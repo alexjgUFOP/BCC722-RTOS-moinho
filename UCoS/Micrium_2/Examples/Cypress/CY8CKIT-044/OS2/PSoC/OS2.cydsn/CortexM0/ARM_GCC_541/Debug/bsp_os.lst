@@ -1,0 +1,1597 @@
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"bsp_os.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.BSP_OS_SemCreate,"ax",%progbits
+  20              		.align	2
+  21              		.global	BSP_OS_SemCreate
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	BSP_OS_SemCreate, %function
+  25              	BSP_OS_SemCreate:
+  26              	.LFB1:
+  27              		.file 1 "..\\..\\..\\BSP\\OS\\uCOS-II\\bsp_os.c"
+   1:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+   2:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+   3:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                     MICRIUM BOARD SUPPORT SUPPORT
+   4:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+   5:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                          (c) Copyright 2003-2015; Micrium, Inc.; Weston, FL
+   6:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+   7:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *               All rights reserved.  Protected by international copyright laws.
+   8:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *               Knowledge of the source code may NOT be used to develop a similar product.
+   9:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *               Please help us continue to provide the Embedded community with the finest
+  10:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *               software available.  Your honesty is greatly appreciated.
+  11:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  12:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+  13:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  14:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+  15:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  16:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+  17:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                    MICRIUM BOARD SUPPORT PACKAGE
+  18:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                             OS LAYER
+  19:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+  20:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Filename      : bsp_os.c
+  21:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Version       : V1.00
+  22:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Programmer(s) : FT
+  23:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                 EHS
+  24:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  25:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+  26:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  27:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  28:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+  29:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  30:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                             INCLUDE FILES
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 2
+
+
+  31:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  32:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+  33:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  34:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** #define  BSP_OS_MODULE
+  35:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** #include <bsp.h>
+  36:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** #include <bsp_os.h>
+  37:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  38:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  39:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+  40:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  41:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                            LOCAL DEFINES
+  42:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  43:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+  44:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  45:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  46:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+  47:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  48:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                           LOCAL CONSTANTS
+  49:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  50:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+  51:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  52:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  53:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+  54:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  55:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                          LOCAL DATA TYPES
+  56:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  57:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+  58:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  59:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  60:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+  61:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  62:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                            LOCAL TABLES
+  63:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  64:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+  65:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  66:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  67:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+  68:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  69:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                       LOCAL GLOBAL VARIABLES
+  70:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  71:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+  72:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  73:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  74:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+  75:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  76:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                      LOCAL FUNCTION PROTOTYPES
+  77:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  78:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+  79:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  80:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  81:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+  82:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  83:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                     LOCAL CONFIGURATION ERRORS
+  84:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  85:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+  86:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  87:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 3
+
+
+  88:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  89:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  90:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** **                                         GLOBAL FUNCTIONS
+  91:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  92:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  93:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+  94:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  95:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+  96:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+  97:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  98:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+  99:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** **                                     BSP OS LOCKS FUNCTIONS
+ 100:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 101:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 102:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+ 103:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 104:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+ 105:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 106:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 107:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** **                                     BSP OS LOCKS FUNCTIONS
+ 108:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 109:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 110:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+ 111:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 112:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+ 113:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 114:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                      BSP_OS_SemCreate()
+ 115:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 116:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Description : Creates a sempahore to lock/unlock
+ 117:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 118:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Argument(s) : p_sem        Pointer to a BSP_OS_SEM structure
+ 119:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 120:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *               sem_val      Initial value of the semaphore.
+ 121:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 122:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *               p_sem_name   Pointer to the semaphore name.
+ 123:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 124:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Return(s)   : DEF_OK        if the semaphore was created.
+ 125:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *               DEF_FAIL      if the sempahore could not be created.
+ 126:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 127:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Caller(s)   : Application.
+ 128:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 129:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Note(s)     : none.
+ 130:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 131:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 132:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+ 133:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 134:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** CPU_BOOLEAN  BSP_OS_SemCreate (BSP_OS_SEM      *p_sem,
+ 135:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****                                BSP_OS_SEM_VAL   sem_val,
+ 136:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****                                CPU_CHAR        *p_sem_name)
+ 137:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** {
+  28              		.loc 1 137 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 24
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 7, -8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 4
+
+
+  35              		.cfi_offset 14, -4
+  36 0002 86B0     		sub	sp, sp, #24
+  37              		.cfi_def_cfa_offset 32
+  38 0004 00AF     		add	r7, sp, #0
+  39              		.cfi_def_cfa_register 7
+  40 0006 F860     		str	r0, [r7, #12]
+  41 0008 7A60     		str	r2, [r7, #4]
+  42 000a 0A23     		movs	r3, #10
+  43 000c FB18     		adds	r3, r7, r3
+  44 000e 0A1C     		adds	r2, r1, #0
+  45 0010 1A80     		strh	r2, [r3]
+ 138:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     OS_EVENT    *p_event;
+ 139:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 140:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** #if (OS_EVENT_NAME_EN > 0)
+ 141:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     CPU_INT08U   os_err;
+ 142:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** #endif
+ 143:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 144:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     p_event = OSSemCreate(sem_val);
+  46              		.loc 1 144 0
+  47 0012 0A23     		movs	r3, #10
+  48 0014 FB18     		adds	r3, r7, r3
+  49 0016 1B88     		ldrh	r3, [r3]
+  50 0018 1800     		movs	r0, r3
+  51 001a FFF7FEFF 		bl	OSSemCreate
+  52 001e 0300     		movs	r3, r0
+  53 0020 7B61     		str	r3, [r7, #20]
+ 145:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 146:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     if (p_event == (OS_EVENT *)0) {
+  54              		.loc 1 146 0
+  55 0022 7B69     		ldr	r3, [r7, #20]
+  56 0024 002B     		cmp	r3, #0
+  57 0026 01D1     		bne	.L2
+ 147:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****         return (DEF_FAIL);
+  58              		.loc 1 147 0
+  59 0028 0023     		movs	r3, #0
+  60 002a 03E0     		b	.L3
+  61              	.L2:
+ 148:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     }
+ 149:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 150:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     *p_sem = (BSP_OS_SEM)(p_event);
+  62              		.loc 1 150 0
+  63 002c FB68     		ldr	r3, [r7, #12]
+  64 002e 7A69     		ldr	r2, [r7, #20]
+  65 0030 1A60     		str	r2, [r3]
+ 151:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 152:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** #if (OS_EVENT_NAME_EN > 0)
+ 153:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     OSEventNameSet(          p_event,
+ 154:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****                    (INT8U *) p_sem_name,
+ 155:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****                             &os_err);
+ 156:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** #endif
+ 157:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 158:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     return (DEF_OK);
+  66              		.loc 1 158 0
+  67 0032 0123     		movs	r3, #1
+  68              	.L3:
+ 159:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** }
+  69              		.loc 1 159 0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 5
+
+
+  70 0034 1800     		movs	r0, r3
+  71 0036 BD46     		mov	sp, r7
+  72 0038 06B0     		add	sp, sp, #24
+  73              		@ sp needed
+  74 003a 80BD     		pop	{r7, pc}
+  75              		.cfi_endproc
+  76              	.LFE1:
+  77              		.size	BSP_OS_SemCreate, .-BSP_OS_SemCreate
+  78              		.global	__aeabi_uidiv
+  79              		.section	.text.BSP_OS_SemWait,"ax",%progbits
+  80              		.align	2
+  81              		.global	BSP_OS_SemWait
+  82              		.code	16
+  83              		.thumb_func
+  84              		.type	BSP_OS_SemWait, %function
+  85              	BSP_OS_SemWait:
+  86              	.LFB2:
+ 160:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 161:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 162:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+ 163:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 164:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                     BSP_OS_SemWait()
+ 165:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 166:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Description : Wait on a semaphore to become available
+ 167:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 168:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Argument(s) : p_sem        Pointer to the sempahore handler.
+ 169:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 170:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *               dly_ms       delay in miliseconds to wait on the semaphore
+ 171:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 172:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Return(s)   : error code return     DEF_OK       if the semaphore was acquire
+ 173:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                     DEF_FAIL     if the sempahore could not be acquire
+ 174:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 175:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Caller(s)   : Application.
+ 176:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 177:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Note(s)     : none.
+ 178:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 179:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+ 180:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 181:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** CPU_BOOLEAN  BSP_OS_SemWait (BSP_OS_SEM  *p_sem,
+ 182:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****                              CPU_INT32U   dly_ms)
+ 183:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** {
+  87              		.loc 1 183 0
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 16
+  90              		@ frame_needed = 1, uses_anonymous_args = 0
+  91 0000 80B5     		push	{r7, lr}
+  92              		.cfi_def_cfa_offset 8
+  93              		.cfi_offset 7, -8
+  94              		.cfi_offset 14, -4
+  95 0002 84B0     		sub	sp, sp, #16
+  96              		.cfi_def_cfa_offset 24
+  97 0004 00AF     		add	r7, sp, #0
+  98              		.cfi_def_cfa_register 7
+  99 0006 7860     		str	r0, [r7, #4]
+ 100 0008 3960     		str	r1, [r7]
+ 184:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     CPU_INT08U  os_err;
+ 185:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     CPU_INT32U  dly_ticks;
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 6
+
+
+ 186:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 187:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 188:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     dly_ticks  = ((dly_ms * DEF_TIME_NBR_mS_PER_SEC) / OS_TICKS_PER_SEC);
+ 101              		.loc 1 188 0
+ 102 000a 3B68     		ldr	r3, [r7]
+ 103 000c FA22     		movs	r2, #250
+ 104 000e 9200     		lsls	r2, r2, #2
+ 105 0010 5A43     		muls	r2, r3
+ 106 0012 FA23     		movs	r3, #250
+ 107 0014 9900     		lsls	r1, r3, #2
+ 108 0016 1000     		movs	r0, r2
+ 109 0018 FFF7FEFF 		bl	__aeabi_uidiv
+ 110 001c 0300     		movs	r3, r0
+ 111 001e FB60     		str	r3, [r7, #12]
+ 189:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 190:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     OSSemPend(*p_sem,
+ 112              		.loc 1 190 0
+ 113 0020 7B68     		ldr	r3, [r7, #4]
+ 114 0022 1B68     		ldr	r3, [r3]
+ 115 0024 0B22     		movs	r2, #11
+ 116 0026 BA18     		adds	r2, r7, r2
+ 117 0028 F968     		ldr	r1, [r7, #12]
+ 118 002a 1800     		movs	r0, r3
+ 119 002c FFF7FEFF 		bl	OSSemPend
+ 191:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****                dly_ticks,
+ 192:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****               &os_err);
+ 193:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 194:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     if (os_err != OS_ERR_NONE) {
+ 120              		.loc 1 194 0
+ 121 0030 0B23     		movs	r3, #11
+ 122 0032 FB18     		adds	r3, r7, r3
+ 123 0034 1B78     		ldrb	r3, [r3]
+ 124 0036 002B     		cmp	r3, #0
+ 125 0038 01D0     		beq	.L5
+ 195:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****        return (DEF_FAIL);
+ 126              		.loc 1 195 0
+ 127 003a 0023     		movs	r3, #0
+ 128 003c 00E0     		b	.L7
+ 129              	.L5:
+ 196:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     }
+ 197:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 198:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     return (DEF_OK);
+ 130              		.loc 1 198 0
+ 131 003e 0123     		movs	r3, #1
+ 132              	.L7:
+ 199:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** }
+ 133              		.loc 1 199 0 discriminator 1
+ 134 0040 1800     		movs	r0, r3
+ 135 0042 BD46     		mov	sp, r7
+ 136 0044 04B0     		add	sp, sp, #16
+ 137              		@ sp needed
+ 138 0046 80BD     		pop	{r7, pc}
+ 139              		.cfi_endproc
+ 140              	.LFE2:
+ 141              		.size	BSP_OS_SemWait, .-BSP_OS_SemWait
+ 142              		.section	.text.BSP_OS_SemPost,"ax",%progbits
+ 143              		.align	2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 7
+
+
+ 144              		.global	BSP_OS_SemPost
+ 145              		.code	16
+ 146              		.thumb_func
+ 147              		.type	BSP_OS_SemPost, %function
+ 148              	BSP_OS_SemPost:
+ 149              	.LFB3:
+ 200:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 201:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+ 202:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 203:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                      BSP_OS_SemCreate()
+ 204:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 205:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Description : Post a semaphore
+ 206:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 207:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Argument(s) : p_sem                 Pointer to the Semaphore handler.
+ 208:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 209:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Return(s)   : error code return     DEF_OK     if the semaphore was posted.
+ 210:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                     DEF_FAIL   if the sempahore could not be posted.
+ 211:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 212:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Caller(s)   : Application.
+ 213:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 214:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Note(s)     : none.
+ 215:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 216:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+ 217:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 218:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** CPU_BOOLEAN  BSP_OS_SemPost (BSP_OS_SEM  *p_sem)
+ 219:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** {
+ 150              		.loc 1 219 0
+ 151              		.cfi_startproc
+ 152              		@ args = 0, pretend = 0, frame = 16
+ 153              		@ frame_needed = 1, uses_anonymous_args = 0
+ 154 0000 90B5     		push	{r4, r7, lr}
+ 155              		.cfi_def_cfa_offset 12
+ 156              		.cfi_offset 4, -12
+ 157              		.cfi_offset 7, -8
+ 158              		.cfi_offset 14, -4
+ 159 0002 85B0     		sub	sp, sp, #20
+ 160              		.cfi_def_cfa_offset 32
+ 161 0004 00AF     		add	r7, sp, #0
+ 162              		.cfi_def_cfa_register 7
+ 163 0006 7860     		str	r0, [r7, #4]
+ 220:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     CPU_INT08U  os_err;
+ 221:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 222:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 223:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     os_err = OSSemPost(*p_sem);
+ 164              		.loc 1 223 0
+ 165 0008 7B68     		ldr	r3, [r7, #4]
+ 166 000a 1B68     		ldr	r3, [r3]
+ 167 000c 0F22     		movs	r2, #15
+ 168 000e BC18     		adds	r4, r7, r2
+ 169 0010 1800     		movs	r0, r3
+ 170 0012 FFF7FEFF 		bl	OSSemPost
+ 171 0016 0300     		movs	r3, r0
+ 172 0018 2370     		strb	r3, [r4]
+ 224:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 225:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     if (os_err != OS_ERR_NONE) {
+ 173              		.loc 1 225 0
+ 174 001a 0F23     		movs	r3, #15
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 8
+
+
+ 175 001c FB18     		adds	r3, r7, r3
+ 176 001e 1B78     		ldrb	r3, [r3]
+ 177 0020 002B     		cmp	r3, #0
+ 178 0022 01D0     		beq	.L9
+ 226:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****         return (DEF_FAIL);
+ 179              		.loc 1 226 0
+ 180 0024 0023     		movs	r3, #0
+ 181 0026 00E0     		b	.L10
+ 182              	.L9:
+ 227:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     }
+ 228:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 229:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     return (DEF_OK);
+ 183              		.loc 1 229 0
+ 184 0028 0123     		movs	r3, #1
+ 185              	.L10:
+ 230:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** }
+ 186              		.loc 1 230 0
+ 187 002a 1800     		movs	r0, r3
+ 188 002c BD46     		mov	sp, r7
+ 189 002e 05B0     		add	sp, sp, #20
+ 190              		@ sp needed
+ 191 0030 90BD     		pop	{r4, r7, pc}
+ 192              		.cfi_endproc
+ 193              	.LFE3:
+ 194              		.size	BSP_OS_SemPost, .-BSP_OS_SemPost
+ 195              		.global	__aeabi_uidivmod
+ 196 0032 C046     		.section	.text.BSP_OS_TimeDlyMs,"ax",%progbits
+ 197              		.align	2
+ 198              		.global	BSP_OS_TimeDlyMs
+ 199              		.code	16
+ 200              		.thumb_func
+ 201              		.type	BSP_OS_TimeDlyMs, %function
+ 202              	BSP_OS_TimeDlyMs:
+ 203              	.LFB4:
+ 231:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 232:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 233:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 234:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+ 235:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 236:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 237:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** **                                     uC/OS-II TIMER FUNCTIONS
+ 238:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 239:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 240:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+ 241:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 242:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+ 243:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 244:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                    BSP_TimeDlyMs()
+ 245:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 246:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Description : This function delay the exceution for specifi amount of miliseconds
+ 247:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 248:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Argument(s) : dly_ms       Delay in miliseconds
+ 249:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 250:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Return(s)   : none.
+ 251:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 252:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Caller(s)   : Application
+ 253:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 9
+
+
+ 254:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Note(s)     : none.
+ 255:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 256:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 257:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+ 258:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 259:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** void  BSP_OS_TimeDlyMs (CPU_INT32U  dly_ms)
+ 260:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** {
+ 204              		.loc 1 260 0
+ 205              		.cfi_startproc
+ 206              		@ args = 0, pretend = 0, frame = 16
+ 207              		@ frame_needed = 1, uses_anonymous_args = 0
+ 208 0000 80B5     		push	{r7, lr}
+ 209              		.cfi_def_cfa_offset 8
+ 210              		.cfi_offset 7, -8
+ 211              		.cfi_offset 14, -4
+ 212 0002 84B0     		sub	sp, sp, #16
+ 213              		.cfi_def_cfa_offset 24
+ 214 0004 00AF     		add	r7, sp, #0
+ 215              		.cfi_def_cfa_register 7
+ 216 0006 7860     		str	r0, [r7, #4]
+ 261:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     CPU_INT16U  os_ms;
+ 262:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     CPU_INT08U  os_sec;
+ 263:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 264:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 265:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     if (dly_ms > 10000u) {                                       /* Limit delays to 10 seconds.    
+ 217              		.loc 1 265 0
+ 218 0008 7B68     		ldr	r3, [r7, #4]
+ 219 000a 1B4A     		ldr	r2, .L15
+ 220 000c 9342     		cmp	r3, r2
+ 221 000e 01D9     		bls	.L12
+ 266:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****         dly_ms = 10000u;
+ 222              		.loc 1 266 0
+ 223 0010 194B     		ldr	r3, .L15
+ 224 0012 7B60     		str	r3, [r7, #4]
+ 225              	.L12:
+ 267:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     }
+ 268:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 269:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     if (dly_ms >= 1000u) {
+ 226              		.loc 1 269 0
+ 227 0014 7B68     		ldr	r3, [r7, #4]
+ 228 0016 194A     		ldr	r2, .L15+4
+ 229 0018 9342     		cmp	r3, r2
+ 230 001a 16D9     		bls	.L13
+ 270:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****         os_sec = dly_ms / 1000u;
+ 231              		.loc 1 270 0
+ 232 001c 7A68     		ldr	r2, [r7, #4]
+ 233 001e FA23     		movs	r3, #250
+ 234 0020 9900     		lsls	r1, r3, #2
+ 235 0022 1000     		movs	r0, r2
+ 236 0024 FFF7FEFF 		bl	__aeabi_uidiv
+ 237 0028 0300     		movs	r3, r0
+ 238 002a 1A00     		movs	r2, r3
+ 239 002c 0D23     		movs	r3, #13
+ 240 002e FB18     		adds	r3, r7, r3
+ 241 0030 1A70     		strb	r2, [r3]
+ 271:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****         os_ms  = dly_ms % 1000u;
+ 242              		.loc 1 271 0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 10
+
+
+ 243 0032 7A68     		ldr	r2, [r7, #4]
+ 244 0034 FA23     		movs	r3, #250
+ 245 0036 9900     		lsls	r1, r3, #2
+ 246 0038 1000     		movs	r0, r2
+ 247 003a FFF7FEFF 		bl	__aeabi_uidivmod
+ 248 003e 0B00     		movs	r3, r1
+ 249 0040 1A00     		movs	r2, r3
+ 250 0042 0E23     		movs	r3, #14
+ 251 0044 FB18     		adds	r3, r7, r3
+ 252 0046 1A80     		strh	r2, [r3]
+ 253 0048 07E0     		b	.L14
+ 254              	.L13:
+ 272:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     } else {
+ 273:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****         os_ms  = dly_ms;
+ 255              		.loc 1 273 0
+ 256 004a 0E23     		movs	r3, #14
+ 257 004c FB18     		adds	r3, r7, r3
+ 258 004e 7A68     		ldr	r2, [r7, #4]
+ 259 0050 1A80     		strh	r2, [r3]
+ 274:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****         os_sec = 0u;
+ 260              		.loc 1 274 0
+ 261 0052 0D23     		movs	r3, #13
+ 262 0054 FB18     		adds	r3, r7, r3
+ 263 0056 0022     		movs	r2, #0
+ 264 0058 1A70     		strb	r2, [r3]
+ 265              	.L14:
+ 275:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     }
+ 276:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 277:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     OSTimeDlyHMSM(0u, 0u, os_sec, os_ms);
+ 266              		.loc 1 277 0
+ 267 005a 0E23     		movs	r3, #14
+ 268 005c FB18     		adds	r3, r7, r3
+ 269 005e 1988     		ldrh	r1, [r3]
+ 270 0060 0D23     		movs	r3, #13
+ 271 0062 FB18     		adds	r3, r7, r3
+ 272 0064 1A78     		ldrb	r2, [r3]
+ 273 0066 0B00     		movs	r3, r1
+ 274 0068 0021     		movs	r1, #0
+ 275 006a 0020     		movs	r0, #0
+ 276 006c FFF7FEFF 		bl	OSTimeDlyHMSM
+ 278:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** }
+ 277              		.loc 1 278 0
+ 278 0070 C046     		nop
+ 279 0072 BD46     		mov	sp, r7
+ 280 0074 04B0     		add	sp, sp, #16
+ 281              		@ sp needed
+ 282 0076 80BD     		pop	{r7, pc}
+ 283              	.L16:
+ 284              		.align	2
+ 285              	.L15:
+ 286 0078 10270000 		.word	10000
+ 287 007c E7030000 		.word	999
+ 288              		.cfi_endproc
+ 289              	.LFE4:
+ 290              		.size	BSP_OS_TimeDlyMs, .-BSP_OS_TimeDlyMs
+ 291              		.section	.text.BSP_OS_TimeDly,"ax",%progbits
+ 292              		.align	2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 11
+
+
+ 293              		.global	BSP_OS_TimeDly
+ 294              		.code	16
+ 295              		.thumb_func
+ 296              		.type	BSP_OS_TimeDly, %function
+ 297              	BSP_OS_TimeDly:
+ 298              	.LFB5:
+ 279:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 280:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** /*
+ 281:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 282:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *                                    BSP_TimeDlyMs()
+ 283:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 284:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Description : This function delay the exceution for specifi amount of miliseconds
+ 285:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 286:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Argument(s) : dly_ms       Delay in miliseconds
+ 287:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 288:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Return(s)   : none.
+ 289:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 290:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Caller(s)   : Application
+ 291:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 292:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** * Note(s)     : none.
+ 293:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** *
+ 294:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** ***************************************************************************************************
+ 295:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** */
+ 296:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** 
+ 297:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** void  BSP_OS_TimeDly (CPU_INT32U  dly_tick)
+ 298:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** {
+ 299              		.loc 1 298 0
+ 300              		.cfi_startproc
+ 301              		@ args = 0, pretend = 0, frame = 8
+ 302              		@ frame_needed = 1, uses_anonymous_args = 0
+ 303 0000 80B5     		push	{r7, lr}
+ 304              		.cfi_def_cfa_offset 8
+ 305              		.cfi_offset 7, -8
+ 306              		.cfi_offset 14, -4
+ 307 0002 82B0     		sub	sp, sp, #8
+ 308              		.cfi_def_cfa_offset 16
+ 309 0004 00AF     		add	r7, sp, #0
+ 310              		.cfi_def_cfa_register 7
+ 311 0006 7860     		str	r0, [r7, #4]
+ 299:..\..\..\BSP\OS\uCOS-II/bsp_os.c ****     OSTimeDly(dly_tick);
+ 312              		.loc 1 299 0
+ 313 0008 7B68     		ldr	r3, [r7, #4]
+ 314 000a 1800     		movs	r0, r3
+ 315 000c FFF7FEFF 		bl	OSTimeDly
+ 300:..\..\..\BSP\OS\uCOS-II/bsp_os.c **** }
+ 316              		.loc 1 300 0
+ 317 0010 C046     		nop
+ 318 0012 BD46     		mov	sp, r7
+ 319 0014 02B0     		add	sp, sp, #8
+ 320              		@ sp needed
+ 321 0016 80BD     		pop	{r7, pc}
+ 322              		.cfi_endproc
+ 323              	.LFE5:
+ 324              		.size	BSP_OS_TimeDly, .-BSP_OS_TimeDly
+ 325              		.text
+ 326              	.Letext0:
+ 327              		.file 2 "..\\..\\..\\..\\..\\..\\Software\\uCOS-II\\Ports\\ARM-Cortex-M0\\Generic\\GNU/os_cpu.h"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 12
+
+
+ 328              		.file 3 "..\\..\\..\\..\\..\\..\\Software\\uCOS-II\\Source/ucos_ii.h"
+ 329              		.file 4 "..\\..\\..\\..\\..\\..\\Software\\uC-CPU\\ARM-Cortex-M0\\GNU/cpu.h"
+ 330              		.file 5 "..\\..\\..\\BSP\\OS\\uCOS-II/bsp_os.h"
+ 331              		.section	.debug_info,"",%progbits
+ 332              	.Ldebug_info0:
+ 333 0000 B9020000 		.4byte	0x2b9
+ 334 0004 0400     		.2byte	0x4
+ 335 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 336 000a 04       		.byte	0x4
+ 337 000b 01       		.uleb128 0x1
+ 338 000c 13010000 		.4byte	.LASF43
+ 339 0010 0C       		.byte	0xc
+ 340 0011 A1010000 		.4byte	.LASF44
+ 341 0015 00000000 		.4byte	.LASF45
+ 342 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 343 001d 00000000 		.4byte	0
+ 344 0021 00000000 		.4byte	.Ldebug_line0
+ 345 0025 02       		.uleb128 0x2
+ 346 0026 01       		.byte	0x1
+ 347 0027 06       		.byte	0x6
+ 348 0028 E6020000 		.4byte	.LASF0
+ 349 002c 02       		.uleb128 0x2
+ 350 002d 01       		.byte	0x1
+ 351 002e 08       		.byte	0x8
+ 352 002f D2000000 		.4byte	.LASF1
+ 353 0033 02       		.uleb128 0x2
+ 354 0034 02       		.byte	0x2
+ 355 0035 05       		.byte	0x5
+ 356 0036 A3020000 		.4byte	.LASF2
+ 357 003a 02       		.uleb128 0x2
+ 358 003b 02       		.byte	0x2
+ 359 003c 07       		.byte	0x7
+ 360 003d 63020000 		.4byte	.LASF3
+ 361 0041 02       		.uleb128 0x2
+ 362 0042 04       		.byte	0x4
+ 363 0043 05       		.byte	0x5
+ 364 0044 C6020000 		.4byte	.LASF4
+ 365 0048 02       		.uleb128 0x2
+ 366 0049 04       		.byte	0x4
+ 367 004a 07       		.byte	0x7
+ 368 004b F0000000 		.4byte	.LASF5
+ 369 004f 02       		.uleb128 0x2
+ 370 0050 08       		.byte	0x8
+ 371 0051 05       		.byte	0x5
+ 372 0052 76020000 		.4byte	.LASF6
+ 373 0056 02       		.uleb128 0x2
+ 374 0057 08       		.byte	0x8
+ 375 0058 07       		.byte	0x7
+ 376 0059 FE010000 		.4byte	.LASF7
+ 377 005d 03       		.uleb128 0x3
+ 378 005e 04       		.byte	0x4
+ 379 005f 05       		.byte	0x5
+ 380 0060 696E7400 		.ascii	"int\000"
+ 381 0064 02       		.uleb128 0x2
+ 382 0065 04       		.byte	0x4
+ 383 0066 07       		.byte	0x7
+ 384 0067 EB010000 		.4byte	.LASF8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 13
+
+
+ 385 006b 02       		.uleb128 0x2
+ 386 006c 08       		.byte	0x8
+ 387 006d 04       		.byte	0x4
+ 388 006e 46020000 		.4byte	.LASF9
+ 389 0072 04       		.uleb128 0x4
+ 390 0073 04       		.byte	0x4
+ 391 0074 02       		.uleb128 0x2
+ 392 0075 04       		.byte	0x4
+ 393 0076 07       		.byte	0x7
+ 394 0077 52020000 		.4byte	.LASF10
+ 395 007b 02       		.uleb128 0x2
+ 396 007c 01       		.byte	0x1
+ 397 007d 08       		.byte	0x8
+ 398 007e 8A020000 		.4byte	.LASF11
+ 399 0082 05       		.uleb128 0x5
+ 400 0083 F8010000 		.4byte	.LASF12
+ 401 0087 02       		.byte	0x2
+ 402 0088 73       		.byte	0x73
+ 403 0089 2C000000 		.4byte	0x2c
+ 404 008d 05       		.uleb128 0x5
+ 405 008e BA000000 		.4byte	.LASF13
+ 406 0092 02       		.byte	0x2
+ 407 0093 75       		.byte	0x75
+ 408 0094 3A000000 		.4byte	0x3a
+ 409 0098 02       		.uleb128 0x2
+ 410 0099 04       		.byte	0x4
+ 411 009a 04       		.byte	0x4
+ 412 009b CC000000 		.4byte	.LASF14
+ 413 009f 02       		.uleb128 0x2
+ 414 00a0 08       		.byte	0x8
+ 415 00a1 04       		.byte	0x4
+ 416 00a2 F2020000 		.4byte	.LASF15
+ 417 00a6 06       		.uleb128 0x6
+ 418 00a7 9C000000 		.4byte	.LASF16
+ 419 00ab 03       		.byte	0x3
+ 420 00ac 7201     		.2byte	0x172
+ 421 00ae 82000000 		.4byte	0x82
+ 422 00b2 07       		.uleb128 0x7
+ 423 00b3 E0000000 		.4byte	.LASF46
+ 424 00b7 10       		.byte	0x10
+ 425 00b8 03       		.byte	0x3
+ 426 00b9 7801     		.2byte	0x178
+ 427 00bb 01010000 		.4byte	0x101
+ 428 00bf 08       		.uleb128 0x8
+ 429 00c0 DF010000 		.4byte	.LASF17
+ 430 00c4 03       		.byte	0x3
+ 431 00c5 7901     		.2byte	0x179
+ 432 00c7 82000000 		.4byte	0x82
+ 433 00cb 00       		.byte	0
+ 434 00cc 08       		.uleb128 0x8
+ 435 00cd C2010000 		.4byte	.LASF18
+ 436 00d1 03       		.byte	0x3
+ 437 00d2 7A01     		.2byte	0x17a
+ 438 00d4 72000000 		.4byte	0x72
+ 439 00d8 04       		.byte	0x4
+ 440 00d9 08       		.uleb128 0x8
+ 441 00da D4010000 		.4byte	.LASF19
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 14
+
+
+ 442 00de 03       		.byte	0x3
+ 443 00df 7B01     		.2byte	0x17b
+ 444 00e1 8D000000 		.4byte	0x8d
+ 445 00e5 08       		.byte	0x8
+ 446 00e6 08       		.uleb128 0x8
+ 447 00e7 0A030000 		.4byte	.LASF20
+ 448 00eb 03       		.byte	0x3
+ 449 00ec 7C01     		.2byte	0x17c
+ 450 00ee A6000000 		.4byte	0xa6
+ 451 00f2 0A       		.byte	0xa
+ 452 00f3 08       		.uleb128 0x8
+ 453 00f4 6E000000 		.4byte	.LASF21
+ 454 00f8 03       		.byte	0x3
+ 455 00f9 7D01     		.2byte	0x17d
+ 456 00fb 01010000 		.4byte	0x101
+ 457 00ff 0B       		.byte	0xb
+ 458 0100 00       		.byte	0
+ 459 0101 09       		.uleb128 0x9
+ 460 0102 A6000000 		.4byte	0xa6
+ 461 0106 11010000 		.4byte	0x111
+ 462 010a 0A       		.uleb128 0xa
+ 463 010b 74000000 		.4byte	0x74
+ 464 010f 03       		.byte	0x3
+ 465 0110 00       		.byte	0
+ 466 0111 06       		.uleb128 0x6
+ 467 0112 8F020000 		.4byte	.LASF22
+ 468 0116 03       		.byte	0x3
+ 469 0117 8201     		.2byte	0x182
+ 470 0119 B2000000 		.4byte	0xb2
+ 471 011d 0B       		.uleb128 0xb
+ 472 011e 04       		.byte	0x4
+ 473 011f 11010000 		.4byte	0x111
+ 474 0123 05       		.uleb128 0x5
+ 475 0124 93000000 		.4byte	.LASF23
+ 476 0128 04       		.byte	0x4
+ 477 0129 7C       		.byte	0x7c
+ 478 012a 7B000000 		.4byte	0x7b
+ 479 012e 05       		.uleb128 0x5
+ 480 012f 26020000 		.4byte	.LASF24
+ 481 0133 04       		.byte	0x4
+ 482 0134 7D       		.byte	0x7d
+ 483 0135 2C000000 		.4byte	0x2c
+ 484 0139 05       		.uleb128 0x5
+ 485 013a 02010000 		.4byte	.LASF25
+ 486 013e 04       		.byte	0x4
+ 487 013f 7E       		.byte	0x7e
+ 488 0140 2C000000 		.4byte	0x2c
+ 489 0144 05       		.uleb128 0x5
+ 490 0145 3B020000 		.4byte	.LASF26
+ 491 0149 04       		.byte	0x4
+ 492 014a 80       		.byte	0x80
+ 493 014b 3A000000 		.4byte	0x3a
+ 494 014f 05       		.uleb128 0x5
+ 495 0150 C1000000 		.4byte	.LASF27
+ 496 0154 04       		.byte	0x4
+ 497 0155 82       		.byte	0x82
+ 498 0156 64000000 		.4byte	0x64
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 15
+
+
+ 499 015a 05       		.uleb128 0x5
+ 500 015b 79000000 		.4byte	.LASF28
+ 501 015f 05       		.byte	0x5
+ 502 0160 4C       		.byte	0x4c
+ 503 0161 1D010000 		.4byte	0x11d
+ 504 0165 05       		.uleb128 0x5
+ 505 0166 D7020000 		.4byte	.LASF29
+ 506 016a 05       		.byte	0x5
+ 507 016b 4D       		.byte	0x4d
+ 508 016c 44010000 		.4byte	0x144
+ 509 0170 0C       		.uleb128 0xc
+ 510 0171 F9020000 		.4byte	.LASF33
+ 511 0175 01       		.byte	0x1
+ 512 0176 86       		.byte	0x86
+ 513 0177 2E010000 		.4byte	0x12e
+ 514 017b 00000000 		.4byte	.LFB1
+ 515 017f 3C000000 		.4byte	.LFE1-.LFB1
+ 516 0183 01       		.uleb128 0x1
+ 517 0184 9C       		.byte	0x9c
+ 518 0185 C2010000 		.4byte	0x1c2
+ 519 0189 0D       		.uleb128 0xd
+ 520 018a 0D010000 		.4byte	.LASF30
+ 521 018e 01       		.byte	0x1
+ 522 018f 86       		.byte	0x86
+ 523 0190 C2010000 		.4byte	0x1c2
+ 524 0194 02       		.uleb128 0x2
+ 525 0195 91       		.byte	0x91
+ 526 0196 6C       		.sleb128 -20
+ 527 0197 0D       		.uleb128 0xd
+ 528 0198 CF020000 		.4byte	.LASF31
+ 529 019c 01       		.byte	0x1
+ 530 019d 87       		.byte	0x87
+ 531 019e 65010000 		.4byte	0x165
+ 532 01a2 02       		.uleb128 0x2
+ 533 01a3 91       		.byte	0x91
+ 534 01a4 6A       		.sleb128 -22
+ 535 01a5 0D       		.uleb128 0xd
+ 536 01a6 98020000 		.4byte	.LASF32
+ 537 01aa 01       		.byte	0x1
+ 538 01ab 88       		.byte	0x88
+ 539 01ac C8010000 		.4byte	0x1c8
+ 540 01b0 02       		.uleb128 0x2
+ 541 01b1 91       		.byte	0x91
+ 542 01b2 64       		.sleb128 -28
+ 543 01b3 0E       		.uleb128 0xe
+ 544 01b4 5B020000 		.4byte	.LASF36
+ 545 01b8 01       		.byte	0x1
+ 546 01b9 8A       		.byte	0x8a
+ 547 01ba 1D010000 		.4byte	0x11d
+ 548 01be 02       		.uleb128 0x2
+ 549 01bf 91       		.byte	0x91
+ 550 01c0 74       		.sleb128 -12
+ 551 01c1 00       		.byte	0
+ 552 01c2 0B       		.uleb128 0xb
+ 553 01c3 04       		.byte	0x4
+ 554 01c4 5A010000 		.4byte	0x15a
+ 555 01c8 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 16
+
+
+ 556 01c9 04       		.byte	0x4
+ 557 01ca 23010000 		.4byte	0x123
+ 558 01ce 0C       		.uleb128 0xc
+ 559 01cf AB000000 		.4byte	.LASF34
+ 560 01d3 01       		.byte	0x1
+ 561 01d4 B5       		.byte	0xb5
+ 562 01d5 2E010000 		.4byte	0x12e
+ 563 01d9 00000000 		.4byte	.LFB2
+ 564 01dd 48000000 		.4byte	.LFE2-.LFB2
+ 565 01e1 01       		.uleb128 0x1
+ 566 01e2 9C       		.byte	0x9c
+ 567 01e3 20020000 		.4byte	0x220
+ 568 01e7 0D       		.uleb128 0xd
+ 569 01e8 0D010000 		.4byte	.LASF30
+ 570 01ec 01       		.byte	0x1
+ 571 01ed B5       		.byte	0xb5
+ 572 01ee C2010000 		.4byte	0x1c2
+ 573 01f2 02       		.uleb128 0x2
+ 574 01f3 91       		.byte	0x91
+ 575 01f4 6C       		.sleb128 -20
+ 576 01f5 0D       		.uleb128 0xd
+ 577 01f6 A4000000 		.4byte	.LASF35
+ 578 01fa 01       		.byte	0x1
+ 579 01fb B6       		.byte	0xb6
+ 580 01fc 4F010000 		.4byte	0x14f
+ 581 0200 02       		.uleb128 0x2
+ 582 0201 91       		.byte	0x91
+ 583 0202 68       		.sleb128 -24
+ 584 0203 0E       		.uleb128 0xe
+ 585 0204 CD010000 		.4byte	.LASF37
+ 586 0208 01       		.byte	0x1
+ 587 0209 B8       		.byte	0xb8
+ 588 020a 39010000 		.4byte	0x139
+ 589 020e 02       		.uleb128 0x2
+ 590 020f 91       		.byte	0x91
+ 591 0210 73       		.sleb128 -13
+ 592 0211 0E       		.uleb128 0xe
+ 593 0212 BC020000 		.4byte	.LASF38
+ 594 0216 01       		.byte	0x1
+ 595 0217 B9       		.byte	0xb9
+ 596 0218 4F010000 		.4byte	0x14f
+ 597 021c 02       		.uleb128 0x2
+ 598 021d 91       		.byte	0x91
+ 599 021e 74       		.sleb128 -12
+ 600 021f 00       		.byte	0
+ 601 0220 0C       		.uleb128 0xc
+ 602 0221 AD020000 		.4byte	.LASF39
+ 603 0225 01       		.byte	0x1
+ 604 0226 DA       		.byte	0xda
+ 605 0227 2E010000 		.4byte	0x12e
+ 606 022b 00000000 		.4byte	.LFB3
+ 607 022f 32000000 		.4byte	.LFE3-.LFB3
+ 608 0233 01       		.uleb128 0x1
+ 609 0234 9C       		.byte	0x9c
+ 610 0235 56020000 		.4byte	0x256
+ 611 0239 0D       		.uleb128 0xd
+ 612 023a 0D010000 		.4byte	.LASF30
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 17
+
+
+ 613 023e 01       		.byte	0x1
+ 614 023f DA       		.byte	0xda
+ 615 0240 C2010000 		.4byte	0x1c2
+ 616 0244 02       		.uleb128 0x2
+ 617 0245 91       		.byte	0x91
+ 618 0246 64       		.sleb128 -28
+ 619 0247 0E       		.uleb128 0xe
+ 620 0248 CD010000 		.4byte	.LASF37
+ 621 024c 01       		.byte	0x1
+ 622 024d DC       		.byte	0xdc
+ 623 024e 39010000 		.4byte	0x139
+ 624 0252 02       		.uleb128 0x2
+ 625 0253 91       		.byte	0x91
+ 626 0254 6F       		.sleb128 -17
+ 627 0255 00       		.byte	0
+ 628 0256 0F       		.uleb128 0xf
+ 629 0257 15020000 		.4byte	.LASF47
+ 630 025b 01       		.byte	0x1
+ 631 025c 0301     		.2byte	0x103
+ 632 025e 00000000 		.4byte	.LFB4
+ 633 0262 80000000 		.4byte	.LFE4-.LFB4
+ 634 0266 01       		.uleb128 0x1
+ 635 0267 9C       		.byte	0x9c
+ 636 0268 9A020000 		.4byte	0x29a
+ 637 026c 10       		.uleb128 0x10
+ 638 026d A4000000 		.4byte	.LASF35
+ 639 0271 01       		.byte	0x1
+ 640 0272 0301     		.2byte	0x103
+ 641 0274 4F010000 		.4byte	0x14f
+ 642 0278 02       		.uleb128 0x2
+ 643 0279 91       		.byte	0x91
+ 644 027a 6C       		.sleb128 -20
+ 645 027b 11       		.uleb128 0x11
+ 646 027c 84020000 		.4byte	.LASF40
+ 647 0280 01       		.byte	0x1
+ 648 0281 0501     		.2byte	0x105
+ 649 0283 44010000 		.4byte	0x144
+ 650 0287 02       		.uleb128 0x2
+ 651 0288 91       		.byte	0x91
+ 652 0289 76       		.sleb128 -10
+ 653 028a 11       		.uleb128 0x11
+ 654 028b E9000000 		.4byte	.LASF41
+ 655 028f 01       		.byte	0x1
+ 656 0290 0601     		.2byte	0x106
+ 657 0292 39010000 		.4byte	0x139
+ 658 0296 02       		.uleb128 0x2
+ 659 0297 91       		.byte	0x91
+ 660 0298 75       		.sleb128 -11
+ 661 0299 00       		.byte	0
+ 662 029a 12       		.uleb128 0x12
+ 663 029b 84000000 		.4byte	.LASF48
+ 664 029f 01       		.byte	0x1
+ 665 02a0 2901     		.2byte	0x129
+ 666 02a2 00000000 		.4byte	.LFB5
+ 667 02a6 18000000 		.4byte	.LFE5-.LFB5
+ 668 02aa 01       		.uleb128 0x1
+ 669 02ab 9C       		.byte	0x9c
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 18
+
+
+ 670 02ac 10       		.uleb128 0x10
+ 671 02ad 32020000 		.4byte	.LASF42
+ 672 02b1 01       		.byte	0x1
+ 673 02b2 2901     		.2byte	0x129
+ 674 02b4 4F010000 		.4byte	0x14f
+ 675 02b8 02       		.uleb128 0x2
+ 676 02b9 91       		.byte	0x91
+ 677 02ba 74       		.sleb128 -12
+ 678 02bb 00       		.byte	0
+ 679 02bc 00       		.byte	0
+ 680              		.section	.debug_abbrev,"",%progbits
+ 681              	.Ldebug_abbrev0:
+ 682 0000 01       		.uleb128 0x1
+ 683 0001 11       		.uleb128 0x11
+ 684 0002 01       		.byte	0x1
+ 685 0003 25       		.uleb128 0x25
+ 686 0004 0E       		.uleb128 0xe
+ 687 0005 13       		.uleb128 0x13
+ 688 0006 0B       		.uleb128 0xb
+ 689 0007 03       		.uleb128 0x3
+ 690 0008 0E       		.uleb128 0xe
+ 691 0009 1B       		.uleb128 0x1b
+ 692 000a 0E       		.uleb128 0xe
+ 693 000b 55       		.uleb128 0x55
+ 694 000c 17       		.uleb128 0x17
+ 695 000d 11       		.uleb128 0x11
+ 696 000e 01       		.uleb128 0x1
+ 697 000f 10       		.uleb128 0x10
+ 698 0010 17       		.uleb128 0x17
+ 699 0011 00       		.byte	0
+ 700 0012 00       		.byte	0
+ 701 0013 02       		.uleb128 0x2
+ 702 0014 24       		.uleb128 0x24
+ 703 0015 00       		.byte	0
+ 704 0016 0B       		.uleb128 0xb
+ 705 0017 0B       		.uleb128 0xb
+ 706 0018 3E       		.uleb128 0x3e
+ 707 0019 0B       		.uleb128 0xb
+ 708 001a 03       		.uleb128 0x3
+ 709 001b 0E       		.uleb128 0xe
+ 710 001c 00       		.byte	0
+ 711 001d 00       		.byte	0
+ 712 001e 03       		.uleb128 0x3
+ 713 001f 24       		.uleb128 0x24
+ 714 0020 00       		.byte	0
+ 715 0021 0B       		.uleb128 0xb
+ 716 0022 0B       		.uleb128 0xb
+ 717 0023 3E       		.uleb128 0x3e
+ 718 0024 0B       		.uleb128 0xb
+ 719 0025 03       		.uleb128 0x3
+ 720 0026 08       		.uleb128 0x8
+ 721 0027 00       		.byte	0
+ 722 0028 00       		.byte	0
+ 723 0029 04       		.uleb128 0x4
+ 724 002a 0F       		.uleb128 0xf
+ 725 002b 00       		.byte	0
+ 726 002c 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 19
+
+
+ 727 002d 0B       		.uleb128 0xb
+ 728 002e 00       		.byte	0
+ 729 002f 00       		.byte	0
+ 730 0030 05       		.uleb128 0x5
+ 731 0031 16       		.uleb128 0x16
+ 732 0032 00       		.byte	0
+ 733 0033 03       		.uleb128 0x3
+ 734 0034 0E       		.uleb128 0xe
+ 735 0035 3A       		.uleb128 0x3a
+ 736 0036 0B       		.uleb128 0xb
+ 737 0037 3B       		.uleb128 0x3b
+ 738 0038 0B       		.uleb128 0xb
+ 739 0039 49       		.uleb128 0x49
+ 740 003a 13       		.uleb128 0x13
+ 741 003b 00       		.byte	0
+ 742 003c 00       		.byte	0
+ 743 003d 06       		.uleb128 0x6
+ 744 003e 16       		.uleb128 0x16
+ 745 003f 00       		.byte	0
+ 746 0040 03       		.uleb128 0x3
+ 747 0041 0E       		.uleb128 0xe
+ 748 0042 3A       		.uleb128 0x3a
+ 749 0043 0B       		.uleb128 0xb
+ 750 0044 3B       		.uleb128 0x3b
+ 751 0045 05       		.uleb128 0x5
+ 752 0046 49       		.uleb128 0x49
+ 753 0047 13       		.uleb128 0x13
+ 754 0048 00       		.byte	0
+ 755 0049 00       		.byte	0
+ 756 004a 07       		.uleb128 0x7
+ 757 004b 13       		.uleb128 0x13
+ 758 004c 01       		.byte	0x1
+ 759 004d 03       		.uleb128 0x3
+ 760 004e 0E       		.uleb128 0xe
+ 761 004f 0B       		.uleb128 0xb
+ 762 0050 0B       		.uleb128 0xb
+ 763 0051 3A       		.uleb128 0x3a
+ 764 0052 0B       		.uleb128 0xb
+ 765 0053 3B       		.uleb128 0x3b
+ 766 0054 05       		.uleb128 0x5
+ 767 0055 01       		.uleb128 0x1
+ 768 0056 13       		.uleb128 0x13
+ 769 0057 00       		.byte	0
+ 770 0058 00       		.byte	0
+ 771 0059 08       		.uleb128 0x8
+ 772 005a 0D       		.uleb128 0xd
+ 773 005b 00       		.byte	0
+ 774 005c 03       		.uleb128 0x3
+ 775 005d 0E       		.uleb128 0xe
+ 776 005e 3A       		.uleb128 0x3a
+ 777 005f 0B       		.uleb128 0xb
+ 778 0060 3B       		.uleb128 0x3b
+ 779 0061 05       		.uleb128 0x5
+ 780 0062 49       		.uleb128 0x49
+ 781 0063 13       		.uleb128 0x13
+ 782 0064 38       		.uleb128 0x38
+ 783 0065 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 20
+
+
+ 784 0066 00       		.byte	0
+ 785 0067 00       		.byte	0
+ 786 0068 09       		.uleb128 0x9
+ 787 0069 01       		.uleb128 0x1
+ 788 006a 01       		.byte	0x1
+ 789 006b 49       		.uleb128 0x49
+ 790 006c 13       		.uleb128 0x13
+ 791 006d 01       		.uleb128 0x1
+ 792 006e 13       		.uleb128 0x13
+ 793 006f 00       		.byte	0
+ 794 0070 00       		.byte	0
+ 795 0071 0A       		.uleb128 0xa
+ 796 0072 21       		.uleb128 0x21
+ 797 0073 00       		.byte	0
+ 798 0074 49       		.uleb128 0x49
+ 799 0075 13       		.uleb128 0x13
+ 800 0076 2F       		.uleb128 0x2f
+ 801 0077 0B       		.uleb128 0xb
+ 802 0078 00       		.byte	0
+ 803 0079 00       		.byte	0
+ 804 007a 0B       		.uleb128 0xb
+ 805 007b 0F       		.uleb128 0xf
+ 806 007c 00       		.byte	0
+ 807 007d 0B       		.uleb128 0xb
+ 808 007e 0B       		.uleb128 0xb
+ 809 007f 49       		.uleb128 0x49
+ 810 0080 13       		.uleb128 0x13
+ 811 0081 00       		.byte	0
+ 812 0082 00       		.byte	0
+ 813 0083 0C       		.uleb128 0xc
+ 814 0084 2E       		.uleb128 0x2e
+ 815 0085 01       		.byte	0x1
+ 816 0086 3F       		.uleb128 0x3f
+ 817 0087 19       		.uleb128 0x19
+ 818 0088 03       		.uleb128 0x3
+ 819 0089 0E       		.uleb128 0xe
+ 820 008a 3A       		.uleb128 0x3a
+ 821 008b 0B       		.uleb128 0xb
+ 822 008c 3B       		.uleb128 0x3b
+ 823 008d 0B       		.uleb128 0xb
+ 824 008e 27       		.uleb128 0x27
+ 825 008f 19       		.uleb128 0x19
+ 826 0090 49       		.uleb128 0x49
+ 827 0091 13       		.uleb128 0x13
+ 828 0092 11       		.uleb128 0x11
+ 829 0093 01       		.uleb128 0x1
+ 830 0094 12       		.uleb128 0x12
+ 831 0095 06       		.uleb128 0x6
+ 832 0096 40       		.uleb128 0x40
+ 833 0097 18       		.uleb128 0x18
+ 834 0098 9642     		.uleb128 0x2116
+ 835 009a 19       		.uleb128 0x19
+ 836 009b 01       		.uleb128 0x1
+ 837 009c 13       		.uleb128 0x13
+ 838 009d 00       		.byte	0
+ 839 009e 00       		.byte	0
+ 840 009f 0D       		.uleb128 0xd
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 21
+
+
+ 841 00a0 05       		.uleb128 0x5
+ 842 00a1 00       		.byte	0
+ 843 00a2 03       		.uleb128 0x3
+ 844 00a3 0E       		.uleb128 0xe
+ 845 00a4 3A       		.uleb128 0x3a
+ 846 00a5 0B       		.uleb128 0xb
+ 847 00a6 3B       		.uleb128 0x3b
+ 848 00a7 0B       		.uleb128 0xb
+ 849 00a8 49       		.uleb128 0x49
+ 850 00a9 13       		.uleb128 0x13
+ 851 00aa 02       		.uleb128 0x2
+ 852 00ab 18       		.uleb128 0x18
+ 853 00ac 00       		.byte	0
+ 854 00ad 00       		.byte	0
+ 855 00ae 0E       		.uleb128 0xe
+ 856 00af 34       		.uleb128 0x34
+ 857 00b0 00       		.byte	0
+ 858 00b1 03       		.uleb128 0x3
+ 859 00b2 0E       		.uleb128 0xe
+ 860 00b3 3A       		.uleb128 0x3a
+ 861 00b4 0B       		.uleb128 0xb
+ 862 00b5 3B       		.uleb128 0x3b
+ 863 00b6 0B       		.uleb128 0xb
+ 864 00b7 49       		.uleb128 0x49
+ 865 00b8 13       		.uleb128 0x13
+ 866 00b9 02       		.uleb128 0x2
+ 867 00ba 18       		.uleb128 0x18
+ 868 00bb 00       		.byte	0
+ 869 00bc 00       		.byte	0
+ 870 00bd 0F       		.uleb128 0xf
+ 871 00be 2E       		.uleb128 0x2e
+ 872 00bf 01       		.byte	0x1
+ 873 00c0 3F       		.uleb128 0x3f
+ 874 00c1 19       		.uleb128 0x19
+ 875 00c2 03       		.uleb128 0x3
+ 876 00c3 0E       		.uleb128 0xe
+ 877 00c4 3A       		.uleb128 0x3a
+ 878 00c5 0B       		.uleb128 0xb
+ 879 00c6 3B       		.uleb128 0x3b
+ 880 00c7 05       		.uleb128 0x5
+ 881 00c8 27       		.uleb128 0x27
+ 882 00c9 19       		.uleb128 0x19
+ 883 00ca 11       		.uleb128 0x11
+ 884 00cb 01       		.uleb128 0x1
+ 885 00cc 12       		.uleb128 0x12
+ 886 00cd 06       		.uleb128 0x6
+ 887 00ce 40       		.uleb128 0x40
+ 888 00cf 18       		.uleb128 0x18
+ 889 00d0 9642     		.uleb128 0x2116
+ 890 00d2 19       		.uleb128 0x19
+ 891 00d3 01       		.uleb128 0x1
+ 892 00d4 13       		.uleb128 0x13
+ 893 00d5 00       		.byte	0
+ 894 00d6 00       		.byte	0
+ 895 00d7 10       		.uleb128 0x10
+ 896 00d8 05       		.uleb128 0x5
+ 897 00d9 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 22
+
+
+ 898 00da 03       		.uleb128 0x3
+ 899 00db 0E       		.uleb128 0xe
+ 900 00dc 3A       		.uleb128 0x3a
+ 901 00dd 0B       		.uleb128 0xb
+ 902 00de 3B       		.uleb128 0x3b
+ 903 00df 05       		.uleb128 0x5
+ 904 00e0 49       		.uleb128 0x49
+ 905 00e1 13       		.uleb128 0x13
+ 906 00e2 02       		.uleb128 0x2
+ 907 00e3 18       		.uleb128 0x18
+ 908 00e4 00       		.byte	0
+ 909 00e5 00       		.byte	0
+ 910 00e6 11       		.uleb128 0x11
+ 911 00e7 34       		.uleb128 0x34
+ 912 00e8 00       		.byte	0
+ 913 00e9 03       		.uleb128 0x3
+ 914 00ea 0E       		.uleb128 0xe
+ 915 00eb 3A       		.uleb128 0x3a
+ 916 00ec 0B       		.uleb128 0xb
+ 917 00ed 3B       		.uleb128 0x3b
+ 918 00ee 05       		.uleb128 0x5
+ 919 00ef 49       		.uleb128 0x49
+ 920 00f0 13       		.uleb128 0x13
+ 921 00f1 02       		.uleb128 0x2
+ 922 00f2 18       		.uleb128 0x18
+ 923 00f3 00       		.byte	0
+ 924 00f4 00       		.byte	0
+ 925 00f5 12       		.uleb128 0x12
+ 926 00f6 2E       		.uleb128 0x2e
+ 927 00f7 01       		.byte	0x1
+ 928 00f8 3F       		.uleb128 0x3f
+ 929 00f9 19       		.uleb128 0x19
+ 930 00fa 03       		.uleb128 0x3
+ 931 00fb 0E       		.uleb128 0xe
+ 932 00fc 3A       		.uleb128 0x3a
+ 933 00fd 0B       		.uleb128 0xb
+ 934 00fe 3B       		.uleb128 0x3b
+ 935 00ff 05       		.uleb128 0x5
+ 936 0100 27       		.uleb128 0x27
+ 937 0101 19       		.uleb128 0x19
+ 938 0102 11       		.uleb128 0x11
+ 939 0103 01       		.uleb128 0x1
+ 940 0104 12       		.uleb128 0x12
+ 941 0105 06       		.uleb128 0x6
+ 942 0106 40       		.uleb128 0x40
+ 943 0107 18       		.uleb128 0x18
+ 944 0108 9642     		.uleb128 0x2116
+ 945 010a 19       		.uleb128 0x19
+ 946 010b 00       		.byte	0
+ 947 010c 00       		.byte	0
+ 948 010d 00       		.byte	0
+ 949              		.section	.debug_aranges,"",%progbits
+ 950 0000 3C000000 		.4byte	0x3c
+ 951 0004 0200     		.2byte	0x2
+ 952 0006 00000000 		.4byte	.Ldebug_info0
+ 953 000a 04       		.byte	0x4
+ 954 000b 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 23
+
+
+ 955 000c 0000     		.2byte	0
+ 956 000e 0000     		.2byte	0
+ 957 0010 00000000 		.4byte	.LFB1
+ 958 0014 3C000000 		.4byte	.LFE1-.LFB1
+ 959 0018 00000000 		.4byte	.LFB2
+ 960 001c 48000000 		.4byte	.LFE2-.LFB2
+ 961 0020 00000000 		.4byte	.LFB3
+ 962 0024 32000000 		.4byte	.LFE3-.LFB3
+ 963 0028 00000000 		.4byte	.LFB4
+ 964 002c 80000000 		.4byte	.LFE4-.LFB4
+ 965 0030 00000000 		.4byte	.LFB5
+ 966 0034 18000000 		.4byte	.LFE5-.LFB5
+ 967 0038 00000000 		.4byte	0
+ 968 003c 00000000 		.4byte	0
+ 969              		.section	.debug_ranges,"",%progbits
+ 970              	.Ldebug_ranges0:
+ 971 0000 00000000 		.4byte	.LFB1
+ 972 0004 3C000000 		.4byte	.LFE1
+ 973 0008 00000000 		.4byte	.LFB2
+ 974 000c 48000000 		.4byte	.LFE2
+ 975 0010 00000000 		.4byte	.LFB3
+ 976 0014 32000000 		.4byte	.LFE3
+ 977 0018 00000000 		.4byte	.LFB4
+ 978 001c 80000000 		.4byte	.LFE4
+ 979 0020 00000000 		.4byte	.LFB5
+ 980 0024 18000000 		.4byte	.LFE5
+ 981 0028 00000000 		.4byte	0
+ 982 002c 00000000 		.4byte	0
+ 983              		.section	.debug_line,"",%progbits
+ 984              	.Ldebug_line0:
+ 985 0000 7C010000 		.section	.debug_str,"MS",%progbits,1
+ 985      02000601 
+ 985      00000201 
+ 985      FB0E0D00 
+ 985      01010101 
+ 986              	.LASF45:
+ 987 0000 433A5C55 		.ascii	"C:\\Users\\edulu.DESKTOP-961TG4K\\Documents\\PSoC C"
+ 987      73657273 
+ 987      5C656475 
+ 987      6C752E44 
+ 987      45534B54 
+ 988 002f 72656174 		.ascii	"reator\\Micrium\\Examples\\Cypress\\CY8CKIT-044\\OS"
+ 988      6F725C4D 
+ 988      69637269 
+ 988      756D5C45 
+ 988      78616D70 
+ 989 005d 325C5053 		.ascii	"2\\PSoC\\OS2.cydsn\000"
+ 989      6F435C4F 
+ 989      53322E63 
+ 989      7964736E 
+ 989      00
+ 990              	.LASF21:
+ 991 006e 4F534576 		.ascii	"OSEventTbl\000"
+ 991      656E7454 
+ 991      626C00
+ 992              	.LASF28:
+ 993 0079 4253505F 		.ascii	"BSP_OS_SEM\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 24
+
+
+ 993      4F535F53 
+ 993      454D00
+ 994              	.LASF48:
+ 995 0084 4253505F 		.ascii	"BSP_OS_TimeDly\000"
+ 995      4F535F54 
+ 995      696D6544 
+ 995      6C7900
+ 996              	.LASF23:
+ 997 0093 4350555F 		.ascii	"CPU_CHAR\000"
+ 997      43484152 
+ 997      00
+ 998              	.LASF16:
+ 999 009c 4F535F50 		.ascii	"OS_PRIO\000"
+ 999      52494F00 
+ 1000              	.LASF35:
+ 1001 00a4 646C795F 		.ascii	"dly_ms\000"
+ 1001      6D7300
+ 1002              	.LASF34:
+ 1003 00ab 4253505F 		.ascii	"BSP_OS_SemWait\000"
+ 1003      4F535F53 
+ 1003      656D5761 
+ 1003      697400
+ 1004              	.LASF13:
+ 1005 00ba 494E5431 		.ascii	"INT16U\000"
+ 1005      365500
+ 1006              	.LASF27:
+ 1007 00c1 4350555F 		.ascii	"CPU_INT32U\000"
+ 1007      494E5433 
+ 1007      325500
+ 1008              	.LASF14:
+ 1009 00cc 666C6F61 		.ascii	"float\000"
+ 1009      7400
+ 1010              	.LASF1:
+ 1011 00d2 756E7369 		.ascii	"unsigned char\000"
+ 1011      676E6564 
+ 1011      20636861 
+ 1011      7200
+ 1012              	.LASF46:
+ 1013 00e0 6F735F65 		.ascii	"os_event\000"
+ 1013      76656E74 
+ 1013      00
+ 1014              	.LASF41:
+ 1015 00e9 6F735F73 		.ascii	"os_sec\000"
+ 1015      656300
+ 1016              	.LASF5:
+ 1017 00f0 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1017      20756E73 
+ 1017      69676E65 
+ 1017      6420696E 
+ 1017      7400
+ 1018              	.LASF25:
+ 1019 0102 4350555F 		.ascii	"CPU_INT08U\000"
+ 1019      494E5430 
+ 1019      385500
+ 1020              	.LASF30:
+ 1021 010d 705F7365 		.ascii	"p_sem\000"
+ 1021      6D00
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 25
+
+
+ 1022              	.LASF43:
+ 1023 0113 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1023      43313120 
+ 1023      352E342E 
+ 1023      31203230 
+ 1023      31363036 
+ 1024 0146 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1024      20726576 
+ 1024      6973696F 
+ 1024      6E203233 
+ 1024      37373135 
+ 1025 0179 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1025      66756E63 
+ 1025      74696F6E 
+ 1025      2D736563 
+ 1025      74696F6E 
+ 1026              	.LASF44:
+ 1027 01a1 2E2E5C2E 		.ascii	"..\\..\\..\\BSP\\OS\\uCOS-II\\bsp_os.c\000"
+ 1027      2E5C2E2E 
+ 1027      5C425350 
+ 1027      5C4F535C 
+ 1027      75434F53 
+ 1028              	.LASF18:
+ 1029 01c2 4F534576 		.ascii	"OSEventPtr\000"
+ 1029      656E7450 
+ 1029      747200
+ 1030              	.LASF37:
+ 1031 01cd 6F735F65 		.ascii	"os_err\000"
+ 1031      727200
+ 1032              	.LASF19:
+ 1033 01d4 4F534576 		.ascii	"OSEventCnt\000"
+ 1033      656E7443 
+ 1033      6E7400
+ 1034              	.LASF17:
+ 1035 01df 4F534576 		.ascii	"OSEventType\000"
+ 1035      656E7454 
+ 1035      79706500 
+ 1036              	.LASF8:
+ 1037 01eb 756E7369 		.ascii	"unsigned int\000"
+ 1037      676E6564 
+ 1037      20696E74 
+ 1037      00
+ 1038              	.LASF12:
+ 1039 01f8 494E5438 		.ascii	"INT8U\000"
+ 1039      5500
+ 1040              	.LASF7:
+ 1041 01fe 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1041      206C6F6E 
+ 1041      6720756E 
+ 1041      7369676E 
+ 1041      65642069 
+ 1042              	.LASF47:
+ 1043 0215 4253505F 		.ascii	"BSP_OS_TimeDlyMs\000"
+ 1043      4F535F54 
+ 1043      696D6544 
+ 1043      6C794D73 
+ 1043      00
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 26
+
+
+ 1044              	.LASF24:
+ 1045 0226 4350555F 		.ascii	"CPU_BOOLEAN\000"
+ 1045      424F4F4C 
+ 1045      45414E00 
+ 1046              	.LASF42:
+ 1047 0232 646C795F 		.ascii	"dly_tick\000"
+ 1047      7469636B 
+ 1047      00
+ 1048              	.LASF26:
+ 1049 023b 4350555F 		.ascii	"CPU_INT16U\000"
+ 1049      494E5431 
+ 1049      365500
+ 1050              	.LASF9:
+ 1051 0246 6C6F6E67 		.ascii	"long double\000"
+ 1051      20646F75 
+ 1051      626C6500 
+ 1052              	.LASF10:
+ 1053 0252 73697A65 		.ascii	"sizetype\000"
+ 1053      74797065 
+ 1053      00
+ 1054              	.LASF36:
+ 1055 025b 705F6576 		.ascii	"p_event\000"
+ 1055      656E7400 
+ 1056              	.LASF3:
+ 1057 0263 73686F72 		.ascii	"short unsigned int\000"
+ 1057      7420756E 
+ 1057      7369676E 
+ 1057      65642069 
+ 1057      6E7400
+ 1058              	.LASF6:
+ 1059 0276 6C6F6E67 		.ascii	"long long int\000"
+ 1059      206C6F6E 
+ 1059      6720696E 
+ 1059      7400
+ 1060              	.LASF40:
+ 1061 0284 6F735F6D 		.ascii	"os_ms\000"
+ 1061      7300
+ 1062              	.LASF11:
+ 1063 028a 63686172 		.ascii	"char\000"
+ 1063      00
+ 1064              	.LASF22:
+ 1065 028f 4F535F45 		.ascii	"OS_EVENT\000"
+ 1065      56454E54 
+ 1065      00
+ 1066              	.LASF32:
+ 1067 0298 705F7365 		.ascii	"p_sem_name\000"
+ 1067      6D5F6E61 
+ 1067      6D6500
+ 1068              	.LASF2:
+ 1069 02a3 73686F72 		.ascii	"short int\000"
+ 1069      7420696E 
+ 1069      7400
+ 1070              	.LASF39:
+ 1071 02ad 4253505F 		.ascii	"BSP_OS_SemPost\000"
+ 1071      4F535F53 
+ 1071      656D506F 
+ 1071      737400
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccHh1TvZ.s 			page 27
+
+
+ 1072              	.LASF38:
+ 1073 02bc 646C795F 		.ascii	"dly_ticks\000"
+ 1073      7469636B 
+ 1073      7300
+ 1074              	.LASF4:
+ 1075 02c6 6C6F6E67 		.ascii	"long int\000"
+ 1075      20696E74 
+ 1075      00
+ 1076              	.LASF31:
+ 1077 02cf 73656D5F 		.ascii	"sem_val\000"
+ 1077      76616C00 
+ 1078              	.LASF29:
+ 1079 02d7 4253505F 		.ascii	"BSP_OS_SEM_VAL\000"
+ 1079      4F535F53 
+ 1079      454D5F56 
+ 1079      414C00
+ 1080              	.LASF0:
+ 1081 02e6 7369676E 		.ascii	"signed char\000"
+ 1081      65642063 
+ 1081      68617200 
+ 1082              	.LASF15:
+ 1083 02f2 646F7562 		.ascii	"double\000"
+ 1083      6C6500
+ 1084              	.LASF33:
+ 1085 02f9 4253505F 		.ascii	"BSP_OS_SemCreate\000"
+ 1085      4F535F53 
+ 1085      656D4372 
+ 1085      65617465 
+ 1085      00
+ 1086              	.LASF20:
+ 1087 030a 4F534576 		.ascii	"OSEventGrp\000"
+ 1087      656E7447 
+ 1087      727000
+ 1088              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

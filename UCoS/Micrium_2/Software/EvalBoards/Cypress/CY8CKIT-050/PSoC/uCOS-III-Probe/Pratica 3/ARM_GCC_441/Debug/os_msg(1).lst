@@ -1,0 +1,3916 @@
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"os_msg.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 98010000 		.text
+  20      0200D500 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.section	.text.OS_MsgPoolInit,"ax",%progbits
+  24              		.align	2
+  25              		.global	OS_MsgPoolInit
+  26              		.thumb
+  27              		.thumb_func
+  28              		.type	OS_MsgPoolInit, %function
+  29              	OS_MsgPoolInit:
+  30              	.LFB0:
+  31              		.file 1 "C:\\Micrium\\Software\\uCOS-III\\Source\\os_msg.c"
+   1:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** /*
+   2:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** ***************************************************************************************************
+   3:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                                                      uC/OS-III
+   4:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                                                 The Real-Time Kernel
+   5:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+   6:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                                  (c) Copyright 2009-2012; Micrium, Inc.; Weston, FL
+   7:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                           All rights reserved.  Protected by international copyright laws.
+   8:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+   9:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                                              MESSAGE HANDLING SERVICES
+  10:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+  11:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * File    : OS_MSG.C
+  12:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * By      : JJL
+  13:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Version : V3.03.01
+  14:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+  15:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * LICENSING TERMS:
+  16:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * ---------------
+  17:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *           uC/OS-III is provided in source form for FREE short-term evaluation, for educational us
+  18:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *           for peaceful research.  If you plan or intend to use uC/OS-III in a commercial applicat
+  19:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *           product then, you need to contact Micrium to properly license uC/OS-III for its use in 
+  20:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *           application/product.   We provide ALL the source code for your convenience and to help 
+  21:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *           experience uC/OS-III.  The fact that the source is provided does NOT mean that you can 
+  22:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *           it commercially without paying a licensing fee.
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 2
+
+
+  23:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+  24:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *           Knowledge of the source code may NOT be used to develop a similar product.
+  25:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+  26:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *           Please help us continue to provide the embedded community with the finest software avai
+  27:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *           Your honesty is greatly appreciated.
+  28:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+  29:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *           You can contact us at www.micrium.com, or by phone at +1 (954) 217-2036.
+  30:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** ***************************************************************************************************
+  31:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** */
+  32:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+  33:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** #define  MICRIUM_SOURCE
+  34:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** #include <os.h>
+  35:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+  36:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** #ifdef VSC_INCLUDE_SOURCE_FILE_NAMES
+  37:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** const  CPU_CHAR  *os_msg__c = "$Id: $";
+  38:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** #endif
+  39:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+  40:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+  41:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** #if OS_MSG_EN > 0u
+  42:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** /*$PAGE*/
+  43:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** /*
+  44:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** ***************************************************************************************************
+  45:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                                            INITIALIZE THE POOL OF 'OS_MSG'
+  46:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+  47:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Description: This function is called by OSInit() to initialize the free list of OS_MSGs.
+  48:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+  49:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Argument(s): p_err     is a pointer to a variable that will contain an error code returned by thi
+  50:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+  51:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                            OS_ERR_MSG_POOL_NULL_PTR
+  52:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                            OS_ERR_MSG_POOL_EMPTY
+  53:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                            OS_ERR_NONE
+  54:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+  55:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Returns    : none
+  56:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+  57:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+  58:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** ***************************************************************************************************
+  59:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** */
+  60:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+  61:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** void  OS_MsgPoolInit (OS_ERR  *p_err)
+  62:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** {
+  32              		.loc 1 62 0
+  33              		.cfi_startproc
+  34              		@ args = 0, pretend = 0, frame = 24
+  35              		@ frame_needed = 1, uses_anonymous_args = 0
+  36              		@ link register save eliminated.
+  37 0000 80B4     		push	{r7}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 4
+  40 0002 87B0     		sub	sp, sp, #28
+  41              	.LCFI1:
+  42              		.cfi_def_cfa_offset 32
+  43 0004 00AF     		add	r7, sp, #0
+  44              		.cfi_offset 7, -4
+  45              	.LCFI2:
+  46              		.cfi_def_cfa_register 7
+  47 0006 7860     		str	r0, [r7, #4]
+  63:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OS_MSG      *p_msg1;
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 3
+
+
+  64:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OS_MSG      *p_msg2;
+  65:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OS_MSG_QTY   i;
+  66:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OS_MSG_QTY   loops;
+  67:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+  68:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+  69:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+  70:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** #ifdef OS_SAFETY_CRITICAL
+  71:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (p_err == (OS_ERR *)0) {
+  72:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+  73:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         return;
+  74:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+  75:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** #endif
+  76:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+  77:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** #if OS_CFG_ARG_CHK_EN > 0u
+  78:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (OSCfg_MsgPoolBasePtr == (OS_MSG *)0) {
+  48              		.loc 1 78 0
+  49 0008 40F20003 		movw	r3, #:lower16:OSCfg_MsgPoolBasePtr
+  50 000c C0F20003 		movt	r3, #:upper16:OSCfg_MsgPoolBasePtr
+  51 0010 1B68     		ldr	r3, [r3, #0]
+  52 0012 002B     		cmp	r3, #0
+  53 0014 04D1     		bne	.L2
+  79:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****        *p_err = OS_ERR_MSG_POOL_NULL_PTR;
+  54              		.loc 1 79 0
+  55 0016 7B68     		ldr	r3, [r7, #4]
+  56 0018 45F21E72 		movw	r2, #22302
+  57 001c 1A80     		strh	r2, [r3, #0]	@ movhi
+  80:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         return;
+  58              		.loc 1 80 0
+  59 001e 7CE0     		b	.L7
+  60              	.L2:
+  81:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+  82:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (OSCfg_MsgPoolSize == (OS_MSG_QTY)0) {
+  61              		.loc 1 82 0
+  62 0020 40F20003 		movw	r3, #:lower16:OSCfg_MsgPoolSize
+  63 0024 C0F20003 		movt	r3, #:upper16:OSCfg_MsgPoolSize
+  64 0028 1B88     		ldrh	r3, [r3, #0]
+  65 002a 002B     		cmp	r3, #0
+  66 002c 04D1     		bne	.L4
+  83:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****        *p_err = OS_ERR_MSG_POOL_EMPTY;
+  67              		.loc 1 83 0
+  68 002e 7B68     		ldr	r3, [r7, #4]
+  69 0030 45F21D72 		movw	r2, #22301
+  70 0034 1A80     		strh	r2, [r3, #0]	@ movhi
+  84:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         return;
+  71              		.loc 1 84 0
+  72 0036 70E0     		b	.L7
+  73              	.L4:
+  85:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+  86:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** #endif
+  87:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+  88:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg1 = OSCfg_MsgPoolBasePtr;
+  74              		.loc 1 88 0
+  75 0038 40F20003 		movw	r3, #:lower16:OSCfg_MsgPoolBasePtr
+  76 003c C0F20003 		movt	r3, #:upper16:OSCfg_MsgPoolBasePtr
+  77 0040 1B68     		ldr	r3, [r3, #0]
+  78 0042 FB60     		str	r3, [r7, #12]
+  89:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg2 = OSCfg_MsgPoolBasePtr;
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 4
+
+
+  79              		.loc 1 89 0
+  80 0044 40F20003 		movw	r3, #:lower16:OSCfg_MsgPoolBasePtr
+  81 0048 C0F20003 		movt	r3, #:upper16:OSCfg_MsgPoolBasePtr
+  82 004c 1B68     		ldr	r3, [r3, #0]
+  83 004e 3B61     		str	r3, [r7, #16]
+  90:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg2++;
+  84              		.loc 1 90 0
+  85 0050 3B69     		ldr	r3, [r7, #16]
+  86 0052 03F11003 		add	r3, r3, #16
+  87 0056 3B61     		str	r3, [r7, #16]
+  91:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     loops  = OSCfg_MsgPoolSize - 1u;
+  88              		.loc 1 91 0
+  89 0058 40F20003 		movw	r3, #:lower16:OSCfg_MsgPoolSize
+  90 005c C0F20003 		movt	r3, #:upper16:OSCfg_MsgPoolSize
+  91 0060 1B88     		ldrh	r3, [r3, #0]
+  92 0062 03F1FF33 		add	r3, r3, #-1
+  93 0066 FB82     		strh	r3, [r7, #22]	@ movhi
+  92:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     for (i = 0u; i < loops; i++) {                          /* Init. list of free OS_MSGs          
+  94              		.loc 1 92 0
+  95 0068 4FF00003 		mov	r3, #0
+  96 006c BB82     		strh	r3, [r7, #20]	@ movhi
+  97 006e 1AE0     		b	.L5
+  98              	.L6:
+  93:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg1->NextPtr = p_msg2;
+  99              		.loc 1 93 0
+ 100 0070 FB68     		ldr	r3, [r7, #12]
+ 101 0072 3A69     		ldr	r2, [r7, #16]
+ 102 0074 1A60     		str	r2, [r3, #0]
+  94:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg1->MsgPtr  = (void      *)0;
+ 103              		.loc 1 94 0
+ 104 0076 FB68     		ldr	r3, [r7, #12]
+ 105 0078 4FF00002 		mov	r2, #0
+ 106 007c 5A60     		str	r2, [r3, #4]
+  95:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg1->MsgSize = (OS_MSG_SIZE)0u;
+ 107              		.loc 1 95 0
+ 108 007e FB68     		ldr	r3, [r7, #12]
+ 109 0080 4FF00002 		mov	r2, #0
+ 110 0084 1A81     		strh	r2, [r3, #8]	@ movhi
+  96:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg1->MsgTS   = (CPU_TS     )0u;
+ 111              		.loc 1 96 0
+ 112 0086 FB68     		ldr	r3, [r7, #12]
+ 113 0088 4FF00002 		mov	r2, #0
+ 114 008c DA60     		str	r2, [r3, #12]
+  97:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg1++;
+ 115              		.loc 1 97 0
+ 116 008e FB68     		ldr	r3, [r7, #12]
+ 117 0090 03F11003 		add	r3, r3, #16
+ 118 0094 FB60     		str	r3, [r7, #12]
+  98:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg2++;
+ 119              		.loc 1 98 0
+ 120 0096 3B69     		ldr	r3, [r7, #16]
+ 121 0098 03F11003 		add	r3, r3, #16
+ 122 009c 3B61     		str	r3, [r7, #16]
+ 123              		.loc 1 92 0
+ 124 009e BB8A     		ldrh	r3, [r7, #20]	@ movhi
+ 125 00a0 03F10103 		add	r3, r3, #1
+ 126 00a4 BB82     		strh	r3, [r7, #20]	@ movhi
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 5
+
+
+ 127              	.L5:
+ 128 00a6 BA8A     		ldrh	r2, [r7, #20]
+ 129 00a8 FB8A     		ldrh	r3, [r7, #22]
+ 130 00aa 9A42     		cmp	r2, r3
+ 131 00ac E0D3     		bcc	.L6
+  99:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+ 100:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg1->NextPtr = (OS_MSG    *)0;                       /* Last OS_MSG                         
+ 132              		.loc 1 100 0
+ 133 00ae FB68     		ldr	r3, [r7, #12]
+ 134 00b0 4FF00002 		mov	r2, #0
+ 135 00b4 1A60     		str	r2, [r3, #0]
+ 101:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg1->MsgPtr  = (void      *)0;
+ 136              		.loc 1 101 0
+ 137 00b6 FB68     		ldr	r3, [r7, #12]
+ 138 00b8 4FF00002 		mov	r2, #0
+ 139 00bc 5A60     		str	r2, [r3, #4]
+ 102:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg1->MsgSize = (OS_MSG_SIZE)0u;
+ 140              		.loc 1 102 0
+ 141 00be FB68     		ldr	r3, [r7, #12]
+ 142 00c0 4FF00002 		mov	r2, #0
+ 143 00c4 1A81     		strh	r2, [r3, #8]	@ movhi
+ 103:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg1->MsgTS   = (CPU_TS     )0u;
+ 144              		.loc 1 103 0
+ 145 00c6 FB68     		ldr	r3, [r7, #12]
+ 146 00c8 4FF00002 		mov	r2, #0
+ 147 00cc DA60     		str	r2, [r3, #12]
+ 104:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 105:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OSMsgPool.NextPtr    =  OSCfg_MsgPoolBasePtr;
+ 148              		.loc 1 105 0
+ 149 00ce 40F20003 		movw	r3, #:lower16:OSCfg_MsgPoolBasePtr
+ 150 00d2 C0F20003 		movt	r3, #:upper16:OSCfg_MsgPoolBasePtr
+ 151 00d6 1A68     		ldr	r2, [r3, #0]
+ 152 00d8 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 153 00dc C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 154 00e0 1A60     		str	r2, [r3, #0]
+ 106:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OSMsgPool.NbrFree    =  OSCfg_MsgPoolSize;
+ 155              		.loc 1 106 0
+ 156 00e2 40F20003 		movw	r3, #:lower16:OSCfg_MsgPoolSize
+ 157 00e6 C0F20003 		movt	r3, #:upper16:OSCfg_MsgPoolSize
+ 158 00ea 1A88     		ldrh	r2, [r3, #0]
+ 159 00ec 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 160 00f0 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 161 00f4 9A80     		strh	r2, [r3, #4]	@ movhi
+ 107:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OSMsgPool.NbrUsed    = (OS_MSG_QTY)0;
+ 162              		.loc 1 107 0
+ 163 00f6 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 164 00fa C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 165 00fe 4FF00002 		mov	r2, #0
+ 166 0102 DA80     		strh	r2, [r3, #6]	@ movhi
+ 108:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OSMsgPool.NbrUsedMax = (OS_MSG_QTY)0;
+ 167              		.loc 1 108 0
+ 168 0104 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 169 0108 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 170 010c 4FF00002 		mov	r2, #0
+ 171 0110 1A81     		strh	r2, [r3, #8]	@ movhi
+ 109:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****    *p_err                =  OS_ERR_NONE;
+ 172              		.loc 1 109 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 6
+
+
+ 173 0112 7B68     		ldr	r3, [r7, #4]
+ 174 0114 4FF00002 		mov	r2, #0
+ 175 0118 1A80     		strh	r2, [r3, #0]	@ movhi
+ 176              	.L7:
+ 110:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** }
+ 177              		.loc 1 110 0
+ 178 011a 07F11C07 		add	r7, r7, #28
+ 179 011e BD46     		mov	sp, r7
+ 180 0120 80BC     		pop	{r7}
+ 181 0122 7047     		bx	lr
+ 182              		.cfi_endproc
+ 183              	.LFE0:
+ 184              		.size	OS_MsgPoolInit, .-OS_MsgPoolInit
+ 185              		.section	.text.OS_MsgQFreeAll,"ax",%progbits
+ 186              		.align	2
+ 187              		.global	OS_MsgQFreeAll
+ 188              		.thumb
+ 189              		.thumb_func
+ 190              		.type	OS_MsgQFreeAll, %function
+ 191              	OS_MsgQFreeAll:
+ 192              	.LFB1:
+ 111:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 112:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** /*$PAGE*/
+ 113:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** /*
+ 114:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** ***************************************************************************************************
+ 115:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                                        RELEASE ALL MESSAGE IN MESSAGE QUEUE
+ 116:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 117:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Description: This function returns all the messages in a message queue to the free list.
+ 118:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 119:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Arguments  : p_msg_q       is a pointer to the OS_MSG_Q structure containing messages to free.
+ 120:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *              -------
+ 121:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 122:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Returns    : the number of OS_MSGs returned to the free list
+ 123:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 124:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+ 125:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** ***************************************************************************************************
+ 126:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** */
+ 127:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 128:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** OS_MSG_QTY  OS_MsgQFreeAll (OS_MSG_Q  *p_msg_q)
+ 129:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** {
+ 193              		.loc 1 129 0
+ 194              		.cfi_startproc
+ 195              		@ args = 0, pretend = 0, frame = 16
+ 196              		@ frame_needed = 1, uses_anonymous_args = 0
+ 197              		@ link register save eliminated.
+ 198 0000 80B4     		push	{r7}
+ 199              	.LCFI3:
+ 200              		.cfi_def_cfa_offset 4
+ 201 0002 85B0     		sub	sp, sp, #20
+ 202              	.LCFI4:
+ 203              		.cfi_def_cfa_offset 24
+ 204 0004 00AF     		add	r7, sp, #0
+ 205              		.cfi_offset 7, -4
+ 206              	.LCFI5:
+ 207              		.cfi_def_cfa_register 7
+ 208 0006 7860     		str	r0, [r7, #4]
+ 130:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OS_MSG      *p_msg;
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 7
+
+
+ 131:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OS_MSG_QTY   qty;
+ 132:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 133:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 134:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 135:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     qty = p_msg_q->NbrEntries;                              /* Get the number of OS_MSGs being free
+ 209              		.loc 1 135 0
+ 210 0008 7B68     		ldr	r3, [r7, #4]
+ 211 000a 5B89     		ldrh	r3, [r3, #10]	@ movhi
+ 212 000c FB81     		strh	r3, [r7, #14]	@ movhi
+ 136:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (p_msg_q->NbrEntries > (OS_MSG_QTY)0) {
+ 213              		.loc 1 136 0
+ 214 000e 7B68     		ldr	r3, [r7, #4]
+ 215 0010 5B89     		ldrh	r3, [r3, #10]
+ 216 0012 002B     		cmp	r3, #0
+ 217 0014 3DD0     		beq	.L9
+ 137:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg                   = p_msg_q->InPtr;           /* Point to end of message chain       
+ 218              		.loc 1 137 0
+ 219 0016 7B68     		ldr	r3, [r7, #4]
+ 220 0018 1B68     		ldr	r3, [r3, #0]
+ 221 001a BB60     		str	r3, [r7, #8]
+ 138:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg->NextPtr          = OSMsgPool.NextPtr;
+ 222              		.loc 1 138 0
+ 223 001c 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 224 0020 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 225 0024 1A68     		ldr	r2, [r3, #0]
+ 226 0026 BB68     		ldr	r3, [r7, #8]
+ 227 0028 1A60     		str	r2, [r3, #0]
+ 139:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         OSMsgPool.NextPtr       = p_msg_q->OutPtr;          /* Point to beginning of message chain 
+ 228              		.loc 1 139 0
+ 229 002a 7B68     		ldr	r3, [r7, #4]
+ 230 002c 5A68     		ldr	r2, [r3, #4]
+ 231 002e 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 232 0032 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 233 0036 1A60     		str	r2, [r3, #0]
+ 140:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         OSMsgPool.NbrUsed      -= p_msg_q->NbrEntries;      /* Update statistics for free list of m
+ 234              		.loc 1 140 0
+ 235 0038 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 236 003c C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 237 0040 DA88     		ldrh	r2, [r3, #6]
+ 238 0042 7B68     		ldr	r3, [r7, #4]
+ 239 0044 5B89     		ldrh	r3, [r3, #10]
+ 240 0046 C3EB0203 		rsb	r3, r3, r2
+ 241 004a 9AB2     		uxth	r2, r3
+ 242 004c 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 243 0050 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 244 0054 DA80     		strh	r2, [r3, #6]	@ movhi
+ 141:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         OSMsgPool.NbrFree      += p_msg_q->NbrEntries;
+ 245              		.loc 1 141 0
+ 246 0056 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 247 005a C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 248 005e 9A88     		ldrh	r2, [r3, #4]
+ 249 0060 7B68     		ldr	r3, [r7, #4]
+ 250 0062 5B89     		ldrh	r3, [r3, #10]
+ 251 0064 1344     		add	r3, r2, r3
+ 252 0066 9AB2     		uxth	r2, r3
+ 253 0068 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 254 006c C0F20003 		movt	r3, #:upper16:OSMsgPool
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 8
+
+
+ 255 0070 9A80     		strh	r2, [r3, #4]	@ movhi
+ 142:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg_q->NbrEntries     = (OS_MSG_QTY)0;            /* Flush the message queue             
+ 256              		.loc 1 142 0
+ 257 0072 7B68     		ldr	r3, [r7, #4]
+ 258 0074 4FF00002 		mov	r2, #0
+ 259 0078 5A81     		strh	r2, [r3, #10]	@ movhi
+ 143:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg_q->NbrEntriesMax  = (OS_MSG_QTY)0;
+ 260              		.loc 1 143 0
+ 261 007a 7B68     		ldr	r3, [r7, #4]
+ 262 007c 4FF00002 		mov	r2, #0
+ 263 0080 9A81     		strh	r2, [r3, #12]	@ movhi
+ 144:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg_q->InPtr          = (OS_MSG   *)0;
+ 264              		.loc 1 144 0
+ 265 0082 7B68     		ldr	r3, [r7, #4]
+ 266 0084 4FF00002 		mov	r2, #0
+ 267 0088 1A60     		str	r2, [r3, #0]
+ 145:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg_q->OutPtr         = (OS_MSG   *)0;
+ 268              		.loc 1 145 0
+ 269 008a 7B68     		ldr	r3, [r7, #4]
+ 270 008c 4FF00002 		mov	r2, #0
+ 271 0090 5A60     		str	r2, [r3, #4]
+ 272              	.L9:
+ 146:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+ 147:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     return (qty);
+ 273              		.loc 1 147 0
+ 274 0092 FB89     		ldrh	r3, [r7, #14]
+ 148:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** }
+ 275              		.loc 1 148 0
+ 276 0094 1846     		mov	r0, r3
+ 277 0096 07F11407 		add	r7, r7, #20
+ 278 009a BD46     		mov	sp, r7
+ 279 009c 80BC     		pop	{r7}
+ 280 009e 7047     		bx	lr
+ 281              		.cfi_endproc
+ 282              	.LFE1:
+ 283              		.size	OS_MsgQFreeAll, .-OS_MsgQFreeAll
+ 284              		.section	.text.OS_MsgQInit,"ax",%progbits
+ 285              		.align	2
+ 286              		.global	OS_MsgQInit
+ 287              		.thumb
+ 288              		.thumb_func
+ 289              		.type	OS_MsgQInit, %function
+ 290              	OS_MsgQInit:
+ 291              	.LFB2:
+ 149:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 150:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** /*$PAGE*/
+ 151:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** /*
+ 152:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** ***************************************************************************************************
+ 153:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                                               INITIALIZE A MESSAGE QUEUE
+ 154:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 155:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Description: This function is called to initialize a message queue
+ 156:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 157:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Arguments  : p_msg_q      is a pointer to the message queue to initialize
+ 158:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *              -------
+ 159:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 160:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *              max          is the maximum number of entries that a message queue can have.
+ 161:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 9
+
+
+ 162:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Returns    : none
+ 163:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 164:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+ 165:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** ***************************************************************************************************
+ 166:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** */
+ 167:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 168:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** void  OS_MsgQInit (OS_MSG_Q    *p_msg_q,
+ 169:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****                    OS_MSG_QTY   size)
+ 170:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** {
+ 292              		.loc 1 170 0
+ 293              		.cfi_startproc
+ 294              		@ args = 0, pretend = 0, frame = 8
+ 295              		@ frame_needed = 1, uses_anonymous_args = 0
+ 296              		@ link register save eliminated.
+ 297 0000 80B4     		push	{r7}
+ 298              	.LCFI6:
+ 299              		.cfi_def_cfa_offset 4
+ 300 0002 83B0     		sub	sp, sp, #12
+ 301              	.LCFI7:
+ 302              		.cfi_def_cfa_offset 16
+ 303 0004 00AF     		add	r7, sp, #0
+ 304              		.cfi_offset 7, -4
+ 305              	.LCFI8:
+ 306              		.cfi_def_cfa_register 7
+ 307 0006 7860     		str	r0, [r7, #4]
+ 308 0008 0B46     		mov	r3, r1
+ 309 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 171:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg_q->NbrEntriesSize = (OS_MSG_QTY)size;
+ 310              		.loc 1 171 0
+ 311 000c 7B68     		ldr	r3, [r7, #4]
+ 312 000e 7A88     		ldrh	r2, [r7, #2]	@ movhi
+ 313 0010 1A81     		strh	r2, [r3, #8]	@ movhi
+ 172:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg_q->NbrEntries     = (OS_MSG_QTY)0;
+ 314              		.loc 1 172 0
+ 315 0012 7B68     		ldr	r3, [r7, #4]
+ 316 0014 4FF00002 		mov	r2, #0
+ 317 0018 5A81     		strh	r2, [r3, #10]	@ movhi
+ 173:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg_q->NbrEntriesMax  = (OS_MSG_QTY)0;
+ 318              		.loc 1 173 0
+ 319 001a 7B68     		ldr	r3, [r7, #4]
+ 320 001c 4FF00002 		mov	r2, #0
+ 321 0020 9A81     		strh	r2, [r3, #12]	@ movhi
+ 174:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg_q->InPtr          = (OS_MSG   *)0;
+ 322              		.loc 1 174 0
+ 323 0022 7B68     		ldr	r3, [r7, #4]
+ 324 0024 4FF00002 		mov	r2, #0
+ 325 0028 1A60     		str	r2, [r3, #0]
+ 175:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg_q->OutPtr         = (OS_MSG   *)0;
+ 326              		.loc 1 175 0
+ 327 002a 7B68     		ldr	r3, [r7, #4]
+ 328 002c 4FF00002 		mov	r2, #0
+ 329 0030 5A60     		str	r2, [r3, #4]
+ 176:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** }
+ 330              		.loc 1 176 0
+ 331 0032 07F10C07 		add	r7, r7, #12
+ 332 0036 BD46     		mov	sp, r7
+ 333 0038 80BC     		pop	{r7}
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 10
+
+
+ 334 003a 7047     		bx	lr
+ 335              		.cfi_endproc
+ 336              	.LFE2:
+ 337              		.size	OS_MsgQInit, .-OS_MsgQInit
+ 338              		.section	.text.OS_MsgQGet,"ax",%progbits
+ 339              		.align	2
+ 340              		.global	OS_MsgQGet
+ 341              		.thumb
+ 342              		.thumb_func
+ 343              		.type	OS_MsgQGet, %function
+ 344              	OS_MsgQGet:
+ 345              	.LFB3:
+ 177:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 178:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** /*$PAGE*/
+ 179:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** /*
+ 180:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** ***************************************************************************************************
+ 181:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                                           RETRIEVE MESSAGE FROM MESSAGE QUEUE
+ 182:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 183:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Description: This function retrieves a message from a message queue
+ 184:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 185:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Arguments  : p_msg_q     is a pointer to the message queue where we want to extract the message f
+ 186:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *              -------
+ 187:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 188:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *              p_msg_size  is a pointer to where the size (in bytes) of the message will be placed
+ 189:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 190:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *              p_ts        is a pointer to where the time stamp will be placed
+ 191:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 192:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *              p_err       is a pointer to an error code that will be returned from this call.
+ 193:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 194:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                              OS_ERR_Q_EMPTY
+ 195:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                              OS_ERR_NONE
+ 196:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 197:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Returns    : The message (a pointer)
+ 198:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 199:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+ 200:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** ***************************************************************************************************
+ 201:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** */
+ 202:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 203:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** void  *OS_MsgQGet (OS_MSG_Q     *p_msg_q,
+ 204:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****                    OS_MSG_SIZE  *p_msg_size,
+ 205:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****                    CPU_TS       *p_ts,
+ 206:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****                    OS_ERR       *p_err)
+ 207:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** {
+ 346              		.loc 1 207 0
+ 347              		.cfi_startproc
+ 348              		@ args = 0, pretend = 0, frame = 24
+ 349              		@ frame_needed = 1, uses_anonymous_args = 0
+ 350              		@ link register save eliminated.
+ 351 0000 80B4     		push	{r7}
+ 352              	.LCFI9:
+ 353              		.cfi_def_cfa_offset 4
+ 354 0002 87B0     		sub	sp, sp, #28
+ 355              	.LCFI10:
+ 356              		.cfi_def_cfa_offset 32
+ 357 0004 00AF     		add	r7, sp, #0
+ 358              		.cfi_offset 7, -4
+ 359              	.LCFI11:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 11
+
+
+ 360              		.cfi_def_cfa_register 7
+ 361 0006 F860     		str	r0, [r7, #12]
+ 362 0008 B960     		str	r1, [r7, #8]
+ 363 000a 7A60     		str	r2, [r7, #4]
+ 364 000c 3B60     		str	r3, [r7, #0]
+ 208:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OS_MSG  *p_msg;
+ 209:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     void    *p_void;
+ 210:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 211:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 212:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 213:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** #ifdef OS_SAFETY_CRITICAL
+ 214:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (p_err == (OS_ERR *)0) {
+ 215:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 216:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         return ((void *)0);
+ 217:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+ 218:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** #endif
+ 219:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 220:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (p_msg_q->NbrEntries == (OS_MSG_QTY)0) {             /* Is the queue empty?                 
+ 365              		.loc 1 220 0
+ 366 000e FB68     		ldr	r3, [r7, #12]
+ 367 0010 5B89     		ldrh	r3, [r3, #10]
+ 368 0012 002B     		cmp	r3, #0
+ 369 0014 11D1     		bne	.L14
+ 221:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****        *p_msg_size = (OS_MSG_SIZE)0;                        /* Yes                                 
+ 370              		.loc 1 221 0
+ 371 0016 BB68     		ldr	r3, [r7, #8]
+ 372 0018 4FF00002 		mov	r2, #0
+ 373 001c 1A80     		strh	r2, [r3, #0]	@ movhi
+ 222:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         if (p_ts != (CPU_TS *)0) {
+ 374              		.loc 1 222 0
+ 375 001e 7B68     		ldr	r3, [r7, #4]
+ 376 0020 002B     		cmp	r3, #0
+ 377 0022 03D0     		beq	.L15
+ 223:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****            *p_ts  = (CPU_TS  )0;
+ 378              		.loc 1 223 0
+ 379 0024 7B68     		ldr	r3, [r7, #4]
+ 380 0026 4FF00002 		mov	r2, #0
+ 381 002a 1A60     		str	r2, [r3, #0]
+ 382              	.L15:
+ 224:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         }
+ 225:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****        *p_err = OS_ERR_Q_EMPTY;
+ 383              		.loc 1 225 0
+ 384 002c 3B68     		ldr	r3, [r7, #0]
+ 385 002e 46F29252 		movw	r2, #26002
+ 386 0032 1A80     		strh	r2, [r3, #0]	@ movhi
+ 226:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         return ((void *)0);
+ 387              		.loc 1 226 0
+ 388 0034 4FF00003 		mov	r3, #0
+ 389 0038 54E0     		b	.L16
+ 390              	.L14:
+ 227:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+ 228:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 229:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg           = p_msg_q->OutPtr;                      /* No, get the next message to extract 
+ 391              		.loc 1 229 0
+ 392 003a FB68     		ldr	r3, [r7, #12]
+ 393 003c 5B68     		ldr	r3, [r3, #4]
+ 394 003e 3B61     		str	r3, [r7, #16]
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 12
+
+
+ 230:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_void          = p_msg->MsgPtr;
+ 395              		.loc 1 230 0
+ 396 0040 3B69     		ldr	r3, [r7, #16]
+ 397 0042 5B68     		ldr	r3, [r3, #4]
+ 398 0044 7B61     		str	r3, [r7, #20]
+ 231:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****    *p_msg_size      = p_msg->MsgSize;
+ 399              		.loc 1 231 0
+ 400 0046 3B69     		ldr	r3, [r7, #16]
+ 401 0048 1A89     		ldrh	r2, [r3, #8]
+ 402 004a BB68     		ldr	r3, [r7, #8]
+ 403 004c 1A80     		strh	r2, [r3, #0]	@ movhi
+ 232:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (p_ts != (CPU_TS *)0) {
+ 404              		.loc 1 232 0
+ 405 004e 7B68     		ldr	r3, [r7, #4]
+ 406 0050 002B     		cmp	r3, #0
+ 407 0052 03D0     		beq	.L17
+ 233:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****        *p_ts  = p_msg->MsgTS;
+ 408              		.loc 1 233 0
+ 409 0054 3B69     		ldr	r3, [r7, #16]
+ 410 0056 DA68     		ldr	r2, [r3, #12]
+ 411 0058 7B68     		ldr	r3, [r7, #4]
+ 412 005a 1A60     		str	r2, [r3, #0]
+ 413              	.L17:
+ 234:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+ 235:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 236:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg_q->OutPtr = p_msg->NextPtr;                       /* Point to next message to extract    
+ 414              		.loc 1 236 0
+ 415 005c 3B69     		ldr	r3, [r7, #16]
+ 416 005e 1A68     		ldr	r2, [r3, #0]
+ 417 0060 FB68     		ldr	r3, [r7, #12]
+ 418 0062 5A60     		str	r2, [r3, #4]
+ 237:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 238:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (p_msg_q->OutPtr == (OS_MSG *)0) {                   /* Are there any more messages in the q
+ 419              		.loc 1 238 0
+ 420 0064 FB68     		ldr	r3, [r7, #12]
+ 421 0066 5B68     		ldr	r3, [r3, #4]
+ 422 0068 002B     		cmp	r3, #0
+ 423 006a 08D1     		bne	.L18
+ 239:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg_q->InPtr      = (OS_MSG   *)0;                /* No                                  
+ 424              		.loc 1 239 0
+ 425 006c FB68     		ldr	r3, [r7, #12]
+ 426 006e 4FF00002 		mov	r2, #0
+ 427 0072 1A60     		str	r2, [r3, #0]
+ 240:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg_q->NbrEntries = (OS_MSG_QTY)0;
+ 428              		.loc 1 240 0
+ 429 0074 FB68     		ldr	r3, [r7, #12]
+ 430 0076 4FF00002 		mov	r2, #0
+ 431 007a 5A81     		strh	r2, [r3, #10]	@ movhi
+ 432 007c 06E0     		b	.L19
+ 433              	.L18:
+ 241:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     } else {
+ 242:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg_q->NbrEntries--;                              /* Yes, One less message in the queue  
+ 434              		.loc 1 242 0
+ 435 007e FB68     		ldr	r3, [r7, #12]
+ 436 0080 5B89     		ldrh	r3, [r3, #10]
+ 437 0082 03F1FF33 		add	r3, r3, #-1
+ 438 0086 9AB2     		uxth	r2, r3
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 13
+
+
+ 439 0088 FB68     		ldr	r3, [r7, #12]
+ 440 008a 5A81     		strh	r2, [r3, #10]	@ movhi
+ 441              	.L19:
+ 243:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+ 244:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 245:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg->NextPtr    = OSMsgPool.NextPtr;                  /* Return message control block to free
+ 442              		.loc 1 245 0
+ 443 008c 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 444 0090 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 445 0094 1A68     		ldr	r2, [r3, #0]
+ 446 0096 3B69     		ldr	r3, [r7, #16]
+ 447 0098 1A60     		str	r2, [r3, #0]
+ 246:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OSMsgPool.NextPtr = p_msg;
+ 448              		.loc 1 246 0
+ 449 009a 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 450 009e C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 451 00a2 3A69     		ldr	r2, [r7, #16]
+ 452 00a4 1A60     		str	r2, [r3, #0]
+ 247:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OSMsgPool.NbrFree++;
+ 453              		.loc 1 247 0
+ 454 00a6 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 455 00aa C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 456 00ae 9B88     		ldrh	r3, [r3, #4]
+ 457 00b0 03F10103 		add	r3, r3, #1
+ 458 00b4 9AB2     		uxth	r2, r3
+ 459 00b6 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 460 00ba C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 461 00be 9A80     		strh	r2, [r3, #4]	@ movhi
+ 248:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OSMsgPool.NbrUsed--;
+ 462              		.loc 1 248 0
+ 463 00c0 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 464 00c4 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 465 00c8 DB88     		ldrh	r3, [r3, #6]
+ 466 00ca 03F1FF33 		add	r3, r3, #-1
+ 467 00ce 9AB2     		uxth	r2, r3
+ 468 00d0 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 469 00d4 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 470 00d8 DA80     		strh	r2, [r3, #6]	@ movhi
+ 249:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 250:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****    *p_err             = OS_ERR_NONE;
+ 471              		.loc 1 250 0
+ 472 00da 3B68     		ldr	r3, [r7, #0]
+ 473 00dc 4FF00002 		mov	r2, #0
+ 474 00e0 1A80     		strh	r2, [r3, #0]	@ movhi
+ 251:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     return (p_void);
+ 475              		.loc 1 251 0
+ 476 00e2 7B69     		ldr	r3, [r7, #20]
+ 477              	.L16:
+ 252:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** }
+ 478              		.loc 1 252 0
+ 479 00e4 1846     		mov	r0, r3
+ 480 00e6 07F11C07 		add	r7, r7, #28
+ 481 00ea BD46     		mov	sp, r7
+ 482 00ec 80BC     		pop	{r7}
+ 483 00ee 7047     		bx	lr
+ 484              		.cfi_endproc
+ 485              	.LFE3:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 14
+
+
+ 486              		.size	OS_MsgQGet, .-OS_MsgQGet
+ 487              		.section	.text.OS_MsgQPut,"ax",%progbits
+ 488              		.align	2
+ 489              		.global	OS_MsgQPut
+ 490              		.thumb
+ 491              		.thumb_func
+ 492              		.type	OS_MsgQPut, %function
+ 493              	OS_MsgQPut:
+ 494              	.LFB4:
+ 253:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 254:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** /*$PAGE*/
+ 255:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** /*
+ 256:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** ***************************************************************************************************
+ 257:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                                           DEPOSIT MESSAGE IN MESSAGE QUEUE
+ 258:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 259:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Description: This function places a message in a message queue
+ 260:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 261:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Arguments  : p_msg_q     is a pointer to the OS_TCB of the task to post the message to
+ 262:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *              -------
+ 263:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 264:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *              p_void      is a pointer to the message to send.
+ 265:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 266:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *              msg_size    is the size of the message (in bytes)
+ 267:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 268:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *              opt         specifies whether the message will be posted in FIFO or LIFO order
+ 269:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 270:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                              OS_OPT_POST_FIFO
+ 271:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                              OS_OPT_POST_LIFO
+ 272:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 273:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *              ts          is a timestamp as to when the message was posted
+ 274:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 275:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *              p_err       is a pointer to a variable that will contain an error code returned by t
+ 276:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 277:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                              OS_ERR_Q_MAX           if the queue is full
+ 278:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                              OS_ERR_MSG_POOL_EMPTY  if we no longer have any OS_MSG to use
+ 279:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *                              OS_ERR_NONE            the message was deposited in the queue
+ 280:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 281:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Returns    : none
+ 282:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** *
+ 283:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+ 284:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** ***************************************************************************************************
+ 285:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** */
+ 286:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 287:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** void  OS_MsgQPut (OS_MSG_Q     *p_msg_q,
+ 288:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****                   void         *p_void,
+ 289:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****                   OS_MSG_SIZE   msg_size,
+ 290:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****                   OS_OPT        opt,
+ 291:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****                   CPU_TS        ts,
+ 292:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****                   OS_ERR       *p_err)
+ 293:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** {
+ 495              		.loc 1 293 0
+ 496              		.cfi_startproc
+ 497              		@ args = 8, pretend = 0, frame = 24
+ 498              		@ frame_needed = 1, uses_anonymous_args = 0
+ 499              		@ link register save eliminated.
+ 500 0000 80B4     		push	{r7}
+ 501              	.LCFI12:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 15
+
+
+ 502              		.cfi_def_cfa_offset 4
+ 503 0002 87B0     		sub	sp, sp, #28
+ 504              	.LCFI13:
+ 505              		.cfi_def_cfa_offset 32
+ 506 0004 00AF     		add	r7, sp, #0
+ 507              		.cfi_offset 7, -4
+ 508              	.LCFI14:
+ 509              		.cfi_def_cfa_register 7
+ 510 0006 F860     		str	r0, [r7, #12]
+ 511 0008 B960     		str	r1, [r7, #8]
+ 512 000a FA80     		strh	r2, [r7, #6]	@ movhi
+ 513 000c BB80     		strh	r3, [r7, #4]	@ movhi
+ 294:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OS_MSG  *p_msg;
+ 295:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OS_MSG  *p_msg_in;
+ 296:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 297:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 298:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 299:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** #ifdef OS_SAFETY_CRITICAL
+ 300:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (p_err == (OS_ERR *)0) {
+ 301:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 302:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         return;
+ 303:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+ 304:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** #endif
+ 305:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 306:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (p_msg_q->NbrEntries >= p_msg_q->NbrEntriesSize) {
+ 514              		.loc 1 306 0
+ 515 000e FB68     		ldr	r3, [r7, #12]
+ 516 0010 5A89     		ldrh	r2, [r3, #10]
+ 517 0012 FB68     		ldr	r3, [r7, #12]
+ 518 0014 1B89     		ldrh	r3, [r3, #8]
+ 519 0016 9A42     		cmp	r2, r3
+ 520 0018 04D3     		bcc	.L22
+ 307:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****        *p_err = OS_ERR_Q_MAX;                               /* Message queue cannot accept any more
+ 521              		.loc 1 307 0
+ 522 001a 7B6A     		ldr	r3, [r7, #36]
+ 523 001c 46F29352 		movw	r2, #26003
+ 524 0020 1A80     		strh	r2, [r3, #0]	@ movhi
+ 308:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         return;
+ 525              		.loc 1 308 0
+ 526 0022 93E0     		b	.L31
+ 527              	.L22:
+ 309:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+ 310:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 311:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (OSMsgPool.NbrFree == (OS_MSG_QTY)0) {
+ 528              		.loc 1 311 0
+ 529 0024 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 530 0028 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 531 002c 9B88     		ldrh	r3, [r3, #4]
+ 532 002e 002B     		cmp	r3, #0
+ 533 0030 04D1     		bne	.L24
+ 312:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****        *p_err = OS_ERR_MSG_POOL_EMPTY;                      /* No more OS_MSG to use               
+ 534              		.loc 1 312 0
+ 535 0032 7B6A     		ldr	r3, [r7, #36]
+ 536 0034 45F21D72 		movw	r2, #22301
+ 537 0038 1A80     		strh	r2, [r3, #0]	@ movhi
+ 313:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         return;
+ 538              		.loc 1 313 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 16
+
+
+ 539 003a 87E0     		b	.L31
+ 540              	.L24:
+ 314:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+ 315:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 316:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg             = OSMsgPool.NextPtr;                  /* Remove message control block from fr
+ 541              		.loc 1 316 0
+ 542 003c 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 543 0040 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 544 0044 1B68     		ldr	r3, [r3, #0]
+ 545 0046 3B61     		str	r3, [r7, #16]
+ 317:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OSMsgPool.NextPtr = p_msg->NextPtr;
+ 546              		.loc 1 317 0
+ 547 0048 3B69     		ldr	r3, [r7, #16]
+ 548 004a 1A68     		ldr	r2, [r3, #0]
+ 549 004c 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 550 0050 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 551 0054 1A60     		str	r2, [r3, #0]
+ 318:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OSMsgPool.NbrFree--;
+ 552              		.loc 1 318 0
+ 553 0056 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 554 005a C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 555 005e 9B88     		ldrh	r3, [r3, #4]
+ 556 0060 03F1FF33 		add	r3, r3, #-1
+ 557 0064 9AB2     		uxth	r2, r3
+ 558 0066 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 559 006a C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 560 006e 9A80     		strh	r2, [r3, #4]	@ movhi
+ 319:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     OSMsgPool.NbrUsed++;
+ 561              		.loc 1 319 0
+ 562 0070 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 563 0074 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 564 0078 DB88     		ldrh	r3, [r3, #6]
+ 565 007a 03F10103 		add	r3, r3, #1
+ 566 007e 9AB2     		uxth	r2, r3
+ 567 0080 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 568 0084 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 569 0088 DA80     		strh	r2, [r3, #6]	@ movhi
+ 320:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (OSMsgPool.NbrUsedMax < OSMsgPool.NbrUsed) {
+ 570              		.loc 1 320 0
+ 571 008a 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 572 008e C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 573 0092 1A89     		ldrh	r2, [r3, #8]
+ 574 0094 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 575 0098 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 576 009c DB88     		ldrh	r3, [r3, #6]
+ 577 009e 9A42     		cmp	r2, r3
+ 578 00a0 09D2     		bcs	.L25
+ 321:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         OSMsgPool.NbrUsedMax = OSMsgPool.NbrUsed;
+ 579              		.loc 1 321 0
+ 580 00a2 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 581 00a6 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 582 00aa DA88     		ldrh	r2, [r3, #6]
+ 583 00ac 40F20003 		movw	r3, #:lower16:OSMsgPool
+ 584 00b0 C0F20003 		movt	r3, #:upper16:OSMsgPool
+ 585 00b4 1A81     		strh	r2, [r3, #8]	@ movhi
+ 586              	.L25:
+ 322:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 17
+
+
+ 323:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** 
+ 324:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (p_msg_q->NbrEntries == (OS_MSG_QTY)0) {             /* Is this first message placed in the 
+ 587              		.loc 1 324 0
+ 588 00b6 FB68     		ldr	r3, [r7, #12]
+ 589 00b8 5B89     		ldrh	r3, [r3, #10]
+ 590 00ba 002B     		cmp	r3, #0
+ 591 00bc 0ED1     		bne	.L26
+ 325:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg_q->InPtr         = p_msg;                     /* Yes                                 
+ 592              		.loc 1 325 0
+ 593 00be FB68     		ldr	r3, [r7, #12]
+ 594 00c0 3A69     		ldr	r2, [r7, #16]
+ 595 00c2 1A60     		str	r2, [r3, #0]
+ 326:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg_q->OutPtr        = p_msg;
+ 596              		.loc 1 326 0
+ 597 00c4 FB68     		ldr	r3, [r7, #12]
+ 598 00c6 3A69     		ldr	r2, [r7, #16]
+ 599 00c8 5A60     		str	r2, [r3, #4]
+ 327:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg_q->NbrEntries    = (OS_MSG_QTY)1;
+ 600              		.loc 1 327 0
+ 601 00ca FB68     		ldr	r3, [r7, #12]
+ 602 00cc 4FF00102 		mov	r2, #1
+ 603 00d0 5A81     		strh	r2, [r3, #10]	@ movhi
+ 328:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg->NextPtr         = (OS_MSG *)0;
+ 604              		.loc 1 328 0
+ 605 00d2 3B69     		ldr	r3, [r7, #16]
+ 606 00d4 4FF00002 		mov	r2, #0
+ 607 00d8 1A60     		str	r2, [r3, #0]
+ 608 00da 20E0     		b	.L27
+ 609              	.L26:
+ 329:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     } else {                                                /* No                                  
+ 330:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         if ((opt & OS_OPT_POST_LIFO) == OS_OPT_POST_FIFO) { /* Is it FIFO or LIFO?                 
+ 610              		.loc 1 330 0
+ 611 00dc BB88     		ldrh	r3, [r7, #4]
+ 612 00de 03F01003 		and	r3, r3, #16
+ 613 00e2 002B     		cmp	r3, #0
+ 614 00e4 0DD1     		bne	.L28
+ 331:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****             p_msg_in           = p_msg_q->InPtr;            /* FIFO, add to the head               
+ 615              		.loc 1 331 0
+ 616 00e6 FB68     		ldr	r3, [r7, #12]
+ 617 00e8 1B68     		ldr	r3, [r3, #0]
+ 618 00ea 7B61     		str	r3, [r7, #20]
+ 332:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****             p_msg_in->NextPtr  = p_msg;
+ 619              		.loc 1 332 0
+ 620 00ec 7B69     		ldr	r3, [r7, #20]
+ 621 00ee 3A69     		ldr	r2, [r7, #16]
+ 622 00f0 1A60     		str	r2, [r3, #0]
+ 333:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****             p_msg_q->InPtr     = p_msg;
+ 623              		.loc 1 333 0
+ 624 00f2 FB68     		ldr	r3, [r7, #12]
+ 625 00f4 3A69     		ldr	r2, [r7, #16]
+ 626 00f6 1A60     		str	r2, [r3, #0]
+ 334:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****             p_msg->NextPtr     = (OS_MSG *)0;
+ 627              		.loc 1 334 0
+ 628 00f8 3B69     		ldr	r3, [r7, #16]
+ 629 00fa 4FF00002 		mov	r2, #0
+ 630 00fe 1A60     		str	r2, [r3, #0]
+ 631 0100 06E0     		b	.L29
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 18
+
+
+ 632              	.L28:
+ 335:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         } else {
+ 336:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****             p_msg->NextPtr     = p_msg_q->OutPtr;           /* LIFO, add to the tail               
+ 633              		.loc 1 336 0
+ 634 0102 FB68     		ldr	r3, [r7, #12]
+ 635 0104 5A68     		ldr	r2, [r3, #4]
+ 636 0106 3B69     		ldr	r3, [r7, #16]
+ 637 0108 1A60     		str	r2, [r3, #0]
+ 337:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****             p_msg_q->OutPtr    = p_msg;
+ 638              		.loc 1 337 0
+ 639 010a FB68     		ldr	r3, [r7, #12]
+ 640 010c 3A69     		ldr	r2, [r7, #16]
+ 641 010e 5A60     		str	r2, [r3, #4]
+ 642              	.L29:
+ 338:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         }
+ 339:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg_q->NbrEntries++;
+ 643              		.loc 1 339 0
+ 644 0110 FB68     		ldr	r3, [r7, #12]
+ 645 0112 5B89     		ldrh	r3, [r3, #10]
+ 646 0114 03F10103 		add	r3, r3, #1
+ 647 0118 9AB2     		uxth	r2, r3
+ 648 011a FB68     		ldr	r3, [r7, #12]
+ 649 011c 5A81     		strh	r2, [r3, #10]	@ movhi
+ 650              	.L27:
+ 340:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+ 341:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     if (p_msg_q->NbrEntriesMax < p_msg_q->NbrEntries) {
+ 651              		.loc 1 341 0
+ 652 011e FB68     		ldr	r3, [r7, #12]
+ 653 0120 9A89     		ldrh	r2, [r3, #12]
+ 654 0122 FB68     		ldr	r3, [r7, #12]
+ 655 0124 5B89     		ldrh	r3, [r3, #10]
+ 656 0126 9A42     		cmp	r2, r3
+ 657 0128 03D2     		bcs	.L30
+ 342:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****         p_msg_q->NbrEntriesMax = p_msg_q->NbrEntries;
+ 658              		.loc 1 342 0
+ 659 012a FB68     		ldr	r3, [r7, #12]
+ 660 012c 5A89     		ldrh	r2, [r3, #10]
+ 661 012e FB68     		ldr	r3, [r7, #12]
+ 662 0130 9A81     		strh	r2, [r3, #12]	@ movhi
+ 663              	.L30:
+ 343:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     }
+ 344:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg->MsgPtr  = p_void;                                /* Deposit message in the message queue
+ 664              		.loc 1 344 0
+ 665 0132 3B69     		ldr	r3, [r7, #16]
+ 666 0134 BA68     		ldr	r2, [r7, #8]
+ 667 0136 5A60     		str	r2, [r3, #4]
+ 345:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg->MsgSize = msg_size;
+ 668              		.loc 1 345 0
+ 669 0138 3B69     		ldr	r3, [r7, #16]
+ 670 013a FA88     		ldrh	r2, [r7, #6]	@ movhi
+ 671 013c 1A81     		strh	r2, [r3, #8]	@ movhi
+ 346:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****     p_msg->MsgTS   = ts;
+ 672              		.loc 1 346 0
+ 673 013e 3B69     		ldr	r3, [r7, #16]
+ 674 0140 3A6A     		ldr	r2, [r7, #32]
+ 675 0142 DA60     		str	r2, [r3, #12]
+ 347:C:\Micrium\Software\uCOS-III\Source\os_msg.c ****    *p_err          = OS_ERR_NONE;
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 19
+
+
+ 676              		.loc 1 347 0
+ 677 0144 7B6A     		ldr	r3, [r7, #36]
+ 678 0146 4FF00002 		mov	r2, #0
+ 679 014a 1A80     		strh	r2, [r3, #0]	@ movhi
+ 680              	.L31:
+ 348:C:\Micrium\Software\uCOS-III\Source\os_msg.c **** }
+ 681              		.loc 1 348 0
+ 682 014c 07F11C07 		add	r7, r7, #28
+ 683 0150 BD46     		mov	sp, r7
+ 684 0152 80BC     		pop	{r7}
+ 685 0154 7047     		bx	lr
+ 686              		.cfi_endproc
+ 687              	.LFE4:
+ 688              		.size	OS_MsgQPut, .-OS_MsgQPut
+ 689 0156 00BF     		.text
+ 690              	.Letext0:
+ 691              		.section	.debug_loc,"",%progbits
+ 692              	.Ldebug_loc0:
+ 693              	.LLST0:
+ 694 0000 00000000 		.4byte	.LFB0
+ 695 0004 02000000 		.4byte	.LCFI0
+ 696 0008 0100     		.2byte	0x1
+ 697 000a 5D       		.byte	0x5d
+ 698 000b 02000000 		.4byte	.LCFI0
+ 699 000f 04000000 		.4byte	.LCFI1
+ 700 0013 0200     		.2byte	0x2
+ 701 0015 7D       		.byte	0x7d
+ 702 0016 04       		.sleb128 4
+ 703 0017 04000000 		.4byte	.LCFI1
+ 704 001b 06000000 		.4byte	.LCFI2
+ 705 001f 0200     		.2byte	0x2
+ 706 0021 7D       		.byte	0x7d
+ 707 0022 20       		.sleb128 32
+ 708 0023 06000000 		.4byte	.LCFI2
+ 709 0027 24010000 		.4byte	.LFE0
+ 710 002b 0200     		.2byte	0x2
+ 711 002d 77       		.byte	0x77
+ 712 002e 20       		.sleb128 32
+ 713 002f 00000000 		.4byte	0x0
+ 714 0033 00000000 		.4byte	0x0
+ 715              	.LLST1:
+ 716 0037 00000000 		.4byte	.LFB1
+ 717 003b 02000000 		.4byte	.LCFI3
+ 718 003f 0100     		.2byte	0x1
+ 719 0041 5D       		.byte	0x5d
+ 720 0042 02000000 		.4byte	.LCFI3
+ 721 0046 04000000 		.4byte	.LCFI4
+ 722 004a 0200     		.2byte	0x2
+ 723 004c 7D       		.byte	0x7d
+ 724 004d 04       		.sleb128 4
+ 725 004e 04000000 		.4byte	.LCFI4
+ 726 0052 06000000 		.4byte	.LCFI5
+ 727 0056 0200     		.2byte	0x2
+ 728 0058 7D       		.byte	0x7d
+ 729 0059 18       		.sleb128 24
+ 730 005a 06000000 		.4byte	.LCFI5
+ 731 005e A0000000 		.4byte	.LFE1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 20
+
+
+ 732 0062 0200     		.2byte	0x2
+ 733 0064 77       		.byte	0x77
+ 734 0065 18       		.sleb128 24
+ 735 0066 00000000 		.4byte	0x0
+ 736 006a 00000000 		.4byte	0x0
+ 737              	.LLST2:
+ 738 006e 00000000 		.4byte	.LFB2
+ 739 0072 02000000 		.4byte	.LCFI6
+ 740 0076 0100     		.2byte	0x1
+ 741 0078 5D       		.byte	0x5d
+ 742 0079 02000000 		.4byte	.LCFI6
+ 743 007d 04000000 		.4byte	.LCFI7
+ 744 0081 0200     		.2byte	0x2
+ 745 0083 7D       		.byte	0x7d
+ 746 0084 04       		.sleb128 4
+ 747 0085 04000000 		.4byte	.LCFI7
+ 748 0089 06000000 		.4byte	.LCFI8
+ 749 008d 0200     		.2byte	0x2
+ 750 008f 7D       		.byte	0x7d
+ 751 0090 10       		.sleb128 16
+ 752 0091 06000000 		.4byte	.LCFI8
+ 753 0095 3C000000 		.4byte	.LFE2
+ 754 0099 0200     		.2byte	0x2
+ 755 009b 77       		.byte	0x77
+ 756 009c 10       		.sleb128 16
+ 757 009d 00000000 		.4byte	0x0
+ 758 00a1 00000000 		.4byte	0x0
+ 759              	.LLST3:
+ 760 00a5 00000000 		.4byte	.LFB3
+ 761 00a9 02000000 		.4byte	.LCFI9
+ 762 00ad 0100     		.2byte	0x1
+ 763 00af 5D       		.byte	0x5d
+ 764 00b0 02000000 		.4byte	.LCFI9
+ 765 00b4 04000000 		.4byte	.LCFI10
+ 766 00b8 0200     		.2byte	0x2
+ 767 00ba 7D       		.byte	0x7d
+ 768 00bb 04       		.sleb128 4
+ 769 00bc 04000000 		.4byte	.LCFI10
+ 770 00c0 06000000 		.4byte	.LCFI11
+ 771 00c4 0200     		.2byte	0x2
+ 772 00c6 7D       		.byte	0x7d
+ 773 00c7 20       		.sleb128 32
+ 774 00c8 06000000 		.4byte	.LCFI11
+ 775 00cc F0000000 		.4byte	.LFE3
+ 776 00d0 0200     		.2byte	0x2
+ 777 00d2 77       		.byte	0x77
+ 778 00d3 20       		.sleb128 32
+ 779 00d4 00000000 		.4byte	0x0
+ 780 00d8 00000000 		.4byte	0x0
+ 781              	.LLST4:
+ 782 00dc 00000000 		.4byte	.LFB4
+ 783 00e0 02000000 		.4byte	.LCFI12
+ 784 00e4 0100     		.2byte	0x1
+ 785 00e6 5D       		.byte	0x5d
+ 786 00e7 02000000 		.4byte	.LCFI12
+ 787 00eb 04000000 		.4byte	.LCFI13
+ 788 00ef 0200     		.2byte	0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 21
+
+
+ 789 00f1 7D       		.byte	0x7d
+ 790 00f2 04       		.sleb128 4
+ 791 00f3 04000000 		.4byte	.LCFI13
+ 792 00f7 06000000 		.4byte	.LCFI14
+ 793 00fb 0200     		.2byte	0x2
+ 794 00fd 7D       		.byte	0x7d
+ 795 00fe 20       		.sleb128 32
+ 796 00ff 06000000 		.4byte	.LCFI14
+ 797 0103 56010000 		.4byte	.LFE4
+ 798 0107 0200     		.2byte	0x2
+ 799 0109 77       		.byte	0x77
+ 800 010a 20       		.sleb128 32
+ 801 010b 00000000 		.4byte	0x0
+ 802 010f 00000000 		.4byte	0x0
+ 803              		.file 2 "..\\..\\..\\..\\..\\..\\uC-CPU\\ARM-Cortex-M3\\GNU/cpu.h"
+ 804              		.file 3 "..\\..\\..\\..\\..\\..\\uC-CPU/cpu_core.h"
+ 805              		.file 4 "..\\..\\..\\..\\..\\..\\uCOS-III\\Source/os_type.h"
+ 806              		.file 5 "..\\..\\..\\..\\..\\..\\uCOS-III\\Source/os.h"
+ 807              		.section	.debug_info
+ 808 0000 28090000 		.4byte	0x928
+ 809 0004 0200     		.2byte	0x2
+ 810 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 811 000a 04       		.byte	0x4
+ 812 000b 01       		.uleb128 0x1
+ 813 000c 32000000 		.4byte	.LASF217
+ 814 0010 01       		.byte	0x1
+ 815 0011 620C0000 		.4byte	.LASF218
+ 816 0015 D10D0000 		.4byte	.LASF219
+ 817 0019 00000000 		.4byte	0x0
+ 818 001d 00000000 		.4byte	0x0
+ 819 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 820 0025 00000000 		.4byte	.Ldebug_line0
+ 821 0029 02       		.uleb128 0x2
+ 822 002a 01       		.byte	0x1
+ 823 002b 08       		.byte	0x8
+ 824 002c EF060000 		.4byte	.LASF0
+ 825 0030 02       		.uleb128 0x2
+ 826 0031 01       		.byte	0x1
+ 827 0032 08       		.byte	0x8
+ 828 0033 D00B0000 		.4byte	.LASF1
+ 829 0037 02       		.uleb128 0x2
+ 830 0038 01       		.byte	0x1
+ 831 0039 06       		.byte	0x6
+ 832 003a F10C0000 		.4byte	.LASF2
+ 833 003e 03       		.uleb128 0x3
+ 834 003f 01080000 		.4byte	.LASF5
+ 835 0043 02       		.byte	0x2
+ 836 0044 7A       		.byte	0x7a
+ 837 0045 49000000 		.4byte	0x49
+ 838 0049 02       		.uleb128 0x2
+ 839 004a 02       		.byte	0x2
+ 840 004b 07       		.byte	0x7
+ 841 004c 170D0000 		.4byte	.LASF3
+ 842 0050 02       		.uleb128 0x2
+ 843 0051 02       		.byte	0x2
+ 844 0052 05       		.byte	0x5
+ 845 0053 4F0A0000 		.4byte	.LASF4
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 22
+
+
+ 846 0057 03       		.uleb128 0x3
+ 847 0058 AE010000 		.4byte	.LASF6
+ 848 005c 02       		.byte	0x2
+ 849 005d 7C       		.byte	0x7c
+ 850 005e 62000000 		.4byte	0x62
+ 851 0062 02       		.uleb128 0x2
+ 852 0063 04       		.byte	0x4
+ 853 0064 07       		.byte	0x7
+ 854 0065 120B0000 		.4byte	.LASF7
+ 855 0069 04       		.uleb128 0x4
+ 856 006a 04       		.byte	0x4
+ 857 006b 05       		.byte	0x5
+ 858 006c 696E7400 		.ascii	"int\000"
+ 859 0070 02       		.uleb128 0x2
+ 860 0071 08       		.byte	0x8
+ 861 0072 07       		.byte	0x7
+ 862 0073 96040000 		.4byte	.LASF8
+ 863 0077 02       		.uleb128 0x2
+ 864 0078 08       		.byte	0x8
+ 865 0079 05       		.byte	0x5
+ 866 007a 96070000 		.4byte	.LASF9
+ 867 007e 02       		.uleb128 0x2
+ 868 007f 04       		.byte	0x4
+ 869 0080 04       		.byte	0x4
+ 870 0081 08040000 		.4byte	.LASF10
+ 871 0085 02       		.uleb128 0x2
+ 872 0086 08       		.byte	0x8
+ 873 0087 04       		.byte	0x4
+ 874 0088 840D0000 		.4byte	.LASF11
+ 875 008c 05       		.uleb128 0x5
+ 876 008d 04       		.byte	0x4
+ 877 008e 03       		.uleb128 0x3
+ 878 008f B5080000 		.4byte	.LASF12
+ 879 0093 03       		.byte	0x3
+ 880 0094 C4       		.byte	0xc4
+ 881 0095 57000000 		.4byte	0x57
+ 882 0099 03       		.uleb128 0x3
+ 883 009a 8F070000 		.4byte	.LASF13
+ 884 009e 03       		.byte	0x3
+ 885 009f C7       		.byte	0xc7
+ 886 00a0 8E000000 		.4byte	0x8e
+ 887 00a4 03       		.uleb128 0x3
+ 888 00a5 15060000 		.4byte	.LASF14
+ 889 00a9 04       		.byte	0x4
+ 890 00aa 3F       		.byte	0x3f
+ 891 00ab 3E000000 		.4byte	0x3e
+ 892 00af 03       		.uleb128 0x3
+ 893 00b0 C3050000 		.4byte	.LASF15
+ 894 00b4 04       		.byte	0x4
+ 895 00b5 40       		.byte	0x40
+ 896 00b6 3E000000 		.4byte	0x3e
+ 897 00ba 03       		.uleb128 0x3
+ 898 00bb 030C0000 		.4byte	.LASF16
+ 899 00bf 04       		.byte	0x4
+ 900 00c0 47       		.byte	0x47
+ 901 00c1 3E000000 		.4byte	0x3e
+ 902 00c5 06       		.uleb128 0x6
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 23
+
+
+ 903 00c6 5B010000 		.4byte	.LASF220
+ 904 00ca 02       		.byte	0x2
+ 905 00cb 05       		.byte	0x5
+ 906 00cc A501     		.2byte	0x1a5
+ 907 00ce D9050000 		.4byte	0x5d9
+ 908 00d2 07       		.uleb128 0x7
+ 909 00d3 530D0000 		.4byte	.LASF17
+ 910 00d7 00       		.sleb128 0
+ 911 00d8 07       		.uleb128 0x7
+ 912 00d9 69000000 		.4byte	.LASF18
+ 913 00dd 90CE00   		.sleb128 10000
+ 914 00e0 07       		.uleb128 0x7
+ 915 00e1 E2020000 		.4byte	.LASF19
+ 916 00e5 91CE00   		.sleb128 10001
+ 917 00e8 07       		.uleb128 0x7
+ 918 00e9 72000000 		.4byte	.LASF20
+ 919 00ed F8D500   		.sleb128 11000
+ 920 00f0 07       		.uleb128 0x7
+ 921 00f1 7B000000 		.4byte	.LASF21
+ 922 00f5 E0DD00   		.sleb128 12000
+ 923 00f8 07       		.uleb128 0x7
+ 924 00f9 7F010000 		.4byte	.LASF22
+ 925 00fd E1DD00   		.sleb128 12001
+ 926 0100 07       		.uleb128 0x7
+ 927 0101 84000000 		.4byte	.LASF23
+ 928 0105 C8E500   		.sleb128 13000
+ 929 0108 07       		.uleb128 0x7
+ 930 0109 D3060000 		.4byte	.LASF24
+ 931 010d C9E500   		.sleb128 13001
+ 932 0110 07       		.uleb128 0x7
+ 933 0111 8D000000 		.4byte	.LASF25
+ 934 0115 B0ED00   		.sleb128 14000
+ 935 0118 07       		.uleb128 0x7
+ 936 0119 96000000 		.4byte	.LASF26
+ 937 011d 98F500   		.sleb128 15000
+ 938 0120 07       		.uleb128 0x7
+ 939 0121 030D0000 		.4byte	.LASF27
+ 940 0125 99F500   		.sleb128 15001
+ 941 0128 07       		.uleb128 0x7
+ 942 0129 6E060000 		.4byte	.LASF28
+ 943 012d FDF500   		.sleb128 15101
+ 944 0130 07       		.uleb128 0x7
+ 945 0131 570B0000 		.4byte	.LASF29
+ 946 0135 FEF500   		.sleb128 15102
+ 947 0138 07       		.uleb128 0x7
+ 948 0139 A4070000 		.4byte	.LASF30
+ 949 013d FFF500   		.sleb128 15103
+ 950 0140 07       		.uleb128 0x7
+ 951 0141 730D0000 		.4byte	.LASF31
+ 952 0145 80F600   		.sleb128 15104
+ 953 0148 07       		.uleb128 0x7
+ 954 0149 9F000000 		.4byte	.LASF32
+ 955 014d 80FD00   		.sleb128 16000
+ 956 0150 07       		.uleb128 0x7
+ 957 0151 A8000000 		.4byte	.LASF33
+ 958 0155 E88401   		.sleb128 17000
+ 959 0158 07       		.uleb128 0x7
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 24
+
+
+ 960 0159 B1000000 		.4byte	.LASF34
+ 961 015d D08C01   		.sleb128 18000
+ 962 0160 07       		.uleb128 0x7
+ 963 0161 8A030000 		.4byte	.LASF35
+ 964 0165 D18C01   		.sleb128 18001
+ 965 0168 07       		.uleb128 0x7
+ 966 0169 C1020000 		.4byte	.LASF36
+ 967 016d D28C01   		.sleb128 18002
+ 968 0170 07       		.uleb128 0x7
+ 969 0171 6D030000 		.4byte	.LASF37
+ 970 0175 D38C01   		.sleb128 18003
+ 971 0178 07       		.uleb128 0x7
+ 972 0179 6D010000 		.4byte	.LASF38
+ 973 017d D48C01   		.sleb128 18004
+ 974 0180 07       		.uleb128 0x7
+ 975 0181 A40C0000 		.4byte	.LASF39
+ 976 0185 D58C01   		.sleb128 18005
+ 977 0188 07       		.uleb128 0x7
+ 978 0189 45090000 		.4byte	.LASF40
+ 979 018d D68C01   		.sleb128 18006
+ 980 0190 07       		.uleb128 0x7
+ 981 0191 BA000000 		.4byte	.LASF41
+ 982 0195 B89401   		.sleb128 19000
+ 983 0198 07       		.uleb128 0x7
+ 984 0199 C3000000 		.4byte	.LASF42
+ 985 019d A09C01   		.sleb128 20000
+ 986 01a0 07       		.uleb128 0x7
+ 987 01a1 CC000000 		.4byte	.LASF43
+ 988 01a5 88A401   		.sleb128 21000
+ 989 01a8 07       		.uleb128 0x7
+ 990 01a9 2E0A0000 		.4byte	.LASF44
+ 991 01ad 89A401   		.sleb128 21001
+ 992 01b0 07       		.uleb128 0x7
+ 993 01b1 D5000000 		.4byte	.LASF45
+ 994 01b5 F0AB01   		.sleb128 22000
+ 995 01b8 07       		.uleb128 0x7
+ 996 01b9 150C0000 		.4byte	.LASF46
+ 997 01bd B9AD01   		.sleb128 22201
+ 998 01c0 07       		.uleb128 0x7
+ 999 01c1 74080000 		.4byte	.LASF47
+ 1000 01c5 BAAD01   		.sleb128 22202
+ 1001 01c8 07       		.uleb128 0x7
+ 1002 01c9 140A0000 		.4byte	.LASF48
+ 1003 01cd BBAD01   		.sleb128 22203
+ 1004 01d0 07       		.uleb128 0x7
+ 1005 01d1 87060000 		.4byte	.LASF49
+ 1006 01d5 BCAD01   		.sleb128 22204
+ 1007 01d8 07       		.uleb128 0x7
+ 1008 01d9 32080000 		.4byte	.LASF50
+ 1009 01dd BDAD01   		.sleb128 22205
+ 1010 01e0 07       		.uleb128 0x7
+ 1011 01e1 FB090000 		.4byte	.LASF51
+ 1012 01e5 BEAD01   		.sleb128 22206
+ 1013 01e8 07       		.uleb128 0x7
+ 1014 01e9 9C080000 		.4byte	.LASF52
+ 1015 01ed BFAD01   		.sleb128 22207
+ 1016 01f0 07       		.uleb128 0x7
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 25
+
+
+ 1017 01f1 3B040000 		.4byte	.LASF53
+ 1018 01f5 C0AD01   		.sleb128 22208
+ 1019 01f8 07       		.uleb128 0x7
+ 1020 01f9 7C0E0000 		.4byte	.LASF54
+ 1021 01fd C1AD01   		.sleb128 22209
+ 1022 0200 07       		.uleb128 0x7
+ 1023 0201 3F0F0000 		.4byte	.LASF55
+ 1024 0205 C2AD01   		.sleb128 22210
+ 1025 0208 07       		.uleb128 0x7
+ 1026 0209 590A0000 		.4byte	.LASF56
+ 1027 020d 9DAE01   		.sleb128 22301
+ 1028 0210 07       		.uleb128 0x7
+ 1029 0211 9F0A0000 		.4byte	.LASF57
+ 1030 0215 9EAE01   		.sleb128 22302
+ 1031 0218 07       		.uleb128 0x7
+ 1032 0219 AC050000 		.4byte	.LASF58
+ 1033 021d 81AF01   		.sleb128 22401
+ 1034 0220 07       		.uleb128 0x7
+ 1035 0221 270B0000 		.4byte	.LASF59
+ 1036 0225 82AF01   		.sleb128 22402
+ 1037 0228 07       		.uleb128 0x7
+ 1038 0229 0C030000 		.4byte	.LASF60
+ 1039 022d 83AF01   		.sleb128 22403
+ 1040 0230 07       		.uleb128 0x7
+ 1041 0231 DE000000 		.4byte	.LASF61
+ 1042 0235 D8B301   		.sleb128 23000
+ 1043 0238 07       		.uleb128 0x7
+ 1044 0239 7C050000 		.4byte	.LASF62
+ 1045 023d D9B301   		.sleb128 23001
+ 1046 0240 07       		.uleb128 0x7
+ 1047 0241 23040000 		.4byte	.LASF63
+ 1048 0245 DAB301   		.sleb128 23002
+ 1049 0248 07       		.uleb128 0x7
+ 1050 0249 E7000000 		.4byte	.LASF64
+ 1051 024d C0BB01   		.sleb128 24000
+ 1052 0250 07       		.uleb128 0x7
+ 1053 0251 3A030000 		.4byte	.LASF65
+ 1054 0255 C1BB01   		.sleb128 24001
+ 1055 0258 07       		.uleb128 0x7
+ 1056 0259 80070000 		.4byte	.LASF66
+ 1057 025d C2BB01   		.sleb128 24002
+ 1058 0260 07       		.uleb128 0x7
+ 1059 0261 4A080000 		.4byte	.LASF67
+ 1060 0265 C3BB01   		.sleb128 24003
+ 1061 0268 07       		.uleb128 0x7
+ 1062 0269 D00A0000 		.4byte	.LASF68
+ 1063 026d C4BB01   		.sleb128 24004
+ 1064 0270 07       		.uleb128 0x7
+ 1065 0271 06070000 		.4byte	.LASF69
+ 1066 0275 A5BC01   		.sleb128 24101
+ 1067 0278 07       		.uleb128 0x7
+ 1068 0279 BC090000 		.4byte	.LASF70
+ 1069 027d 89BD01   		.sleb128 24201
+ 1070 0280 07       		.uleb128 0x7
+ 1071 0281 20060000 		.4byte	.LASF71
+ 1072 0285 8ABD01   		.sleb128 24202
+ 1073 0288 07       		.uleb128 0x7
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 26
+
+
+ 1074 0289 F0000000 		.4byte	.LASF72
+ 1075 028d A8C301   		.sleb128 25000
+ 1076 0290 07       		.uleb128 0x7
+ 1077 0291 8B0D0000 		.4byte	.LASF73
+ 1078 0295 A9C301   		.sleb128 25001
+ 1079 0298 07       		.uleb128 0x7
+ 1080 0299 6B0B0000 		.4byte	.LASF74
+ 1081 029d AAC301   		.sleb128 25002
+ 1082 02a0 07       		.uleb128 0x7
+ 1083 02a1 FB0A0000 		.4byte	.LASF75
+ 1084 02a5 ABC301   		.sleb128 25003
+ 1085 02a8 07       		.uleb128 0x7
+ 1086 02a9 EA070000 		.4byte	.LASF76
+ 1087 02ad ACC301   		.sleb128 25004
+ 1088 02b0 07       		.uleb128 0x7
+ 1089 02b1 C10D0000 		.4byte	.LASF77
+ 1090 02b5 ADC301   		.sleb128 25005
+ 1091 02b8 07       		.uleb128 0x7
+ 1092 02b9 520C0000 		.4byte	.LASF78
+ 1093 02bd AEC301   		.sleb128 25006
+ 1094 02c0 07       		.uleb128 0x7
+ 1095 02c1 50020000 		.4byte	.LASF79
+ 1096 02c5 AFC301   		.sleb128 25007
+ 1097 02c8 07       		.uleb128 0x7
+ 1098 02c9 F2010000 		.4byte	.LASF80
+ 1099 02cd B0C301   		.sleb128 25008
+ 1100 02d0 07       		.uleb128 0x7
+ 1101 02d1 0E040000 		.4byte	.LASF81
+ 1102 02d5 8DC401   		.sleb128 25101
+ 1103 02d8 07       		.uleb128 0x7
+ 1104 02d9 810B0000 		.4byte	.LASF82
+ 1105 02dd 8EC401   		.sleb128 25102
+ 1106 02e0 07       		.uleb128 0x7
+ 1107 02e1 2D0F0000 		.4byte	.LASF83
+ 1108 02e5 F1C401   		.sleb128 25201
+ 1109 02e8 07       		.uleb128 0x7
+ 1110 02e9 B50D0000 		.4byte	.LASF84
+ 1111 02ed F2C401   		.sleb128 25202
+ 1112 02f0 07       		.uleb128 0x7
+ 1113 02f1 00000000 		.4byte	.LASF85
+ 1114 02f5 F3C401   		.sleb128 25203
+ 1115 02f8 07       		.uleb128 0x7
+ 1116 02f9 8C090000 		.4byte	.LASF86
+ 1117 02fd D5C501   		.sleb128 25301
+ 1118 0300 07       		.uleb128 0x7
+ 1119 0301 F9000000 		.4byte	.LASF87
+ 1120 0305 90CB01   		.sleb128 26000
+ 1121 0308 07       		.uleb128 0x7
+ 1122 0309 960C0000 		.4byte	.LASF88
+ 1123 030d 91CB01   		.sleb128 26001
+ 1124 0310 07       		.uleb128 0x7
+ 1125 0311 4C050000 		.4byte	.LASF89
+ 1126 0315 92CB01   		.sleb128 26002
+ 1127 0318 07       		.uleb128 0x7
+ 1128 0319 E2060000 		.4byte	.LASF90
+ 1129 031d 93CB01   		.sleb128 26003
+ 1130 0320 07       		.uleb128 0x7
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 27
+
+
+ 1131 0321 DC070000 		.4byte	.LASF91
+ 1132 0325 94CB01   		.sleb128 26004
+ 1133 0328 07       		.uleb128 0x7
+ 1134 0329 02010000 		.4byte	.LASF92
+ 1135 032d F8D201   		.sleb128 27000
+ 1136 0330 07       		.uleb128 0x7
+ 1137 0331 5E080000 		.4byte	.LASF93
+ 1138 0335 F9D201   		.sleb128 27001
+ 1139 0338 07       		.uleb128 0x7
+ 1140 0339 E6090000 		.4byte	.LASF94
+ 1141 033d FAD201   		.sleb128 27002
+ 1142 0340 07       		.uleb128 0x7
+ 1143 0341 0C080000 		.4byte	.LASF95
+ 1144 0345 FBD201   		.sleb128 27003
+ 1145 0348 07       		.uleb128 0x7
+ 1146 0349 0B010000 		.4byte	.LASF96
+ 1147 034d E0DA01   		.sleb128 28000
+ 1148 0350 07       		.uleb128 0x7
+ 1149 0351 19070000 		.4byte	.LASF97
+ 1150 0355 E1DA01   		.sleb128 28001
+ 1151 0358 07       		.uleb128 0x7
+ 1152 0359 BD060000 		.4byte	.LASF98
+ 1153 035d E2DA01   		.sleb128 28002
+ 1154 0360 07       		.uleb128 0x7
+ 1155 0361 5F0D0000 		.4byte	.LASF99
+ 1156 0365 E3DA01   		.sleb128 28003
+ 1157 0368 07       		.uleb128 0x7
+ 1158 0369 9D0D0000 		.4byte	.LASF100
+ 1159 036d E4DA01   		.sleb128 28004
+ 1160 0370 07       		.uleb128 0x7
+ 1161 0371 6F0A0000 		.4byte	.LASF101
+ 1162 0375 E5DA01   		.sleb128 28005
+ 1163 0378 07       		.uleb128 0x7
+ 1164 0379 C10E0000 		.4byte	.LASF102
+ 1165 037d C5DB01   		.sleb128 28101
+ 1166 0380 07       		.uleb128 0x7
+ 1167 0381 AA0E0000 		.4byte	.LASF103
+ 1168 0385 C6DB01   		.sleb128 28102
+ 1169 0388 07       		.uleb128 0x7
+ 1170 0389 2F020000 		.4byte	.LASF104
+ 1171 038d A9DC01   		.sleb128 28201
+ 1172 0390 07       		.uleb128 0x7
+ 1173 0391 39070000 		.4byte	.LASF105
+ 1174 0395 AADC01   		.sleb128 28202
+ 1175 0398 07       		.uleb128 0x7
+ 1176 0399 56060000 		.4byte	.LASF106
+ 1177 039d ABDC01   		.sleb128 28203
+ 1178 03a0 07       		.uleb128 0x7
+ 1179 03a1 3A0B0000 		.4byte	.LASF107
+ 1180 03a5 ACDC01   		.sleb128 28204
+ 1181 03a8 07       		.uleb128 0x7
+ 1182 03a9 9F090000 		.4byte	.LASF108
+ 1183 03ad ADDC01   		.sleb128 28205
+ 1184 03b0 07       		.uleb128 0x7
+ 1185 03b1 330C0000 		.4byte	.LASF109
+ 1186 03b5 AEDC01   		.sleb128 28206
+ 1187 03b8 07       		.uleb128 0x7
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 28
+
+
+ 1188 03b9 C8010000 		.4byte	.LASF110
+ 1189 03bd AFDC01   		.sleb128 28207
+ 1190 03c0 07       		.uleb128 0x7
+ 1191 03c1 A50B0000 		.4byte	.LASF111
+ 1192 03c5 B0DC01   		.sleb128 28208
+ 1193 03c8 07       		.uleb128 0x7
+ 1194 03c9 EF030000 		.4byte	.LASF112
+ 1195 03cd B1DC01   		.sleb128 28209
+ 1196 03d0 07       		.uleb128 0x7
+ 1197 03d1 14010000 		.4byte	.LASF113
+ 1198 03d5 C8E201   		.sleb128 29000
+ 1199 03d8 07       		.uleb128 0x7
+ 1200 03d9 0A020000 		.4byte	.LASF114
+ 1201 03dd C9E201   		.sleb128 29001
+ 1202 03e0 07       		.uleb128 0x7
+ 1203 03e1 FE050000 		.4byte	.LASF115
+ 1204 03e5 CAE201   		.sleb128 29002
+ 1205 03e8 07       		.uleb128 0x7
+ 1206 03e9 D90C0000 		.4byte	.LASF116
+ 1207 03ed CBE201   		.sleb128 29003
+ 1208 03f0 07       		.uleb128 0x7
+ 1209 03f1 D00E0000 		.4byte	.LASF117
+ 1210 03f5 CCE201   		.sleb128 29004
+ 1211 03f8 07       		.uleb128 0x7
+ 1212 03f9 F4040000 		.4byte	.LASF118
+ 1213 03fd CDE201   		.sleb128 29005
+ 1214 0400 07       		.uleb128 0x7
+ 1215 0401 78090000 		.4byte	.LASF119
+ 1216 0405 CEE201   		.sleb128 29006
+ 1217 0408 07       		.uleb128 0x7
+ 1218 0409 FB080000 		.4byte	.LASF120
+ 1219 040d CFE201   		.sleb128 29007
+ 1220 0410 07       		.uleb128 0x7
+ 1221 0411 84080000 		.4byte	.LASF121
+ 1222 0415 D0E201   		.sleb128 29008
+ 1223 0418 07       		.uleb128 0x7
+ 1224 0419 AD020000 		.4byte	.LASF122
+ 1225 041d D1E201   		.sleb128 29009
+ 1226 0420 07       		.uleb128 0x7
+ 1227 0421 E5080000 		.4byte	.LASF123
+ 1228 0425 D2E201   		.sleb128 29010
+ 1229 0428 07       		.uleb128 0x7
+ 1230 0429 93020000 		.4byte	.LASF124
+ 1231 042d D3E201   		.sleb128 29011
+ 1232 0430 07       		.uleb128 0x7
+ 1233 0431 DE0B0000 		.4byte	.LASF125
+ 1234 0435 D4E201   		.sleb128 29012
+ 1235 0438 07       		.uleb128 0x7
+ 1236 0439 DB010000 		.4byte	.LASF126
+ 1237 043d D5E201   		.sleb128 29013
+ 1238 0440 07       		.uleb128 0x7
+ 1239 0441 D7030000 		.4byte	.LASF127
+ 1240 0445 D6E201   		.sleb128 29014
+ 1241 0448 07       		.uleb128 0x7
+ 1242 0449 B80A0000 		.4byte	.LASF128
+ 1243 044d D7E201   		.sleb128 29015
+ 1244 0450 07       		.uleb128 0x7
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 29
+
+
+ 1245 0451 AD040000 		.4byte	.LASF129
+ 1246 0455 D8E201   		.sleb128 29016
+ 1247 0458 07       		.uleb128 0x7
+ 1248 0459 63020000 		.4byte	.LASF130
+ 1249 045d D9E201   		.sleb128 29017
+ 1250 0460 07       		.uleb128 0x7
+ 1251 0461 940E0000 		.4byte	.LASF131
+ 1252 0465 DAE201   		.sleb128 29018
+ 1253 0468 07       		.uleb128 0x7
+ 1254 0469 54030000 		.4byte	.LASF132
+ 1255 046d DBE201   		.sleb128 29019
+ 1256 0470 07       		.uleb128 0x7
+ 1257 0471 D4040000 		.4byte	.LASF133
+ 1258 0475 DCE201   		.sleb128 29020
+ 1259 0478 07       		.uleb128 0x7
+ 1260 0479 F4020000 		.4byte	.LASF134
+ 1261 047d DDE201   		.sleb128 29021
+ 1262 0480 07       		.uleb128 0x7
+ 1263 0481 2C090000 		.4byte	.LASF135
+ 1264 0485 DEE201   		.sleb128 29022
+ 1265 0488 07       		.uleb128 0x7
+ 1266 0489 CE020000 		.4byte	.LASF136
+ 1267 048d DFE201   		.sleb128 29023
+ 1268 0490 07       		.uleb128 0x7
+ 1269 0491 39050000 		.4byte	.LASF137
+ 1270 0495 ADE301   		.sleb128 29101
+ 1271 0498 07       		.uleb128 0x7
+ 1272 0499 80040000 		.4byte	.LASF138
+ 1273 049d C0E301   		.sleb128 29120
+ 1274 04a0 07       		.uleb128 0x7
+ 1275 04a1 63090000 		.4byte	.LASF139
+ 1276 04a5 C1E301   		.sleb128 29121
+ 1277 04a8 07       		.uleb128 0x7
+ 1278 04a9 3A0D0000 		.4byte	.LASF140
+ 1279 04ad C2E301   		.sleb128 29122
+ 1280 04b0 07       		.uleb128 0x7
+ 1281 04b1 F4060000 		.4byte	.LASF141
+ 1282 04b5 C3E301   		.sleb128 29123
+ 1283 04b8 07       		.uleb128 0x7
+ 1284 04b9 8F050000 		.4byte	.LASF142
+ 1285 04bd C4E301   		.sleb128 29124
+ 1286 04c0 07       		.uleb128 0x7
+ 1287 04c1 140F0000 		.4byte	.LASF143
+ 1288 04c5 91E401   		.sleb128 29201
+ 1289 04c8 07       		.uleb128 0x7
+ 1290 04c9 870A0000 		.4byte	.LASF144
+ 1291 04cd 92E401   		.sleb128 29202
+ 1292 04d0 07       		.uleb128 0x7
+ 1293 04d1 91010000 		.4byte	.LASF145
+ 1294 04d5 93E401   		.sleb128 29203
+ 1295 04d8 07       		.uleb128 0x7
+ 1296 04d9 1B000000 		.4byte	.LASF146
+ 1297 04dd 94E401   		.sleb128 29204
+ 1298 04e0 07       		.uleb128 0x7
+ 1299 04e1 910B0000 		.4byte	.LASF147
+ 1300 04e5 F5E401   		.sleb128 29301
+ 1301 04e8 07       		.uleb128 0x7
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 30
+
+
+ 1302 04e9 F90E0000 		.4byte	.LASF148
+ 1303 04ed F6E401   		.sleb128 29302
+ 1304 04f0 07       		.uleb128 0x7
+ 1305 04f1 E50E0000 		.4byte	.LASF149
+ 1306 04f5 F7E401   		.sleb128 29303
+ 1307 04f8 07       		.uleb128 0x7
+ 1308 04f9 CF050000 		.4byte	.LASF150
+ 1309 04fd F8E401   		.sleb128 29304
+ 1310 0500 07       		.uleb128 0x7
+ 1311 0501 4D000000 		.4byte	.LASF151
+ 1312 0505 F9E401   		.sleb128 29305
+ 1313 0508 07       		.uleb128 0x7
+ 1314 0509 BD0C0000 		.4byte	.LASF152
+ 1315 050d FAE401   		.sleb128 29306
+ 1316 0510 07       		.uleb128 0x7
+ 1317 0511 5B050000 		.4byte	.LASF153
+ 1318 0515 FBE401   		.sleb128 29307
+ 1319 0518 07       		.uleb128 0x7
+ 1320 0519 52070000 		.4byte	.LASF154
+ 1321 051d FCE401   		.sleb128 29308
+ 1322 0520 07       		.uleb128 0x7
+ 1323 0521 D2090000 		.4byte	.LASF155
+ 1324 0525 FDE401   		.sleb128 29309
+ 1325 0528 07       		.uleb128 0x7
+ 1326 0529 41060000 		.4byte	.LASF156
+ 1327 052d FEE401   		.sleb128 29310
+ 1328 0530 07       		.uleb128 0x7
+ 1329 0531 EE0B0000 		.4byte	.LASF157
+ 1330 0535 D9E501   		.sleb128 29401
+ 1331 0538 07       		.uleb128 0x7
+ 1332 0539 6C040000 		.4byte	.LASF158
+ 1333 053d BDE601   		.sleb128 29501
+ 1334 0540 07       		.uleb128 0x7
+ 1335 0541 A5060000 		.4byte	.LASF159
+ 1336 0545 BEE601   		.sleb128 29502
+ 1337 0548 07       		.uleb128 0x7
+ 1338 0549 A9030000 		.4byte	.LASF160
+ 1339 054d BFE601   		.sleb128 29503
+ 1340 0550 07       		.uleb128 0x7
+ 1341 0551 41010000 		.4byte	.LASF161
+ 1342 0555 C0E601   		.sleb128 29504
+ 1343 0558 07       		.uleb128 0x7
+ 1344 0559 21030000 		.4byte	.LASF162
+ 1345 055d C1E601   		.sleb128 29505
+ 1346 0560 07       		.uleb128 0x7
+ 1347 0561 C1040000 		.4byte	.LASF163
+ 1348 0565 C2E601   		.sleb128 29506
+ 1349 0568 07       		.uleb128 0x7
+ 1350 0569 3E000000 		.4byte	.LASF164
+ 1351 056d C3E601   		.sleb128 29507
+ 1352 0570 07       		.uleb128 0x7
+ 1353 0571 55040000 		.4byte	.LASF165
+ 1354 0575 C4E601   		.sleb128 29508
+ 1355 0578 07       		.uleb128 0x7
+ 1356 0579 E9050000 		.4byte	.LASF166
+ 1357 057d C5E601   		.sleb128 29509
+ 1358 0580 07       		.uleb128 0x7
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 31
+
+
+ 1359 0581 0F090000 		.4byte	.LASF167
+ 1360 0585 C6E601   		.sleb128 29510
+ 1361 0588 07       		.uleb128 0x7
+ 1362 0589 0C050000 		.4byte	.LASF168
+ 1363 058d C7E601   		.sleb128 29511
+ 1364 0590 07       		.uleb128 0x7
+ 1365 0591 C9080000 		.4byte	.LASF169
+ 1366 0595 C8E601   		.sleb128 29512
+ 1367 0598 07       		.uleb128 0x7
+ 1368 0599 BD0B0000 		.4byte	.LASF170
+ 1369 059d C9E601   		.sleb128 29513
+ 1370 05a0 07       		.uleb128 0x7
+ 1371 05a1 1D010000 		.4byte	.LASF171
+ 1372 05a5 B0EA01   		.sleb128 30000
+ 1373 05a8 07       		.uleb128 0x7
+ 1374 05a9 26010000 		.4byte	.LASF172
+ 1375 05ad 98F201   		.sleb128 31000
+ 1376 05b0 07       		.uleb128 0x7
+ 1377 05b1 2F010000 		.4byte	.LASF173
+ 1378 05b5 80FA01   		.sleb128 32000
+ 1379 05b8 07       		.uleb128 0x7
+ 1380 05b9 38010000 		.4byte	.LASF174
+ 1381 05bd E88102   		.sleb128 33000
+ 1382 05c0 07       		.uleb128 0x7
+ 1383 05c1 490C0000 		.4byte	.LASF175
+ 1384 05c5 D08902   		.sleb128 34000
+ 1385 05c8 07       		.uleb128 0x7
+ 1386 05c9 6F070000 		.4byte	.LASF176
+ 1387 05cd D18902   		.sleb128 34001
+ 1388 05d0 07       		.uleb128 0x7
+ 1389 05d1 460A0000 		.4byte	.LASF177
+ 1390 05d5 B89102   		.sleb128 35000
+ 1391 05d8 00       		.byte	0x0
+ 1392 05d9 08       		.uleb128 0x8
+ 1393 05da 14000000 		.4byte	.LASF178
+ 1394 05de 05       		.byte	0x5
+ 1395 05df 7202     		.2byte	0x272
+ 1396 05e1 C5000000 		.4byte	0xc5
+ 1397 05e5 08       		.uleb128 0x8
+ 1398 05e6 88050000 		.4byte	.LASF179
+ 1399 05ea 05       		.byte	0x5
+ 1400 05eb 8202     		.2byte	0x282
+ 1401 05ed F1050000 		.4byte	0x5f1
+ 1402 05f1 09       		.uleb128 0x9
+ 1403 05f2 32050000 		.4byte	.LASF185
+ 1404 05f6 10       		.byte	0x10
+ 1405 05f7 05       		.byte	0x5
+ 1406 05f8 8202     		.2byte	0x282
+ 1407 05fa 3B060000 		.4byte	0x63b
+ 1408 05fe 0A       		.uleb128 0xa
+ 1409 05ff B4090000 		.4byte	.LASF180
+ 1410 0603 05       		.byte	0x5
+ 1411 0604 4103     		.2byte	0x341
+ 1412 0606 F6060000 		.4byte	0x6f6
+ 1413 060a 02       		.byte	0x2
+ 1414 060b 23       		.byte	0x23
+ 1415 060c 00       		.uleb128 0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 32
+
+
+ 1416 060d 0A       		.uleb128 0xa
+ 1417 060e 330D0000 		.4byte	.LASF181
+ 1418 0612 05       		.byte	0x5
+ 1419 0613 4203     		.2byte	0x342
+ 1420 0615 8C000000 		.4byte	0x8c
+ 1421 0619 02       		.byte	0x2
+ 1422 061a 23       		.byte	0x23
+ 1423 061b 04       		.uleb128 0x4
+ 1424 061c 0A       		.uleb128 0xa
+ 1425 061d 1F0B0000 		.4byte	.LASF182
+ 1426 0621 05       		.byte	0x5
+ 1427 0622 4303     		.2byte	0x343
+ 1428 0624 AF000000 		.4byte	0xaf
+ 1429 0628 02       		.byte	0x2
+ 1430 0629 23       		.byte	0x23
+ 1431 062a 08       		.uleb128 0x8
+ 1432 062b 0A       		.uleb128 0xa
+ 1433 062c FD0C0000 		.4byte	.LASF183
+ 1434 0630 05       		.byte	0x5
+ 1435 0631 4403     		.2byte	0x344
+ 1436 0633 99000000 		.4byte	0x99
+ 1437 0637 02       		.byte	0x2
+ 1438 0638 23       		.byte	0x23
+ 1439 0639 0C       		.uleb128 0xc
+ 1440 063a 00       		.byte	0x0
+ 1441 063b 08       		.uleb128 0x8
+ 1442 063c D0070000 		.4byte	.LASF184
+ 1443 0640 05       		.byte	0x5
+ 1444 0641 8302     		.2byte	0x283
+ 1445 0643 47060000 		.4byte	0x647
+ 1446 0647 09       		.uleb128 0x9
+ 1447 0648 7B020000 		.4byte	.LASF186
+ 1448 064c 0C       		.byte	0xc
+ 1449 064d 05       		.byte	0x5
+ 1450 064e 8302     		.2byte	0x283
+ 1451 0650 91060000 		.4byte	0x691
+ 1452 0654 0A       		.uleb128 0xa
+ 1453 0655 B4090000 		.4byte	.LASF180
+ 1454 0659 05       		.byte	0x5
+ 1455 065a 4B03     		.2byte	0x34b
+ 1456 065c F6060000 		.4byte	0x6f6
+ 1457 0660 02       		.byte	0x2
+ 1458 0661 23       		.byte	0x23
+ 1459 0662 00       		.uleb128 0x0
+ 1460 0663 0A       		.uleb128 0xa
+ 1461 0664 2B0C0000 		.4byte	.LASF187
+ 1462 0668 05       		.byte	0x5
+ 1463 0669 4C03     		.2byte	0x34c
+ 1464 066b A4000000 		.4byte	0xa4
+ 1465 066f 02       		.byte	0x2
+ 1466 0670 23       		.byte	0x23
+ 1467 0671 04       		.uleb128 0x4
+ 1468 0672 0A       		.uleb128 0xa
+ 1469 0673 E90C0000 		.4byte	.LASF188
+ 1470 0677 05       		.byte	0x5
+ 1471 0678 4D03     		.2byte	0x34d
+ 1472 067a A4000000 		.4byte	0xa4
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 33
+
+
+ 1473 067e 02       		.byte	0x2
+ 1474 067f 23       		.byte	0x23
+ 1475 0680 06       		.uleb128 0x6
+ 1476 0681 0A       		.uleb128 0xa
+ 1477 0682 0A0C0000 		.4byte	.LASF189
+ 1478 0686 05       		.byte	0x5
+ 1479 0687 4E03     		.2byte	0x34e
+ 1480 0689 A4000000 		.4byte	0xa4
+ 1481 068d 02       		.byte	0x2
+ 1482 068e 23       		.byte	0x23
+ 1483 068f 08       		.uleb128 0x8
+ 1484 0690 00       		.byte	0x0
+ 1485 0691 08       		.uleb128 0x8
+ 1486 0692 66070000 		.4byte	.LASF190
+ 1487 0696 05       		.byte	0x5
+ 1488 0697 8402     		.2byte	0x284
+ 1489 0699 9D060000 		.4byte	0x69d
+ 1490 069d 09       		.uleb128 0x9
+ 1491 069e 2A0D0000 		.4byte	.LASF191
+ 1492 06a2 10       		.byte	0x10
+ 1493 06a3 05       		.byte	0x5
+ 1494 06a4 8402     		.2byte	0x284
+ 1495 06a6 F6060000 		.4byte	0x6f6
+ 1496 06aa 0A       		.uleb128 0xa
+ 1497 06ab E00A0000 		.4byte	.LASF192
+ 1498 06af 05       		.byte	0x5
+ 1499 06b0 5403     		.2byte	0x354
+ 1500 06b2 F6060000 		.4byte	0x6f6
+ 1501 06b6 02       		.byte	0x2
+ 1502 06b7 23       		.byte	0x23
+ 1503 06b8 00       		.uleb128 0x0
+ 1504 06b9 0A       		.uleb128 0xa
+ 1505 06ba 8F0C0000 		.4byte	.LASF193
+ 1506 06be 05       		.byte	0x5
+ 1507 06bf 5503     		.2byte	0x355
+ 1508 06c1 F6060000 		.4byte	0x6f6
+ 1509 06c5 02       		.byte	0x2
+ 1510 06c6 23       		.byte	0x23
+ 1511 06c7 04       		.uleb128 0x4
+ 1512 06c8 0A       		.uleb128 0xa
+ 1513 06c9 32060000 		.4byte	.LASF194
+ 1514 06cd 05       		.byte	0x5
+ 1515 06ce 5603     		.2byte	0x356
+ 1516 06d0 A4000000 		.4byte	0xa4
+ 1517 06d4 02       		.byte	0x2
+ 1518 06d5 23       		.byte	0x23
+ 1519 06d6 08       		.uleb128 0x8
+ 1520 06d7 0A       		.uleb128 0xa
+ 1521 06d8 62010000 		.4byte	.LASF195
+ 1522 06dc 05       		.byte	0x5
+ 1523 06dd 5703     		.2byte	0x357
+ 1524 06df A4000000 		.4byte	0xa4
+ 1525 06e3 02       		.byte	0x2
+ 1526 06e4 23       		.byte	0x23
+ 1527 06e5 0A       		.uleb128 0xa
+ 1528 06e6 0A       		.uleb128 0xa
+ 1529 06e7 6E0E0000 		.4byte	.LASF196
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 34
+
+
+ 1530 06eb 05       		.byte	0x5
+ 1531 06ec 5803     		.2byte	0x358
+ 1532 06ee A4000000 		.4byte	0xa4
+ 1533 06f2 02       		.byte	0x2
+ 1534 06f3 23       		.byte	0x23
+ 1535 06f4 0C       		.uleb128 0xc
+ 1536 06f5 00       		.byte	0x0
+ 1537 06f6 0B       		.uleb128 0xb
+ 1538 06f7 04       		.byte	0x4
+ 1539 06f8 E5050000 		.4byte	0x5e5
+ 1540 06fc 0C       		.uleb128 0xc
+ 1541 06fd 04       		.byte	0x4
+ 1542 06fe 07       		.byte	0x7
+ 1543 06ff 0D       		.uleb128 0xd
+ 1544 0700 01       		.byte	0x1
+ 1545 0701 B9010000 		.4byte	.LASF203
+ 1546 0705 01       		.byte	0x1
+ 1547 0706 3D       		.byte	0x3d
+ 1548 0707 01       		.byte	0x1
+ 1549 0708 00000000 		.4byte	.LFB0
+ 1550 070c 24010000 		.4byte	.LFE0
+ 1551 0710 00000000 		.4byte	.LLST0
+ 1552 0714 5D070000 		.4byte	0x75d
+ 1553 0718 0E       		.uleb128 0xe
+ 1554 0719 9F060000 		.4byte	.LASF200
+ 1555 071d 01       		.byte	0x1
+ 1556 071e 3D       		.byte	0x3d
+ 1557 071f 5D070000 		.4byte	0x75d
+ 1558 0723 02       		.byte	0x2
+ 1559 0724 91       		.byte	0x91
+ 1560 0725 64       		.sleb128 -28
+ 1561 0726 0F       		.uleb128 0xf
+ 1562 0727 C2070000 		.4byte	.LASF197
+ 1563 072b 01       		.byte	0x1
+ 1564 072c 3F       		.byte	0x3f
+ 1565 072d F6060000 		.4byte	0x6f6
+ 1566 0731 02       		.byte	0x2
+ 1567 0732 91       		.byte	0x91
+ 1568 0733 6C       		.sleb128 -20
+ 1569 0734 0F       		.uleb128 0xf
+ 1570 0735 C9070000 		.4byte	.LASF198
+ 1571 0739 01       		.byte	0x1
+ 1572 073a 40       		.byte	0x40
+ 1573 073b F6060000 		.4byte	0x6f6
+ 1574 073f 02       		.byte	0x2
+ 1575 0740 91       		.byte	0x91
+ 1576 0741 70       		.sleb128 -16
+ 1577 0742 10       		.uleb128 0x10
+ 1578 0743 6900     		.ascii	"i\000"
+ 1579 0745 01       		.byte	0x1
+ 1580 0746 41       		.byte	0x41
+ 1581 0747 A4000000 		.4byte	0xa4
+ 1582 074b 02       		.byte	0x2
+ 1583 074c 91       		.byte	0x91
+ 1584 074d 74       		.sleb128 -12
+ 1585 074e 0F       		.uleb128 0xf
+ 1586 074f FD0B0000 		.4byte	.LASF199
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 35
+
+
+ 1587 0753 01       		.byte	0x1
+ 1588 0754 42       		.byte	0x42
+ 1589 0755 A4000000 		.4byte	0xa4
+ 1590 0759 02       		.byte	0x2
+ 1591 075a 91       		.byte	0x91
+ 1592 075b 76       		.sleb128 -10
+ 1593 075c 00       		.byte	0x0
+ 1594 075d 0B       		.uleb128 0xb
+ 1595 075e 04       		.byte	0x4
+ 1596 075f D9050000 		.4byte	0x5d9
+ 1597 0763 11       		.uleb128 0x11
+ 1598 0764 01       		.byte	0x1
+ 1599 0765 23050000 		.4byte	.LASF206
+ 1600 0769 01       		.byte	0x1
+ 1601 076a 80       		.byte	0x80
+ 1602 076b 01       		.byte	0x1
+ 1603 076c A4000000 		.4byte	0xa4
+ 1604 0770 00000000 		.4byte	.LFB1
+ 1605 0774 A0000000 		.4byte	.LFE1
+ 1606 0778 37000000 		.4byte	.LLST1
+ 1607 077c AB070000 		.4byte	0x7ab
+ 1608 0780 0E       		.uleb128 0xe
+ 1609 0781 B90E0000 		.4byte	.LASF201
+ 1610 0785 01       		.byte	0x1
+ 1611 0786 80       		.byte	0x80
+ 1612 0787 AB070000 		.4byte	0x7ab
+ 1613 078b 02       		.byte	0x2
+ 1614 078c 91       		.byte	0x91
+ 1615 078d 6C       		.sleb128 -20
+ 1616 078e 0F       		.uleb128 0xf
+ 1617 078f 72090000 		.4byte	.LASF202
+ 1618 0793 01       		.byte	0x1
+ 1619 0794 82       		.byte	0x82
+ 1620 0795 F6060000 		.4byte	0x6f6
+ 1621 0799 02       		.byte	0x2
+ 1622 079a 91       		.byte	0x91
+ 1623 079b 70       		.sleb128 -16
+ 1624 079c 10       		.uleb128 0x10
+ 1625 079d 71747900 		.ascii	"qty\000"
+ 1626 07a1 01       		.byte	0x1
+ 1627 07a2 83       		.byte	0x83
+ 1628 07a3 A4000000 		.4byte	0xa4
+ 1629 07a7 02       		.byte	0x2
+ 1630 07a8 91       		.byte	0x91
+ 1631 07a9 76       		.sleb128 -10
+ 1632 07aa 00       		.byte	0x0
+ 1633 07ab 0B       		.uleb128 0xb
+ 1634 07ac 04       		.byte	0x4
+ 1635 07ad 91060000 		.4byte	0x691
+ 1636 07b1 0D       		.uleb128 0xd
+ 1637 07b2 01       		.byte	0x1
+ 1638 07b3 87020000 		.4byte	.LASF204
+ 1639 07b7 01       		.byte	0x1
+ 1640 07b8 A8       		.byte	0xa8
+ 1641 07b9 01       		.byte	0x1
+ 1642 07ba 00000000 		.4byte	.LFB2
+ 1643 07be 3C000000 		.4byte	.LFE2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 36
+
+
+ 1644 07c2 6E000000 		.4byte	.LLST2
+ 1645 07c6 E7070000 		.4byte	0x7e7
+ 1646 07ca 0E       		.uleb128 0xe
+ 1647 07cb B90E0000 		.4byte	.LASF201
+ 1648 07cf 01       		.byte	0x1
+ 1649 07d0 A8       		.byte	0xa8
+ 1650 07d1 AB070000 		.4byte	0x7ab
+ 1651 07d5 02       		.byte	0x2
+ 1652 07d6 91       		.byte	0x91
+ 1653 07d7 74       		.sleb128 -12
+ 1654 07d8 0E       		.uleb128 0xe
+ 1655 07d9 D2030000 		.4byte	.LASF205
+ 1656 07dd 01       		.byte	0x1
+ 1657 07de A9       		.byte	0xa9
+ 1658 07df A4000000 		.4byte	0xa4
+ 1659 07e3 02       		.byte	0x2
+ 1660 07e4 91       		.byte	0x91
+ 1661 07e5 72       		.sleb128 -14
+ 1662 07e6 00       		.byte	0x0
+ 1663 07e7 11       		.uleb128 0x11
+ 1664 07e8 01       		.byte	0x1
+ 1665 07e9 BE080000 		.4byte	.LASF207
+ 1666 07ed 01       		.byte	0x1
+ 1667 07ee CB       		.byte	0xcb
+ 1668 07ef 01       		.byte	0x1
+ 1669 07f0 8C000000 		.4byte	0x8c
+ 1670 07f4 00000000 		.4byte	.LFB3
+ 1671 07f8 F0000000 		.4byte	.LFE3
+ 1672 07fc A5000000 		.4byte	.LLST3
+ 1673 0800 59080000 		.4byte	0x859
+ 1674 0804 0E       		.uleb128 0xe
+ 1675 0805 B90E0000 		.4byte	.LASF201
+ 1676 0809 01       		.byte	0x1
+ 1677 080a CB       		.byte	0xcb
+ 1678 080b AB070000 		.4byte	0x7ab
+ 1679 080f 02       		.byte	0x2
+ 1680 0810 91       		.byte	0x91
+ 1681 0811 6C       		.sleb128 -20
+ 1682 0812 0E       		.uleb128 0xe
+ 1683 0813 45020000 		.4byte	.LASF208
+ 1684 0817 01       		.byte	0x1
+ 1685 0818 CC       		.byte	0xcc
+ 1686 0819 59080000 		.4byte	0x859
+ 1687 081d 02       		.byte	0x2
+ 1688 081e 91       		.byte	0x91
+ 1689 081f 68       		.sleb128 -24
+ 1690 0820 0E       		.uleb128 0xe
+ 1691 0821 27090000 		.4byte	.LASF209
+ 1692 0825 01       		.byte	0x1
+ 1693 0826 CD       		.byte	0xcd
+ 1694 0827 5F080000 		.4byte	0x85f
+ 1695 082b 02       		.byte	0x2
+ 1696 082c 91       		.byte	0x91
+ 1697 082d 64       		.sleb128 -28
+ 1698 082e 0E       		.uleb128 0xe
+ 1699 082f 9F060000 		.4byte	.LASF200
+ 1700 0833 01       		.byte	0x1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 37
+
+
+ 1701 0834 CE       		.byte	0xce
+ 1702 0835 5D070000 		.4byte	0x75d
+ 1703 0839 02       		.byte	0x2
+ 1704 083a 91       		.byte	0x91
+ 1705 083b 60       		.sleb128 -32
+ 1706 083c 0F       		.uleb128 0xf
+ 1707 083d 72090000 		.4byte	.LASF202
+ 1708 0841 01       		.byte	0x1
+ 1709 0842 D0       		.byte	0xd0
+ 1710 0843 F6060000 		.4byte	0x6f6
+ 1711 0847 02       		.byte	0x2
+ 1712 0848 91       		.byte	0x91
+ 1713 0849 70       		.sleb128 -16
+ 1714 084a 0F       		.uleb128 0xf
+ 1715 084b 4D030000 		.4byte	.LASF210
+ 1716 084f 01       		.byte	0x1
+ 1717 0850 D1       		.byte	0xd1
+ 1718 0851 8C000000 		.4byte	0x8c
+ 1719 0855 02       		.byte	0x2
+ 1720 0856 91       		.byte	0x91
+ 1721 0857 74       		.sleb128 -12
+ 1722 0858 00       		.byte	0x0
+ 1723 0859 0B       		.uleb128 0xb
+ 1724 085a 04       		.byte	0x4
+ 1725 085b AF000000 		.4byte	0xaf
+ 1726 085f 0B       		.uleb128 0xb
+ 1727 0860 04       		.byte	0x4
+ 1728 0861 99000000 		.4byte	0x99
+ 1729 0865 12       		.uleb128 0x12
+ 1730 0866 01       		.byte	0x1
+ 1731 0867 7F030000 		.4byte	.LASF211
+ 1732 086b 01       		.byte	0x1
+ 1733 086c 1F01     		.2byte	0x11f
+ 1734 086e 01       		.byte	0x1
+ 1735 086f 00000000 		.4byte	.LFB4
+ 1736 0873 56010000 		.4byte	.LFE4
+ 1737 0877 DC000000 		.4byte	.LLST4
+ 1738 087b F7080000 		.4byte	0x8f7
+ 1739 087f 13       		.uleb128 0x13
+ 1740 0880 B90E0000 		.4byte	.LASF201
+ 1741 0884 01       		.byte	0x1
+ 1742 0885 1F01     		.2byte	0x11f
+ 1743 0887 AB070000 		.4byte	0x7ab
+ 1744 088b 02       		.byte	0x2
+ 1745 088c 91       		.byte	0x91
+ 1746 088d 6C       		.sleb128 -20
+ 1747 088e 13       		.uleb128 0x13
+ 1748 088f 4D030000 		.4byte	.LASF210
+ 1749 0893 01       		.byte	0x1
+ 1750 0894 2001     		.2byte	0x120
+ 1751 0896 8C000000 		.4byte	0x8c
+ 1752 089a 02       		.byte	0x2
+ 1753 089b 91       		.byte	0x91
+ 1754 089c 68       		.sleb128 -24
+ 1755 089d 13       		.uleb128 0x13
+ 1756 089e B9070000 		.4byte	.LASF212
+ 1757 08a2 01       		.byte	0x1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 38
+
+
+ 1758 08a3 2101     		.2byte	0x121
+ 1759 08a5 AF000000 		.4byte	0xaf
+ 1760 08a9 02       		.byte	0x2
+ 1761 08aa 91       		.byte	0x91
+ 1762 08ab 66       		.sleb128 -26
+ 1763 08ac 14       		.uleb128 0x14
+ 1764 08ad 6F707400 		.ascii	"opt\000"
+ 1765 08b1 01       		.byte	0x1
+ 1766 08b2 2201     		.2byte	0x122
+ 1767 08b4 BA000000 		.4byte	0xba
+ 1768 08b8 02       		.byte	0x2
+ 1769 08b9 91       		.byte	0x91
+ 1770 08ba 64       		.sleb128 -28
+ 1771 08bb 14       		.uleb128 0x14
+ 1772 08bc 747300   		.ascii	"ts\000"
+ 1773 08bf 01       		.byte	0x1
+ 1774 08c0 2301     		.2byte	0x123
+ 1775 08c2 99000000 		.4byte	0x99
+ 1776 08c6 02       		.byte	0x2
+ 1777 08c7 91       		.byte	0x91
+ 1778 08c8 00       		.sleb128 0
+ 1779 08c9 13       		.uleb128 0x13
+ 1780 08ca 9F060000 		.4byte	.LASF200
+ 1781 08ce 01       		.byte	0x1
+ 1782 08cf 2401     		.2byte	0x124
+ 1783 08d1 5D070000 		.4byte	0x75d
+ 1784 08d5 02       		.byte	0x2
+ 1785 08d6 91       		.byte	0x91
+ 1786 08d7 04       		.sleb128 4
+ 1787 08d8 15       		.uleb128 0x15
+ 1788 08d9 72090000 		.4byte	.LASF202
+ 1789 08dd 01       		.byte	0x1
+ 1790 08de 2601     		.2byte	0x126
+ 1791 08e0 F6060000 		.4byte	0x6f6
+ 1792 08e4 02       		.byte	0x2
+ 1793 08e5 91       		.byte	0x91
+ 1794 08e6 70       		.sleb128 -16
+ 1795 08e7 15       		.uleb128 0x15
+ 1796 08e8 26020000 		.4byte	.LASF213
+ 1797 08ec 01       		.byte	0x1
+ 1798 08ed 2701     		.2byte	0x127
+ 1799 08ef F6060000 		.4byte	0x6f6
+ 1800 08f3 02       		.byte	0x2
+ 1801 08f4 91       		.byte	0x91
+ 1802 08f5 74       		.sleb128 -12
+ 1803 08f6 00       		.byte	0x0
+ 1804 08f7 16       		.uleb128 0x16
+ 1805 08f8 28080000 		.4byte	.LASF214
+ 1806 08fc 05       		.byte	0x5
+ 1807 08fd 8404     		.2byte	0x484
+ 1808 08ff 3B060000 		.4byte	0x63b
+ 1809 0903 01       		.byte	0x1
+ 1810 0904 01       		.byte	0x1
+ 1811 0905 16       		.uleb128 0x16
+ 1812 0906 C0030000 		.4byte	.LASF215
+ 1813 090a 05       		.byte	0x5
+ 1814 090b 0205     		.2byte	0x502
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 39
+
+
+ 1815 090d 13090000 		.4byte	0x913
+ 1816 0911 01       		.byte	0x1
+ 1817 0912 01       		.byte	0x1
+ 1818 0913 17       		.uleb128 0x17
+ 1819 0914 AF000000 		.4byte	0xaf
+ 1820 0918 16       		.uleb128 0x16
+ 1821 0919 E60A0000 		.4byte	.LASF216
+ 1822 091d 05       		.byte	0x5
+ 1823 091e 0405     		.2byte	0x504
+ 1824 0920 26090000 		.4byte	0x926
+ 1825 0924 01       		.byte	0x1
+ 1826 0925 01       		.byte	0x1
+ 1827 0926 17       		.uleb128 0x17
+ 1828 0927 F6060000 		.4byte	0x6f6
+ 1829 092b 00       		.byte	0x0
+ 1830              		.section	.debug_abbrev
+ 1831 0000 01       		.uleb128 0x1
+ 1832 0001 11       		.uleb128 0x11
+ 1833 0002 01       		.byte	0x1
+ 1834 0003 25       		.uleb128 0x25
+ 1835 0004 0E       		.uleb128 0xe
+ 1836 0005 13       		.uleb128 0x13
+ 1837 0006 0B       		.uleb128 0xb
+ 1838 0007 03       		.uleb128 0x3
+ 1839 0008 0E       		.uleb128 0xe
+ 1840 0009 1B       		.uleb128 0x1b
+ 1841 000a 0E       		.uleb128 0xe
+ 1842 000b 11       		.uleb128 0x11
+ 1843 000c 01       		.uleb128 0x1
+ 1844 000d 52       		.uleb128 0x52
+ 1845 000e 01       		.uleb128 0x1
+ 1846 000f 55       		.uleb128 0x55
+ 1847 0010 06       		.uleb128 0x6
+ 1848 0011 10       		.uleb128 0x10
+ 1849 0012 06       		.uleb128 0x6
+ 1850 0013 00       		.byte	0x0
+ 1851 0014 00       		.byte	0x0
+ 1852 0015 02       		.uleb128 0x2
+ 1853 0016 24       		.uleb128 0x24
+ 1854 0017 00       		.byte	0x0
+ 1855 0018 0B       		.uleb128 0xb
+ 1856 0019 0B       		.uleb128 0xb
+ 1857 001a 3E       		.uleb128 0x3e
+ 1858 001b 0B       		.uleb128 0xb
+ 1859 001c 03       		.uleb128 0x3
+ 1860 001d 0E       		.uleb128 0xe
+ 1861 001e 00       		.byte	0x0
+ 1862 001f 00       		.byte	0x0
+ 1863 0020 03       		.uleb128 0x3
+ 1864 0021 16       		.uleb128 0x16
+ 1865 0022 00       		.byte	0x0
+ 1866 0023 03       		.uleb128 0x3
+ 1867 0024 0E       		.uleb128 0xe
+ 1868 0025 3A       		.uleb128 0x3a
+ 1869 0026 0B       		.uleb128 0xb
+ 1870 0027 3B       		.uleb128 0x3b
+ 1871 0028 0B       		.uleb128 0xb
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 40
+
+
+ 1872 0029 49       		.uleb128 0x49
+ 1873 002a 13       		.uleb128 0x13
+ 1874 002b 00       		.byte	0x0
+ 1875 002c 00       		.byte	0x0
+ 1876 002d 04       		.uleb128 0x4
+ 1877 002e 24       		.uleb128 0x24
+ 1878 002f 00       		.byte	0x0
+ 1879 0030 0B       		.uleb128 0xb
+ 1880 0031 0B       		.uleb128 0xb
+ 1881 0032 3E       		.uleb128 0x3e
+ 1882 0033 0B       		.uleb128 0xb
+ 1883 0034 03       		.uleb128 0x3
+ 1884 0035 08       		.uleb128 0x8
+ 1885 0036 00       		.byte	0x0
+ 1886 0037 00       		.byte	0x0
+ 1887 0038 05       		.uleb128 0x5
+ 1888 0039 0F       		.uleb128 0xf
+ 1889 003a 00       		.byte	0x0
+ 1890 003b 0B       		.uleb128 0xb
+ 1891 003c 0B       		.uleb128 0xb
+ 1892 003d 00       		.byte	0x0
+ 1893 003e 00       		.byte	0x0
+ 1894 003f 06       		.uleb128 0x6
+ 1895 0040 04       		.uleb128 0x4
+ 1896 0041 01       		.byte	0x1
+ 1897 0042 03       		.uleb128 0x3
+ 1898 0043 0E       		.uleb128 0xe
+ 1899 0044 0B       		.uleb128 0xb
+ 1900 0045 0B       		.uleb128 0xb
+ 1901 0046 3A       		.uleb128 0x3a
+ 1902 0047 0B       		.uleb128 0xb
+ 1903 0048 3B       		.uleb128 0x3b
+ 1904 0049 05       		.uleb128 0x5
+ 1905 004a 01       		.uleb128 0x1
+ 1906 004b 13       		.uleb128 0x13
+ 1907 004c 00       		.byte	0x0
+ 1908 004d 00       		.byte	0x0
+ 1909 004e 07       		.uleb128 0x7
+ 1910 004f 28       		.uleb128 0x28
+ 1911 0050 00       		.byte	0x0
+ 1912 0051 03       		.uleb128 0x3
+ 1913 0052 0E       		.uleb128 0xe
+ 1914 0053 1C       		.uleb128 0x1c
+ 1915 0054 0D       		.uleb128 0xd
+ 1916 0055 00       		.byte	0x0
+ 1917 0056 00       		.byte	0x0
+ 1918 0057 08       		.uleb128 0x8
+ 1919 0058 16       		.uleb128 0x16
+ 1920 0059 00       		.byte	0x0
+ 1921 005a 03       		.uleb128 0x3
+ 1922 005b 0E       		.uleb128 0xe
+ 1923 005c 3A       		.uleb128 0x3a
+ 1924 005d 0B       		.uleb128 0xb
+ 1925 005e 3B       		.uleb128 0x3b
+ 1926 005f 05       		.uleb128 0x5
+ 1927 0060 49       		.uleb128 0x49
+ 1928 0061 13       		.uleb128 0x13
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 41
+
+
+ 1929 0062 00       		.byte	0x0
+ 1930 0063 00       		.byte	0x0
+ 1931 0064 09       		.uleb128 0x9
+ 1932 0065 13       		.uleb128 0x13
+ 1933 0066 01       		.byte	0x1
+ 1934 0067 03       		.uleb128 0x3
+ 1935 0068 0E       		.uleb128 0xe
+ 1936 0069 0B       		.uleb128 0xb
+ 1937 006a 0B       		.uleb128 0xb
+ 1938 006b 3A       		.uleb128 0x3a
+ 1939 006c 0B       		.uleb128 0xb
+ 1940 006d 3B       		.uleb128 0x3b
+ 1941 006e 05       		.uleb128 0x5
+ 1942 006f 01       		.uleb128 0x1
+ 1943 0070 13       		.uleb128 0x13
+ 1944 0071 00       		.byte	0x0
+ 1945 0072 00       		.byte	0x0
+ 1946 0073 0A       		.uleb128 0xa
+ 1947 0074 0D       		.uleb128 0xd
+ 1948 0075 00       		.byte	0x0
+ 1949 0076 03       		.uleb128 0x3
+ 1950 0077 0E       		.uleb128 0xe
+ 1951 0078 3A       		.uleb128 0x3a
+ 1952 0079 0B       		.uleb128 0xb
+ 1953 007a 3B       		.uleb128 0x3b
+ 1954 007b 05       		.uleb128 0x5
+ 1955 007c 49       		.uleb128 0x49
+ 1956 007d 13       		.uleb128 0x13
+ 1957 007e 38       		.uleb128 0x38
+ 1958 007f 0A       		.uleb128 0xa
+ 1959 0080 00       		.byte	0x0
+ 1960 0081 00       		.byte	0x0
+ 1961 0082 0B       		.uleb128 0xb
+ 1962 0083 0F       		.uleb128 0xf
+ 1963 0084 00       		.byte	0x0
+ 1964 0085 0B       		.uleb128 0xb
+ 1965 0086 0B       		.uleb128 0xb
+ 1966 0087 49       		.uleb128 0x49
+ 1967 0088 13       		.uleb128 0x13
+ 1968 0089 00       		.byte	0x0
+ 1969 008a 00       		.byte	0x0
+ 1970 008b 0C       		.uleb128 0xc
+ 1971 008c 24       		.uleb128 0x24
+ 1972 008d 00       		.byte	0x0
+ 1973 008e 0B       		.uleb128 0xb
+ 1974 008f 0B       		.uleb128 0xb
+ 1975 0090 3E       		.uleb128 0x3e
+ 1976 0091 0B       		.uleb128 0xb
+ 1977 0092 00       		.byte	0x0
+ 1978 0093 00       		.byte	0x0
+ 1979 0094 0D       		.uleb128 0xd
+ 1980 0095 2E       		.uleb128 0x2e
+ 1981 0096 01       		.byte	0x1
+ 1982 0097 3F       		.uleb128 0x3f
+ 1983 0098 0C       		.uleb128 0xc
+ 1984 0099 03       		.uleb128 0x3
+ 1985 009a 0E       		.uleb128 0xe
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 42
+
+
+ 1986 009b 3A       		.uleb128 0x3a
+ 1987 009c 0B       		.uleb128 0xb
+ 1988 009d 3B       		.uleb128 0x3b
+ 1989 009e 0B       		.uleb128 0xb
+ 1990 009f 27       		.uleb128 0x27
+ 1991 00a0 0C       		.uleb128 0xc
+ 1992 00a1 11       		.uleb128 0x11
+ 1993 00a2 01       		.uleb128 0x1
+ 1994 00a3 12       		.uleb128 0x12
+ 1995 00a4 01       		.uleb128 0x1
+ 1996 00a5 40       		.uleb128 0x40
+ 1997 00a6 06       		.uleb128 0x6
+ 1998 00a7 01       		.uleb128 0x1
+ 1999 00a8 13       		.uleb128 0x13
+ 2000 00a9 00       		.byte	0x0
+ 2001 00aa 00       		.byte	0x0
+ 2002 00ab 0E       		.uleb128 0xe
+ 2003 00ac 05       		.uleb128 0x5
+ 2004 00ad 00       		.byte	0x0
+ 2005 00ae 03       		.uleb128 0x3
+ 2006 00af 0E       		.uleb128 0xe
+ 2007 00b0 3A       		.uleb128 0x3a
+ 2008 00b1 0B       		.uleb128 0xb
+ 2009 00b2 3B       		.uleb128 0x3b
+ 2010 00b3 0B       		.uleb128 0xb
+ 2011 00b4 49       		.uleb128 0x49
+ 2012 00b5 13       		.uleb128 0x13
+ 2013 00b6 02       		.uleb128 0x2
+ 2014 00b7 0A       		.uleb128 0xa
+ 2015 00b8 00       		.byte	0x0
+ 2016 00b9 00       		.byte	0x0
+ 2017 00ba 0F       		.uleb128 0xf
+ 2018 00bb 34       		.uleb128 0x34
+ 2019 00bc 00       		.byte	0x0
+ 2020 00bd 03       		.uleb128 0x3
+ 2021 00be 0E       		.uleb128 0xe
+ 2022 00bf 3A       		.uleb128 0x3a
+ 2023 00c0 0B       		.uleb128 0xb
+ 2024 00c1 3B       		.uleb128 0x3b
+ 2025 00c2 0B       		.uleb128 0xb
+ 2026 00c3 49       		.uleb128 0x49
+ 2027 00c4 13       		.uleb128 0x13
+ 2028 00c5 02       		.uleb128 0x2
+ 2029 00c6 0A       		.uleb128 0xa
+ 2030 00c7 00       		.byte	0x0
+ 2031 00c8 00       		.byte	0x0
+ 2032 00c9 10       		.uleb128 0x10
+ 2033 00ca 34       		.uleb128 0x34
+ 2034 00cb 00       		.byte	0x0
+ 2035 00cc 03       		.uleb128 0x3
+ 2036 00cd 08       		.uleb128 0x8
+ 2037 00ce 3A       		.uleb128 0x3a
+ 2038 00cf 0B       		.uleb128 0xb
+ 2039 00d0 3B       		.uleb128 0x3b
+ 2040 00d1 0B       		.uleb128 0xb
+ 2041 00d2 49       		.uleb128 0x49
+ 2042 00d3 13       		.uleb128 0x13
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 43
+
+
+ 2043 00d4 02       		.uleb128 0x2
+ 2044 00d5 0A       		.uleb128 0xa
+ 2045 00d6 00       		.byte	0x0
+ 2046 00d7 00       		.byte	0x0
+ 2047 00d8 11       		.uleb128 0x11
+ 2048 00d9 2E       		.uleb128 0x2e
+ 2049 00da 01       		.byte	0x1
+ 2050 00db 3F       		.uleb128 0x3f
+ 2051 00dc 0C       		.uleb128 0xc
+ 2052 00dd 03       		.uleb128 0x3
+ 2053 00de 0E       		.uleb128 0xe
+ 2054 00df 3A       		.uleb128 0x3a
+ 2055 00e0 0B       		.uleb128 0xb
+ 2056 00e1 3B       		.uleb128 0x3b
+ 2057 00e2 0B       		.uleb128 0xb
+ 2058 00e3 27       		.uleb128 0x27
+ 2059 00e4 0C       		.uleb128 0xc
+ 2060 00e5 49       		.uleb128 0x49
+ 2061 00e6 13       		.uleb128 0x13
+ 2062 00e7 11       		.uleb128 0x11
+ 2063 00e8 01       		.uleb128 0x1
+ 2064 00e9 12       		.uleb128 0x12
+ 2065 00ea 01       		.uleb128 0x1
+ 2066 00eb 40       		.uleb128 0x40
+ 2067 00ec 06       		.uleb128 0x6
+ 2068 00ed 01       		.uleb128 0x1
+ 2069 00ee 13       		.uleb128 0x13
+ 2070 00ef 00       		.byte	0x0
+ 2071 00f0 00       		.byte	0x0
+ 2072 00f1 12       		.uleb128 0x12
+ 2073 00f2 2E       		.uleb128 0x2e
+ 2074 00f3 01       		.byte	0x1
+ 2075 00f4 3F       		.uleb128 0x3f
+ 2076 00f5 0C       		.uleb128 0xc
+ 2077 00f6 03       		.uleb128 0x3
+ 2078 00f7 0E       		.uleb128 0xe
+ 2079 00f8 3A       		.uleb128 0x3a
+ 2080 00f9 0B       		.uleb128 0xb
+ 2081 00fa 3B       		.uleb128 0x3b
+ 2082 00fb 05       		.uleb128 0x5
+ 2083 00fc 27       		.uleb128 0x27
+ 2084 00fd 0C       		.uleb128 0xc
+ 2085 00fe 11       		.uleb128 0x11
+ 2086 00ff 01       		.uleb128 0x1
+ 2087 0100 12       		.uleb128 0x12
+ 2088 0101 01       		.uleb128 0x1
+ 2089 0102 40       		.uleb128 0x40
+ 2090 0103 06       		.uleb128 0x6
+ 2091 0104 01       		.uleb128 0x1
+ 2092 0105 13       		.uleb128 0x13
+ 2093 0106 00       		.byte	0x0
+ 2094 0107 00       		.byte	0x0
+ 2095 0108 13       		.uleb128 0x13
+ 2096 0109 05       		.uleb128 0x5
+ 2097 010a 00       		.byte	0x0
+ 2098 010b 03       		.uleb128 0x3
+ 2099 010c 0E       		.uleb128 0xe
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 44
+
+
+ 2100 010d 3A       		.uleb128 0x3a
+ 2101 010e 0B       		.uleb128 0xb
+ 2102 010f 3B       		.uleb128 0x3b
+ 2103 0110 05       		.uleb128 0x5
+ 2104 0111 49       		.uleb128 0x49
+ 2105 0112 13       		.uleb128 0x13
+ 2106 0113 02       		.uleb128 0x2
+ 2107 0114 0A       		.uleb128 0xa
+ 2108 0115 00       		.byte	0x0
+ 2109 0116 00       		.byte	0x0
+ 2110 0117 14       		.uleb128 0x14
+ 2111 0118 05       		.uleb128 0x5
+ 2112 0119 00       		.byte	0x0
+ 2113 011a 03       		.uleb128 0x3
+ 2114 011b 08       		.uleb128 0x8
+ 2115 011c 3A       		.uleb128 0x3a
+ 2116 011d 0B       		.uleb128 0xb
+ 2117 011e 3B       		.uleb128 0x3b
+ 2118 011f 05       		.uleb128 0x5
+ 2119 0120 49       		.uleb128 0x49
+ 2120 0121 13       		.uleb128 0x13
+ 2121 0122 02       		.uleb128 0x2
+ 2122 0123 0A       		.uleb128 0xa
+ 2123 0124 00       		.byte	0x0
+ 2124 0125 00       		.byte	0x0
+ 2125 0126 15       		.uleb128 0x15
+ 2126 0127 34       		.uleb128 0x34
+ 2127 0128 00       		.byte	0x0
+ 2128 0129 03       		.uleb128 0x3
+ 2129 012a 0E       		.uleb128 0xe
+ 2130 012b 3A       		.uleb128 0x3a
+ 2131 012c 0B       		.uleb128 0xb
+ 2132 012d 3B       		.uleb128 0x3b
+ 2133 012e 05       		.uleb128 0x5
+ 2134 012f 49       		.uleb128 0x49
+ 2135 0130 13       		.uleb128 0x13
+ 2136 0131 02       		.uleb128 0x2
+ 2137 0132 0A       		.uleb128 0xa
+ 2138 0133 00       		.byte	0x0
+ 2139 0134 00       		.byte	0x0
+ 2140 0135 16       		.uleb128 0x16
+ 2141 0136 34       		.uleb128 0x34
+ 2142 0137 00       		.byte	0x0
+ 2143 0138 03       		.uleb128 0x3
+ 2144 0139 0E       		.uleb128 0xe
+ 2145 013a 3A       		.uleb128 0x3a
+ 2146 013b 0B       		.uleb128 0xb
+ 2147 013c 3B       		.uleb128 0x3b
+ 2148 013d 05       		.uleb128 0x5
+ 2149 013e 49       		.uleb128 0x49
+ 2150 013f 13       		.uleb128 0x13
+ 2151 0140 3F       		.uleb128 0x3f
+ 2152 0141 0C       		.uleb128 0xc
+ 2153 0142 3C       		.uleb128 0x3c
+ 2154 0143 0C       		.uleb128 0xc
+ 2155 0144 00       		.byte	0x0
+ 2156 0145 00       		.byte	0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 45
+
+
+ 2157 0146 17       		.uleb128 0x17
+ 2158 0147 26       		.uleb128 0x26
+ 2159 0148 00       		.byte	0x0
+ 2160 0149 49       		.uleb128 0x49
+ 2161 014a 13       		.uleb128 0x13
+ 2162 014b 00       		.byte	0x0
+ 2163 014c 00       		.byte	0x0
+ 2164 014d 00       		.byte	0x0
+ 2165              		.section	.debug_pubnames,"",%progbits
+ 2166 0000 62000000 		.4byte	0x62
+ 2167 0004 0200     		.2byte	0x2
+ 2168 0006 00000000 		.4byte	.Ldebug_info0
+ 2169 000a 2C090000 		.4byte	0x92c
+ 2170 000e FF060000 		.4byte	0x6ff
+ 2171 0012 4F535F4D 		.ascii	"OS_MsgPoolInit\000"
+ 2171      7367506F 
+ 2171      6F6C496E 
+ 2171      697400
+ 2172 0021 63070000 		.4byte	0x763
+ 2173 0025 4F535F4D 		.ascii	"OS_MsgQFreeAll\000"
+ 2173      73675146 
+ 2173      72656541 
+ 2173      6C6C00
+ 2174 0034 B1070000 		.4byte	0x7b1
+ 2175 0038 4F535F4D 		.ascii	"OS_MsgQInit\000"
+ 2175      73675149 
+ 2175      6E697400 
+ 2176 0044 E7070000 		.4byte	0x7e7
+ 2177 0048 4F535F4D 		.ascii	"OS_MsgQGet\000"
+ 2177      73675147 
+ 2177      657400
+ 2178 0053 65080000 		.4byte	0x865
+ 2179 0057 4F535F4D 		.ascii	"OS_MsgQPut\000"
+ 2179      73675150 
+ 2179      757400
+ 2180 0062 00000000 		.4byte	0x0
+ 2181              		.section	.debug_aranges,"",%progbits
+ 2182 0000 3C000000 		.4byte	0x3c
+ 2183 0004 0200     		.2byte	0x2
+ 2184 0006 00000000 		.4byte	.Ldebug_info0
+ 2185 000a 04       		.byte	0x4
+ 2186 000b 00       		.byte	0x0
+ 2187 000c 0000     		.2byte	0x0
+ 2188 000e 0000     		.2byte	0x0
+ 2189 0010 00000000 		.4byte	.LFB0
+ 2190 0014 24010000 		.4byte	.LFE0-.LFB0
+ 2191 0018 00000000 		.4byte	.LFB1
+ 2192 001c A0000000 		.4byte	.LFE1-.LFB1
+ 2193 0020 00000000 		.4byte	.LFB2
+ 2194 0024 3C000000 		.4byte	.LFE2-.LFB2
+ 2195 0028 00000000 		.4byte	.LFB3
+ 2196 002c F0000000 		.4byte	.LFE3-.LFB3
+ 2197 0030 00000000 		.4byte	.LFB4
+ 2198 0034 56010000 		.4byte	.LFE4-.LFB4
+ 2199 0038 00000000 		.4byte	0x0
+ 2200 003c 00000000 		.4byte	0x0
+ 2201              		.section	.debug_ranges,"",%progbits
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 46
+
+
+ 2202              	.Ldebug_ranges0:
+ 2203 0000 00000000 		.4byte	.Ltext0
+ 2204 0004 00000000 		.4byte	.Letext0
+ 2205 0008 00000000 		.4byte	.LFB0
+ 2206 000c 24010000 		.4byte	.LFE0
+ 2207 0010 00000000 		.4byte	.LFB1
+ 2208 0014 A0000000 		.4byte	.LFE1
+ 2209 0018 00000000 		.4byte	.LFB2
+ 2210 001c 3C000000 		.4byte	.LFE2
+ 2211 0020 00000000 		.4byte	.LFB3
+ 2212 0024 F0000000 		.4byte	.LFE3
+ 2213 0028 00000000 		.4byte	.LFB4
+ 2214 002c 56010000 		.4byte	.LFE4
+ 2215 0030 00000000 		.4byte	0x0
+ 2216 0034 00000000 		.4byte	0x0
+ 2217              		.section	.debug_str,"MS",%progbits,1
+ 2218              	.LASF85:
+ 2219 0000 4F535F45 		.ascii	"OS_ERR_PRIO_INVALID\000"
+ 2219      52525F50 
+ 2219      52494F5F 
+ 2219      494E5641 
+ 2219      4C494400 
+ 2220              	.LASF178:
+ 2221 0014 4F535F45 		.ascii	"OS_ERR\000"
+ 2221      525200
+ 2222              	.LASF146:
+ 2223 001b 4F535F45 		.ascii	"OS_ERR_TICK_WHEEL_SIZE\000"
+ 2223      52525F54 
+ 2223      49434B5F 
+ 2223      57484545 
+ 2223      4C5F5349 
+ 2224              	.LASF217:
+ 2225 0032 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 2225      4320342E 
+ 2225      342E3100 
+ 2226              	.LASF164:
+ 2227 003e 4F535F45 		.ascii	"OS_ERR_TMR_ISR\000"
+ 2227      52525F54 
+ 2227      4D525F49 
+ 2227      535200
+ 2228              	.LASF151:
+ 2229 004d 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_MINUTES\000"
+ 2229      52525F54 
+ 2229      494D455F 
+ 2229      494E5641 
+ 2229      4C49445F 
+ 2230              	.LASF18:
+ 2231 0069 4F535F45 		.ascii	"OS_ERR_A\000"
+ 2231      52525F41 
+ 2231      00
+ 2232              	.LASF20:
+ 2233 0072 4F535F45 		.ascii	"OS_ERR_B\000"
+ 2233      52525F42 
+ 2233      00
+ 2234              	.LASF21:
+ 2235 007b 4F535F45 		.ascii	"OS_ERR_C\000"
+ 2235      52525F43 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 47
+
+
+ 2235      00
+ 2236              	.LASF23:
+ 2237 0084 4F535F45 		.ascii	"OS_ERR_D\000"
+ 2237      52525F44 
+ 2237      00
+ 2238              	.LASF25:
+ 2239 008d 4F535F45 		.ascii	"OS_ERR_E\000"
+ 2239      52525F45 
+ 2239      00
+ 2240              	.LASF26:
+ 2241 0096 4F535F45 		.ascii	"OS_ERR_F\000"
+ 2241      52525F46 
+ 2241      00
+ 2242              	.LASF32:
+ 2243 009f 4F535F45 		.ascii	"OS_ERR_G\000"
+ 2243      52525F47 
+ 2243      00
+ 2244              	.LASF33:
+ 2245 00a8 4F535F45 		.ascii	"OS_ERR_H\000"
+ 2245      52525F48 
+ 2245      00
+ 2246              	.LASF34:
+ 2247 00b1 4F535F45 		.ascii	"OS_ERR_I\000"
+ 2247      52525F49 
+ 2247      00
+ 2248              	.LASF41:
+ 2249 00ba 4F535F45 		.ascii	"OS_ERR_J\000"
+ 2249      52525F4A 
+ 2249      00
+ 2250              	.LASF42:
+ 2251 00c3 4F535F45 		.ascii	"OS_ERR_K\000"
+ 2251      52525F4B 
+ 2251      00
+ 2252              	.LASF43:
+ 2253 00cc 4F535F45 		.ascii	"OS_ERR_L\000"
+ 2253      52525F4C 
+ 2253      00
+ 2254              	.LASF45:
+ 2255 00d5 4F535F45 		.ascii	"OS_ERR_M\000"
+ 2255      52525F4D 
+ 2255      00
+ 2256              	.LASF61:
+ 2257 00de 4F535F45 		.ascii	"OS_ERR_N\000"
+ 2257      52525F4E 
+ 2257      00
+ 2258              	.LASF64:
+ 2259 00e7 4F535F45 		.ascii	"OS_ERR_O\000"
+ 2259      52525F4F 
+ 2259      00
+ 2260              	.LASF72:
+ 2261 00f0 4F535F45 		.ascii	"OS_ERR_P\000"
+ 2261      52525F50 
+ 2261      00
+ 2262              	.LASF87:
+ 2263 00f9 4F535F45 		.ascii	"OS_ERR_Q\000"
+ 2263      52525F51 
+ 2263      00
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 48
+
+
+ 2264              	.LASF92:
+ 2265 0102 4F535F45 		.ascii	"OS_ERR_R\000"
+ 2265      52525F52 
+ 2265      00
+ 2266              	.LASF96:
+ 2267 010b 4F535F45 		.ascii	"OS_ERR_S\000"
+ 2267      52525F53 
+ 2267      00
+ 2268              	.LASF113:
+ 2269 0114 4F535F45 		.ascii	"OS_ERR_T\000"
+ 2269      52525F54 
+ 2269      00
+ 2270              	.LASF171:
+ 2271 011d 4F535F45 		.ascii	"OS_ERR_U\000"
+ 2271      52525F55 
+ 2271      00
+ 2272              	.LASF172:
+ 2273 0126 4F535F45 		.ascii	"OS_ERR_V\000"
+ 2273      52525F56 
+ 2273      00
+ 2274              	.LASF173:
+ 2275 012f 4F535F45 		.ascii	"OS_ERR_W\000"
+ 2275      52525F57 
+ 2275      00
+ 2276              	.LASF174:
+ 2277 0138 4F535F45 		.ascii	"OS_ERR_X\000"
+ 2277      52525F58 
+ 2277      00
+ 2278              	.LASF161:
+ 2279 0141 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_PERIOD\000"
+ 2279      52525F54 
+ 2279      4D525F49 
+ 2279      4E56414C 
+ 2279      49445F50 
+ 2280              	.LASF220:
+ 2281 015b 6F735F65 		.ascii	"os_err\000"
+ 2281      727200
+ 2282              	.LASF195:
+ 2283 0162 4E627245 		.ascii	"NbrEntries\000"
+ 2283      6E747269 
+ 2283      657300
+ 2284              	.LASF38:
+ 2285 016d 4F535F45 		.ascii	"OS_ERR_INT_Q_SIZE\000"
+ 2285      52525F49 
+ 2285      4E545F51 
+ 2285      5F53495A 
+ 2285      4500
+ 2286              	.LASF22:
+ 2287 017f 4F535F45 		.ascii	"OS_ERR_CREATE_ISR\000"
+ 2287      52525F43 
+ 2287      52454154 
+ 2287      455F4953 
+ 2287      5200
+ 2288              	.LASF145:
+ 2289 0191 4F535F45 		.ascii	"OS_ERR_TICK_STK_SIZE_INVALID\000"
+ 2289      52525F54 
+ 2289      49434B5F 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 49
+
+
+ 2289      53544B5F 
+ 2289      53495A45 
+ 2290              	.LASF6:
+ 2291 01ae 4350555F 		.ascii	"CPU_INT32U\000"
+ 2291      494E5433 
+ 2291      325500
+ 2292              	.LASF203:
+ 2293 01b9 4F535F4D 		.ascii	"OS_MsgPoolInit\000"
+ 2293      7367506F 
+ 2293      6F6C496E 
+ 2293      697400
+ 2294              	.LASF110:
+ 2295 01c8 4F535F45 		.ascii	"OS_ERR_STK_INVALID\000"
+ 2295      52525F53 
+ 2295      544B5F49 
+ 2295      4E56414C 
+ 2295      494400
+ 2296              	.LASF126:
+ 2297 01db 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_ISR\000"
+ 2297      52525F54 
+ 2297      41534B5F 
+ 2297      52455355 
+ 2297      4D455F49 
+ 2298              	.LASF80:
+ 2299 01f2 4F535F45 		.ascii	"OS_ERR_PEND_WOULD_BLOCK\000"
+ 2299      52525F50 
+ 2299      454E445F 
+ 2299      574F554C 
+ 2299      445F424C 
+ 2300              	.LASF114:
+ 2301 020a 4F535F45 		.ascii	"OS_ERR_TASK_CHANGE_PRIO_ISR\000"
+ 2301      52525F54 
+ 2301      41534B5F 
+ 2301      4348414E 
+ 2301      47455F50 
+ 2302              	.LASF213:
+ 2303 0226 705F6D73 		.ascii	"p_msg_in\000"
+ 2303      675F696E 
+ 2303      00
+ 2304              	.LASF104:
+ 2305 022f 4F535F45 		.ascii	"OS_ERR_STAT_RESET_ISR\000"
+ 2305      52525F53 
+ 2305      5441545F 
+ 2305      52455345 
+ 2305      545F4953 
+ 2306              	.LASF208:
+ 2307 0245 705F6D73 		.ascii	"p_msg_size\000"
+ 2307      675F7369 
+ 2307      7A6500
+ 2308              	.LASF79:
+ 2309 0250 4F535F45 		.ascii	"OS_ERR_PEND_LOCKED\000"
+ 2309      52525F50 
+ 2309      454E445F 
+ 2309      4C4F434B 
+ 2309      454400
+ 2310              	.LASF130:
+ 2311 0263 4F535F45 		.ascii	"OS_ERR_TASK_STK_CHK_ISR\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 50
+
+
+ 2311      52525F54 
+ 2311      41534B5F 
+ 2311      53544B5F 
+ 2311      43484B5F 
+ 2312              	.LASF186:
+ 2313 027b 6F735F6D 		.ascii	"os_msg_pool\000"
+ 2313      73675F70 
+ 2313      6F6F6C00 
+ 2314              	.LASF204:
+ 2315 0287 4F535F4D 		.ascii	"OS_MsgQInit\000"
+ 2315      73675149 
+ 2315      6E697400 
+ 2316              	.LASF124:
+ 2317 0293 4F535F45 		.ascii	"OS_ERR_TASK_NOT_SUSPENDED\000"
+ 2317      52525F54 
+ 2317      41534B5F 
+ 2317      4E4F545F 
+ 2317      53555350 
+ 2318              	.LASF122:
+ 2319 02ad 4F535F45 		.ascii	"OS_ERR_TASK_NOT_DLY\000"
+ 2319      52525F54 
+ 2319      41534B5F 
+ 2319      4E4F545F 
+ 2319      444C5900 
+ 2320              	.LASF36:
+ 2321 02c1 4F535F45 		.ascii	"OS_ERR_INT_Q\000"
+ 2321      52525F49 
+ 2321      4E545F51 
+ 2321      00
+ 2322              	.LASF136:
+ 2323 02ce 4F535F45 		.ascii	"OS_ERR_TASK_WAITING\000"
+ 2323      52525F54 
+ 2323      41534B5F 
+ 2323      57414954 
+ 2323      494E4700 
+ 2324              	.LASF19:
+ 2325 02e2 4F535F45 		.ascii	"OS_ERR_ACCEPT_ISR\000"
+ 2325      52525F41 
+ 2325      43434550 
+ 2325      545F4953 
+ 2325      5200
+ 2326              	.LASF134:
+ 2327 02f4 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_ISR\000"
+ 2327      52525F54 
+ 2327      41534B5F 
+ 2327      53555350 
+ 2327      454E445F 
+ 2328              	.LASF60:
+ 2329 030c 4F535F45 		.ascii	"OS_ERR_MUTEX_NESTING\000"
+ 2329      52525F4D 
+ 2329      55544558 
+ 2329      5F4E4553 
+ 2329      54494E47 
+ 2330              	.LASF162:
+ 2331 0321 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_STATE\000"
+ 2331      52525F54 
+ 2331      4D525F49 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 51
+
+
+ 2331      4E56414C 
+ 2331      49445F53 
+ 2332              	.LASF65:
+ 2333 033a 4F535F45 		.ascii	"OS_ERR_OBJ_CREATED\000"
+ 2333      52525F4F 
+ 2333      424A5F43 
+ 2333      52454154 
+ 2333      454400
+ 2334              	.LASF210:
+ 2335 034d 705F766F 		.ascii	"p_void\000"
+ 2335      696400
+ 2336              	.LASF132:
+ 2337 0354 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_IDLE\000"
+ 2337      52525F54 
+ 2337      41534B5F 
+ 2337      53555350 
+ 2337      454E445F 
+ 2338              	.LASF37:
+ 2339 036d 4F535F45 		.ascii	"OS_ERR_INT_Q_FULL\000"
+ 2339      52525F49 
+ 2339      4E545F51 
+ 2339      5F46554C 
+ 2339      4C00
+ 2340              	.LASF211:
+ 2341 037f 4F535F4D 		.ascii	"OS_MsgQPut\000"
+ 2341      73675150 
+ 2341      757400
+ 2342              	.LASF35:
+ 2343 038a 4F535F45 		.ascii	"OS_ERR_ILLEGAL_CREATE_RUN_TIME\000"
+ 2343      52525F49 
+ 2343      4C4C4547 
+ 2343      414C5F43 
+ 2343      52454154 
+ 2344              	.LASF160:
+ 2345 03a9 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_DLY\000"
+ 2345      52525F54 
+ 2345      4D525F49 
+ 2345      4E56414C 
+ 2345      49445F44 
+ 2346              	.LASF215:
+ 2347 03c0 4F534366 		.ascii	"OSCfg_MsgPoolSize\000"
+ 2347      675F4D73 
+ 2347      67506F6F 
+ 2347      6C53697A 
+ 2347      6500
+ 2348              	.LASF205:
+ 2349 03d2 73697A65 		.ascii	"size\000"
+ 2349      00
+ 2350              	.LASF127:
+ 2351 03d7 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_PRIO\000"
+ 2351      52525F54 
+ 2351      41534B5F 
+ 2351      52455355 
+ 2351      4D455F50 
+ 2352              	.LASF112:
+ 2353 03ef 4F535F45 		.ascii	"OS_ERR_STK_LIMIT_INVALID\000"
+ 2353      52525F53 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 52
+
+
+ 2353      544B5F4C 
+ 2353      494D4954 
+ 2353      5F494E56 
+ 2354              	.LASF10:
+ 2355 0408 666C6F61 		.ascii	"float\000"
+ 2355      7400
+ 2356              	.LASF81:
+ 2357 040e 4F535F45 		.ascii	"OS_ERR_POST_NULL_PTR\000"
+ 2357      52525F50 
+ 2357      4F53545F 
+ 2357      4E554C4C 
+ 2357      5F505452 
+ 2358              	.LASF63:
+ 2359 0423 4F535F45 		.ascii	"OS_ERR_NO_MORE_ID_AVAIL\000"
+ 2359      52525F4E 
+ 2359      4F5F4D4F 
+ 2359      52455F49 
+ 2359      445F4156 
+ 2360              	.LASF53:
+ 2361 043b 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_DATA\000"
+ 2361      52525F4D 
+ 2361      454D5F49 
+ 2361      4E56414C 
+ 2361      49445F50 
+ 2362              	.LASF165:
+ 2363 0455 4F535F45 		.ascii	"OS_ERR_TMR_NO_CALLBACK\000"
+ 2363      52525F54 
+ 2363      4D525F4E 
+ 2363      4F5F4341 
+ 2363      4C4C4241 
+ 2364              	.LASF158:
+ 2365 046c 4F535F45 		.ascii	"OS_ERR_TMR_INACTIVE\000"
+ 2365      52525F54 
+ 2365      4D525F49 
+ 2365      4E414354 
+ 2365      49564500 
+ 2366              	.LASF138:
+ 2367 0480 4F535F45 		.ascii	"OS_ERR_TLS_ID_INVALID\000"
+ 2367      52525F54 
+ 2367      4C535F49 
+ 2367      445F494E 
+ 2367      56414C49 
+ 2368              	.LASF8:
+ 2369 0496 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2369      206C6F6E 
+ 2369      6720756E 
+ 2369      7369676E 
+ 2369      65642069 
+ 2370              	.LASF129:
+ 2371 04ad 4F535F45 		.ascii	"OS_ERR_TASK_RUNNING\000"
+ 2371      52525F54 
+ 2371      41534B5F 
+ 2371      52554E4E 
+ 2371      494E4700 
+ 2372              	.LASF163:
+ 2373 04c1 4F535F45 		.ascii	"OS_ERR_TMR_INVALID\000"
+ 2373      52525F54 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 53
+
+
+ 2373      4D525F49 
+ 2373      4E56414C 
+ 2373      494400
+ 2374              	.LASF133:
+ 2375 04d4 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_INT_HANDLER\000"
+ 2375      52525F54 
+ 2375      41534B5F 
+ 2375      53555350 
+ 2375      454E445F 
+ 2376              	.LASF118:
+ 2377 04f4 4F535F45 		.ascii	"OS_ERR_TASK_DEL_INVALID\000"
+ 2377      52525F54 
+ 2377      41534B5F 
+ 2377      44454C5F 
+ 2377      494E5641 
+ 2378              	.LASF168:
+ 2379 050c 4F535F45 		.ascii	"OS_ERR_TMR_STK_INVALID\000"
+ 2379      52525F54 
+ 2379      4D525F53 
+ 2379      544B5F49 
+ 2379      4E56414C 
+ 2380              	.LASF206:
+ 2381 0523 4F535F4D 		.ascii	"OS_MsgQFreeAll\000"
+ 2381      73675146 
+ 2381      72656541 
+ 2381      6C6C00
+ 2382              	.LASF185:
+ 2383 0532 6F735F6D 		.ascii	"os_msg\000"
+ 2383      736700
+ 2384              	.LASF137:
+ 2385 0539 4F535F45 		.ascii	"OS_ERR_TCB_INVALID\000"
+ 2385      52525F54 
+ 2385      43425F49 
+ 2385      4E56414C 
+ 2385      494400
+ 2386              	.LASF89:
+ 2387 054c 4F535F45 		.ascii	"OS_ERR_Q_EMPTY\000"
+ 2387      52525F51 
+ 2387      5F454D50 
+ 2387      545900
+ 2388              	.LASF153:
+ 2389 055b 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_MILLISECONDS\000"
+ 2389      52525F54 
+ 2389      494D455F 
+ 2389      494E5641 
+ 2389      4C49445F 
+ 2390              	.LASF62:
+ 2391 057c 4F535F45 		.ascii	"OS_ERR_NAME\000"
+ 2391      52525F4E 
+ 2391      414D4500 
+ 2392              	.LASF179:
+ 2393 0588 4F535F4D 		.ascii	"OS_MSG\000"
+ 2393      534700
+ 2394              	.LASF142:
+ 2395 058f 4F535F45 		.ascii	"OS_ERR_TLS_DESTRUCT_ASSIGNED\000"
+ 2395      52525F54 
+ 2395      4C535F44 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 54
+
+
+ 2395      45535452 
+ 2395      5543545F 
+ 2396              	.LASF58:
+ 2397 05ac 4F535F45 		.ascii	"OS_ERR_MUTEX_NOT_OWNER\000"
+ 2397      52525F4D 
+ 2397      55544558 
+ 2397      5F4E4F54 
+ 2397      5F4F574E 
+ 2398              	.LASF15:
+ 2399 05c3 4F535F4D 		.ascii	"OS_MSG_SIZE\000"
+ 2399      53475F53 
+ 2399      495A4500 
+ 2400              	.LASF150:
+ 2401 05cf 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_HOURS\000"
+ 2401      52525F54 
+ 2401      494D455F 
+ 2401      494E5641 
+ 2401      4C49445F 
+ 2402              	.LASF166:
+ 2403 05e9 4F535F45 		.ascii	"OS_ERR_TMR_NON_AVAIL\000"
+ 2403      52525F54 
+ 2403      4D525F4E 
+ 2403      4F4E5F41 
+ 2403      5641494C 
+ 2404              	.LASF115:
+ 2405 05fe 4F535F45 		.ascii	"OS_ERR_TASK_CREATE_ISR\000"
+ 2405      52525F54 
+ 2405      41534B5F 
+ 2405      43524541 
+ 2405      54455F49 
+ 2406              	.LASF14:
+ 2407 0615 4F535F4D 		.ascii	"OS_MSG_QTY\000"
+ 2407      53475F51 
+ 2407      545900
+ 2408              	.LASF71:
+ 2409 0620 4F535F45 		.ascii	"OS_ERR_OS_RUNNING\000"
+ 2409      52525F4F 
+ 2409      535F5255 
+ 2409      4E4E494E 
+ 2409      4700
+ 2410              	.LASF194:
+ 2411 0632 4E627245 		.ascii	"NbrEntriesSize\000"
+ 2411      6E747269 
+ 2411      65735369 
+ 2411      7A6500
+ 2412              	.LASF156:
+ 2413 0641 4F535F45 		.ascii	"OS_ERR_TIME_ZERO_DLY\000"
+ 2413      52525F54 
+ 2413      494D455F 
+ 2413      5A45524F 
+ 2413      5F444C59 
+ 2414              	.LASF106:
+ 2415 0656 4F535F45 		.ascii	"OS_ERR_STAT_STK_INVALID\000"
+ 2415      52525F53 
+ 2415      5441545F 
+ 2415      53544B5F 
+ 2415      494E5641 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 55
+
+
+ 2416              	.LASF28:
+ 2417 066e 4F535F45 		.ascii	"OS_ERR_FLAG_GRP_DEPLETED\000"
+ 2417      52525F46 
+ 2417      4C41475F 
+ 2417      4752505F 
+ 2417      4445504C 
+ 2418              	.LASF49:
+ 2419 0687 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_BLKS\000"
+ 2419      52525F4D 
+ 2419      454D5F49 
+ 2419      4E56414C 
+ 2419      49445F42 
+ 2420              	.LASF200:
+ 2421 069f 705F6572 		.ascii	"p_err\000"
+ 2421      7200
+ 2422              	.LASF159:
+ 2423 06a5 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_DEST\000"
+ 2423      52525F54 
+ 2423      4D525F49 
+ 2423      4E56414C 
+ 2423      49445F44 
+ 2424              	.LASF98:
+ 2425 06bd 4F535F45 		.ascii	"OS_ERR_SCHED_LOCK_ISR\000"
+ 2425      52525F53 
+ 2425      43484544 
+ 2425      5F4C4F43 
+ 2425      4B5F4953 
+ 2426              	.LASF24:
+ 2427 06d3 4F535F45 		.ascii	"OS_ERR_DEL_ISR\000"
+ 2427      52525F44 
+ 2427      454C5F49 
+ 2427      535200
+ 2428              	.LASF90:
+ 2429 06e2 4F535F45 		.ascii	"OS_ERR_Q_MAX\000"
+ 2429      52525F51 
+ 2429      5F4D4158 
+ 2429      00
+ 2430              	.LASF0:
+ 2431 06ef 63686172 		.ascii	"char\000"
+ 2431      00
+ 2432              	.LASF141:
+ 2433 06f4 4F535F45 		.ascii	"OS_ERR_TLS_NOT_EN\000"
+ 2433      52525F54 
+ 2433      4C535F4E 
+ 2433      4F545F45 
+ 2433      4E00
+ 2434              	.LASF69:
+ 2435 0706 4F535F45 		.ascii	"OS_ERR_OPT_INVALID\000"
+ 2435      52525F4F 
+ 2435      50545F49 
+ 2435      4E56414C 
+ 2435      494400
+ 2436              	.LASF97:
+ 2437 0719 4F535F45 		.ascii	"OS_ERR_SCHED_INVALID_TIME_SLICE\000"
+ 2437      52525F53 
+ 2437      43484544 
+ 2437      5F494E56 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 56
+
+
+ 2437      414C4944 
+ 2438              	.LASF105:
+ 2439 0739 4F535F45 		.ascii	"OS_ERR_STAT_PRIO_INVALID\000"
+ 2439      52525F53 
+ 2439      5441545F 
+ 2439      5052494F 
+ 2439      5F494E56 
+ 2440              	.LASF154:
+ 2441 0752 4F535F45 		.ascii	"OS_ERR_TIME_NOT_DLY\000"
+ 2441      52525F54 
+ 2441      494D455F 
+ 2441      4E4F545F 
+ 2441      444C5900 
+ 2442              	.LASF190:
+ 2443 0766 4F535F4D 		.ascii	"OS_MSG_Q\000"
+ 2443      53475F51 
+ 2443      00
+ 2444              	.LASF176:
+ 2445 076f 4F535F45 		.ascii	"OS_ERR_YIELD_ISR\000"
+ 2445      52525F59 
+ 2445      49454C44 
+ 2445      5F495352 
+ 2445      00
+ 2446              	.LASF66:
+ 2447 0780 4F535F45 		.ascii	"OS_ERR_OBJ_DEL\000"
+ 2447      52525F4F 
+ 2447      424A5F44 
+ 2447      454C00
+ 2448              	.LASF13:
+ 2449 078f 4350555F 		.ascii	"CPU_TS\000"
+ 2449      545300
+ 2450              	.LASF9:
+ 2451 0796 6C6F6E67 		.ascii	"long long int\000"
+ 2451      206C6F6E 
+ 2451      6720696E 
+ 2451      7400
+ 2452              	.LASF30:
+ 2453 07a4 4F535F45 		.ascii	"OS_ERR_FLAG_PEND_OPT\000"
+ 2453      52525F46 
+ 2453      4C41475F 
+ 2453      50454E44 
+ 2453      5F4F5054 
+ 2454              	.LASF212:
+ 2455 07b9 6D73675F 		.ascii	"msg_size\000"
+ 2455      73697A65 
+ 2455      00
+ 2456              	.LASF197:
+ 2457 07c2 705F6D73 		.ascii	"p_msg1\000"
+ 2457      673100
+ 2458              	.LASF198:
+ 2459 07c9 705F6D73 		.ascii	"p_msg2\000"
+ 2459      673200
+ 2460              	.LASF184:
+ 2461 07d0 4F535F4D 		.ascii	"OS_MSG_POOL\000"
+ 2461      53475F50 
+ 2461      4F4F4C00 
+ 2462              	.LASF91:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 57
+
+
+ 2463 07dc 4F535F45 		.ascii	"OS_ERR_Q_SIZE\000"
+ 2463      52525F51 
+ 2463      5F53495A 
+ 2463      4500
+ 2464              	.LASF76:
+ 2465 07ea 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_SELF\000"
+ 2465      52525F50 
+ 2465      454E445F 
+ 2465      41424F52 
+ 2465      545F5345 
+ 2466              	.LASF5:
+ 2467 0801 4350555F 		.ascii	"CPU_INT16U\000"
+ 2467      494E5431 
+ 2467      365500
+ 2468              	.LASF95:
+ 2469 080c 4F535F45 		.ascii	"OS_ERR_ROUND_ROBIN_DISABLED\000"
+ 2469      52525F52 
+ 2469      4F554E44 
+ 2469      5F524F42 
+ 2469      494E5F44 
+ 2470              	.LASF214:
+ 2471 0828 4F534D73 		.ascii	"OSMsgPool\000"
+ 2471      67506F6F 
+ 2471      6C00
+ 2472              	.LASF50:
+ 2473 0832 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_PART\000"
+ 2473      52525F4D 
+ 2473      454D5F49 
+ 2473      4E56414C 
+ 2473      49445F50 
+ 2474              	.LASF67:
+ 2475 084a 4F535F45 		.ascii	"OS_ERR_OBJ_PTR_NULL\000"
+ 2475      52525F4F 
+ 2475      424A5F50 
+ 2475      54525F4E 
+ 2475      554C4C00 
+ 2476              	.LASF93:
+ 2477 085e 4F535F45 		.ascii	"OS_ERR_REG_ID_INVALID\000"
+ 2477      52525F52 
+ 2477      45475F49 
+ 2477      445F494E 
+ 2477      56414C49 
+ 2478              	.LASF47:
+ 2479 0874 4F535F45 		.ascii	"OS_ERR_MEM_FULL\000"
+ 2479      52525F4D 
+ 2479      454D5F46 
+ 2479      554C4C00 
+ 2480              	.LASF121:
+ 2481 0884 4F535F45 		.ascii	"OS_ERR_TASK_NO_MORE_TCB\000"
+ 2481      52525F54 
+ 2481      41534B5F 
+ 2481      4E4F5F4D 
+ 2481      4F52455F 
+ 2482              	.LASF52:
+ 2483 089c 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_MEM\000"
+ 2483      52525F4D 
+ 2483      454D5F49 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 58
+
+
+ 2483      4E56414C 
+ 2483      49445F50 
+ 2484              	.LASF12:
+ 2485 08b5 4350555F 		.ascii	"CPU_TS32\000"
+ 2485      54533332 
+ 2485      00
+ 2486              	.LASF207:
+ 2487 08be 4F535F4D 		.ascii	"OS_MsgQGet\000"
+ 2487      73675147 
+ 2487      657400
+ 2488              	.LASF169:
+ 2489 08c9 4F535F45 		.ascii	"OS_ERR_TMR_STK_SIZE_INVALID\000"
+ 2489      52525F54 
+ 2489      4D525F53 
+ 2489      544B5F53 
+ 2489      495A455F 
+ 2490              	.LASF123:
+ 2491 08e5 4F535F45 		.ascii	"OS_ERR_TASK_NOT_EXIST\000"
+ 2491      52525F54 
+ 2491      41534B5F 
+ 2491      4E4F545F 
+ 2491      45584953 
+ 2492              	.LASF120:
+ 2493 08fb 4F535F45 		.ascii	"OS_ERR_TASK_INVALID\000"
+ 2493      52525F54 
+ 2493      41534B5F 
+ 2493      494E5641 
+ 2493      4C494400 
+ 2494              	.LASF167:
+ 2495 090f 4F535F45 		.ascii	"OS_ERR_TMR_PRIO_INVALID\000"
+ 2495      52525F54 
+ 2495      4D525F50 
+ 2495      52494F5F 
+ 2495      494E5641 
+ 2496              	.LASF209:
+ 2497 0927 705F7473 		.ascii	"p_ts\000"
+ 2497      00
+ 2498              	.LASF135:
+ 2499 092c 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_PRIO\000"
+ 2499      52525F54 
+ 2499      41534B5F 
+ 2499      53555350 
+ 2499      454E445F 
+ 2500              	.LASF40:
+ 2501 0945 4F535F45 		.ascii	"OS_ERR_INT_Q_STK_SIZE_INVALID\000"
+ 2501      52525F49 
+ 2501      4E545F51 
+ 2501      5F53544B 
+ 2501      5F53495A 
+ 2502              	.LASF139:
+ 2503 0963 4F535F45 		.ascii	"OS_ERR_TLS_ISR\000"
+ 2503      52525F54 
+ 2503      4C535F49 
+ 2503      535200
+ 2504              	.LASF202:
+ 2505 0972 705F6D73 		.ascii	"p_msg\000"
+ 2505      6700
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 59
+
+
+ 2506              	.LASF119:
+ 2507 0978 4F535F45 		.ascii	"OS_ERR_TASK_DEL_ISR\000"
+ 2507      52525F54 
+ 2507      41534B5F 
+ 2507      44454C5F 
+ 2507      49535200 
+ 2508              	.LASF86:
+ 2509 098c 4F535F45 		.ascii	"OS_ERR_PTR_INVALID\000"
+ 2509      52525F50 
+ 2509      54525F49 
+ 2509      4E56414C 
+ 2509      494400
+ 2510              	.LASF108:
+ 2511 099f 4F535F45 		.ascii	"OS_ERR_STATE_INVALID\000"
+ 2511      52525F53 
+ 2511      54415445 
+ 2511      5F494E56 
+ 2511      414C4944 
+ 2512              	.LASF180:
+ 2513 09b4 4E657874 		.ascii	"NextPtr\000"
+ 2513      50747200 
+ 2514              	.LASF70:
+ 2515 09bc 4F535F45 		.ascii	"OS_ERR_OS_NOT_RUNNING\000"
+ 2515      52525F4F 
+ 2515      535F4E4F 
+ 2515      545F5255 
+ 2515      4E4E494E 
+ 2516              	.LASF155:
+ 2517 09d2 4F535F45 		.ascii	"OS_ERR_TIME_SET_ISR\000"
+ 2517      52525F54 
+ 2517      494D455F 
+ 2517      5345545F 
+ 2517      49535200 
+ 2518              	.LASF94:
+ 2519 09e6 4F535F45 		.ascii	"OS_ERR_ROUND_ROBIN_1\000"
+ 2519      52525F52 
+ 2519      4F554E44 
+ 2519      5F524F42 
+ 2519      494E5F31 
+ 2520              	.LASF51:
+ 2521 09fb 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_BLK\000"
+ 2521      52525F4D 
+ 2521      454D5F49 
+ 2521      4E56414C 
+ 2521      49445F50 
+ 2522              	.LASF48:
+ 2523 0a14 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_ADDR\000"
+ 2523      52525F4D 
+ 2523      454D5F49 
+ 2523      4E56414C 
+ 2523      49445F50 
+ 2524              	.LASF44:
+ 2525 0a2e 4F535F45 		.ascii	"OS_ERR_LOCK_NESTING_OVF\000"
+ 2525      52525F4C 
+ 2525      4F434B5F 
+ 2525      4E455354 
+ 2525      494E475F 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 60
+
+
+ 2526              	.LASF177:
+ 2527 0a46 4F535F45 		.ascii	"OS_ERR_Z\000"
+ 2527      52525F5A 
+ 2527      00
+ 2528              	.LASF4:
+ 2529 0a4f 73686F72 		.ascii	"short int\000"
+ 2529      7420696E 
+ 2529      7400
+ 2530              	.LASF56:
+ 2531 0a59 4F535F45 		.ascii	"OS_ERR_MSG_POOL_EMPTY\000"
+ 2531      52525F4D 
+ 2531      53475F50 
+ 2531      4F4F4C5F 
+ 2531      454D5054 
+ 2532              	.LASF101:
+ 2533 0a6f 4F535F45 		.ascii	"OS_ERR_SCHED_UNLOCK_ISR\000"
+ 2533      52525F53 
+ 2533      43484544 
+ 2533      5F554E4C 
+ 2533      4F434B5F 
+ 2534              	.LASF144:
+ 2535 0a87 4F535F45 		.ascii	"OS_ERR_TICK_STK_INVALID\000"
+ 2535      52525F54 
+ 2535      49434B5F 
+ 2535      53544B5F 
+ 2535      494E5641 
+ 2536              	.LASF57:
+ 2537 0a9f 4F535F45 		.ascii	"OS_ERR_MSG_POOL_NULL_PTR\000"
+ 2537      52525F4D 
+ 2537      53475F50 
+ 2537      4F4F4C5F 
+ 2537      4E554C4C 
+ 2538              	.LASF128:
+ 2539 0ab8 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_SELF\000"
+ 2539      52525F54 
+ 2539      41534B5F 
+ 2539      52455355 
+ 2539      4D455F53 
+ 2540              	.LASF68:
+ 2541 0ad0 4F535F45 		.ascii	"OS_ERR_OBJ_TYPE\000"
+ 2541      52525F4F 
+ 2541      424A5F54 
+ 2541      59504500 
+ 2542              	.LASF192:
+ 2543 0ae0 496E5074 		.ascii	"InPtr\000"
+ 2543      7200
+ 2544              	.LASF216:
+ 2545 0ae6 4F534366 		.ascii	"OSCfg_MsgPoolBasePtr\000"
+ 2545      675F4D73 
+ 2545      67506F6F 
+ 2545      6C426173 
+ 2545      65507472 
+ 2546              	.LASF75:
+ 2547 0afb 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_NONE\000"
+ 2547      52525F50 
+ 2547      454E445F 
+ 2547      41424F52 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 61
+
+
+ 2547      545F4E4F 
+ 2548              	.LASF7:
+ 2549 0b12 756E7369 		.ascii	"unsigned int\000"
+ 2549      676E6564 
+ 2549      20696E74 
+ 2549      00
+ 2550              	.LASF182:
+ 2551 0b1f 4D736753 		.ascii	"MsgSize\000"
+ 2551      697A6500 
+ 2552              	.LASF59:
+ 2553 0b27 4F535F45 		.ascii	"OS_ERR_MUTEX_OWNER\000"
+ 2553      52525F4D 
+ 2553      55544558 
+ 2553      5F4F574E 
+ 2553      455200
+ 2554              	.LASF107:
+ 2555 0b3a 4F535F45 		.ascii	"OS_ERR_STAT_STK_SIZE_INVALID\000"
+ 2555      52525F53 
+ 2555      5441545F 
+ 2555      53544B5F 
+ 2555      53495A45 
+ 2556              	.LASF29:
+ 2557 0b57 4F535F45 		.ascii	"OS_ERR_FLAG_NOT_RDY\000"
+ 2557      52525F46 
+ 2557      4C41475F 
+ 2557      4E4F545F 
+ 2557      52445900 
+ 2558              	.LASF74:
+ 2559 0b6b 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_ISR\000"
+ 2559      52525F50 
+ 2559      454E445F 
+ 2559      41424F52 
+ 2559      545F4953 
+ 2560              	.LASF82:
+ 2561 0b81 4F535F45 		.ascii	"OS_ERR_POST_ISR\000"
+ 2561      52525F50 
+ 2561      4F53545F 
+ 2561      49535200 
+ 2562              	.LASF147:
+ 2563 0b91 4F535F45 		.ascii	"OS_ERR_TIME_DLY_ISR\000"
+ 2563      52525F54 
+ 2563      494D455F 
+ 2563      444C595F 
+ 2563      49535200 
+ 2564              	.LASF111:
+ 2565 0ba5 4F535F45 		.ascii	"OS_ERR_STK_SIZE_INVALID\000"
+ 2565      52525F53 
+ 2565      544B5F53 
+ 2565      495A455F 
+ 2565      494E5641 
+ 2566              	.LASF170:
+ 2567 0bbd 4F535F45 		.ascii	"OS_ERR_TMR_STOPPED\000"
+ 2567      52525F54 
+ 2567      4D525F53 
+ 2567      544F5050 
+ 2567      454400
+ 2568              	.LASF1:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 62
+
+
+ 2569 0bd0 756E7369 		.ascii	"unsigned char\000"
+ 2569      676E6564 
+ 2569      20636861 
+ 2569      7200
+ 2570              	.LASF125:
+ 2571 0bde 4F535F45 		.ascii	"OS_ERR_TASK_OPT\000"
+ 2571      52525F54 
+ 2571      41534B5F 
+ 2571      4F505400 
+ 2572              	.LASF157:
+ 2573 0bee 4F535F45 		.ascii	"OS_ERR_TIMEOUT\000"
+ 2573      52525F54 
+ 2573      494D454F 
+ 2573      555400
+ 2574              	.LASF199:
+ 2575 0bfd 6C6F6F70 		.ascii	"loops\000"
+ 2575      7300
+ 2576              	.LASF16:
+ 2577 0c03 4F535F4F 		.ascii	"OS_OPT\000"
+ 2577      505400
+ 2578              	.LASF189:
+ 2579 0c0a 4E627255 		.ascii	"NbrUsedMax\000"
+ 2579      7365644D 
+ 2579      617800
+ 2580              	.LASF46:
+ 2581 0c15 4F535F45 		.ascii	"OS_ERR_MEM_CREATE_ISR\000"
+ 2581      52525F4D 
+ 2581      454D5F43 
+ 2581      52454154 
+ 2581      455F4953 
+ 2582              	.LASF187:
+ 2583 0c2b 4E627246 		.ascii	"NbrFree\000"
+ 2583      72656500 
+ 2584              	.LASF109:
+ 2585 0c33 4F535F45 		.ascii	"OS_ERR_STATUS_INVALID\000"
+ 2585      52525F53 
+ 2585      54415455 
+ 2585      535F494E 
+ 2585      56414C49 
+ 2586              	.LASF175:
+ 2587 0c49 4F535F45 		.ascii	"OS_ERR_Y\000"
+ 2587      52525F59 
+ 2587      00
+ 2588              	.LASF78:
+ 2589 0c52 4F535F45 		.ascii	"OS_ERR_PEND_ISR\000"
+ 2589      52525F50 
+ 2589      454E445F 
+ 2589      49535200 
+ 2590              	.LASF218:
+ 2591 0c62 433A5C4D 		.ascii	"C:\\Micrium\\Software\\uCOS-III\\Source\\os_msg.c\000"
+ 2591      69637269 
+ 2591      756D5C53 
+ 2591      6F667477 
+ 2591      6172655C 
+ 2592              	.LASF193:
+ 2593 0c8f 4F757450 		.ascii	"OutPtr\000"
+ 2593      747200
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 63
+
+
+ 2594              	.LASF88:
+ 2595 0c96 4F535F45 		.ascii	"OS_ERR_Q_FULL\000"
+ 2595      52525F51 
+ 2595      5F46554C 
+ 2595      4C00
+ 2596              	.LASF39:
+ 2597 0ca4 4F535F45 		.ascii	"OS_ERR_INT_Q_STK_INVALID\000"
+ 2597      52525F49 
+ 2597      4E545F51 
+ 2597      5F53544B 
+ 2597      5F494E56 
+ 2598              	.LASF152:
+ 2599 0cbd 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_SECONDS\000"
+ 2599      52525F54 
+ 2599      494D455F 
+ 2599      494E5641 
+ 2599      4C49445F 
+ 2600              	.LASF116:
+ 2601 0cd9 4F535F45 		.ascii	"OS_ERR_TASK_DEL\000"
+ 2601      52525F54 
+ 2601      41534B5F 
+ 2601      44454C00 
+ 2602              	.LASF188:
+ 2603 0ce9 4E627255 		.ascii	"NbrUsed\000"
+ 2603      73656400 
+ 2604              	.LASF2:
+ 2605 0cf1 7369676E 		.ascii	"signed char\000"
+ 2605      65642063 
+ 2605      68617200 
+ 2606              	.LASF183:
+ 2607 0cfd 4D736754 		.ascii	"MsgTS\000"
+ 2607      5300
+ 2608              	.LASF27:
+ 2609 0d03 4F535F45 		.ascii	"OS_ERR_FATAL_RETURN\000"
+ 2609      52525F46 
+ 2609      4154414C 
+ 2609      5F524554 
+ 2609      55524E00 
+ 2610              	.LASF3:
+ 2611 0d17 73686F72 		.ascii	"short unsigned int\000"
+ 2611      7420756E 
+ 2611      7369676E 
+ 2611      65642069 
+ 2611      6E7400
+ 2612              	.LASF191:
+ 2613 0d2a 6F735F6D 		.ascii	"os_msg_q\000"
+ 2613      73675F71 
+ 2613      00
+ 2614              	.LASF181:
+ 2615 0d33 4D736750 		.ascii	"MsgPtr\000"
+ 2615      747200
+ 2616              	.LASF140:
+ 2617 0d3a 4F535F45 		.ascii	"OS_ERR_TLS_NO_MORE_AVAIL\000"
+ 2617      52525F54 
+ 2617      4C535F4E 
+ 2617      4F5F4D4F 
+ 2617      52455F41 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 64
+
+
+ 2618              	.LASF17:
+ 2619 0d53 4F535F45 		.ascii	"OS_ERR_NONE\000"
+ 2619      52525F4E 
+ 2619      4F4E4500 
+ 2620              	.LASF99:
+ 2621 0d5f 4F535F45 		.ascii	"OS_ERR_SCHED_LOCKED\000"
+ 2621      52525F53 
+ 2621      43484544 
+ 2621      5F4C4F43 
+ 2621      4B454400 
+ 2622              	.LASF31:
+ 2623 0d73 4F535F45 		.ascii	"OS_ERR_FLUSH_ISR\000"
+ 2623      52525F46 
+ 2623      4C555348 
+ 2623      5F495352 
+ 2623      00
+ 2624              	.LASF11:
+ 2625 0d84 646F7562 		.ascii	"double\000"
+ 2625      6C6500
+ 2626              	.LASF73:
+ 2627 0d8b 4F535F45 		.ascii	"OS_ERR_PEND_ABORT\000"
+ 2627      52525F50 
+ 2627      454E445F 
+ 2627      41424F52 
+ 2627      5400
+ 2628              	.LASF100:
+ 2629 0d9d 4F535F45 		.ascii	"OS_ERR_SCHED_NOT_LOCKED\000"
+ 2629      52525F53 
+ 2629      43484544 
+ 2629      5F4E4F54 
+ 2629      5F4C4F43 
+ 2630              	.LASF84:
+ 2631 0db5 4F535F45 		.ascii	"OS_ERR_PRIO\000"
+ 2631      52525F50 
+ 2631      52494F00 
+ 2632              	.LASF77:
+ 2633 0dc1 4F535F45 		.ascii	"OS_ERR_PEND_DEL\000"
+ 2633      52525F50 
+ 2633      454E445F 
+ 2633      44454C00 
+ 2634              	.LASF219:
+ 2635 0dd1 433A5C55 		.ascii	"C:\\Users\\daniel01\\Desktop\\CY8CKIT-050_uCOS-III\\"
+ 2635      73657273 
+ 2635      5C64616E 
+ 2635      69656C30 
+ 2635      315C4465 
+ 2636 0e00 43593843 		.ascii	"CY8CKIT-050_uCOS-III\\Micrium\\Software\\EvalBoards"
+ 2636      4B49542D 
+ 2636      3035305F 
+ 2636      75434F53 
+ 2636      2D494949 
+ 2637 0e30 5C437970 		.ascii	"\\Cypress\\CY8CKIT-050\\PSoC\\uCOS-III-Probe\\uCOS-"
+ 2637      72657373 
+ 2637      5C435938 
+ 2637      434B4954 
+ 2637      2D303530 
+ 2638 0e5e 4949492D 		.ascii	"III-Probe.cydsn\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 65
+
+
+ 2638      50726F62 
+ 2638      652E6379 
+ 2638      64736E00 
+ 2639              	.LASF196:
+ 2640 0e6e 4E627245 		.ascii	"NbrEntriesMax\000"
+ 2640      6E747269 
+ 2640      65734D61 
+ 2640      7800
+ 2641              	.LASF54:
+ 2642 0e7c 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_SIZE\000"
+ 2642      52525F4D 
+ 2642      454D5F49 
+ 2642      4E56414C 
+ 2642      49445F53 
+ 2643              	.LASF131:
+ 2644 0e94 4F535F45 		.ascii	"OS_ERR_TASK_SUSPENDED\000"
+ 2644      52525F54 
+ 2644      41534B5F 
+ 2644      53555350 
+ 2644      454E4445 
+ 2645              	.LASF103:
+ 2646 0eaa 4F535F45 		.ascii	"OS_ERR_SET_ISR\000"
+ 2646      52525F53 
+ 2646      45545F49 
+ 2646      535200
+ 2647              	.LASF201:
+ 2648 0eb9 705F6D73 		.ascii	"p_msg_q\000"
+ 2648      675F7100 
+ 2649              	.LASF102:
+ 2650 0ec1 4F535F45 		.ascii	"OS_ERR_SEM_OVF\000"
+ 2650      52525F53 
+ 2650      454D5F4F 
+ 2650      564600
+ 2651              	.LASF117:
+ 2652 0ed0 4F535F45 		.ascii	"OS_ERR_TASK_DEL_IDLE\000"
+ 2652      52525F54 
+ 2652      41534B5F 
+ 2652      44454C5F 
+ 2652      49444C45 
+ 2653              	.LASF149:
+ 2654 0ee5 4F535F45 		.ascii	"OS_ERR_TIME_GET_ISR\000"
+ 2654      52525F54 
+ 2654      494D455F 
+ 2654      4745545F 
+ 2654      49535200 
+ 2655              	.LASF148:
+ 2656 0ef9 4F535F45 		.ascii	"OS_ERR_TIME_DLY_RESUME_ISR\000"
+ 2656      52525F54 
+ 2656      494D455F 
+ 2656      444C595F 
+ 2656      52455355 
+ 2657              	.LASF143:
+ 2658 0f14 4F535F45 		.ascii	"OS_ERR_TICK_PRIO_INVALID\000"
+ 2658      52525F54 
+ 2658      49434B5F 
+ 2658      5052494F 
+ 2658      5F494E56 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cca70qYo.s 			page 66
+
+
+ 2659              	.LASF83:
+ 2660 0f2d 4F535F45 		.ascii	"OS_ERR_PRIO_EXIST\000"
+ 2660      52525F50 
+ 2660      52494F5F 
+ 2660      45584953 
+ 2660      5400
+ 2661              	.LASF55:
+ 2662 0f3f 4F535F45 		.ascii	"OS_ERR_MEM_NO_FREE_BLKS\000"
+ 2662      52525F4D 
+ 2662      454D5F4E 
+ 2662      4F5F4652 
+ 2662      45455F42 
+ 2663              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

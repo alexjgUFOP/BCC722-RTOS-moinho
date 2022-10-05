@@ -1,0 +1,252 @@
+ARM GAS  ..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU\os_cpu_a.s 			page 1
+
+
+   1              	@
+   2              	@**************************************************************************************************
+   3              	@                                                uC/OS-III
+   4              	@                                          The Real-Time Kernel
+   5              	@
+   6              	@
+   7              	@                           (c) Copyright 2009-2015; Micrium, Inc.; Weston, FL
+   8              	@                    All rights reserved.  Protected by international copyright laws.
+   9              	@
+  10              	@                                           ARM Cortex-M0 Port
+  11              	@
+  12              	@ File      : OS_CPU_A.ASM
+  13              	@ Version   : V3.05.01
+  14              	@ By        : JJL
+  15              	@             FT
+  16              	@             MD
+  17              	@             FF
+  18              	@
+  19              	@ For       : ARMv6M Cortex-M0 or Cortex-M0+
+  20              	@ Mode      : Thumb2
+  21              	@ Toolchain : GNU C Compiler
+  22              	@
+  23              	@ Note(s)   : (1) This port supports the ARM Cortex-M0 and Cortex-M0+ architectures.
+  24              	@**************************************************************************************************
+  25              	@
+  26              	
+  27              	@**************************************************************************************************
+  28              	@                                          PUBLIC FUNCTIONS
+  29              	@**************************************************************************************************
+  30              	
+  31              	                                                              @ External references.
+  32              	    .extern  OSPrioCur
+  33              	    .extern  OSPrioHighRdy
+  34              	    .extern  OSTCBCurPtr
+  35              	    .extern  OSTCBHighRdyPtr
+  36              	    .extern  OSIntExit
+  37              	    .extern  OSTaskSwHook
+  38              	    .extern  OS_CPU_ExceptStkBase
+  39              	
+  40              	
+  41              	    .global  OSStartHighRdy                                   @ Functions declared in this file
+  42              	    .global  OSCtxSw
+  43              	    .global  OSIntCtxSw
+  44              	    .global  PendSV_Handler
+  45              	
+  46              	@**************************************************************************************************
+  47              	@                                               EQUATES
+  48              	@**************************************************************************************************
+  49              	
+  50              	.equ NVIC_INT_CTRL,   0xE000ED04                              @ Interrupt control state register.
+  51              	.equ NVIC_SYSPRI14,   0xE000ED20                              @ System priority register (priority 
+  52              	.equ NVIC_PENDSV_PRI, 0x00FF0000                              @ PendSV priority value (lowest).
+  53              	.equ NVIC_PENDSVSET,  0x10000000                              @ Value to trigger PendSV exception.
+  54              	
+  55              	
+  56              	@**************************************************************************************************
+  57              	@                                     CODE GENERATION DIRECTIVES
+ARM GAS  ..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU\os_cpu_a.s 			page 2
+
+
+  58              	@**************************************************************************************************
+  59              	
+  60              	   .text
+  61              	   .align 2
+  62              	   .thumb
+  63              	   .syntax unified
+  64              	
+  65              	
+  66              	@**************************************************************************************************
+  67              	@                                         START MULTITASKING
+  68              	@                                      void OSStartHighRdy(void)
+  69              	@
+  70              	@ Note(s) : 1) This function triggers a PendSV exception (essentially, causes a context switch) to 
+  71              	@              the first task to start.
+  72              	@
+  73              	@           2) OSStartHighRdy() MUST:
+  74              	@              a) Setup PendSV exception priority to lowest;
+  75              	@              b) Set initial PSP to 0, to tell context switcher this is first run;
+  76              	@              c) Set the main stack to OS_CPU_ExceptStkBase
+  77              	@              d) Trigger PendSV exception;
+  78              	@              e) Enable interrupts (tasks will run with interrupts enabled).
+  79              	@**************************************************************************************************
+  80              	
+  81              	.thumb_func
+  82              	OSStartHighRdy:
+  83 0000 72B6     	    CPSID   I                                                   @ Prevent interruption during conte
+  84 0002 2148     	    LDR     R0, =NVIC_SYSPRI14                                  @ Set the PendSV exception priority
+  85 0004 2149     	    LDR     R1, =NVIC_PENDSV_PRI
+  86 0006 0160     	    STR     R1, [R0]
+  87              	
+  88 0008 0020     	    MOVS    R0, #0                                              @ Set the PSP to 0 for initial cont
+  89 000a 80F30988 	    MSR     PSP, R0
+  90 000e FFF7FEFF 	    BL      OSTaskSwHook
+  91              	
+  92 0012 1F48     	    LDR     R0, =OS_CPU_ExceptStkBase                           @ Initialize the MSP to the OS_CPU_
+  93 0014 0168     	    LDR     R1, [R0]
+  94 0016 81F30888 	    MSR     MSP, R1
+  95              	
+  96 001a 1E48     	    LDR     R0, =NVIC_INT_CTRL                                  @ Trigger the PendSV exception (cau
+  97 001c 1E49     	    LDR     R1, =NVIC_PENDSVSET
+  98 001e 0160     	    STR     R1, [R0]
+  99              	
+ 100 0020 62B6     	    CPSIE   I                                                   @ Enable interrupts at processor le
+ 101              	
+ 102              	OSStartHang:
+ 103 0022 FEE7     	    B       OSStartHang                                         @ Should never get here
+ 104              	
+ 105              	
+ 106              	@**************************************************************************************************
+ 107              	@                       PERFORM A CONTEXT SWITCH (From task level) - OSCtxSw()
+ 108              	@
+ 109              	@ Note(s) : 1) OSCtxSw() is called when OS wants to perform a task context switch.  This function
+ 110              	@              triggers the PendSV exception which is where the real work is done.
+ 111              	@**************************************************************************************************
+ 112              	
+ 113              	.thumb_func
+ 114              	OSCtxSw:
+ARM GAS  ..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU\os_cpu_a.s 			page 3
+
+
+ 115 0024 1B48     	    LDR     R0, =NVIC_INT_CTRL                                  @ Trigger the PendSV exception (cau
+ 116 0026 1C49     	    LDR     R1, =NVIC_PENDSVSET
+ 117 0028 0160     	    STR     R1, [R0]
+ 118 002a 7047     	    BX      LR
+ 119              	
+ 120              	
+ 121              	@**************************************************************************************************
+ 122              	@                   PERFORM A CONTEXT SWITCH (From interrupt level) - OSIntCtxSw()
+ 123              	@
+ 124              	@ Note(s) : 1) OSIntCtxSw() is called by OSIntExit() when it determines a context switch is needed 
+ 125              	@              the result of an interrupt.  This function simply triggers a PendSV exception which 
+ 126              	@              be handled when there are no more interrupts active and interrupts are enabled.
+ 127              	@**************************************************************************************************
+ 128              	
+ 129              	.thumb_func
+ 130              	OSIntCtxSw:
+ 131 002c 1948     	    LDR     R0, =NVIC_INT_CTRL                                  @ Trigger the PendSV exception (cau
+ 132 002e 1A49     	    LDR     R1, =NVIC_PENDSVSET
+ 133 0030 0160     	    STR     R1, [R0]
+ 134 0032 7047     	    BX      LR
+ 135              	
+ 136              	
+ 137              	@**************************************************************************************************
+ 138              	@                                       HANDLE PendSV EXCEPTION
+ 139              	@                                      void PendSV_Handler(void)
+ 140              	@
+ 141              	@ Note(s) : 1) PendSV is used to cause a context switch.  This is a recommended method for performi
+ 142              	@              context switches with Cortex-M0.  This is because the Cortex-M0 auto-saves half of t
+ 143              	@              processor context on any exception, and restores same on return from exception.  So 
+ 144              	@              saving of R4-R11, LR is required and fixing up the stack pointers. Using the PendSV 
+ 145              	@              this way means that context saving and restoring is identical whether it is initiate
+ 146              	@              a thread or occurs due to an interrupt or exception.
+ 147              	@
+ 148              	@           2) Pseudo-code is:
+ 149              	@              a) Get the process SP, if 0 then skip (goto d) the saving part (first context switch
+ 150              	@              b) Adjust SP to make space for R4-R11 and LR register
+ 151              	@              c) Save the process SP in its TCB, OSTCBCurPtr->StkPtr = SP;
+ 152              	@              d) Save remaining regs R4-R11, LR on process stack;
+ 153              	@              e) Call OSTaskSwHook();
+ 154              	@              f) Get current high priority, OSPrioCur = OSPrioHighRdy;
+ 155              	@              g) Get current ready thread TCB, OSTCBCurPtr = OSTCBHighRdyPtr;
+ 156              	@              h) Get new process SP from TCB, SP = OSTCBHighRdyPtr->StkPtr;
+ 157              	@              i) Adjust SP to the High Registers(R8-R11) & LR location
+ 158              	@              j) Restore R8-R11, and LR from new process stack;
+ 159              	@              k) Load PSP with new process SP
+ 160              	@              m) Restore remaining R4-R7 from new process stack
+ 161              	@              n) Perform exception return which will restore remaining context.
+ 162              	@
+ 163              	@           3) On entry into PendSV handler:
+ 164              	@              a) The following have been saved on the process stack (by processor):
+ 165              	@                 xPSR, PC, LR, R12, R0-R3
+ 166              	@              b) Processor mode is switched to Handler mode (from Thread mode)
+ 167              	@              c) Stack is Main stack (switched from Process stack)
+ 168              	@              d) OSTCBCurPtr      points to the OS_TCB of the task to suspend
+ 169              	@                 OSTCBHighRdyPtr  points to the OS_TCB of the task to resume
+ 170              	@
+ 171              	@           4) Since PendSV is set to lowest priority in the system (by OSStartHighRdy() above), we
+ARM GAS  ..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU\os_cpu_a.s 			page 4
+
+
+ 172              	@              know that it will only be run when no other exception or interrupt is active, and
+ 173              	@              therefore safe to assume that context being switched out was using the process stack
+ 174              	@**************************************************************************************************
+ 175              	
+ 176              	.thumb_func
+ 177              	PendSV_Handler:
+ 178 0034 72B6     	    CPSID   I                                                   @ Prevent interruption during conte
+ 179 0036 EFF30980 	    MRS     R0, PSP                                             @ PSP is process stack pointer
+ 180              	
+ 181 003a 0028     	    CMP     R0, #0
+ 182 003c 0BD0     	    BEQ     OS_CPU_PendSVHandler_nosave                         @ equivalent code to CBZ from M3 ar
+ 183              	                                                                @ Except that it does not change th
+ 184              	
+ 185 003e 2438     	    SUBS    R0, R0, #0x24                                       @ Adjust SP to make space for Low, 
+ 186 0040 1649     	    LDR     R1, =OSTCBCurPtr                                    @ OSTCBCurPtr->StkPtr = SP;
+ 187 0042 0968     	    LDR     R1, [R1]
+ 188 0044 0860     	    STR     R0, [R1]                                            @ R0 is SP of process being switche
+ 189              	
+ 190 0046 F0C0     	    STMIA   R0!, {R4-R7}                                        @ Store R4-R7(Low Registers) on pro
+ 191 0048 4446     	    MOV     R4, R8                                              @ Move R8-R11 values to R4-R7 regis
+ 192 004a 4D46     	    MOV     R5, R9
+ 193 004c 5646     	    MOV     R6, R10
+ 194 004e 5F46     	    MOV     R7, R11
+ 195 0050 F0C0     	    STMIA   R0!, {R4-R7}                                        @ Store R8-R11(High Registers) on p
+ 196 0052 7346     	    MOV     R3, R14                                             @ R3 is LR of process being switche
+ 197 0054 08C0     	    STMIA   R0!, {R3}                                           @ Store LR (EXC_RETURN) on process 
+ 198              	
+ 199              	                                                                @ At this point, entire context of 
+ 200              	OS_CPU_PendSVHandler_nosave:
+ 201 0056 FFF7FEFF 	    BL      OSTaskSwHook                                        @ OSTaskSwHook();
+ 202              	
+ 203 005a 1148     	    LDR     R0, =OSPrioCur                                      @ OSPrioCur   = OSPrioHighRdy;
+ 204 005c 1149     	    LDR     R1, =OSPrioHighRdy
+ 205 005e 0A78     	    LDRB    R2, [R1]
+ 206 0060 0270     	    STRB    R2, [R0]
+ 207              	
+ 208 0062 0E48     	    LDR     R0, =OSTCBCurPtr                                    @ OSTCBCurPtr = OSTCBHighRdyPtr;
+ 209 0064 1049     	    LDR     R1, =OSTCBHighRdyPtr
+ 210 0066 0A68     	    LDR     R2, [R1]
+ 211 0068 0260     	    STR     R2, [R0]
+ 212              	
+ 213 006a 1068     	    LDR     R0, [R2]                                            @ R0 is new process SP; SP = OSTCBH
+ 214              	
+ 215 006c 1030     	    ADDS    R0, #0x10                                           @ Adjust SP to High Registers(R8-R1
+ 216 006e F0C8     	    LDMFD   R0!, {R4-R7}                                        @ Load R8-R11 values from new proce
+ 217 0070 A046     	    MOV     R8,  R4                                             @ Restore R8-R11 by moving their va
+ 218 0072 A946     	    MOV     R9,  R5
+ 219 0074 B246     	    MOV     R10, R6
+ 220 0076 BB46     	    MOV     R11, R7
+ 221              	
+ 222 0078 08C8     	    LDMFD   R0!, {R3}                                           @ R3 has the new process LR; R3 = L
+ 223 007a 9E46     	    MOV     R14, R3                                             @ Restore LR (EXEC_RETURN)
+ 224              	
+ 225 007c 80F30988 	    MSR     PSP, R0                                             @ Load PSP with new process SP
+ 226              	
+ 227 0080 2438     	    SUBS    R0, #0x24                                           @ Adjust SP to Low registers(R4-R7)
+ 228 0082 F0C8     	    LDMFD   R0!, {R4-R7}                                        @ Restore remaining R4-R7 from new 
+ARM GAS  ..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU\os_cpu_a.s 			page 5
+
+
+ 229              	
+ 230 0084 62B6     	    CPSIE   I
+ 231 0086 7047     	    BX      LR                                                  @ Exception return will restore rem
+ 232              	
+ 233 0088 20ED00E0 	.end
+ 233      0000FF00 
+ 233      00000000 
+ 233      04ED00E0 
+ 233      00000010 

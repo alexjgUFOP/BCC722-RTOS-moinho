@@ -1,0 +1,691 @@
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc55NeTb.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"temp_conv_PM.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.temp_conv_Sleep,"ax",%progbits
+  16              		.align	1
+  17              		.global	temp_conv_Sleep
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  23              		.type	temp_conv_Sleep, %function
+  24              	temp_conv_Sleep:
+  25              	.LFB0:
+  26              		.file 1 "Generated_Source\\PSoC4\\temp_conv_PM.c"
+   1:Generated_Source\PSoC4/temp_conv_PM.c **** /*******************************************************************************
+   2:Generated_Source\PSoC4/temp_conv_PM.c **** * File Name: temp_conv.c  
+   3:Generated_Source\PSoC4/temp_conv_PM.c **** * Version 2.20
+   4:Generated_Source\PSoC4/temp_conv_PM.c **** *
+   5:Generated_Source\PSoC4/temp_conv_PM.c **** * Description:
+   6:Generated_Source\PSoC4/temp_conv_PM.c **** *  This file contains APIs to set up the Pins component for low power modes.
+   7:Generated_Source\PSoC4/temp_conv_PM.c **** *
+   8:Generated_Source\PSoC4/temp_conv_PM.c **** * Note:
+   9:Generated_Source\PSoC4/temp_conv_PM.c **** *
+  10:Generated_Source\PSoC4/temp_conv_PM.c **** ********************************************************************************
+  11:Generated_Source\PSoC4/temp_conv_PM.c **** * Copyright 2015, Cypress Semiconductor Corporation.  All rights reserved.
+  12:Generated_Source\PSoC4/temp_conv_PM.c **** * You may use this file only in accordance with the license, terms, conditions, 
+  13:Generated_Source\PSoC4/temp_conv_PM.c **** * disclaimers, and limitations in the end user license agreement accompanying 
+  14:Generated_Source\PSoC4/temp_conv_PM.c **** * the software package with which this file was provided.
+  15:Generated_Source\PSoC4/temp_conv_PM.c **** *******************************************************************************/
+  16:Generated_Source\PSoC4/temp_conv_PM.c **** 
+  17:Generated_Source\PSoC4/temp_conv_PM.c **** #include "cytypes.h"
+  18:Generated_Source\PSoC4/temp_conv_PM.c **** #include "temp_conv.h"
+  19:Generated_Source\PSoC4/temp_conv_PM.c **** 
+  20:Generated_Source\PSoC4/temp_conv_PM.c **** static temp_conv_BACKUP_STRUCT  temp_conv_backup = {0u, 0u, 0u};
+  21:Generated_Source\PSoC4/temp_conv_PM.c **** 
+  22:Generated_Source\PSoC4/temp_conv_PM.c **** 
+  23:Generated_Source\PSoC4/temp_conv_PM.c **** /*******************************************************************************
+  24:Generated_Source\PSoC4/temp_conv_PM.c **** * Function Name: temp_conv_Sleep
+  25:Generated_Source\PSoC4/temp_conv_PM.c **** ****************************************************************************//**
+  26:Generated_Source\PSoC4/temp_conv_PM.c **** *
+  27:Generated_Source\PSoC4/temp_conv_PM.c **** * \brief Stores the pin configuration and prepares the pin for entering chip 
+  28:Generated_Source\PSoC4/temp_conv_PM.c **** *  deep-sleep/hibernate modes. This function applies only to SIO and USBIO pins.
+  29:Generated_Source\PSoC4/temp_conv_PM.c **** *  It should not be called for GPIO or GPIO_OVT pins.
+  30:Generated_Source\PSoC4/temp_conv_PM.c **** *
+  31:Generated_Source\PSoC4/temp_conv_PM.c **** * <b>Note</b> This function is available in PSoC 4 only.
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc55NeTb.s 			page 2
+
+
+  32:Generated_Source\PSoC4/temp_conv_PM.c **** *
+  33:Generated_Source\PSoC4/temp_conv_PM.c **** * \return 
+  34:Generated_Source\PSoC4/temp_conv_PM.c **** *  None 
+  35:Generated_Source\PSoC4/temp_conv_PM.c **** *  
+  36:Generated_Source\PSoC4/temp_conv_PM.c **** * \sideeffect
+  37:Generated_Source\PSoC4/temp_conv_PM.c **** *  For SIO pins, this function configures the pin input threshold to CMOS and
+  38:Generated_Source\PSoC4/temp_conv_PM.c **** *  drive level to Vddio. This is needed for SIO pins when in device 
+  39:Generated_Source\PSoC4/temp_conv_PM.c **** *  deep-sleep/hibernate modes.
+  40:Generated_Source\PSoC4/temp_conv_PM.c **** *
+  41:Generated_Source\PSoC4/temp_conv_PM.c **** * \funcusage
+  42:Generated_Source\PSoC4/temp_conv_PM.c **** *  \snippet temp_conv_SUT.c usage_temp_conv_Sleep_Wakeup
+  43:Generated_Source\PSoC4/temp_conv_PM.c **** *******************************************************************************/
+  44:Generated_Source\PSoC4/temp_conv_PM.c **** void temp_conv_Sleep(void)
+  45:Generated_Source\PSoC4/temp_conv_PM.c **** {
+  27              		.loc 1 45 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  46:Generated_Source\PSoC4/temp_conv_PM.c ****     #if defined(temp_conv__PC)
+  47:Generated_Source\PSoC4/temp_conv_PM.c ****         temp_conv_backup.pcState = temp_conv_PC;
+  32              		.loc 1 47 9 view .LVU1
+  33              		.loc 1 47 36 is_stmt 0 view .LVU2
+  34 0000 024B     		ldr	r3, .L2
+  35 0002 1A68     		ldr	r2, [r3]
+  36              		.loc 1 47 34 view .LVU3
+  37 0004 024B     		ldr	r3, .L2+4
+  38 0006 1A60     		str	r2, [r3]
+  48:Generated_Source\PSoC4/temp_conv_PM.c ****     #else
+  49:Generated_Source\PSoC4/temp_conv_PM.c ****         #if (CY_PSOC4_4200L)
+  50:Generated_Source\PSoC4/temp_conv_PM.c ****             /* Save the regulator state and put the PHY into suspend mode */
+  51:Generated_Source\PSoC4/temp_conv_PM.c ****             temp_conv_backup.usbState = temp_conv_CR1_REG;
+  52:Generated_Source\PSoC4/temp_conv_PM.c ****             temp_conv_USB_POWER_REG |= temp_conv_USBIO_ENTER_SLEEP;
+  53:Generated_Source\PSoC4/temp_conv_PM.c ****             temp_conv_CR1_REG &= temp_conv_USBIO_CR1_OFF;
+  54:Generated_Source\PSoC4/temp_conv_PM.c ****         #endif
+  55:Generated_Source\PSoC4/temp_conv_PM.c ****     #endif
+  56:Generated_Source\PSoC4/temp_conv_PM.c ****     #if defined(CYIPBLOCK_m0s8ioss_VERSION) && defined(temp_conv__SIO)
+  57:Generated_Source\PSoC4/temp_conv_PM.c ****         temp_conv_backup.sioState = temp_conv_SIO_REG;
+  58:Generated_Source\PSoC4/temp_conv_PM.c ****         /* SIO requires unregulated output buffer and single ended input buffer */
+  59:Generated_Source\PSoC4/temp_conv_PM.c ****         temp_conv_SIO_REG &= (uint32)(~temp_conv_SIO_LPM_MASK);
+  60:Generated_Source\PSoC4/temp_conv_PM.c ****     #endif  
+  61:Generated_Source\PSoC4/temp_conv_PM.c **** }
+  39              		.loc 1 61 1 view .LVU4
+  40              		@ sp needed
+  41 0008 7047     		bx	lr
+  42              	.L3:
+  43 000a C046     		.align	2
+  44              	.L2:
+  45 000c 08010440 		.word	1074004232
+  46 0010 00000000 		.word	.LANCHOR0
+  47              		.cfi_endproc
+  48              	.LFE0:
+  49              		.size	temp_conv_Sleep, .-temp_conv_Sleep
+  50              		.section	.text.temp_conv_Wakeup,"ax",%progbits
+  51              		.align	1
+  52              		.global	temp_conv_Wakeup
+  53              		.syntax unified
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc55NeTb.s 			page 3
+
+
+  54              		.code	16
+  55              		.thumb_func
+  56              		.fpu softvfp
+  57              		.type	temp_conv_Wakeup, %function
+  58              	temp_conv_Wakeup:
+  59              	.LFB1:
+  62:Generated_Source\PSoC4/temp_conv_PM.c **** 
+  63:Generated_Source\PSoC4/temp_conv_PM.c **** 
+  64:Generated_Source\PSoC4/temp_conv_PM.c **** /*******************************************************************************
+  65:Generated_Source\PSoC4/temp_conv_PM.c **** * Function Name: temp_conv_Wakeup
+  66:Generated_Source\PSoC4/temp_conv_PM.c **** ****************************************************************************//**
+  67:Generated_Source\PSoC4/temp_conv_PM.c **** *
+  68:Generated_Source\PSoC4/temp_conv_PM.c **** * \brief Restores the pin configuration that was saved during Pin_Sleep(). This 
+  69:Generated_Source\PSoC4/temp_conv_PM.c **** * function applies only to SIO and USBIO pins. It should not be called for
+  70:Generated_Source\PSoC4/temp_conv_PM.c **** * GPIO or GPIO_OVT pins.
+  71:Generated_Source\PSoC4/temp_conv_PM.c **** *
+  72:Generated_Source\PSoC4/temp_conv_PM.c **** * For USBIO pins, the wakeup is only triggered for falling edge interrupts.
+  73:Generated_Source\PSoC4/temp_conv_PM.c **** *
+  74:Generated_Source\PSoC4/temp_conv_PM.c **** * <b>Note</b> This function is available in PSoC 4 only.
+  75:Generated_Source\PSoC4/temp_conv_PM.c **** *
+  76:Generated_Source\PSoC4/temp_conv_PM.c **** * \return 
+  77:Generated_Source\PSoC4/temp_conv_PM.c **** *  None
+  78:Generated_Source\PSoC4/temp_conv_PM.c **** *  
+  79:Generated_Source\PSoC4/temp_conv_PM.c **** * \funcusage
+  80:Generated_Source\PSoC4/temp_conv_PM.c **** *  Refer to temp_conv_Sleep() for an example usage.
+  81:Generated_Source\PSoC4/temp_conv_PM.c **** *******************************************************************************/
+  82:Generated_Source\PSoC4/temp_conv_PM.c **** void temp_conv_Wakeup(void)
+  83:Generated_Source\PSoC4/temp_conv_PM.c **** {
+  60              		.loc 1 83 1 is_stmt 1 view -0
+  61              		.cfi_startproc
+  62              		@ args = 0, pretend = 0, frame = 0
+  63              		@ frame_needed = 0, uses_anonymous_args = 0
+  64              		@ link register save eliminated.
+  84:Generated_Source\PSoC4/temp_conv_PM.c ****     #if defined(temp_conv__PC)
+  85:Generated_Source\PSoC4/temp_conv_PM.c ****         temp_conv_PC = temp_conv_backup.pcState;
+  65              		.loc 1 85 9 view .LVU6
+  66              		.loc 1 85 40 is_stmt 0 view .LVU7
+  67 0000 024B     		ldr	r3, .L5
+  68 0002 1A68     		ldr	r2, [r3]
+  69              		.loc 1 85 22 view .LVU8
+  70 0004 024B     		ldr	r3, .L5+4
+  71 0006 1A60     		str	r2, [r3]
+  86:Generated_Source\PSoC4/temp_conv_PM.c ****     #else
+  87:Generated_Source\PSoC4/temp_conv_PM.c ****         #if (CY_PSOC4_4200L)
+  88:Generated_Source\PSoC4/temp_conv_PM.c ****             /* Restore the regulator state and come out of suspend mode */
+  89:Generated_Source\PSoC4/temp_conv_PM.c ****             temp_conv_USB_POWER_REG &= temp_conv_USBIO_EXIT_SLEEP_PH1;
+  90:Generated_Source\PSoC4/temp_conv_PM.c ****             temp_conv_CR1_REG = temp_conv_backup.usbState;
+  91:Generated_Source\PSoC4/temp_conv_PM.c ****             temp_conv_USB_POWER_REG &= temp_conv_USBIO_EXIT_SLEEP_PH2;
+  92:Generated_Source\PSoC4/temp_conv_PM.c ****         #endif
+  93:Generated_Source\PSoC4/temp_conv_PM.c ****     #endif
+  94:Generated_Source\PSoC4/temp_conv_PM.c ****     #if defined(CYIPBLOCK_m0s8ioss_VERSION) && defined(temp_conv__SIO)
+  95:Generated_Source\PSoC4/temp_conv_PM.c ****         temp_conv_SIO_REG = temp_conv_backup.sioState;
+  96:Generated_Source\PSoC4/temp_conv_PM.c ****     #endif
+  97:Generated_Source\PSoC4/temp_conv_PM.c **** }
+  72              		.loc 1 97 1 view .LVU9
+  73              		@ sp needed
+  74 0008 7047     		bx	lr
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc55NeTb.s 			page 4
+
+
+  75              	.L6:
+  76 000a C046     		.align	2
+  77              	.L5:
+  78 000c 00000000 		.word	.LANCHOR0
+  79 0010 08010440 		.word	1074004232
+  80              		.cfi_endproc
+  81              	.LFE1:
+  82              		.size	temp_conv_Wakeup, .-temp_conv_Wakeup
+  83              		.bss
+  84              		.align	2
+  85              		.set	.LANCHOR0,. + 0
+  86              		.type	temp_conv_backup, %object
+  87              		.size	temp_conv_backup, 12
+  88              	temp_conv_backup:
+  89 0000 00000000 		.space	12
+  89      00000000 
+  89      00000000 
+  90              		.text
+  91              	.Letext0:
+  92              		.file 2 "Generated_Source\\PSoC4\\cytypes.h"
+  93              		.file 3 "Generated_Source\\PSoC4\\temp_conv.h"
+  94              		.section	.debug_info,"",%progbits
+  95              	.Ldebug_info0:
+  96 0000 0F010000 		.4byte	0x10f
+  97 0004 0400     		.2byte	0x4
+  98 0006 00000000 		.4byte	.Ldebug_abbrev0
+  99 000a 04       		.byte	0x4
+ 100 000b 01       		.uleb128 0x1
+ 101 000c 52010000 		.4byte	.LASF20
+ 102 0010 0C       		.byte	0xc
+ 103 0011 6E000000 		.4byte	.LASF21
+ 104 0015 00000000 		.4byte	.LASF22
+ 105 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 106 001d 00000000 		.4byte	0
+ 107 0021 00000000 		.4byte	.Ldebug_line0
+ 108 0025 02       		.uleb128 0x2
+ 109 0026 01       		.byte	0x1
+ 110 0027 06       		.byte	0x6
+ 111 0028 35020000 		.4byte	.LASF0
+ 112 002c 02       		.uleb128 0x2
+ 113 002d 01       		.byte	0x1
+ 114 002e 08       		.byte	0x8
+ 115 002f B4000000 		.4byte	.LASF1
+ 116 0033 02       		.uleb128 0x2
+ 117 0034 02       		.byte	0x2
+ 118 0035 05       		.byte	0x5
+ 119 0036 14020000 		.4byte	.LASF2
+ 120 003a 02       		.uleb128 0x2
+ 121 003b 02       		.byte	0x2
+ 122 003c 07       		.byte	0x7
+ 123 003d D4000000 		.4byte	.LASF3
+ 124 0041 02       		.uleb128 0x2
+ 125 0042 04       		.byte	0x4
+ 126 0043 05       		.byte	0x5
+ 127 0044 26020000 		.4byte	.LASF4
+ 128 0048 02       		.uleb128 0x2
+ 129 0049 04       		.byte	0x4
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc55NeTb.s 			page 5
+
+
+ 130 004a 07       		.byte	0x7
+ 131 004b C2000000 		.4byte	.LASF5
+ 132 004f 02       		.uleb128 0x2
+ 133 0050 08       		.byte	0x8
+ 134 0051 05       		.byte	0x5
+ 135 0052 01020000 		.4byte	.LASF6
+ 136 0056 02       		.uleb128 0x2
+ 137 0057 08       		.byte	0x8
+ 138 0058 07       		.byte	0x7
+ 139 0059 3B010000 		.4byte	.LASF7
+ 140 005d 03       		.uleb128 0x3
+ 141 005e 04       		.byte	0x4
+ 142 005f 05       		.byte	0x5
+ 143 0060 696E7400 		.ascii	"int\000"
+ 144 0064 02       		.uleb128 0x2
+ 145 0065 04       		.byte	0x4
+ 146 0066 07       		.byte	0x7
+ 147 0067 1E010000 		.4byte	.LASF8
+ 148 006b 04       		.uleb128 0x4
+ 149 006c 17010000 		.4byte	.LASF12
+ 150 0070 02       		.byte	0x2
+ 151 0071 E601     		.2byte	0x1e6
+ 152 0073 19       		.byte	0x19
+ 153 0074 48000000 		.4byte	0x48
+ 154 0078 05       		.uleb128 0x5
+ 155 0079 6B000000 		.4byte	0x6b
+ 156 007d 02       		.uleb128 0x2
+ 157 007e 04       		.byte	0x4
+ 158 007f 04       		.byte	0x4
+ 159 0080 AE000000 		.4byte	.LASF9
+ 160 0084 02       		.uleb128 0x2
+ 161 0085 08       		.byte	0x8
+ 162 0086 04       		.byte	0x4
+ 163 0087 F8000000 		.4byte	.LASF10
+ 164 008b 02       		.uleb128 0x2
+ 165 008c 01       		.byte	0x1
+ 166 008d 08       		.byte	0x8
+ 167 008e 0F020000 		.4byte	.LASF11
+ 168 0092 04       		.uleb128 0x4
+ 169 0093 2F020000 		.4byte	.LASF13
+ 170 0097 02       		.byte	0x2
+ 171 0098 9002     		.2byte	0x290
+ 172 009a 21       		.byte	0x21
+ 173 009b 78000000 		.4byte	0x78
+ 174 009f 06       		.uleb128 0x6
+ 175 00a0 0C       		.byte	0xc
+ 176 00a1 03       		.byte	0x3
+ 177 00a2 21       		.byte	0x21
+ 178 00a3 09       		.byte	0x9
+ 179 00a4 D0000000 		.4byte	0xd0
+ 180 00a8 07       		.uleb128 0x7
+ 181 00a9 1E020000 		.4byte	.LASF14
+ 182 00ad 03       		.byte	0x3
+ 183 00ae 23       		.byte	0x23
+ 184 00af 0C       		.byte	0xc
+ 185 00b0 6B000000 		.4byte	0x6b
+ 186 00b4 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc55NeTb.s 			page 6
+
+
+ 187 00b5 07       		.uleb128 0x7
+ 188 00b6 F8010000 		.4byte	.LASF15
+ 189 00ba 03       		.byte	0x3
+ 190 00bb 24       		.byte	0x24
+ 191 00bc 0C       		.byte	0xc
+ 192 00bd 6B000000 		.4byte	0x6b
+ 193 00c1 04       		.byte	0x4
+ 194 00c2 07       		.uleb128 0x7
+ 195 00c3 94000000 		.4byte	.LASF16
+ 196 00c7 03       		.byte	0x3
+ 197 00c8 25       		.byte	0x25
+ 198 00c9 0C       		.byte	0xc
+ 199 00ca 6B000000 		.4byte	0x6b
+ 200 00ce 08       		.byte	0x8
+ 201 00cf 00       		.byte	0
+ 202 00d0 08       		.uleb128 0x8
+ 203 00d1 FF000000 		.4byte	.LASF17
+ 204 00d5 03       		.byte	0x3
+ 205 00d6 26       		.byte	0x26
+ 206 00d7 03       		.byte	0x3
+ 207 00d8 9F000000 		.4byte	0x9f
+ 208 00dc 09       		.uleb128 0x9
+ 209 00dd 9D000000 		.4byte	.LASF23
+ 210 00e1 01       		.byte	0x1
+ 211 00e2 14       		.byte	0x14
+ 212 00e3 21       		.byte	0x21
+ 213 00e4 D0000000 		.4byte	0xd0
+ 214 00e8 05       		.uleb128 0x5
+ 215 00e9 03       		.byte	0x3
+ 216 00ea 00000000 		.4byte	temp_conv_backup
+ 217 00ee 0A       		.uleb128 0xa
+ 218 00ef E7000000 		.4byte	.LASF18
+ 219 00f3 01       		.byte	0x1
+ 220 00f4 52       		.byte	0x52
+ 221 00f5 06       		.byte	0x6
+ 222 00f6 00000000 		.4byte	.LFB1
+ 223 00fa 14000000 		.4byte	.LFE1-.LFB1
+ 224 00fe 01       		.uleb128 0x1
+ 225 00ff 9C       		.byte	0x9c
+ 226 0100 0A       		.uleb128 0xa
+ 227 0101 2B010000 		.4byte	.LASF19
+ 228 0105 01       		.byte	0x1
+ 229 0106 2C       		.byte	0x2c
+ 230 0107 06       		.byte	0x6
+ 231 0108 00000000 		.4byte	.LFB0
+ 232 010c 14000000 		.4byte	.LFE0-.LFB0
+ 233 0110 01       		.uleb128 0x1
+ 234 0111 9C       		.byte	0x9c
+ 235 0112 00       		.byte	0
+ 236              		.section	.debug_abbrev,"",%progbits
+ 237              	.Ldebug_abbrev0:
+ 238 0000 01       		.uleb128 0x1
+ 239 0001 11       		.uleb128 0x11
+ 240 0002 01       		.byte	0x1
+ 241 0003 25       		.uleb128 0x25
+ 242 0004 0E       		.uleb128 0xe
+ 243 0005 13       		.uleb128 0x13
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc55NeTb.s 			page 7
+
+
+ 244 0006 0B       		.uleb128 0xb
+ 245 0007 03       		.uleb128 0x3
+ 246 0008 0E       		.uleb128 0xe
+ 247 0009 1B       		.uleb128 0x1b
+ 248 000a 0E       		.uleb128 0xe
+ 249 000b 55       		.uleb128 0x55
+ 250 000c 17       		.uleb128 0x17
+ 251 000d 11       		.uleb128 0x11
+ 252 000e 01       		.uleb128 0x1
+ 253 000f 10       		.uleb128 0x10
+ 254 0010 17       		.uleb128 0x17
+ 255 0011 00       		.byte	0
+ 256 0012 00       		.byte	0
+ 257 0013 02       		.uleb128 0x2
+ 258 0014 24       		.uleb128 0x24
+ 259 0015 00       		.byte	0
+ 260 0016 0B       		.uleb128 0xb
+ 261 0017 0B       		.uleb128 0xb
+ 262 0018 3E       		.uleb128 0x3e
+ 263 0019 0B       		.uleb128 0xb
+ 264 001a 03       		.uleb128 0x3
+ 265 001b 0E       		.uleb128 0xe
+ 266 001c 00       		.byte	0
+ 267 001d 00       		.byte	0
+ 268 001e 03       		.uleb128 0x3
+ 269 001f 24       		.uleb128 0x24
+ 270 0020 00       		.byte	0
+ 271 0021 0B       		.uleb128 0xb
+ 272 0022 0B       		.uleb128 0xb
+ 273 0023 3E       		.uleb128 0x3e
+ 274 0024 0B       		.uleb128 0xb
+ 275 0025 03       		.uleb128 0x3
+ 276 0026 08       		.uleb128 0x8
+ 277 0027 00       		.byte	0
+ 278 0028 00       		.byte	0
+ 279 0029 04       		.uleb128 0x4
+ 280 002a 16       		.uleb128 0x16
+ 281 002b 00       		.byte	0
+ 282 002c 03       		.uleb128 0x3
+ 283 002d 0E       		.uleb128 0xe
+ 284 002e 3A       		.uleb128 0x3a
+ 285 002f 0B       		.uleb128 0xb
+ 286 0030 3B       		.uleb128 0x3b
+ 287 0031 05       		.uleb128 0x5
+ 288 0032 39       		.uleb128 0x39
+ 289 0033 0B       		.uleb128 0xb
+ 290 0034 49       		.uleb128 0x49
+ 291 0035 13       		.uleb128 0x13
+ 292 0036 00       		.byte	0
+ 293 0037 00       		.byte	0
+ 294 0038 05       		.uleb128 0x5
+ 295 0039 35       		.uleb128 0x35
+ 296 003a 00       		.byte	0
+ 297 003b 49       		.uleb128 0x49
+ 298 003c 13       		.uleb128 0x13
+ 299 003d 00       		.byte	0
+ 300 003e 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc55NeTb.s 			page 8
+
+
+ 301 003f 06       		.uleb128 0x6
+ 302 0040 13       		.uleb128 0x13
+ 303 0041 01       		.byte	0x1
+ 304 0042 0B       		.uleb128 0xb
+ 305 0043 0B       		.uleb128 0xb
+ 306 0044 3A       		.uleb128 0x3a
+ 307 0045 0B       		.uleb128 0xb
+ 308 0046 3B       		.uleb128 0x3b
+ 309 0047 0B       		.uleb128 0xb
+ 310 0048 39       		.uleb128 0x39
+ 311 0049 0B       		.uleb128 0xb
+ 312 004a 01       		.uleb128 0x1
+ 313 004b 13       		.uleb128 0x13
+ 314 004c 00       		.byte	0
+ 315 004d 00       		.byte	0
+ 316 004e 07       		.uleb128 0x7
+ 317 004f 0D       		.uleb128 0xd
+ 318 0050 00       		.byte	0
+ 319 0051 03       		.uleb128 0x3
+ 320 0052 0E       		.uleb128 0xe
+ 321 0053 3A       		.uleb128 0x3a
+ 322 0054 0B       		.uleb128 0xb
+ 323 0055 3B       		.uleb128 0x3b
+ 324 0056 0B       		.uleb128 0xb
+ 325 0057 39       		.uleb128 0x39
+ 326 0058 0B       		.uleb128 0xb
+ 327 0059 49       		.uleb128 0x49
+ 328 005a 13       		.uleb128 0x13
+ 329 005b 38       		.uleb128 0x38
+ 330 005c 0B       		.uleb128 0xb
+ 331 005d 00       		.byte	0
+ 332 005e 00       		.byte	0
+ 333 005f 08       		.uleb128 0x8
+ 334 0060 16       		.uleb128 0x16
+ 335 0061 00       		.byte	0
+ 336 0062 03       		.uleb128 0x3
+ 337 0063 0E       		.uleb128 0xe
+ 338 0064 3A       		.uleb128 0x3a
+ 339 0065 0B       		.uleb128 0xb
+ 340 0066 3B       		.uleb128 0x3b
+ 341 0067 0B       		.uleb128 0xb
+ 342 0068 39       		.uleb128 0x39
+ 343 0069 0B       		.uleb128 0xb
+ 344 006a 49       		.uleb128 0x49
+ 345 006b 13       		.uleb128 0x13
+ 346 006c 00       		.byte	0
+ 347 006d 00       		.byte	0
+ 348 006e 09       		.uleb128 0x9
+ 349 006f 34       		.uleb128 0x34
+ 350 0070 00       		.byte	0
+ 351 0071 03       		.uleb128 0x3
+ 352 0072 0E       		.uleb128 0xe
+ 353 0073 3A       		.uleb128 0x3a
+ 354 0074 0B       		.uleb128 0xb
+ 355 0075 3B       		.uleb128 0x3b
+ 356 0076 0B       		.uleb128 0xb
+ 357 0077 39       		.uleb128 0x39
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc55NeTb.s 			page 9
+
+
+ 358 0078 0B       		.uleb128 0xb
+ 359 0079 49       		.uleb128 0x49
+ 360 007a 13       		.uleb128 0x13
+ 361 007b 02       		.uleb128 0x2
+ 362 007c 18       		.uleb128 0x18
+ 363 007d 00       		.byte	0
+ 364 007e 00       		.byte	0
+ 365 007f 0A       		.uleb128 0xa
+ 366 0080 2E       		.uleb128 0x2e
+ 367 0081 00       		.byte	0
+ 368 0082 3F       		.uleb128 0x3f
+ 369 0083 19       		.uleb128 0x19
+ 370 0084 03       		.uleb128 0x3
+ 371 0085 0E       		.uleb128 0xe
+ 372 0086 3A       		.uleb128 0x3a
+ 373 0087 0B       		.uleb128 0xb
+ 374 0088 3B       		.uleb128 0x3b
+ 375 0089 0B       		.uleb128 0xb
+ 376 008a 39       		.uleb128 0x39
+ 377 008b 0B       		.uleb128 0xb
+ 378 008c 27       		.uleb128 0x27
+ 379 008d 19       		.uleb128 0x19
+ 380 008e 11       		.uleb128 0x11
+ 381 008f 01       		.uleb128 0x1
+ 382 0090 12       		.uleb128 0x12
+ 383 0091 06       		.uleb128 0x6
+ 384 0092 40       		.uleb128 0x40
+ 385 0093 18       		.uleb128 0x18
+ 386 0094 9742     		.uleb128 0x2117
+ 387 0096 19       		.uleb128 0x19
+ 388 0097 00       		.byte	0
+ 389 0098 00       		.byte	0
+ 390 0099 00       		.byte	0
+ 391              		.section	.debug_aranges,"",%progbits
+ 392 0000 24000000 		.4byte	0x24
+ 393 0004 0200     		.2byte	0x2
+ 394 0006 00000000 		.4byte	.Ldebug_info0
+ 395 000a 04       		.byte	0x4
+ 396 000b 00       		.byte	0
+ 397 000c 0000     		.2byte	0
+ 398 000e 0000     		.2byte	0
+ 399 0010 00000000 		.4byte	.LFB0
+ 400 0014 14000000 		.4byte	.LFE0-.LFB0
+ 401 0018 00000000 		.4byte	.LFB1
+ 402 001c 14000000 		.4byte	.LFE1-.LFB1
+ 403 0020 00000000 		.4byte	0
+ 404 0024 00000000 		.4byte	0
+ 405              		.section	.debug_ranges,"",%progbits
+ 406              	.Ldebug_ranges0:
+ 407 0000 00000000 		.4byte	.LFB0
+ 408 0004 14000000 		.4byte	.LFE0
+ 409 0008 00000000 		.4byte	.LFB1
+ 410 000c 14000000 		.4byte	.LFE1
+ 411 0010 00000000 		.4byte	0
+ 412 0014 00000000 		.4byte	0
+ 413              		.section	.debug_line,"",%progbits
+ 414              	.Ldebug_line0:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc55NeTb.s 			page 10
+
+
+ 415 0000 9F000000 		.section	.debug_str,"MS",%progbits,1
+ 415      03005800 
+ 415      00000201 
+ 415      FB0E0D00 
+ 415      01010101 
+ 416              	.LASF22:
+ 417 0000 433A5C55 		.ascii	"C:\\Users\\edulu.DESKTOP-961TG4K\\Documents\\PSoC C"
+ 417      73657273 
+ 417      5C656475 
+ 417      6C752E44 
+ 417      45534B54 
+ 418 002f 72656174 		.ascii	"reator\\Micrium\\Examples\\Cypress\\CY8CKIT-044\\OS"
+ 418      6F725C4D 
+ 418      69637269 
+ 418      756D5C45 
+ 418      78616D70 
+ 419 005d 325C5053 		.ascii	"2\\PSoC\\OS2.cydsn\000"
+ 419      6F435C4F 
+ 419      53322E63 
+ 419      7964736E 
+ 419      00
+ 420              	.LASF21:
+ 421 006e 47656E65 		.ascii	"Generated_Source\\PSoC4\\temp_conv_PM.c\000"
+ 421      72617465 
+ 421      645F536F 
+ 421      75726365 
+ 421      5C50536F 
+ 422              	.LASF16:
+ 423 0094 75736253 		.ascii	"usbState\000"
+ 423      74617465 
+ 423      00
+ 424              	.LASF23:
+ 425 009d 74656D70 		.ascii	"temp_conv_backup\000"
+ 425      5F636F6E 
+ 425      765F6261 
+ 425      636B7570 
+ 425      00
+ 426              	.LASF9:
+ 427 00ae 666C6F61 		.ascii	"float\000"
+ 427      7400
+ 428              	.LASF1:
+ 429 00b4 756E7369 		.ascii	"unsigned char\000"
+ 429      676E6564 
+ 429      20636861 
+ 429      7200
+ 430              	.LASF5:
+ 431 00c2 6C6F6E67 		.ascii	"long unsigned int\000"
+ 431      20756E73 
+ 431      69676E65 
+ 431      6420696E 
+ 431      7400
+ 432              	.LASF3:
+ 433 00d4 73686F72 		.ascii	"short unsigned int\000"
+ 433      7420756E 
+ 433      7369676E 
+ 433      65642069 
+ 433      6E7400
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc55NeTb.s 			page 11
+
+
+ 434              	.LASF18:
+ 435 00e7 74656D70 		.ascii	"temp_conv_Wakeup\000"
+ 435      5F636F6E 
+ 435      765F5761 
+ 435      6B657570 
+ 435      00
+ 436              	.LASF10:
+ 437 00f8 646F7562 		.ascii	"double\000"
+ 437      6C6500
+ 438              	.LASF17:
+ 439 00ff 74656D70 		.ascii	"temp_conv_BACKUP_STRUCT\000"
+ 439      5F636F6E 
+ 439      765F4241 
+ 439      434B5550 
+ 439      5F535452 
+ 440              	.LASF12:
+ 441 0117 75696E74 		.ascii	"uint32\000"
+ 441      333200
+ 442              	.LASF8:
+ 443 011e 756E7369 		.ascii	"unsigned int\000"
+ 443      676E6564 
+ 443      20696E74 
+ 443      00
+ 444              	.LASF19:
+ 445 012b 74656D70 		.ascii	"temp_conv_Sleep\000"
+ 445      5F636F6E 
+ 445      765F536C 
+ 445      65657000 
+ 446              	.LASF7:
+ 447 013b 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 447      206C6F6E 
+ 447      6720756E 
+ 447      7369676E 
+ 447      65642069 
+ 448              	.LASF20:
+ 449 0152 474E5520 		.ascii	"GNU C17 8.2.1 20181213 (release) [gcc-8-branch revi"
+ 449      43313720 
+ 449      382E322E 
+ 449      31203230 
+ 449      31383132 
+ 450 0185 73696F6E 		.ascii	"sion 267074] -mcpu=cortex-m0 -mthumb -mfloat-abi=so"
+ 450      20323637 
+ 450      3037345D 
+ 450      202D6D63 
+ 450      70753D63 
+ 451 01b8 6674202D 		.ascii	"ft -march=armv6s-m -g -Og -ffunction-sections -ffat"
+ 451      6D617263 
+ 451      683D6172 
+ 451      6D763673 
+ 451      2D6D202D 
+ 452 01eb 2D6C746F 		.ascii	"-lto-objects\000"
+ 452      2D6F626A 
+ 452      65637473 
+ 452      00
+ 453              	.LASF15:
+ 454 01f8 73696F53 		.ascii	"sioState\000"
+ 454      74617465 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc55NeTb.s 			page 12
+
+
+ 454      00
+ 455              	.LASF6:
+ 456 0201 6C6F6E67 		.ascii	"long long int\000"
+ 456      206C6F6E 
+ 456      6720696E 
+ 456      7400
+ 457              	.LASF11:
+ 458 020f 63686172 		.ascii	"char\000"
+ 458      00
+ 459              	.LASF2:
+ 460 0214 73686F72 		.ascii	"short int\000"
+ 460      7420696E 
+ 460      7400
+ 461              	.LASF14:
+ 462 021e 70635374 		.ascii	"pcState\000"
+ 462      61746500 
+ 463              	.LASF4:
+ 464 0226 6C6F6E67 		.ascii	"long int\000"
+ 464      20696E74 
+ 464      00
+ 465              	.LASF13:
+ 466 022f 72656733 		.ascii	"reg32\000"
+ 466      3200
+ 467              	.LASF0:
+ 468 0235 7369676E 		.ascii	"signed char\000"
+ 468      65642063 
+ 468      68617200 
+ 469              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2018-q4-major) 8.2.1 20181213 (release) [gcc

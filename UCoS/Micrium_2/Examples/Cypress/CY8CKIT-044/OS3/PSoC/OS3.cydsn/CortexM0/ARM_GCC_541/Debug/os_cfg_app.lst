@@ -1,0 +1,3005 @@
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"os_cfg_app.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.comm	OSCfg_IdleTaskStk,512,4
+  20              		.comm	OSCfg_ISRStk,400,4
+  21              		.comm	OSCfg_StatTaskStk,512,4
+  22              		.comm	OSCfg_TickTaskStk,512,4
+  23              		.comm	OSCfg_TickWheel,256,4
+  24              		.comm	OSCfg_TmrTaskStk,512,4
+  25              		.comm	OSCfg_TmrWheel,256,4
+  26              		.global	OSCfg_IdleTaskStkBasePtr
+  27              		.section	.rodata
+  28              		.align	2
+  29              		.type	OSCfg_IdleTaskStkBasePtr, %object
+  30              		.size	OSCfg_IdleTaskStkBasePtr, 4
+  31              	OSCfg_IdleTaskStkBasePtr:
+  32 0000 00000000 		.word	OSCfg_IdleTaskStk
+  33              		.global	OSCfg_IdleTaskStkLimit
+  34              		.align	2
+  35              		.type	OSCfg_IdleTaskStkLimit, %object
+  36              		.size	OSCfg_IdleTaskStkLimit, 4
+  37              	OSCfg_IdleTaskStkLimit:
+  38 0004 0C000000 		.word	12
+  39              		.global	OSCfg_IdleTaskStkSize
+  40              		.align	2
+  41              		.type	OSCfg_IdleTaskStkSize, %object
+  42              		.size	OSCfg_IdleTaskStkSize, 4
+  43              	OSCfg_IdleTaskStkSize:
+  44 0008 80000000 		.word	128
+  45              		.global	OSCfg_IdleTaskStkSizeRAM
+  46              		.align	2
+  47              		.type	OSCfg_IdleTaskStkSizeRAM, %object
+  48              		.size	OSCfg_IdleTaskStkSizeRAM, 4
+  49              	OSCfg_IdleTaskStkSizeRAM:
+  50 000c 00020000 		.word	512
+  51              		.global	OSCfg_IntQBasePtr
+  52              		.align	2
+  53              		.type	OSCfg_IntQBasePtr, %object
+  54              		.size	OSCfg_IntQBasePtr, 4
+  55              	OSCfg_IntQBasePtr:
+  56 0010 00000000 		.space	4
+  57              		.global	OSCfg_IntQSize
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 2
+
+
+  58              		.align	1
+  59              		.type	OSCfg_IntQSize, %object
+  60              		.size	OSCfg_IntQSize, 2
+  61              	OSCfg_IntQSize:
+  62 0014 0000     		.space	2
+  63              		.global	OSCfg_IntQSizeRAM
+  64 0016 0000     		.align	2
+  65              		.type	OSCfg_IntQSizeRAM, %object
+  66              		.size	OSCfg_IntQSizeRAM, 4
+  67              	OSCfg_IntQSizeRAM:
+  68 0018 00000000 		.space	4
+  69              		.global	OSCfg_IntQTaskStkBasePtr
+  70              		.align	2
+  71              		.type	OSCfg_IntQTaskStkBasePtr, %object
+  72              		.size	OSCfg_IntQTaskStkBasePtr, 4
+  73              	OSCfg_IntQTaskStkBasePtr:
+  74 001c 00000000 		.space	4
+  75              		.global	OSCfg_IntQTaskStkLimit
+  76              		.align	2
+  77              		.type	OSCfg_IntQTaskStkLimit, %object
+  78              		.size	OSCfg_IntQTaskStkLimit, 4
+  79              	OSCfg_IntQTaskStkLimit:
+  80 0020 00000000 		.space	4
+  81              		.global	OSCfg_IntQTaskStkSize
+  82              		.align	2
+  83              		.type	OSCfg_IntQTaskStkSize, %object
+  84              		.size	OSCfg_IntQTaskStkSize, 4
+  85              	OSCfg_IntQTaskStkSize:
+  86 0024 00000000 		.space	4
+  87              		.global	OSCfg_IntQTaskStkSizeRAM
+  88              		.align	2
+  89              		.type	OSCfg_IntQTaskStkSizeRAM, %object
+  90              		.size	OSCfg_IntQTaskStkSizeRAM, 4
+  91              	OSCfg_IntQTaskStkSizeRAM:
+  92 0028 00000000 		.space	4
+  93              		.global	OSCfg_ISRStkBasePtr
+  94              		.align	2
+  95              		.type	OSCfg_ISRStkBasePtr, %object
+  96              		.size	OSCfg_ISRStkBasePtr, 4
+  97              	OSCfg_ISRStkBasePtr:
+  98 002c 00000000 		.word	OSCfg_ISRStk
+  99              		.global	OSCfg_ISRStkSize
+ 100              		.align	2
+ 101              		.type	OSCfg_ISRStkSize, %object
+ 102              		.size	OSCfg_ISRStkSize, 4
+ 103              	OSCfg_ISRStkSize:
+ 104 0030 64000000 		.word	100
+ 105              		.global	OSCfg_ISRStkSizeRAM
+ 106              		.align	2
+ 107              		.type	OSCfg_ISRStkSizeRAM, %object
+ 108              		.size	OSCfg_ISRStkSizeRAM, 4
+ 109              	OSCfg_ISRStkSizeRAM:
+ 110 0034 90010000 		.word	400
+ 111              		.global	OSCfg_MsgPoolSize
+ 112              		.align	1
+ 113              		.type	OSCfg_MsgPoolSize, %object
+ 114              		.size	OSCfg_MsgPoolSize, 2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 3
+
+
+ 115              	OSCfg_MsgPoolSize:
+ 116 0038 0000     		.space	2
+ 117              		.global	OSCfg_MsgPoolSizeRAM
+ 118 003a 0000     		.align	2
+ 119              		.type	OSCfg_MsgPoolSizeRAM, %object
+ 120              		.size	OSCfg_MsgPoolSizeRAM, 4
+ 121              	OSCfg_MsgPoolSizeRAM:
+ 122 003c 00000000 		.space	4
+ 123              		.global	OSCfg_MsgPoolBasePtr
+ 124              		.align	2
+ 125              		.type	OSCfg_MsgPoolBasePtr, %object
+ 126              		.size	OSCfg_MsgPoolBasePtr, 4
+ 127              	OSCfg_MsgPoolBasePtr:
+ 128 0040 00000000 		.space	4
+ 129              		.global	OSCfg_StatTaskPrio
+ 130              		.type	OSCfg_StatTaskPrio, %object
+ 131              		.size	OSCfg_StatTaskPrio, 1
+ 132              	OSCfg_StatTaskPrio:
+ 133 0044 1E       		.byte	30
+ 134              		.global	OSCfg_StatTaskRate_Hz
+ 135 0045 000000   		.align	2
+ 136              		.type	OSCfg_StatTaskRate_Hz, %object
+ 137              		.size	OSCfg_StatTaskRate_Hz, 4
+ 138              	OSCfg_StatTaskRate_Hz:
+ 139 0048 0A000000 		.word	10
+ 140              		.global	OSCfg_StatTaskStkBasePtr
+ 141              		.align	2
+ 142              		.type	OSCfg_StatTaskStkBasePtr, %object
+ 143              		.size	OSCfg_StatTaskStkBasePtr, 4
+ 144              	OSCfg_StatTaskStkBasePtr:
+ 145 004c 00000000 		.word	OSCfg_StatTaskStk
+ 146              		.global	OSCfg_StatTaskStkLimit
+ 147              		.align	2
+ 148              		.type	OSCfg_StatTaskStkLimit, %object
+ 149              		.size	OSCfg_StatTaskStkLimit, 4
+ 150              	OSCfg_StatTaskStkLimit:
+ 151 0050 0C000000 		.word	12
+ 152              		.global	OSCfg_StatTaskStkSize
+ 153              		.align	2
+ 154              		.type	OSCfg_StatTaskStkSize, %object
+ 155              		.size	OSCfg_StatTaskStkSize, 4
+ 156              	OSCfg_StatTaskStkSize:
+ 157 0054 80000000 		.word	128
+ 158              		.global	OSCfg_StatTaskStkSizeRAM
+ 159              		.align	2
+ 160              		.type	OSCfg_StatTaskStkSizeRAM, %object
+ 161              		.size	OSCfg_StatTaskStkSizeRAM, 4
+ 162              	OSCfg_StatTaskStkSizeRAM:
+ 163 0058 00020000 		.word	512
+ 164              		.global	OSCfg_StkSizeMin
+ 165              		.align	2
+ 166              		.type	OSCfg_StkSizeMin, %object
+ 167              		.size	OSCfg_StkSizeMin, 4
+ 168              	OSCfg_StkSizeMin:
+ 169 005c 40000000 		.word	64
+ 170              		.global	OSCfg_TickRate_Hz
+ 171              		.align	2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 4
+
+
+ 172              		.type	OSCfg_TickRate_Hz, %object
+ 173              		.size	OSCfg_TickRate_Hz, 4
+ 174              	OSCfg_TickRate_Hz:
+ 175 0060 E8030000 		.word	1000
+ 176              		.global	OSCfg_TickTaskPrio
+ 177              		.type	OSCfg_TickTaskPrio, %object
+ 178              		.size	OSCfg_TickTaskPrio, 1
+ 179              	OSCfg_TickTaskPrio:
+ 180 0064 0A       		.byte	10
+ 181              		.global	OSCfg_TickTaskStkBasePtr
+ 182 0065 000000   		.align	2
+ 183              		.type	OSCfg_TickTaskStkBasePtr, %object
+ 184              		.size	OSCfg_TickTaskStkBasePtr, 4
+ 185              	OSCfg_TickTaskStkBasePtr:
+ 186 0068 00000000 		.word	OSCfg_TickTaskStk
+ 187              		.global	OSCfg_TickTaskStkLimit
+ 188              		.align	2
+ 189              		.type	OSCfg_TickTaskStkLimit, %object
+ 190              		.size	OSCfg_TickTaskStkLimit, 4
+ 191              	OSCfg_TickTaskStkLimit:
+ 192 006c 0C000000 		.word	12
+ 193              		.global	OSCfg_TickTaskStkSize
+ 194              		.align	2
+ 195              		.type	OSCfg_TickTaskStkSize, %object
+ 196              		.size	OSCfg_TickTaskStkSize, 4
+ 197              	OSCfg_TickTaskStkSize:
+ 198 0070 80000000 		.word	128
+ 199              		.global	OSCfg_TickTaskStkSizeRAM
+ 200              		.align	2
+ 201              		.type	OSCfg_TickTaskStkSizeRAM, %object
+ 202              		.size	OSCfg_TickTaskStkSizeRAM, 4
+ 203              	OSCfg_TickTaskStkSizeRAM:
+ 204 0074 00020000 		.word	512
+ 205              		.global	OSCfg_TickWheelSize
+ 206              		.align	1
+ 207              		.type	OSCfg_TickWheelSize, %object
+ 208              		.size	OSCfg_TickWheelSize, 2
+ 209              	OSCfg_TickWheelSize:
+ 210 0078 2000     		.short	32
+ 211              		.global	OSCfg_TickWheelSizeRAM
+ 212 007a 0000     		.align	2
+ 213              		.type	OSCfg_TickWheelSizeRAM, %object
+ 214              		.size	OSCfg_TickWheelSizeRAM, 4
+ 215              	OSCfg_TickWheelSizeRAM:
+ 216 007c 00010000 		.word	256
+ 217              		.global	OSCfg_TmrTaskPrio
+ 218              		.type	OSCfg_TmrTaskPrio, %object
+ 219              		.size	OSCfg_TmrTaskPrio, 1
+ 220              	OSCfg_TmrTaskPrio:
+ 221 0080 1D       		.byte	29
+ 222              		.global	OSCfg_TmrTaskRate_Hz
+ 223 0081 000000   		.align	2
+ 224              		.type	OSCfg_TmrTaskRate_Hz, %object
+ 225              		.size	OSCfg_TmrTaskRate_Hz, 4
+ 226              	OSCfg_TmrTaskRate_Hz:
+ 227 0084 0A000000 		.word	10
+ 228              		.global	OSCfg_TmrTaskStkBasePtr
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 5
+
+
+ 229              		.align	2
+ 230              		.type	OSCfg_TmrTaskStkBasePtr, %object
+ 231              		.size	OSCfg_TmrTaskStkBasePtr, 4
+ 232              	OSCfg_TmrTaskStkBasePtr:
+ 233 0088 00000000 		.word	OSCfg_TmrTaskStk
+ 234              		.global	OSCfg_TmrTaskStkLimit
+ 235              		.align	2
+ 236              		.type	OSCfg_TmrTaskStkLimit, %object
+ 237              		.size	OSCfg_TmrTaskStkLimit, 4
+ 238              	OSCfg_TmrTaskStkLimit:
+ 239 008c 0C000000 		.word	12
+ 240              		.global	OSCfg_TmrTaskStkSize
+ 241              		.align	2
+ 242              		.type	OSCfg_TmrTaskStkSize, %object
+ 243              		.size	OSCfg_TmrTaskStkSize, 4
+ 244              	OSCfg_TmrTaskStkSize:
+ 245 0090 80000000 		.word	128
+ 246              		.global	OSCfg_TmrTaskStkSizeRAM
+ 247              		.align	2
+ 248              		.type	OSCfg_TmrTaskStkSizeRAM, %object
+ 249              		.size	OSCfg_TmrTaskStkSizeRAM, 4
+ 250              	OSCfg_TmrTaskStkSizeRAM:
+ 251 0094 00020000 		.word	512
+ 252              		.global	OSCfg_TmrWheelSize
+ 253              		.align	1
+ 254              		.type	OSCfg_TmrWheelSize, %object
+ 255              		.size	OSCfg_TmrWheelSize, 2
+ 256              	OSCfg_TmrWheelSize:
+ 257 0098 2000     		.short	32
+ 258              		.global	OSCfg_TmrWheelSizeRAM
+ 259 009a 0000     		.align	2
+ 260              		.type	OSCfg_TmrWheelSizeRAM, %object
+ 261              		.size	OSCfg_TmrWheelSizeRAM, 4
+ 262              	OSCfg_TmrWheelSizeRAM:
+ 263 009c 00010000 		.word	256
+ 264              		.global	OSCfg_DataSizeRAM
+ 265              		.align	2
+ 266              		.type	OSCfg_DataSizeRAM, %object
+ 267              		.size	OSCfg_DataSizeRAM, 4
+ 268              	OSCfg_DataSizeRAM:
+ 269 00a0 900B0000 		.word	2960
+ 270              		.section	.text.OSCfg_Init,"ax",%progbits
+ 271              		.align	2
+ 272              		.global	OSCfg_Init
+ 273              		.code	16
+ 274              		.thumb_func
+ 275              		.type	OSCfg_Init, %function
+ 276              	OSCfg_Init:
+ 277              	.LFB1:
+ 278              		.file 1 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source\\os_cfg_app.c"
+   1:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** /*
+   2:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** ***************************************************************************************************
+   3:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *                                                      uC/OS-III
+   4:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *                                                 The Real-Time Kernel
+   5:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *
+   6:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *                                  (c) Copyright 2009-2012; Micrium, Inc.; Weston, FL
+   7:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *                           All rights reserved.  Protected by international copyright laws.
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 6
+
+
+   8:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *
+   9:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *                                       OS CONFIGURATION (APPLICATION SPECIFICS)
+  10:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *
+  11:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** * File    : OS_CFG_APP.C
+  12:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** * By      : JJL
+  13:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** * Version : V3.03.01
+  14:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *
+  15:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** * LICENSING TERMS:
+  16:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** * ---------------
+  17:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *           uC/OS-III is provided in source form for FREE short-term evaluation, for educational us
+  18:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *           for peaceful research.  If you plan or intend to use uC/OS-III in a commercial applicat
+  19:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *           product then, you need to contact Micrium to properly license uC/OS-III for its use in 
+  20:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *           application/product.   We provide ALL the source code for your convenience and to help 
+  21:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *           experience uC/OS-III.  The fact that the source is provided does NOT mean that you can 
+  22:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *           it commercially without paying a licensing fee.
+  23:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *
+  24:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *           Knowledge of the source code may NOT be used to develop a similar product.
+  25:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *
+  26:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *           Please help us continue to provide the embedded community with the finest software avai
+  27:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *           Your honesty is greatly appreciated.
+  28:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *
+  29:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *           You can contact us at www.micrium.com, or by phone at +1 (954) 217-2036.
+  30:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** ***************************************************************************************************
+  31:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** * Note(s) : DO NOT CHANGE THIS FILE!
+  32:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** ***************************************************************************************************
+  33:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** */
+  34:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  35:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #define  MICRIUM_SOURCE
+  36:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #include <os_cfg_app.h>
+  37:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #include <os.h>
+  38:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  39:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #ifdef VSC_INCLUDE_SOURCE_FILE_NAMES
+  40:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** const  CPU_CHAR  *os_cfg_app__c = "$Id: $";
+  41:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+  42:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  43:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #define  OS_CFG_IDLE_TASK_STK_LIMIT      ((OS_CFG_IDLE_TASK_STK_SIZE  * OS_CFG_TASK_STK_LIMIT_PCT_E
+  44:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #define  OS_CFG_INT_Q_TASK_STK_LIMIT     ((OS_CFG_INT_Q_TASK_STK_SIZE * OS_CFG_TASK_STK_LIMIT_PCT_E
+  45:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #define  OS_CFG_STAT_TASK_STK_LIMIT      ((OS_CFG_STAT_TASK_STK_SIZE  * OS_CFG_TASK_STK_LIMIT_PCT_E
+  46:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #define  OS_CFG_TICK_TASK_STK_LIMIT      ((OS_CFG_TICK_TASK_STK_SIZE  * OS_CFG_TASK_STK_LIMIT_PCT_E
+  47:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #define  OS_CFG_TMR_TASK_STK_LIMIT       ((OS_CFG_TMR_TASK_STK_SIZE   * OS_CFG_TASK_STK_LIMIT_PCT_E
+  48:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  49:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** /*
+  50:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** ***************************************************************************************************
+  51:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *                                                    DATA STORAGE
+  52:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** ***************************************************************************************************
+  53:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** */
+  54:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  55:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK        OSCfg_IdleTaskStk   [OS_CFG_IDLE_TASK_STK_SIZE];
+  56:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  57:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_ISR_POST_DEFERRED_EN > 0u)
+  58:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_INT_Q       OSCfg_IntQ          [OS_CFG_INT_Q_SIZE];
+  59:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK        OSCfg_IntQTaskStk   [OS_CFG_INT_Q_TASK_STK_SIZE];
+  60:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+  61:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  62:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_ISR_STK_SIZE > 0u)
+  63:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK        OSCfg_ISRStk        [OS_CFG_ISR_STK_SIZE];
+  64:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 7
+
+
+  65:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  66:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_MSG_EN > 0u)
+  67:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_MSG         OSCfg_MsgPool       [OS_CFG_MSG_POOL_SIZE];
+  68:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+  69:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  70:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_STAT_TASK_EN > 0u)
+  71:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK        OSCfg_StatTaskStk   [OS_CFG_STAT_TASK_STK_SIZE];
+  72:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+  73:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  74:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK        OSCfg_TickTaskStk   [OS_CFG_TICK_TASK_STK_SIZE];
+  75:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_TICK_SPOKE  OSCfg_TickWheel     [OS_CFG_TICK_WHEEL_SIZE];
+  76:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  77:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_TMR_EN > 0u)
+  78:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK        OSCfg_TmrTaskStk    [OS_CFG_TMR_TASK_STK_SIZE];
+  79:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_TMR_SPOKE   OSCfg_TmrWheel      [OS_CFG_TMR_WHEEL_SIZE];
+  80:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+  81:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  82:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** /*$PAGE*/
+  83:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** /*
+  84:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** ***************************************************************************************************
+  85:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *                                                      CONSTANTS
+  86:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** ***************************************************************************************************
+  87:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** */
+  88:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  89:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK      * const  OSCfg_IdleTaskStkBasePtr   = (CPU_STK    *)&OSCfg_IdleTaskStk[0];
+  90:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_IdleTaskStkLimit     = (CPU_STK_SIZE)OS_CFG_IDLE_TASK_STK_LIMIT;
+  91:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_IdleTaskStkSize      = (CPU_STK_SIZE)OS_CFG_IDLE_TASK_STK_SIZE;
+  92:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_IdleTaskStkSizeRAM   = (CPU_INT32U  )sizeof(OSCfg_IdleTaskStk);
+  93:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  94:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+  95:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_ISR_POST_DEFERRED_EN > 0u)
+  96:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_INT_Q     * const  OSCfg_IntQBasePtr          = (OS_INT_Q   *)&OSCfg_IntQ[0];
+  97:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_OBJ_QTY     const  OSCfg_IntQSize             = (OS_OBJ_QTY  )OS_CFG_INT_Q_SIZE;
+  98:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_IntQSizeRAM          = (CPU_INT32U  )sizeof(OSCfg_IntQ);
+  99:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK      * const  OSCfg_IntQTaskStkBasePtr   = (CPU_STK    *)&OSCfg_IntQTaskStk[0];
+ 100:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_IntQTaskStkLimit     = (CPU_STK_SIZE)OS_CFG_INT_Q_TASK_STK_LIMIT;
+ 101:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_IntQTaskStkSize      = (CPU_STK_SIZE)OS_CFG_INT_Q_TASK_STK_SIZE;
+ 102:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_IntQTaskStkSizeRAM   = (CPU_INT32U  )sizeof(OSCfg_IntQTaskStk);
+ 103:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #else
+ 104:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_INT_Q     * const  OSCfg_IntQBasePtr          = (OS_INT_Q   *)0;
+ 105:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_OBJ_QTY     const  OSCfg_IntQSize             = (OS_OBJ_QTY  )0;
+ 106:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_IntQSizeRAM          = (CPU_INT32U  )0;
+ 107:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK      * const  OSCfg_IntQTaskStkBasePtr   = (CPU_STK    *)0;
+ 108:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_IntQTaskStkLimit     = (CPU_STK_SIZE)0;
+ 109:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_IntQTaskStkSize      = (CPU_STK_SIZE)0;
+ 110:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_IntQTaskStkSizeRAM   = (CPU_INT32U  )0;
+ 111:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 112:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 113:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 114:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_ISR_STK_SIZE > 0u)
+ 115:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK      * const  OSCfg_ISRStkBasePtr        = (CPU_STK    *)&OSCfg_ISRStk[0];
+ 116:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_ISRStkSize           = (CPU_STK_SIZE)OS_CFG_ISR_STK_SIZE;
+ 117:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_ISRStkSizeRAM        = (CPU_INT32U  )sizeof(OSCfg_ISRStk);
+ 118:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #else
+ 119:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK      * const  OSCfg_ISRStkBasePtr        = (CPU_STK    *)0;
+ 120:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_ISRStkSize           = (CPU_STK_SIZE)0;
+ 121:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_ISRStkSizeRAM        = (CPU_INT32U  )0;
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 8
+
+
+ 122:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 123:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 124:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 125:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_MSG_EN > 0u)
+ 126:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_MSG_SIZE    const  OSCfg_MsgPoolSize          = (OS_MSG_SIZE)OS_CFG_MSG_POOL_SIZE;
+ 127:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_MsgPoolSizeRAM       = (CPU_INT32U )sizeof(OSCfg_MsgPool);
+ 128:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_MSG       * const  OSCfg_MsgPoolBasePtr       = (OS_MSG    *)&OSCfg_MsgPool[0];
+ 129:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #else
+ 130:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_MSG_SIZE    const  OSCfg_MsgPoolSize          = (OS_MSG_SIZE)0;
+ 131:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_MsgPoolSizeRAM       = (CPU_INT32U )0;
+ 132:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_MSG       * const  OSCfg_MsgPoolBasePtr       = (OS_MSG    *)0;
+ 133:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 134:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 135:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 136:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_STAT_TASK_EN > 0u)
+ 137:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_PRIO        const  OSCfg_StatTaskPrio         = (OS_PRIO     )OS_CFG_STAT_TASK_PRIO;
+ 138:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_RATE_HZ     const  OSCfg_StatTaskRate_Hz      = (OS_RATE_HZ  )OS_CFG_STAT_TASK_RATE_HZ;
+ 139:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK      * const  OSCfg_StatTaskStkBasePtr   = (CPU_STK    *)&OSCfg_StatTaskStk[0];
+ 140:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_StatTaskStkLimit     = (CPU_STK_SIZE)OS_CFG_STAT_TASK_STK_LIMIT;
+ 141:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_StatTaskStkSize      = (CPU_STK_SIZE)OS_CFG_STAT_TASK_STK_SIZE;
+ 142:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_StatTaskStkSizeRAM   = (CPU_INT32U  )sizeof(OSCfg_StatTaskStk);
+ 143:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #else
+ 144:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_PRIO        const  OSCfg_StatTaskPrio         = (OS_PRIO     )0;
+ 145:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_RATE_HZ     const  OSCfg_StatTaskRate_Hz      = (OS_RATE_HZ  )0;
+ 146:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK      * const  OSCfg_StatTaskStkBasePtr   = (CPU_STK    *)0;
+ 147:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_StatTaskStkLimit     = (CPU_STK_SIZE)0;
+ 148:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_StatTaskStkSize      = (CPU_STK_SIZE)0;
+ 149:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_StatTaskStkSizeRAM   = (CPU_INT32U  )0;
+ 150:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 151:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 152:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 153:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_StkSizeMin           = (CPU_STK_SIZE)OS_CFG_STK_SIZE_MIN;
+ 154:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 155:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 156:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_RATE_HZ     const  OSCfg_TickRate_Hz          = (OS_RATE_HZ  )OS_CFG_TICK_RATE_HZ;
+ 157:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_PRIO        const  OSCfg_TickTaskPrio         = (OS_PRIO     )OS_CFG_TICK_TASK_PRIO;
+ 158:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK      * const  OSCfg_TickTaskStkBasePtr   = (CPU_STK    *)&OSCfg_TickTaskStk[0];
+ 159:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_TickTaskStkLimit     = (CPU_STK_SIZE)OS_CFG_TICK_TASK_STK_LIMIT;
+ 160:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_TickTaskStkSize      = (CPU_STK_SIZE)OS_CFG_TICK_TASK_STK_SIZE;
+ 161:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_TickTaskStkSizeRAM   = (CPU_INT32U  )sizeof(OSCfg_TickTaskStk);
+ 162:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_OBJ_QTY     const  OSCfg_TickWheelSize        = (OS_OBJ_QTY  )OS_CFG_TICK_WHEEL_SIZE;
+ 163:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_TickWheelSizeRAM     = (CPU_INT32U  )sizeof(OSCfg_TickWheel);
+ 164:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 165:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 166:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_TMR_EN > 0u)
+ 167:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_PRIO        const  OSCfg_TmrTaskPrio          = (OS_PRIO     )OS_CFG_TMR_TASK_PRIO;
+ 168:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_RATE_HZ     const  OSCfg_TmrTaskRate_Hz       = (OS_RATE_HZ  )OS_CFG_TMR_TASK_RATE_HZ;
+ 169:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK      * const  OSCfg_TmrTaskStkBasePtr    = (CPU_STK    *)&OSCfg_TmrTaskStk[0];
+ 170:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_TmrTaskStkLimit      = (CPU_STK_SIZE)OS_CFG_TMR_TASK_STK_LIMIT;
+ 171:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_TmrTaskStkSize       = (CPU_STK_SIZE)OS_CFG_TMR_TASK_STK_SIZE;
+ 172:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_TmrTaskStkSizeRAM    = (CPU_INT32U  )sizeof(OSCfg_TmrTaskStk);
+ 173:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_OBJ_QTY     const  OSCfg_TmrWheelSize         = (OS_OBJ_QTY  )OS_CFG_TMR_WHEEL_SIZE;
+ 174:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_TmrWheelSizeRAM      = (CPU_INT32U  )sizeof(OSCfg_TmrWheel);
+ 175:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #else
+ 176:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_PRIO        const  OSCfg_TmrTaskPrio          = (OS_PRIO     )0;
+ 177:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_RATE_HZ     const  OSCfg_TmrTaskRate_Hz       = (OS_RATE_HZ  )0;
+ 178:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK      * const  OSCfg_TmrTaskStkBasePtr    = (CPU_STK    *)0;
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 9
+
+
+ 179:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_TmrTaskStkLimit      = (CPU_STK_SIZE)0;
+ 180:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_STK_SIZE   const  OSCfg_TmrTaskStkSize       = (CPU_STK_SIZE)0;
+ 181:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_TmrTaskStkSizeRAM    = (CPU_INT32U  )0;
+ 182:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** OS_OBJ_QTY     const  OSCfg_TmrWheelSize         = (OS_OBJ_QTY  )0;
+ 183:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_TmrWheelSizeRAM      = (CPU_INT32U  )0;
+ 184:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 185:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 186:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 187:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** /*$PAGE*/
+ 188:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** /*
+ 189:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** ***************************************************************************************************
+ 190:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *                                         TOTAL SIZE OF APPLICATION CONFIGURATION
+ 191:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** ***************************************************************************************************
+ 192:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** */
+ 193:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 194:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** CPU_INT32U     const  OSCfg_DataSizeRAM          = sizeof(OSCfg_IdleTaskStk)
+ 195:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 196:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_ISR_POST_DEFERRED_EN > 0u)
+ 197:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****                                                  + sizeof(OSCfg_IntQ)
+ 198:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****                                                  + sizeof(OSCfg_IntQTaskStk)
+ 199:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 200:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 201:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_MSG_EN > 0u)
+ 202:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****                                                  + sizeof(OSCfg_MsgPool)
+ 203:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 204:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 205:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_STAT_TASK_EN > 0u)
+ 206:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****                                                  + sizeof(OSCfg_StatTaskStk)
+ 207:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 208:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 209:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_TMR_EN > 0u)
+ 210:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****                                                  + sizeof(OSCfg_TmrTaskStk)
+ 211:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****                                                  + sizeof(OSCfg_TmrWheel)
+ 212:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 213:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 214:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_ISR_STK_SIZE > 0u)
+ 215:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****                                                  + sizeof(OSCfg_ISRStk)
+ 216:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 217:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****                                                  + sizeof(OSCfg_TickTaskStk)
+ 218:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****                                                  + sizeof(OSCfg_TickWheel);
+ 219:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 220:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** /*$PAGE*/
+ 221:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** /*
+ 222:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** ***************************************************************************************************
+ 223:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *                                             OS CONFIGURATION INITIALIZATION
+ 224:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *
+ 225:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** * Description: This function is used to make sure that debug variables that are unused in the appli
+ 226:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *              optimized away.  This function might not be necessary for all compilers.  In this ca
+ 227:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *              DELETE the code in this function while still leaving the declaration of the function
+ 228:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *
+ 229:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** * Arguments  : none
+ 230:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *
+ 231:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** * Returns    : none
+ 232:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *
+ 233:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** * Note(s)    : (1) This code doesn't do anything, it simply prevents the compiler from optimizing o
+ 234:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *                  variables which are declared in this file.
+ 235:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *              (2) You may decide to 'compile out' the code (by using #if 0/#endif) INSIDE the func
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 10
+
+
+ 236:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** *                  DOES NOT optimize out the 'const' variables above.
+ 237:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** ***************************************************************************************************
+ 238:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** */
+ 239:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 240:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** void  OSCfg_Init (void)
+ 241:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** {
+ 279              		.loc 1 241 0
+ 280              		.cfi_startproc
+ 281              		@ args = 0, pretend = 0, frame = 0
+ 282              		@ frame_needed = 1, uses_anonymous_args = 0
+ 283 0000 80B5     		push	{r7, lr}
+ 284              		.cfi_def_cfa_offset 8
+ 285              		.cfi_offset 7, -8
+ 286              		.cfi_offset 14, -4
+ 287 0002 00AF     		add	r7, sp, #0
+ 288              		.cfi_def_cfa_register 7
+ 242:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_DataSizeRAM;
+ 243:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 244:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_IdleTaskStkBasePtr;
+ 245:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_IdleTaskStkLimit;
+ 246:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_IdleTaskStkSize;
+ 247:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_IdleTaskStkSizeRAM;
+ 248:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 249:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_ISR_POST_DEFERRED_EN > 0u)
+ 250:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_IntQBasePtr;
+ 251:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_IntQSize;
+ 252:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_IntQSizeRAM;
+ 253:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_IntQTaskStkBasePtr;
+ 254:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_IntQTaskStkLimit;
+ 255:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_IntQTaskStkSize;
+ 256:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_IntQTaskStkSizeRAM;
+ 257:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 258:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 259:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_ISRStkBasePtr;
+ 260:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_ISRStkSize;
+ 261:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_ISRStkSizeRAM;
+ 262:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 263:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_MSG_EN > 0u)
+ 264:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_MsgPoolSize;
+ 265:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_MsgPoolSizeRAM;
+ 266:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_MsgPoolBasePtr;
+ 267:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 268:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 269:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_STAT_TASK_EN > 0u)
+ 270:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_StatTaskPrio;
+ 271:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_StatTaskRate_Hz;
+ 272:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_StatTaskStkBasePtr;
+ 273:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_StatTaskStkLimit;
+ 274:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_StatTaskStkSize;
+ 275:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_StatTaskStkSizeRAM;
+ 276:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 277:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 278:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_StkSizeMin;
+ 279:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 280:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TickRate_Hz;
+ 281:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TickTaskPrio;
+ 282:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TickTaskStkBasePtr;
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 11
+
+
+ 283:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TickTaskStkLimit;
+ 284:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TickTaskStkSize;
+ 285:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TickTaskStkSizeRAM;
+ 286:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TickWheelSize;
+ 287:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TickWheelSizeRAM;
+ 288:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** 
+ 289:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #if (OS_CFG_TMR_EN > 0u)
+ 290:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TmrTaskPrio;
+ 291:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TmrTaskRate_Hz;
+ 292:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TmrTaskStkBasePtr;
+ 293:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TmrTaskStkLimit;
+ 294:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TmrTaskStkSize;
+ 295:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TmrTaskStkSizeRAM;
+ 296:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TmrWheelSize;
+ 297:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c ****     (void)&OSCfg_TmrWheelSizeRAM;
+ 298:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** #endif
+ 299:..\..\..\..\..\..\Software\uCOS-III\Source/os_cfg_app.c **** }
+ 289              		.loc 1 299 0
+ 290 0004 C046     		nop
+ 291 0006 BD46     		mov	sp, r7
+ 292              		@ sp needed
+ 293 0008 80BD     		pop	{r7, pc}
+ 294              		.cfi_endproc
+ 295              	.LFE1:
+ 296              		.size	OSCfg_Init, .-OSCfg_Init
+ 297 000a C046     		.text
+ 298              	.Letext0:
+ 299              		.file 2 "..\\..\\..\\..\\..\\..\\Software\\uC-CPU\\ARM-Cortex-M0\\GNU/cpu.h"
+ 300              		.file 3 "..\\..\\..\\..\\..\\..\\Software\\uC-CPU/cpu_core.h"
+ 301              		.file 4 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source/os_type.h"
+ 302              		.file 5 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source/os.h"
+ 303              		.section	.debug_info,"",%progbits
+ 304              	.Ldebug_info0:
+ 305 0000 630A0000 		.4byte	0xa63
+ 306 0004 0400     		.2byte	0x4
+ 307 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 308 000a 04       		.byte	0x4
+ 309 000b 01       		.uleb128 0x1
+ 310 000c F0000000 		.4byte	.LASF157
+ 311 0010 0C       		.byte	0xc
+ 312 0011 68030000 		.4byte	.LASF158
+ 313 0015 DA040000 		.4byte	.LASF159
+ 314 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 315 001d 00000000 		.4byte	0
+ 316 0021 00000000 		.4byte	.Ldebug_line0
+ 317 0025 02       		.uleb128 0x2
+ 318 0026 2D030000 		.4byte	.LASF2
+ 319 002a 02       		.byte	0x2
+ 320 002b 7C       		.byte	0x7c
+ 321 002c 30000000 		.4byte	0x30
+ 322 0030 03       		.uleb128 0x3
+ 323 0031 01       		.byte	0x1
+ 324 0032 08       		.byte	0x8
+ 325 0033 CC030000 		.4byte	.LASF0
+ 326 0037 03       		.uleb128 0x3
+ 327 0038 01       		.byte	0x1
+ 328 0039 08       		.byte	0x8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 12
+
+
+ 329 003a B0070000 		.4byte	.LASF1
+ 330 003e 02       		.uleb128 0x2
+ 331 003f BA020000 		.4byte	.LASF3
+ 332 0043 02       		.byte	0x2
+ 333 0044 7E       		.byte	0x7e
+ 334 0045 37000000 		.4byte	0x37
+ 335 0049 03       		.uleb128 0x3
+ 336 004a 01       		.byte	0x1
+ 337 004b 06       		.byte	0x6
+ 338 004c 4B080000 		.4byte	.LASF4
+ 339 0050 02       		.uleb128 0x2
+ 340 0051 C7040000 		.4byte	.LASF5
+ 341 0055 02       		.byte	0x2
+ 342 0056 80       		.byte	0x80
+ 343 0057 5B000000 		.4byte	0x5b
+ 344 005b 03       		.uleb128 0x3
+ 345 005c 02       		.byte	0x2
+ 346 005d 07       		.byte	0x7
+ 347 005e 89080000 		.4byte	.LASF6
+ 348 0062 03       		.uleb128 0x3
+ 349 0063 02       		.byte	0x2
+ 350 0064 05       		.byte	0x5
+ 351 0065 0D060000 		.4byte	.LASF7
+ 352 0069 02       		.uleb128 0x2
+ 353 006a AB000000 		.4byte	.LASF8
+ 354 006e 02       		.byte	0x2
+ 355 006f 82       		.byte	0x82
+ 356 0070 74000000 		.4byte	0x74
+ 357 0074 03       		.uleb128 0x3
+ 358 0075 04       		.byte	0x4
+ 359 0076 07       		.byte	0x7
+ 360 0077 F3060000 		.4byte	.LASF9
+ 361 007b 04       		.uleb128 0x4
+ 362 007c 04       		.byte	0x4
+ 363 007d 05       		.byte	0x5
+ 364 007e 696E7400 		.ascii	"int\000"
+ 365 0082 03       		.uleb128 0x3
+ 366 0083 08       		.byte	0x8
+ 367 0084 07       		.byte	0x7
+ 368 0085 80020000 		.4byte	.LASF10
+ 369 0089 03       		.uleb128 0x3
+ 370 008a 08       		.byte	0x8
+ 371 008b 05       		.byte	0x5
+ 372 008c 84040000 		.4byte	.LASF11
+ 373 0090 03       		.uleb128 0x3
+ 374 0091 04       		.byte	0x4
+ 375 0092 04       		.byte	0x4
+ 376 0093 3F020000 		.4byte	.LASF12
+ 377 0097 03       		.uleb128 0x3
+ 378 0098 08       		.byte	0x8
+ 379 0099 04       		.byte	0x4
+ 380 009a A8080000 		.4byte	.LASF13
+ 381 009e 05       		.uleb128 0x5
+ 382 009f 04       		.byte	0x4
+ 383 00a0 A4000000 		.4byte	0xa4
+ 384 00a4 06       		.uleb128 0x6
+ 385 00a5 AF000000 		.4byte	0xaf
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 13
+
+
+ 386 00a9 07       		.uleb128 0x7
+ 387 00aa AF000000 		.4byte	0xaf
+ 388 00ae 00       		.byte	0
+ 389 00af 08       		.uleb128 0x8
+ 390 00b0 04       		.byte	0x4
+ 391 00b1 02       		.uleb128 0x2
+ 392 00b2 68070000 		.4byte	.LASF14
+ 393 00b6 02       		.byte	0x2
+ 394 00b7 BA       		.byte	0xba
+ 395 00b8 69000000 		.4byte	0x69
+ 396 00bc 02       		.uleb128 0x2
+ 397 00bd 8D090000 		.4byte	.LASF15
+ 398 00c1 02       		.byte	0x2
+ 399 00c2 E5       		.byte	0xe5
+ 400 00c3 69000000 		.4byte	0x69
+ 401 00c7 02       		.uleb128 0x2
+ 402 00c8 43030000 		.4byte	.LASF16
+ 403 00cc 02       		.byte	0x2
+ 404 00cd E6       		.byte	0xe6
+ 405 00ce B1000000 		.4byte	0xb1
+ 406 00d2 03       		.uleb128 0x3
+ 407 00d3 04       		.byte	0x4
+ 408 00d4 05       		.byte	0x5
+ 409 00d5 4A060000 		.4byte	.LASF17
+ 410 00d9 03       		.uleb128 0x3
+ 411 00da 04       		.byte	0x4
+ 412 00db 07       		.byte	0x7
+ 413 00dc 44070000 		.4byte	.LASF18
+ 414 00e0 03       		.uleb128 0x3
+ 415 00e1 08       		.byte	0x8
+ 416 00e2 04       		.byte	0x4
+ 417 00e3 F4050000 		.4byte	.LASF19
+ 418 00e7 03       		.uleb128 0x3
+ 419 00e8 04       		.byte	0x4
+ 420 00e9 07       		.byte	0x7
+ 421 00ea 3B070000 		.4byte	.LASF20
+ 422 00ee 02       		.uleb128 0x2
+ 423 00ef 48050000 		.4byte	.LASF21
+ 424 00f3 03       		.byte	0x3
+ 425 00f4 C4       		.byte	0xc4
+ 426 00f5 69000000 		.4byte	0x69
+ 427 00f9 02       		.uleb128 0x2
+ 428 00fa 7D040000 		.4byte	.LASF22
+ 429 00fe 03       		.byte	0x3
+ 430 00ff C7       		.byte	0xc7
+ 431 0100 EE000000 		.4byte	0xee
+ 432 0104 02       		.uleb128 0x2
+ 433 0105 14030000 		.4byte	.LASF23
+ 434 0109 04       		.byte	0x4
+ 435 010a 40       		.byte	0x40
+ 436 010b 50000000 		.4byte	0x50
+ 437 010f 02       		.uleb128 0x2
+ 438 0110 7C060000 		.4byte	.LASF24
+ 439 0114 04       		.byte	0x4
+ 440 0115 42       		.byte	0x42
+ 441 0116 3E000000 		.4byte	0x3e
+ 442 011a 02       		.uleb128 0x2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 14
+
+
+ 443 011b 1A020000 		.4byte	.LASF25
+ 444 011f 04       		.byte	0x4
+ 445 0120 44       		.byte	0x44
+ 446 0121 50000000 		.4byte	0x50
+ 447 0125 02       		.uleb128 0x2
+ 448 0126 D1030000 		.4byte	.LASF26
+ 449 012a 04       		.byte	0x4
+ 450 012b 45       		.byte	0x45
+ 451 012c 69000000 		.4byte	0x69
+ 452 0130 02       		.uleb128 0x2
+ 453 0131 C7070000 		.4byte	.LASF27
+ 454 0135 04       		.byte	0x4
+ 455 0136 47       		.byte	0x47
+ 456 0137 50000000 		.4byte	0x50
+ 457 013b 02       		.uleb128 0x2
+ 458 013c 37020000 		.4byte	.LASF28
+ 459 0140 04       		.byte	0x4
+ 460 0141 49       		.byte	0x49
+ 461 0142 3E000000 		.4byte	0x3e
+ 462 0146 02       		.uleb128 0x2
+ 463 0147 08040000 		.4byte	.LASF29
+ 464 014b 04       		.byte	0x4
+ 465 014c 4D       		.byte	0x4d
+ 466 014d 69000000 		.4byte	0x69
+ 467 0151 02       		.uleb128 0x2
+ 468 0152 EC020000 		.4byte	.LASF30
+ 469 0156 04       		.byte	0x4
+ 470 0157 4F       		.byte	0x4f
+ 471 0158 69000000 		.4byte	0x69
+ 472 015c 02       		.uleb128 0x2
+ 473 015d 7F050000 		.4byte	.LASF31
+ 474 0161 04       		.byte	0x4
+ 475 0162 52       		.byte	0x52
+ 476 0163 69000000 		.4byte	0x69
+ 477 0167 02       		.uleb128 0x2
+ 478 0168 BE070000 		.4byte	.LASF32
+ 479 016c 04       		.byte	0x4
+ 480 016d 54       		.byte	0x54
+ 481 016e 3E000000 		.4byte	0x3e
+ 482 0172 02       		.uleb128 0x2
+ 483 0173 0A030000 		.4byte	.LASF33
+ 484 0177 04       		.byte	0x4
+ 485 0178 56       		.byte	0x56
+ 486 0179 3E000000 		.4byte	0x3e
+ 487 017d 02       		.uleb128 0x2
+ 488 017e D2040000 		.4byte	.LASF34
+ 489 0182 04       		.byte	0x4
+ 490 0183 58       		.byte	0x58
+ 491 0184 69000000 		.4byte	0x69
+ 492 0188 09       		.uleb128 0x9
+ 493 0189 79020000 		.4byte	.LASF35
+ 494 018d 05       		.byte	0x5
+ 495 018e 8202     		.2byte	0x282
+ 496 0190 94010000 		.4byte	0x194
+ 497 0194 0A       		.uleb128 0xa
+ 498 0195 D2020000 		.4byte	.LASF43
+ 499 0199 10       		.byte	0x10
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 15
+
+
+ 500 019a 05       		.byte	0x5
+ 501 019b 4003     		.2byte	0x340
+ 502 019d D6010000 		.4byte	0x1d6
+ 503 01a1 0B       		.uleb128 0xb
+ 504 01a2 EC050000 		.4byte	.LASF36
+ 505 01a6 05       		.byte	0x5
+ 506 01a7 4103     		.2byte	0x341
+ 507 01a9 8A060000 		.4byte	0x68a
+ 508 01ad 00       		.byte	0
+ 509 01ae 0B       		.uleb128 0xb
+ 510 01af 9C080000 		.4byte	.LASF37
+ 511 01b3 05       		.byte	0x5
+ 512 01b4 4203     		.2byte	0x342
+ 513 01b6 AF000000 		.4byte	0xaf
+ 514 01ba 04       		.byte	0x4
+ 515 01bb 0B       		.uleb128 0xb
+ 516 01bc 00070000 		.4byte	.LASF38
+ 517 01c0 05       		.byte	0x5
+ 518 01c1 4303     		.2byte	0x343
+ 519 01c3 04010000 		.4byte	0x104
+ 520 01c7 08       		.byte	0x8
+ 521 01c8 0B       		.uleb128 0xb
+ 522 01c9 6A080000 		.4byte	.LASF39
+ 523 01cd 05       		.byte	0x5
+ 524 01ce 4403     		.2byte	0x344
+ 525 01d0 F9000000 		.4byte	0xf9
+ 526 01d4 0C       		.byte	0xc
+ 527 01d5 00       		.byte	0
+ 528 01d6 09       		.uleb128 0x9
+ 529 01d7 A2010000 		.4byte	.LASF40
+ 530 01db 05       		.byte	0x5
+ 531 01dc 8802     		.2byte	0x288
+ 532 01de E2010000 		.4byte	0x1e2
+ 533 01e2 0C       		.uleb128 0xc
+ 534 01e3 AE050000 		.4byte	.LASF160
+ 535 01e7 09       		.uleb128 0x9
+ 536 01e8 F5010000 		.4byte	.LASF41
+ 537 01ec 05       		.byte	0x5
+ 538 01ed 8E02     		.2byte	0x28e
+ 539 01ef 9E000000 		.4byte	0x9e
+ 540 01f3 09       		.uleb128 0x9
+ 541 01f4 CE080000 		.4byte	.LASF42
+ 542 01f8 05       		.byte	0x5
+ 543 01f9 9002     		.2byte	0x290
+ 544 01fb FF010000 		.4byte	0x1ff
+ 545 01ff 0A       		.uleb128 0xa
+ 546 0200 00000000 		.4byte	.LASF44
+ 547 0204 7C       		.byte	0x7c
+ 548 0205 05       		.byte	0x5
+ 549 0206 AB03     		.2byte	0x3ab
+ 550 0208 D3030000 		.4byte	0x3d3
+ 551 020c 0B       		.uleb128 0xb
+ 552 020d 92040000 		.4byte	.LASF45
+ 553 0211 05       		.byte	0x5
+ 554 0212 AC03     		.2byte	0x3ac
+ 555 0214 90060000 		.4byte	0x690
+ 556 0218 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 16
+
+
+ 557 0219 0B       		.uleb128 0xb
+ 558 021a 34070000 		.4byte	.LASF46
+ 559 021e 05       		.byte	0x5
+ 560 021f AE03     		.2byte	0x3ae
+ 561 0221 AF000000 		.4byte	0xaf
+ 562 0225 04       		.byte	0x4
+ 563 0226 0B       		.uleb128 0xb
+ 564 0227 5C050000 		.4byte	.LASF47
+ 565 022b 05       		.byte	0x5
+ 566 022c B003     		.2byte	0x3b0
+ 567 022e 90060000 		.4byte	0x690
+ 568 0232 08       		.byte	0x8
+ 569 0233 0B       		.uleb128 0xb
+ 570 0234 EC050000 		.4byte	.LASF36
+ 571 0238 05       		.byte	0x5
+ 572 0239 B203     		.2byte	0x3b2
+ 573 023b 72060000 		.4byte	0x672
+ 574 023f 0C       		.byte	0xc
+ 575 0240 0B       		.uleb128 0xb
+ 576 0241 C4030000 		.4byte	.LASF48
+ 577 0245 05       		.byte	0x5
+ 578 0246 B303     		.2byte	0x3b3
+ 579 0248 72060000 		.4byte	0x672
+ 580 024c 10       		.byte	0x10
+ 581 024d 0B       		.uleb128 0xb
+ 582 024e 91050000 		.4byte	.LASF49
+ 583 0252 05       		.byte	0x5
+ 584 0253 B503     		.2byte	0x3b5
+ 585 0255 72060000 		.4byte	0x672
+ 586 0259 14       		.byte	0x14
+ 587 025a 0B       		.uleb128 0xb
+ 588 025b 5C030000 		.4byte	.LASF50
+ 589 025f 05       		.byte	0x5
+ 590 0260 B603     		.2byte	0x3b6
+ 591 0262 72060000 		.4byte	0x672
+ 592 0266 18       		.byte	0x18
+ 593 0267 0B       		.uleb128 0xb
+ 594 0268 E1070000 		.4byte	.LASF51
+ 595 026c 05       		.byte	0x5
+ 596 026d B803     		.2byte	0x3b8
+ 597 026f 96060000 		.4byte	0x696
+ 598 0273 1C       		.byte	0x1c
+ 599 0274 0B       		.uleb128 0xb
+ 600 0275 3A040000 		.4byte	.LASF52
+ 601 0279 05       		.byte	0x5
+ 602 027a BA03     		.2byte	0x3ba
+ 603 027c 84060000 		.4byte	0x684
+ 604 0280 20       		.byte	0x20
+ 605 0281 0B       		.uleb128 0xb
+ 606 0282 E1020000 		.4byte	.LASF53
+ 607 0286 05       		.byte	0x5
+ 608 0287 BC03     		.2byte	0x3bc
+ 609 0289 90060000 		.4byte	0x690
+ 610 028d 24       		.byte	0x24
+ 611 028e 0B       		.uleb128 0xb
+ 612 028f 13040000 		.4byte	.LASF54
+ 613 0293 05       		.byte	0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 17
+
+
+ 614 0294 C203     		.2byte	0x3c2
+ 615 0296 E7010000 		.4byte	0x1e7
+ 616 029a 28       		.byte	0x28
+ 617 029b 0B       		.uleb128 0xb
+ 618 029c F9070000 		.4byte	.LASF55
+ 619 02a0 05       		.byte	0x5
+ 620 02a1 C303     		.2byte	0x3c3
+ 621 02a3 AF000000 		.4byte	0xaf
+ 622 02a7 2C       		.byte	0x2c
+ 623 02a8 0B       		.uleb128 0xb
+ 624 02a9 6D060000 		.4byte	.LASF56
+ 625 02ad 05       		.byte	0x5
+ 626 02ae C503     		.2byte	0x3c5
+ 627 02b0 78060000 		.4byte	0x678
+ 628 02b4 30       		.byte	0x30
+ 629 02b5 0B       		.uleb128 0xb
+ 630 02b6 BD010000 		.4byte	.LASF57
+ 631 02ba 05       		.byte	0x5
+ 632 02bb C603     		.2byte	0x3c6
+ 633 02bd 67010000 		.4byte	0x167
+ 634 02c1 34       		.byte	0x34
+ 635 02c2 0B       		.uleb128 0xb
+ 636 02c3 42040000 		.4byte	.LASF58
+ 637 02c7 05       		.byte	0x5
+ 638 02c8 C703     		.2byte	0x3c7
+ 639 02ca 72010000 		.4byte	0x172
+ 640 02ce 35       		.byte	0x35
+ 641 02cf 0B       		.uleb128 0xb
+ 642 02d0 ED030000 		.4byte	.LASF59
+ 643 02d4 05       		.byte	0x5
+ 644 02d5 C903     		.2byte	0x3c9
+ 645 02d7 67010000 		.4byte	0x167
+ 646 02db 36       		.byte	0x36
+ 647 02dc 0B       		.uleb128 0xb
+ 648 02dd A3080000 		.4byte	.LASF60
+ 649 02e1 05       		.byte	0x5
+ 650 02e2 CA03     		.2byte	0x3ca
+ 651 02e4 3B010000 		.4byte	0x13b
+ 652 02e8 37       		.byte	0x37
+ 653 02e9 0B       		.uleb128 0xb
+ 654 02ea D9020000 		.4byte	.LASF61
+ 655 02ee 05       		.byte	0x5
+ 656 02ef CB03     		.2byte	0x3cb
+ 657 02f1 C7000000 		.4byte	0xc7
+ 658 02f5 38       		.byte	0x38
+ 659 02f6 0D       		.uleb128 0xd
+ 660 02f7 4F707400 		.ascii	"Opt\000"
+ 661 02fb 05       		.byte	0x5
+ 662 02fc CC03     		.2byte	0x3cc
+ 663 02fe 30010000 		.4byte	0x130
+ 664 0302 3C       		.byte	0x3c
+ 665 0303 0B       		.uleb128 0xb
+ 666 0304 C4010000 		.4byte	.LASF62
+ 667 0308 05       		.byte	0x5
+ 668 0309 CE03     		.2byte	0x3ce
+ 669 030b 1A010000 		.4byte	0x11a
+ 670 030f 3E       		.byte	0x3e
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 18
+
+
+ 671 0310 0D       		.uleb128 0xd
+ 672 0311 545300   		.ascii	"TS\000"
+ 673 0314 05       		.byte	0x5
+ 674 0315 D003     		.2byte	0x3d0
+ 675 0317 F9000000 		.4byte	0xf9
+ 676 031b 40       		.byte	0x40
+ 677 031c 0B       		.uleb128 0xb
+ 678 031d B6060000 		.4byte	.LASF63
+ 679 0321 05       		.byte	0x5
+ 680 0322 D203     		.2byte	0x3d2
+ 681 0324 5C010000 		.4byte	0x15c
+ 682 0328 44       		.byte	0x44
+ 683 0329 0B       		.uleb128 0xb
+ 684 032a 50030000 		.4byte	.LASF64
+ 685 032e 05       		.byte	0x5
+ 686 032f D503     		.2byte	0x3d5
+ 687 0331 7D010000 		.4byte	0x17d
+ 688 0335 48       		.byte	0x48
+ 689 0336 0B       		.uleb128 0xb
+ 690 0337 01020000 		.4byte	.LASF65
+ 691 033b 05       		.byte	0x5
+ 692 033c D603     		.2byte	0x3d6
+ 693 033e 7D010000 		.4byte	0x17d
+ 694 0342 4C       		.byte	0x4c
+ 695 0343 0B       		.uleb128 0xb
+ 696 0344 D2060000 		.4byte	.LASF66
+ 697 0348 05       		.byte	0x5
+ 698 0349 D703     		.2byte	0x3d7
+ 699 034b 7D010000 		.4byte	0x17d
+ 700 034f 50       		.byte	0x50
+ 701 0350 0B       		.uleb128 0xb
+ 702 0351 2C090000 		.4byte	.LASF67
+ 703 0355 05       		.byte	0x5
+ 704 0356 D903     		.2byte	0x3d9
+ 705 0358 7D010000 		.4byte	0x17d
+ 706 035c 54       		.byte	0x54
+ 707 035d 0B       		.uleb128 0xb
+ 708 035e 66000000 		.4byte	.LASF68
+ 709 0362 05       		.byte	0x5
+ 710 0363 DA03     		.2byte	0x3da
+ 711 0365 7D010000 		.4byte	0x17d
+ 712 0369 58       		.byte	0x58
+ 713 036a 0B       		.uleb128 0xb
+ 714 036b F8080000 		.4byte	.LASF69
+ 715 036f 05       		.byte	0x5
+ 716 0370 EA03     		.2byte	0x3ea
+ 717 0372 9C060000 		.4byte	0x69c
+ 718 0376 5C       		.byte	0x5c
+ 719 0377 0B       		.uleb128 0xb
+ 720 0378 51050000 		.4byte	.LASF70
+ 721 037c 05       		.byte	0x5
+ 722 037d F403     		.2byte	0x3f4
+ 723 037f 0F010000 		.4byte	0x10f
+ 724 0383 60       		.byte	0x60
+ 725 0384 0B       		.uleb128 0xb
+ 726 0385 32000000 		.4byte	.LASF71
+ 727 0389 05       		.byte	0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 19
+
+
+ 728 038a 0504     		.2byte	0x405
+ 729 038c C7000000 		.4byte	0xc7
+ 730 0390 64       		.byte	0x64
+ 731 0391 0B       		.uleb128 0xb
+ 732 0392 24090000 		.4byte	.LASF72
+ 733 0396 05       		.byte	0x5
+ 734 0397 0604     		.2byte	0x406
+ 735 0399 C7000000 		.4byte	0xc7
+ 736 039d 68       		.byte	0x68
+ 737 039e 0B       		.uleb128 0xb
+ 738 039f 29060000 		.4byte	.LASF73
+ 739 03a3 05       		.byte	0x5
+ 740 03a4 0A04     		.2byte	0x40a
+ 741 03a6 F9000000 		.4byte	0xf9
+ 742 03aa 6C       		.byte	0x6c
+ 743 03ab 0B       		.uleb128 0xb
+ 744 03ac 7E010000 		.4byte	.LASF74
+ 745 03b0 05       		.byte	0x5
+ 746 03b1 1104     		.2byte	0x411
+ 747 03b3 72060000 		.4byte	0x672
+ 748 03b7 70       		.byte	0x70
+ 749 03b8 0B       		.uleb128 0xb
+ 750 03b9 89010000 		.4byte	.LASF75
+ 751 03bd 05       		.byte	0x5
+ 752 03be 1204     		.2byte	0x412
+ 753 03c0 72060000 		.4byte	0x672
+ 754 03c4 74       		.byte	0x74
+ 755 03c5 0B       		.uleb128 0xb
+ 756 03c6 EE070000 		.4byte	.LASF76
+ 757 03ca 05       		.byte	0x5
+ 758 03cb 1304     		.2byte	0x413
+ 759 03cd 84060000 		.4byte	0x684
+ 760 03d1 78       		.byte	0x78
+ 761 03d2 00       		.byte	0
+ 762 03d3 09       		.uleb128 0x9
+ 763 03d4 52020000 		.4byte	.LASF77
+ 764 03d8 05       		.byte	0x5
+ 765 03d9 9E02     		.2byte	0x29e
+ 766 03db DF030000 		.4byte	0x3df
+ 767 03df 0A       		.uleb128 0xa
+ 768 03e0 99040000 		.4byte	.LASF78
+ 769 03e4 08       		.byte	0x8
+ 770 03e5 05       		.byte	0x5
+ 771 03e6 1E04     		.2byte	0x41e
+ 772 03e8 14040000 		.4byte	0x414
+ 773 03ec 0B       		.uleb128 0xb
+ 774 03ed 2B070000 		.4byte	.LASF79
+ 775 03f1 05       		.byte	0x5
+ 776 03f2 1F04     		.2byte	0x41f
+ 777 03f4 72060000 		.4byte	0x672
+ 778 03f8 00       		.byte	0
+ 779 03f9 0B       		.uleb128 0xb
+ 780 03fa A0000000 		.4byte	.LASF80
+ 781 03fe 05       		.byte	0x5
+ 782 03ff 2004     		.2byte	0x420
+ 783 0401 1A010000 		.4byte	0x11a
+ 784 0405 04       		.byte	0x4
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 20
+
+
+ 785 0406 0B       		.uleb128 0xb
+ 786 0407 06080000 		.4byte	.LASF81
+ 787 040b 05       		.byte	0x5
+ 788 040c 2104     		.2byte	0x421
+ 789 040e 1A010000 		.4byte	0x11a
+ 790 0412 06       		.byte	0x6
+ 791 0413 00       		.byte	0
+ 792 0414 09       		.uleb128 0x9
+ 793 0415 AF080000 		.4byte	.LASF82
+ 794 0419 05       		.byte	0x5
+ 795 041a A002     		.2byte	0x2a0
+ 796 041c 20040000 		.4byte	0x420
+ 797 0420 05       		.uleb128 0x5
+ 798 0421 04       		.byte	0x4
+ 799 0422 26040000 		.4byte	0x426
+ 800 0426 06       		.uleb128 0x6
+ 801 0427 36040000 		.4byte	0x436
+ 802 042b 07       		.uleb128 0x7
+ 803 042c AF000000 		.4byte	0xaf
+ 804 0430 07       		.uleb128 0x7
+ 805 0431 AF000000 		.4byte	0xaf
+ 806 0435 00       		.byte	0
+ 807 0436 09       		.uleb128 0x9
+ 808 0437 00060000 		.4byte	.LASF83
+ 809 043b 05       		.byte	0x5
+ 810 043c A102     		.2byte	0x2a1
+ 811 043e 42040000 		.4byte	0x442
+ 812 0442 0A       		.uleb128 0xa
+ 813 0443 22060000 		.4byte	.LASF84
+ 814 0447 34       		.byte	0x34
+ 815 0448 05       		.byte	0x5
+ 816 0449 2B04     		.2byte	0x42b
+ 817 044b 06050000 		.4byte	0x506
+ 818 044f 0B       		.uleb128 0xb
+ 819 0450 4D040000 		.4byte	.LASF85
+ 820 0454 05       		.byte	0x5
+ 821 0455 2C04     		.2byte	0x42c
+ 822 0457 25010000 		.4byte	0x125
+ 823 045b 00       		.byte	0
+ 824 045c 0B       		.uleb128 0xb
+ 825 045d 3A040000 		.4byte	.LASF52
+ 826 0461 05       		.byte	0x5
+ 827 0462 2D04     		.2byte	0x42d
+ 828 0464 84060000 		.4byte	0x684
+ 829 0468 04       		.byte	0x4
+ 830 0469 0B       		.uleb128 0xb
+ 831 046a A0030000 		.4byte	.LASF86
+ 832 046e 05       		.byte	0x5
+ 833 046f 2E04     		.2byte	0x42e
+ 834 0471 14040000 		.4byte	0x414
+ 835 0475 08       		.byte	0x8
+ 836 0476 0B       		.uleb128 0xb
+ 837 0477 FF080000 		.4byte	.LASF87
+ 838 047b 05       		.byte	0x5
+ 839 047c 2F04     		.2byte	0x42f
+ 840 047e AF000000 		.4byte	0xaf
+ 841 0482 0C       		.byte	0xc
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 21
+
+
+ 842 0483 0B       		.uleb128 0xb
+ 843 0484 EC050000 		.4byte	.LASF36
+ 844 0488 05       		.byte	0x5
+ 845 0489 3004     		.2byte	0x430
+ 846 048b AC060000 		.4byte	0x6ac
+ 847 048f 10       		.byte	0x10
+ 848 0490 0B       		.uleb128 0xb
+ 849 0491 C4030000 		.4byte	.LASF48
+ 850 0495 05       		.byte	0x5
+ 851 0496 3104     		.2byte	0x431
+ 852 0498 AC060000 		.4byte	0x6ac
+ 853 049c 14       		.byte	0x14
+ 854 049d 0B       		.uleb128 0xb
+ 855 049e 53060000 		.4byte	.LASF88
+ 856 04a2 05       		.byte	0x5
+ 857 04a3 3204     		.2byte	0x432
+ 858 04a5 7D010000 		.4byte	0x17d
+ 859 04a9 18       		.byte	0x18
+ 860 04aa 0B       		.uleb128 0xb
+ 861 04ab A4020000 		.4byte	.LASF89
+ 862 04af 05       		.byte	0x5
+ 863 04b0 3304     		.2byte	0x433
+ 864 04b2 7D010000 		.4byte	0x17d
+ 865 04b6 1C       		.byte	0x1c
+ 866 04b7 0D       		.uleb128 0xd
+ 867 04b8 446C7900 		.ascii	"Dly\000"
+ 868 04bc 05       		.byte	0x5
+ 869 04bd 3404     		.2byte	0x434
+ 870 04bf 7D010000 		.4byte	0x17d
+ 871 04c3 20       		.byte	0x20
+ 872 04c4 0B       		.uleb128 0xb
+ 873 04c5 C0040000 		.4byte	.LASF90
+ 874 04c9 05       		.byte	0x5
+ 875 04ca 3504     		.2byte	0x435
+ 876 04cc 7D010000 		.4byte	0x17d
+ 877 04d0 24       		.byte	0x24
+ 878 04d1 0D       		.uleb128 0xd
+ 879 04d2 4F707400 		.ascii	"Opt\000"
+ 880 04d6 05       		.byte	0x5
+ 881 04d7 3604     		.2byte	0x436
+ 882 04d9 30010000 		.4byte	0x130
+ 883 04dd 28       		.byte	0x28
+ 884 04de 0B       		.uleb128 0xb
+ 885 04df 9C010000 		.4byte	.LASF91
+ 886 04e3 05       		.byte	0x5
+ 887 04e4 3704     		.2byte	0x437
+ 888 04e6 67010000 		.4byte	0x167
+ 889 04ea 2A       		.byte	0x2a
+ 890 04eb 0B       		.uleb128 0xb
+ 891 04ec 7E010000 		.4byte	.LASF74
+ 892 04f0 05       		.byte	0x5
+ 893 04f1 3904     		.2byte	0x439
+ 894 04f3 AC060000 		.4byte	0x6ac
+ 895 04f7 2C       		.byte	0x2c
+ 896 04f8 0B       		.uleb128 0xb
+ 897 04f9 89010000 		.4byte	.LASF75
+ 898 04fd 05       		.byte	0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 22
+
+
+ 899 04fe 3A04     		.2byte	0x43a
+ 900 0500 AC060000 		.4byte	0x6ac
+ 901 0504 30       		.byte	0x30
+ 902 0505 00       		.byte	0
+ 903 0506 09       		.uleb128 0x9
+ 904 0507 C5020000 		.4byte	.LASF92
+ 905 050b 05       		.byte	0x5
+ 906 050c A202     		.2byte	0x2a2
+ 907 050e 12050000 		.4byte	0x512
+ 908 0512 0A       		.uleb128 0xa
+ 909 0513 36030000 		.4byte	.LASF93
+ 910 0517 08       		.byte	0x8
+ 911 0518 05       		.byte	0x5
+ 912 0519 4004     		.2byte	0x440
+ 913 051b 47050000 		.4byte	0x547
+ 914 051f 0B       		.uleb128 0xb
+ 915 0520 2B070000 		.4byte	.LASF79
+ 916 0524 05       		.byte	0x5
+ 917 0525 4104     		.2byte	0x441
+ 918 0527 AC060000 		.4byte	0x6ac
+ 919 052b 00       		.byte	0
+ 920 052c 0B       		.uleb128 0xb
+ 921 052d A0000000 		.4byte	.LASF80
+ 922 0531 05       		.byte	0x5
+ 923 0532 4204     		.2byte	0x442
+ 924 0534 1A010000 		.4byte	0x11a
+ 925 0538 04       		.byte	0x4
+ 926 0539 0B       		.uleb128 0xb
+ 927 053a 06080000 		.4byte	.LASF81
+ 928 053e 05       		.byte	0x5
+ 929 053f 4304     		.2byte	0x443
+ 930 0541 1A010000 		.4byte	0x11a
+ 931 0545 06       		.byte	0x6
+ 932 0546 00       		.byte	0
+ 933 0547 09       		.uleb128 0x9
+ 934 0548 97020000 		.4byte	.LASF94
+ 935 054c 05       		.byte	0x5
+ 936 054d A502     		.2byte	0x2a5
+ 937 054f 53050000 		.4byte	0x553
+ 938 0553 0A       		.uleb128 0xa
+ 939 0554 45020000 		.4byte	.LASF95
+ 940 0558 20       		.byte	0x20
+ 941 0559 05       		.byte	0x5
+ 942 055a DD02     		.2byte	0x2dd
+ 943 055c C9050000 		.4byte	0x5c9
+ 944 0560 0B       		.uleb128 0xb
+ 945 0561 C4030000 		.4byte	.LASF48
+ 946 0565 05       		.byte	0x5
+ 947 0566 DE02     		.2byte	0x2de
+ 948 0568 78060000 		.4byte	0x678
+ 949 056c 00       		.byte	0
+ 950 056d 0B       		.uleb128 0xb
+ 951 056e EC050000 		.4byte	.LASF36
+ 952 0572 05       		.byte	0x5
+ 953 0573 DF02     		.2byte	0x2df
+ 954 0575 78060000 		.4byte	0x678
+ 955 0579 04       		.byte	0x4
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 23
+
+
+ 956 057a 0B       		.uleb128 0xb
+ 957 057b 8A050000 		.4byte	.LASF96
+ 958 057f 05       		.byte	0x5
+ 959 0580 E002     		.2byte	0x2e0
+ 960 0582 72060000 		.4byte	0x672
+ 961 0586 08       		.byte	0x8
+ 962 0587 0B       		.uleb128 0xb
+ 963 0588 C3080000 		.4byte	.LASF97
+ 964 058c 05       		.byte	0x5
+ 965 058d E102     		.2byte	0x2e1
+ 966 058f 7E060000 		.4byte	0x67e
+ 967 0593 0C       		.byte	0xc
+ 968 0594 0B       		.uleb128 0xb
+ 969 0595 B7050000 		.4byte	.LASF98
+ 970 0599 05       		.byte	0x5
+ 971 059a E202     		.2byte	0x2e2
+ 972 059c 7E060000 		.4byte	0x67e
+ 973 05a0 10       		.byte	0x10
+ 974 05a1 0B       		.uleb128 0xb
+ 975 05a2 21070000 		.4byte	.LASF99
+ 976 05a6 05       		.byte	0x5
+ 977 05a7 E302     		.2byte	0x2e3
+ 978 05a9 AF000000 		.4byte	0xaf
+ 979 05ad 14       		.byte	0x14
+ 980 05ae 0B       		.uleb128 0xb
+ 981 05af 17060000 		.4byte	.LASF100
+ 982 05b3 05       		.byte	0x5
+ 983 05b4 E402     		.2byte	0x2e4
+ 984 05b6 04010000 		.4byte	0x104
+ 985 05ba 18       		.byte	0x18
+ 986 05bb 0B       		.uleb128 0xb
+ 987 05bc 07060000 		.4byte	.LASF101
+ 988 05c0 05       		.byte	0x5
+ 989 05c1 E502     		.2byte	0x2e5
+ 990 05c3 F9000000 		.4byte	0xf9
+ 991 05c7 1C       		.byte	0x1c
+ 992 05c8 00       		.byte	0
+ 993 05c9 09       		.uleb128 0x9
+ 994 05ca 14080000 		.4byte	.LASF102
+ 995 05ce 05       		.byte	0x5
+ 996 05cf A602     		.2byte	0x2a6
+ 997 05d1 D5050000 		.4byte	0x5d5
+ 998 05d5 0A       		.uleb128 0xa
+ 999 05d6 D5080000 		.4byte	.LASF103
+ 1000 05da 0C       		.byte	0xc
+ 1001 05db 05       		.byte	0x5
+ 1002 05dc E902     		.2byte	0x2e9
+ 1003 05de 0A060000 		.4byte	0x60a
+ 1004 05e2 0B       		.uleb128 0xb
+ 1005 05e3 94010000 		.4byte	.LASF104
+ 1006 05e7 05       		.byte	0x5
+ 1007 05e8 EA02     		.2byte	0x2ea
+ 1008 05ea 78060000 		.4byte	0x678
+ 1009 05ee 00       		.byte	0
+ 1010 05ef 0B       		.uleb128 0xb
+ 1011 05f0 D7010000 		.4byte	.LASF105
+ 1012 05f4 05       		.byte	0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 24
+
+
+ 1013 05f5 EB02     		.2byte	0x2eb
+ 1014 05f7 78060000 		.4byte	0x678
+ 1015 05fb 04       		.byte	0x4
+ 1016 05fc 0B       		.uleb128 0xb
+ 1017 05fd A0000000 		.4byte	.LASF80
+ 1018 0601 05       		.byte	0x5
+ 1019 0602 EC02     		.2byte	0x2ec
+ 1020 0604 1A010000 		.4byte	0x11a
+ 1021 0608 08       		.byte	0x8
+ 1022 0609 00       		.byte	0
+ 1023 060a 09       		.uleb128 0x9
+ 1024 060b 8B060000 		.4byte	.LASF106
+ 1025 060f 05       		.byte	0x5
+ 1026 0610 A702     		.2byte	0x2a7
+ 1027 0612 16060000 		.4byte	0x616
+ 1028 0616 0A       		.uleb128 0xa
+ 1029 0617 0E020000 		.4byte	.LASF107
+ 1030 061b 20       		.byte	0x20
+ 1031 061c 05       		.byte	0x5
+ 1032 061d FF02     		.2byte	0x2ff
+ 1033 061f 72060000 		.4byte	0x672
+ 1034 0623 0B       		.uleb128 0xb
+ 1035 0624 4D040000 		.4byte	.LASF85
+ 1036 0628 05       		.byte	0x5
+ 1037 0629 0003     		.2byte	0x300
+ 1038 062b 25010000 		.4byte	0x125
+ 1039 062f 00       		.byte	0
+ 1040 0630 0B       		.uleb128 0xb
+ 1041 0631 3A040000 		.4byte	.LASF52
+ 1042 0635 05       		.byte	0x5
+ 1043 0636 0103     		.2byte	0x301
+ 1044 0638 84060000 		.4byte	0x684
+ 1045 063c 04       		.byte	0x4
+ 1046 063d 0B       		.uleb128 0xb
+ 1047 063e 97060000 		.4byte	.LASF108
+ 1048 0642 05       		.byte	0x5
+ 1049 0643 0203     		.2byte	0x302
+ 1050 0645 C9050000 		.4byte	0x5c9
+ 1051 0649 08       		.byte	0x8
+ 1052 064a 0B       		.uleb128 0xb
+ 1053 064b 7E010000 		.4byte	.LASF74
+ 1054 064f 05       		.byte	0x5
+ 1055 0650 0403     		.2byte	0x304
+ 1056 0652 AF000000 		.4byte	0xaf
+ 1057 0656 14       		.byte	0x14
+ 1058 0657 0B       		.uleb128 0xb
+ 1059 0658 89010000 		.4byte	.LASF75
+ 1060 065c 05       		.byte	0x5
+ 1061 065d 0503     		.2byte	0x305
+ 1062 065f AF000000 		.4byte	0xaf
+ 1063 0663 18       		.byte	0x18
+ 1064 0664 0B       		.uleb128 0xb
+ 1065 0665 EE070000 		.4byte	.LASF76
+ 1066 0669 05       		.byte	0x5
+ 1067 066a 0603     		.2byte	0x306
+ 1068 066c 84060000 		.4byte	0x684
+ 1069 0670 1C       		.byte	0x1c
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 25
+
+
+ 1070 0671 00       		.byte	0
+ 1071 0672 05       		.uleb128 0x5
+ 1072 0673 04       		.byte	0x4
+ 1073 0674 F3010000 		.4byte	0x1f3
+ 1074 0678 05       		.uleb128 0x5
+ 1075 0679 04       		.byte	0x4
+ 1076 067a 47050000 		.4byte	0x547
+ 1077 067e 05       		.uleb128 0x5
+ 1078 067f 04       		.byte	0x4
+ 1079 0680 0A060000 		.4byte	0x60a
+ 1080 0684 05       		.uleb128 0x5
+ 1081 0685 04       		.byte	0x4
+ 1082 0686 25000000 		.4byte	0x25
+ 1083 068a 05       		.uleb128 0x5
+ 1084 068b 04       		.byte	0x4
+ 1085 068c 88010000 		.4byte	0x188
+ 1086 0690 05       		.uleb128 0x5
+ 1087 0691 04       		.byte	0x4
+ 1088 0692 BC000000 		.4byte	0xbc
+ 1089 0696 05       		.uleb128 0x5
+ 1090 0697 04       		.byte	0x4
+ 1091 0698 D3030000 		.4byte	0x3d3
+ 1092 069c 0E       		.uleb128 0xe
+ 1093 069d 51010000 		.4byte	0x151
+ 1094 06a1 AC060000 		.4byte	0x6ac
+ 1095 06a5 0F       		.uleb128 0xf
+ 1096 06a6 E7000000 		.4byte	0xe7
+ 1097 06aa 00       		.byte	0
+ 1098 06ab 00       		.byte	0
+ 1099 06ac 05       		.uleb128 0x5
+ 1100 06ad 04       		.byte	0x4
+ 1101 06ae 36040000 		.4byte	0x436
+ 1102 06b2 10       		.uleb128 0x10
+ 1103 06b3 5B000000 		.4byte	.LASF161
+ 1104 06b7 01       		.byte	0x1
+ 1105 06b8 F0       		.byte	0xf0
+ 1106 06b9 00000000 		.4byte	.LFB1
+ 1107 06bd 0A000000 		.4byte	.LFE1-.LFB1
+ 1108 06c1 01       		.uleb128 0x1
+ 1109 06c2 9C       		.byte	0x9c
+ 1110 06c3 11       		.uleb128 0x11
+ 1111 06c4 4C090000 		.4byte	.LASF109
+ 1112 06c8 01       		.byte	0x1
+ 1113 06c9 59       		.byte	0x59
+ 1114 06ca D4060000 		.4byte	0x6d4
+ 1115 06ce 05       		.uleb128 0x5
+ 1116 06cf 03       		.byte	0x3
+ 1117 06d0 00000000 		.4byte	OSCfg_IdleTaskStkBasePtr
+ 1118 06d4 12       		.uleb128 0x12
+ 1119 06d5 90060000 		.4byte	0x690
+ 1120 06d9 11       		.uleb128 0x11
+ 1121 06da 68050000 		.4byte	.LASF110
+ 1122 06de 01       		.byte	0x1
+ 1123 06df 5A       		.byte	0x5a
+ 1124 06e0 EA060000 		.4byte	0x6ea
+ 1125 06e4 05       		.uleb128 0x5
+ 1126 06e5 03       		.byte	0x3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 26
+
+
+ 1127 06e6 00000000 		.4byte	OSCfg_IdleTaskStkLimit
+ 1128 06ea 12       		.uleb128 0x12
+ 1129 06eb C7000000 		.4byte	0xc7
+ 1130 06ef 11       		.uleb128 0x11
+ 1131 06f0 77090000 		.4byte	.LASF111
+ 1132 06f4 01       		.byte	0x1
+ 1133 06f5 5B       		.byte	0x5b
+ 1134 06f6 EA060000 		.4byte	0x6ea
+ 1135 06fa 05       		.uleb128 0x5
+ 1136 06fb 03       		.byte	0x3
+ 1137 06fc 00000000 		.4byte	OSCfg_IdleTaskStkSize
+ 1138 0700 11       		.uleb128 0x11
+ 1139 0701 60020000 		.4byte	.LASF112
+ 1140 0705 01       		.byte	0x1
+ 1141 0706 5C       		.byte	0x5c
+ 1142 0707 11070000 		.4byte	0x711
+ 1143 070b 05       		.uleb128 0x5
+ 1144 070c 03       		.byte	0x3
+ 1145 070d 00000000 		.4byte	OSCfg_IdleTaskStkSizeRAM
+ 1146 0711 12       		.uleb128 0x12
+ 1147 0712 69000000 		.4byte	0x69
+ 1148 0716 11       		.uleb128 0x11
+ 1149 0717 21080000 		.4byte	.LASF113
+ 1150 071b 01       		.byte	0x1
+ 1151 071c 68       		.byte	0x68
+ 1152 071d 2D070000 		.4byte	0x72d
+ 1153 0721 05       		.uleb128 0x5
+ 1154 0722 03       		.byte	0x3
+ 1155 0723 00000000 		.4byte	OSCfg_IntQBasePtr
+ 1156 0727 05       		.uleb128 0x5
+ 1157 0728 04       		.byte	0x4
+ 1158 0729 D6010000 		.4byte	0x1d6
+ 1159 072d 12       		.uleb128 0x12
+ 1160 072e 27070000 		.4byte	0x727
+ 1161 0732 11       		.uleb128 0x11
+ 1162 0733 3A000000 		.4byte	.LASF114
+ 1163 0737 01       		.byte	0x1
+ 1164 0738 69       		.byte	0x69
+ 1165 0739 43070000 		.4byte	0x743
+ 1166 073d 05       		.uleb128 0x5
+ 1167 073e 03       		.byte	0x3
+ 1168 073f 00000000 		.4byte	OSCfg_IntQSize
+ 1169 0743 12       		.uleb128 0x12
+ 1170 0744 1A010000 		.4byte	0x11a
+ 1171 0748 11       		.uleb128 0x11
+ 1172 0749 AB010000 		.4byte	.LASF115
+ 1173 074d 01       		.byte	0x1
+ 1174 074e 6A       		.byte	0x6a
+ 1175 074f 11070000 		.4byte	0x711
+ 1176 0753 05       		.uleb128 0x5
+ 1177 0754 03       		.byte	0x3
+ 1178 0755 00000000 		.4byte	OSCfg_IntQSizeRAM
+ 1179 0759 11       		.uleb128 0x11
+ 1180 075a A7040000 		.4byte	.LASF116
+ 1181 075e 01       		.byte	0x1
+ 1182 075f 6B       		.byte	0x6b
+ 1183 0760 D4060000 		.4byte	0x6d4
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 27
+
+
+ 1184 0764 05       		.uleb128 0x5
+ 1185 0765 03       		.byte	0x3
+ 1186 0766 00000000 		.4byte	OSCfg_IntQTaskStkBasePtr
+ 1187 076a 11       		.uleb128 0x11
+ 1188 076b B6000000 		.4byte	.LASF117
+ 1189 076f 01       		.byte	0x1
+ 1190 0770 6C       		.byte	0x6c
+ 1191 0771 EA060000 		.4byte	0x6ea
+ 1192 0775 05       		.uleb128 0x5
+ 1193 0776 03       		.byte	0x3
+ 1194 0777 00000000 		.4byte	OSCfg_IntQTaskStkLimit
+ 1195 077b 11       		.uleb128 0x11
+ 1196 077c DD060000 		.4byte	.LASF118
+ 1197 0780 01       		.byte	0x1
+ 1198 0781 6D       		.byte	0x6d
+ 1199 0782 EA060000 		.4byte	0x6ea
+ 1200 0786 05       		.uleb128 0x5
+ 1201 0787 03       		.byte	0x3
+ 1202 0788 00000000 		.4byte	OSCfg_IntQTaskStkSize
+ 1203 078c 11       		.uleb128 0x11
+ 1204 078d 08070000 		.4byte	.LASF119
+ 1205 0791 01       		.byte	0x1
+ 1206 0792 6E       		.byte	0x6e
+ 1207 0793 11070000 		.4byte	0x711
+ 1208 0797 05       		.uleb128 0x5
+ 1209 0798 03       		.byte	0x3
+ 1210 0799 00000000 		.4byte	OSCfg_IntQTaskStkSizeRAM
+ 1211 079d 11       		.uleb128 0x11
+ 1212 079e 71070000 		.4byte	.LASF120
+ 1213 07a2 01       		.byte	0x1
+ 1214 07a3 73       		.byte	0x73
+ 1215 07a4 D4060000 		.4byte	0x6d4
+ 1216 07a8 05       		.uleb128 0x5
+ 1217 07a9 03       		.byte	0x3
+ 1218 07aa 00000000 		.4byte	OSCfg_ISRStkBasePtr
+ 1219 07ae 11       		.uleb128 0x11
+ 1220 07af F7030000 		.4byte	.LASF121
+ 1221 07b3 01       		.byte	0x1
+ 1222 07b4 74       		.byte	0x74
+ 1223 07b5 EA060000 		.4byte	0x6ea
+ 1224 07b9 05       		.uleb128 0x5
+ 1225 07ba 03       		.byte	0x3
+ 1226 07bb 00000000 		.4byte	OSCfg_ISRStkSize
+ 1227 07bf 11       		.uleb128 0x11
+ 1228 07c0 59060000 		.4byte	.LASF122
+ 1229 07c4 01       		.byte	0x1
+ 1230 07c5 75       		.byte	0x75
+ 1231 07c6 11070000 		.4byte	0x711
+ 1232 07ca 05       		.uleb128 0x5
+ 1233 07cb 03       		.byte	0x3
+ 1234 07cc 00000000 		.4byte	OSCfg_ISRStkSizeRAM
+ 1235 07d0 11       		.uleb128 0x11
+ 1236 07d1 25020000 		.4byte	.LASF123
+ 1237 07d5 01       		.byte	0x1
+ 1238 07d6 82       		.byte	0x82
+ 1239 07d7 E1070000 		.4byte	0x7e1
+ 1240 07db 05       		.uleb128 0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 28
+
+
+ 1241 07dc 03       		.byte	0x3
+ 1242 07dd 00000000 		.4byte	OSCfg_MsgPoolSize
+ 1243 07e1 12       		.uleb128 0x12
+ 1244 07e2 04010000 		.4byte	0x104
+ 1245 07e6 11       		.uleb128 0x11
+ 1246 07e7 37090000 		.4byte	.LASF124
+ 1247 07eb 01       		.byte	0x1
+ 1248 07ec 83       		.byte	0x83
+ 1249 07ed 11070000 		.4byte	0x711
+ 1250 07f1 05       		.uleb128 0x5
+ 1251 07f2 03       		.byte	0x3
+ 1252 07f3 00000000 		.4byte	OSCfg_MsgPoolSizeRAM
+ 1253 07f7 11       		.uleb128 0x11
+ 1254 07f8 BD060000 		.4byte	.LASF125
+ 1255 07fc 01       		.byte	0x1
+ 1256 07fd 84       		.byte	0x84
+ 1257 07fe 08080000 		.4byte	0x808
+ 1258 0802 05       		.uleb128 0x5
+ 1259 0803 03       		.byte	0x3
+ 1260 0804 00000000 		.4byte	OSCfg_MsgPoolBasePtr
+ 1261 0808 12       		.uleb128 0x12
+ 1262 0809 8A060000 		.4byte	0x68a
+ 1263 080d 11       		.uleb128 0x11
+ 1264 080e 37060000 		.4byte	.LASF126
+ 1265 0812 01       		.byte	0x1
+ 1266 0813 89       		.byte	0x89
+ 1267 0814 1E080000 		.4byte	0x81e
+ 1268 0818 05       		.uleb128 0x5
+ 1269 0819 03       		.byte	0x3
+ 1270 081a 00000000 		.4byte	OSCfg_StatTaskPrio
+ 1271 081e 12       		.uleb128 0x12
+ 1272 081f 3B010000 		.4byte	0x13b
+ 1273 0823 11       		.uleb128 0x11
+ 1274 0824 E2080000 		.4byte	.LASF127
+ 1275 0828 01       		.byte	0x1
+ 1276 0829 8A       		.byte	0x8a
+ 1277 082a 34080000 		.4byte	0x834
+ 1278 082e 05       		.uleb128 0x5
+ 1279 082f 03       		.byte	0x3
+ 1280 0830 00000000 		.4byte	OSCfg_StatTaskRate_Hz
+ 1281 0834 12       		.uleb128 0x12
+ 1282 0835 46010000 		.4byte	0x146
+ 1283 0839 11       		.uleb128 0x11
+ 1284 083a 21040000 		.4byte	.LASF128
+ 1285 083e 01       		.byte	0x1
+ 1286 083f 8B       		.byte	0x8b
+ 1287 0840 D4060000 		.4byte	0x6d4
+ 1288 0844 05       		.uleb128 0x5
+ 1289 0845 03       		.byte	0x3
+ 1290 0846 00000000 		.4byte	OSCfg_StatTaskStkBasePtr
+ 1291 084a 11       		.uleb128 0x11
+ 1292 084b F3020000 		.4byte	.LASF129
+ 1293 084f 01       		.byte	0x1
+ 1294 0850 8C       		.byte	0x8c
+ 1295 0851 EA060000 		.4byte	0x6ea
+ 1296 0855 05       		.uleb128 0x5
+ 1297 0856 03       		.byte	0x3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 29
+
+
+ 1298 0857 00000000 		.4byte	OSCfg_StatTaskStkLimit
+ 1299 085b 11       		.uleb128 0x11
+ 1300 085c 1C000000 		.4byte	.LASF130
+ 1301 0860 01       		.byte	0x1
+ 1302 0861 8D       		.byte	0x8d
+ 1303 0862 EA060000 		.4byte	0x6ea
+ 1304 0866 05       		.uleb128 0x5
+ 1305 0867 03       		.byte	0x3
+ 1306 0868 00000000 		.4byte	OSCfg_StatTaskStkSize
+ 1307 086c 11       		.uleb128 0x11
+ 1308 086d 70080000 		.4byte	.LASF131
+ 1309 0871 01       		.byte	0x1
+ 1310 0872 8E       		.byte	0x8e
+ 1311 0873 11070000 		.4byte	0x711
+ 1312 0877 05       		.uleb128 0x5
+ 1313 0878 03       		.byte	0x3
+ 1314 0879 00000000 		.4byte	OSCfg_StatTaskStkSizeRAM
+ 1315 087d 11       		.uleb128 0x11
+ 1316 087e 9D050000 		.4byte	.LASF132
+ 1317 0882 01       		.byte	0x1
+ 1318 0883 99       		.byte	0x99
+ 1319 0884 EA060000 		.4byte	0x6ea
+ 1320 0888 05       		.uleb128 0x5
+ 1321 0889 03       		.byte	0x3
+ 1322 088a 00000000 		.4byte	OSCfg_StkSizeMin
+ 1323 088e 11       		.uleb128 0x11
+ 1324 088f 65090000 		.4byte	.LASF133
+ 1325 0893 01       		.byte	0x1
+ 1326 0894 9C       		.byte	0x9c
+ 1327 0895 34080000 		.4byte	0x834
+ 1328 0899 05       		.uleb128 0x5
+ 1329 089a 03       		.byte	0x3
+ 1330 089b 00000000 		.4byte	OSCfg_TickRate_Hz
+ 1331 089f 11       		.uleb128 0x11
+ 1332 08a0 CE070000 		.4byte	.LASF134
+ 1333 08a4 01       		.byte	0x1
+ 1334 08a5 9D       		.byte	0x9d
+ 1335 08a6 1E080000 		.4byte	0x81e
+ 1336 08aa 05       		.uleb128 0x5
+ 1337 08ab 03       		.byte	0x3
+ 1338 08ac 00000000 		.4byte	OSCfg_TickTaskPrio
+ 1339 08b0 11       		.uleb128 0x11
+ 1340 08b1 52040000 		.4byte	.LASF135
+ 1341 08b5 01       		.byte	0x1
+ 1342 08b6 9E       		.byte	0x9e
+ 1343 08b7 D4060000 		.4byte	0x6d4
+ 1344 08bb 05       		.uleb128 0x5
+ 1345 08bc 03       		.byte	0x3
+ 1346 08bd 00000000 		.4byte	OSCfg_TickTaskStkBasePtr
+ 1347 08c1 11       		.uleb128 0x11
+ 1348 08c2 89000000 		.4byte	.LASF136
+ 1349 08c6 01       		.byte	0x1
+ 1350 08c7 9F       		.byte	0x9f
+ 1351 08c8 EA060000 		.4byte	0x6ea
+ 1352 08cc 05       		.uleb128 0x5
+ 1353 08cd 03       		.byte	0x3
+ 1354 08ce 00000000 		.4byte	OSCfg_TickTaskStkLimit
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 30
+
+
+ 1355 08d2 11       		.uleb128 0x11
+ 1356 08d3 0E090000 		.4byte	.LASF137
+ 1357 08d7 01       		.byte	0x1
+ 1358 08d8 A0       		.byte	0xa0
+ 1359 08d9 EA060000 		.4byte	0x6ea
+ 1360 08dd 05       		.uleb128 0x5
+ 1361 08de 03       		.byte	0x3
+ 1362 08df 00000000 		.4byte	OSCfg_TickTaskStkSize
+ 1363 08e3 11       		.uleb128 0x11
+ 1364 08e4 97070000 		.4byte	.LASF138
+ 1365 08e8 01       		.byte	0x1
+ 1366 08e9 A1       		.byte	0xa1
+ 1367 08ea 11070000 		.4byte	0x711
+ 1368 08ee 05       		.uleb128 0x5
+ 1369 08ef 03       		.byte	0x3
+ 1370 08f0 00000000 		.4byte	OSCfg_TickTaskStkSizeRAM
+ 1371 08f4 11       		.uleb128 0x11
+ 1372 08f5 D8050000 		.4byte	.LASF139
+ 1373 08f9 01       		.byte	0x1
+ 1374 08fa A2       		.byte	0xa2
+ 1375 08fb 43070000 		.4byte	0x743
+ 1376 08ff 05       		.uleb128 0x5
+ 1377 0900 03       		.byte	0x3
+ 1378 0901 00000000 		.4byte	OSCfg_TickWheelSize
+ 1379 0905 11       		.uleb128 0x11
+ 1380 0906 C1050000 		.4byte	.LASF140
+ 1381 090a 01       		.byte	0x1
+ 1382 090b A3       		.byte	0xa3
+ 1383 090c 11070000 		.4byte	0x711
+ 1384 0910 05       		.uleb128 0x5
+ 1385 0911 03       		.byte	0x3
+ 1386 0912 00000000 		.4byte	OSCfg_TickWheelSizeRAM
+ 1387 0916 11       		.uleb128 0x11
+ 1388 0917 85070000 		.4byte	.LASF141
+ 1389 091b 01       		.byte	0x1
+ 1390 091c A7       		.byte	0xa7
+ 1391 091d 1E080000 		.4byte	0x81e
+ 1392 0921 05       		.uleb128 0x5
+ 1393 0922 03       		.byte	0x3
+ 1394 0923 00000000 		.4byte	OSCfg_TmrTaskPrio
+ 1395 0927 11       		.uleb128 0x11
+ 1396 0928 07000000 		.4byte	.LASF142
+ 1397 092c 01       		.byte	0x1
+ 1398 092d A8       		.byte	0xa8
+ 1399 092e 34080000 		.4byte	0x834
+ 1400 0932 05       		.uleb128 0x5
+ 1401 0933 03       		.byte	0x3
+ 1402 0934 00000000 		.4byte	OSCfg_TmrTaskRate_Hz
+ 1403 0938 11       		.uleb128 0x11
+ 1404 0939 AC030000 		.4byte	.LASF143
+ 1405 093d 01       		.byte	0x1
+ 1406 093e A9       		.byte	0xa9
+ 1407 093f D4060000 		.4byte	0x6d4
+ 1408 0943 05       		.uleb128 0x5
+ 1409 0944 03       		.byte	0x3
+ 1410 0945 00000000 		.4byte	OSCfg_TmrTaskStkBasePtr
+ 1411 0949 11       		.uleb128 0x11
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 31
+
+
+ 1412 094a DF010000 		.4byte	.LASF144
+ 1413 094e 01       		.byte	0x1
+ 1414 094f AA       		.byte	0xaa
+ 1415 0950 EA060000 		.4byte	0x6ea
+ 1416 0954 05       		.uleb128 0x5
+ 1417 0955 03       		.byte	0x3
+ 1418 0956 00000000 		.4byte	OSCfg_TmrTaskStkLimit
+ 1419 095a 11       		.uleb128 0x11
+ 1420 095b 74000000 		.4byte	.LASF145
+ 1421 095f 01       		.byte	0x1
+ 1422 0960 AB       		.byte	0xab
+ 1423 0961 EA060000 		.4byte	0x6ea
+ 1424 0965 05       		.uleb128 0x5
+ 1425 0966 03       		.byte	0x3
+ 1426 0967 00000000 		.4byte	OSCfg_TmrTaskStkSize
+ 1427 096b 11       		.uleb128 0x11
+ 1428 096c 33080000 		.4byte	.LASF146
+ 1429 0970 01       		.byte	0x1
+ 1430 0971 AC       		.byte	0xac
+ 1431 0972 11070000 		.4byte	0x711
+ 1432 0976 05       		.uleb128 0x5
+ 1433 0977 03       		.byte	0x3
+ 1434 0978 00000000 		.4byte	OSCfg_TmrTaskStkSizeRAM
+ 1435 097c 11       		.uleb128 0x11
+ 1436 097d 57080000 		.4byte	.LASF147
+ 1437 0981 01       		.byte	0x1
+ 1438 0982 AD       		.byte	0xad
+ 1439 0983 43070000 		.4byte	0x743
+ 1440 0987 05       		.uleb128 0x5
+ 1441 0988 03       		.byte	0x3
+ 1442 0989 00000000 		.4byte	OSCfg_TmrWheelSize
+ 1443 098d 0E       		.uleb128 0xe
+ 1444 098e BC000000 		.4byte	0xbc
+ 1445 0992 9D090000 		.4byte	0x99d
+ 1446 0996 0F       		.uleb128 0xf
+ 1447 0997 E7000000 		.4byte	0xe7
+ 1448 099b 7F       		.byte	0x7f
+ 1449 099c 00       		.byte	0
+ 1450 099d 11       		.uleb128 0x11
+ 1451 099e DE000000 		.4byte	.LASF148
+ 1452 09a2 01       		.byte	0x1
+ 1453 09a3 37       		.byte	0x37
+ 1454 09a4 8D090000 		.4byte	0x98d
+ 1455 09a8 05       		.uleb128 0x5
+ 1456 09a9 03       		.byte	0x3
+ 1457 09aa 00000000 		.4byte	OSCfg_IdleTaskStk
+ 1458 09ae 0E       		.uleb128 0xe
+ 1459 09af BC000000 		.4byte	0xbc
+ 1460 09b3 BE090000 		.4byte	0x9be
+ 1461 09b7 0F       		.uleb128 0xf
+ 1462 09b8 E7000000 		.4byte	0xe7
+ 1463 09bc 63       		.byte	0x63
+ 1464 09bd 00       		.byte	0
+ 1465 09be 11       		.uleb128 0x11
+ 1466 09bf 20030000 		.4byte	.LASF149
+ 1467 09c3 01       		.byte	0x1
+ 1468 09c4 3F       		.byte	0x3f
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 32
+
+
+ 1469 09c5 AE090000 		.4byte	0x9ae
+ 1470 09c9 05       		.uleb128 0x5
+ 1471 09ca 03       		.byte	0x3
+ 1472 09cb 00000000 		.4byte	OSCfg_ISRStk
+ 1473 09cf 11       		.uleb128 0x11
+ 1474 09d0 6B040000 		.4byte	.LASF150
+ 1475 09d4 01       		.byte	0x1
+ 1476 09d5 47       		.byte	0x47
+ 1477 09d6 8D090000 		.4byte	0x98d
+ 1478 09da 05       		.uleb128 0x5
+ 1479 09db 03       		.byte	0x3
+ 1480 09dc 00000000 		.4byte	OSCfg_StatTaskStk
+ 1481 09e0 11       		.uleb128 0x11
+ 1482 09e1 49000000 		.4byte	.LASF151
+ 1483 09e5 01       		.byte	0x1
+ 1484 09e6 4A       		.byte	0x4a
+ 1485 09e7 8D090000 		.4byte	0x98d
+ 1486 09eb 05       		.uleb128 0x5
+ 1487 09ec 03       		.byte	0x3
+ 1488 09ed 00000000 		.4byte	OSCfg_TickTaskStk
+ 1489 09f1 0E       		.uleb128 0xe
+ 1490 09f2 D3030000 		.4byte	0x3d3
+ 1491 09f6 010A0000 		.4byte	0xa01
+ 1492 09fa 0F       		.uleb128 0xf
+ 1493 09fb E7000000 		.4byte	0xe7
+ 1494 09ff 1F       		.byte	0x1f
+ 1495 0a00 00       		.byte	0
+ 1496 0a01 11       		.uleb128 0x11
+ 1497 0a02 DD030000 		.4byte	.LASF152
+ 1498 0a06 01       		.byte	0x1
+ 1499 0a07 4B       		.byte	0x4b
+ 1500 0a08 F1090000 		.4byte	0x9f1
+ 1501 0a0c 05       		.uleb128 0x5
+ 1502 0a0d 03       		.byte	0x3
+ 1503 0a0e 00000000 		.4byte	OSCfg_TickWheel
+ 1504 0a12 11       		.uleb128 0x11
+ 1505 0a13 CD000000 		.4byte	.LASF153
+ 1506 0a17 01       		.byte	0x1
+ 1507 0a18 4E       		.byte	0x4e
+ 1508 0a19 8D090000 		.4byte	0x98d
+ 1509 0a1d 05       		.uleb128 0x5
+ 1510 0a1e 03       		.byte	0x3
+ 1511 0a1f 00000000 		.4byte	OSCfg_TmrTaskStk
+ 1512 0a23 0E       		.uleb128 0xe
+ 1513 0a24 06050000 		.4byte	0x506
+ 1514 0a28 330A0000 		.4byte	0xa33
+ 1515 0a2c 0F       		.uleb128 0xf
+ 1516 0a2d E7000000 		.4byte	0xe7
+ 1517 0a31 1F       		.byte	0x1f
+ 1518 0a32 00       		.byte	0
+ 1519 0a33 11       		.uleb128 0x11
+ 1520 0a34 AB020000 		.4byte	.LASF154
+ 1521 0a38 01       		.byte	0x1
+ 1522 0a39 4F       		.byte	0x4f
+ 1523 0a3a 230A0000 		.4byte	0xa23
+ 1524 0a3e 05       		.uleb128 0x5
+ 1525 0a3f 03       		.byte	0x3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 33
+
+
+ 1526 0a40 00000000 		.4byte	OSCfg_TmrWheel
+ 1527 0a44 11       		.uleb128 0x11
+ 1528 0a45 A0060000 		.4byte	.LASF155
+ 1529 0a49 01       		.byte	0x1
+ 1530 0a4a AE       		.byte	0xae
+ 1531 0a4b 11070000 		.4byte	0x711
+ 1532 0a4f 05       		.uleb128 0x5
+ 1533 0a50 03       		.byte	0x3
+ 1534 0a51 00000000 		.4byte	OSCfg_TmrWheelSizeRAM
+ 1535 0a55 11       		.uleb128 0x11
+ 1536 0a56 56070000 		.4byte	.LASF156
+ 1537 0a5a 01       		.byte	0x1
+ 1538 0a5b C2       		.byte	0xc2
+ 1539 0a5c 11070000 		.4byte	0x711
+ 1540 0a60 05       		.uleb128 0x5
+ 1541 0a61 03       		.byte	0x3
+ 1542 0a62 00000000 		.4byte	OSCfg_DataSizeRAM
+ 1543 0a66 00       		.byte	0
+ 1544              		.section	.debug_abbrev,"",%progbits
+ 1545              	.Ldebug_abbrev0:
+ 1546 0000 01       		.uleb128 0x1
+ 1547 0001 11       		.uleb128 0x11
+ 1548 0002 01       		.byte	0x1
+ 1549 0003 25       		.uleb128 0x25
+ 1550 0004 0E       		.uleb128 0xe
+ 1551 0005 13       		.uleb128 0x13
+ 1552 0006 0B       		.uleb128 0xb
+ 1553 0007 03       		.uleb128 0x3
+ 1554 0008 0E       		.uleb128 0xe
+ 1555 0009 1B       		.uleb128 0x1b
+ 1556 000a 0E       		.uleb128 0xe
+ 1557 000b 55       		.uleb128 0x55
+ 1558 000c 17       		.uleb128 0x17
+ 1559 000d 11       		.uleb128 0x11
+ 1560 000e 01       		.uleb128 0x1
+ 1561 000f 10       		.uleb128 0x10
+ 1562 0010 17       		.uleb128 0x17
+ 1563 0011 00       		.byte	0
+ 1564 0012 00       		.byte	0
+ 1565 0013 02       		.uleb128 0x2
+ 1566 0014 16       		.uleb128 0x16
+ 1567 0015 00       		.byte	0
+ 1568 0016 03       		.uleb128 0x3
+ 1569 0017 0E       		.uleb128 0xe
+ 1570 0018 3A       		.uleb128 0x3a
+ 1571 0019 0B       		.uleb128 0xb
+ 1572 001a 3B       		.uleb128 0x3b
+ 1573 001b 0B       		.uleb128 0xb
+ 1574 001c 49       		.uleb128 0x49
+ 1575 001d 13       		.uleb128 0x13
+ 1576 001e 00       		.byte	0
+ 1577 001f 00       		.byte	0
+ 1578 0020 03       		.uleb128 0x3
+ 1579 0021 24       		.uleb128 0x24
+ 1580 0022 00       		.byte	0
+ 1581 0023 0B       		.uleb128 0xb
+ 1582 0024 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 34
+
+
+ 1583 0025 3E       		.uleb128 0x3e
+ 1584 0026 0B       		.uleb128 0xb
+ 1585 0027 03       		.uleb128 0x3
+ 1586 0028 0E       		.uleb128 0xe
+ 1587 0029 00       		.byte	0
+ 1588 002a 00       		.byte	0
+ 1589 002b 04       		.uleb128 0x4
+ 1590 002c 24       		.uleb128 0x24
+ 1591 002d 00       		.byte	0
+ 1592 002e 0B       		.uleb128 0xb
+ 1593 002f 0B       		.uleb128 0xb
+ 1594 0030 3E       		.uleb128 0x3e
+ 1595 0031 0B       		.uleb128 0xb
+ 1596 0032 03       		.uleb128 0x3
+ 1597 0033 08       		.uleb128 0x8
+ 1598 0034 00       		.byte	0
+ 1599 0035 00       		.byte	0
+ 1600 0036 05       		.uleb128 0x5
+ 1601 0037 0F       		.uleb128 0xf
+ 1602 0038 00       		.byte	0
+ 1603 0039 0B       		.uleb128 0xb
+ 1604 003a 0B       		.uleb128 0xb
+ 1605 003b 49       		.uleb128 0x49
+ 1606 003c 13       		.uleb128 0x13
+ 1607 003d 00       		.byte	0
+ 1608 003e 00       		.byte	0
+ 1609 003f 06       		.uleb128 0x6
+ 1610 0040 15       		.uleb128 0x15
+ 1611 0041 01       		.byte	0x1
+ 1612 0042 27       		.uleb128 0x27
+ 1613 0043 19       		.uleb128 0x19
+ 1614 0044 01       		.uleb128 0x1
+ 1615 0045 13       		.uleb128 0x13
+ 1616 0046 00       		.byte	0
+ 1617 0047 00       		.byte	0
+ 1618 0048 07       		.uleb128 0x7
+ 1619 0049 05       		.uleb128 0x5
+ 1620 004a 00       		.byte	0
+ 1621 004b 49       		.uleb128 0x49
+ 1622 004c 13       		.uleb128 0x13
+ 1623 004d 00       		.byte	0
+ 1624 004e 00       		.byte	0
+ 1625 004f 08       		.uleb128 0x8
+ 1626 0050 0F       		.uleb128 0xf
+ 1627 0051 00       		.byte	0
+ 1628 0052 0B       		.uleb128 0xb
+ 1629 0053 0B       		.uleb128 0xb
+ 1630 0054 00       		.byte	0
+ 1631 0055 00       		.byte	0
+ 1632 0056 09       		.uleb128 0x9
+ 1633 0057 16       		.uleb128 0x16
+ 1634 0058 00       		.byte	0
+ 1635 0059 03       		.uleb128 0x3
+ 1636 005a 0E       		.uleb128 0xe
+ 1637 005b 3A       		.uleb128 0x3a
+ 1638 005c 0B       		.uleb128 0xb
+ 1639 005d 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 35
+
+
+ 1640 005e 05       		.uleb128 0x5
+ 1641 005f 49       		.uleb128 0x49
+ 1642 0060 13       		.uleb128 0x13
+ 1643 0061 00       		.byte	0
+ 1644 0062 00       		.byte	0
+ 1645 0063 0A       		.uleb128 0xa
+ 1646 0064 13       		.uleb128 0x13
+ 1647 0065 01       		.byte	0x1
+ 1648 0066 03       		.uleb128 0x3
+ 1649 0067 0E       		.uleb128 0xe
+ 1650 0068 0B       		.uleb128 0xb
+ 1651 0069 0B       		.uleb128 0xb
+ 1652 006a 3A       		.uleb128 0x3a
+ 1653 006b 0B       		.uleb128 0xb
+ 1654 006c 3B       		.uleb128 0x3b
+ 1655 006d 05       		.uleb128 0x5
+ 1656 006e 01       		.uleb128 0x1
+ 1657 006f 13       		.uleb128 0x13
+ 1658 0070 00       		.byte	0
+ 1659 0071 00       		.byte	0
+ 1660 0072 0B       		.uleb128 0xb
+ 1661 0073 0D       		.uleb128 0xd
+ 1662 0074 00       		.byte	0
+ 1663 0075 03       		.uleb128 0x3
+ 1664 0076 0E       		.uleb128 0xe
+ 1665 0077 3A       		.uleb128 0x3a
+ 1666 0078 0B       		.uleb128 0xb
+ 1667 0079 3B       		.uleb128 0x3b
+ 1668 007a 05       		.uleb128 0x5
+ 1669 007b 49       		.uleb128 0x49
+ 1670 007c 13       		.uleb128 0x13
+ 1671 007d 38       		.uleb128 0x38
+ 1672 007e 0B       		.uleb128 0xb
+ 1673 007f 00       		.byte	0
+ 1674 0080 00       		.byte	0
+ 1675 0081 0C       		.uleb128 0xc
+ 1676 0082 13       		.uleb128 0x13
+ 1677 0083 00       		.byte	0
+ 1678 0084 03       		.uleb128 0x3
+ 1679 0085 0E       		.uleb128 0xe
+ 1680 0086 3C       		.uleb128 0x3c
+ 1681 0087 19       		.uleb128 0x19
+ 1682 0088 00       		.byte	0
+ 1683 0089 00       		.byte	0
+ 1684 008a 0D       		.uleb128 0xd
+ 1685 008b 0D       		.uleb128 0xd
+ 1686 008c 00       		.byte	0
+ 1687 008d 03       		.uleb128 0x3
+ 1688 008e 08       		.uleb128 0x8
+ 1689 008f 3A       		.uleb128 0x3a
+ 1690 0090 0B       		.uleb128 0xb
+ 1691 0091 3B       		.uleb128 0x3b
+ 1692 0092 05       		.uleb128 0x5
+ 1693 0093 49       		.uleb128 0x49
+ 1694 0094 13       		.uleb128 0x13
+ 1695 0095 38       		.uleb128 0x38
+ 1696 0096 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 36
+
+
+ 1697 0097 00       		.byte	0
+ 1698 0098 00       		.byte	0
+ 1699 0099 0E       		.uleb128 0xe
+ 1700 009a 01       		.uleb128 0x1
+ 1701 009b 01       		.byte	0x1
+ 1702 009c 49       		.uleb128 0x49
+ 1703 009d 13       		.uleb128 0x13
+ 1704 009e 01       		.uleb128 0x1
+ 1705 009f 13       		.uleb128 0x13
+ 1706 00a0 00       		.byte	0
+ 1707 00a1 00       		.byte	0
+ 1708 00a2 0F       		.uleb128 0xf
+ 1709 00a3 21       		.uleb128 0x21
+ 1710 00a4 00       		.byte	0
+ 1711 00a5 49       		.uleb128 0x49
+ 1712 00a6 13       		.uleb128 0x13
+ 1713 00a7 2F       		.uleb128 0x2f
+ 1714 00a8 0B       		.uleb128 0xb
+ 1715 00a9 00       		.byte	0
+ 1716 00aa 00       		.byte	0
+ 1717 00ab 10       		.uleb128 0x10
+ 1718 00ac 2E       		.uleb128 0x2e
+ 1719 00ad 00       		.byte	0
+ 1720 00ae 3F       		.uleb128 0x3f
+ 1721 00af 19       		.uleb128 0x19
+ 1722 00b0 03       		.uleb128 0x3
+ 1723 00b1 0E       		.uleb128 0xe
+ 1724 00b2 3A       		.uleb128 0x3a
+ 1725 00b3 0B       		.uleb128 0xb
+ 1726 00b4 3B       		.uleb128 0x3b
+ 1727 00b5 0B       		.uleb128 0xb
+ 1728 00b6 27       		.uleb128 0x27
+ 1729 00b7 19       		.uleb128 0x19
+ 1730 00b8 11       		.uleb128 0x11
+ 1731 00b9 01       		.uleb128 0x1
+ 1732 00ba 12       		.uleb128 0x12
+ 1733 00bb 06       		.uleb128 0x6
+ 1734 00bc 40       		.uleb128 0x40
+ 1735 00bd 18       		.uleb128 0x18
+ 1736 00be 9742     		.uleb128 0x2117
+ 1737 00c0 19       		.uleb128 0x19
+ 1738 00c1 00       		.byte	0
+ 1739 00c2 00       		.byte	0
+ 1740 00c3 11       		.uleb128 0x11
+ 1741 00c4 34       		.uleb128 0x34
+ 1742 00c5 00       		.byte	0
+ 1743 00c6 03       		.uleb128 0x3
+ 1744 00c7 0E       		.uleb128 0xe
+ 1745 00c8 3A       		.uleb128 0x3a
+ 1746 00c9 0B       		.uleb128 0xb
+ 1747 00ca 3B       		.uleb128 0x3b
+ 1748 00cb 0B       		.uleb128 0xb
+ 1749 00cc 49       		.uleb128 0x49
+ 1750 00cd 13       		.uleb128 0x13
+ 1751 00ce 3F       		.uleb128 0x3f
+ 1752 00cf 19       		.uleb128 0x19
+ 1753 00d0 02       		.uleb128 0x2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 37
+
+
+ 1754 00d1 18       		.uleb128 0x18
+ 1755 00d2 00       		.byte	0
+ 1756 00d3 00       		.byte	0
+ 1757 00d4 12       		.uleb128 0x12
+ 1758 00d5 26       		.uleb128 0x26
+ 1759 00d6 00       		.byte	0
+ 1760 00d7 49       		.uleb128 0x49
+ 1761 00d8 13       		.uleb128 0x13
+ 1762 00d9 00       		.byte	0
+ 1763 00da 00       		.byte	0
+ 1764 00db 00       		.byte	0
+ 1765              		.section	.debug_aranges,"",%progbits
+ 1766 0000 1C000000 		.4byte	0x1c
+ 1767 0004 0200     		.2byte	0x2
+ 1768 0006 00000000 		.4byte	.Ldebug_info0
+ 1769 000a 04       		.byte	0x4
+ 1770 000b 00       		.byte	0
+ 1771 000c 0000     		.2byte	0
+ 1772 000e 0000     		.2byte	0
+ 1773 0010 00000000 		.4byte	.LFB1
+ 1774 0014 0A000000 		.4byte	.LFE1-.LFB1
+ 1775 0018 00000000 		.4byte	0
+ 1776 001c 00000000 		.4byte	0
+ 1777              		.section	.debug_ranges,"",%progbits
+ 1778              	.Ldebug_ranges0:
+ 1779 0000 00000000 		.4byte	.LFB1
+ 1780 0004 0A000000 		.4byte	.LFE1
+ 1781 0008 00000000 		.4byte	0
+ 1782 000c 00000000 		.4byte	0
+ 1783              		.section	.debug_line,"",%progbits
+ 1784              	.Ldebug_line0:
+ 1785 0000 E9000000 		.section	.debug_str,"MS",%progbits,1
+ 1785      0200D000 
+ 1785      00000201 
+ 1785      FB0E0D00 
+ 1785      01010101 
+ 1786              	.LASF44:
+ 1787 0000 6F735F74 		.ascii	"os_tcb\000"
+ 1787      636200
+ 1788              	.LASF142:
+ 1789 0007 4F534366 		.ascii	"OSCfg_TmrTaskRate_Hz\000"
+ 1789      675F546D 
+ 1789      72546173 
+ 1789      6B526174 
+ 1789      655F487A 
+ 1790              	.LASF130:
+ 1791 001c 4F534366 		.ascii	"OSCfg_StatTaskStkSize\000"
+ 1791      675F5374 
+ 1791      61745461 
+ 1791      736B5374 
+ 1791      6B53697A 
+ 1792              	.LASF71:
+ 1793 0032 53746B55 		.ascii	"StkUsed\000"
+ 1793      73656400 
+ 1794              	.LASF114:
+ 1795 003a 4F534366 		.ascii	"OSCfg_IntQSize\000"
+ 1795      675F496E 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 38
+
+
+ 1795      74515369 
+ 1795      7A6500
+ 1796              	.LASF151:
+ 1797 0049 4F534366 		.ascii	"OSCfg_TickTaskStk\000"
+ 1797      675F5469 
+ 1797      636B5461 
+ 1797      736B5374 
+ 1797      6B00
+ 1798              	.LASF161:
+ 1799 005b 4F534366 		.ascii	"OSCfg_Init\000"
+ 1799      675F496E 
+ 1799      697400
+ 1800              	.LASF68:
+ 1801 0066 54696D65 		.ascii	"TimeQuantaCtr\000"
+ 1801      5175616E 
+ 1801      74614374 
+ 1801      7200
+ 1802              	.LASF145:
+ 1803 0074 4F534366 		.ascii	"OSCfg_TmrTaskStkSize\000"
+ 1803      675F546D 
+ 1803      72546173 
+ 1803      6B53746B 
+ 1803      53697A65 
+ 1804              	.LASF136:
+ 1805 0089 4F534366 		.ascii	"OSCfg_TickTaskStkLimit\000"
+ 1805      675F5469 
+ 1805      636B5461 
+ 1805      736B5374 
+ 1805      6B4C696D 
+ 1806              	.LASF80:
+ 1807 00a0 4E627245 		.ascii	"NbrEntries\000"
+ 1807      6E747269 
+ 1807      657300
+ 1808              	.LASF8:
+ 1809 00ab 4350555F 		.ascii	"CPU_INT32U\000"
+ 1809      494E5433 
+ 1809      325500
+ 1810              	.LASF117:
+ 1811 00b6 4F534366 		.ascii	"OSCfg_IntQTaskStkLimit\000"
+ 1811      675F496E 
+ 1811      74515461 
+ 1811      736B5374 
+ 1811      6B4C696D 
+ 1812              	.LASF153:
+ 1813 00cd 4F534366 		.ascii	"OSCfg_TmrTaskStk\000"
+ 1813      675F546D 
+ 1813      72546173 
+ 1813      6B53746B 
+ 1813      00
+ 1814              	.LASF148:
+ 1815 00de 4F534366 		.ascii	"OSCfg_IdleTaskStk\000"
+ 1815      675F4964 
+ 1815      6C655461 
+ 1815      736B5374 
+ 1815      6B00
+ 1816              	.LASF157:
+ 1817 00f0 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 39
+
+
+ 1817      43313120 
+ 1817      352E342E 
+ 1817      31203230 
+ 1817      31363036 
+ 1818 0123 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1818      20726576 
+ 1818      6973696F 
+ 1818      6E203233 
+ 1818      37373135 
+ 1819 0156 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1819      66756E63 
+ 1819      74696F6E 
+ 1819      2D736563 
+ 1819      74696F6E 
+ 1820              	.LASF74:
+ 1821 017e 44626750 		.ascii	"DbgPrevPtr\000"
+ 1821      72657650 
+ 1821      747200
+ 1822              	.LASF75:
+ 1823 0189 4462674E 		.ascii	"DbgNextPtr\000"
+ 1823      65787450 
+ 1823      747200
+ 1824              	.LASF104:
+ 1825 0194 48656164 		.ascii	"HeadPtr\000"
+ 1825      50747200 
+ 1826              	.LASF91:
+ 1827 019c 53746174 		.ascii	"State\000"
+ 1827      6500
+ 1828              	.LASF40:
+ 1829 01a2 4F535F49 		.ascii	"OS_INT_Q\000"
+ 1829      4E545F51 
+ 1829      00
+ 1830              	.LASF115:
+ 1831 01ab 4F534366 		.ascii	"OSCfg_IntQSizeRAM\000"
+ 1831      675F496E 
+ 1831      74515369 
+ 1831      7A655241 
+ 1831      4D00
+ 1832              	.LASF57:
+ 1833 01bd 50656E64 		.ascii	"PendOn\000"
+ 1833      4F6E00
+ 1834              	.LASF62:
+ 1835 01c4 50656E64 		.ascii	"PendDataTblEntries\000"
+ 1835      44617461 
+ 1835      54626C45 
+ 1835      6E747269 
+ 1835      657300
+ 1836              	.LASF105:
+ 1837 01d7 5461696C 		.ascii	"TailPtr\000"
+ 1837      50747200 
+ 1838              	.LASF144:
+ 1839 01df 4F534366 		.ascii	"OSCfg_TmrTaskStkLimit\000"
+ 1839      675F546D 
+ 1839      72546173 
+ 1839      6B53746B 
+ 1839      4C696D69 
+ 1840              	.LASF41:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 40
+
+
+ 1841 01f5 4F535F54 		.ascii	"OS_TASK_PTR\000"
+ 1841      41534B5F 
+ 1841      50545200 
+ 1842              	.LASF65:
+ 1843 0201 5469636B 		.ascii	"TickCtrMatch\000"
+ 1843      4374724D 
+ 1843      61746368 
+ 1843      00
+ 1844              	.LASF107:
+ 1845 020e 6F735F70 		.ascii	"os_pend_obj\000"
+ 1845      656E645F 
+ 1845      6F626A00 
+ 1846              	.LASF25:
+ 1847 021a 4F535F4F 		.ascii	"OS_OBJ_QTY\000"
+ 1847      424A5F51 
+ 1847      545900
+ 1848              	.LASF123:
+ 1849 0225 4F534366 		.ascii	"OSCfg_MsgPoolSize\000"
+ 1849      675F4D73 
+ 1849      67506F6F 
+ 1849      6C53697A 
+ 1849      6500
+ 1850              	.LASF28:
+ 1851 0237 4F535F50 		.ascii	"OS_PRIO\000"
+ 1851      52494F00 
+ 1852              	.LASF12:
+ 1853 023f 666C6F61 		.ascii	"float\000"
+ 1853      7400
+ 1854              	.LASF95:
+ 1855 0245 6F735F70 		.ascii	"os_pend_data\000"
+ 1855      656E645F 
+ 1855      64617461 
+ 1855      00
+ 1856              	.LASF77:
+ 1857 0252 4F535F54 		.ascii	"OS_TICK_SPOKE\000"
+ 1857      49434B5F 
+ 1857      53504F4B 
+ 1857      4500
+ 1858              	.LASF112:
+ 1859 0260 4F534366 		.ascii	"OSCfg_IdleTaskStkSizeRAM\000"
+ 1859      675F4964 
+ 1859      6C655461 
+ 1859      736B5374 
+ 1859      6B53697A 
+ 1860              	.LASF35:
+ 1861 0279 4F535F4D 		.ascii	"OS_MSG\000"
+ 1861      534700
+ 1862              	.LASF10:
+ 1863 0280 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1863      206C6F6E 
+ 1863      6720756E 
+ 1863      7369676E 
+ 1863      65642069 
+ 1864              	.LASF94:
+ 1865 0297 4F535F50 		.ascii	"OS_PEND_DATA\000"
+ 1865      454E445F 
+ 1865      44415441 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 41
+
+
+ 1865      00
+ 1866              	.LASF89:
+ 1867 02a4 52656D61 		.ascii	"Remain\000"
+ 1867      696E00
+ 1868              	.LASF154:
+ 1869 02ab 4F534366 		.ascii	"OSCfg_TmrWheel\000"
+ 1869      675F546D 
+ 1869      72576865 
+ 1869      656C00
+ 1870              	.LASF3:
+ 1871 02ba 4350555F 		.ascii	"CPU_INT08U\000"
+ 1871      494E5430 
+ 1871      385500
+ 1872              	.LASF92:
+ 1873 02c5 4F535F54 		.ascii	"OS_TMR_SPOKE\000"
+ 1873      4D525F53 
+ 1873      504F4B45 
+ 1873      00
+ 1874              	.LASF43:
+ 1875 02d2 6F735F6D 		.ascii	"os_msg\000"
+ 1875      736700
+ 1876              	.LASF61:
+ 1877 02d9 53746B53 		.ascii	"StkSize\000"
+ 1877      697A6500 
+ 1878              	.LASF53:
+ 1879 02e1 53746B42 		.ascii	"StkBasePtr\000"
+ 1879      61736550 
+ 1879      747200
+ 1880              	.LASF30:
+ 1881 02ec 4F535F52 		.ascii	"OS_REG\000"
+ 1881      454700
+ 1882              	.LASF129:
+ 1883 02f3 4F534366 		.ascii	"OSCfg_StatTaskStkLimit\000"
+ 1883      675F5374 
+ 1883      61745461 
+ 1883      736B5374 
+ 1883      6B4C696D 
+ 1884              	.LASF33:
+ 1885 030a 4F535F53 		.ascii	"OS_STATUS\000"
+ 1885      54415455 
+ 1885      5300
+ 1886              	.LASF23:
+ 1887 0314 4F535F4D 		.ascii	"OS_MSG_SIZE\000"
+ 1887      53475F53 
+ 1887      495A4500 
+ 1888              	.LASF149:
+ 1889 0320 4F534366 		.ascii	"OSCfg_ISRStk\000"
+ 1889      675F4953 
+ 1889      5253746B 
+ 1889      00
+ 1890              	.LASF2:
+ 1891 032d 4350555F 		.ascii	"CPU_CHAR\000"
+ 1891      43484152 
+ 1891      00
+ 1892              	.LASF93:
+ 1893 0336 6F735F74 		.ascii	"os_tmr_spoke\000"
+ 1893      6D725F73 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 42
+
+
+ 1893      706F6B65 
+ 1893      00
+ 1894              	.LASF16:
+ 1895 0343 4350555F 		.ascii	"CPU_STK_SIZE\000"
+ 1895      53544B5F 
+ 1895      53495A45 
+ 1895      00
+ 1896              	.LASF64:
+ 1897 0350 5469636B 		.ascii	"TickCtrPrev\000"
+ 1897      43747250 
+ 1897      72657600 
+ 1898              	.LASF50:
+ 1899 035c 5469636B 		.ascii	"TickPrevPtr\000"
+ 1899      50726576 
+ 1899      50747200 
+ 1900              	.LASF158:
+ 1901 0368 2E2E5C2E 		.ascii	"..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source\\"
+ 1901      2E5C2E2E 
+ 1901      5C2E2E5C 
+ 1901      2E2E5C2E 
+ 1901      2E5C536F 
+ 1902 0393 6F735F63 		.ascii	"os_cfg_app.c\000"
+ 1902      66675F61 
+ 1902      70702E63 
+ 1902      00
+ 1903              	.LASF86:
+ 1904 03a0 43616C6C 		.ascii	"CallbackPtr\000"
+ 1904      6261636B 
+ 1904      50747200 
+ 1905              	.LASF143:
+ 1906 03ac 4F534366 		.ascii	"OSCfg_TmrTaskStkBasePtr\000"
+ 1906      675F546D 
+ 1906      72546173 
+ 1906      6B53746B 
+ 1906      42617365 
+ 1907              	.LASF48:
+ 1908 03c4 50726576 		.ascii	"PrevPtr\000"
+ 1908      50747200 
+ 1909              	.LASF0:
+ 1910 03cc 63686172 		.ascii	"char\000"
+ 1910      00
+ 1911              	.LASF26:
+ 1912 03d1 4F535F4F 		.ascii	"OS_OBJ_TYPE\000"
+ 1912      424A5F54 
+ 1912      59504500 
+ 1913              	.LASF152:
+ 1914 03dd 4F534366 		.ascii	"OSCfg_TickWheel\000"
+ 1914      675F5469 
+ 1914      636B5768 
+ 1914      65656C00 
+ 1915              	.LASF59:
+ 1916 03ed 5461736B 		.ascii	"TaskState\000"
+ 1916      53746174 
+ 1916      6500
+ 1917              	.LASF121:
+ 1918 03f7 4F534366 		.ascii	"OSCfg_ISRStkSize\000"
+ 1918      675F4953 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 43
+
+
+ 1918      5253746B 
+ 1918      53697A65 
+ 1918      00
+ 1919              	.LASF29:
+ 1920 0408 4F535F52 		.ascii	"OS_RATE_HZ\000"
+ 1920      4154455F 
+ 1920      485A00
+ 1921              	.LASF54:
+ 1922 0413 5461736B 		.ascii	"TaskEntryAddr\000"
+ 1922      456E7472 
+ 1922      79416464 
+ 1922      7200
+ 1923              	.LASF128:
+ 1924 0421 4F534366 		.ascii	"OSCfg_StatTaskStkBasePtr\000"
+ 1924      675F5374 
+ 1924      61745461 
+ 1924      736B5374 
+ 1924      6B426173 
+ 1925              	.LASF52:
+ 1926 043a 4E616D65 		.ascii	"NamePtr\000"
+ 1926      50747200 
+ 1927              	.LASF58:
+ 1928 0442 50656E64 		.ascii	"PendStatus\000"
+ 1928      53746174 
+ 1928      757300
+ 1929              	.LASF85:
+ 1930 044d 54797065 		.ascii	"Type\000"
+ 1930      00
+ 1931              	.LASF135:
+ 1932 0452 4F534366 		.ascii	"OSCfg_TickTaskStkBasePtr\000"
+ 1932      675F5469 
+ 1932      636B5461 
+ 1932      736B5374 
+ 1932      6B426173 
+ 1933              	.LASF150:
+ 1934 046b 4F534366 		.ascii	"OSCfg_StatTaskStk\000"
+ 1934      675F5374 
+ 1934      61745461 
+ 1934      736B5374 
+ 1934      6B00
+ 1935              	.LASF22:
+ 1936 047d 4350555F 		.ascii	"CPU_TS\000"
+ 1936      545300
+ 1937              	.LASF11:
+ 1938 0484 6C6F6E67 		.ascii	"long long int\000"
+ 1938      206C6F6E 
+ 1938      6720696E 
+ 1938      7400
+ 1939              	.LASF45:
+ 1940 0492 53746B50 		.ascii	"StkPtr\000"
+ 1940      747200
+ 1941              	.LASF78:
+ 1942 0499 6F735F74 		.ascii	"os_tick_spoke\000"
+ 1942      69636B5F 
+ 1942      73706F6B 
+ 1942      6500
+ 1943              	.LASF116:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 44
+
+
+ 1944 04a7 4F534366 		.ascii	"OSCfg_IntQTaskStkBasePtr\000"
+ 1944      675F496E 
+ 1944      74515461 
+ 1944      736B5374 
+ 1944      6B426173 
+ 1945              	.LASF90:
+ 1946 04c0 50657269 		.ascii	"Period\000"
+ 1946      6F6400
+ 1947              	.LASF5:
+ 1948 04c7 4350555F 		.ascii	"CPU_INT16U\000"
+ 1948      494E5431 
+ 1948      365500
+ 1949              	.LASF34:
+ 1950 04d2 4F535F54 		.ascii	"OS_TICK\000"
+ 1950      49434B00 
+ 1951              	.LASF159:
+ 1952 04da 433A5C55 		.ascii	"C:\\Users\\edulu.DESKTOP-961TG4K\\Documents\\PSoC C"
+ 1952      73657273 
+ 1952      5C656475 
+ 1952      6C752E44 
+ 1952      45534B54 
+ 1953 0509 72656174 		.ascii	"reator\\Micrium\\Examples\\Cypress\\CY8CKIT-044\\OS"
+ 1953      6F725C4D 
+ 1953      69637269 
+ 1953      756D5C45 
+ 1953      78616D70 
+ 1954 0537 335C5053 		.ascii	"3\\PSoC\\OS3.cydsn\000"
+ 1954      6F435C4F 
+ 1954      53332E63 
+ 1954      7964736E 
+ 1954      00
+ 1955              	.LASF21:
+ 1956 0548 4350555F 		.ascii	"CPU_TS32\000"
+ 1956      54533332 
+ 1956      00
+ 1957              	.LASF70:
+ 1958 0551 53757370 		.ascii	"SuspendCtr\000"
+ 1958      656E6443 
+ 1958      747200
+ 1959              	.LASF47:
+ 1960 055c 53746B4C 		.ascii	"StkLimitPtr\000"
+ 1960      696D6974 
+ 1960      50747200 
+ 1961              	.LASF110:
+ 1962 0568 4F534366 		.ascii	"OSCfg_IdleTaskStkLimit\000"
+ 1962      675F4964 
+ 1962      6C655461 
+ 1962      736B5374 
+ 1962      6B4C696D 
+ 1963              	.LASF31:
+ 1964 057f 4F535F53 		.ascii	"OS_SEM_CTR\000"
+ 1964      454D5F43 
+ 1964      545200
+ 1965              	.LASF96:
+ 1966 058a 54434250 		.ascii	"TCBPtr\000"
+ 1966      747200
+ 1967              	.LASF49:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 45
+
+
+ 1968 0591 5469636B 		.ascii	"TickNextPtr\000"
+ 1968      4E657874 
+ 1968      50747200 
+ 1969              	.LASF132:
+ 1970 059d 4F534366 		.ascii	"OSCfg_StkSizeMin\000"
+ 1970      675F5374 
+ 1970      6B53697A 
+ 1970      654D696E 
+ 1970      00
+ 1971              	.LASF160:
+ 1972 05ae 6F735F69 		.ascii	"os_int_q\000"
+ 1972      6E745F71 
+ 1972      00
+ 1973              	.LASF98:
+ 1974 05b7 5264794F 		.ascii	"RdyObjPtr\000"
+ 1974      626A5074 
+ 1974      7200
+ 1975              	.LASF140:
+ 1976 05c1 4F534366 		.ascii	"OSCfg_TickWheelSizeRAM\000"
+ 1976      675F5469 
+ 1976      636B5768 
+ 1976      65656C53 
+ 1976      697A6552 
+ 1977              	.LASF139:
+ 1978 05d8 4F534366 		.ascii	"OSCfg_TickWheelSize\000"
+ 1978      675F5469 
+ 1978      636B5768 
+ 1978      65656C53 
+ 1978      697A6500 
+ 1979              	.LASF36:
+ 1980 05ec 4E657874 		.ascii	"NextPtr\000"
+ 1980      50747200 
+ 1981              	.LASF19:
+ 1982 05f4 6C6F6E67 		.ascii	"long double\000"
+ 1982      20646F75 
+ 1982      626C6500 
+ 1983              	.LASF83:
+ 1984 0600 4F535F54 		.ascii	"OS_TMR\000"
+ 1984      4D5200
+ 1985              	.LASF101:
+ 1986 0607 52647954 		.ascii	"RdyTS\000"
+ 1986      5300
+ 1987              	.LASF7:
+ 1988 060d 73686F72 		.ascii	"short int\000"
+ 1988      7420696E 
+ 1988      7400
+ 1989              	.LASF100:
+ 1990 0617 5264794D 		.ascii	"RdyMsgSize\000"
+ 1990      73675369 
+ 1990      7A6500
+ 1991              	.LASF84:
+ 1992 0622 6F735F74 		.ascii	"os_tmr\000"
+ 1992      6D7200
+ 1993              	.LASF73:
+ 1994 0629 496E7444 		.ascii	"IntDisTimeMax\000"
+ 1994      69735469 
+ 1994      6D654D61 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 46
+
+
+ 1994      7800
+ 1995              	.LASF126:
+ 1996 0637 4F534366 		.ascii	"OSCfg_StatTaskPrio\000"
+ 1996      675F5374 
+ 1996      61745461 
+ 1996      736B5072 
+ 1996      696F00
+ 1997              	.LASF17:
+ 1998 064a 6C6F6E67 		.ascii	"long int\000"
+ 1998      20696E74 
+ 1998      00
+ 1999              	.LASF88:
+ 2000 0653 4D617463 		.ascii	"Match\000"
+ 2000      6800
+ 2001              	.LASF122:
+ 2002 0659 4F534366 		.ascii	"OSCfg_ISRStkSizeRAM\000"
+ 2002      675F4953 
+ 2002      5253746B 
+ 2002      53697A65 
+ 2002      52414D00 
+ 2003              	.LASF56:
+ 2004 066d 50656E64 		.ascii	"PendDataTblPtr\000"
+ 2004      44617461 
+ 2004      54626C50 
+ 2004      747200
+ 2005              	.LASF24:
+ 2006 067c 4F535F4E 		.ascii	"OS_NESTING_CTR\000"
+ 2006      45535449 
+ 2006      4E475F43 
+ 2006      545200
+ 2007              	.LASF106:
+ 2008 068b 4F535F50 		.ascii	"OS_PEND_OBJ\000"
+ 2008      454E445F 
+ 2008      4F424A00 
+ 2009              	.LASF108:
+ 2010 0697 50656E64 		.ascii	"PendList\000"
+ 2010      4C697374 
+ 2010      00
+ 2011              	.LASF155:
+ 2012 06a0 4F534366 		.ascii	"OSCfg_TmrWheelSizeRAM\000"
+ 2012      675F546D 
+ 2012      72576865 
+ 2012      656C5369 
+ 2012      7A655241 
+ 2013              	.LASF63:
+ 2014 06b6 53656D43 		.ascii	"SemCtr\000"
+ 2014      747200
+ 2015              	.LASF125:
+ 2016 06bd 4F534366 		.ascii	"OSCfg_MsgPoolBasePtr\000"
+ 2016      675F4D73 
+ 2016      67506F6F 
+ 2016      6C426173 
+ 2016      65507472 
+ 2017              	.LASF66:
+ 2018 06d2 5469636B 		.ascii	"TickRemain\000"
+ 2018      52656D61 
+ 2018      696E00
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 47
+
+
+ 2019              	.LASF118:
+ 2020 06dd 4F534366 		.ascii	"OSCfg_IntQTaskStkSize\000"
+ 2020      675F496E 
+ 2020      74515461 
+ 2020      736B5374 
+ 2020      6B53697A 
+ 2021              	.LASF9:
+ 2022 06f3 756E7369 		.ascii	"unsigned int\000"
+ 2022      676E6564 
+ 2022      20696E74 
+ 2022      00
+ 2023              	.LASF38:
+ 2024 0700 4D736753 		.ascii	"MsgSize\000"
+ 2024      697A6500 
+ 2025              	.LASF119:
+ 2026 0708 4F534366 		.ascii	"OSCfg_IntQTaskStkSizeRAM\000"
+ 2026      675F496E 
+ 2026      74515461 
+ 2026      736B5374 
+ 2026      6B53697A 
+ 2027              	.LASF99:
+ 2028 0721 5264794D 		.ascii	"RdyMsgPtr\000"
+ 2028      73675074 
+ 2028      7200
+ 2029              	.LASF79:
+ 2030 072b 46697273 		.ascii	"FirstPtr\000"
+ 2030      74507472 
+ 2030      00
+ 2031              	.LASF46:
+ 2032 0734 45787450 		.ascii	"ExtPtr\000"
+ 2032      747200
+ 2033              	.LASF20:
+ 2034 073b 73697A65 		.ascii	"sizetype\000"
+ 2034      74797065 
+ 2034      00
+ 2035              	.LASF18:
+ 2036 0744 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2036      20756E73 
+ 2036      69676E65 
+ 2036      6420696E 
+ 2036      7400
+ 2037              	.LASF156:
+ 2038 0756 4F534366 		.ascii	"OSCfg_DataSizeRAM\000"
+ 2038      675F4461 
+ 2038      74615369 
+ 2038      7A655241 
+ 2038      4D00
+ 2039              	.LASF14:
+ 2040 0768 4350555F 		.ascii	"CPU_ADDR\000"
+ 2040      41444452 
+ 2040      00
+ 2041              	.LASF120:
+ 2042 0771 4F534366 		.ascii	"OSCfg_ISRStkBasePtr\000"
+ 2042      675F4953 
+ 2042      5253746B 
+ 2042      42617365 
+ 2042      50747200 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 48
+
+
+ 2043              	.LASF141:
+ 2044 0785 4F534366 		.ascii	"OSCfg_TmrTaskPrio\000"
+ 2044      675F546D 
+ 2044      72546173 
+ 2044      6B507269 
+ 2044      6F00
+ 2045              	.LASF138:
+ 2046 0797 4F534366 		.ascii	"OSCfg_TickTaskStkSizeRAM\000"
+ 2046      675F5469 
+ 2046      636B5461 
+ 2046      736B5374 
+ 2046      6B53697A 
+ 2047              	.LASF1:
+ 2048 07b0 756E7369 		.ascii	"unsigned char\000"
+ 2048      676E6564 
+ 2048      20636861 
+ 2048      7200
+ 2049              	.LASF32:
+ 2050 07be 4F535F53 		.ascii	"OS_STATE\000"
+ 2050      54415445 
+ 2050      00
+ 2051              	.LASF27:
+ 2052 07c7 4F535F4F 		.ascii	"OS_OPT\000"
+ 2052      505400
+ 2053              	.LASF134:
+ 2054 07ce 4F534366 		.ascii	"OSCfg_TickTaskPrio\000"
+ 2054      675F5469 
+ 2054      636B5461 
+ 2054      736B5072 
+ 2054      696F00
+ 2055              	.LASF51:
+ 2056 07e1 5469636B 		.ascii	"TickSpokePtr\000"
+ 2056      53706F6B 
+ 2056      65507472 
+ 2056      00
+ 2057              	.LASF76:
+ 2058 07ee 4462674E 		.ascii	"DbgNamePtr\000"
+ 2058      616D6550 
+ 2058      747200
+ 2059              	.LASF55:
+ 2060 07f9 5461736B 		.ascii	"TaskEntryArg\000"
+ 2060      456E7472 
+ 2060      79417267 
+ 2060      00
+ 2061              	.LASF81:
+ 2062 0806 4E627245 		.ascii	"NbrEntriesMax\000"
+ 2062      6E747269 
+ 2062      65734D61 
+ 2062      7800
+ 2063              	.LASF102:
+ 2064 0814 4F535F50 		.ascii	"OS_PEND_LIST\000"
+ 2064      454E445F 
+ 2064      4C495354 
+ 2064      00
+ 2065              	.LASF113:
+ 2066 0821 4F534366 		.ascii	"OSCfg_IntQBasePtr\000"
+ 2066      675F496E 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 49
+
+
+ 2066      74514261 
+ 2066      73655074 
+ 2066      7200
+ 2067              	.LASF146:
+ 2068 0833 4F534366 		.ascii	"OSCfg_TmrTaskStkSizeRAM\000"
+ 2068      675F546D 
+ 2068      72546173 
+ 2068      6B53746B 
+ 2068      53697A65 
+ 2069              	.LASF4:
+ 2070 084b 7369676E 		.ascii	"signed char\000"
+ 2070      65642063 
+ 2070      68617200 
+ 2071              	.LASF147:
+ 2072 0857 4F534366 		.ascii	"OSCfg_TmrWheelSize\000"
+ 2072      675F546D 
+ 2072      72576865 
+ 2072      656C5369 
+ 2072      7A6500
+ 2073              	.LASF39:
+ 2074 086a 4D736754 		.ascii	"MsgTS\000"
+ 2074      5300
+ 2075              	.LASF131:
+ 2076 0870 4F534366 		.ascii	"OSCfg_StatTaskStkSizeRAM\000"
+ 2076      675F5374 
+ 2076      61745461 
+ 2076      736B5374 
+ 2076      6B53697A 
+ 2077              	.LASF6:
+ 2078 0889 73686F72 		.ascii	"short unsigned int\000"
+ 2078      7420756E 
+ 2078      7369676E 
+ 2078      65642069 
+ 2078      6E7400
+ 2079              	.LASF37:
+ 2080 089c 4D736750 		.ascii	"MsgPtr\000"
+ 2080      747200
+ 2081              	.LASF60:
+ 2082 08a3 5072696F 		.ascii	"Prio\000"
+ 2082      00
+ 2083              	.LASF13:
+ 2084 08a8 646F7562 		.ascii	"double\000"
+ 2084      6C6500
+ 2085              	.LASF82:
+ 2086 08af 4F535F54 		.ascii	"OS_TMR_CALLBACK_PTR\000"
+ 2086      4D525F43 
+ 2086      414C4C42 
+ 2086      41434B5F 
+ 2086      50545200 
+ 2087              	.LASF97:
+ 2088 08c3 50656E64 		.ascii	"PendObjPtr\000"
+ 2088      4F626A50 
+ 2088      747200
+ 2089              	.LASF42:
+ 2090 08ce 4F535F54 		.ascii	"OS_TCB\000"
+ 2090      434200
+ 2091              	.LASF103:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 50
+
+
+ 2092 08d5 6F735F70 		.ascii	"os_pend_list\000"
+ 2092      656E645F 
+ 2092      6C697374 
+ 2092      00
+ 2093              	.LASF127:
+ 2094 08e2 4F534366 		.ascii	"OSCfg_StatTaskRate_Hz\000"
+ 2094      675F5374 
+ 2094      61745461 
+ 2094      736B5261 
+ 2094      74655F48 
+ 2095              	.LASF69:
+ 2096 08f8 52656754 		.ascii	"RegTbl\000"
+ 2096      626C00
+ 2097              	.LASF87:
+ 2098 08ff 43616C6C 		.ascii	"CallbackPtrArg\000"
+ 2098      6261636B 
+ 2098      50747241 
+ 2098      726700
+ 2099              	.LASF137:
+ 2100 090e 4F534366 		.ascii	"OSCfg_TickTaskStkSize\000"
+ 2100      675F5469 
+ 2100      636B5461 
+ 2100      736B5374 
+ 2100      6B53697A 
+ 2101              	.LASF72:
+ 2102 0924 53746B46 		.ascii	"StkFree\000"
+ 2102      72656500 
+ 2103              	.LASF67:
+ 2104 092c 54696D65 		.ascii	"TimeQuanta\000"
+ 2104      5175616E 
+ 2104      746100
+ 2105              	.LASF124:
+ 2106 0937 4F534366 		.ascii	"OSCfg_MsgPoolSizeRAM\000"
+ 2106      675F4D73 
+ 2106      67506F6F 
+ 2106      6C53697A 
+ 2106      6552414D 
+ 2107              	.LASF109:
+ 2108 094c 4F534366 		.ascii	"OSCfg_IdleTaskStkBasePtr\000"
+ 2108      675F4964 
+ 2108      6C655461 
+ 2108      736B5374 
+ 2108      6B426173 
+ 2109              	.LASF133:
+ 2110 0965 4F534366 		.ascii	"OSCfg_TickRate_Hz\000"
+ 2110      675F5469 
+ 2110      636B5261 
+ 2110      74655F48 
+ 2110      7A00
+ 2111              	.LASF111:
+ 2112 0977 4F534366 		.ascii	"OSCfg_IdleTaskStkSize\000"
+ 2112      675F4964 
+ 2112      6C655461 
+ 2112      736B5374 
+ 2112      6B53697A 
+ 2113              	.LASF15:
+ 2114 098d 4350555F 		.ascii	"CPU_STK\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccSClL1T.s 			page 51
+
+
+ 2114      53544B00 
+ 2115              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

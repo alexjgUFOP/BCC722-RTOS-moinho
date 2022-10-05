@@ -1,0 +1,3413 @@
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"cpu_c.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.CPU_BitBandClr,"ax",%progbits
+  20              		.align	2
+  21              		.global	CPU_BitBandClr
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	CPU_BitBandClr, %function
+  25              	CPU_BitBandClr:
+  26              	.LFB1:
+  27              		.file 1 "..\\..\\..\\..\\..\\..\\Software\\uC-CPU\\ARM-Cortex-M0\\GNU\\cpu_c.c"
+   1:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+   2:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+   3:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                                uC/CPU
+   4:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                    CPU CONFIGURATION & PORT LAYER
+   5:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+   6:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                          (c) Copyright 2004-2015; Micrium, Inc.; Weston, FL
+   7:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+   8:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               All rights reserved.  Protected by international copyright laws.
+   9:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+  10:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               uC/CPU is provided in source form to registered licensees ONLY.  It is
+  11:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               illegal to distribute this source code to any third party unless you receive
+  12:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               written permission by an authorized Micrium representative.  Knowledge of
+  13:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               the source code may NOT be used to develop a similar product.
+  14:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+  15:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               Please help us continue to provide the Embedded community with the finest
+  16:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               software available.  Your honesty is greatly appreciated.
+  17:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+  18:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               You can find our product's user manual, API reference, release notes and
+  19:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               more information at https://doc.micrium.com.
+  20:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               You can contact us at www.micrium.com.
+  21:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  22:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+  23:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  24:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+  25:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  26:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+  27:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                            CPU PORT FILE
+  28:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+  29:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                            ARM-Cortex-M0
+  30:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                            GNU C Compiler
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 2
+
+
+  31:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+  32:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Filename      : cpu_c.c
+  33:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Version       : V1.30.02.00
+  34:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Programmer(s) : JJL
+  35:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                 BAN
+  36:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                 MD
+  37:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  38:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+  39:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  40:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  41:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+  42:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  43:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                            INCLUDE FILES
+  44:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  45:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+  46:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  47:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** #include  <cpu.h>
+  48:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** #include  <cpu_core.h>
+  49:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  50:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** #include  <lib_def.h>
+  51:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  52:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** #ifdef __cplusplus
+  53:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** extern  "C" {
+  54:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** #endif
+  55:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  56:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  57:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+  58:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  59:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                            LOCAL DEFINES
+  60:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  61:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+  62:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  63:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** #define  CPU_INT_SRC_POS_MAX                  ((((CPU_REG_NVIC_NVIC + 1) & 0x1F) * 32) + 16)
+  64:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  65:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** #define  CPU_BIT_BAND_SRAM_REG_LO                 0x20000000
+  66:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** #define  CPU_BIT_BAND_SRAM_REG_HI                 0x200FFFFF
+  67:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** #define  CPU_BIT_BAND_SRAM_BASE                   0x22000000
+  68:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  69:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  70:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** #define  CPU_BIT_BAND_PERIPH_REG_LO               0x40000000
+  71:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** #define  CPU_BIT_BAND_PERIPH_REG_HI               0x400FFFFF
+  72:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** #define  CPU_BIT_BAND_PERIPH_BASE                 0x42000000
+  73:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  74:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  75:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+  76:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  77:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                           LOCAL CONSTANTS
+  78:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  79:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+  80:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  81:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  82:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+  83:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  84:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                          LOCAL DATA TYPES
+  85:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  86:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+  87:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 3
+
+
+  88:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  89:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+  90:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  91:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                            LOCAL TABLES
+  92:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  93:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+  94:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  95:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  96:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+  97:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+  98:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                       LOCAL GLOBAL VARIABLES
+  99:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 100:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+ 101:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 102:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 103:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+ 104:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 105:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                      LOCAL FUNCTION PROTOTYPES
+ 106:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 107:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+ 108:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 109:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 110:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+ 111:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 112:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                     LOCAL CONFIGURATION ERRORS
+ 113:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 114:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+ 115:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 116:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 117:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+ 118:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 119:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                          CPU_BitBandClr()
+ 120:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 121:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Description : Clear bit in bit-band region.
+ 122:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 123:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Argument(s) : addr            Byte address in memory space.
+ 124:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 125:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               bit_nbr         Bit number in byte.
+ 126:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 127:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Return(s)   : none.
+ 128:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 129:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Caller(s)   : Application.
+ 130:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 131:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Note(s)     : none.
+ 132:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 133:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+ 134:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 135:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** void  CPU_BitBandClr (CPU_ADDR    addr,
+ 136:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                       CPU_INT08U  bit_nbr)
+ 137:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** {
+  28              		.loc 1 137 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 16
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 7, -8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 4
+
+
+  35              		.cfi_offset 14, -4
+  36 0002 84B0     		sub	sp, sp, #16
+  37              		.cfi_def_cfa_offset 24
+  38 0004 00AF     		add	r7, sp, #0
+  39              		.cfi_def_cfa_register 7
+  40 0006 7860     		str	r0, [r7, #4]
+  41 0008 0A00     		movs	r2, r1
+  42 000a FB1C     		adds	r3, r7, #3
+  43 000c 1A70     		strb	r2, [r3]
+ 138:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_ADDR  bit_word_off;
+ 139:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_ADDR  bit_word_addr;
+ 140:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 141:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 142:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     if ((addr >= CPU_BIT_BAND_SRAM_REG_LO) &&
+  44              		.loc 1 142 0
+  45 000e 7B68     		ldr	r3, [r7, #4]
+  46 0010 194A     		ldr	r2, .L5
+  47 0012 9342     		cmp	r3, r2
+  48 0014 14D9     		bls	.L2
+  49              		.loc 1 142 0 is_stmt 0 discriminator 1
+  50 0016 7B68     		ldr	r3, [r7, #4]
+  51 0018 184A     		ldr	r2, .L5+4
+  52 001a 9342     		cmp	r3, r2
+  53 001c 10D8     		bhi	.L2
+ 143:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         (addr <= CPU_BIT_BAND_SRAM_REG_HI)) {
+ 144:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         bit_word_off  = ((addr - CPU_BIT_BAND_SRAM_REG_LO  ) * 32) + (bit_nbr * 4);
+  54              		.loc 1 144 0 is_stmt 1
+  55 001e 7B68     		ldr	r3, [r7, #4]
+  56 0020 5B01     		lsls	r3, r3, #5
+  57 0022 FA1C     		adds	r2, r7, #3
+  58 0024 1278     		ldrb	r2, [r2]
+  59 0026 9200     		lsls	r2, r2, #2
+  60 0028 9B18     		adds	r3, r3, r2
+  61 002a FB60     		str	r3, [r7, #12]
+ 145:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         bit_word_addr = CPU_BIT_BAND_SRAM_BASE   + bit_word_off;
+  62              		.loc 1 145 0
+  63 002c FB68     		ldr	r3, [r7, #12]
+  64 002e 8822     		movs	r2, #136
+  65 0030 9205     		lsls	r2, r2, #22
+  66 0032 9446     		mov	ip, r2
+  67 0034 6344     		add	r3, r3, ip
+  68 0036 BB60     		str	r3, [r7, #8]
+ 146:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 147:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****       *(volatile CPU_INT32U *)(bit_word_addr) = 0;
+  69              		.loc 1 147 0
+  70 0038 BB68     		ldr	r3, [r7, #8]
+  71 003a 0022     		movs	r2, #0
+  72 003c 1A60     		str	r2, [r3]
+ 148:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 149:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     } else if ((addr >= CPU_BIT_BAND_PERIPH_REG_LO) &&
+ 150:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                (addr <= CPU_BIT_BAND_PERIPH_REG_HI)) {
+ 151:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         bit_word_off  = ((addr - CPU_BIT_BAND_PERIPH_REG_LO) * 32) + (bit_nbr * 4);
+ 152:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         bit_word_addr = CPU_BIT_BAND_PERIPH_BASE + bit_word_off;
+ 153:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 154:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****       *(volatile CPU_INT32U *)(bit_word_addr) = 0;
+ 155:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     }
+ 156:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** }
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 5
+
+
+  73              		.loc 1 156 0
+  74 003e 17E0     		b	.L4
+  75              	.L2:
+ 149:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                (addr <= CPU_BIT_BAND_PERIPH_REG_HI)) {
+  76              		.loc 1 149 0
+  77 0040 7B68     		ldr	r3, [r7, #4]
+  78 0042 0F4A     		ldr	r2, .L5+8
+  79 0044 9342     		cmp	r3, r2
+  80 0046 13D9     		bls	.L4
+ 149:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                (addr <= CPU_BIT_BAND_PERIPH_REG_HI)) {
+  81              		.loc 1 149 0 is_stmt 0 discriminator 1
+  82 0048 7B68     		ldr	r3, [r7, #4]
+  83 004a 0E4A     		ldr	r2, .L5+12
+  84 004c 9342     		cmp	r3, r2
+  85 004e 0FD8     		bhi	.L4
+ 151:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         bit_word_addr = CPU_BIT_BAND_PERIPH_BASE + bit_word_off;
+  86              		.loc 1 151 0 is_stmt 1
+  87 0050 7B68     		ldr	r3, [r7, #4]
+  88 0052 5B01     		lsls	r3, r3, #5
+  89 0054 FA1C     		adds	r2, r7, #3
+  90 0056 1278     		ldrb	r2, [r2]
+  91 0058 9200     		lsls	r2, r2, #2
+  92 005a 9B18     		adds	r3, r3, r2
+  93 005c FB60     		str	r3, [r7, #12]
+ 152:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+  94              		.loc 1 152 0
+  95 005e FB68     		ldr	r3, [r7, #12]
+  96 0060 8422     		movs	r2, #132
+  97 0062 D205     		lsls	r2, r2, #23
+  98 0064 9446     		mov	ip, r2
+  99 0066 6344     		add	r3, r3, ip
+ 100 0068 BB60     		str	r3, [r7, #8]
+ 154:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     }
+ 101              		.loc 1 154 0
+ 102 006a BB68     		ldr	r3, [r7, #8]
+ 103 006c 0022     		movs	r2, #0
+ 104 006e 1A60     		str	r2, [r3]
+ 105              	.L4:
+ 106              		.loc 1 156 0
+ 107 0070 C046     		nop
+ 108 0072 BD46     		mov	sp, r7
+ 109 0074 04B0     		add	sp, sp, #16
+ 110              		@ sp needed
+ 111 0076 80BD     		pop	{r7, pc}
+ 112              	.L6:
+ 113              		.align	2
+ 114              	.L5:
+ 115 0078 FFFFFF1F 		.word	536870911
+ 116 007c FFFF0F20 		.word	537919487
+ 117 0080 FFFFFF3F 		.word	1073741823
+ 118 0084 FFFF0F40 		.word	1074790399
+ 119              		.cfi_endproc
+ 120              	.LFE1:
+ 121              		.size	CPU_BitBandClr, .-CPU_BitBandClr
+ 122              		.section	.text.CPU_BitBandSet,"ax",%progbits
+ 123              		.align	2
+ 124              		.global	CPU_BitBandSet
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 6
+
+
+ 125              		.code	16
+ 126              		.thumb_func
+ 127              		.type	CPU_BitBandSet, %function
+ 128              	CPU_BitBandSet:
+ 129              	.LFB2:
+ 157:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 158:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 159:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+ 160:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 161:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                          CPU_BitBandSet()
+ 162:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 163:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Description : Set bit in bit-band region.
+ 164:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 165:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Argument(s) : addr            Byte address in memory space.
+ 166:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 167:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               bit_nbr         Bit number in byte.
+ 168:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 169:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Return(s)   : none.
+ 170:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 171:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Caller(s)   : Application.
+ 172:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 173:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Note(s)     : none.
+ 174:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 175:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+ 176:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 177:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** void  CPU_BitBandSet (CPU_ADDR    addr,
+ 178:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                       CPU_INT08U  bit_nbr)
+ 179:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** {
+ 130              		.loc 1 179 0
+ 131              		.cfi_startproc
+ 132              		@ args = 0, pretend = 0, frame = 16
+ 133              		@ frame_needed = 1, uses_anonymous_args = 0
+ 134 0000 80B5     		push	{r7, lr}
+ 135              		.cfi_def_cfa_offset 8
+ 136              		.cfi_offset 7, -8
+ 137              		.cfi_offset 14, -4
+ 138 0002 84B0     		sub	sp, sp, #16
+ 139              		.cfi_def_cfa_offset 24
+ 140 0004 00AF     		add	r7, sp, #0
+ 141              		.cfi_def_cfa_register 7
+ 142 0006 7860     		str	r0, [r7, #4]
+ 143 0008 0A00     		movs	r2, r1
+ 144 000a FB1C     		adds	r3, r7, #3
+ 145 000c 1A70     		strb	r2, [r3]
+ 180:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_ADDR  bit_word_off;
+ 181:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_ADDR  bit_word_addr;
+ 182:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 183:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 184:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     if ((addr >= CPU_BIT_BAND_SRAM_REG_LO) &&
+ 146              		.loc 1 184 0
+ 147 000e 7B68     		ldr	r3, [r7, #4]
+ 148 0010 194A     		ldr	r2, .L11
+ 149 0012 9342     		cmp	r3, r2
+ 150 0014 14D9     		bls	.L8
+ 151              		.loc 1 184 0 is_stmt 0 discriminator 1
+ 152 0016 7B68     		ldr	r3, [r7, #4]
+ 153 0018 184A     		ldr	r2, .L11+4
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 7
+
+
+ 154 001a 9342     		cmp	r3, r2
+ 155 001c 10D8     		bhi	.L8
+ 185:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         (addr <= CPU_BIT_BAND_SRAM_REG_HI)) {
+ 186:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         bit_word_off  = ((addr - CPU_BIT_BAND_SRAM_REG_LO  ) * 32) + (bit_nbr * 4);
+ 156              		.loc 1 186 0 is_stmt 1
+ 157 001e 7B68     		ldr	r3, [r7, #4]
+ 158 0020 5B01     		lsls	r3, r3, #5
+ 159 0022 FA1C     		adds	r2, r7, #3
+ 160 0024 1278     		ldrb	r2, [r2]
+ 161 0026 9200     		lsls	r2, r2, #2
+ 162 0028 9B18     		adds	r3, r3, r2
+ 163 002a FB60     		str	r3, [r7, #12]
+ 187:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         bit_word_addr = CPU_BIT_BAND_SRAM_BASE   + bit_word_off;
+ 164              		.loc 1 187 0
+ 165 002c FB68     		ldr	r3, [r7, #12]
+ 166 002e 8822     		movs	r2, #136
+ 167 0030 9205     		lsls	r2, r2, #22
+ 168 0032 9446     		mov	ip, r2
+ 169 0034 6344     		add	r3, r3, ip
+ 170 0036 BB60     		str	r3, [r7, #8]
+ 188:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 189:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****       *(volatile CPU_INT32U *)(bit_word_addr) = 1;
+ 171              		.loc 1 189 0
+ 172 0038 BB68     		ldr	r3, [r7, #8]
+ 173 003a 0122     		movs	r2, #1
+ 174 003c 1A60     		str	r2, [r3]
+ 190:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 191:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     } else if ((addr >= CPU_BIT_BAND_PERIPH_REG_LO) &&
+ 192:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                (addr <= CPU_BIT_BAND_PERIPH_REG_HI)) {
+ 193:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         bit_word_off  = ((addr - CPU_BIT_BAND_PERIPH_REG_LO) * 32) + (bit_nbr * 4);
+ 194:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         bit_word_addr = CPU_BIT_BAND_PERIPH_BASE + bit_word_off;
+ 195:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 196:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****       *(volatile CPU_INT32U *)(bit_word_addr) = 1;
+ 197:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     }
+ 198:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** }
+ 175              		.loc 1 198 0
+ 176 003e 17E0     		b	.L10
+ 177              	.L8:
+ 191:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                (addr <= CPU_BIT_BAND_PERIPH_REG_HI)) {
+ 178              		.loc 1 191 0
+ 179 0040 7B68     		ldr	r3, [r7, #4]
+ 180 0042 0F4A     		ldr	r2, .L11+8
+ 181 0044 9342     		cmp	r3, r2
+ 182 0046 13D9     		bls	.L10
+ 191:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                (addr <= CPU_BIT_BAND_PERIPH_REG_HI)) {
+ 183              		.loc 1 191 0 is_stmt 0 discriminator 1
+ 184 0048 7B68     		ldr	r3, [r7, #4]
+ 185 004a 0E4A     		ldr	r2, .L11+12
+ 186 004c 9342     		cmp	r3, r2
+ 187 004e 0FD8     		bhi	.L10
+ 193:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         bit_word_addr = CPU_BIT_BAND_PERIPH_BASE + bit_word_off;
+ 188              		.loc 1 193 0 is_stmt 1
+ 189 0050 7B68     		ldr	r3, [r7, #4]
+ 190 0052 5B01     		lsls	r3, r3, #5
+ 191 0054 FA1C     		adds	r2, r7, #3
+ 192 0056 1278     		ldrb	r2, [r2]
+ 193 0058 9200     		lsls	r2, r2, #2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 8
+
+
+ 194 005a 9B18     		adds	r3, r3, r2
+ 195 005c FB60     		str	r3, [r7, #12]
+ 194:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 196              		.loc 1 194 0
+ 197 005e FB68     		ldr	r3, [r7, #12]
+ 198 0060 8422     		movs	r2, #132
+ 199 0062 D205     		lsls	r2, r2, #23
+ 200 0064 9446     		mov	ip, r2
+ 201 0066 6344     		add	r3, r3, ip
+ 202 0068 BB60     		str	r3, [r7, #8]
+ 196:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     }
+ 203              		.loc 1 196 0
+ 204 006a BB68     		ldr	r3, [r7, #8]
+ 205 006c 0122     		movs	r2, #1
+ 206 006e 1A60     		str	r2, [r3]
+ 207              	.L10:
+ 208              		.loc 1 198 0
+ 209 0070 C046     		nop
+ 210 0072 BD46     		mov	sp, r7
+ 211 0074 04B0     		add	sp, sp, #16
+ 212              		@ sp needed
+ 213 0076 80BD     		pop	{r7, pc}
+ 214              	.L12:
+ 215              		.align	2
+ 216              	.L11:
+ 217 0078 FFFFFF1F 		.word	536870911
+ 218 007c FFFF0F20 		.word	537919487
+ 219 0080 FFFFFF3F 		.word	1073741823
+ 220 0084 FFFF0F40 		.word	1074790399
+ 221              		.cfi_endproc
+ 222              	.LFE2:
+ 223              		.size	CPU_BitBandSet, .-CPU_BitBandSet
+ 224              		.section	.text.CPU_IntSrcDis,"ax",%progbits
+ 225              		.align	2
+ 226              		.global	CPU_IntSrcDis
+ 227              		.code	16
+ 228              		.thumb_func
+ 229              		.type	CPU_IntSrcDis, %function
+ 230              	CPU_IntSrcDis:
+ 231              	.LFB3:
+ 199:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 200:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 201:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+ 202:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 203:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                           CPU_IntSrcDis()
+ 204:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 205:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Description : Disable an interrupt source.
+ 206:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 207:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Argument(s) : pos     Position of interrupt vector in interrupt table :
+ 208:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 209:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           0       Invalid (see Note #1a).
+ 210:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           1       Invalid (see Note #1b).
+ 211:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           2       Non-maskable Interrupt.
+ 212:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           3       Hard Fault.
+ 213:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           4       Memory Management.
+ 214:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           5       Bus Fault.
+ 215:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           6       Usage Fault.
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 9
+
+
+ 216:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           7-10    Reserved.
+ 217:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           11      SVCall.
+ 218:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           12      Debug Monitor.
+ 219:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           13      Reserved.
+ 220:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           14      PendSV.
+ 221:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           15      SysTick.
+ 222:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                           16+     External Interrupt.
+ 223:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 224:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Return(s)   : none.
+ 225:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 226:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Caller(s)   : Application.
+ 227:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 228:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Note(s)     : (1) Several table positions do not contain interrupt sources :
+ 229:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 230:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (a) Position 0 contains the stack pointer.
+ 231:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (b) Positions 7-10, 13 are reserved.
+ 232:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 233:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               (2) Several interrupts cannot be disabled/enabled :
+ 234:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 235:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (a) Reset.
+ 236:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (b) NMI.
+ 237:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (c) Hard fault.
+ 238:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (d) SVCall.
+ 239:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (e) Debug monitor.
+ 240:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (f) PendSV.
+ 241:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 242:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               (3) The maximum Cortex-M0 table position is 256.  A particular Cortex-M0 may have f
+ 243:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   than 240 external exceptions and, consequently, fewer than 256 table positions.
+ 244:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   This function assumes that the specified table position is valid if the interru
+ 245:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   controller type register's INTLINESNUM field is large enough so that the positi
+ 246:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   COULD be valid.
+ 247:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 248:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+ 249:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 250:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** void  CPU_IntSrcDis (CPU_INT08U  pos)
+ 251:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** {
+ 232              		.loc 1 251 0
+ 233              		.cfi_startproc
+ 234              		@ args = 0, pretend = 0, frame = 16
+ 235              		@ frame_needed = 1, uses_anonymous_args = 0
+ 236 0000 80B5     		push	{r7, lr}
+ 237              		.cfi_def_cfa_offset 8
+ 238              		.cfi_offset 7, -8
+ 239              		.cfi_offset 14, -4
+ 240 0002 84B0     		sub	sp, sp, #16
+ 241              		.cfi_def_cfa_offset 24
+ 242 0004 00AF     		add	r7, sp, #0
+ 243              		.cfi_def_cfa_register 7
+ 244 0006 0200     		movs	r2, r0
+ 245 0008 FB1D     		adds	r3, r7, #7
+ 246 000a 1A70     		strb	r2, [r3]
+ 252:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  group;
+ 253:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  pos_max;
+ 254:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  nbr;
+ 255:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_SR_ALLOC();
+ 247              		.loc 1 255 0
+ 248 000c 0023     		movs	r3, #0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 10
+
+
+ 249 000e FB60     		str	r3, [r7, #12]
+ 256:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 257:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 258:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     switch (pos) {
+ 250              		.loc 1 258 0
+ 251 0010 FB1D     		adds	r3, r7, #7
+ 252 0012 1B78     		ldrb	r3, [r3]
+ 253 0014 0F2B     		cmp	r3, #15
+ 254 0016 17D8     		bhi	.L14
+ 255 0018 9A00     		lsls	r2, r3, #2
+ 256 001a 334B     		ldr	r3, .L25
+ 257 001c D318     		adds	r3, r2, r3
+ 258 001e 1B68     		ldr	r3, [r3]
+ 259 0020 9F46     		mov	pc, r3
+ 260              		.section	.rodata
+ 261              		.align	2
+ 262              	.L16:
+ 263 0000 DA000000 		.word	.L23
+ 264 0004 DA000000 		.word	.L23
+ 265 0008 DA000000 		.word	.L23
+ 266 000c DA000000 		.word	.L23
+ 267 0010 48000000 		.word	.L14
+ 268 0014 48000000 		.word	.L14
+ 269 0018 48000000 		.word	.L14
+ 270 001c DA000000 		.word	.L23
+ 271 0020 DA000000 		.word	.L23
+ 272 0024 DA000000 		.word	.L23
+ 273 0028 DA000000 		.word	.L23
+ 274 002c DA000000 		.word	.L23
+ 275 0030 48000000 		.word	.L14
+ 276 0034 DA000000 		.word	.L23
+ 277 0038 DA000000 		.word	.L23
+ 278 003c 22000000 		.word	.L18
+ 279              		.section	.text.CPU_IntSrcDis
+ 280              	.L18:
+ 259:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_STK_PTR:                                   /* ---------------- INVALID OR RESE
+ 260:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_RSVD_07:
+ 261:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_RSVD_08:
+ 262:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_RSVD_09:
+ 263:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_RSVD_10:
+ 264:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_RSVD_13:
+ 265:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              break;
+ 266:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 267:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 268:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                                                                 /* ----------------- SYSTEM EXCEPTI
+ 269:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_RESET:                                     /* Reset (see Note #2).            
+ 270:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_NMI:                                       /* Non-maskable interrupt (see Note
+ 271:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_HFAULT:                                    /* Hard fault (see Note #2).       
+ 272:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_SVCALL:                                    /* SVCall (see Note #2).           
+ 273:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_PENDSV:                                    /* PendSV (see Note #2).           
+ 274:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              break;
+ 275:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 276:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_SYSTICK:                                  /* SysTick.                        
+ 277:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              CPU_CRITICAL_ENTER();
+ 281              		.loc 1 277 0
+ 282 0022 FFF7FEFF 		bl	CPU_SR_Save
+ 283 0026 0300     		movs	r3, r0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 11
+
+
+ 284 0028 FB60     		str	r3, [r7, #12]
+ 285 002a FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 278:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              CPU_REG_NVIC_ST_CTRL &= ~CPU_REG_NVIC_ST_CTRL_ENABLE;
+ 286              		.loc 1 278 0
+ 287 002e 2F4B     		ldr	r3, .L25+4
+ 288 0030 2E4A     		ldr	r2, .L25+4
+ 289 0032 1268     		ldr	r2, [r2]
+ 290 0034 0121     		movs	r1, #1
+ 291 0036 8A43     		bics	r2, r1
+ 292 0038 1A60     		str	r2, [r3]
+ 279:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              CPU_CRITICAL_EXIT();
+ 293              		.loc 1 279 0
+ 294 003a FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 295 003e FB68     		ldr	r3, [r7, #12]
+ 296 0040 1800     		movs	r0, r3
+ 297 0042 FFF7FEFF 		bl	CPU_SR_Restore
+ 280:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              break;
+ 298              		.loc 1 280 0
+ 299 0046 4BE0     		b	.L19
+ 300              	.L14:
+ 281:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 282:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 283:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                                                                 /* ---------------- EXTERNAL INTERR
+ 284:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         default:
+ 285:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****             pos_max = CPU_INT_SRC_POS_MAX;
+ 301              		.loc 1 285 0
+ 302 0048 294B     		ldr	r3, .L25+8
+ 303 004a 1B68     		ldr	r3, [r3]
+ 304 004c 0133     		adds	r3, r3, #1
+ 305 004e DBB2     		uxtb	r3, r3
+ 306 0050 1F22     		movs	r2, #31
+ 307 0052 1340     		ands	r3, r2
+ 308 0054 DBB2     		uxtb	r3, r3
+ 309 0056 5B01     		lsls	r3, r3, #5
+ 310 0058 DAB2     		uxtb	r2, r3
+ 311 005a 0B23     		movs	r3, #11
+ 312 005c FB18     		adds	r3, r7, r3
+ 313 005e 1032     		adds	r2, r2, #16
+ 314 0060 1A70     		strb	r2, [r3]
+ 286:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****             if (pos < pos_max) {                                /* See Note #3.                    
+ 315              		.loc 1 286 0
+ 316 0062 FA1D     		adds	r2, r7, #7
+ 317 0064 0B23     		movs	r3, #11
+ 318 0066 FB18     		adds	r3, r7, r3
+ 319 0068 1278     		ldrb	r2, [r2]
+ 320 006a 1B78     		ldrb	r3, [r3]
+ 321 006c 9A42     		cmp	r2, r3
+ 322 006e 36D2     		bcs	.L24
+ 287:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  group = (pos - 16) / 32;
+ 323              		.loc 1 287 0
+ 324 0070 FB1D     		adds	r3, r7, #7
+ 325 0072 1B78     		ldrb	r3, [r3]
+ 326 0074 103B     		subs	r3, r3, #16
+ 327 0076 002B     		cmp	r3, #0
+ 328 0078 00DA     		bge	.L21
+ 329 007a 1F33     		adds	r3, r3, #31
+ 330              	.L21:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 12
+
+
+ 331 007c 5B11     		asrs	r3, r3, #5
+ 332 007e 1A00     		movs	r2, r3
+ 333 0080 0A23     		movs	r3, #10
+ 334 0082 FB18     		adds	r3, r7, r3
+ 335 0084 1A70     		strb	r2, [r3]
+ 288:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  nbr   = (pos - 16) % 32;
+ 336              		.loc 1 288 0
+ 337 0086 FB1D     		adds	r3, r7, #7
+ 338 0088 1B78     		ldrb	r3, [r3]
+ 339 008a 103B     		subs	r3, r3, #16
+ 340 008c 194A     		ldr	r2, .L25+12
+ 341 008e 1340     		ands	r3, r2
+ 342 0090 04D5     		bpl	.L22
+ 343 0092 013B     		subs	r3, r3, #1
+ 344 0094 2022     		movs	r2, #32
+ 345 0096 5242     		rsbs	r2, r2, #0
+ 346 0098 1343     		orrs	r3, r2
+ 347 009a 0133     		adds	r3, r3, #1
+ 348              	.L22:
+ 349 009c 1A00     		movs	r2, r3
+ 350 009e 0923     		movs	r3, #9
+ 351 00a0 FB18     		adds	r3, r7, r3
+ 352 00a2 1A70     		strb	r2, [r3]
+ 289:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 290:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_CRITICAL_ENTER();
+ 353              		.loc 1 290 0
+ 354 00a4 FFF7FEFF 		bl	CPU_SR_Save
+ 355 00a8 0300     		movs	r3, r0
+ 356 00aa FB60     		str	r3, [r7, #12]
+ 357 00ac FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 291:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_REG_NVIC_CLREN(group) = DEF_BIT(nbr);
+ 358              		.loc 1 291 0
+ 359 00b0 0A23     		movs	r3, #10
+ 360 00b2 FB18     		adds	r3, r7, r3
+ 361 00b4 1B78     		ldrb	r3, [r3]
+ 362 00b6 104A     		ldr	r2, .L25+16
+ 363 00b8 9446     		mov	ip, r2
+ 364 00ba 6344     		add	r3, r3, ip
+ 365 00bc 9B00     		lsls	r3, r3, #2
+ 366 00be 0922     		movs	r2, #9
+ 367 00c0 BA18     		adds	r2, r7, r2
+ 368 00c2 1278     		ldrb	r2, [r2]
+ 369 00c4 0121     		movs	r1, #1
+ 370 00c6 9140     		lsls	r1, r1, r2
+ 371 00c8 0A00     		movs	r2, r1
+ 372 00ca 1A60     		str	r2, [r3]
+ 292:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_CRITICAL_EXIT();
+ 373              		.loc 1 292 0
+ 374 00cc FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 375 00d0 FB68     		ldr	r3, [r7, #12]
+ 376 00d2 1800     		movs	r0, r3
+ 377 00d4 FFF7FEFF 		bl	CPU_SR_Restore
+ 293:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              }
+ 294:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              break;
+ 378              		.loc 1 294 0
+ 379 00d8 01E0     		b	.L24
+ 380              	.L23:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 13
+
+
+ 265:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 381              		.loc 1 265 0
+ 382 00da C046     		nop
+ 383 00dc 00E0     		b	.L19
+ 384              	.L24:
+ 385              		.loc 1 294 0
+ 386 00de C046     		nop
+ 387              	.L19:
+ 295:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     }
+ 296:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** }
+ 388              		.loc 1 296 0
+ 389 00e0 C046     		nop
+ 390 00e2 BD46     		mov	sp, r7
+ 391 00e4 04B0     		add	sp, sp, #16
+ 392              		@ sp needed
+ 393 00e6 80BD     		pop	{r7, pc}
+ 394              	.L26:
+ 395              		.align	2
+ 396              	.L25:
+ 397 00e8 00000000 		.word	.L16
+ 398 00ec 10E000E0 		.word	-536813552
+ 399 00f0 04E000E0 		.word	-536813564
+ 400 00f4 1F000080 		.word	-2147483617
+ 401 00f8 60380038 		.word	939538528
+ 402              		.cfi_endproc
+ 403              	.LFE3:
+ 404              		.size	CPU_IntSrcDis, .-CPU_IntSrcDis
+ 405              		.section	.text.CPU_IntSrcEn,"ax",%progbits
+ 406              		.align	2
+ 407              		.global	CPU_IntSrcEn
+ 408              		.code	16
+ 409              		.thumb_func
+ 410              		.type	CPU_IntSrcEn, %function
+ 411              	CPU_IntSrcEn:
+ 412              	.LFB4:
+ 297:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 298:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 299:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+ 300:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 301:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                           CPU_IntSrcEn()
+ 302:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 303:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Description : Enable an interrupt source.
+ 304:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 305:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Argument(s) : pos     Position of interrupt vector in interrupt table (see 'CPU_IntSrcDis()').
+ 306:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 307:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Return(s)   : none.
+ 308:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 309:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Caller(s)   : Application.
+ 310:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 311:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Note(s)     : (1) See 'CPU_IntSrcDis()  Note #1'.
+ 312:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 313:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               (2) See 'CPU_IntSrcDis()  Note #2'.
+ 314:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 315:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               (3) See 'CPU_IntSrcDis()  Note #3'.
+ 316:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 317:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+ 318:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 14
+
+
+ 319:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** void  CPU_IntSrcEn (CPU_INT08U  pos)
+ 320:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** {
+ 413              		.loc 1 320 0
+ 414              		.cfi_startproc
+ 415              		@ args = 0, pretend = 0, frame = 16
+ 416              		@ frame_needed = 1, uses_anonymous_args = 0
+ 417 0000 80B5     		push	{r7, lr}
+ 418              		.cfi_def_cfa_offset 8
+ 419              		.cfi_offset 7, -8
+ 420              		.cfi_offset 14, -4
+ 421 0002 84B0     		sub	sp, sp, #16
+ 422              		.cfi_def_cfa_offset 24
+ 423 0004 00AF     		add	r7, sp, #0
+ 424              		.cfi_def_cfa_register 7
+ 425 0006 0200     		movs	r2, r0
+ 426 0008 FB1D     		adds	r3, r7, #7
+ 427 000a 1A70     		strb	r2, [r3]
+ 321:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  group;
+ 322:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  nbr;
+ 323:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  pos_max;
+ 324:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_SR_ALLOC();
+ 428              		.loc 1 324 0
+ 429 000c 0023     		movs	r3, #0
+ 430 000e FB60     		str	r3, [r7, #12]
+ 325:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 326:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 327:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     switch (pos) {
+ 431              		.loc 1 327 0
+ 432 0010 FB1D     		adds	r3, r7, #7
+ 433 0012 1B78     		ldrb	r3, [r3]
+ 434 0014 0F2B     		cmp	r3, #15
+ 435 0016 17D8     		bhi	.L28
+ 436 0018 9A00     		lsls	r2, r3, #2
+ 437 001a 334B     		ldr	r3, .L39
+ 438 001c D318     		adds	r3, r2, r3
+ 439 001e 1B68     		ldr	r3, [r3]
+ 440 0020 9F46     		mov	pc, r3
+ 441              		.section	.rodata
+ 442              		.align	2
+ 443              	.L30:
+ 444 0040 DA000000 		.word	.L37
+ 445 0044 DA000000 		.word	.L37
+ 446 0048 DA000000 		.word	.L37
+ 447 004c DA000000 		.word	.L37
+ 448 0050 48000000 		.word	.L28
+ 449 0054 48000000 		.word	.L28
+ 450 0058 48000000 		.word	.L28
+ 451 005c DA000000 		.word	.L37
+ 452 0060 DA000000 		.word	.L37
+ 453 0064 DA000000 		.word	.L37
+ 454 0068 DA000000 		.word	.L37
+ 455 006c DA000000 		.word	.L37
+ 456 0070 48000000 		.word	.L28
+ 457 0074 DA000000 		.word	.L37
+ 458 0078 DA000000 		.word	.L37
+ 459 007c 22000000 		.word	.L32
+ 460              		.section	.text.CPU_IntSrcEn
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 15
+
+
+ 461              	.L32:
+ 328:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_STK_PTR:                                  /* ---------------- INVALID OR RESE
+ 329:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_07:
+ 330:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_08:
+ 331:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_09:
+ 332:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_10:
+ 333:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_13:
+ 334:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 335:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 336:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 337:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                                                                 /* ----------------- SYSTEM EXCEPTI
+ 338:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RESET:                                    /* Reset (see Note #2).            
+ 339:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_NMI:                                      /* Non-maskable interrupt (see Note
+ 340:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_HFAULT:                                   /* Hard fault (see Note #2).       
+ 341:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_SVCALL:                                   /* SVCall (see Note #2).           
+ 342:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_PENDSV:                                   /* PendSV (see Note #2).           
+ 343:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 344:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 345:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_SYSTICK:                                  /* SysTick.                        
+ 346:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_ENTER();
+ 462              		.loc 1 346 0
+ 463 0022 FFF7FEFF 		bl	CPU_SR_Save
+ 464 0026 0300     		movs	r3, r0
+ 465 0028 FB60     		str	r3, [r7, #12]
+ 466 002a FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 347:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_REG_NVIC_ST_CTRL |= CPU_REG_NVIC_ST_CTRL_ENABLE;
+ 467              		.loc 1 347 0
+ 468 002e 2F4B     		ldr	r3, .L39+4
+ 469 0030 2E4A     		ldr	r2, .L39+4
+ 470 0032 1268     		ldr	r2, [r2]
+ 471 0034 0121     		movs	r1, #1
+ 472 0036 0A43     		orrs	r2, r1
+ 473 0038 1A60     		str	r2, [r3]
+ 348:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_EXIT();
+ 474              		.loc 1 348 0
+ 475 003a FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 476 003e FB68     		ldr	r3, [r7, #12]
+ 477 0040 1800     		movs	r0, r3
+ 478 0042 FFF7FEFF 		bl	CPU_SR_Restore
+ 349:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 479              		.loc 1 349 0
+ 480 0046 4BE0     		b	.L33
+ 481              	.L28:
+ 350:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 351:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 352:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                                                                 /* ---------------- EXTERNAL INTERR
+ 353:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          default:
+ 354:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              pos_max = CPU_INT_SRC_POS_MAX;
+ 482              		.loc 1 354 0
+ 483 0048 294B     		ldr	r3, .L39+8
+ 484 004a 1B68     		ldr	r3, [r3]
+ 485 004c 0133     		adds	r3, r3, #1
+ 486 004e DBB2     		uxtb	r3, r3
+ 487 0050 1F22     		movs	r2, #31
+ 488 0052 1340     		ands	r3, r2
+ 489 0054 DBB2     		uxtb	r3, r3
+ 490 0056 5B01     		lsls	r3, r3, #5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 16
+
+
+ 491 0058 DAB2     		uxtb	r2, r3
+ 492 005a 0B23     		movs	r3, #11
+ 493 005c FB18     		adds	r3, r7, r3
+ 494 005e 1032     		adds	r2, r2, #16
+ 495 0060 1A70     		strb	r2, [r3]
+ 355:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              if (pos < pos_max) {                               /* See Note #3.                    
+ 496              		.loc 1 355 0
+ 497 0062 FA1D     		adds	r2, r7, #7
+ 498 0064 0B23     		movs	r3, #11
+ 499 0066 FB18     		adds	r3, r7, r3
+ 500 0068 1278     		ldrb	r2, [r2]
+ 501 006a 1B78     		ldrb	r3, [r3]
+ 502 006c 9A42     		cmp	r2, r3
+ 503 006e 36D2     		bcs	.L38
+ 356:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  group = (pos - 16) / 32;
+ 504              		.loc 1 356 0
+ 505 0070 FB1D     		adds	r3, r7, #7
+ 506 0072 1B78     		ldrb	r3, [r3]
+ 507 0074 103B     		subs	r3, r3, #16
+ 508 0076 002B     		cmp	r3, #0
+ 509 0078 00DA     		bge	.L35
+ 510 007a 1F33     		adds	r3, r3, #31
+ 511              	.L35:
+ 512 007c 5B11     		asrs	r3, r3, #5
+ 513 007e 1A00     		movs	r2, r3
+ 514 0080 0A23     		movs	r3, #10
+ 515 0082 FB18     		adds	r3, r7, r3
+ 516 0084 1A70     		strb	r2, [r3]
+ 357:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  nbr   = (pos - 16) % 32;
+ 517              		.loc 1 357 0
+ 518 0086 FB1D     		adds	r3, r7, #7
+ 519 0088 1B78     		ldrb	r3, [r3]
+ 520 008a 103B     		subs	r3, r3, #16
+ 521 008c 194A     		ldr	r2, .L39+12
+ 522 008e 1340     		ands	r3, r2
+ 523 0090 04D5     		bpl	.L36
+ 524 0092 013B     		subs	r3, r3, #1
+ 525 0094 2022     		movs	r2, #32
+ 526 0096 5242     		rsbs	r2, r2, #0
+ 527 0098 1343     		orrs	r3, r2
+ 528 009a 0133     		adds	r3, r3, #1
+ 529              	.L36:
+ 530 009c 1A00     		movs	r2, r3
+ 531 009e 0923     		movs	r3, #9
+ 532 00a0 FB18     		adds	r3, r7, r3
+ 533 00a2 1A70     		strb	r2, [r3]
+ 358:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 359:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_CRITICAL_ENTER();
+ 534              		.loc 1 359 0
+ 535 00a4 FFF7FEFF 		bl	CPU_SR_Save
+ 536 00a8 0300     		movs	r3, r0
+ 537 00aa FB60     		str	r3, [r7, #12]
+ 538 00ac FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 360:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_REG_NVIC_SETEN(group) = DEF_BIT(nbr);
+ 539              		.loc 1 360 0
+ 540 00b0 0A23     		movs	r3, #10
+ 541 00b2 FB18     		adds	r3, r7, r3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 17
+
+
+ 542 00b4 1B78     		ldrb	r3, [r3]
+ 543 00b6 104A     		ldr	r2, .L39+16
+ 544 00b8 9446     		mov	ip, r2
+ 545 00ba 6344     		add	r3, r3, ip
+ 546 00bc 9B00     		lsls	r3, r3, #2
+ 547 00be 0922     		movs	r2, #9
+ 548 00c0 BA18     		adds	r2, r7, r2
+ 549 00c2 1278     		ldrb	r2, [r2]
+ 550 00c4 0121     		movs	r1, #1
+ 551 00c6 9140     		lsls	r1, r1, r2
+ 552 00c8 0A00     		movs	r2, r1
+ 553 00ca 1A60     		str	r2, [r3]
+ 361:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_CRITICAL_EXIT();
+ 554              		.loc 1 361 0
+ 555 00cc FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 556 00d0 FB68     		ldr	r3, [r7, #12]
+ 557 00d2 1800     		movs	r0, r3
+ 558 00d4 FFF7FEFF 		bl	CPU_SR_Restore
+ 362:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              }
+ 363:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              break;
+ 559              		.loc 1 363 0
+ 560 00d8 01E0     		b	.L38
+ 561              	.L37:
+ 334:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 562              		.loc 1 334 0
+ 563 00da C046     		nop
+ 564 00dc 00E0     		b	.L33
+ 565              	.L38:
+ 566              		.loc 1 363 0
+ 567 00de C046     		nop
+ 568              	.L33:
+ 364:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     }
+ 365:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** }
+ 569              		.loc 1 365 0
+ 570 00e0 C046     		nop
+ 571 00e2 BD46     		mov	sp, r7
+ 572 00e4 04B0     		add	sp, sp, #16
+ 573              		@ sp needed
+ 574 00e6 80BD     		pop	{r7, pc}
+ 575              	.L40:
+ 576              		.align	2
+ 577              	.L39:
+ 578 00e8 40000000 		.word	.L30
+ 579 00ec 10E000E0 		.word	-536813552
+ 580 00f0 04E000E0 		.word	-536813564
+ 581 00f4 1F000080 		.word	-2147483617
+ 582 00f8 40380038 		.word	939538496
+ 583              		.cfi_endproc
+ 584              	.LFE4:
+ 585              		.size	CPU_IntSrcEn, .-CPU_IntSrcEn
+ 586              		.section	.text.CPU_IntSrcPendClr,"ax",%progbits
+ 587              		.align	2
+ 588              		.global	CPU_IntSrcPendClr
+ 589              		.code	16
+ 590              		.thumb_func
+ 591              		.type	CPU_IntSrcPendClr, %function
+ 592              	CPU_IntSrcPendClr:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 18
+
+
+ 593              	.LFB5:
+ 366:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 367:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 368:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+ 369:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 370:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                         CPU_IntSrcPendClr()
+ 371:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 372:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Description : Clear a pending interrupt.
+ 373:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 374:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Argument(s) : pos     Position of interrupt vector in interrupt table (see 'CPU_IntSrcDis()').
+ 375:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 376:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Return(s)   : none.
+ 377:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 378:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Caller(s)   : Application.
+ 379:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 380:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Note(s)     : (1) See 'CPU_IntSrcDis()  Note #1'.
+ 381:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 382:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               (2) The pending status of several interrupts cannot be clear/set :
+ 383:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 384:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (a) Reset.
+ 385:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (b) NMI.
+ 386:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (c) Hard fault.
+ 387:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (d) Memory Managment.
+ 388:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (e) Bus Fault.
+ 389:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (f) Usage Fault.
+ 390:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (g) SVCall.
+ 391:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (h) Debug monitor.
+ 392:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (i) PendSV.
+ 393:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (j) Systick
+ 394:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 395:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               (3) See 'CPU_IntSrcDis()  Note #3'.
+ 396:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 397:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+ 398:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 399:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** void  CPU_IntSrcPendClr (CPU_INT08U  pos)
+ 400:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 401:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** {
+ 594              		.loc 1 401 0
+ 595              		.cfi_startproc
+ 596              		@ args = 0, pretend = 0, frame = 16
+ 597              		@ frame_needed = 1, uses_anonymous_args = 0
+ 598 0000 80B5     		push	{r7, lr}
+ 599              		.cfi_def_cfa_offset 8
+ 600              		.cfi_offset 7, -8
+ 601              		.cfi_offset 14, -4
+ 602 0002 84B0     		sub	sp, sp, #16
+ 603              		.cfi_def_cfa_offset 24
+ 604 0004 00AF     		add	r7, sp, #0
+ 605              		.cfi_def_cfa_register 7
+ 606 0006 0200     		movs	r2, r0
+ 607 0008 FB1D     		adds	r3, r7, #7
+ 608 000a 1A70     		strb	r2, [r3]
+ 402:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  group;
+ 403:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  nbr;
+ 404:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  pos_max;
+ 405:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_SR_ALLOC();
+ 609              		.loc 1 405 0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 19
+
+
+ 610 000c 0023     		movs	r3, #0
+ 611 000e FB60     		str	r3, [r7, #12]
+ 406:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 407:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 408:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     switch (pos) {
+ 612              		.loc 1 408 0
+ 613 0010 FB1D     		adds	r3, r7, #7
+ 614 0012 1B78     		ldrb	r3, [r3]
+ 615 0014 0F2B     		cmp	r3, #15
+ 616 0016 04D8     		bhi	.L42
+ 617 0018 9A00     		lsls	r2, r3, #2
+ 618 001a 2A4B     		ldr	r3, .L52
+ 619 001c D318     		adds	r3, r2, r3
+ 620 001e 1B68     		ldr	r3, [r3]
+ 621 0020 9F46     		mov	pc, r3
+ 622              		.section	.rodata
+ 623              		.align	2
+ 624              	.L44:
+ 625 0080 B4000000 		.word	.L50
+ 626 0084 B4000000 		.word	.L50
+ 627 0088 B4000000 		.word	.L50
+ 628 008c B4000000 		.word	.L50
+ 629 0090 22000000 		.word	.L42
+ 630 0094 22000000 		.word	.L42
+ 631 0098 22000000 		.word	.L42
+ 632 009c B4000000 		.word	.L50
+ 633 00a0 B4000000 		.word	.L50
+ 634 00a4 B4000000 		.word	.L50
+ 635 00a8 B4000000 		.word	.L50
+ 636 00ac B4000000 		.word	.L50
+ 637 00b0 22000000 		.word	.L42
+ 638 00b4 B4000000 		.word	.L50
+ 639 00b8 B4000000 		.word	.L50
+ 640 00bc B4000000 		.word	.L50
+ 641              		.section	.text.CPU_IntSrcPendClr
+ 642              	.L42:
+ 409:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_STK_PTR:                                   /* ---------------- INVALID OR RESE
+ 410:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_RSVD_07:
+ 411:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_RSVD_08:
+ 412:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_RSVD_09:
+ 413:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_RSVD_10:
+ 414:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_RSVD_13:
+ 415:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              break;
+ 416:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                                                                 /* ----------------- SYSTEM EXCEPTI
+ 417:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_RESET:                                     /* Reset (see Note #2).            
+ 418:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_NMI:                                       /* Non-maskable interrupt (see Note
+ 419:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_HFAULT:                                    /* Hard fault (see Note #2).       
+ 420:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_SVCALL:                                    /* SVCall (see Note #2).           
+ 421:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_PENDSV:                                    /* PendSV (see Note #2).           
+ 422:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         case CPU_INT_SYSTICK:                                   /* SysTick.                        
+ 423:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              break;
+ 424:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                                                                 /* ---------------- EXTERNAL INTERR
+ 425:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         default:
+ 426:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****             pos_max = CPU_INT_SRC_POS_MAX;
+ 643              		.loc 1 426 0
+ 644 0022 294B     		ldr	r3, .L52+4
+ 645 0024 1B68     		ldr	r3, [r3]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 20
+
+
+ 646 0026 0133     		adds	r3, r3, #1
+ 647 0028 DBB2     		uxtb	r3, r3
+ 648 002a 1F22     		movs	r2, #31
+ 649 002c 1340     		ands	r3, r2
+ 650 002e DBB2     		uxtb	r3, r3
+ 651 0030 5B01     		lsls	r3, r3, #5
+ 652 0032 DAB2     		uxtb	r2, r3
+ 653 0034 0B23     		movs	r3, #11
+ 654 0036 FB18     		adds	r3, r7, r3
+ 655 0038 1032     		adds	r2, r2, #16
+ 656 003a 1A70     		strb	r2, [r3]
+ 427:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****             if (pos < pos_max) {                                /* See Note #3.                    
+ 657              		.loc 1 427 0
+ 658 003c FA1D     		adds	r2, r7, #7
+ 659 003e 0B23     		movs	r3, #11
+ 660 0040 FB18     		adds	r3, r7, r3
+ 661 0042 1278     		ldrb	r2, [r2]
+ 662 0044 1B78     		ldrb	r3, [r3]
+ 663 0046 9A42     		cmp	r2, r3
+ 664 0048 36D2     		bcs	.L51
+ 428:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  group = (pos - 16) / 32;
+ 665              		.loc 1 428 0
+ 666 004a FB1D     		adds	r3, r7, #7
+ 667 004c 1B78     		ldrb	r3, [r3]
+ 668 004e 103B     		subs	r3, r3, #16
+ 669 0050 002B     		cmp	r3, #0
+ 670 0052 00DA     		bge	.L48
+ 671 0054 1F33     		adds	r3, r3, #31
+ 672              	.L48:
+ 673 0056 5B11     		asrs	r3, r3, #5
+ 674 0058 1A00     		movs	r2, r3
+ 675 005a 0A23     		movs	r3, #10
+ 676 005c FB18     		adds	r3, r7, r3
+ 677 005e 1A70     		strb	r2, [r3]
+ 429:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  nbr   = (pos - 16) % 32;
+ 678              		.loc 1 429 0
+ 679 0060 FB1D     		adds	r3, r7, #7
+ 680 0062 1B78     		ldrb	r3, [r3]
+ 681 0064 103B     		subs	r3, r3, #16
+ 682 0066 194A     		ldr	r2, .L52+8
+ 683 0068 1340     		ands	r3, r2
+ 684 006a 04D5     		bpl	.L49
+ 685 006c 013B     		subs	r3, r3, #1
+ 686 006e 2022     		movs	r2, #32
+ 687 0070 5242     		rsbs	r2, r2, #0
+ 688 0072 1343     		orrs	r3, r2
+ 689 0074 0133     		adds	r3, r3, #1
+ 690              	.L49:
+ 691 0076 1A00     		movs	r2, r3
+ 692 0078 0923     		movs	r3, #9
+ 693 007a FB18     		adds	r3, r7, r3
+ 694 007c 1A70     		strb	r2, [r3]
+ 430:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 431:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_CRITICAL_ENTER();
+ 695              		.loc 1 431 0
+ 696 007e FFF7FEFF 		bl	CPU_SR_Save
+ 697 0082 0300     		movs	r3, r0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 21
+
+
+ 698 0084 FB60     		str	r3, [r7, #12]
+ 699 0086 FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 432:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_REG_NVIC_CLRPEND(group) = DEF_BIT(nbr);
+ 700              		.loc 1 432 0
+ 701 008a 0A23     		movs	r3, #10
+ 702 008c FB18     		adds	r3, r7, r3
+ 703 008e 1B78     		ldrb	r3, [r3]
+ 704 0090 0F4A     		ldr	r2, .L52+12
+ 705 0092 9446     		mov	ip, r2
+ 706 0094 6344     		add	r3, r3, ip
+ 707 0096 9B00     		lsls	r3, r3, #2
+ 708 0098 0922     		movs	r2, #9
+ 709 009a BA18     		adds	r2, r7, r2
+ 710 009c 1278     		ldrb	r2, [r2]
+ 711 009e 0121     		movs	r1, #1
+ 712 00a0 9140     		lsls	r1, r1, r2
+ 713 00a2 0A00     		movs	r2, r1
+ 714 00a4 1A60     		str	r2, [r3]
+ 433:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_CRITICAL_EXIT();
+ 715              		.loc 1 433 0
+ 716 00a6 FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 717 00aa FB68     		ldr	r3, [r7, #12]
+ 718 00ac 1800     		movs	r0, r3
+ 719 00ae FFF7FEFF 		bl	CPU_SR_Restore
+ 434:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              }
+ 435:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              break;
+ 720              		.loc 1 435 0
+ 721 00b2 01E0     		b	.L51
+ 722              	.L50:
+ 415:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                                                                 /* ----------------- SYSTEM EXCEPTI
+ 723              		.loc 1 415 0
+ 724 00b4 C046     		nop
+ 725 00b6 00E0     		b	.L46
+ 726              	.L51:
+ 727              		.loc 1 435 0
+ 728 00b8 C046     		nop
+ 729              	.L46:
+ 436:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     }
+ 437:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** }
+ 730              		.loc 1 437 0
+ 731 00ba C046     		nop
+ 732 00bc BD46     		mov	sp, r7
+ 733 00be 04B0     		add	sp, sp, #16
+ 734              		@ sp needed
+ 735 00c0 80BD     		pop	{r7, pc}
+ 736              	.L53:
+ 737 00c2 C046     		.align	2
+ 738              	.L52:
+ 739 00c4 80000000 		.word	.L44
+ 740 00c8 04E000E0 		.word	-536813564
+ 741 00cc 1F000080 		.word	-2147483617
+ 742 00d0 A0380038 		.word	939538592
+ 743              		.cfi_endproc
+ 744              	.LFE5:
+ 745              		.size	CPU_IntSrcPendClr, .-CPU_IntSrcPendClr
+ 746              		.section	.text.CPU_IntSrcPrioSet,"ax",%progbits
+ 747              		.align	2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 22
+
+
+ 748              		.global	CPU_IntSrcPrioSet
+ 749              		.code	16
+ 750              		.thumb_func
+ 751              		.type	CPU_IntSrcPrioSet, %function
+ 752              	CPU_IntSrcPrioSet:
+ 753              	.LFB6:
+ 438:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 439:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 440:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+ 441:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 442:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                         CPU_IntSrcPrioSet()
+ 443:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 444:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Description : Set priority of an interrupt source.
+ 445:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 446:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Argument(s) : pos     Position of interrupt vector in interrupt table (see 'CPU_IntSrcDis()').
+ 447:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 448:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               prio    Priority.  Use a lower priority number for a higher priority.
+ 449:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 450:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Return(s)   : none.
+ 451:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 452:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Caller(s)   : Application.
+ 453:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 454:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Note(s)     : (1) See 'CPU_IntSrcDis()  Note #1'.
+ 455:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 456:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               (2) Several interrupts priorities CANNOT be set :
+ 457:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 458:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (a) Reset (always -3).
+ 459:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (b) NMI (always -2).
+ 460:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                   (c) Hard fault (always -1).
+ 461:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 462:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               (3) See 'CPU_IntSrcDis()  Note #3'.
+ 463:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 464:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+ 465:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 466:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** void  CPU_IntSrcPrioSet (CPU_INT08U  pos,
+ 467:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                          CPU_INT08U  prio)
+ 468:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** {
+ 754              		.loc 1 468 0
+ 755              		.cfi_startproc
+ 756              		@ args = 0, pretend = 0, frame = 24
+ 757              		@ frame_needed = 1, uses_anonymous_args = 0
+ 758 0000 80B5     		push	{r7, lr}
+ 759              		.cfi_def_cfa_offset 8
+ 760              		.cfi_offset 7, -8
+ 761              		.cfi_offset 14, -4
+ 762 0002 86B0     		sub	sp, sp, #24
+ 763              		.cfi_def_cfa_offset 32
+ 764 0004 00AF     		add	r7, sp, #0
+ 765              		.cfi_def_cfa_register 7
+ 766 0006 0200     		movs	r2, r0
+ 767 0008 FB1D     		adds	r3, r7, #7
+ 768 000a 1A70     		strb	r2, [r3]
+ 769 000c BB1D     		adds	r3, r7, #6
+ 770 000e 0A1C     		adds	r2, r1, #0
+ 771 0010 1A70     		strb	r2, [r3]
+ 469:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  group;
+ 470:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  nbr;
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 23
+
+
+ 471:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  pos_max;
+ 472:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT32U  temp;
+ 473:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_SR_ALLOC();
+ 772              		.loc 1 473 0
+ 773 0012 0023     		movs	r3, #0
+ 774 0014 7B61     		str	r3, [r7, #20]
+ 474:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 475:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 476:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     switch (pos) {
+ 775              		.loc 1 476 0
+ 776 0016 FB1D     		adds	r3, r7, #7
+ 777 0018 1B78     		ldrb	r3, [r3]
+ 778 001a 0F2B     		cmp	r3, #15
+ 779 001c 5ED8     		bhi	.L55
+ 780 001e 9A00     		lsls	r2, r3, #2
+ 781 0020 644B     		ldr	r3, .L68
+ 782 0022 D318     		adds	r3, r2, r3
+ 783 0024 1B68     		ldr	r3, [r3]
+ 784 0026 9F46     		mov	pc, r3
+ 785              		.section	.rodata
+ 786              		.align	2
+ 787              	.L57:
+ 788 00c0 A4010000 		.word	.L66
+ 789 00c4 A4010000 		.word	.L66
+ 790 00c8 A4010000 		.word	.L66
+ 791 00cc A4010000 		.word	.L66
+ 792 00d0 DC000000 		.word	.L55
+ 793 00d4 DC000000 		.word	.L55
+ 794 00d8 DC000000 		.word	.L55
+ 795 00dc A4010000 		.word	.L66
+ 796 00e0 A4010000 		.word	.L66
+ 797 00e4 A4010000 		.word	.L66
+ 798 00e8 A4010000 		.word	.L66
+ 799 00ec 28000000 		.word	.L59
+ 800 00f0 DC000000 		.word	.L55
+ 801 00f4 A4010000 		.word	.L66
+ 802 00f8 64000000 		.word	.L60
+ 803 00fc A0000000 		.word	.L61
+ 804              		.section	.text.CPU_IntSrcPrioSet
+ 805              	.L59:
+ 477:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_STK_PTR:                                  /* ---------------- INVALID OR RESE
+ 478:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_07:
+ 479:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_08:
+ 480:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_09:
+ 481:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_10:
+ 482:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_13:
+ 483:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 484:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 485:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 486:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                                                                 /* ----------------- SYSTEM EXCEPTI
+ 487:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RESET:                                    /* Reset (see Note #2).            
+ 488:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_NMI:                                      /* Non-maskable interrupt (see Note
+ 489:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_HFAULT:                                   /* Hard fault (see Note #2).       
+ 490:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 491:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 492:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_SVCALL:                                   /* SVCall.                         
+ 493:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_ENTER();
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 24
+
+
+ 806              		.loc 1 493 0
+ 807 0028 FFF7FEFF 		bl	CPU_SR_Save
+ 808 002c 0300     		movs	r3, r0
+ 809 002e 7B61     		str	r3, [r7, #20]
+ 810 0030 FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 494:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               temp                 = CPU_REG_NVIC_SHPRI2;
+ 811              		.loc 1 494 0
+ 812 0034 604B     		ldr	r3, .L68+4
+ 813 0036 1B68     		ldr	r3, [r3]
+ 814 0038 3B61     		str	r3, [r7, #16]
+ 495:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               temp                &= ~((CPU_INT32U)DEF_OCTET_MASK << (3 * DEF_OCTET_NBR_BITS));
+ 815              		.loc 1 495 0
+ 816 003a 3B69     		ldr	r3, [r7, #16]
+ 817 003c 1B02     		lsls	r3, r3, #8
+ 818 003e 1B0A     		lsrs	r3, r3, #8
+ 819 0040 3B61     		str	r3, [r7, #16]
+ 496:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               temp                |=  (prio                       << (3 * DEF_OCTET_NBR_BITS));
+ 820              		.loc 1 496 0
+ 821 0042 BB1D     		adds	r3, r7, #6
+ 822 0044 1B78     		ldrb	r3, [r3]
+ 823 0046 1B06     		lsls	r3, r3, #24
+ 824 0048 1A00     		movs	r2, r3
+ 825 004a 3B69     		ldr	r3, [r7, #16]
+ 826 004c 1343     		orrs	r3, r2
+ 827 004e 3B61     		str	r3, [r7, #16]
+ 497:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_REG_NVIC_SHPRI2  = temp;
+ 828              		.loc 1 497 0
+ 829 0050 594B     		ldr	r3, .L68+4
+ 830 0052 3A69     		ldr	r2, [r7, #16]
+ 831 0054 1A60     		str	r2, [r3]
+ 498:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_EXIT();
+ 832              		.loc 1 498 0
+ 833 0056 FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 834 005a 7B69     		ldr	r3, [r7, #20]
+ 835 005c 1800     		movs	r0, r3
+ 836 005e FFF7FEFF 		bl	CPU_SR_Restore
+ 499:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 837              		.loc 1 499 0
+ 838 0062 A2E0     		b	.L62
+ 839              	.L60:
+ 500:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 501:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_PENDSV:                                   /* PendSV.                         
+ 502:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_ENTER();
+ 840              		.loc 1 502 0
+ 841 0064 FFF7FEFF 		bl	CPU_SR_Save
+ 842 0068 0300     		movs	r3, r0
+ 843 006a 7B61     		str	r3, [r7, #20]
+ 844 006c FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 503:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               temp                 = CPU_REG_NVIC_SHPRI3;
+ 845              		.loc 1 503 0
+ 846 0070 524B     		ldr	r3, .L68+8
+ 847 0072 1B68     		ldr	r3, [r3]
+ 848 0074 3B61     		str	r3, [r7, #16]
+ 504:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               temp                &= ~(DEF_OCTET_MASK << (2 * DEF_OCTET_NBR_BITS));
+ 849              		.loc 1 504 0
+ 850 0076 3B69     		ldr	r3, [r7, #16]
+ 851 0078 514A     		ldr	r2, .L68+12
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 25
+
+
+ 852 007a 1340     		ands	r3, r2
+ 853 007c 3B61     		str	r3, [r7, #16]
+ 505:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               temp                |=  (prio           << (2 * DEF_OCTET_NBR_BITS));
+ 854              		.loc 1 505 0
+ 855 007e BB1D     		adds	r3, r7, #6
+ 856 0080 1B78     		ldrb	r3, [r3]
+ 857 0082 1B04     		lsls	r3, r3, #16
+ 858 0084 1A00     		movs	r2, r3
+ 859 0086 3B69     		ldr	r3, [r7, #16]
+ 860 0088 1343     		orrs	r3, r2
+ 861 008a 3B61     		str	r3, [r7, #16]
+ 506:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_REG_NVIC_SHPRI3  = temp;
+ 862              		.loc 1 506 0
+ 863 008c 4B4B     		ldr	r3, .L68+8
+ 864 008e 3A69     		ldr	r2, [r7, #16]
+ 865 0090 1A60     		str	r2, [r3]
+ 507:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_EXIT();
+ 866              		.loc 1 507 0
+ 867 0092 FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 868 0096 7B69     		ldr	r3, [r7, #20]
+ 869 0098 1800     		movs	r0, r3
+ 870 009a FFF7FEFF 		bl	CPU_SR_Restore
+ 508:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 871              		.loc 1 508 0
+ 872 009e 84E0     		b	.L62
+ 873              	.L61:
+ 509:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 510:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_SYSTICK:                                  /* SysTick.                        
+ 511:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_ENTER();
+ 874              		.loc 1 511 0
+ 875 00a0 FFF7FEFF 		bl	CPU_SR_Save
+ 876 00a4 0300     		movs	r3, r0
+ 877 00a6 7B61     		str	r3, [r7, #20]
+ 878 00a8 FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 512:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               temp                 = CPU_REG_NVIC_SHPRI3;
+ 879              		.loc 1 512 0
+ 880 00ac 434B     		ldr	r3, .L68+8
+ 881 00ae 1B68     		ldr	r3, [r3]
+ 882 00b0 3B61     		str	r3, [r7, #16]
+ 513:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               temp                &= ~((CPU_INT32U)DEF_OCTET_MASK << (3 * DEF_OCTET_NBR_BITS));
+ 883              		.loc 1 513 0
+ 884 00b2 3B69     		ldr	r3, [r7, #16]
+ 885 00b4 1B02     		lsls	r3, r3, #8
+ 886 00b6 1B0A     		lsrs	r3, r3, #8
+ 887 00b8 3B61     		str	r3, [r7, #16]
+ 514:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               temp                |=  (prio                       << (3 * DEF_OCTET_NBR_BITS));
+ 888              		.loc 1 514 0
+ 889 00ba BB1D     		adds	r3, r7, #6
+ 890 00bc 1B78     		ldrb	r3, [r3]
+ 891 00be 1B06     		lsls	r3, r3, #24
+ 892 00c0 1A00     		movs	r2, r3
+ 893 00c2 3B69     		ldr	r3, [r7, #16]
+ 894 00c4 1343     		orrs	r3, r2
+ 895 00c6 3B61     		str	r3, [r7, #16]
+ 515:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_REG_NVIC_SHPRI3  = temp;
+ 896              		.loc 1 515 0
+ 897 00c8 3C4B     		ldr	r3, .L68+8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 26
+
+
+ 898 00ca 3A69     		ldr	r2, [r7, #16]
+ 899 00cc 1A60     		str	r2, [r3]
+ 516:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_EXIT();
+ 900              		.loc 1 516 0
+ 901 00ce FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 902 00d2 7B69     		ldr	r3, [r7, #20]
+ 903 00d4 1800     		movs	r0, r3
+ 904 00d6 FFF7FEFF 		bl	CPU_SR_Restore
+ 517:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 905              		.loc 1 517 0
+ 906 00da 66E0     		b	.L62
+ 907              	.L55:
+ 518:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 519:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 520:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                                                                 /* ---------------- EXTERNAL INTERR
+ 521:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          default:
+ 522:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              pos_max = CPU_INT_SRC_POS_MAX;
+ 908              		.loc 1 522 0
+ 909 00dc 394B     		ldr	r3, .L68+16
+ 910 00de 1B68     		ldr	r3, [r3]
+ 911 00e0 0133     		adds	r3, r3, #1
+ 912 00e2 DBB2     		uxtb	r3, r3
+ 913 00e4 1F22     		movs	r2, #31
+ 914 00e6 1340     		ands	r3, r2
+ 915 00e8 DBB2     		uxtb	r3, r3
+ 916 00ea 5B01     		lsls	r3, r3, #5
+ 917 00ec DAB2     		uxtb	r2, r3
+ 918 00ee 0F23     		movs	r3, #15
+ 919 00f0 FB18     		adds	r3, r7, r3
+ 920 00f2 1032     		adds	r2, r2, #16
+ 921 00f4 1A70     		strb	r2, [r3]
+ 523:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              if (pos < pos_max) {                               /* See Note #3.                    
+ 922              		.loc 1 523 0
+ 923 00f6 FA1D     		adds	r2, r7, #7
+ 924 00f8 0F23     		movs	r3, #15
+ 925 00fa FB18     		adds	r3, r7, r3
+ 926 00fc 1278     		ldrb	r2, [r2]
+ 927 00fe 1B78     		ldrb	r3, [r3]
+ 928 0100 9A42     		cmp	r2, r3
+ 929 0102 51D2     		bcs	.L67
+ 524:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  group                    = (pos - 16) / 4;
+ 930              		.loc 1 524 0
+ 931 0104 FB1D     		adds	r3, r7, #7
+ 932 0106 1B78     		ldrb	r3, [r3]
+ 933 0108 103B     		subs	r3, r3, #16
+ 934 010a 002B     		cmp	r3, #0
+ 935 010c 00DA     		bge	.L64
+ 936 010e 0333     		adds	r3, r3, #3
+ 937              	.L64:
+ 938 0110 9B10     		asrs	r3, r3, #2
+ 939 0112 1A00     		movs	r2, r3
+ 940 0114 0E23     		movs	r3, #14
+ 941 0116 FB18     		adds	r3, r7, r3
+ 942 0118 1A70     		strb	r2, [r3]
+ 525:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  nbr                      = (pos - 16) % 4;
+ 943              		.loc 1 525 0
+ 944 011a FB1D     		adds	r3, r7, #7
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 27
+
+
+ 945 011c 1B78     		ldrb	r3, [r3]
+ 946 011e 103B     		subs	r3, r3, #16
+ 947 0120 294A     		ldr	r2, .L68+20
+ 948 0122 1340     		ands	r3, r2
+ 949 0124 04D5     		bpl	.L65
+ 950 0126 013B     		subs	r3, r3, #1
+ 951 0128 0422     		movs	r2, #4
+ 952 012a 5242     		rsbs	r2, r2, #0
+ 953 012c 1343     		orrs	r3, r2
+ 954 012e 0133     		adds	r3, r3, #1
+ 955              	.L65:
+ 956 0130 1A00     		movs	r2, r3
+ 957 0132 0D23     		movs	r3, #13
+ 958 0134 FB18     		adds	r3, r7, r3
+ 959 0136 1A70     		strb	r2, [r3]
+ 526:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 527:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_CRITICAL_ENTER();
+ 960              		.loc 1 527 0
+ 961 0138 FFF7FEFF 		bl	CPU_SR_Save
+ 962 013c 0300     		movs	r3, r0
+ 963 013e 7B61     		str	r3, [r7, #20]
+ 964 0140 FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 528:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  temp                     = CPU_REG_NVIC_PRIO(group);
+ 965              		.loc 1 528 0
+ 966 0144 0E23     		movs	r3, #14
+ 967 0146 FB18     		adds	r3, r7, r3
+ 968 0148 1B78     		ldrb	r3, [r3]
+ 969 014a 204A     		ldr	r2, .L68+24
+ 970 014c 9446     		mov	ip, r2
+ 971 014e 6344     		add	r3, r3, ip
+ 972 0150 9B00     		lsls	r3, r3, #2
+ 973 0152 1B68     		ldr	r3, [r3]
+ 974 0154 3B61     		str	r3, [r7, #16]
+ 529:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  temp                    &= ~(DEF_OCTET_MASK << (nbr * DEF_OCTET_NBR_BITS));
+ 975              		.loc 1 529 0
+ 976 0156 0D23     		movs	r3, #13
+ 977 0158 FB18     		adds	r3, r7, r3
+ 978 015a 1B78     		ldrb	r3, [r3]
+ 979 015c DB00     		lsls	r3, r3, #3
+ 980 015e FF22     		movs	r2, #255
+ 981 0160 9A40     		lsls	r2, r2, r3
+ 982 0162 1300     		movs	r3, r2
+ 983 0164 DA43     		mvns	r2, r3
+ 984 0166 3B69     		ldr	r3, [r7, #16]
+ 985 0168 1340     		ands	r3, r2
+ 986 016a 3B61     		str	r3, [r7, #16]
+ 530:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  temp                    |=  (prio           << (nbr * DEF_OCTET_NBR_BITS));
+ 987              		.loc 1 530 0
+ 988 016c BB1D     		adds	r3, r7, #6
+ 989 016e 1A78     		ldrb	r2, [r3]
+ 990 0170 0D23     		movs	r3, #13
+ 991 0172 FB18     		adds	r3, r7, r3
+ 992 0174 1B78     		ldrb	r3, [r3]
+ 993 0176 DB00     		lsls	r3, r3, #3
+ 994 0178 9A40     		lsls	r2, r2, r3
+ 995 017a 1300     		movs	r3, r2
+ 996 017c 1A00     		movs	r2, r3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 28
+
+
+ 997 017e 3B69     		ldr	r3, [r7, #16]
+ 998 0180 1343     		orrs	r3, r2
+ 999 0182 3B61     		str	r3, [r7, #16]
+ 531:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_REG_NVIC_PRIO(group) = temp;
+ 1000              		.loc 1 531 0
+ 1001 0184 0E23     		movs	r3, #14
+ 1002 0186 FB18     		adds	r3, r7, r3
+ 1003 0188 1B78     		ldrb	r3, [r3]
+ 1004 018a 104A     		ldr	r2, .L68+24
+ 1005 018c 9446     		mov	ip, r2
+ 1006 018e 6344     		add	r3, r3, ip
+ 1007 0190 9B00     		lsls	r3, r3, #2
+ 1008 0192 3A69     		ldr	r2, [r7, #16]
+ 1009 0194 1A60     		str	r2, [r3]
+ 532:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_CRITICAL_EXIT();
+ 1010              		.loc 1 532 0
+ 1011 0196 FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 1012 019a 7B69     		ldr	r3, [r7, #20]
+ 1013 019c 1800     		movs	r0, r3
+ 1014 019e FFF7FEFF 		bl	CPU_SR_Restore
+ 533:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              }
+ 534:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              break;
+ 1015              		.loc 1 534 0
+ 1016 01a2 01E0     		b	.L67
+ 1017              	.L66:
+ 483:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 1018              		.loc 1 483 0
+ 1019 01a4 C046     		nop
+ 1020 01a6 00E0     		b	.L62
+ 1021              	.L67:
+ 1022              		.loc 1 534 0
+ 1023 01a8 C046     		nop
+ 1024              	.L62:
+ 535:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     }
+ 536:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** }
+ 1025              		.loc 1 536 0
+ 1026 01aa C046     		nop
+ 1027 01ac BD46     		mov	sp, r7
+ 1028 01ae 06B0     		add	sp, sp, #24
+ 1029              		@ sp needed
+ 1030 01b0 80BD     		pop	{r7, pc}
+ 1031              	.L69:
+ 1032 01b2 C046     		.align	2
+ 1033              	.L68:
+ 1034 01b4 C0000000 		.word	.L57
+ 1035 01b8 1CED00E0 		.word	-536810212
+ 1036 01bc 20ED00E0 		.word	-536810208
+ 1037 01c0 FFFF00FF 		.word	-16711681
+ 1038 01c4 04E000E0 		.word	-536813564
+ 1039 01c8 03000080 		.word	-2147483645
+ 1040 01cc 00390038 		.word	939538688
+ 1041              		.cfi_endproc
+ 1042              	.LFE6:
+ 1043              		.size	CPU_IntSrcPrioSet, .-CPU_IntSrcPrioSet
+ 1044              		.section	.text.CPU_IntSrcPrioGet,"ax",%progbits
+ 1045              		.align	2
+ 1046              		.global	CPU_IntSrcPrioGet
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 29
+
+
+ 1047              		.code	16
+ 1048              		.thumb_func
+ 1049              		.type	CPU_IntSrcPrioGet, %function
+ 1050              	CPU_IntSrcPrioGet:
+ 1051              	.LFB7:
+ 537:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 538:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 539:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+ 540:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 541:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                         CPU_IntSrcPrioGet()
+ 542:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 543:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Description : Get priority of an interrupt source.
+ 544:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 545:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Argument(s) : pos     Position of interrupt vector in interrupt table (see 'CPU_IntSrcDis()').
+ 546:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 547:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Return(s)   : Priority of interrupt source.  If the interrupt source specified is invalid, then
+ 548:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               DEF_INT_16S_MIN_VAL is returned.
+ 549:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 550:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Caller(s)   : Application.
+ 551:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 552:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Note(s)     : (1) See 'CPU_IntSrcDis()      Note #1'.
+ 553:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 554:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               (2) See 'CPU_IntSrcPrioSet()  Note #2'.
+ 555:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 556:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               (3) See 'CPU_IntSrcDis()      Note #3'.
+ 557:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 558:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+ 559:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 560:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** CPU_INT16S  CPU_IntSrcPrioGet (CPU_INT08U  pos)
+ 561:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** {
+ 1052              		.loc 1 561 0
+ 1053              		.cfi_startproc
+ 1054              		@ args = 0, pretend = 0, frame = 24
+ 1055              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1056 0000 80B5     		push	{r7, lr}
+ 1057              		.cfi_def_cfa_offset 8
+ 1058              		.cfi_offset 7, -8
+ 1059              		.cfi_offset 14, -4
+ 1060 0002 86B0     		sub	sp, sp, #24
+ 1061              		.cfi_def_cfa_offset 32
+ 1062 0004 00AF     		add	r7, sp, #0
+ 1063              		.cfi_def_cfa_register 7
+ 1064 0006 0200     		movs	r2, r0
+ 1065 0008 FB1D     		adds	r3, r7, #7
+ 1066 000a 1A70     		strb	r2, [r3]
+ 562:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  group;
+ 563:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  nbr;
+ 564:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  pos_max;
+ 565:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT16S  prio;
+ 566:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT32U  temp;
+ 567:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_SR_ALLOC();
+ 1067              		.loc 1 567 0
+ 1068 000c 0023     		movs	r3, #0
+ 1069 000e 3B61     		str	r3, [r7, #16]
+ 568:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 569:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 570:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     switch (pos) {
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 30
+
+
+ 1070              		.loc 1 570 0
+ 1071 0010 FB1D     		adds	r3, r7, #7
+ 1072 0012 1B78     		ldrb	r3, [r3]
+ 1073 0014 0F2B     		cmp	r3, #15
+ 1074 0016 5DD8     		bhi	.L71
+ 1075 0018 9A00     		lsls	r2, r3, #2
+ 1076 001a 5D4B     		ldr	r3, .L87
+ 1077 001c D318     		adds	r3, r2, r3
+ 1078 001e 1B68     		ldr	r3, [r3]
+ 1079 0020 9F46     		mov	pc, r3
+ 1080              		.section	.rodata
+ 1081              		.align	2
+ 1082              	.L73:
+ 1083 0100 22000000 		.word	.L72
+ 1084 0104 2C000000 		.word	.L74
+ 1085 0108 38000000 		.word	.L75
+ 1086 010c 44000000 		.word	.L76
+ 1087 0110 D4000000 		.word	.L71
+ 1088 0114 D4000000 		.word	.L71
+ 1089 0118 D4000000 		.word	.L71
+ 1090 011c 22000000 		.word	.L72
+ 1091 0120 22000000 		.word	.L72
+ 1092 0124 22000000 		.word	.L72
+ 1093 0128 22000000 		.word	.L72
+ 1094 012c 50000000 		.word	.L77
+ 1095 0130 D4000000 		.word	.L71
+ 1096 0134 22000000 		.word	.L72
+ 1097 0138 7A000000 		.word	.L78
+ 1098 013c AA000000 		.word	.L79
+ 1099              		.section	.text.CPU_IntSrcPrioGet
+ 1100              	.L72:
+ 571:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_STK_PTR:                                  /* ---------------- INVALID OR RESE
+ 572:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_07:
+ 573:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_08:
+ 574:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_09:
+ 575:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_10:
+ 576:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RSVD_13:
+ 577:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               prio = DEF_INT_16S_MIN_VAL;
+ 1101              		.loc 1 577 0
+ 1102 0022 1623     		movs	r3, #22
+ 1103 0024 FB18     		adds	r3, r7, r3
+ 1104 0026 5B4A     		ldr	r2, .L87+4
+ 1105 0028 1A80     		strh	r2, [r3]
+ 578:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 1106              		.loc 1 578 0
+ 1107 002a A9E0     		b	.L80
+ 1108              	.L74:
+ 579:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 580:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 581:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                                                                 /* ----------------- SYSTEM EXCEPTI
+ 582:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_RESET:                                    /* Reset (see Note #2).            
+ 583:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               prio = -3;
+ 1109              		.loc 1 583 0
+ 1110 002c 1623     		movs	r3, #22
+ 1111 002e FB18     		adds	r3, r7, r3
+ 1112 0030 0322     		movs	r2, #3
+ 1113 0032 5242     		rsbs	r2, r2, #0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 31
+
+
+ 1114 0034 1A80     		strh	r2, [r3]
+ 584:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 1115              		.loc 1 584 0
+ 1116 0036 A3E0     		b	.L80
+ 1117              	.L75:
+ 585:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 586:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_NMI:                                      /* Non-maskable interrupt (see Note
+ 587:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               prio = -2;
+ 1118              		.loc 1 587 0
+ 1119 0038 1623     		movs	r3, #22
+ 1120 003a FB18     		adds	r3, r7, r3
+ 1121 003c 0222     		movs	r2, #2
+ 1122 003e 5242     		rsbs	r2, r2, #0
+ 1123 0040 1A80     		strh	r2, [r3]
+ 588:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 1124              		.loc 1 588 0
+ 1125 0042 9DE0     		b	.L80
+ 1126              	.L76:
+ 589:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 590:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_HFAULT:                                   /* Hard fault (see Note #2).       
+ 591:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               prio = -1;
+ 1127              		.loc 1 591 0
+ 1128 0044 1623     		movs	r3, #22
+ 1129 0046 FB18     		adds	r3, r7, r3
+ 1130 0048 0122     		movs	r2, #1
+ 1131 004a 5242     		rsbs	r2, r2, #0
+ 1132 004c 1A80     		strh	r2, [r3]
+ 592:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 1133              		.loc 1 592 0
+ 1134 004e 97E0     		b	.L80
+ 1135              	.L77:
+ 593:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 594:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_SVCALL:                                   /* SVCall.                         
+ 595:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_ENTER();
+ 1136              		.loc 1 595 0
+ 1137 0050 FFF7FEFF 		bl	CPU_SR_Save
+ 1138 0054 0300     		movs	r3, r0
+ 1139 0056 3B61     		str	r3, [r7, #16]
+ 1140 0058 FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 596:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               temp = CPU_REG_NVIC_SHPRI2;
+ 1141              		.loc 1 596 0
+ 1142 005c 4E4B     		ldr	r3, .L87+8
+ 1143 005e 1B68     		ldr	r3, [r3]
+ 1144 0060 FB60     		str	r3, [r7, #12]
+ 597:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               prio = (temp >> (3 * DEF_OCTET_NBR_BITS)) & DEF_OCTET_MASK;
+ 1145              		.loc 1 597 0
+ 1146 0062 FB68     		ldr	r3, [r7, #12]
+ 1147 0064 1A0E     		lsrs	r2, r3, #24
+ 1148 0066 1623     		movs	r3, #22
+ 1149 0068 FB18     		adds	r3, r7, r3
+ 1150 006a 1A80     		strh	r2, [r3]
+ 598:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_EXIT();
+ 1151              		.loc 1 598 0
+ 1152 006c FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 1153 0070 3B69     		ldr	r3, [r7, #16]
+ 1154 0072 1800     		movs	r0, r3
+ 1155 0074 FFF7FEFF 		bl	CPU_SR_Restore
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 32
+
+
+ 599:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 1156              		.loc 1 599 0
+ 1157 0078 82E0     		b	.L80
+ 1158              	.L78:
+ 600:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 601:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_PENDSV:                                   /* PendSV.                         
+ 602:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_ENTER();
+ 1159              		.loc 1 602 0
+ 1160 007a FFF7FEFF 		bl	CPU_SR_Save
+ 1161 007e 0300     		movs	r3, r0
+ 1162 0080 3B61     		str	r3, [r7, #16]
+ 1163 0082 FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 603:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               temp = CPU_REG_NVIC_SHPRI3;
+ 1164              		.loc 1 603 0
+ 1165 0086 454B     		ldr	r3, .L87+12
+ 1166 0088 1B68     		ldr	r3, [r3]
+ 1167 008a FB60     		str	r3, [r7, #12]
+ 604:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               prio = (temp >> (2 * DEF_OCTET_NBR_BITS)) & DEF_OCTET_MASK;
+ 1168              		.loc 1 604 0
+ 1169 008c FB68     		ldr	r3, [r7, #12]
+ 1170 008e 1B0C     		lsrs	r3, r3, #16
+ 1171 0090 1AB2     		sxth	r2, r3
+ 1172 0092 1623     		movs	r3, #22
+ 1173 0094 FB18     		adds	r3, r7, r3
+ 1174 0096 FF21     		movs	r1, #255
+ 1175 0098 0A40     		ands	r2, r1
+ 1176 009a 1A80     		strh	r2, [r3]
+ 605:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_EXIT();
+ 1177              		.loc 1 605 0
+ 1178 009c FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 1179 00a0 3B69     		ldr	r3, [r7, #16]
+ 1180 00a2 1800     		movs	r0, r3
+ 1181 00a4 FFF7FEFF 		bl	CPU_SR_Restore
+ 606:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 1182              		.loc 1 606 0
+ 1183 00a8 6AE0     		b	.L80
+ 1184              	.L79:
+ 607:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 608:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          case CPU_INT_SYSTICK:                                  /* SysTick.                        
+ 609:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_ENTER();
+ 1185              		.loc 1 609 0
+ 1186 00aa FFF7FEFF 		bl	CPU_SR_Save
+ 1187 00ae 0300     		movs	r3, r0
+ 1188 00b0 3B61     		str	r3, [r7, #16]
+ 1189 00b2 FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 610:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               temp = CPU_REG_NVIC_SHPRI3;
+ 1190              		.loc 1 610 0
+ 1191 00b6 394B     		ldr	r3, .L87+12
+ 1192 00b8 1B68     		ldr	r3, [r3]
+ 1193 00ba FB60     		str	r3, [r7, #12]
+ 611:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               prio = (temp >> (3 * DEF_OCTET_NBR_BITS)) & DEF_OCTET_MASK;
+ 1194              		.loc 1 611 0
+ 1195 00bc FB68     		ldr	r3, [r7, #12]
+ 1196 00be 1A0E     		lsrs	r2, r3, #24
+ 1197 00c0 1623     		movs	r3, #22
+ 1198 00c2 FB18     		adds	r3, r7, r3
+ 1199 00c4 1A80     		strh	r2, [r3]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 33
+
+
+ 612:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               CPU_CRITICAL_EXIT();
+ 1200              		.loc 1 612 0
+ 1201 00c6 FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 1202 00ca 3B69     		ldr	r3, [r7, #16]
+ 1203 00cc 1800     		movs	r0, r3
+ 1204 00ce FFF7FEFF 		bl	CPU_SR_Restore
+ 613:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****               break;
+ 1205              		.loc 1 613 0
+ 1206 00d2 55E0     		b	.L80
+ 1207              	.L71:
+ 614:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 615:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 616:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                                                                 /* ---------------- EXTERNAL INTERR
+ 617:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****          default:
+ 618:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              pos_max = CPU_INT_SRC_POS_MAX;
+ 1208              		.loc 1 618 0
+ 1209 00d4 324B     		ldr	r3, .L87+16
+ 1210 00d6 1B68     		ldr	r3, [r3]
+ 1211 00d8 0133     		adds	r3, r3, #1
+ 1212 00da DBB2     		uxtb	r3, r3
+ 1213 00dc 1F22     		movs	r2, #31
+ 1214 00de 1340     		ands	r3, r2
+ 1215 00e0 DBB2     		uxtb	r3, r3
+ 1216 00e2 5B01     		lsls	r3, r3, #5
+ 1217 00e4 DAB2     		uxtb	r2, r3
+ 1218 00e6 0B23     		movs	r3, #11
+ 1219 00e8 FB18     		adds	r3, r7, r3
+ 1220 00ea 1032     		adds	r2, r2, #16
+ 1221 00ec 1A70     		strb	r2, [r3]
+ 619:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              if (pos < pos_max) {                               /* See Note #3.                    
+ 1222              		.loc 1 619 0
+ 1223 00ee FA1D     		adds	r2, r7, #7
+ 1224 00f0 0B23     		movs	r3, #11
+ 1225 00f2 FB18     		adds	r3, r7, r3
+ 1226 00f4 1278     		ldrb	r2, [r2]
+ 1227 00f6 1B78     		ldrb	r3, [r3]
+ 1228 00f8 9A42     		cmp	r2, r3
+ 1229 00fa 3CD2     		bcs	.L81
+ 620:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  group = (pos - 16) / 4;
+ 1230              		.loc 1 620 0
+ 1231 00fc FB1D     		adds	r3, r7, #7
+ 1232 00fe 1B78     		ldrb	r3, [r3]
+ 1233 0100 103B     		subs	r3, r3, #16
+ 1234 0102 002B     		cmp	r3, #0
+ 1235 0104 00DA     		bge	.L82
+ 1236 0106 0333     		adds	r3, r3, #3
+ 1237              	.L82:
+ 1238 0108 9B10     		asrs	r3, r3, #2
+ 1239 010a 1A00     		movs	r2, r3
+ 1240 010c 0A23     		movs	r3, #10
+ 1241 010e FB18     		adds	r3, r7, r3
+ 1242 0110 1A70     		strb	r2, [r3]
+ 621:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  nbr   = (pos - 16) % 4;
+ 1243              		.loc 1 621 0
+ 1244 0112 FB1D     		adds	r3, r7, #7
+ 1245 0114 1B78     		ldrb	r3, [r3]
+ 1246 0116 103B     		subs	r3, r3, #16
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 34
+
+
+ 1247 0118 224A     		ldr	r2, .L87+20
+ 1248 011a 1340     		ands	r3, r2
+ 1249 011c 04D5     		bpl	.L83
+ 1250 011e 013B     		subs	r3, r3, #1
+ 1251 0120 0422     		movs	r2, #4
+ 1252 0122 5242     		rsbs	r2, r2, #0
+ 1253 0124 1343     		orrs	r3, r2
+ 1254 0126 0133     		adds	r3, r3, #1
+ 1255              	.L83:
+ 1256 0128 1A00     		movs	r2, r3
+ 1257 012a 0923     		movs	r3, #9
+ 1258 012c FB18     		adds	r3, r7, r3
+ 1259 012e 1A70     		strb	r2, [r3]
+ 622:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 623:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_CRITICAL_ENTER();
+ 1260              		.loc 1 623 0
+ 1261 0130 FFF7FEFF 		bl	CPU_SR_Save
+ 1262 0134 0300     		movs	r3, r0
+ 1263 0136 3B61     		str	r3, [r7, #16]
+ 1264 0138 FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 624:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  temp  = CPU_REG_NVIC_PRIO(group);
+ 1265              		.loc 1 624 0
+ 1266 013c 0A23     		movs	r3, #10
+ 1267 013e FB18     		adds	r3, r7, r3
+ 1268 0140 1B78     		ldrb	r3, [r3]
+ 1269 0142 194A     		ldr	r2, .L87+24
+ 1270 0144 9446     		mov	ip, r2
+ 1271 0146 6344     		add	r3, r3, ip
+ 1272 0148 9B00     		lsls	r3, r3, #2
+ 1273 014a 1B68     		ldr	r3, [r3]
+ 1274 014c FB60     		str	r3, [r7, #12]
+ 625:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  CPU_CRITICAL_EXIT();
+ 1275              		.loc 1 625 0
+ 1276 014e FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 1277 0152 3B69     		ldr	r3, [r7, #16]
+ 1278 0154 1800     		movs	r0, r3
+ 1279 0156 FFF7FEFF 		bl	CPU_SR_Restore
+ 626:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 627:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  prio  = (temp >> (nbr * DEF_OCTET_NBR_BITS)) & DEF_OCTET_MASK;
+ 1280              		.loc 1 627 0
+ 1281 015a 0923     		movs	r3, #9
+ 1282 015c FB18     		adds	r3, r7, r3
+ 1283 015e 1B78     		ldrb	r3, [r3]
+ 1284 0160 DB00     		lsls	r3, r3, #3
+ 1285 0162 FA68     		ldr	r2, [r7, #12]
+ 1286 0164 DA40     		lsrs	r2, r2, r3
+ 1287 0166 1300     		movs	r3, r2
+ 1288 0168 1AB2     		sxth	r2, r3
+ 1289 016a 1623     		movs	r3, #22
+ 1290 016c FB18     		adds	r3, r7, r3
+ 1291 016e FF21     		movs	r1, #255
+ 1292 0170 0A40     		ands	r2, r1
+ 1293 0172 1A80     		strh	r2, [r3]
+ 628:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              } else {
+ 629:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****                  prio  = DEF_INT_16S_MIN_VAL;
+ 630:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              }
+ 631:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              break;
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 35
+
+
+ 1294              		.loc 1 631 0
+ 1295 0174 03E0     		b	.L86
+ 1296              	.L81:
+ 629:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****              }
+ 1297              		.loc 1 629 0
+ 1298 0176 1623     		movs	r3, #22
+ 1299 0178 FB18     		adds	r3, r7, r3
+ 1300 017a 064A     		ldr	r2, .L87+4
+ 1301 017c 1A80     		strh	r2, [r3]
+ 1302              	.L86:
+ 1303              		.loc 1 631 0
+ 1304 017e C046     		nop
+ 1305              	.L80:
+ 632:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     }
+ 633:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 634:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     return (prio);
+ 1306              		.loc 1 634 0
+ 1307 0180 1623     		movs	r3, #22
+ 1308 0182 FB18     		adds	r3, r7, r3
+ 1309 0184 0022     		movs	r2, #0
+ 1310 0186 9B5E     		ldrsh	r3, [r3, r2]
+ 635:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** }
+ 1311              		.loc 1 635 0
+ 1312 0188 1800     		movs	r0, r3
+ 1313 018a BD46     		mov	sp, r7
+ 1314 018c 06B0     		add	sp, sp, #24
+ 1315              		@ sp needed
+ 1316 018e 80BD     		pop	{r7, pc}
+ 1317              	.L88:
+ 1318              		.align	2
+ 1319              	.L87:
+ 1320 0190 00010000 		.word	.L73
+ 1321 0194 0080FFFF 		.word	-32768
+ 1322 0198 1CED00E0 		.word	-536810212
+ 1323 019c 20ED00E0 		.word	-536810208
+ 1324 01a0 04E000E0 		.word	-536813564
+ 1325 01a4 03000080 		.word	-2147483645
+ 1326 01a8 00390038 		.word	939538688
+ 1327              		.cfi_endproc
+ 1328              	.LFE7:
+ 1329              		.size	CPU_IntSrcPrioGet, .-CPU_IntSrcPrioGet
+ 1330              		.section	.text.CPU_RevBits,"ax",%progbits
+ 1331              		.align	2
+ 1332              		.global	CPU_RevBits
+ 1333              		.code	16
+ 1334              		.thumb_func
+ 1335              		.type	CPU_RevBits, %function
+ 1336              	CPU_RevBits:
+ 1337              	.LFB8:
+ 636:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 637:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 638:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** /*
+ 639:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 640:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                         CPU_RevBits()
+ 641:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *Description : Reverses the bits in a data value.
+ 642:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 643:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Prototypes  : CPU_DATA  CPU_RevBits(CPU_DATA  val);
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 36
+
+
+ 644:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 645:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Argument(s) : val         Data value to reverse bits.
+ 646:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 647:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Return(s)   : Value with all bits in 'val' reversed (see Note #1).
+ 648:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 649:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Caller(s)   : Application.
+ 650:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 651:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *               This function is an INTERNAL CPU module function but MAY be called by application f
+ 652:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 653:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** * Note(s)     : (1) val is a 32-bit number
+ 654:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                (2) Goes through a number and checks for sets bits which are then 
+ 655:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                        in the reverse locations:
+ 656:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 657:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                        reverse_val                 =>     0b00000....00
+ 658:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                        val                         =>     0101100....10
+ 659:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                        val's 2nd bit is set        =>     reverse_val's bit (num_
+ 660:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                        val's 5th bit is set        =>     reverse_val's bit (num_
+ 661:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                        ...                                ...
+ 662:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *                                        ...                                ...
+ 663:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** *
+ 664:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** ***************************************************************************************************
+ 665:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** */
+ 666:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 667:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** CPU_DATA CPU_RevBits(CPU_DATA val)
+ 668:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** {
+ 1338              		.loc 1 668 0
+ 1339              		.cfi_startproc
+ 1340              		@ args = 0, pretend = 0, frame = 24
+ 1341              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1342 0000 80B5     		push	{r7, lr}
+ 1343              		.cfi_def_cfa_offset 8
+ 1344              		.cfi_offset 7, -8
+ 1345              		.cfi_offset 14, -4
+ 1346 0002 86B0     		sub	sp, sp, #24
+ 1347              		.cfi_def_cfa_offset 32
+ 1348 0004 00AF     		add	r7, sp, #0
+ 1349              		.cfi_def_cfa_register 7
+ 1350 0006 7860     		str	r0, [r7, #4]
+ 669:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_DATA    reverse_val;
+ 670:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT08U  nbr_bits;                                       /* establish how many bits are in v
+ 671:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT32U  cnt;                                            /* for stepping through each bit in
+ 672:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     CPU_INT32U  tmp;                                            /* gets shifted off bit to check if
+ 673:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 674:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 675:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         nbr_bits    = sizeof(CPU_DATA) * 8;
+ 1351              		.loc 1 675 0
+ 1352 0008 0F23     		movs	r3, #15
+ 1353 000a FB18     		adds	r3, r7, r3
+ 1354 000c 2022     		movs	r2, #32
+ 1355 000e 1A70     		strb	r2, [r3]
+ 676:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         reverse_val = 0;                                        /* make sure reverse_val is cleared
+ 1356              		.loc 1 676 0
+ 1357 0010 0023     		movs	r3, #0
+ 1358 0012 7B61     		str	r3, [r7, #20]
+ 677:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 678:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     for (cnt = 0; cnt < nbr_bits; cnt++)
+ 1359              		.loc 1 678 0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 37
+
+
+ 1360 0014 0023     		movs	r3, #0
+ 1361 0016 3B61     		str	r3, [r7, #16]
+ 1362 0018 1AE0     		b	.L90
+ 1363              	.L92:
+ 679:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     {
+ 680:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         tmp = (val & (1 << cnt));                               /* shift the next bit into tmp     
+ 1364              		.loc 1 680 0
+ 1365 001a 0122     		movs	r2, #1
+ 1366 001c 3B69     		ldr	r3, [r7, #16]
+ 1367 001e 9A40     		lsls	r2, r2, r3
+ 1368 0020 1300     		movs	r3, r2
+ 1369 0022 1A00     		movs	r2, r3
+ 1370 0024 7B68     		ldr	r3, [r7, #4]
+ 1371 0026 1340     		ands	r3, r2
+ 1372 0028 BB60     		str	r3, [r7, #8]
+ 681:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 682:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         if(tmp) {
+ 1373              		.loc 1 682 0
+ 1374 002a BB68     		ldr	r3, [r7, #8]
+ 1375 002c 002B     		cmp	r3, #0
+ 1376 002e 0CD0     		beq	.L91
+ 683:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****             reverse_val |= (1 << ((nbr_bits - 1) - cnt));       /* shift in a 1 bit to reverse equi
+ 1377              		.loc 1 683 0
+ 1378 0030 0F23     		movs	r3, #15
+ 1379 0032 FB18     		adds	r3, r7, r3
+ 1380 0034 1A78     		ldrb	r2, [r3]
+ 1381 0036 3B69     		ldr	r3, [r7, #16]
+ 1382 0038 D31A     		subs	r3, r2, r3
+ 1383 003a 013B     		subs	r3, r3, #1
+ 1384 003c 0122     		movs	r2, #1
+ 1385 003e 9A40     		lsls	r2, r2, r3
+ 1386 0040 1300     		movs	r3, r2
+ 1387 0042 1A00     		movs	r2, r3
+ 1388 0044 7B69     		ldr	r3, [r7, #20]
+ 1389 0046 1343     		orrs	r3, r2
+ 1390 0048 7B61     		str	r3, [r7, #20]
+ 1391              	.L91:
+ 678:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     {
+ 1392              		.loc 1 678 0 discriminator 2
+ 1393 004a 3B69     		ldr	r3, [r7, #16]
+ 1394 004c 0133     		adds	r3, r3, #1
+ 1395 004e 3B61     		str	r3, [r7, #16]
+ 1396              	.L90:
+ 678:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     {
+ 1397              		.loc 1 678 0 is_stmt 0 discriminator 1
+ 1398 0050 0F23     		movs	r3, #15
+ 1399 0052 FB18     		adds	r3, r7, r3
+ 1400 0054 1A78     		ldrb	r2, [r3]
+ 1401 0056 3B69     		ldr	r3, [r7, #16]
+ 1402 0058 9A42     		cmp	r2, r3
+ 1403 005a DED8     		bhi	.L92
+ 684:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****         }
+ 685:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     }
+ 686:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** 
+ 687:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c ****     return (reverse_val);
+ 1404              		.loc 1 687 0 is_stmt 1
+ 1405 005c 7B69     		ldr	r3, [r7, #20]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 38
+
+
+ 688:..\..\..\..\..\..\Software\uC-CPU\ARM-Cortex-M0\GNU/cpu_c.c **** }
+ 1406              		.loc 1 688 0
+ 1407 005e 1800     		movs	r0, r3
+ 1408 0060 BD46     		mov	sp, r7
+ 1409 0062 06B0     		add	sp, sp, #24
+ 1410              		@ sp needed
+ 1411 0064 80BD     		pop	{r7, pc}
+ 1412              		.cfi_endproc
+ 1413              	.LFE8:
+ 1414              		.size	CPU_RevBits, .-CPU_RevBits
+ 1415 0066 C046     		.text
+ 1416              	.Letext0:
+ 1417              		.file 2 "..\\..\\..\\..\\..\\..\\Software\\uC-CPU\\ARM-Cortex-M0\\GNU/cpu.h"
+ 1418              		.section	.debug_info,"",%progbits
+ 1419              	.Ldebug_info0:
+ 1420 0000 00040000 		.4byte	0x400
+ 1421 0004 0400     		.2byte	0x4
+ 1422 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1423 000a 04       		.byte	0x4
+ 1424 000b 01       		.uleb128 0x1
+ 1425 000c 27010000 		.4byte	.LASF39
+ 1426 0010 0C       		.byte	0xc
+ 1427 0011 F4010000 		.4byte	.LASF40
+ 1428 0015 7F000000 		.4byte	.LASF41
+ 1429 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 1430 001d 00000000 		.4byte	0
+ 1431 0021 00000000 		.4byte	.Ldebug_line0
+ 1432 0025 02       		.uleb128 0x2
+ 1433 0026 01       		.byte	0x1
+ 1434 0027 08       		.byte	0x8
+ 1435 0028 C2020000 		.4byte	.LASF0
+ 1436 002c 02       		.uleb128 0x2
+ 1437 002d 01       		.byte	0x1
+ 1438 002e 08       		.byte	0x8
+ 1439 002f B5010000 		.4byte	.LASF1
+ 1440 0033 03       		.uleb128 0x3
+ 1441 0034 1C010000 		.4byte	.LASF4
+ 1442 0038 02       		.byte	0x2
+ 1443 0039 7E       		.byte	0x7e
+ 1444 003a 2C000000 		.4byte	0x2c
+ 1445 003e 02       		.uleb128 0x2
+ 1446 003f 01       		.byte	0x1
+ 1447 0040 06       		.byte	0x6
+ 1448 0041 DD020000 		.4byte	.LASF2
+ 1449 0045 02       		.uleb128 0x2
+ 1450 0046 02       		.byte	0x2
+ 1451 0047 07       		.byte	0x7
+ 1452 0048 35000000 		.4byte	.LASF3
+ 1453 004c 03       		.uleb128 0x3
+ 1454 004d 47020000 		.4byte	.LASF5
+ 1455 0051 02       		.byte	0x2
+ 1456 0052 81       		.byte	0x81
+ 1457 0053 57000000 		.4byte	0x57
+ 1458 0057 02       		.uleb128 0x2
+ 1459 0058 02       		.byte	0x2
+ 1460 0059 05       		.byte	0x5
+ 1461 005a A3020000 		.4byte	.LASF6
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 39
+
+
+ 1462 005e 03       		.uleb128 0x3
+ 1463 005f 74000000 		.4byte	.LASF7
+ 1464 0063 02       		.byte	0x2
+ 1465 0064 82       		.byte	0x82
+ 1466 0065 69000000 		.4byte	0x69
+ 1467 0069 02       		.uleb128 0x2
+ 1468 006a 04       		.byte	0x4
+ 1469 006b 07       		.byte	0x7
+ 1470 006c E7010000 		.4byte	.LASF8
+ 1471 0070 04       		.uleb128 0x4
+ 1472 0071 04       		.byte	0x4
+ 1473 0072 05       		.byte	0x5
+ 1474 0073 696E7400 		.ascii	"int\000"
+ 1475 0077 02       		.uleb128 0x2
+ 1476 0078 08       		.byte	0x8
+ 1477 0079 07       		.byte	0x7
+ 1478 007a 30020000 		.4byte	.LASF9
+ 1479 007e 02       		.uleb128 0x2
+ 1480 007f 08       		.byte	0x8
+ 1481 0080 05       		.byte	0x5
+ 1482 0081 7E020000 		.4byte	.LASF10
+ 1483 0085 02       		.uleb128 0x2
+ 1484 0086 04       		.byte	0x4
+ 1485 0087 04       		.byte	0x4
+ 1486 0088 ED000000 		.4byte	.LASF11
+ 1487 008c 02       		.uleb128 0x2
+ 1488 008d 08       		.byte	0x8
+ 1489 008e 04       		.byte	0x4
+ 1490 008f D1010000 		.4byte	.LASF12
+ 1491 0093 03       		.uleb128 0x3
+ 1492 0094 99020000 		.4byte	.LASF13
+ 1493 0098 02       		.byte	0x2
+ 1494 0099 8D       		.byte	0x8d
+ 1495 009a 9E000000 		.4byte	0x9e
+ 1496 009e 05       		.uleb128 0x5
+ 1497 009f 5E000000 		.4byte	0x5e
+ 1498 00a3 03       		.uleb128 0x3
+ 1499 00a4 C7020000 		.4byte	.LASF14
+ 1500 00a8 02       		.byte	0x2
+ 1501 00a9 BA       		.byte	0xba
+ 1502 00aa 5E000000 		.4byte	0x5e
+ 1503 00ae 03       		.uleb128 0x3
+ 1504 00af 52020000 		.4byte	.LASF15
+ 1505 00b3 02       		.byte	0x2
+ 1506 00b4 C3       		.byte	0xc3
+ 1507 00b5 5E000000 		.4byte	0x5e
+ 1508 00b9 06       		.uleb128 0x6
+ 1509 00ba F3000000 		.4byte	.LASF16
+ 1510 00be 02       		.byte	0x2
+ 1511 00bf 3301     		.2byte	0x133
+ 1512 00c1 5E000000 		.4byte	0x5e
+ 1513 00c5 02       		.uleb128 0x2
+ 1514 00c6 04       		.byte	0x4
+ 1515 00c7 05       		.byte	0x5
+ 1516 00c8 B9020000 		.4byte	.LASF17
+ 1517 00cc 02       		.uleb128 0x2
+ 1518 00cd 04       		.byte	0x4
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 40
+
+
+ 1519 00ce 07       		.byte	0x7
+ 1520 00cf 00010000 		.4byte	.LASF18
+ 1521 00d3 02       		.uleb128 0x2
+ 1522 00d4 08       		.byte	0x8
+ 1523 00d5 04       		.byte	0x4
+ 1524 00d6 5B020000 		.4byte	.LASF19
+ 1525 00da 02       		.uleb128 0x2
+ 1526 00db 04       		.byte	0x4
+ 1527 00dc 07       		.byte	0x7
+ 1528 00dd 67020000 		.4byte	.LASF20
+ 1529 00e1 07       		.uleb128 0x7
+ 1530 00e2 1E000000 		.4byte	.LASF25
+ 1531 00e6 01       		.byte	0x1
+ 1532 00e7 87       		.byte	0x87
+ 1533 00e8 00000000 		.4byte	.LFB1
+ 1534 00ec 88000000 		.4byte	.LFE1-.LFB1
+ 1535 00f0 01       		.uleb128 0x1
+ 1536 00f1 9C       		.byte	0x9c
+ 1537 00f2 2F010000 		.4byte	0x12f
+ 1538 00f6 08       		.uleb128 0x8
+ 1539 00f7 17010000 		.4byte	.LASF21
+ 1540 00fb 01       		.byte	0x1
+ 1541 00fc 87       		.byte	0x87
+ 1542 00fd A3000000 		.4byte	0xa3
+ 1543 0101 02       		.uleb128 0x2
+ 1544 0102 91       		.byte	0x91
+ 1545 0103 6C       		.sleb128 -20
+ 1546 0104 08       		.uleb128 0x8
+ 1547 0105 5A000000 		.4byte	.LASF22
+ 1548 0109 01       		.byte	0x1
+ 1549 010a 88       		.byte	0x88
+ 1550 010b 33000000 		.4byte	0x33
+ 1551 010f 02       		.uleb128 0x2
+ 1552 0110 91       		.byte	0x91
+ 1553 0111 6B       		.sleb128 -21
+ 1554 0112 09       		.uleb128 0x9
+ 1555 0113 D0020000 		.4byte	.LASF23
+ 1556 0117 01       		.byte	0x1
+ 1557 0118 8A       		.byte	0x8a
+ 1558 0119 A3000000 		.4byte	0xa3
+ 1559 011d 02       		.uleb128 0x2
+ 1560 011e 91       		.byte	0x91
+ 1561 011f 74       		.sleb128 -12
+ 1562 0120 09       		.uleb128 0x9
+ 1563 0121 C3010000 		.4byte	.LASF24
+ 1564 0125 01       		.byte	0x1
+ 1565 0126 8B       		.byte	0x8b
+ 1566 0127 A3000000 		.4byte	0xa3
+ 1567 012b 02       		.uleb128 0x2
+ 1568 012c 91       		.byte	0x91
+ 1569 012d 70       		.sleb128 -16
+ 1570 012e 00       		.byte	0
+ 1571 012f 07       		.uleb128 0x7
+ 1572 0130 D8010000 		.4byte	.LASF26
+ 1573 0134 01       		.byte	0x1
+ 1574 0135 B1       		.byte	0xb1
+ 1575 0136 00000000 		.4byte	.LFB2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 41
+
+
+ 1576 013a 88000000 		.4byte	.LFE2-.LFB2
+ 1577 013e 01       		.uleb128 0x1
+ 1578 013f 9C       		.byte	0x9c
+ 1579 0140 7D010000 		.4byte	0x17d
+ 1580 0144 08       		.uleb128 0x8
+ 1581 0145 17010000 		.4byte	.LASF21
+ 1582 0149 01       		.byte	0x1
+ 1583 014a B1       		.byte	0xb1
+ 1584 014b A3000000 		.4byte	0xa3
+ 1585 014f 02       		.uleb128 0x2
+ 1586 0150 91       		.byte	0x91
+ 1587 0151 6C       		.sleb128 -20
+ 1588 0152 08       		.uleb128 0x8
+ 1589 0153 5A000000 		.4byte	.LASF22
+ 1590 0157 01       		.byte	0x1
+ 1591 0158 B2       		.byte	0xb2
+ 1592 0159 33000000 		.4byte	0x33
+ 1593 015d 02       		.uleb128 0x2
+ 1594 015e 91       		.byte	0x91
+ 1595 015f 6B       		.sleb128 -21
+ 1596 0160 09       		.uleb128 0x9
+ 1597 0161 D0020000 		.4byte	.LASF23
+ 1598 0165 01       		.byte	0x1
+ 1599 0166 B4       		.byte	0xb4
+ 1600 0167 A3000000 		.4byte	0xa3
+ 1601 016b 02       		.uleb128 0x2
+ 1602 016c 91       		.byte	0x91
+ 1603 016d 74       		.sleb128 -12
+ 1604 016e 09       		.uleb128 0x9
+ 1605 016f C3010000 		.4byte	.LASF24
+ 1606 0173 01       		.byte	0x1
+ 1607 0174 B5       		.byte	0xb5
+ 1608 0175 A3000000 		.4byte	0xa3
+ 1609 0179 02       		.uleb128 0x2
+ 1610 017a 91       		.byte	0x91
+ 1611 017b 70       		.sleb128 -16
+ 1612 017c 00       		.byte	0
+ 1613 017d 0A       		.uleb128 0xa
+ 1614 017e 70020000 		.4byte	.LASF27
+ 1615 0182 01       		.byte	0x1
+ 1616 0183 FA       		.byte	0xfa
+ 1617 0184 00000000 		.4byte	.LFB3
+ 1618 0188 FC000000 		.4byte	.LFE3-.LFB3
+ 1619 018c 01       		.uleb128 0x1
+ 1620 018d 9C       		.byte	0x9c
+ 1621 018e D9010000 		.4byte	0x1d9
+ 1622 0192 0B       		.uleb128 0xb
+ 1623 0193 706F7300 		.ascii	"pos\000"
+ 1624 0197 01       		.byte	0x1
+ 1625 0198 FA       		.byte	0xfa
+ 1626 0199 33000000 		.4byte	0x33
+ 1627 019d 02       		.uleb128 0x2
+ 1628 019e 91       		.byte	0x91
+ 1629 019f 6F       		.sleb128 -17
+ 1630 01a0 09       		.uleb128 0x9
+ 1631 01a1 FA000000 		.4byte	.LASF28
+ 1632 01a5 01       		.byte	0x1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 42
+
+
+ 1633 01a6 FC       		.byte	0xfc
+ 1634 01a7 33000000 		.4byte	0x33
+ 1635 01ab 02       		.uleb128 0x2
+ 1636 01ac 91       		.byte	0x91
+ 1637 01ad 72       		.sleb128 -14
+ 1638 01ae 09       		.uleb128 0x9
+ 1639 01af 2D000000 		.4byte	.LASF29
+ 1640 01b3 01       		.byte	0x1
+ 1641 01b4 FD       		.byte	0xfd
+ 1642 01b5 33000000 		.4byte	0x33
+ 1643 01b9 02       		.uleb128 0x2
+ 1644 01ba 91       		.byte	0x91
+ 1645 01bb 73       		.sleb128 -13
+ 1646 01bc 0C       		.uleb128 0xc
+ 1647 01bd 6E627200 		.ascii	"nbr\000"
+ 1648 01c1 01       		.byte	0x1
+ 1649 01c2 FE       		.byte	0xfe
+ 1650 01c3 33000000 		.4byte	0x33
+ 1651 01c7 02       		.uleb128 0x2
+ 1652 01c8 91       		.byte	0x91
+ 1653 01c9 71       		.sleb128 -15
+ 1654 01ca 09       		.uleb128 0x9
+ 1655 01cb 17000000 		.4byte	.LASF30
+ 1656 01cf 01       		.byte	0x1
+ 1657 01d0 FF       		.byte	0xff
+ 1658 01d1 B9000000 		.4byte	0xb9
+ 1659 01d5 02       		.uleb128 0x2
+ 1660 01d6 91       		.byte	0x91
+ 1661 01d7 74       		.sleb128 -12
+ 1662 01d8 00       		.byte	0
+ 1663 01d9 0D       		.uleb128 0xd
+ 1664 01da 8C020000 		.4byte	.LASF31
+ 1665 01de 01       		.byte	0x1
+ 1666 01df 3F01     		.2byte	0x13f
+ 1667 01e1 00000000 		.4byte	.LFB4
+ 1668 01e5 FC000000 		.4byte	.LFE4-.LFB4
+ 1669 01e9 01       		.uleb128 0x1
+ 1670 01ea 9C       		.byte	0x9c
+ 1671 01eb 3B020000 		.4byte	0x23b
+ 1672 01ef 0E       		.uleb128 0xe
+ 1673 01f0 706F7300 		.ascii	"pos\000"
+ 1674 01f4 01       		.byte	0x1
+ 1675 01f5 3F01     		.2byte	0x13f
+ 1676 01f7 33000000 		.4byte	0x33
+ 1677 01fb 02       		.uleb128 0x2
+ 1678 01fc 91       		.byte	0x91
+ 1679 01fd 6F       		.sleb128 -17
+ 1680 01fe 0F       		.uleb128 0xf
+ 1681 01ff FA000000 		.4byte	.LASF28
+ 1682 0203 01       		.byte	0x1
+ 1683 0204 4101     		.2byte	0x141
+ 1684 0206 33000000 		.4byte	0x33
+ 1685 020a 02       		.uleb128 0x2
+ 1686 020b 91       		.byte	0x91
+ 1687 020c 72       		.sleb128 -14
+ 1688 020d 10       		.uleb128 0x10
+ 1689 020e 6E627200 		.ascii	"nbr\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 43
+
+
+ 1690 0212 01       		.byte	0x1
+ 1691 0213 4201     		.2byte	0x142
+ 1692 0215 33000000 		.4byte	0x33
+ 1693 0219 02       		.uleb128 0x2
+ 1694 021a 91       		.byte	0x91
+ 1695 021b 71       		.sleb128 -15
+ 1696 021c 0F       		.uleb128 0xf
+ 1697 021d 2D000000 		.4byte	.LASF29
+ 1698 0221 01       		.byte	0x1
+ 1699 0222 4301     		.2byte	0x143
+ 1700 0224 33000000 		.4byte	0x33
+ 1701 0228 02       		.uleb128 0x2
+ 1702 0229 91       		.byte	0x91
+ 1703 022a 73       		.sleb128 -13
+ 1704 022b 0F       		.uleb128 0xf
+ 1705 022c 17000000 		.4byte	.LASF30
+ 1706 0230 01       		.byte	0x1
+ 1707 0231 4401     		.2byte	0x144
+ 1708 0233 B9000000 		.4byte	0xb9
+ 1709 0237 02       		.uleb128 0x2
+ 1710 0238 91       		.byte	0x91
+ 1711 0239 74       		.sleb128 -12
+ 1712 023a 00       		.byte	0
+ 1713 023b 0D       		.uleb128 0xd
+ 1714 023c 62000000 		.4byte	.LASF32
+ 1715 0240 01       		.byte	0x1
+ 1716 0241 8F01     		.2byte	0x18f
+ 1717 0243 00000000 		.4byte	.LFB5
+ 1718 0247 D4000000 		.4byte	.LFE5-.LFB5
+ 1719 024b 01       		.uleb128 0x1
+ 1720 024c 9C       		.byte	0x9c
+ 1721 024d 9D020000 		.4byte	0x29d
+ 1722 0251 0E       		.uleb128 0xe
+ 1723 0252 706F7300 		.ascii	"pos\000"
+ 1724 0256 01       		.byte	0x1
+ 1725 0257 8F01     		.2byte	0x18f
+ 1726 0259 33000000 		.4byte	0x33
+ 1727 025d 02       		.uleb128 0x2
+ 1728 025e 91       		.byte	0x91
+ 1729 025f 6F       		.sleb128 -17
+ 1730 0260 0F       		.uleb128 0xf
+ 1731 0261 FA000000 		.4byte	.LASF28
+ 1732 0265 01       		.byte	0x1
+ 1733 0266 9201     		.2byte	0x192
+ 1734 0268 33000000 		.4byte	0x33
+ 1735 026c 02       		.uleb128 0x2
+ 1736 026d 91       		.byte	0x91
+ 1737 026e 72       		.sleb128 -14
+ 1738 026f 10       		.uleb128 0x10
+ 1739 0270 6E627200 		.ascii	"nbr\000"
+ 1740 0274 01       		.byte	0x1
+ 1741 0275 9301     		.2byte	0x193
+ 1742 0277 33000000 		.4byte	0x33
+ 1743 027b 02       		.uleb128 0x2
+ 1744 027c 91       		.byte	0x91
+ 1745 027d 71       		.sleb128 -15
+ 1746 027e 0F       		.uleb128 0xf
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 44
+
+
+ 1747 027f 2D000000 		.4byte	.LASF29
+ 1748 0283 01       		.byte	0x1
+ 1749 0284 9401     		.2byte	0x194
+ 1750 0286 33000000 		.4byte	0x33
+ 1751 028a 02       		.uleb128 0x2
+ 1752 028b 91       		.byte	0x91
+ 1753 028c 73       		.sleb128 -13
+ 1754 028d 0F       		.uleb128 0xf
+ 1755 028e 17000000 		.4byte	.LASF30
+ 1756 0292 01       		.byte	0x1
+ 1757 0293 9501     		.2byte	0x195
+ 1758 0295 B9000000 		.4byte	0xb9
+ 1759 0299 02       		.uleb128 0x2
+ 1760 029a 91       		.byte	0x91
+ 1761 029b 74       		.sleb128 -12
+ 1762 029c 00       		.byte	0
+ 1763 029d 0D       		.uleb128 0xd
+ 1764 029e 48000000 		.4byte	.LASF33
+ 1765 02a2 01       		.byte	0x1
+ 1766 02a3 D201     		.2byte	0x1d2
+ 1767 02a5 00000000 		.4byte	.LFB6
+ 1768 02a9 D0010000 		.4byte	.LFE6-.LFB6
+ 1769 02ad 01       		.uleb128 0x1
+ 1770 02ae 9C       		.byte	0x9c
+ 1771 02af 1D030000 		.4byte	0x31d
+ 1772 02b3 0E       		.uleb128 0xe
+ 1773 02b4 706F7300 		.ascii	"pos\000"
+ 1774 02b8 01       		.byte	0x1
+ 1775 02b9 D201     		.2byte	0x1d2
+ 1776 02bb 33000000 		.4byte	0x33
+ 1777 02bf 02       		.uleb128 0x2
+ 1778 02c0 91       		.byte	0x91
+ 1779 02c1 67       		.sleb128 -25
+ 1780 02c2 11       		.uleb128 0x11
+ 1781 02c3 00000000 		.4byte	.LASF34
+ 1782 02c7 01       		.byte	0x1
+ 1783 02c8 D301     		.2byte	0x1d3
+ 1784 02ca 33000000 		.4byte	0x33
+ 1785 02ce 02       		.uleb128 0x2
+ 1786 02cf 91       		.byte	0x91
+ 1787 02d0 66       		.sleb128 -26
+ 1788 02d1 0F       		.uleb128 0xf
+ 1789 02d2 FA000000 		.4byte	.LASF28
+ 1790 02d6 01       		.byte	0x1
+ 1791 02d7 D501     		.2byte	0x1d5
+ 1792 02d9 33000000 		.4byte	0x33
+ 1793 02dd 02       		.uleb128 0x2
+ 1794 02de 91       		.byte	0x91
+ 1795 02df 6E       		.sleb128 -18
+ 1796 02e0 10       		.uleb128 0x10
+ 1797 02e1 6E627200 		.ascii	"nbr\000"
+ 1798 02e5 01       		.byte	0x1
+ 1799 02e6 D601     		.2byte	0x1d6
+ 1800 02e8 33000000 		.4byte	0x33
+ 1801 02ec 02       		.uleb128 0x2
+ 1802 02ed 91       		.byte	0x91
+ 1803 02ee 6D       		.sleb128 -19
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 45
+
+
+ 1804 02ef 0F       		.uleb128 0xf
+ 1805 02f0 2D000000 		.4byte	.LASF29
+ 1806 02f4 01       		.byte	0x1
+ 1807 02f5 D701     		.2byte	0x1d7
+ 1808 02f7 33000000 		.4byte	0x33
+ 1809 02fb 02       		.uleb128 0x2
+ 1810 02fc 91       		.byte	0x91
+ 1811 02fd 6F       		.sleb128 -17
+ 1812 02fe 0F       		.uleb128 0xf
+ 1813 02ff 12010000 		.4byte	.LASF35
+ 1814 0303 01       		.byte	0x1
+ 1815 0304 D801     		.2byte	0x1d8
+ 1816 0306 5E000000 		.4byte	0x5e
+ 1817 030a 02       		.uleb128 0x2
+ 1818 030b 91       		.byte	0x91
+ 1819 030c 70       		.sleb128 -16
+ 1820 030d 0F       		.uleb128 0xf
+ 1821 030e 17000000 		.4byte	.LASF30
+ 1822 0312 01       		.byte	0x1
+ 1823 0313 D901     		.2byte	0x1d9
+ 1824 0315 B9000000 		.4byte	0xb9
+ 1825 0319 02       		.uleb128 0x2
+ 1826 031a 91       		.byte	0x91
+ 1827 031b 74       		.sleb128 -12
+ 1828 031c 00       		.byte	0
+ 1829 031d 12       		.uleb128 0x12
+ 1830 031e 05000000 		.4byte	.LASF42
+ 1831 0322 01       		.byte	0x1
+ 1832 0323 3002     		.2byte	0x230
+ 1833 0325 4C000000 		.4byte	0x4c
+ 1834 0329 00000000 		.4byte	.LFB7
+ 1835 032d AC010000 		.4byte	.LFE7-.LFB7
+ 1836 0331 01       		.uleb128 0x1
+ 1837 0332 9C       		.byte	0x9c
+ 1838 0333 A1030000 		.4byte	0x3a1
+ 1839 0337 0E       		.uleb128 0xe
+ 1840 0338 706F7300 		.ascii	"pos\000"
+ 1841 033c 01       		.byte	0x1
+ 1842 033d 3002     		.2byte	0x230
+ 1843 033f 33000000 		.4byte	0x33
+ 1844 0343 02       		.uleb128 0x2
+ 1845 0344 91       		.byte	0x91
+ 1846 0345 67       		.sleb128 -25
+ 1847 0346 0F       		.uleb128 0xf
+ 1848 0347 FA000000 		.4byte	.LASF28
+ 1849 034b 01       		.byte	0x1
+ 1850 034c 3202     		.2byte	0x232
+ 1851 034e 33000000 		.4byte	0x33
+ 1852 0352 02       		.uleb128 0x2
+ 1853 0353 91       		.byte	0x91
+ 1854 0354 6A       		.sleb128 -22
+ 1855 0355 10       		.uleb128 0x10
+ 1856 0356 6E627200 		.ascii	"nbr\000"
+ 1857 035a 01       		.byte	0x1
+ 1858 035b 3302     		.2byte	0x233
+ 1859 035d 33000000 		.4byte	0x33
+ 1860 0361 02       		.uleb128 0x2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 46
+
+
+ 1861 0362 91       		.byte	0x91
+ 1862 0363 69       		.sleb128 -23
+ 1863 0364 0F       		.uleb128 0xf
+ 1864 0365 2D000000 		.4byte	.LASF29
+ 1865 0369 01       		.byte	0x1
+ 1866 036a 3402     		.2byte	0x234
+ 1867 036c 33000000 		.4byte	0x33
+ 1868 0370 02       		.uleb128 0x2
+ 1869 0371 91       		.byte	0x91
+ 1870 0372 6B       		.sleb128 -21
+ 1871 0373 0F       		.uleb128 0xf
+ 1872 0374 00000000 		.4byte	.LASF34
+ 1873 0378 01       		.byte	0x1
+ 1874 0379 3502     		.2byte	0x235
+ 1875 037b 4C000000 		.4byte	0x4c
+ 1876 037f 02       		.uleb128 0x2
+ 1877 0380 91       		.byte	0x91
+ 1878 0381 76       		.sleb128 -10
+ 1879 0382 0F       		.uleb128 0xf
+ 1880 0383 12010000 		.4byte	.LASF35
+ 1881 0387 01       		.byte	0x1
+ 1882 0388 3602     		.2byte	0x236
+ 1883 038a 5E000000 		.4byte	0x5e
+ 1884 038e 02       		.uleb128 0x2
+ 1885 038f 91       		.byte	0x91
+ 1886 0390 6C       		.sleb128 -20
+ 1887 0391 0F       		.uleb128 0xf
+ 1888 0392 17000000 		.4byte	.LASF30
+ 1889 0396 01       		.byte	0x1
+ 1890 0397 3702     		.2byte	0x237
+ 1891 0399 B9000000 		.4byte	0xb9
+ 1892 039d 02       		.uleb128 0x2
+ 1893 039e 91       		.byte	0x91
+ 1894 039f 70       		.sleb128 -16
+ 1895 03a0 00       		.byte	0
+ 1896 03a1 13       		.uleb128 0x13
+ 1897 03a2 F2020000 		.4byte	.LASF36
+ 1898 03a6 01       		.byte	0x1
+ 1899 03a7 9B02     		.2byte	0x29b
+ 1900 03a9 AE000000 		.4byte	0xae
+ 1901 03ad 00000000 		.4byte	.LFB8
+ 1902 03b1 66000000 		.4byte	.LFE8-.LFB8
+ 1903 03b5 01       		.uleb128 0x1
+ 1904 03b6 9C       		.byte	0x9c
+ 1905 03b7 0E       		.uleb128 0xe
+ 1906 03b8 76616C00 		.ascii	"val\000"
+ 1907 03bc 01       		.byte	0x1
+ 1908 03bd 9B02     		.2byte	0x29b
+ 1909 03bf AE000000 		.4byte	0xae
+ 1910 03c3 02       		.uleb128 0x2
+ 1911 03c4 91       		.byte	0x91
+ 1912 03c5 64       		.sleb128 -28
+ 1913 03c6 0F       		.uleb128 0xf
+ 1914 03c7 AD020000 		.4byte	.LASF37
+ 1915 03cb 01       		.byte	0x1
+ 1916 03cc 9D02     		.2byte	0x29d
+ 1917 03ce AE000000 		.4byte	0xae
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 47
+
+
+ 1918 03d2 02       		.uleb128 0x2
+ 1919 03d3 91       		.byte	0x91
+ 1920 03d4 74       		.sleb128 -12
+ 1921 03d5 0F       		.uleb128 0xf
+ 1922 03d6 E9020000 		.4byte	.LASF38
+ 1923 03da 01       		.byte	0x1
+ 1924 03db 9E02     		.2byte	0x29e
+ 1925 03dd 33000000 		.4byte	0x33
+ 1926 03e1 02       		.uleb128 0x2
+ 1927 03e2 91       		.byte	0x91
+ 1928 03e3 6F       		.sleb128 -17
+ 1929 03e4 10       		.uleb128 0x10
+ 1930 03e5 636E7400 		.ascii	"cnt\000"
+ 1931 03e9 01       		.byte	0x1
+ 1932 03ea 9F02     		.2byte	0x29f
+ 1933 03ec 5E000000 		.4byte	0x5e
+ 1934 03f0 02       		.uleb128 0x2
+ 1935 03f1 91       		.byte	0x91
+ 1936 03f2 70       		.sleb128 -16
+ 1937 03f3 10       		.uleb128 0x10
+ 1938 03f4 746D7000 		.ascii	"tmp\000"
+ 1939 03f8 01       		.byte	0x1
+ 1940 03f9 A002     		.2byte	0x2a0
+ 1941 03fb 5E000000 		.4byte	0x5e
+ 1942 03ff 02       		.uleb128 0x2
+ 1943 0400 91       		.byte	0x91
+ 1944 0401 68       		.sleb128 -24
+ 1945 0402 00       		.byte	0
+ 1946 0403 00       		.byte	0
+ 1947              		.section	.debug_abbrev,"",%progbits
+ 1948              	.Ldebug_abbrev0:
+ 1949 0000 01       		.uleb128 0x1
+ 1950 0001 11       		.uleb128 0x11
+ 1951 0002 01       		.byte	0x1
+ 1952 0003 25       		.uleb128 0x25
+ 1953 0004 0E       		.uleb128 0xe
+ 1954 0005 13       		.uleb128 0x13
+ 1955 0006 0B       		.uleb128 0xb
+ 1956 0007 03       		.uleb128 0x3
+ 1957 0008 0E       		.uleb128 0xe
+ 1958 0009 1B       		.uleb128 0x1b
+ 1959 000a 0E       		.uleb128 0xe
+ 1960 000b 55       		.uleb128 0x55
+ 1961 000c 17       		.uleb128 0x17
+ 1962 000d 11       		.uleb128 0x11
+ 1963 000e 01       		.uleb128 0x1
+ 1964 000f 10       		.uleb128 0x10
+ 1965 0010 17       		.uleb128 0x17
+ 1966 0011 00       		.byte	0
+ 1967 0012 00       		.byte	0
+ 1968 0013 02       		.uleb128 0x2
+ 1969 0014 24       		.uleb128 0x24
+ 1970 0015 00       		.byte	0
+ 1971 0016 0B       		.uleb128 0xb
+ 1972 0017 0B       		.uleb128 0xb
+ 1973 0018 3E       		.uleb128 0x3e
+ 1974 0019 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 48
+
+
+ 1975 001a 03       		.uleb128 0x3
+ 1976 001b 0E       		.uleb128 0xe
+ 1977 001c 00       		.byte	0
+ 1978 001d 00       		.byte	0
+ 1979 001e 03       		.uleb128 0x3
+ 1980 001f 16       		.uleb128 0x16
+ 1981 0020 00       		.byte	0
+ 1982 0021 03       		.uleb128 0x3
+ 1983 0022 0E       		.uleb128 0xe
+ 1984 0023 3A       		.uleb128 0x3a
+ 1985 0024 0B       		.uleb128 0xb
+ 1986 0025 3B       		.uleb128 0x3b
+ 1987 0026 0B       		.uleb128 0xb
+ 1988 0027 49       		.uleb128 0x49
+ 1989 0028 13       		.uleb128 0x13
+ 1990 0029 00       		.byte	0
+ 1991 002a 00       		.byte	0
+ 1992 002b 04       		.uleb128 0x4
+ 1993 002c 24       		.uleb128 0x24
+ 1994 002d 00       		.byte	0
+ 1995 002e 0B       		.uleb128 0xb
+ 1996 002f 0B       		.uleb128 0xb
+ 1997 0030 3E       		.uleb128 0x3e
+ 1998 0031 0B       		.uleb128 0xb
+ 1999 0032 03       		.uleb128 0x3
+ 2000 0033 08       		.uleb128 0x8
+ 2001 0034 00       		.byte	0
+ 2002 0035 00       		.byte	0
+ 2003 0036 05       		.uleb128 0x5
+ 2004 0037 35       		.uleb128 0x35
+ 2005 0038 00       		.byte	0
+ 2006 0039 49       		.uleb128 0x49
+ 2007 003a 13       		.uleb128 0x13
+ 2008 003b 00       		.byte	0
+ 2009 003c 00       		.byte	0
+ 2010 003d 06       		.uleb128 0x6
+ 2011 003e 16       		.uleb128 0x16
+ 2012 003f 00       		.byte	0
+ 2013 0040 03       		.uleb128 0x3
+ 2014 0041 0E       		.uleb128 0xe
+ 2015 0042 3A       		.uleb128 0x3a
+ 2016 0043 0B       		.uleb128 0xb
+ 2017 0044 3B       		.uleb128 0x3b
+ 2018 0045 05       		.uleb128 0x5
+ 2019 0046 49       		.uleb128 0x49
+ 2020 0047 13       		.uleb128 0x13
+ 2021 0048 00       		.byte	0
+ 2022 0049 00       		.byte	0
+ 2023 004a 07       		.uleb128 0x7
+ 2024 004b 2E       		.uleb128 0x2e
+ 2025 004c 01       		.byte	0x1
+ 2026 004d 3F       		.uleb128 0x3f
+ 2027 004e 19       		.uleb128 0x19
+ 2028 004f 03       		.uleb128 0x3
+ 2029 0050 0E       		.uleb128 0xe
+ 2030 0051 3A       		.uleb128 0x3a
+ 2031 0052 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 49
+
+
+ 2032 0053 3B       		.uleb128 0x3b
+ 2033 0054 0B       		.uleb128 0xb
+ 2034 0055 27       		.uleb128 0x27
+ 2035 0056 19       		.uleb128 0x19
+ 2036 0057 11       		.uleb128 0x11
+ 2037 0058 01       		.uleb128 0x1
+ 2038 0059 12       		.uleb128 0x12
+ 2039 005a 06       		.uleb128 0x6
+ 2040 005b 40       		.uleb128 0x40
+ 2041 005c 18       		.uleb128 0x18
+ 2042 005d 9742     		.uleb128 0x2117
+ 2043 005f 19       		.uleb128 0x19
+ 2044 0060 01       		.uleb128 0x1
+ 2045 0061 13       		.uleb128 0x13
+ 2046 0062 00       		.byte	0
+ 2047 0063 00       		.byte	0
+ 2048 0064 08       		.uleb128 0x8
+ 2049 0065 05       		.uleb128 0x5
+ 2050 0066 00       		.byte	0
+ 2051 0067 03       		.uleb128 0x3
+ 2052 0068 0E       		.uleb128 0xe
+ 2053 0069 3A       		.uleb128 0x3a
+ 2054 006a 0B       		.uleb128 0xb
+ 2055 006b 3B       		.uleb128 0x3b
+ 2056 006c 0B       		.uleb128 0xb
+ 2057 006d 49       		.uleb128 0x49
+ 2058 006e 13       		.uleb128 0x13
+ 2059 006f 02       		.uleb128 0x2
+ 2060 0070 18       		.uleb128 0x18
+ 2061 0071 00       		.byte	0
+ 2062 0072 00       		.byte	0
+ 2063 0073 09       		.uleb128 0x9
+ 2064 0074 34       		.uleb128 0x34
+ 2065 0075 00       		.byte	0
+ 2066 0076 03       		.uleb128 0x3
+ 2067 0077 0E       		.uleb128 0xe
+ 2068 0078 3A       		.uleb128 0x3a
+ 2069 0079 0B       		.uleb128 0xb
+ 2070 007a 3B       		.uleb128 0x3b
+ 2071 007b 0B       		.uleb128 0xb
+ 2072 007c 49       		.uleb128 0x49
+ 2073 007d 13       		.uleb128 0x13
+ 2074 007e 02       		.uleb128 0x2
+ 2075 007f 18       		.uleb128 0x18
+ 2076 0080 00       		.byte	0
+ 2077 0081 00       		.byte	0
+ 2078 0082 0A       		.uleb128 0xa
+ 2079 0083 2E       		.uleb128 0x2e
+ 2080 0084 01       		.byte	0x1
+ 2081 0085 3F       		.uleb128 0x3f
+ 2082 0086 19       		.uleb128 0x19
+ 2083 0087 03       		.uleb128 0x3
+ 2084 0088 0E       		.uleb128 0xe
+ 2085 0089 3A       		.uleb128 0x3a
+ 2086 008a 0B       		.uleb128 0xb
+ 2087 008b 3B       		.uleb128 0x3b
+ 2088 008c 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 50
+
+
+ 2089 008d 27       		.uleb128 0x27
+ 2090 008e 19       		.uleb128 0x19
+ 2091 008f 11       		.uleb128 0x11
+ 2092 0090 01       		.uleb128 0x1
+ 2093 0091 12       		.uleb128 0x12
+ 2094 0092 06       		.uleb128 0x6
+ 2095 0093 40       		.uleb128 0x40
+ 2096 0094 18       		.uleb128 0x18
+ 2097 0095 9642     		.uleb128 0x2116
+ 2098 0097 19       		.uleb128 0x19
+ 2099 0098 01       		.uleb128 0x1
+ 2100 0099 13       		.uleb128 0x13
+ 2101 009a 00       		.byte	0
+ 2102 009b 00       		.byte	0
+ 2103 009c 0B       		.uleb128 0xb
+ 2104 009d 05       		.uleb128 0x5
+ 2105 009e 00       		.byte	0
+ 2106 009f 03       		.uleb128 0x3
+ 2107 00a0 08       		.uleb128 0x8
+ 2108 00a1 3A       		.uleb128 0x3a
+ 2109 00a2 0B       		.uleb128 0xb
+ 2110 00a3 3B       		.uleb128 0x3b
+ 2111 00a4 0B       		.uleb128 0xb
+ 2112 00a5 49       		.uleb128 0x49
+ 2113 00a6 13       		.uleb128 0x13
+ 2114 00a7 02       		.uleb128 0x2
+ 2115 00a8 18       		.uleb128 0x18
+ 2116 00a9 00       		.byte	0
+ 2117 00aa 00       		.byte	0
+ 2118 00ab 0C       		.uleb128 0xc
+ 2119 00ac 34       		.uleb128 0x34
+ 2120 00ad 00       		.byte	0
+ 2121 00ae 03       		.uleb128 0x3
+ 2122 00af 08       		.uleb128 0x8
+ 2123 00b0 3A       		.uleb128 0x3a
+ 2124 00b1 0B       		.uleb128 0xb
+ 2125 00b2 3B       		.uleb128 0x3b
+ 2126 00b3 0B       		.uleb128 0xb
+ 2127 00b4 49       		.uleb128 0x49
+ 2128 00b5 13       		.uleb128 0x13
+ 2129 00b6 02       		.uleb128 0x2
+ 2130 00b7 18       		.uleb128 0x18
+ 2131 00b8 00       		.byte	0
+ 2132 00b9 00       		.byte	0
+ 2133 00ba 0D       		.uleb128 0xd
+ 2134 00bb 2E       		.uleb128 0x2e
+ 2135 00bc 01       		.byte	0x1
+ 2136 00bd 3F       		.uleb128 0x3f
+ 2137 00be 19       		.uleb128 0x19
+ 2138 00bf 03       		.uleb128 0x3
+ 2139 00c0 0E       		.uleb128 0xe
+ 2140 00c1 3A       		.uleb128 0x3a
+ 2141 00c2 0B       		.uleb128 0xb
+ 2142 00c3 3B       		.uleb128 0x3b
+ 2143 00c4 05       		.uleb128 0x5
+ 2144 00c5 27       		.uleb128 0x27
+ 2145 00c6 19       		.uleb128 0x19
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 51
+
+
+ 2146 00c7 11       		.uleb128 0x11
+ 2147 00c8 01       		.uleb128 0x1
+ 2148 00c9 12       		.uleb128 0x12
+ 2149 00ca 06       		.uleb128 0x6
+ 2150 00cb 40       		.uleb128 0x40
+ 2151 00cc 18       		.uleb128 0x18
+ 2152 00cd 9642     		.uleb128 0x2116
+ 2153 00cf 19       		.uleb128 0x19
+ 2154 00d0 01       		.uleb128 0x1
+ 2155 00d1 13       		.uleb128 0x13
+ 2156 00d2 00       		.byte	0
+ 2157 00d3 00       		.byte	0
+ 2158 00d4 0E       		.uleb128 0xe
+ 2159 00d5 05       		.uleb128 0x5
+ 2160 00d6 00       		.byte	0
+ 2161 00d7 03       		.uleb128 0x3
+ 2162 00d8 08       		.uleb128 0x8
+ 2163 00d9 3A       		.uleb128 0x3a
+ 2164 00da 0B       		.uleb128 0xb
+ 2165 00db 3B       		.uleb128 0x3b
+ 2166 00dc 05       		.uleb128 0x5
+ 2167 00dd 49       		.uleb128 0x49
+ 2168 00de 13       		.uleb128 0x13
+ 2169 00df 02       		.uleb128 0x2
+ 2170 00e0 18       		.uleb128 0x18
+ 2171 00e1 00       		.byte	0
+ 2172 00e2 00       		.byte	0
+ 2173 00e3 0F       		.uleb128 0xf
+ 2174 00e4 34       		.uleb128 0x34
+ 2175 00e5 00       		.byte	0
+ 2176 00e6 03       		.uleb128 0x3
+ 2177 00e7 0E       		.uleb128 0xe
+ 2178 00e8 3A       		.uleb128 0x3a
+ 2179 00e9 0B       		.uleb128 0xb
+ 2180 00ea 3B       		.uleb128 0x3b
+ 2181 00eb 05       		.uleb128 0x5
+ 2182 00ec 49       		.uleb128 0x49
+ 2183 00ed 13       		.uleb128 0x13
+ 2184 00ee 02       		.uleb128 0x2
+ 2185 00ef 18       		.uleb128 0x18
+ 2186 00f0 00       		.byte	0
+ 2187 00f1 00       		.byte	0
+ 2188 00f2 10       		.uleb128 0x10
+ 2189 00f3 34       		.uleb128 0x34
+ 2190 00f4 00       		.byte	0
+ 2191 00f5 03       		.uleb128 0x3
+ 2192 00f6 08       		.uleb128 0x8
+ 2193 00f7 3A       		.uleb128 0x3a
+ 2194 00f8 0B       		.uleb128 0xb
+ 2195 00f9 3B       		.uleb128 0x3b
+ 2196 00fa 05       		.uleb128 0x5
+ 2197 00fb 49       		.uleb128 0x49
+ 2198 00fc 13       		.uleb128 0x13
+ 2199 00fd 02       		.uleb128 0x2
+ 2200 00fe 18       		.uleb128 0x18
+ 2201 00ff 00       		.byte	0
+ 2202 0100 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 52
+
+
+ 2203 0101 11       		.uleb128 0x11
+ 2204 0102 05       		.uleb128 0x5
+ 2205 0103 00       		.byte	0
+ 2206 0104 03       		.uleb128 0x3
+ 2207 0105 0E       		.uleb128 0xe
+ 2208 0106 3A       		.uleb128 0x3a
+ 2209 0107 0B       		.uleb128 0xb
+ 2210 0108 3B       		.uleb128 0x3b
+ 2211 0109 05       		.uleb128 0x5
+ 2212 010a 49       		.uleb128 0x49
+ 2213 010b 13       		.uleb128 0x13
+ 2214 010c 02       		.uleb128 0x2
+ 2215 010d 18       		.uleb128 0x18
+ 2216 010e 00       		.byte	0
+ 2217 010f 00       		.byte	0
+ 2218 0110 12       		.uleb128 0x12
+ 2219 0111 2E       		.uleb128 0x2e
+ 2220 0112 01       		.byte	0x1
+ 2221 0113 3F       		.uleb128 0x3f
+ 2222 0114 19       		.uleb128 0x19
+ 2223 0115 03       		.uleb128 0x3
+ 2224 0116 0E       		.uleb128 0xe
+ 2225 0117 3A       		.uleb128 0x3a
+ 2226 0118 0B       		.uleb128 0xb
+ 2227 0119 3B       		.uleb128 0x3b
+ 2228 011a 05       		.uleb128 0x5
+ 2229 011b 27       		.uleb128 0x27
+ 2230 011c 19       		.uleb128 0x19
+ 2231 011d 49       		.uleb128 0x49
+ 2232 011e 13       		.uleb128 0x13
+ 2233 011f 11       		.uleb128 0x11
+ 2234 0120 01       		.uleb128 0x1
+ 2235 0121 12       		.uleb128 0x12
+ 2236 0122 06       		.uleb128 0x6
+ 2237 0123 40       		.uleb128 0x40
+ 2238 0124 18       		.uleb128 0x18
+ 2239 0125 9642     		.uleb128 0x2116
+ 2240 0127 19       		.uleb128 0x19
+ 2241 0128 01       		.uleb128 0x1
+ 2242 0129 13       		.uleb128 0x13
+ 2243 012a 00       		.byte	0
+ 2244 012b 00       		.byte	0
+ 2245 012c 13       		.uleb128 0x13
+ 2246 012d 2E       		.uleb128 0x2e
+ 2247 012e 01       		.byte	0x1
+ 2248 012f 3F       		.uleb128 0x3f
+ 2249 0130 19       		.uleb128 0x19
+ 2250 0131 03       		.uleb128 0x3
+ 2251 0132 0E       		.uleb128 0xe
+ 2252 0133 3A       		.uleb128 0x3a
+ 2253 0134 0B       		.uleb128 0xb
+ 2254 0135 3B       		.uleb128 0x3b
+ 2255 0136 05       		.uleb128 0x5
+ 2256 0137 27       		.uleb128 0x27
+ 2257 0138 19       		.uleb128 0x19
+ 2258 0139 49       		.uleb128 0x49
+ 2259 013a 13       		.uleb128 0x13
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 53
+
+
+ 2260 013b 11       		.uleb128 0x11
+ 2261 013c 01       		.uleb128 0x1
+ 2262 013d 12       		.uleb128 0x12
+ 2263 013e 06       		.uleb128 0x6
+ 2264 013f 40       		.uleb128 0x40
+ 2265 0140 18       		.uleb128 0x18
+ 2266 0141 9742     		.uleb128 0x2117
+ 2267 0143 19       		.uleb128 0x19
+ 2268 0144 00       		.byte	0
+ 2269 0145 00       		.byte	0
+ 2270 0146 00       		.byte	0
+ 2271              		.section	.debug_aranges,"",%progbits
+ 2272 0000 54000000 		.4byte	0x54
+ 2273 0004 0200     		.2byte	0x2
+ 2274 0006 00000000 		.4byte	.Ldebug_info0
+ 2275 000a 04       		.byte	0x4
+ 2276 000b 00       		.byte	0
+ 2277 000c 0000     		.2byte	0
+ 2278 000e 0000     		.2byte	0
+ 2279 0010 00000000 		.4byte	.LFB1
+ 2280 0014 88000000 		.4byte	.LFE1-.LFB1
+ 2281 0018 00000000 		.4byte	.LFB2
+ 2282 001c 88000000 		.4byte	.LFE2-.LFB2
+ 2283 0020 00000000 		.4byte	.LFB3
+ 2284 0024 FC000000 		.4byte	.LFE3-.LFB3
+ 2285 0028 00000000 		.4byte	.LFB4
+ 2286 002c FC000000 		.4byte	.LFE4-.LFB4
+ 2287 0030 00000000 		.4byte	.LFB5
+ 2288 0034 D4000000 		.4byte	.LFE5-.LFB5
+ 2289 0038 00000000 		.4byte	.LFB6
+ 2290 003c D0010000 		.4byte	.LFE6-.LFB6
+ 2291 0040 00000000 		.4byte	.LFB7
+ 2292 0044 AC010000 		.4byte	.LFE7-.LFB7
+ 2293 0048 00000000 		.4byte	.LFB8
+ 2294 004c 66000000 		.4byte	.LFE8-.LFB8
+ 2295 0050 00000000 		.4byte	0
+ 2296 0054 00000000 		.4byte	0
+ 2297              		.section	.debug_ranges,"",%progbits
+ 2298              	.Ldebug_ranges0:
+ 2299 0000 00000000 		.4byte	.LFB1
+ 2300 0004 88000000 		.4byte	.LFE1
+ 2301 0008 00000000 		.4byte	.LFB2
+ 2302 000c 88000000 		.4byte	.LFE2
+ 2303 0010 00000000 		.4byte	.LFB3
+ 2304 0014 FC000000 		.4byte	.LFE3
+ 2305 0018 00000000 		.4byte	.LFB4
+ 2306 001c FC000000 		.4byte	.LFE4
+ 2307 0020 00000000 		.4byte	.LFB5
+ 2308 0024 D4000000 		.4byte	.LFE5
+ 2309 0028 00000000 		.4byte	.LFB6
+ 2310 002c D0010000 		.4byte	.LFE6
+ 2311 0030 00000000 		.4byte	.LFB7
+ 2312 0034 AC010000 		.4byte	.LFE7
+ 2313 0038 00000000 		.4byte	.LFB8
+ 2314 003c 66000000 		.4byte	.LFE8
+ 2315 0040 00000000 		.4byte	0
+ 2316 0044 00000000 		.4byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 54
+
+
+ 2317              		.section	.debug_line,"",%progbits
+ 2318              	.Ldebug_line0:
+ 2319 0000 C1010000 		.section	.debug_str,"MS",%progbits,1
+ 2319      02005B00 
+ 2319      00000201 
+ 2319      FB0E0D00 
+ 2319      01010101 
+ 2320              	.LASF34:
+ 2321 0000 7072696F 		.ascii	"prio\000"
+ 2321      00
+ 2322              	.LASF42:
+ 2323 0005 4350555F 		.ascii	"CPU_IntSrcPrioGet\000"
+ 2323      496E7453 
+ 2323      72635072 
+ 2323      696F4765 
+ 2323      7400
+ 2324              	.LASF30:
+ 2325 0017 6370755F 		.ascii	"cpu_sr\000"
+ 2325      737200
+ 2326              	.LASF25:
+ 2327 001e 4350555F 		.ascii	"CPU_BitBandClr\000"
+ 2327      42697442 
+ 2327      616E6443 
+ 2327      6C7200
+ 2328              	.LASF29:
+ 2329 002d 706F735F 		.ascii	"pos_max\000"
+ 2329      6D617800 
+ 2330              	.LASF3:
+ 2331 0035 73686F72 		.ascii	"short unsigned int\000"
+ 2331      7420756E 
+ 2331      7369676E 
+ 2331      65642069 
+ 2331      6E7400
+ 2332              	.LASF33:
+ 2333 0048 4350555F 		.ascii	"CPU_IntSrcPrioSet\000"
+ 2333      496E7453 
+ 2333      72635072 
+ 2333      696F5365 
+ 2333      7400
+ 2334              	.LASF22:
+ 2335 005a 6269745F 		.ascii	"bit_nbr\000"
+ 2335      6E627200 
+ 2336              	.LASF32:
+ 2337 0062 4350555F 		.ascii	"CPU_IntSrcPendClr\000"
+ 2337      496E7453 
+ 2337      72635065 
+ 2337      6E64436C 
+ 2337      7200
+ 2338              	.LASF7:
+ 2339 0074 4350555F 		.ascii	"CPU_INT32U\000"
+ 2339      494E5433 
+ 2339      325500
+ 2340              	.LASF41:
+ 2341 007f 433A5C55 		.ascii	"C:\\Users\\edulu.DESKTOP-961TG4K\\Documents\\PSoC C"
+ 2341      73657273 
+ 2341      5C656475 
+ 2341      6C752E44 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 55
+
+
+ 2341      45534B54 
+ 2342 00ae 72656174 		.ascii	"reator\\Micrium\\Examples\\Cypress\\CY8CKIT-044\\OS"
+ 2342      6F725C4D 
+ 2342      69637269 
+ 2342      756D5C45 
+ 2342      78616D70 
+ 2343 00dc 335C5053 		.ascii	"3\\PSoC\\OS3.cydsn\000"
+ 2343      6F435C4F 
+ 2343      53332E63 
+ 2343      7964736E 
+ 2343      00
+ 2344              	.LASF11:
+ 2345 00ed 666C6F61 		.ascii	"float\000"
+ 2345      7400
+ 2346              	.LASF16:
+ 2347 00f3 4350555F 		.ascii	"CPU_SR\000"
+ 2347      535200
+ 2348              	.LASF28:
+ 2349 00fa 67726F75 		.ascii	"group\000"
+ 2349      7000
+ 2350              	.LASF18:
+ 2351 0100 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2351      20756E73 
+ 2351      69676E65 
+ 2351      6420696E 
+ 2351      7400
+ 2352              	.LASF35:
+ 2353 0112 74656D70 		.ascii	"temp\000"
+ 2353      00
+ 2354              	.LASF21:
+ 2355 0117 61646472 		.ascii	"addr\000"
+ 2355      00
+ 2356              	.LASF4:
+ 2357 011c 4350555F 		.ascii	"CPU_INT08U\000"
+ 2357      494E5430 
+ 2357      385500
+ 2358              	.LASF39:
+ 2359 0127 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2359      43313120 
+ 2359      352E342E 
+ 2359      31203230 
+ 2359      31363036 
+ 2360 015a 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 2360      20726576 
+ 2360      6973696F 
+ 2360      6E203233 
+ 2360      37373135 
+ 2361 018d 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 2361      66756E63 
+ 2361      74696F6E 
+ 2361      2D736563 
+ 2361      74696F6E 
+ 2362              	.LASF1:
+ 2363 01b5 756E7369 		.ascii	"unsigned char\000"
+ 2363      676E6564 
+ 2363      20636861 
+ 2363      7200
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 56
+
+
+ 2364              	.LASF24:
+ 2365 01c3 6269745F 		.ascii	"bit_word_addr\000"
+ 2365      776F7264 
+ 2365      5F616464 
+ 2365      7200
+ 2366              	.LASF12:
+ 2367 01d1 646F7562 		.ascii	"double\000"
+ 2367      6C6500
+ 2368              	.LASF26:
+ 2369 01d8 4350555F 		.ascii	"CPU_BitBandSet\000"
+ 2369      42697442 
+ 2369      616E6453 
+ 2369      657400
+ 2370              	.LASF8:
+ 2371 01e7 756E7369 		.ascii	"unsigned int\000"
+ 2371      676E6564 
+ 2371      20696E74 
+ 2371      00
+ 2372              	.LASF40:
+ 2373 01f4 2E2E5C2E 		.ascii	"..\\..\\..\\..\\..\\..\\Software\\uC-CPU\\ARM-Corte"
+ 2373      2E5C2E2E 
+ 2373      5C2E2E5C 
+ 2373      2E2E5C2E 
+ 2373      2E5C536F 
+ 2374 021f 782D4D30 		.ascii	"x-M0\\GNU\\cpu_c.c\000"
+ 2374      5C474E55 
+ 2374      5C637075 
+ 2374      5F632E63 
+ 2374      00
+ 2375              	.LASF9:
+ 2376 0230 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2376      206C6F6E 
+ 2376      6720756E 
+ 2376      7369676E 
+ 2376      65642069 
+ 2377              	.LASF5:
+ 2378 0247 4350555F 		.ascii	"CPU_INT16S\000"
+ 2378      494E5431 
+ 2378      365300
+ 2379              	.LASF15:
+ 2380 0252 4350555F 		.ascii	"CPU_DATA\000"
+ 2380      44415441 
+ 2380      00
+ 2381              	.LASF19:
+ 2382 025b 6C6F6E67 		.ascii	"long double\000"
+ 2382      20646F75 
+ 2382      626C6500 
+ 2383              	.LASF20:
+ 2384 0267 73697A65 		.ascii	"sizetype\000"
+ 2384      74797065 
+ 2384      00
+ 2385              	.LASF27:
+ 2386 0270 4350555F 		.ascii	"CPU_IntSrcDis\000"
+ 2386      496E7453 
+ 2386      72634469 
+ 2386      7300
+ 2387              	.LASF10:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc6L5AMl.s 			page 57
+
+
+ 2388 027e 6C6F6E67 		.ascii	"long long int\000"
+ 2388      206C6F6E 
+ 2388      6720696E 
+ 2388      7400
+ 2389              	.LASF31:
+ 2390 028c 4350555F 		.ascii	"CPU_IntSrcEn\000"
+ 2390      496E7453 
+ 2390      7263456E 
+ 2390      00
+ 2391              	.LASF13:
+ 2392 0299 4350555F 		.ascii	"CPU_REG32\000"
+ 2392      52454733 
+ 2392      3200
+ 2393              	.LASF6:
+ 2394 02a3 73686F72 		.ascii	"short int\000"
+ 2394      7420696E 
+ 2394      7400
+ 2395              	.LASF37:
+ 2396 02ad 72657665 		.ascii	"reverse_val\000"
+ 2396      7273655F 
+ 2396      76616C00 
+ 2397              	.LASF17:
+ 2398 02b9 6C6F6E67 		.ascii	"long int\000"
+ 2398      20696E74 
+ 2398      00
+ 2399              	.LASF0:
+ 2400 02c2 63686172 		.ascii	"char\000"
+ 2400      00
+ 2401              	.LASF14:
+ 2402 02c7 4350555F 		.ascii	"CPU_ADDR\000"
+ 2402      41444452 
+ 2402      00
+ 2403              	.LASF23:
+ 2404 02d0 6269745F 		.ascii	"bit_word_off\000"
+ 2404      776F7264 
+ 2404      5F6F6666 
+ 2404      00
+ 2405              	.LASF2:
+ 2406 02dd 7369676E 		.ascii	"signed char\000"
+ 2406      65642063 
+ 2406      68617200 
+ 2407              	.LASF38:
+ 2408 02e9 6E62725F 		.ascii	"nbr_bits\000"
+ 2408      62697473 
+ 2408      00
+ 2409              	.LASF36:
+ 2410 02f2 4350555F 		.ascii	"CPU_RevBits\000"
+ 2410      52657642 
+ 2410      69747300 
+ 2411              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

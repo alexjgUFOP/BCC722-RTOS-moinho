@@ -1,0 +1,3173 @@
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"os_cpu_c.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.comm	OS_CPU_ExceptStkBase,4,4
+  20              		.section	.text.OSIdleTaskHook,"ax",%progbits
+  21              		.align	2
+  22              		.global	OSIdleTaskHook
+  23              		.code	16
+  24              		.thumb_func
+  25              		.type	OSIdleTaskHook, %function
+  26              	OSIdleTaskHook:
+  27              	.LFB1:
+  28              		.file 1 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Ports\\ARM-Cortex-M0\\Generic\\GNU\\os_cpu_c.
+   1:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+   2:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+   3:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                                uC/OS-III
+   4:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                          The Real-Time Kernel
+   5:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+   6:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+   7:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                           (c) Copyright 2009-2015; Micrium, Inc.; Weston, FL
+   8:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                    All rights reserved.  Protected by international copyright laws.
+   9:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+  10:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                           ARM Cortex-M0 Port
+  11:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+  12:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * File      : OS_CPU_C.C
+  13:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Version   : V3.05.01
+  14:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * By        : JJL
+  15:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *             BAN
+  16:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *             MD
+  17:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *             FF
+  18:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+  19:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * LICENSING TERMS:
+  20:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * ---------------
+  21:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *           uC/OS-III is provided in source form for FREE short-term evaluation, for educational us
+  22:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *           for peaceful research.  If you plan or intend to use uC/OS-III in a commercial applicat
+  23:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *           product then, you need to contact Micrium to properly license uC/OS-III for its use in 
+  24:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *           application/product.   We provide ALL the source code for your convenience and to help 
+  25:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *           experience uC/OS-III.  The fact that the source is provided does NOT mean that you can 
+  26:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *           it commercially without paying a licensing fee.
+  27:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+  28:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *           Knowledge of the source code may NOT be used to develop a similar product.
+  29:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 2
+
+
+  30:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *           Please help us continue to provide the embedded community with the finest software avai
+  31:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *           Your honesty is greatly appreciated.
+  32:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+  33:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *           You can find our product's user manual, API reference, release notes and
+  34:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *           more information at https://doc.micrium.com.
+  35:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *           You can contact us at www.micrium.com, or by phone at +1 (954) 217-2036.
+  36:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+  37:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * For       : ARMv6M Cortex-M0 or Cortex-M0+
+  38:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Mode      : Thumb2
+  39:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Toolchain : GNU C Compiler
+  40:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+  41:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Note(s)   : (1) This port supports the ARM Cortex-M0 and Cortex-M0+ architectures.
+  42:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+  43:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+  44:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+  45:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #define   OS_CPU_GLOBALS
+  46:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+  47:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #ifdef VSC_INCLUDE_SOURCE_FILE_NAMES
+  48:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** const  CPU_CHAR  *os_cpu_c__c = "$Id: $";
+  49:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+  50:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+  51:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+  52:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+  53:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+  54:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                             INCLUDE FILES
+  55:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+  56:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+  57:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+  58:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #include  "../../../../Source/os.h"
+  59:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+  60:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+  61:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #ifdef __cplusplus
+  62:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** extern  "C" {
+  63:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+  64:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+  65:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+  66:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+  67:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+  68:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                           IDLE TASK HOOK
+  69:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+  70:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Description: This function is called by the idle task.  This hook has been added to allow you to 
+  71:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              such things as STOP the CPU to conserve power.
+  72:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+  73:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Arguments  : None.
+  74:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+  75:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Note(s)    : None.
+  76:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+  77:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+  78:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+  79:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** void  OSIdleTaskHook (void)
+  80:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** {
+  29              		.loc 1 80 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33 0000 80B5     		push	{r7, lr}
+  34              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 3
+
+
+  35              		.cfi_offset 7, -8
+  36              		.cfi_offset 14, -4
+  37 0002 00AF     		add	r7, sp, #0
+  38              		.cfi_def_cfa_register 7
+  81:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if OS_CFG_APP_HOOKS_EN > 0u
+  82:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     if (OS_AppIdleTaskHookPtr != (OS_APP_HOOK_VOID)0) {
+  83:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         (*OS_AppIdleTaskHookPtr)();
+  84:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     }
+  85:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+  86:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** }
+  39              		.loc 1 86 0
+  40 0004 C046     		nop
+  41 0006 BD46     		mov	sp, r7
+  42              		@ sp needed
+  43 0008 80BD     		pop	{r7, pc}
+  44              		.cfi_endproc
+  45              	.LFE1:
+  46              		.size	OSIdleTaskHook, .-OSIdleTaskHook
+  47 000a C046     		.section	.text.OSInitHook,"ax",%progbits
+  48              		.align	2
+  49              		.global	OSInitHook
+  50              		.code	16
+  51              		.thumb_func
+  52              		.type	OSInitHook, %function
+  53              	OSInitHook:
+  54              	.LFB2:
+  87:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+  88:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+  89:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+  90:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+  91:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                       OS INITIALIZATION HOOK
+  92:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+  93:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Description: This function is called by OSInit() at the beginning of OSInit().
+  94:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+  95:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Arguments  : None.
+  96:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+  97:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Note(s)    : None.
+  98:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+  99:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+ 100:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 101:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** void  OSInitHook (void)
+ 102:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** {
+  55              		.loc 1 102 0
+  56              		.cfi_startproc
+  57              		@ args = 0, pretend = 0, frame = 0
+  58              		@ frame_needed = 1, uses_anonymous_args = 0
+  59 0000 80B5     		push	{r7, lr}
+  60              		.cfi_def_cfa_offset 8
+  61              		.cfi_offset 7, -8
+  62              		.cfi_offset 14, -4
+  63 0002 00AF     		add	r7, sp, #0
+  64              		.cfi_def_cfa_register 7
+ 103:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                                                                 /* 8-byte align the ISR stack.     
+ 104:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     OS_CPU_ExceptStkBase = (CPU_STK *)(OSCfg_ISRStkBasePtr + OSCfg_ISRStkSize);
+  65              		.loc 1 104 0
+  66 0004 094B     		ldr	r3, .L3
+  67 0006 1A68     		ldr	r2, [r3]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 4
+
+
+  68 0008 094B     		ldr	r3, .L3+4
+  69 000a 1B68     		ldr	r3, [r3]
+  70 000c 9B00     		lsls	r3, r3, #2
+  71 000e D218     		adds	r2, r2, r3
+  72 0010 084B     		ldr	r3, .L3+8
+  73 0012 1A60     		str	r2, [r3]
+ 105:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     OS_CPU_ExceptStkBase = (CPU_STK *)((CPU_STK)(OS_CPU_ExceptStkBase) & 0xFFFFFFF8);
+  74              		.loc 1 105 0
+  75 0014 074B     		ldr	r3, .L3+8
+  76 0016 1B68     		ldr	r3, [r3]
+  77 0018 1A00     		movs	r2, r3
+  78 001a 0723     		movs	r3, #7
+  79 001c 9A43     		bics	r2, r3
+  80 001e 1300     		movs	r3, r2
+  81 0020 1A00     		movs	r2, r3
+  82 0022 044B     		ldr	r3, .L3+8
+  83 0024 1A60     		str	r2, [r3]
+ 106:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 107:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** }
+  84              		.loc 1 107 0
+  85 0026 C046     		nop
+  86 0028 BD46     		mov	sp, r7
+  87              		@ sp needed
+  88 002a 80BD     		pop	{r7, pc}
+  89              	.L4:
+  90              		.align	2
+  91              	.L3:
+  92 002c 00000000 		.word	OSCfg_ISRStkBasePtr
+  93 0030 00000000 		.word	OSCfg_ISRStkSize
+  94 0034 00000000 		.word	OS_CPU_ExceptStkBase
+  95              		.cfi_endproc
+  96              	.LFE2:
+  97              		.size	OSInitHook, .-OSInitHook
+  98              		.section	.text.OSStatTaskHook,"ax",%progbits
+  99              		.align	2
+ 100              		.global	OSStatTaskHook
+ 101              		.code	16
+ 102              		.thumb_func
+ 103              		.type	OSStatTaskHook, %function
+ 104              	OSStatTaskHook:
+ 105              	.LFB3:
+ 108:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 109:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 110:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+ 111:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 112:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                           REDZONE HIT HOOK
+ 113:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 114:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Description: This function is called when a task's stack overflowed.
+ 115:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 116:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Arguments  : p_tcb        Pointer to the task control block of the offending task. NULL if ISR.
+ 117:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 118:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Note(s)    : None.
+ 119:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 120:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+ 121:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if (OS_CFG_TASK_STK_REDZONE_EN == DEF_ENABLED)
+ 122:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** void  OSRedzoneHitHook (OS_TCB  *p_tcb)
+ 123:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** {
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 5
+
+
+ 124:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if OS_CFG_APP_HOOKS_EN > 0u
+ 125:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     if (OS_AppRedzoneHitHookPtr != (OS_APP_HOOK_TCB)0) {
+ 126:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         (*OS_AppRedzoneHitHookPtr)(p_tcb);
+ 127:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     } else {
+ 128:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         CPU_SW_EXCEPTION(;);
+ 129:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     }
+ 130:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #else
+ 131:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     (void)p_tcb;                                                /* Prevent compiler warning        
+ 132:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_SW_EXCEPTION(;);
+ 133:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 134:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** }
+ 135:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 136:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 137:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 138:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+ 139:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 140:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                         STATISTIC TASK HOOK
+ 141:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 142:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Description: This function is called every second by uC/OS-III's statistics task.  This allows yo
+ 143:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              application to add functionality to the statistics task.
+ 144:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 145:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Arguments  : None.
+ 146:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 147:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Note(s)    : None.
+ 148:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 149:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+ 150:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 151:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** void  OSStatTaskHook (void)
+ 152:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** {
+ 106              		.loc 1 152 0
+ 107              		.cfi_startproc
+ 108              		@ args = 0, pretend = 0, frame = 0
+ 109              		@ frame_needed = 1, uses_anonymous_args = 0
+ 110 0000 80B5     		push	{r7, lr}
+ 111              		.cfi_def_cfa_offset 8
+ 112              		.cfi_offset 7, -8
+ 113              		.cfi_offset 14, -4
+ 114 0002 00AF     		add	r7, sp, #0
+ 115              		.cfi_def_cfa_register 7
+ 153:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if OS_CFG_APP_HOOKS_EN > 0u
+ 154:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     if (OS_AppStatTaskHookPtr != (OS_APP_HOOK_VOID)0) {
+ 155:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         (*OS_AppStatTaskHookPtr)();
+ 156:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     }
+ 157:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 158:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** }
+ 116              		.loc 1 158 0
+ 117 0004 C046     		nop
+ 118 0006 BD46     		mov	sp, r7
+ 119              		@ sp needed
+ 120 0008 80BD     		pop	{r7, pc}
+ 121              		.cfi_endproc
+ 122              	.LFE3:
+ 123              		.size	OSStatTaskHook, .-OSStatTaskHook
+ 124              		.section	.text.OSTaskCreateHook,"ax",%progbits
+ 125              		.align	2
+ 126              		.global	OSTaskCreateHook
+ 127              		.code	16
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 6
+
+
+ 128              		.thumb_func
+ 129              		.type	OSTaskCreateHook, %function
+ 130              	OSTaskCreateHook:
+ 131              	.LFB4:
+ 159:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 160:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 161:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+ 162:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 163:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                          TASK CREATION HOOK
+ 164:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 165:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Description: This function is called when a task is created.
+ 166:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 167:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Arguments  : p_tcb        Pointer to the task control block of the task being created.
+ 168:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 169:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Note(s)    : None.
+ 170:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 171:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+ 172:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 173:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** void  OSTaskCreateHook (OS_TCB  *p_tcb)
+ 174:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** {
+ 132              		.loc 1 174 0
+ 133              		.cfi_startproc
+ 134              		@ args = 0, pretend = 0, frame = 8
+ 135              		@ frame_needed = 1, uses_anonymous_args = 0
+ 136 0000 80B5     		push	{r7, lr}
+ 137              		.cfi_def_cfa_offset 8
+ 138              		.cfi_offset 7, -8
+ 139              		.cfi_offset 14, -4
+ 140 0002 82B0     		sub	sp, sp, #8
+ 141              		.cfi_def_cfa_offset 16
+ 142 0004 00AF     		add	r7, sp, #0
+ 143              		.cfi_def_cfa_register 7
+ 144 0006 7860     		str	r0, [r7, #4]
+ 175:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if OS_CFG_APP_HOOKS_EN > 0u
+ 176:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     if (OS_AppTaskCreateHookPtr != (OS_APP_HOOK_TCB)0) {
+ 177:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         (*OS_AppTaskCreateHookPtr)(p_tcb);
+ 178:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     }
+ 179:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #else
+ 180:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     (void)p_tcb;                                                /* Prevent compiler warning        
+ 181:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 182:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** }
+ 145              		.loc 1 182 0
+ 146 0008 C046     		nop
+ 147 000a BD46     		mov	sp, r7
+ 148 000c 02B0     		add	sp, sp, #8
+ 149              		@ sp needed
+ 150 000e 80BD     		pop	{r7, pc}
+ 151              		.cfi_endproc
+ 152              	.LFE4:
+ 153              		.size	OSTaskCreateHook, .-OSTaskCreateHook
+ 154              		.section	.text.OSTaskDelHook,"ax",%progbits
+ 155              		.align	2
+ 156              		.global	OSTaskDelHook
+ 157              		.code	16
+ 158              		.thumb_func
+ 159              		.type	OSTaskDelHook, %function
+ 160              	OSTaskDelHook:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 7
+
+
+ 161              	.LFB5:
+ 183:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 184:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 185:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+ 186:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 187:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                           TASK DELETION HOOK
+ 188:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 189:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Description: This function is called when a task is deleted.
+ 190:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 191:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Arguments  : p_tcb        Pointer to the task control block of the task being deleted.
+ 192:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 193:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Note(s)    : None.
+ 194:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 195:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+ 196:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 197:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** void  OSTaskDelHook (OS_TCB  *p_tcb)
+ 198:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** {
+ 162              		.loc 1 198 0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 8
+ 165              		@ frame_needed = 1, uses_anonymous_args = 0
+ 166 0000 80B5     		push	{r7, lr}
+ 167              		.cfi_def_cfa_offset 8
+ 168              		.cfi_offset 7, -8
+ 169              		.cfi_offset 14, -4
+ 170 0002 82B0     		sub	sp, sp, #8
+ 171              		.cfi_def_cfa_offset 16
+ 172 0004 00AF     		add	r7, sp, #0
+ 173              		.cfi_def_cfa_register 7
+ 174 0006 7860     		str	r0, [r7, #4]
+ 199:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if OS_CFG_APP_HOOKS_EN > 0u
+ 200:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     if (OS_AppTaskDelHookPtr != (OS_APP_HOOK_TCB)0) {
+ 201:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         (*OS_AppTaskDelHookPtr)(p_tcb);
+ 202:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     }
+ 203:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #else
+ 204:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     (void)p_tcb;                                                /* Prevent compiler warning        
+ 205:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 206:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** }
+ 175              		.loc 1 206 0
+ 176 0008 C046     		nop
+ 177 000a BD46     		mov	sp, r7
+ 178 000c 02B0     		add	sp, sp, #8
+ 179              		@ sp needed
+ 180 000e 80BD     		pop	{r7, pc}
+ 181              		.cfi_endproc
+ 182              	.LFE5:
+ 183              		.size	OSTaskDelHook, .-OSTaskDelHook
+ 184              		.section	.text.OSTaskReturnHook,"ax",%progbits
+ 185              		.align	2
+ 186              		.global	OSTaskReturnHook
+ 187              		.code	16
+ 188              		.thumb_func
+ 189              		.type	OSTaskReturnHook, %function
+ 190              	OSTaskReturnHook:
+ 191              	.LFB6:
+ 207:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 208:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 8
+
+
+ 209:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+ 210:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 211:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                            TASK RETURN HOOK
+ 212:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 213:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Description: This function is called if a task accidentally returns.  In other words, a task shou
+ 214:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              either be an infinite loop or delete itself when done.
+ 215:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 216:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Arguments  : p_tcb        Pointer to the task control block of the task that is returning.
+ 217:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 218:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Note(s)    : None.
+ 219:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 220:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+ 221:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 222:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** void  OSTaskReturnHook (OS_TCB  *p_tcb)
+ 223:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** {
+ 192              		.loc 1 223 0
+ 193              		.cfi_startproc
+ 194              		@ args = 0, pretend = 0, frame = 8
+ 195              		@ frame_needed = 1, uses_anonymous_args = 0
+ 196 0000 80B5     		push	{r7, lr}
+ 197              		.cfi_def_cfa_offset 8
+ 198              		.cfi_offset 7, -8
+ 199              		.cfi_offset 14, -4
+ 200 0002 82B0     		sub	sp, sp, #8
+ 201              		.cfi_def_cfa_offset 16
+ 202 0004 00AF     		add	r7, sp, #0
+ 203              		.cfi_def_cfa_register 7
+ 204 0006 7860     		str	r0, [r7, #4]
+ 224:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if OS_CFG_APP_HOOKS_EN > 0u
+ 225:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     if (OS_AppTaskReturnHookPtr != (OS_APP_HOOK_TCB)0) {
+ 226:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         (*OS_AppTaskReturnHookPtr)(p_tcb);
+ 227:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     }
+ 228:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #else
+ 229:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     (void)p_tcb;                                                /* Prevent compiler warning        
+ 230:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 231:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** }
+ 205              		.loc 1 231 0
+ 206 0008 C046     		nop
+ 207 000a BD46     		mov	sp, r7
+ 208 000c 02B0     		add	sp, sp, #8
+ 209              		@ sp needed
+ 210 000e 80BD     		pop	{r7, pc}
+ 211              		.cfi_endproc
+ 212              	.LFE6:
+ 213              		.size	OSTaskReturnHook, .-OSTaskReturnHook
+ 214              		.section	.text.OSTaskStkInit,"ax",%progbits
+ 215              		.align	2
+ 216              		.global	OSTaskStkInit
+ 217              		.code	16
+ 218              		.thumb_func
+ 219              		.type	OSTaskStkInit, %function
+ 220              	OSTaskStkInit:
+ 221              	.LFB7:
+ 232:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 233:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 234:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+ 235:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 9
+
+
+ 236:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                        INITIALIZE A TASK'S STACK
+ 237:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 238:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Description: This function is called by either OSTaskCreate() or OSTaskCreateExt() to initialize 
+ 239:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              stack frame of the task being created.  This function is highly processor specific.
+ 240:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 241:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Arguments  : p_task       Pointer to the task entry point address.
+ 242:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 243:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              p_arg        Pointer to a user supplied data area that will be passed to the task
+ 244:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                               when the task first executes.
+ 245:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 246:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              p_stk_base   Pointer to the base address of the stack.
+ 247:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 248:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              stk_size     Size of the stack, in number of CPU_STK elements.
+ 249:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 250:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              opt          Options used to alter the behavior of OS_Task_StkInit().
+ 251:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                            (see OS.H for OS_TASK_OPT_xxx).
+ 252:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 253:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Returns    : Always returns the location of the new top-of-stack once the processor registers hav
+ 254:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              been placed on the stack in the proper order.
+ 255:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 256:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Note(s)    : (1) Interrupts are enabled when task starts executing.
+ 257:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 258:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              (2) All tasks run in Thread mode, using process stack.
+ 259:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 260:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *             (3) The SP must be 8-byte aligned in conforming to the Procedure Call Standard for th
+ 261:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 262:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                    (a) Section 2.1 of the  ABI for the ARM Architecture Advisory Note. SP must be
+ 263:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                        on entry to AAPCS-Conforming functions states :
+ 264:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 265:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                        The Procedure Call Standard for the ARM Architecture [AAPCS] requires prim
+ 266:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                        data types to be naturally aligned according to their sizes (for size = 1,
+ 267:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                        Doing otherwise creates more problems than it solves.
+ 268:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 269:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                        In return for preserving the natural alignment of data, conforming code is
+ 270:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                        to rely on that alignment. To support aligning data allocated on the stack
+ 271:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                        pointer (SP) is required to be 8-byte aligned on entry to a conforming fun
+ 272:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                        practice this requirement is met if:
+ 273:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 274:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                           (1) At each call site, the current size of the calling function’s stack
+ 275:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                               This places an obligation on compilers and assembly language progra
+ 276:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 277:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                           (2) SP is a multiple of 8 when control first enters a program.
+ 278:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                               This places an obligation on authors of low level OS, RTOS, and run
+ 279:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                               code to align SP at all points at which control first enters
+ 280:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                               a body of (AAPCS-conforming) code.
+ 281:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 282:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                       In turn, this requires the value of SP to be aligned to 0 modulo 8:
+ 283:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 284:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                           (3) By exception handlers, before calling AAPCS-conforming code.
+ 285:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 286:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                           (4) By OS/RTOS/run-time system code, before giving control to an applic
+ 287:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 288:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                 (b) Section 2.3.1 corrective steps from the the SP must be 8-byte aligned on entr
+ 289:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                     to AAPCS-conforming functions advisory note also states.
+ 290:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 291:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                     " This requirement extends to operating systems and run-time code for all arc
+ 292:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                       prior to ARMV7 and to the A, R and M architecture profiles thereafter. Spec
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 10
+
+
+ 293:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                       associated with ARMV7M are discussed in §2.3.3"
+ 294:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 295:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                     (1) Even if the SP 8-byte aligment is not a requirement for the ARMv7M profil
+ 296:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                         to 8-byte boundaries to support legacy execution enviroments.
+ 297:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 298:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                 (c) Section 5.2.1.2 from the Procedure Call Standard for the ARM
+ 299:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                     architecture states :  "The stack must also conform to the following
+ 300:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                     constraint at a public interface:
+ 301:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 302:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                     (1) SP mod 8 = 0. The stack must be double-word aligned"
+ 303:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 304:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                 (d) From the ARM Technical Support Knowledge Base. 8 Byte stack aligment.
+ 305:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 306:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                     "8 byte stack alignment is a requirement of the ARM Architecture Procedure
+ 307:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                      Call Standard [AAPCS]. This specifies that functions must maintain an 8 byte
+ 308:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                      aligned stack address (e.g. 0x00, 0x08, 0x10, 0x18, 0x20) on all external
+ 309:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                      interfaces. In practice this requirement is met if:
+ 310:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 311:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                      (1) At each external interface, the current stack pointer
+ 312:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                          is a multiple of 8 bytes.
+ 313:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 314:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                      (2) Your OS maintains 8 byte stack alignment on its external interfaces
+ 315:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                          e.g. on task switches"
+ 316:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 317:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              (4) Exception Return Behavior(EXEC_RETURN)
+ 318:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                  0xFFFFFFF1      Return to Thread mode. Exception return gets state from the Main
+ 319:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                  On Return execution uses the Main Stack.
+ 320:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 321:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                  0xFFFFFFF9      Return to Thread mode. Exception return gets state from the Main
+ 322:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                  On Return execution uses the Main Stack.
+ 323:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 324:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                  0xFFFFFFFD      Return to Thread mode. Exception return gets state from the Proc
+ 325:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                  On Return execution uses the Process Stack.
+ 326:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 327:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+ 328:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 329:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** CPU_STK  *OSTaskStkInit (OS_TASK_PTR    p_task,
+ 330:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                          void          *p_arg,
+ 331:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                          CPU_STK       *p_stk_base,
+ 332:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                          CPU_STK       *p_stk_limit,
+ 333:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                          CPU_STK_SIZE   stk_size,
+ 334:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                          OS_OPT         opt)
+ 335:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** {
+ 222              		.loc 1 335 0
+ 223              		.cfi_startproc
+ 224              		@ args = 8, pretend = 0, frame = 24
+ 225              		@ frame_needed = 1, uses_anonymous_args = 0
+ 226 0000 80B5     		push	{r7, lr}
+ 227              		.cfi_def_cfa_offset 8
+ 228              		.cfi_offset 7, -8
+ 229              		.cfi_offset 14, -4
+ 230 0002 86B0     		sub	sp, sp, #24
+ 231              		.cfi_def_cfa_offset 32
+ 232 0004 00AF     		add	r7, sp, #0
+ 233              		.cfi_def_cfa_register 7
+ 234 0006 F860     		str	r0, [r7, #12]
+ 235 0008 B960     		str	r1, [r7, #8]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 11
+
+
+ 236 000a 7A60     		str	r2, [r7, #4]
+ 237 000c 3B60     		str	r3, [r7]
+ 336:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_STK    *p_stk;
+ 337:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 338:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 339:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     (void)opt;                                                  /* 'opt' is not used, prevent warni
+ 340:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 341:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     p_stk = &p_stk_base[stk_size];                              /* Load stack pointer              
+ 238              		.loc 1 341 0
+ 239 000e 3B6A     		ldr	r3, [r7, #32]
+ 240 0010 9B00     		lsls	r3, r3, #2
+ 241 0012 7A68     		ldr	r2, [r7, #4]
+ 242 0014 D318     		adds	r3, r2, r3
+ 243 0016 7B61     		str	r3, [r7, #20]
+ 342:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                                                                 /* Align the stack to 8-bytes.     
+ 343:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     p_stk = (CPU_STK *)((CPU_STK)(p_stk) & 0xFFFFFFF8u);
+ 244              		.loc 1 343 0
+ 245 0018 7B69     		ldr	r3, [r7, #20]
+ 246 001a 0722     		movs	r2, #7
+ 247 001c 9343     		bics	r3, r2
+ 248 001e 7B61     		str	r3, [r7, #20]
+ 344:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                                                                 /* Registers stacked as if auto-sav
+ 345:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)0x01000000u;                          /* xPSR                            
+ 249              		.loc 1 345 0
+ 250 0020 7B69     		ldr	r3, [r7, #20]
+ 251 0022 043B     		subs	r3, r3, #4
+ 252 0024 7B61     		str	r3, [r7, #20]
+ 253 0026 7B69     		ldr	r3, [r7, #20]
+ 254 0028 8022     		movs	r2, #128
+ 255 002a 5204     		lsls	r2, r2, #17
+ 256 002c 1A60     		str	r2, [r3]
+ 346:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)p_task;                               /* Entry Point                     
+ 257              		.loc 1 346 0
+ 258 002e 7B69     		ldr	r3, [r7, #20]
+ 259 0030 043B     		subs	r3, r3, #4
+ 260 0032 7B61     		str	r3, [r7, #20]
+ 261 0034 FA68     		ldr	r2, [r7, #12]
+ 262 0036 7B69     		ldr	r3, [r7, #20]
+ 263 0038 1A60     		str	r2, [r3]
+ 347:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)OS_TaskReturn;                        /* R14 (LR)                        
+ 264              		.loc 1 347 0
+ 265 003a 7B69     		ldr	r3, [r7, #20]
+ 266 003c 043B     		subs	r3, r3, #4
+ 267 003e 7B61     		str	r3, [r7, #20]
+ 268 0040 2E4A     		ldr	r2, .L11
+ 269 0042 7B69     		ldr	r3, [r7, #20]
+ 270 0044 1A60     		str	r2, [r3]
+ 348:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)0x12121212u;                          /* R12                             
+ 271              		.loc 1 348 0
+ 272 0046 7B69     		ldr	r3, [r7, #20]
+ 273 0048 043B     		subs	r3, r3, #4
+ 274 004a 7B61     		str	r3, [r7, #20]
+ 275 004c 7B69     		ldr	r3, [r7, #20]
+ 276 004e 2C4A     		ldr	r2, .L11+4
+ 277 0050 1A60     		str	r2, [r3]
+ 349:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)0x03030303u;                          /* R3                              
+ 278              		.loc 1 349 0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 12
+
+
+ 279 0052 7B69     		ldr	r3, [r7, #20]
+ 280 0054 043B     		subs	r3, r3, #4
+ 281 0056 7B61     		str	r3, [r7, #20]
+ 282 0058 7B69     		ldr	r3, [r7, #20]
+ 283 005a 2A4A     		ldr	r2, .L11+8
+ 284 005c 1A60     		str	r2, [r3]
+ 350:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)0x02020202u;                          /* R2                              
+ 285              		.loc 1 350 0
+ 286 005e 7B69     		ldr	r3, [r7, #20]
+ 287 0060 043B     		subs	r3, r3, #4
+ 288 0062 7B61     		str	r3, [r7, #20]
+ 289 0064 7B69     		ldr	r3, [r7, #20]
+ 290 0066 284A     		ldr	r2, .L11+12
+ 291 0068 1A60     		str	r2, [r3]
+ 351:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)p_stk_limit;                          /* R1                              
+ 292              		.loc 1 351 0
+ 293 006a 7B69     		ldr	r3, [r7, #20]
+ 294 006c 043B     		subs	r3, r3, #4
+ 295 006e 7B61     		str	r3, [r7, #20]
+ 296 0070 3A68     		ldr	r2, [r7]
+ 297 0072 7B69     		ldr	r3, [r7, #20]
+ 298 0074 1A60     		str	r2, [r3]
+ 352:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)p_arg;                                /* R0 : argument                   
+ 299              		.loc 1 352 0
+ 300 0076 7B69     		ldr	r3, [r7, #20]
+ 301 0078 043B     		subs	r3, r3, #4
+ 302 007a 7B61     		str	r3, [r7, #20]
+ 303 007c BA68     		ldr	r2, [r7, #8]
+ 304 007e 7B69     		ldr	r3, [r7, #20]
+ 305 0080 1A60     		str	r2, [r3]
+ 353:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                                                                 /* Remaining registers saved on pro
+ 354:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)0xFFFFFFFDuL;                         /* R14: EXEC_RETURN; See Note 4    
+ 306              		.loc 1 354 0
+ 307 0082 7B69     		ldr	r3, [r7, #20]
+ 308 0084 043B     		subs	r3, r3, #4
+ 309 0086 7B61     		str	r3, [r7, #20]
+ 310 0088 7B69     		ldr	r3, [r7, #20]
+ 311 008a 0322     		movs	r2, #3
+ 312 008c 5242     		rsbs	r2, r2, #0
+ 313 008e 1A60     		str	r2, [r3]
+ 355:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)0x11111111uL;                         /* R11                             
+ 314              		.loc 1 355 0
+ 315 0090 7B69     		ldr	r3, [r7, #20]
+ 316 0092 043B     		subs	r3, r3, #4
+ 317 0094 7B61     		str	r3, [r7, #20]
+ 318 0096 7B69     		ldr	r3, [r7, #20]
+ 319 0098 1C4A     		ldr	r2, .L11+16
+ 320 009a 1A60     		str	r2, [r3]
+ 356:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)0x10101010uL;                         /* R10                             
+ 321              		.loc 1 356 0
+ 322 009c 7B69     		ldr	r3, [r7, #20]
+ 323 009e 043B     		subs	r3, r3, #4
+ 324 00a0 7B61     		str	r3, [r7, #20]
+ 325 00a2 7B69     		ldr	r3, [r7, #20]
+ 326 00a4 1A4A     		ldr	r2, .L11+20
+ 327 00a6 1A60     		str	r2, [r3]
+ 357:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)0x09090909uL;                         /* R9                              
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 13
+
+
+ 328              		.loc 1 357 0
+ 329 00a8 7B69     		ldr	r3, [r7, #20]
+ 330 00aa 043B     		subs	r3, r3, #4
+ 331 00ac 7B61     		str	r3, [r7, #20]
+ 332 00ae 7B69     		ldr	r3, [r7, #20]
+ 333 00b0 184A     		ldr	r2, .L11+24
+ 334 00b2 1A60     		str	r2, [r3]
+ 358:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)0x08080808uL;                         /* R8                              
+ 335              		.loc 1 358 0
+ 336 00b4 7B69     		ldr	r3, [r7, #20]
+ 337 00b6 043B     		subs	r3, r3, #4
+ 338 00b8 7B61     		str	r3, [r7, #20]
+ 339 00ba 7B69     		ldr	r3, [r7, #20]
+ 340 00bc 164A     		ldr	r2, .L11+28
+ 341 00be 1A60     		str	r2, [r3]
+ 359:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)0x07070707uL;                         /* R7                              
+ 342              		.loc 1 359 0
+ 343 00c0 7B69     		ldr	r3, [r7, #20]
+ 344 00c2 043B     		subs	r3, r3, #4
+ 345 00c4 7B61     		str	r3, [r7, #20]
+ 346 00c6 7B69     		ldr	r3, [r7, #20]
+ 347 00c8 144A     		ldr	r2, .L11+32
+ 348 00ca 1A60     		str	r2, [r3]
+ 360:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)0x06060606uL;                         /* R6                              
+ 349              		.loc 1 360 0
+ 350 00cc 7B69     		ldr	r3, [r7, #20]
+ 351 00ce 043B     		subs	r3, r3, #4
+ 352 00d0 7B61     		str	r3, [r7, #20]
+ 353 00d2 7B69     		ldr	r3, [r7, #20]
+ 354 00d4 124A     		ldr	r2, .L11+36
+ 355 00d6 1A60     		str	r2, [r3]
+ 361:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)0x05050505uL;                         /* R5                              
+ 356              		.loc 1 361 0
+ 357 00d8 7B69     		ldr	r3, [r7, #20]
+ 358 00da 043B     		subs	r3, r3, #4
+ 359 00dc 7B61     		str	r3, [r7, #20]
+ 360 00de 7B69     		ldr	r3, [r7, #20]
+ 361 00e0 104A     		ldr	r2, .L11+40
+ 362 00e2 1A60     		str	r2, [r3]
+ 362:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     *(--p_stk) = (CPU_STK)0x04040404uL;                         /* R4                              
+ 363              		.loc 1 362 0
+ 364 00e4 7B69     		ldr	r3, [r7, #20]
+ 365 00e6 043B     		subs	r3, r3, #4
+ 366 00e8 7B61     		str	r3, [r7, #20]
+ 367 00ea 7B69     		ldr	r3, [r7, #20]
+ 368 00ec 0E4A     		ldr	r2, .L11+44
+ 369 00ee 1A60     		str	r2, [r3]
+ 363:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 364:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     return (p_stk);
+ 370              		.loc 1 364 0
+ 371 00f0 7B69     		ldr	r3, [r7, #20]
+ 365:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** }
+ 372              		.loc 1 365 0
+ 373 00f2 1800     		movs	r0, r3
+ 374 00f4 BD46     		mov	sp, r7
+ 375 00f6 06B0     		add	sp, sp, #24
+ 376              		@ sp needed
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 14
+
+
+ 377 00f8 80BD     		pop	{r7, pc}
+ 378              	.L12:
+ 379 00fa C046     		.align	2
+ 380              	.L11:
+ 381 00fc 00000000 		.word	OS_TaskReturn
+ 382 0100 12121212 		.word	303174162
+ 383 0104 03030303 		.word	50529027
+ 384 0108 02020202 		.word	33686018
+ 385 010c 11111111 		.word	286331153
+ 386 0110 10101010 		.word	269488144
+ 387 0114 09090909 		.word	151587081
+ 388 0118 08080808 		.word	134744072
+ 389 011c 07070707 		.word	117901063
+ 390 0120 06060606 		.word	101058054
+ 391 0124 05050505 		.word	84215045
+ 392 0128 04040404 		.word	67372036
+ 393              		.cfi_endproc
+ 394              	.LFE7:
+ 395              		.size	OSTaskStkInit, .-OSTaskStkInit
+ 396              		.section	.text.OSTaskSwHook,"ax",%progbits
+ 397              		.align	2
+ 398              		.global	OSTaskSwHook
+ 399              		.code	16
+ 400              		.thumb_func
+ 401              		.type	OSTaskSwHook, %function
+ 402              	OSTaskSwHook:
+ 403              	.LFB8:
+ 366:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 367:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 368:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+ 369:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 370:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                           TASK SWITCH HOOK
+ 371:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 372:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Description: This function is called when a task switch is performed.  This allows you to perform
+ 373:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              operations during a context switch.
+ 374:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 375:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Arguments  : None.
+ 376:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 377:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Note(s)    : 1) Interrupts are disabled during this call.
+ 378:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              2) It is assumed that the global pointer 'OSTCBHighRdyPtr' points to the TCB of the 
+ 379:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                 that will be 'switched in' (i.e. the highest priority task) and, 'OSTCBCurPtr' po
+ 380:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                 to the task being switched out (i.e. the preempted task).
+ 381:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 382:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+ 383:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 384:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** void  OSTaskSwHook (void)
+ 385:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** {
+ 404              		.loc 1 385 0
+ 405              		.cfi_startproc
+ 406              		@ args = 0, pretend = 0, frame = 8
+ 407              		@ frame_needed = 1, uses_anonymous_args = 0
+ 408 0000 80B5     		push	{r7, lr}
+ 409              		.cfi_def_cfa_offset 8
+ 410              		.cfi_offset 7, -8
+ 411              		.cfi_offset 14, -4
+ 412 0002 82B0     		sub	sp, sp, #8
+ 413              		.cfi_def_cfa_offset 16
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 15
+
+
+ 414 0004 00AF     		add	r7, sp, #0
+ 415              		.cfi_def_cfa_register 7
+ 386:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if OS_CFG_TASK_PROFILE_EN > 0u
+ 387:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_TS  ts;
+ 388:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 389:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #ifdef  CPU_CFG_INT_DIS_MEAS_EN
+ 390:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_TS  int_dis_time;
+ 391:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 392:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if (OS_CFG_TASK_STK_REDZONE_EN == DEF_ENABLED)
+ 393:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_BOOLEAN  stk_status;
+ 394:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 395:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 396:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if OS_CFG_APP_HOOKS_EN > 0u
+ 397:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     if (OS_AppTaskSwHookPtr != (OS_APP_HOOK_VOID)0) {
+ 398:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         (*OS_AppTaskSwHookPtr)();
+ 399:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     }
+ 400:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 401:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 402:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if (defined(TRACE_CFG_EN) && (TRACE_CFG_EN > 0u))
+ 403:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     TRACE_OS_TASK_SWITCHED_IN(OSTCBHighRdyPtr);                 /* Record the event.               
+ 404:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 405:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 406:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if OS_CFG_TASK_PROFILE_EN > 0u
+ 407:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     ts = OS_TS_GET();
+ 408:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     if (OSTCBCurPtr != OSTCBHighRdyPtr) {
+ 409:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         OSTCBCurPtr->CyclesDelta  = ts - OSTCBCurPtr->CyclesStart;
+ 410:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         OSTCBCurPtr->CyclesTotal += (OS_CYCLES)OSTCBCurPtr->CyclesDelta;
+ 411:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     }
+ 412:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 413:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     OSTCBHighRdyPtr->CyclesStart = ts;
+ 414:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 415:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 416:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #ifdef  CPU_CFG_INT_DIS_MEAS_EN
+ 417:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     int_dis_time = CPU_IntDisMeasMaxCurReset();                 /* Keep track of per-task interrupt
+ 416              		.loc 1 417 0
+ 417 0006 FFF7FEFF 		bl	CPU_IntDisMeasMaxCurReset
+ 418 000a 0300     		movs	r3, r0
+ 419 000c 7B60     		str	r3, [r7, #4]
+ 418:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     if (OSTCBCurPtr->IntDisTimeMax < int_dis_time) {
+ 420              		.loc 1 418 0
+ 421 000e 074B     		ldr	r3, .L16
+ 422 0010 1B68     		ldr	r3, [r3]
+ 423 0012 DA6E     		ldr	r2, [r3, #108]
+ 424 0014 7B68     		ldr	r3, [r7, #4]
+ 425 0016 9A42     		cmp	r2, r3
+ 426 0018 03D2     		bcs	.L15
+ 419:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         OSTCBCurPtr->IntDisTimeMax = int_dis_time;
+ 427              		.loc 1 419 0
+ 428 001a 044B     		ldr	r3, .L16
+ 429 001c 1B68     		ldr	r3, [r3]
+ 430 001e 7A68     		ldr	r2, [r7, #4]
+ 431 0020 DA66     		str	r2, [r3, #108]
+ 432              	.L15:
+ 420:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     }
+ 421:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 422:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 423:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if OS_CFG_SCHED_LOCK_TIME_MEAS_EN > 0u
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 16
+
+
+ 424:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                                                                 /* Keep track of per-task scheduler
+ 425:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     if (OSTCBCurPtr->SchedLockTimeMax < OSSchedLockTimeMaxCur) {
+ 426:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         OSTCBCurPtr->SchedLockTimeMax = OSSchedLockTimeMaxCur;
+ 427:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     }
+ 428:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     OSSchedLockTimeMaxCur = (CPU_TS)0;                          /* Reset the per-task value        
+ 429:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 430:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 431:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if (OS_CFG_TASK_STK_REDZONE_EN == DEF_ENABLED)
+ 432:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                                                                 /* Check if stack overflowed.      
+ 433:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     stk_status = OSTaskStkRedzoneChk(DEF_NULL);
+ 434:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     if (stk_status != DEF_OK) {
+ 435:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         OSRedzoneHitHook(OSTCBCurPtr);
+ 436:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     }
+ 437:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 438:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** }
+ 433              		.loc 1 438 0
+ 434 0022 C046     		nop
+ 435 0024 BD46     		mov	sp, r7
+ 436 0026 02B0     		add	sp, sp, #8
+ 437              		@ sp needed
+ 438 0028 80BD     		pop	{r7, pc}
+ 439              	.L17:
+ 440 002a C046     		.align	2
+ 441              	.L16:
+ 442 002c 00000000 		.word	OSTCBCurPtr
+ 443              		.cfi_endproc
+ 444              	.LFE8:
+ 445              		.size	OSTaskSwHook, .-OSTaskSwHook
+ 446              		.section	.text.OSTimeTickHook,"ax",%progbits
+ 447              		.align	2
+ 448              		.global	OSTimeTickHook
+ 449              		.code	16
+ 450              		.thumb_func
+ 451              		.type	OSTimeTickHook, %function
+ 452              	OSTimeTickHook:
+ 453              	.LFB9:
+ 439:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 440:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 441:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+ 442:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 443:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                              TICK HOOK
+ 444:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 445:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Description: This function is called every tick.
+ 446:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 447:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Arguments  : None.
+ 448:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 449:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Note(s)    : 1) This function is assumed to be called from the Tick ISR.
+ 450:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 451:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+ 452:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 453:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** void  OSTimeTickHook (void)
+ 454:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** {
+ 454              		.loc 1 454 0
+ 455              		.cfi_startproc
+ 456              		@ args = 0, pretend = 0, frame = 0
+ 457              		@ frame_needed = 1, uses_anonymous_args = 0
+ 458 0000 80B5     		push	{r7, lr}
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 17
+
+
+ 459              		.cfi_def_cfa_offset 8
+ 460              		.cfi_offset 7, -8
+ 461              		.cfi_offset 14, -4
+ 462 0002 00AF     		add	r7, sp, #0
+ 463              		.cfi_def_cfa_register 7
+ 455:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #if OS_CFG_APP_HOOKS_EN > 0u
+ 456:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     if (OS_AppTimeTickHookPtr != (OS_APP_HOOK_VOID)0) {
+ 457:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****         (*OS_AppTimeTickHookPtr)();
+ 458:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     }
+ 459:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** #endif
+ 460:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** }
+ 464              		.loc 1 460 0
+ 465 0004 C046     		nop
+ 466 0006 BD46     		mov	sp, r7
+ 467              		@ sp needed
+ 468 0008 80BD     		pop	{r7, pc}
+ 469              		.cfi_endproc
+ 470              	.LFE9:
+ 471              		.size	OSTimeTickHook, .-OSTimeTickHook
+ 472              		.section	.text.SysTick_Handler,"ax",%progbits
+ 473              		.align	2
+ 474              		.global	SysTick_Handler
+ 475              		.code	16
+ 476              		.thumb_func
+ 477              		.type	SysTick_Handler, %function
+ 478              	SysTick_Handler:
+ 479              	.LFB10:
+ 461:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 462:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 463:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+ 464:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 465:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                          SYS TICK HANDLER
+ 466:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 467:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Description: Handle the system tick (SysTick) interrupt, which is used to generate the uC/OS-II t
+ 468:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *              interrupt.
+ 469:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 470:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Arguments  : None.
+ 471:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 472:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Note(s)    : 1) This function MUST be placed on entry 15 of the Cortex-M0 vector table.
+ 473:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 474:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+ 475:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 476:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** void  SysTick_Handler (void)
+ 477:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** {
+ 480              		.loc 1 477 0
+ 481              		.cfi_startproc
+ 482              		@ args = 0, pretend = 0, frame = 8
+ 483              		@ frame_needed = 1, uses_anonymous_args = 0
+ 484 0000 80B5     		push	{r7, lr}
+ 485              		.cfi_def_cfa_offset 8
+ 486              		.cfi_offset 7, -8
+ 487              		.cfi_offset 14, -4
+ 488 0002 82B0     		sub	sp, sp, #8
+ 489              		.cfi_def_cfa_offset 16
+ 490 0004 00AF     		add	r7, sp, #0
+ 491              		.cfi_def_cfa_register 7
+ 478:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_SR_ALLOC();
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 18
+
+
+ 492              		.loc 1 478 0
+ 493 0006 0023     		movs	r3, #0
+ 494 0008 7B60     		str	r3, [r7, #4]
+ 479:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 480:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 481:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_CRITICAL_ENTER();
+ 495              		.loc 1 481 0
+ 496 000a FFF7FEFF 		bl	CPU_SR_Save
+ 497 000e 0300     		movs	r3, r0
+ 498 0010 7B60     		str	r3, [r7, #4]
+ 499 0012 FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 482:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     OSIntEnter();                                               /* Tell uC/OS-III that we are start
+ 500              		.loc 1 482 0
+ 501 0016 FFF7FEFF 		bl	OSIntEnter
+ 483:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_CRITICAL_EXIT();
+ 502              		.loc 1 483 0
+ 503 001a FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 504 001e 7B68     		ldr	r3, [r7, #4]
+ 505 0020 1800     		movs	r0, r3
+ 506 0022 FFF7FEFF 		bl	CPU_SR_Restore
+ 484:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 485:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     OSTimeTick();                                               /* Call uC/OS-III's OSTimeTick()   
+ 507              		.loc 1 485 0
+ 508 0026 FFF7FEFF 		bl	OSTimeTick
+ 486:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 487:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     OSIntExit();                                                /* Tell uC/OS-III that we are leavi
+ 509              		.loc 1 487 0
+ 510 002a FFF7FEFF 		bl	OSIntExit
+ 488:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** }
+ 511              		.loc 1 488 0
+ 512 002e C046     		nop
+ 513 0030 BD46     		mov	sp, r7
+ 514 0032 02B0     		add	sp, sp, #8
+ 515              		@ sp needed
+ 516 0034 80BD     		pop	{r7, pc}
+ 517              		.cfi_endproc
+ 518              	.LFE10:
+ 519              		.size	SysTick_Handler, .-SysTick_Handler
+ 520              		.global	__aeabi_uidiv
+ 521              		.section	.text.OS_CPU_SysTickInit,"ax",%progbits
+ 522              		.align	2
+ 523              		.global	OS_CPU_SysTickInit
+ 524              		.code	16
+ 525              		.thumb_func
+ 526              		.type	OS_CPU_SysTickInit, %function
+ 527              	OS_CPU_SysTickInit:
+ 528              	.LFB11:
+ 489:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 490:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 491:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** /*
+ 492:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 493:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *                                         INITIALIZE SYS TICK
+ 494:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 495:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Description: Initialize the SysTick.
+ 496:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ 497:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Arguments  : cpu_freq         CPU clock frequency.
+ 498:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** *
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 19
+
+
+ 499:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** * Note(s)    : 1) This function MUST be called after OSStart() & after processor initialization.
+ 500:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** ***************************************************************************************************
+ 501:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** */
+ 502:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 503:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** void  OS_CPU_SysTickInit (CPU_INT32U  cpu_freq)
+ 504:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** {
+ 529              		.loc 1 504 0
+ 530              		.cfi_startproc
+ 531              		@ args = 0, pretend = 0, frame = 16
+ 532              		@ frame_needed = 1, uses_anonymous_args = 0
+ 533 0000 80B5     		push	{r7, lr}
+ 534              		.cfi_def_cfa_offset 8
+ 535              		.cfi_offset 7, -8
+ 536              		.cfi_offset 14, -4
+ 537 0002 84B0     		sub	sp, sp, #16
+ 538              		.cfi_def_cfa_offset 24
+ 539 0004 00AF     		add	r7, sp, #0
+ 540              		.cfi_def_cfa_register 7
+ 541 0006 7860     		str	r0, [r7, #4]
+ 505:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_INT32U  prio;
+ 506:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_INT32U  cnts;
+ 507:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 508:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 509:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     cnts = (cpu_freq / (CPU_INT32U)OSCfg_TickRate_Hz);          /* Determine nbr SysTick cnts betwe
+ 542              		.loc 1 509 0
+ 543 0008 124B     		ldr	r3, .L21
+ 544 000a 1B68     		ldr	r3, [r3]
+ 545 000c 1900     		movs	r1, r3
+ 546 000e 7868     		ldr	r0, [r7, #4]
+ 547 0010 FFF7FEFF 		bl	__aeabi_uidiv
+ 548 0014 0300     		movs	r3, r0
+ 549 0016 FB60     		str	r3, [r7, #12]
+ 510:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 511:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_REG_NVIC_ST_RELOAD = cnts - 1u;
+ 550              		.loc 1 511 0
+ 551 0018 0F4B     		ldr	r3, .L21+4
+ 552 001a FA68     		ldr	r2, [r7, #12]
+ 553 001c 013A     		subs	r2, r2, #1
+ 554 001e 1A60     		str	r2, [r3]
+ 512:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 513:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                                                                 /* Set SysTick handler prio.       
+ 514:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     prio                  =  CPU_REG_NVIC_SHPRI3;
+ 555              		.loc 1 514 0
+ 556 0020 0E4B     		ldr	r3, .L21+8
+ 557 0022 1B68     		ldr	r3, [r3]
+ 558 0024 BB60     		str	r3, [r7, #8]
+ 515:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     prio                 &=  0x00FFFFFFu;
+ 559              		.loc 1 515 0
+ 560 0026 BB68     		ldr	r3, [r7, #8]
+ 561 0028 1B02     		lsls	r3, r3, #8
+ 562 002a 1B0A     		lsrs	r3, r3, #8
+ 563 002c BB60     		str	r3, [r7, #8]
+ 516:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     prio                 |= (OS_CPU_CFG_SYSTICK_PRIO << 24u);
+ 517:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 518:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_REG_NVIC_SHPRI3   = prio;
+ 564              		.loc 1 518 0
+ 565 002e 0B4B     		ldr	r3, .L21+8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 20
+
+
+ 566 0030 BA68     		ldr	r2, [r7, #8]
+ 567 0032 1A60     		str	r2, [r3]
+ 519:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** 
+ 520:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                                                                 /* Enable timer.                   
+ 521:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_REG_NVIC_ST_CTRL |= CPU_REG_NVIC_ST_CTRL_CLKSOURCE |
+ 568              		.loc 1 521 0
+ 569 0034 0A4B     		ldr	r3, .L21+12
+ 570 0036 0A4A     		ldr	r2, .L21+12
+ 571 0038 1268     		ldr	r2, [r2]
+ 572 003a 0521     		movs	r1, #5
+ 573 003c 0A43     		orrs	r2, r1
+ 574 003e 1A60     		str	r2, [r3]
+ 522:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                             CPU_REG_NVIC_ST_CTRL_ENABLE;
+ 523:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****                                                                 /* Enable timer interrupt.         
+ 524:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c ****     CPU_REG_NVIC_ST_CTRL |= CPU_REG_NVIC_ST_CTRL_TICKINT;
+ 575              		.loc 1 524 0
+ 576 0040 074B     		ldr	r3, .L21+12
+ 577 0042 074A     		ldr	r2, .L21+12
+ 578 0044 1268     		ldr	r2, [r2]
+ 579 0046 0221     		movs	r1, #2
+ 580 0048 0A43     		orrs	r2, r1
+ 581 004a 1A60     		str	r2, [r3]
+ 525:..\..\..\..\..\..\Software\uCOS-III\Ports\ARM-Cortex-M0\Generic\GNU/os_cpu_c.c **** }
+ 582              		.loc 1 525 0
+ 583 004c C046     		nop
+ 584 004e BD46     		mov	sp, r7
+ 585 0050 04B0     		add	sp, sp, #16
+ 586              		@ sp needed
+ 587 0052 80BD     		pop	{r7, pc}
+ 588              	.L22:
+ 589              		.align	2
+ 590              	.L21:
+ 591 0054 00000000 		.word	OSCfg_TickRate_Hz
+ 592 0058 14E000E0 		.word	-536813548
+ 593 005c 20ED00E0 		.word	-536810208
+ 594 0060 10E000E0 		.word	-536813552
+ 595              		.cfi_endproc
+ 596              	.LFE11:
+ 597              		.size	OS_CPU_SysTickInit, .-OS_CPU_SysTickInit
+ 598              		.text
+ 599              	.Letext0:
+ 600              		.file 2 "..\\..\\..\\..\\..\\..\\Software\\uC-CPU\\ARM-Cortex-M0\\GNU/cpu.h"
+ 601              		.file 3 "..\\..\\..\\..\\..\\..\\Software\\uC-CPU/cpu_core.h"
+ 602              		.file 4 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source/os_type.h"
+ 603              		.file 5 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Ports\\ARM-Cortex-M0\\Generic\\GNU\\../../../
+ 604              		.file 6 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Ports\\ARM-Cortex-M0\\Generic\\GNU/os_cpu.h"
+ 605              		.section	.debug_info,"",%progbits
+ 606              	.Ldebug_info0:
+ 607 0000 42070000 		.4byte	0x742
+ 608 0004 0400     		.2byte	0x4
+ 609 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 610 000a 04       		.byte	0x4
+ 611 000b 01       		.uleb128 0x1
+ 612 000c 54000000 		.4byte	.LASF121
+ 613 0010 0C       		.byte	0xc
+ 614 0011 10050000 		.4byte	.LASF122
+ 615 0015 40030000 		.4byte	.LASF123
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 21
+
+
+ 616 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 617 001d 00000000 		.4byte	0
+ 618 0021 00000000 		.4byte	.Ldebug_line0
+ 619 0025 02       		.uleb128 0x2
+ 620 0026 FD010000 		.4byte	.LASF2
+ 621 002a 02       		.byte	0x2
+ 622 002b 7C       		.byte	0x7c
+ 623 002c 30000000 		.4byte	0x30
+ 624 0030 03       		.uleb128 0x3
+ 625 0031 01       		.byte	0x1
+ 626 0032 08       		.byte	0x8
+ 627 0033 65020000 		.4byte	.LASF0
+ 628 0037 03       		.uleb128 0x3
+ 629 0038 01       		.byte	0x1
+ 630 0039 08       		.byte	0x8
+ 631 003a 95050000 		.4byte	.LASF1
+ 632 003e 02       		.uleb128 0x2
+ 633 003f BC010000 		.4byte	.LASF3
+ 634 0043 02       		.byte	0x2
+ 635 0044 7E       		.byte	0x7e
+ 636 0045 37000000 		.4byte	0x37
+ 637 0049 03       		.uleb128 0x3
+ 638 004a 01       		.byte	0x1
+ 639 004b 06       		.byte	0x6
+ 640 004c 01060000 		.4byte	.LASF4
+ 641 0050 02       		.uleb128 0x2
+ 642 0051 2D030000 		.4byte	.LASF5
+ 643 0055 02       		.byte	0x2
+ 644 0056 80       		.byte	0x80
+ 645 0057 5B000000 		.4byte	0x5b
+ 646 005b 03       		.uleb128 0x3
+ 647 005c 02       		.byte	0x2
+ 648 005d 07       		.byte	0x7
+ 649 005e 0D060000 		.4byte	.LASF6
+ 650 0062 03       		.uleb128 0x3
+ 651 0063 02       		.byte	0x2
+ 652 0064 05       		.byte	0x5
+ 653 0065 19040000 		.4byte	.LASF7
+ 654 0069 02       		.uleb128 0x2
+ 655 006a 3D000000 		.4byte	.LASF8
+ 656 006e 02       		.byte	0x2
+ 657 006f 82       		.byte	0x82
+ 658 0070 74000000 		.4byte	0x74
+ 659 0074 03       		.uleb128 0x3
+ 660 0075 04       		.byte	0x4
+ 661 0076 07       		.byte	0x7
+ 662 0077 A4040000 		.4byte	.LASF9
+ 663 007b 04       		.uleb128 0x4
+ 664 007c 04       		.byte	0x4
+ 665 007d 05       		.byte	0x5
+ 666 007e 696E7400 		.ascii	"int\000"
+ 667 0082 03       		.uleb128 0x3
+ 668 0083 08       		.byte	0x8
+ 669 0084 07       		.byte	0x7
+ 670 0085 91010000 		.4byte	.LASF10
+ 671 0089 03       		.uleb128 0x3
+ 672 008a 08       		.byte	0x8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 22
+
+
+ 673 008b 05       		.byte	0x5
+ 674 008c FA020000 		.4byte	.LASF11
+ 675 0090 03       		.uleb128 0x3
+ 676 0091 04       		.byte	0x4
+ 677 0092 04       		.byte	0x4
+ 678 0093 69010000 		.4byte	.LASF12
+ 679 0097 03       		.uleb128 0x3
+ 680 0098 08       		.byte	0x8
+ 681 0099 04       		.byte	0x4
+ 682 009a 25060000 		.4byte	.LASF13
+ 683 009e 02       		.uleb128 0x2
+ 684 009f 0F000000 		.4byte	.LASF14
+ 685 00a3 02       		.byte	0x2
+ 686 00a4 8D       		.byte	0x8d
+ 687 00a5 A9000000 		.4byte	0xa9
+ 688 00a9 05       		.uleb128 0x5
+ 689 00aa 69000000 		.4byte	0x69
+ 690 00ae 06       		.uleb128 0x6
+ 691 00af 04       		.byte	0x4
+ 692 00b0 B4000000 		.4byte	0xb4
+ 693 00b4 07       		.uleb128 0x7
+ 694 00b5 BF000000 		.4byte	0xbf
+ 695 00b9 08       		.uleb128 0x8
+ 696 00ba BF000000 		.4byte	0xbf
+ 697 00be 00       		.byte	0
+ 698 00bf 09       		.uleb128 0x9
+ 699 00c0 04       		.byte	0x4
+ 700 00c1 02       		.uleb128 0x2
+ 701 00c2 5F050000 		.4byte	.LASF15
+ 702 00c6 02       		.byte	0x2
+ 703 00c7 BA       		.byte	0xba
+ 704 00c8 69000000 		.4byte	0x69
+ 705 00cc 02       		.uleb128 0x2
+ 706 00cd 84060000 		.4byte	.LASF16
+ 707 00d1 02       		.byte	0x2
+ 708 00d2 E5       		.byte	0xe5
+ 709 00d3 69000000 		.4byte	0x69
+ 710 00d7 02       		.uleb128 0x2
+ 711 00d8 06020000 		.4byte	.LASF17
+ 712 00dc 02       		.byte	0x2
+ 713 00dd E6       		.byte	0xe6
+ 714 00de C1000000 		.4byte	0xc1
+ 715 00e2 0A       		.uleb128 0xa
+ 716 00e3 8C020000 		.4byte	.LASF18
+ 717 00e7 02       		.byte	0x2
+ 718 00e8 3301     		.2byte	0x133
+ 719 00ea 69000000 		.4byte	0x69
+ 720 00ee 03       		.uleb128 0x3
+ 721 00ef 04       		.byte	0x4
+ 722 00f0 05       		.byte	0x5
+ 723 00f1 3C040000 		.4byte	.LASF19
+ 724 00f5 03       		.uleb128 0x3
+ 725 00f6 04       		.byte	0x4
+ 726 00f7 07       		.byte	0x7
+ 727 00f8 FE040000 		.4byte	.LASF20
+ 728 00fc 03       		.uleb128 0x3
+ 729 00fd 08       		.byte	0x8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 23
+
+
+ 730 00fe 04       		.byte	0x4
+ 731 00ff FE030000 		.4byte	.LASF21
+ 732 0103 03       		.uleb128 0x3
+ 733 0104 04       		.byte	0x4
+ 734 0105 07       		.byte	0x7
+ 735 0106 F5040000 		.4byte	.LASF22
+ 736 010a 02       		.uleb128 0x2
+ 737 010b AE030000 		.4byte	.LASF23
+ 738 010f 03       		.byte	0x3
+ 739 0110 C4       		.byte	0xc4
+ 740 0111 69000000 		.4byte	0x69
+ 741 0115 02       		.uleb128 0x2
+ 742 0116 F3020000 		.4byte	.LASF24
+ 743 011a 03       		.byte	0x3
+ 744 011b C7       		.byte	0xc7
+ 745 011c 0A010000 		.4byte	0x10a
+ 746 0120 02       		.uleb128 0x2
+ 747 0121 F1010000 		.4byte	.LASF25
+ 748 0125 04       		.byte	0x4
+ 749 0126 40       		.byte	0x40
+ 750 0127 50000000 		.4byte	0x50
+ 751 012b 02       		.uleb128 0x2
+ 752 012c 54040000 		.4byte	.LASF26
+ 753 0130 04       		.byte	0x4
+ 754 0131 42       		.byte	0x42
+ 755 0132 3E000000 		.4byte	0x3e
+ 756 0136 02       		.uleb128 0x2
+ 757 0137 56010000 		.4byte	.LASF27
+ 758 013b 04       		.byte	0x4
+ 759 013c 44       		.byte	0x44
+ 760 013d 50000000 		.4byte	0x50
+ 761 0141 02       		.uleb128 0x2
+ 762 0142 6A020000 		.4byte	.LASF28
+ 763 0146 04       		.byte	0x4
+ 764 0147 45       		.byte	0x45
+ 765 0148 69000000 		.4byte	0x69
+ 766 014c 02       		.uleb128 0x2
+ 767 014d AC050000 		.4byte	.LASF29
+ 768 0151 04       		.byte	0x4
+ 769 0152 47       		.byte	0x47
+ 770 0153 50000000 		.4byte	0x50
+ 771 0157 02       		.uleb128 0x2
+ 772 0158 61010000 		.4byte	.LASF30
+ 773 015c 04       		.byte	0x4
+ 774 015d 49       		.byte	0x49
+ 775 015e 3E000000 		.4byte	0x3e
+ 776 0162 02       		.uleb128 0x2
+ 777 0163 A4020000 		.4byte	.LASF31
+ 778 0167 04       		.byte	0x4
+ 779 0168 4D       		.byte	0x4d
+ 780 0169 69000000 		.4byte	0x69
+ 781 016d 02       		.uleb128 0x2
+ 782 016e DA010000 		.4byte	.LASF32
+ 783 0172 04       		.byte	0x4
+ 784 0173 4F       		.byte	0x4f
+ 785 0174 69000000 		.4byte	0x69
+ 786 0178 02       		.uleb128 0x2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 24
+
+
+ 787 0179 CE030000 		.4byte	.LASF33
+ 788 017d 04       		.byte	0x4
+ 789 017e 52       		.byte	0x52
+ 790 017f 69000000 		.4byte	0x69
+ 791 0183 02       		.uleb128 0x2
+ 792 0184 A3050000 		.4byte	.LASF34
+ 793 0188 04       		.byte	0x4
+ 794 0189 54       		.byte	0x54
+ 795 018a 3E000000 		.4byte	0x3e
+ 796 018e 02       		.uleb128 0x2
+ 797 018f E1010000 		.4byte	.LASF35
+ 798 0193 04       		.byte	0x4
+ 799 0194 56       		.byte	0x56
+ 800 0195 3E000000 		.4byte	0x3e
+ 801 0199 02       		.uleb128 0x2
+ 802 019a 38030000 		.4byte	.LASF36
+ 803 019e 04       		.byte	0x4
+ 804 019f 58       		.byte	0x58
+ 805 01a0 69000000 		.4byte	0x69
+ 806 01a4 0A       		.uleb128 0xa
+ 807 01a5 31010000 		.4byte	.LASF37
+ 808 01a9 05       		.byte	0x5
+ 809 01aa 8E02     		.2byte	0x28e
+ 810 01ac AE000000 		.4byte	0xae
+ 811 01b0 0A       		.uleb128 0xa
+ 812 01b1 37060000 		.4byte	.LASF38
+ 813 01b5 05       		.byte	0x5
+ 814 01b6 9002     		.2byte	0x290
+ 815 01b8 BC010000 		.4byte	0x1bc
+ 816 01bc 0B       		.uleb128 0xb
+ 817 01bd 00000000 		.4byte	.LASF73
+ 818 01c1 7C       		.byte	0x7c
+ 819 01c2 05       		.byte	0x5
+ 820 01c3 AB03     		.2byte	0x3ab
+ 821 01c5 90030000 		.4byte	0x390
+ 822 01c9 0C       		.uleb128 0xc
+ 823 01ca 08030000 		.4byte	.LASF39
+ 824 01ce 05       		.byte	0x5
+ 825 01cf AC03     		.2byte	0x3ac
+ 826 01d1 14050000 		.4byte	0x514
+ 827 01d5 00       		.byte	0
+ 828 01d6 0C       		.uleb128 0xc
+ 829 01d7 EE040000 		.4byte	.LASF40
+ 830 01db 05       		.byte	0x5
+ 831 01dc AE03     		.2byte	0x3ae
+ 832 01de BF000000 		.4byte	0xbf
+ 833 01e2 04       		.byte	0x4
+ 834 01e3 0C       		.uleb128 0xc
+ 835 01e4 C2030000 		.4byte	.LASF41
+ 836 01e8 05       		.byte	0x5
+ 837 01e9 B003     		.2byte	0x3b0
+ 838 01eb 14050000 		.4byte	0x514
+ 839 01ef 08       		.byte	0x8
+ 840 01f0 0C       		.uleb128 0xc
+ 841 01f1 F6030000 		.4byte	.LASF42
+ 842 01f5 05       		.byte	0x5
+ 843 01f6 B203     		.2byte	0x3b2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 25
+
+
+ 844 01f8 FC040000 		.4byte	0x4fc
+ 845 01fc 0C       		.byte	0xc
+ 846 01fd 0C       		.uleb128 0xc
+ 847 01fe 5D020000 		.4byte	.LASF43
+ 848 0202 05       		.byte	0x5
+ 849 0203 B303     		.2byte	0x3b3
+ 850 0205 FC040000 		.4byte	0x4fc
+ 851 0209 10       		.byte	0x10
+ 852 020a 0C       		.uleb128 0xc
+ 853 020b E0030000 		.4byte	.LASF44
+ 854 020f 05       		.byte	0x5
+ 855 0210 B503     		.2byte	0x3b5
+ 856 0212 FC040000 		.4byte	0x4fc
+ 857 0216 14       		.byte	0x14
+ 858 0217 0C       		.uleb128 0xc
+ 859 0218 1F020000 		.4byte	.LASF45
+ 860 021c 05       		.byte	0x5
+ 861 021d B603     		.2byte	0x3b6
+ 862 021f FC040000 		.4byte	0x4fc
+ 863 0223 18       		.byte	0x18
+ 864 0224 0C       		.uleb128 0xc
+ 865 0225 B3050000 		.4byte	.LASF46
+ 866 0229 05       		.byte	0x5
+ 867 022a B803     		.2byte	0x3b8
+ 868 022c 1A050000 		.4byte	0x51a
+ 869 0230 1C       		.byte	0x1c
+ 870 0231 0C       		.uleb128 0xc
+ 871 0232 DB020000 		.4byte	.LASF47
+ 872 0236 05       		.byte	0x5
+ 873 0237 BA03     		.2byte	0x3ba
+ 874 0239 0E050000 		.4byte	0x50e
+ 875 023d 20       		.byte	0x20
+ 876 023e 0C       		.uleb128 0xc
+ 877 023f CF010000 		.4byte	.LASF48
+ 878 0243 05       		.byte	0x5
+ 879 0244 BC03     		.2byte	0x3bc
+ 880 0246 14050000 		.4byte	0x514
+ 881 024a 24       		.byte	0x24
+ 882 024b 0C       		.uleb128 0xc
+ 883 024c AF020000 		.4byte	.LASF49
+ 884 0250 05       		.byte	0x5
+ 885 0251 C203     		.2byte	0x3c2
+ 886 0253 A4010000 		.4byte	0x1a4
+ 887 0257 28       		.byte	0x28
+ 888 0258 0C       		.uleb128 0xc
+ 889 0259 CB050000 		.4byte	.LASF50
+ 890 025d 05       		.byte	0x5
+ 891 025e C303     		.2byte	0x3c3
+ 892 0260 BF000000 		.4byte	0xbf
+ 893 0264 2C       		.byte	0x2c
+ 894 0265 0C       		.uleb128 0xc
+ 895 0266 45040000 		.4byte	.LASF51
+ 896 026a 05       		.byte	0x5
+ 897 026b C503     		.2byte	0x3c5
+ 898 026d 02050000 		.4byte	0x502
+ 899 0271 30       		.byte	0x30
+ 900 0272 0C       		.uleb128 0xc
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 26
+
+
+ 901 0273 00010000 		.4byte	.LASF52
+ 902 0277 05       		.byte	0x5
+ 903 0278 C603     		.2byte	0x3c6
+ 904 027a 83010000 		.4byte	0x183
+ 905 027e 34       		.byte	0x34
+ 906 027f 0C       		.uleb128 0xc
+ 907 0280 E3020000 		.4byte	.LASF53
+ 908 0284 05       		.byte	0x5
+ 909 0285 C703     		.2byte	0x3c7
+ 910 0287 8E010000 		.4byte	0x18e
+ 911 028b 35       		.byte	0x35
+ 912 028c 0C       		.uleb128 0xc
+ 913 028d 82020000 		.4byte	.LASF54
+ 914 0291 05       		.byte	0x5
+ 915 0292 C903     		.2byte	0x3c9
+ 916 0294 83010000 		.4byte	0x183
+ 917 0298 36       		.byte	0x36
+ 918 0299 0C       		.uleb128 0xc
+ 919 029a 20060000 		.4byte	.LASF55
+ 920 029e 05       		.byte	0x5
+ 921 029f CA03     		.2byte	0x3ca
+ 922 02a1 57010000 		.4byte	0x157
+ 923 02a5 37       		.byte	0x37
+ 924 02a6 0C       		.uleb128 0xc
+ 925 02a7 C7010000 		.4byte	.LASF56
+ 926 02ab 05       		.byte	0x5
+ 927 02ac CB03     		.2byte	0x3cb
+ 928 02ae D7000000 		.4byte	0xd7
+ 929 02b2 38       		.byte	0x38
+ 930 02b3 0D       		.uleb128 0xd
+ 931 02b4 4F707400 		.ascii	"Opt\000"
+ 932 02b8 05       		.byte	0x5
+ 933 02b9 CC03     		.2byte	0x3cc
+ 934 02bb 4C010000 		.4byte	0x14c
+ 935 02bf 3C       		.byte	0x3c
+ 936 02c0 0C       		.uleb128 0xc
+ 937 02c1 07010000 		.4byte	.LASF57
+ 938 02c5 05       		.byte	0x5
+ 939 02c6 CE03     		.2byte	0x3ce
+ 940 02c8 36010000 		.4byte	0x136
+ 941 02cc 3E       		.byte	0x3e
+ 942 02cd 0D       		.uleb128 0xd
+ 943 02ce 545300   		.ascii	"TS\000"
+ 944 02d1 05       		.byte	0x5
+ 945 02d2 D003     		.2byte	0x3d0
+ 946 02d4 15010000 		.4byte	0x115
+ 947 02d8 40       		.byte	0x40
+ 948 02d9 0C       		.uleb128 0xc
+ 949 02da 78040000 		.4byte	.LASF58
+ 950 02de 05       		.byte	0x5
+ 951 02df D203     		.2byte	0x3d2
+ 952 02e1 78010000 		.4byte	0x178
+ 953 02e5 44       		.byte	0x44
+ 954 02e6 0C       		.uleb128 0xc
+ 955 02e7 13020000 		.4byte	.LASF59
+ 956 02eb 05       		.byte	0x5
+ 957 02ec D503     		.2byte	0x3d5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 27
+
+
+ 958 02ee 99010000 		.4byte	0x199
+ 959 02f2 48       		.byte	0x48
+ 960 02f3 0C       		.uleb128 0xc
+ 961 02f4 3D010000 		.4byte	.LASF60
+ 962 02f8 05       		.byte	0x5
+ 963 02f9 D603     		.2byte	0x3d6
+ 964 02fb 99010000 		.4byte	0x199
+ 965 02ff 4C       		.byte	0x4c
+ 966 0300 0C       		.uleb128 0xc
+ 967 0301 8E040000 		.4byte	.LASF61
+ 968 0305 05       		.byte	0x5
+ 969 0306 D703     		.2byte	0x3d7
+ 970 0308 99010000 		.4byte	0x199
+ 971 030c 50       		.byte	0x50
+ 972 030d 0C       		.uleb128 0xc
+ 973 030e 67060000 		.4byte	.LASF62
+ 974 0312 05       		.byte	0x5
+ 975 0313 D903     		.2byte	0x3d9
+ 976 0315 99010000 		.4byte	0x199
+ 977 0319 54       		.byte	0x54
+ 978 031a 0C       		.uleb128 0xc
+ 979 031b 1E000000 		.4byte	.LASF63
+ 980 031f 05       		.byte	0x5
+ 981 0320 DA03     		.2byte	0x3da
+ 982 0322 99010000 		.4byte	0x199
+ 983 0326 58       		.byte	0x58
+ 984 0327 0C       		.uleb128 0xc
+ 985 0328 58060000 		.4byte	.LASF64
+ 986 032c 05       		.byte	0x5
+ 987 032d EA03     		.2byte	0x3ea
+ 988 032f 20050000 		.4byte	0x520
+ 989 0333 5C       		.byte	0x5c
+ 990 0334 0C       		.uleb128 0xc
+ 991 0335 B7030000 		.4byte	.LASF65
+ 992 0339 05       		.byte	0x5
+ 993 033a F403     		.2byte	0x3f4
+ 994 033c 2B010000 		.4byte	0x12b
+ 995 0340 60       		.byte	0x60
+ 996 0341 0C       		.uleb128 0xc
+ 997 0342 07000000 		.4byte	.LASF66
+ 998 0346 05       		.byte	0x5
+ 999 0347 0504     		.2byte	0x405
+ 1000 0349 D7000000 		.4byte	0xd7
+ 1001 034d 64       		.byte	0x64
+ 1002 034e 0C       		.uleb128 0xc
+ 1003 034f 5F060000 		.4byte	.LASF67
+ 1004 0353 05       		.byte	0x5
+ 1005 0354 0604     		.2byte	0x406
+ 1006 0356 D7000000 		.4byte	0xd7
+ 1007 035a 68       		.byte	0x68
+ 1008 035b 0C       		.uleb128 0xc
+ 1009 035c 2E040000 		.4byte	.LASF68
+ 1010 0360 05       		.byte	0x5
+ 1011 0361 0A04     		.2byte	0x40a
+ 1012 0363 15010000 		.4byte	0x115
+ 1013 0367 6C       		.byte	0x6c
+ 1014 0368 0C       		.uleb128 0xc
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 28
+
+
+ 1015 0369 E2000000 		.4byte	.LASF69
+ 1016 036d 05       		.byte	0x5
+ 1017 036e 1104     		.2byte	0x411
+ 1018 0370 FC040000 		.4byte	0x4fc
+ 1019 0374 70       		.byte	0x70
+ 1020 0375 0C       		.uleb128 0xc
+ 1021 0376 ED000000 		.4byte	.LASF70
+ 1022 037a 05       		.byte	0x5
+ 1023 037b 1204     		.2byte	0x412
+ 1024 037d FC040000 		.4byte	0x4fc
+ 1025 0381 74       		.byte	0x74
+ 1026 0382 0C       		.uleb128 0xc
+ 1027 0383 C0050000 		.4byte	.LASF71
+ 1028 0387 05       		.byte	0x5
+ 1029 0388 1304     		.2byte	0x413
+ 1030 038a 0E050000 		.4byte	0x50e
+ 1031 038e 78       		.byte	0x78
+ 1032 038f 00       		.byte	0
+ 1033 0390 0A       		.uleb128 0xa
+ 1034 0391 7C010000 		.4byte	.LASF72
+ 1035 0395 05       		.byte	0x5
+ 1036 0396 9E02     		.2byte	0x29e
+ 1037 0398 9C030000 		.4byte	0x39c
+ 1038 039c 0B       		.uleb128 0xb
+ 1039 039d 0F030000 		.4byte	.LASF74
+ 1040 03a1 08       		.byte	0x8
+ 1041 03a2 05       		.byte	0x5
+ 1042 03a3 1E04     		.2byte	0x41e
+ 1043 03a5 D1030000 		.4byte	0x3d1
+ 1044 03a9 0C       		.uleb128 0xc
+ 1045 03aa CA040000 		.4byte	.LASF75
+ 1046 03ae 05       		.byte	0x5
+ 1047 03af 1F04     		.2byte	0x41f
+ 1048 03b1 FC040000 		.4byte	0x4fc
+ 1049 03b5 00       		.byte	0
+ 1050 03b6 0C       		.uleb128 0xc
+ 1051 03b7 32000000 		.4byte	.LASF76
+ 1052 03bb 05       		.byte	0x5
+ 1053 03bc 2004     		.2byte	0x420
+ 1054 03be 36010000 		.4byte	0x136
+ 1055 03c2 04       		.byte	0x4
+ 1056 03c3 0C       		.uleb128 0xc
+ 1057 03c4 E6050000 		.4byte	.LASF77
+ 1058 03c8 05       		.byte	0x5
+ 1059 03c9 2104     		.2byte	0x421
+ 1060 03cb 36010000 		.4byte	0x136
+ 1061 03cf 06       		.byte	0x6
+ 1062 03d0 00       		.byte	0
+ 1063 03d1 0A       		.uleb128 0xa
+ 1064 03d2 AF010000 		.4byte	.LASF78
+ 1065 03d6 05       		.byte	0x5
+ 1066 03d7 A502     		.2byte	0x2a5
+ 1067 03d9 DD030000 		.4byte	0x3dd
+ 1068 03dd 0B       		.uleb128 0xb
+ 1069 03de 6F010000 		.4byte	.LASF79
+ 1070 03e2 20       		.byte	0x20
+ 1071 03e3 05       		.byte	0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 29
+
+
+ 1072 03e4 DD02     		.2byte	0x2dd
+ 1073 03e6 53040000 		.4byte	0x453
+ 1074 03ea 0C       		.uleb128 0xc
+ 1075 03eb 5D020000 		.4byte	.LASF43
+ 1076 03ef 05       		.byte	0x5
+ 1077 03f0 DE02     		.2byte	0x2de
+ 1078 03f2 02050000 		.4byte	0x502
+ 1079 03f6 00       		.byte	0
+ 1080 03f7 0C       		.uleb128 0xc
+ 1081 03f8 F6030000 		.4byte	.LASF42
+ 1082 03fc 05       		.byte	0x5
+ 1083 03fd DF02     		.2byte	0x2df
+ 1084 03ff 02050000 		.4byte	0x502
+ 1085 0403 04       		.byte	0x4
+ 1086 0404 0C       		.uleb128 0xc
+ 1087 0405 D9030000 		.4byte	.LASF80
+ 1088 0409 05       		.byte	0x5
+ 1089 040a E002     		.2byte	0x2e0
+ 1090 040c FC040000 		.4byte	0x4fc
+ 1091 0410 08       		.byte	0x8
+ 1092 0411 0C       		.uleb128 0xc
+ 1093 0412 2C060000 		.4byte	.LASF81
+ 1094 0416 05       		.byte	0x5
+ 1095 0417 E102     		.2byte	0x2e1
+ 1096 0419 08050000 		.4byte	0x508
+ 1097 041d 0C       		.byte	0xc
+ 1098 041e 0C       		.uleb128 0xc
+ 1099 041f EC030000 		.4byte	.LASF82
+ 1100 0423 05       		.byte	0x5
+ 1101 0424 E202     		.2byte	0x2e2
+ 1102 0426 08050000 		.4byte	0x508
+ 1103 042a 10       		.byte	0x10
+ 1104 042b 0C       		.uleb128 0xc
+ 1105 042c C0040000 		.4byte	.LASF83
+ 1106 0430 05       		.byte	0x5
+ 1107 0431 E302     		.2byte	0x2e3
+ 1108 0433 BF000000 		.4byte	0xbf
+ 1109 0437 14       		.byte	0x14
+ 1110 0438 0C       		.uleb128 0xc
+ 1111 0439 23040000 		.4byte	.LASF84
+ 1112 043d 05       		.byte	0x5
+ 1113 043e E402     		.2byte	0x2e4
+ 1114 0440 20010000 		.4byte	0x120
+ 1115 0444 18       		.byte	0x18
+ 1116 0445 0C       		.uleb128 0xc
+ 1117 0446 0A040000 		.4byte	.LASF85
+ 1118 044a 05       		.byte	0x5
+ 1119 044b E502     		.2byte	0x2e5
+ 1120 044d 15010000 		.4byte	0x115
+ 1121 0451 1C       		.byte	0x1c
+ 1122 0452 00       		.byte	0
+ 1123 0453 0A       		.uleb128 0xa
+ 1124 0454 F4050000 		.4byte	.LASF86
+ 1125 0458 05       		.byte	0x5
+ 1126 0459 A602     		.2byte	0x2a6
+ 1127 045b 5F040000 		.4byte	0x45f
+ 1128 045f 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 30
+
+
+ 1129 0460 3E060000 		.4byte	.LASF87
+ 1130 0464 0C       		.byte	0xc
+ 1131 0465 05       		.byte	0x5
+ 1132 0466 E902     		.2byte	0x2e9
+ 1133 0468 94040000 		.4byte	0x494
+ 1134 046c 0C       		.uleb128 0xc
+ 1135 046d F8000000 		.4byte	.LASF88
+ 1136 0471 05       		.byte	0x5
+ 1137 0472 EA02     		.2byte	0x2ea
+ 1138 0474 02050000 		.4byte	0x502
+ 1139 0478 00       		.byte	0
+ 1140 0479 0C       		.uleb128 0xc
+ 1141 047a 1A010000 		.4byte	.LASF89
+ 1142 047e 05       		.byte	0x5
+ 1143 047f EB02     		.2byte	0x2eb
+ 1144 0481 02050000 		.4byte	0x502
+ 1145 0485 04       		.byte	0x4
+ 1146 0486 0C       		.uleb128 0xc
+ 1147 0487 32000000 		.4byte	.LASF76
+ 1148 048b 05       		.byte	0x5
+ 1149 048c EC02     		.2byte	0x2ec
+ 1150 048e 36010000 		.4byte	0x136
+ 1151 0492 08       		.byte	0x8
+ 1152 0493 00       		.byte	0
+ 1153 0494 0A       		.uleb128 0xa
+ 1154 0495 63040000 		.4byte	.LASF90
+ 1155 0499 05       		.byte	0x5
+ 1156 049a A702     		.2byte	0x2a7
+ 1157 049c A0040000 		.4byte	0x4a0
+ 1158 04a0 0B       		.uleb128 0xb
+ 1159 04a1 4A010000 		.4byte	.LASF91
+ 1160 04a5 20       		.byte	0x20
+ 1161 04a6 05       		.byte	0x5
+ 1162 04a7 FF02     		.2byte	0x2ff
+ 1163 04a9 FC040000 		.4byte	0x4fc
+ 1164 04ad 0C       		.uleb128 0xc
+ 1165 04ae EE020000 		.4byte	.LASF92
+ 1166 04b2 05       		.byte	0x5
+ 1167 04b3 0003     		.2byte	0x300
+ 1168 04b5 41010000 		.4byte	0x141
+ 1169 04b9 00       		.byte	0
+ 1170 04ba 0C       		.uleb128 0xc
+ 1171 04bb DB020000 		.4byte	.LASF47
+ 1172 04bf 05       		.byte	0x5
+ 1173 04c0 0103     		.2byte	0x301
+ 1174 04c2 0E050000 		.4byte	0x50e
+ 1175 04c6 04       		.byte	0x4
+ 1176 04c7 0C       		.uleb128 0xc
+ 1177 04c8 6F040000 		.4byte	.LASF93
+ 1178 04cc 05       		.byte	0x5
+ 1179 04cd 0203     		.2byte	0x302
+ 1180 04cf 53040000 		.4byte	0x453
+ 1181 04d3 08       		.byte	0x8
+ 1182 04d4 0C       		.uleb128 0xc
+ 1183 04d5 E2000000 		.4byte	.LASF69
+ 1184 04d9 05       		.byte	0x5
+ 1185 04da 0403     		.2byte	0x304
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 31
+
+
+ 1186 04dc BF000000 		.4byte	0xbf
+ 1187 04e0 14       		.byte	0x14
+ 1188 04e1 0C       		.uleb128 0xc
+ 1189 04e2 ED000000 		.4byte	.LASF70
+ 1190 04e6 05       		.byte	0x5
+ 1191 04e7 0503     		.2byte	0x305
+ 1192 04e9 BF000000 		.4byte	0xbf
+ 1193 04ed 18       		.byte	0x18
+ 1194 04ee 0C       		.uleb128 0xc
+ 1195 04ef C0050000 		.4byte	.LASF71
+ 1196 04f3 05       		.byte	0x5
+ 1197 04f4 0603     		.2byte	0x306
+ 1198 04f6 0E050000 		.4byte	0x50e
+ 1199 04fa 1C       		.byte	0x1c
+ 1200 04fb 00       		.byte	0
+ 1201 04fc 06       		.uleb128 0x6
+ 1202 04fd 04       		.byte	0x4
+ 1203 04fe B0010000 		.4byte	0x1b0
+ 1204 0502 06       		.uleb128 0x6
+ 1205 0503 04       		.byte	0x4
+ 1206 0504 D1030000 		.4byte	0x3d1
+ 1207 0508 06       		.uleb128 0x6
+ 1208 0509 04       		.byte	0x4
+ 1209 050a 94040000 		.4byte	0x494
+ 1210 050e 06       		.uleb128 0x6
+ 1211 050f 04       		.byte	0x4
+ 1212 0510 25000000 		.4byte	0x25
+ 1213 0514 06       		.uleb128 0x6
+ 1214 0515 04       		.byte	0x4
+ 1215 0516 CC000000 		.4byte	0xcc
+ 1216 051a 06       		.uleb128 0x6
+ 1217 051b 04       		.byte	0x4
+ 1218 051c 90030000 		.4byte	0x390
+ 1219 0520 0E       		.uleb128 0xe
+ 1220 0521 6D010000 		.4byte	0x16d
+ 1221 0525 30050000 		.4byte	0x530
+ 1222 0529 0F       		.uleb128 0xf
+ 1223 052a 03010000 		.4byte	0x103
+ 1224 052e 00       		.byte	0
+ 1225 052f 00       		.byte	0
+ 1226 0530 10       		.uleb128 0x10
+ 1227 0531 B1040000 		.4byte	.LASF94
+ 1228 0535 01       		.byte	0x1
+ 1229 0536 4F       		.byte	0x4f
+ 1230 0537 00000000 		.4byte	.LFB1
+ 1231 053b 0A000000 		.4byte	.LFE1-.LFB1
+ 1232 053f 01       		.uleb128 0x1
+ 1233 0540 9C       		.byte	0x9c
+ 1234 0541 10       		.uleb128 0x10
+ 1235 0542 99040000 		.4byte	.LASF95
+ 1236 0546 01       		.byte	0x1
+ 1237 0547 65       		.byte	0x65
+ 1238 0548 00000000 		.4byte	.LFB2
+ 1239 054c 38000000 		.4byte	.LFE2-.LFB2
+ 1240 0550 01       		.uleb128 0x1
+ 1241 0551 9C       		.byte	0x9c
+ 1242 0552 10       		.uleb128 0x10
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 32
+
+
+ 1243 0553 22010000 		.4byte	.LASF96
+ 1244 0557 01       		.byte	0x1
+ 1245 0558 97       		.byte	0x97
+ 1246 0559 00000000 		.4byte	.LFB3
+ 1247 055d 0A000000 		.4byte	.LFE3-.LFB3
+ 1248 0561 01       		.uleb128 0x1
+ 1249 0562 9C       		.byte	0x9c
+ 1250 0563 11       		.uleb128 0x11
+ 1251 0564 2B020000 		.4byte	.LASF97
+ 1252 0568 01       		.byte	0x1
+ 1253 0569 AD       		.byte	0xad
+ 1254 056a 00000000 		.4byte	.LFB4
+ 1255 056e 10000000 		.4byte	.LFE4-.LFB4
+ 1256 0572 01       		.uleb128 0x1
+ 1257 0573 9C       		.byte	0x9c
+ 1258 0574 87050000 		.4byte	0x587
+ 1259 0578 12       		.uleb128 0x12
+ 1260 0579 EB010000 		.4byte	.LASF99
+ 1261 057d 01       		.byte	0x1
+ 1262 057e AD       		.byte	0xad
+ 1263 057f FC040000 		.4byte	0x4fc
+ 1264 0583 02       		.uleb128 0x2
+ 1265 0584 91       		.byte	0x91
+ 1266 0585 74       		.sleb128 -12
+ 1267 0586 00       		.byte	0
+ 1268 0587 11       		.uleb128 0x11
+ 1269 0588 7C050000 		.4byte	.LASF98
+ 1270 058c 01       		.byte	0x1
+ 1271 058d C5       		.byte	0xc5
+ 1272 058e 00000000 		.4byte	.LFB5
+ 1273 0592 10000000 		.4byte	.LFE5-.LFB5
+ 1274 0596 01       		.uleb128 0x1
+ 1275 0597 9C       		.byte	0x9c
+ 1276 0598 AB050000 		.4byte	0x5ab
+ 1277 059c 12       		.uleb128 0x12
+ 1278 059d EB010000 		.4byte	.LASF99
+ 1279 05a1 01       		.byte	0x1
+ 1280 05a2 C5       		.byte	0xc5
+ 1281 05a3 FC040000 		.4byte	0x4fc
+ 1282 05a7 02       		.uleb128 0x2
+ 1283 05a8 91       		.byte	0x91
+ 1284 05a9 74       		.sleb128 -12
+ 1285 05aa 00       		.byte	0
+ 1286 05ab 11       		.uleb128 0x11
+ 1287 05ac BD020000 		.4byte	.LASF100
+ 1288 05b0 01       		.byte	0x1
+ 1289 05b1 DE       		.byte	0xde
+ 1290 05b2 00000000 		.4byte	.LFB6
+ 1291 05b6 10000000 		.4byte	.LFE6-.LFB6
+ 1292 05ba 01       		.uleb128 0x1
+ 1293 05bb 9C       		.byte	0x9c
+ 1294 05bc CF050000 		.4byte	0x5cf
+ 1295 05c0 12       		.uleb128 0x12
+ 1296 05c1 EB010000 		.4byte	.LASF99
+ 1297 05c5 01       		.byte	0x1
+ 1298 05c6 DE       		.byte	0xde
+ 1299 05c7 FC040000 		.4byte	0x4fc
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 33
+
+
+ 1300 05cb 02       		.uleb128 0x2
+ 1301 05cc 91       		.byte	0x91
+ 1302 05cd 74       		.sleb128 -12
+ 1303 05ce 00       		.byte	0
+ 1304 05cf 13       		.uleb128 0x13
+ 1305 05d0 D8050000 		.4byte	.LASF124
+ 1306 05d4 01       		.byte	0x1
+ 1307 05d5 4901     		.2byte	0x149
+ 1308 05d7 14050000 		.4byte	0x514
+ 1309 05db 00000000 		.4byte	.LFB7
+ 1310 05df 2C010000 		.4byte	.LFE7-.LFB7
+ 1311 05e3 01       		.uleb128 0x1
+ 1312 05e4 9C       		.byte	0x9c
+ 1313 05e5 53060000 		.4byte	0x653
+ 1314 05e9 14       		.uleb128 0x14
+ 1315 05ea A8010000 		.4byte	.LASF101
+ 1316 05ee 01       		.byte	0x1
+ 1317 05ef 4901     		.2byte	0x149
+ 1318 05f1 A4010000 		.4byte	0x1a4
+ 1319 05f5 02       		.uleb128 0x2
+ 1320 05f6 91       		.byte	0x91
+ 1321 05f7 6C       		.sleb128 -20
+ 1322 05f8 14       		.uleb128 0x14
+ 1323 05f9 E8040000 		.4byte	.LASF102
+ 1324 05fd 01       		.byte	0x1
+ 1325 05fe 4A01     		.2byte	0x14a
+ 1326 0600 BF000000 		.4byte	0xbf
+ 1327 0604 02       		.uleb128 0x2
+ 1328 0605 91       		.byte	0x91
+ 1329 0606 68       		.sleb128 -24
+ 1330 0607 14       		.uleb128 0x14
+ 1331 0608 8A050000 		.4byte	.LASF103
+ 1332 060c 01       		.byte	0x1
+ 1333 060d 4B01     		.2byte	0x14b
+ 1334 060f 14050000 		.4byte	0x514
+ 1335 0613 02       		.uleb128 0x2
+ 1336 0614 91       		.byte	0x91
+ 1337 0615 64       		.sleb128 -28
+ 1338 0616 14       		.uleb128 0x14
+ 1339 0617 76020000 		.4byte	.LASF104
+ 1340 061b 01       		.byte	0x1
+ 1341 061c 4C01     		.2byte	0x14c
+ 1342 061e 14050000 		.4byte	0x514
+ 1343 0622 02       		.uleb128 0x2
+ 1344 0623 91       		.byte	0x91
+ 1345 0624 60       		.sleb128 -32
+ 1346 0625 14       		.uleb128 0x14
+ 1347 0626 10040000 		.4byte	.LASF105
+ 1348 062a 01       		.byte	0x1
+ 1349 062b 4D01     		.2byte	0x14d
+ 1350 062d D7000000 		.4byte	0xd7
+ 1351 0631 02       		.uleb128 0x2
+ 1352 0632 91       		.byte	0x91
+ 1353 0633 00       		.sleb128 0
+ 1354 0634 15       		.uleb128 0x15
+ 1355 0635 6F707400 		.ascii	"opt\000"
+ 1356 0639 01       		.byte	0x1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 34
+
+
+ 1357 063a 4E01     		.2byte	0x14e
+ 1358 063c 4C010000 		.4byte	0x14c
+ 1359 0640 02       		.uleb128 0x2
+ 1360 0641 91       		.byte	0x91
+ 1361 0642 04       		.sleb128 4
+ 1362 0643 16       		.uleb128 0x16
+ 1363 0644 2C000000 		.4byte	.LASF107
+ 1364 0648 01       		.byte	0x1
+ 1365 0649 5001     		.2byte	0x150
+ 1366 064b 14050000 		.4byte	0x514
+ 1367 064f 02       		.uleb128 0x2
+ 1368 0650 91       		.byte	0x91
+ 1369 0651 74       		.sleb128 -12
+ 1370 0652 00       		.byte	0
+ 1371 0653 17       		.uleb128 0x17
+ 1372 0654 CE020000 		.4byte	.LASF106
+ 1373 0658 01       		.byte	0x1
+ 1374 0659 8001     		.2byte	0x180
+ 1375 065b 00000000 		.4byte	.LFB8
+ 1376 065f 30000000 		.4byte	.LFE8-.LFB8
+ 1377 0663 01       		.uleb128 0x1
+ 1378 0664 9C       		.byte	0x9c
+ 1379 0665 79060000 		.4byte	0x679
+ 1380 0669 16       		.uleb128 0x16
+ 1381 066a 4B060000 		.4byte	.LASF108
+ 1382 066e 01       		.byte	0x1
+ 1383 066f 8601     		.2byte	0x186
+ 1384 0671 15010000 		.4byte	0x115
+ 1385 0675 02       		.uleb128 0x2
+ 1386 0676 91       		.byte	0x91
+ 1387 0677 74       		.sleb128 -12
+ 1388 0678 00       		.byte	0
+ 1389 0679 18       		.uleb128 0x18
+ 1390 067a 7F040000 		.4byte	.LASF109
+ 1391 067e 01       		.byte	0x1
+ 1392 067f C501     		.2byte	0x1c5
+ 1393 0681 00000000 		.4byte	.LFB9
+ 1394 0685 0A000000 		.4byte	.LFE9-.LFB9
+ 1395 0689 01       		.uleb128 0x1
+ 1396 068a 9C       		.byte	0x9c
+ 1397 068b 17       		.uleb128 0x17
+ 1398 068c 1D030000 		.4byte	.LASF110
+ 1399 0690 01       		.byte	0x1
+ 1400 0691 DC01     		.2byte	0x1dc
+ 1401 0693 00000000 		.4byte	.LFB10
+ 1402 0697 36000000 		.4byte	.LFE10-.LFB10
+ 1403 069b 01       		.uleb128 0x1
+ 1404 069c 9C       		.byte	0x9c
+ 1405 069d B1060000 		.4byte	0x6b1
+ 1406 06a1 16       		.uleb128 0x16
+ 1407 06a2 8A010000 		.4byte	.LASF111
+ 1408 06a6 01       		.byte	0x1
+ 1409 06a7 DE01     		.2byte	0x1de
+ 1410 06a9 E2000000 		.4byte	0xe2
+ 1411 06ad 02       		.uleb128 0x2
+ 1412 06ae 91       		.byte	0x91
+ 1413 06af 74       		.sleb128 -12
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 35
+
+
+ 1414 06b0 00       		.byte	0
+ 1415 06b1 17       		.uleb128 0x17
+ 1416 06b2 45020000 		.4byte	.LASF112
+ 1417 06b6 01       		.byte	0x1
+ 1418 06b7 F701     		.2byte	0x1f7
+ 1419 06b9 00000000 		.4byte	.LFB11
+ 1420 06bd 64000000 		.4byte	.LFE11-.LFB11
+ 1421 06c1 01       		.uleb128 0x1
+ 1422 06c2 9C       		.byte	0x9c
+ 1423 06c3 F5060000 		.4byte	0x6f5
+ 1424 06c7 14       		.uleb128 0x14
+ 1425 06c8 3C020000 		.4byte	.LASF113
+ 1426 06cc 01       		.byte	0x1
+ 1427 06cd F701     		.2byte	0x1f7
+ 1428 06cf 69000000 		.4byte	0x69
+ 1429 06d3 02       		.uleb128 0x2
+ 1430 06d4 91       		.byte	0x91
+ 1431 06d5 6C       		.sleb128 -20
+ 1432 06d6 16       		.uleb128 0x16
+ 1433 06d7 58020000 		.4byte	.LASF114
+ 1434 06db 01       		.byte	0x1
+ 1435 06dc F901     		.2byte	0x1f9
+ 1436 06de 69000000 		.4byte	0x69
+ 1437 06e2 02       		.uleb128 0x2
+ 1438 06e3 91       		.byte	0x91
+ 1439 06e4 70       		.sleb128 -16
+ 1440 06e5 16       		.uleb128 0x16
+ 1441 06e6 19000000 		.4byte	.LASF115
+ 1442 06ea 01       		.byte	0x1
+ 1443 06eb FA01     		.2byte	0x1fa
+ 1444 06ed 69000000 		.4byte	0x69
+ 1445 06f1 02       		.uleb128 0x2
+ 1446 06f2 91       		.byte	0x91
+ 1447 06f3 74       		.sleb128 -12
+ 1448 06f4 00       		.byte	0
+ 1449 06f5 19       		.uleb128 0x19
+ 1450 06f6 D3040000 		.4byte	.LASF116
+ 1451 06fa 06       		.byte	0x6
+ 1452 06fb 95       		.byte	0x95
+ 1453 06fc 14050000 		.4byte	0x514
+ 1454 0700 05       		.uleb128 0x5
+ 1455 0701 03       		.byte	0x3
+ 1456 0702 00000000 		.4byte	OS_CPU_ExceptStkBase
+ 1457 0706 1A       		.uleb128 0x1a
+ 1458 0707 48000000 		.4byte	.LASF117
+ 1459 070b 05       		.byte	0x5
+ 1460 070c E504     		.2byte	0x4e5
+ 1461 070e FC040000 		.4byte	0x4fc
+ 1462 0712 1A       		.uleb128 0x1a
+ 1463 0713 68050000 		.4byte	.LASF118
+ 1464 0717 05       		.byte	0x5
+ 1465 0718 FE04     		.2byte	0x4fe
+ 1466 071a 1E070000 		.4byte	0x71e
+ 1467 071e 1B       		.uleb128 0x1b
+ 1468 071f 14050000 		.4byte	0x514
+ 1469 0723 1A       		.uleb128 0x1a
+ 1470 0724 93020000 		.4byte	.LASF119
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 36
+
+
+ 1471 0728 05       		.byte	0x5
+ 1472 0729 FF04     		.2byte	0x4ff
+ 1473 072b 2F070000 		.4byte	0x72f
+ 1474 072f 1B       		.uleb128 0x1b
+ 1475 0730 D7000000 		.4byte	0xd7
+ 1476 0734 1A       		.uleb128 0x1a
+ 1477 0735 72060000 		.4byte	.LASF120
+ 1478 0739 05       		.byte	0x5
+ 1479 073a 0F05     		.2byte	0x50f
+ 1480 073c 40070000 		.4byte	0x740
+ 1481 0740 1B       		.uleb128 0x1b
+ 1482 0741 62010000 		.4byte	0x162
+ 1483 0745 00       		.byte	0
+ 1484              		.section	.debug_abbrev,"",%progbits
+ 1485              	.Ldebug_abbrev0:
+ 1486 0000 01       		.uleb128 0x1
+ 1487 0001 11       		.uleb128 0x11
+ 1488 0002 01       		.byte	0x1
+ 1489 0003 25       		.uleb128 0x25
+ 1490 0004 0E       		.uleb128 0xe
+ 1491 0005 13       		.uleb128 0x13
+ 1492 0006 0B       		.uleb128 0xb
+ 1493 0007 03       		.uleb128 0x3
+ 1494 0008 0E       		.uleb128 0xe
+ 1495 0009 1B       		.uleb128 0x1b
+ 1496 000a 0E       		.uleb128 0xe
+ 1497 000b 55       		.uleb128 0x55
+ 1498 000c 17       		.uleb128 0x17
+ 1499 000d 11       		.uleb128 0x11
+ 1500 000e 01       		.uleb128 0x1
+ 1501 000f 10       		.uleb128 0x10
+ 1502 0010 17       		.uleb128 0x17
+ 1503 0011 00       		.byte	0
+ 1504 0012 00       		.byte	0
+ 1505 0013 02       		.uleb128 0x2
+ 1506 0014 16       		.uleb128 0x16
+ 1507 0015 00       		.byte	0
+ 1508 0016 03       		.uleb128 0x3
+ 1509 0017 0E       		.uleb128 0xe
+ 1510 0018 3A       		.uleb128 0x3a
+ 1511 0019 0B       		.uleb128 0xb
+ 1512 001a 3B       		.uleb128 0x3b
+ 1513 001b 0B       		.uleb128 0xb
+ 1514 001c 49       		.uleb128 0x49
+ 1515 001d 13       		.uleb128 0x13
+ 1516 001e 00       		.byte	0
+ 1517 001f 00       		.byte	0
+ 1518 0020 03       		.uleb128 0x3
+ 1519 0021 24       		.uleb128 0x24
+ 1520 0022 00       		.byte	0
+ 1521 0023 0B       		.uleb128 0xb
+ 1522 0024 0B       		.uleb128 0xb
+ 1523 0025 3E       		.uleb128 0x3e
+ 1524 0026 0B       		.uleb128 0xb
+ 1525 0027 03       		.uleb128 0x3
+ 1526 0028 0E       		.uleb128 0xe
+ 1527 0029 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 37
+
+
+ 1528 002a 00       		.byte	0
+ 1529 002b 04       		.uleb128 0x4
+ 1530 002c 24       		.uleb128 0x24
+ 1531 002d 00       		.byte	0
+ 1532 002e 0B       		.uleb128 0xb
+ 1533 002f 0B       		.uleb128 0xb
+ 1534 0030 3E       		.uleb128 0x3e
+ 1535 0031 0B       		.uleb128 0xb
+ 1536 0032 03       		.uleb128 0x3
+ 1537 0033 08       		.uleb128 0x8
+ 1538 0034 00       		.byte	0
+ 1539 0035 00       		.byte	0
+ 1540 0036 05       		.uleb128 0x5
+ 1541 0037 35       		.uleb128 0x35
+ 1542 0038 00       		.byte	0
+ 1543 0039 49       		.uleb128 0x49
+ 1544 003a 13       		.uleb128 0x13
+ 1545 003b 00       		.byte	0
+ 1546 003c 00       		.byte	0
+ 1547 003d 06       		.uleb128 0x6
+ 1548 003e 0F       		.uleb128 0xf
+ 1549 003f 00       		.byte	0
+ 1550 0040 0B       		.uleb128 0xb
+ 1551 0041 0B       		.uleb128 0xb
+ 1552 0042 49       		.uleb128 0x49
+ 1553 0043 13       		.uleb128 0x13
+ 1554 0044 00       		.byte	0
+ 1555 0045 00       		.byte	0
+ 1556 0046 07       		.uleb128 0x7
+ 1557 0047 15       		.uleb128 0x15
+ 1558 0048 01       		.byte	0x1
+ 1559 0049 27       		.uleb128 0x27
+ 1560 004a 19       		.uleb128 0x19
+ 1561 004b 01       		.uleb128 0x1
+ 1562 004c 13       		.uleb128 0x13
+ 1563 004d 00       		.byte	0
+ 1564 004e 00       		.byte	0
+ 1565 004f 08       		.uleb128 0x8
+ 1566 0050 05       		.uleb128 0x5
+ 1567 0051 00       		.byte	0
+ 1568 0052 49       		.uleb128 0x49
+ 1569 0053 13       		.uleb128 0x13
+ 1570 0054 00       		.byte	0
+ 1571 0055 00       		.byte	0
+ 1572 0056 09       		.uleb128 0x9
+ 1573 0057 0F       		.uleb128 0xf
+ 1574 0058 00       		.byte	0
+ 1575 0059 0B       		.uleb128 0xb
+ 1576 005a 0B       		.uleb128 0xb
+ 1577 005b 00       		.byte	0
+ 1578 005c 00       		.byte	0
+ 1579 005d 0A       		.uleb128 0xa
+ 1580 005e 16       		.uleb128 0x16
+ 1581 005f 00       		.byte	0
+ 1582 0060 03       		.uleb128 0x3
+ 1583 0061 0E       		.uleb128 0xe
+ 1584 0062 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 38
+
+
+ 1585 0063 0B       		.uleb128 0xb
+ 1586 0064 3B       		.uleb128 0x3b
+ 1587 0065 05       		.uleb128 0x5
+ 1588 0066 49       		.uleb128 0x49
+ 1589 0067 13       		.uleb128 0x13
+ 1590 0068 00       		.byte	0
+ 1591 0069 00       		.byte	0
+ 1592 006a 0B       		.uleb128 0xb
+ 1593 006b 13       		.uleb128 0x13
+ 1594 006c 01       		.byte	0x1
+ 1595 006d 03       		.uleb128 0x3
+ 1596 006e 0E       		.uleb128 0xe
+ 1597 006f 0B       		.uleb128 0xb
+ 1598 0070 0B       		.uleb128 0xb
+ 1599 0071 3A       		.uleb128 0x3a
+ 1600 0072 0B       		.uleb128 0xb
+ 1601 0073 3B       		.uleb128 0x3b
+ 1602 0074 05       		.uleb128 0x5
+ 1603 0075 01       		.uleb128 0x1
+ 1604 0076 13       		.uleb128 0x13
+ 1605 0077 00       		.byte	0
+ 1606 0078 00       		.byte	0
+ 1607 0079 0C       		.uleb128 0xc
+ 1608 007a 0D       		.uleb128 0xd
+ 1609 007b 00       		.byte	0
+ 1610 007c 03       		.uleb128 0x3
+ 1611 007d 0E       		.uleb128 0xe
+ 1612 007e 3A       		.uleb128 0x3a
+ 1613 007f 0B       		.uleb128 0xb
+ 1614 0080 3B       		.uleb128 0x3b
+ 1615 0081 05       		.uleb128 0x5
+ 1616 0082 49       		.uleb128 0x49
+ 1617 0083 13       		.uleb128 0x13
+ 1618 0084 38       		.uleb128 0x38
+ 1619 0085 0B       		.uleb128 0xb
+ 1620 0086 00       		.byte	0
+ 1621 0087 00       		.byte	0
+ 1622 0088 0D       		.uleb128 0xd
+ 1623 0089 0D       		.uleb128 0xd
+ 1624 008a 00       		.byte	0
+ 1625 008b 03       		.uleb128 0x3
+ 1626 008c 08       		.uleb128 0x8
+ 1627 008d 3A       		.uleb128 0x3a
+ 1628 008e 0B       		.uleb128 0xb
+ 1629 008f 3B       		.uleb128 0x3b
+ 1630 0090 05       		.uleb128 0x5
+ 1631 0091 49       		.uleb128 0x49
+ 1632 0092 13       		.uleb128 0x13
+ 1633 0093 38       		.uleb128 0x38
+ 1634 0094 0B       		.uleb128 0xb
+ 1635 0095 00       		.byte	0
+ 1636 0096 00       		.byte	0
+ 1637 0097 0E       		.uleb128 0xe
+ 1638 0098 01       		.uleb128 0x1
+ 1639 0099 01       		.byte	0x1
+ 1640 009a 49       		.uleb128 0x49
+ 1641 009b 13       		.uleb128 0x13
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 39
+
+
+ 1642 009c 01       		.uleb128 0x1
+ 1643 009d 13       		.uleb128 0x13
+ 1644 009e 00       		.byte	0
+ 1645 009f 00       		.byte	0
+ 1646 00a0 0F       		.uleb128 0xf
+ 1647 00a1 21       		.uleb128 0x21
+ 1648 00a2 00       		.byte	0
+ 1649 00a3 49       		.uleb128 0x49
+ 1650 00a4 13       		.uleb128 0x13
+ 1651 00a5 2F       		.uleb128 0x2f
+ 1652 00a6 0B       		.uleb128 0xb
+ 1653 00a7 00       		.byte	0
+ 1654 00a8 00       		.byte	0
+ 1655 00a9 10       		.uleb128 0x10
+ 1656 00aa 2E       		.uleb128 0x2e
+ 1657 00ab 00       		.byte	0
+ 1658 00ac 3F       		.uleb128 0x3f
+ 1659 00ad 19       		.uleb128 0x19
+ 1660 00ae 03       		.uleb128 0x3
+ 1661 00af 0E       		.uleb128 0xe
+ 1662 00b0 3A       		.uleb128 0x3a
+ 1663 00b1 0B       		.uleb128 0xb
+ 1664 00b2 3B       		.uleb128 0x3b
+ 1665 00b3 0B       		.uleb128 0xb
+ 1666 00b4 27       		.uleb128 0x27
+ 1667 00b5 19       		.uleb128 0x19
+ 1668 00b6 11       		.uleb128 0x11
+ 1669 00b7 01       		.uleb128 0x1
+ 1670 00b8 12       		.uleb128 0x12
+ 1671 00b9 06       		.uleb128 0x6
+ 1672 00ba 40       		.uleb128 0x40
+ 1673 00bb 18       		.uleb128 0x18
+ 1674 00bc 9742     		.uleb128 0x2117
+ 1675 00be 19       		.uleb128 0x19
+ 1676 00bf 00       		.byte	0
+ 1677 00c0 00       		.byte	0
+ 1678 00c1 11       		.uleb128 0x11
+ 1679 00c2 2E       		.uleb128 0x2e
+ 1680 00c3 01       		.byte	0x1
+ 1681 00c4 3F       		.uleb128 0x3f
+ 1682 00c5 19       		.uleb128 0x19
+ 1683 00c6 03       		.uleb128 0x3
+ 1684 00c7 0E       		.uleb128 0xe
+ 1685 00c8 3A       		.uleb128 0x3a
+ 1686 00c9 0B       		.uleb128 0xb
+ 1687 00ca 3B       		.uleb128 0x3b
+ 1688 00cb 0B       		.uleb128 0xb
+ 1689 00cc 27       		.uleb128 0x27
+ 1690 00cd 19       		.uleb128 0x19
+ 1691 00ce 11       		.uleb128 0x11
+ 1692 00cf 01       		.uleb128 0x1
+ 1693 00d0 12       		.uleb128 0x12
+ 1694 00d1 06       		.uleb128 0x6
+ 1695 00d2 40       		.uleb128 0x40
+ 1696 00d3 18       		.uleb128 0x18
+ 1697 00d4 9742     		.uleb128 0x2117
+ 1698 00d6 19       		.uleb128 0x19
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 40
+
+
+ 1699 00d7 01       		.uleb128 0x1
+ 1700 00d8 13       		.uleb128 0x13
+ 1701 00d9 00       		.byte	0
+ 1702 00da 00       		.byte	0
+ 1703 00db 12       		.uleb128 0x12
+ 1704 00dc 05       		.uleb128 0x5
+ 1705 00dd 00       		.byte	0
+ 1706 00de 03       		.uleb128 0x3
+ 1707 00df 0E       		.uleb128 0xe
+ 1708 00e0 3A       		.uleb128 0x3a
+ 1709 00e1 0B       		.uleb128 0xb
+ 1710 00e2 3B       		.uleb128 0x3b
+ 1711 00e3 0B       		.uleb128 0xb
+ 1712 00e4 49       		.uleb128 0x49
+ 1713 00e5 13       		.uleb128 0x13
+ 1714 00e6 02       		.uleb128 0x2
+ 1715 00e7 18       		.uleb128 0x18
+ 1716 00e8 00       		.byte	0
+ 1717 00e9 00       		.byte	0
+ 1718 00ea 13       		.uleb128 0x13
+ 1719 00eb 2E       		.uleb128 0x2e
+ 1720 00ec 01       		.byte	0x1
+ 1721 00ed 3F       		.uleb128 0x3f
+ 1722 00ee 19       		.uleb128 0x19
+ 1723 00ef 03       		.uleb128 0x3
+ 1724 00f0 0E       		.uleb128 0xe
+ 1725 00f1 3A       		.uleb128 0x3a
+ 1726 00f2 0B       		.uleb128 0xb
+ 1727 00f3 3B       		.uleb128 0x3b
+ 1728 00f4 05       		.uleb128 0x5
+ 1729 00f5 27       		.uleb128 0x27
+ 1730 00f6 19       		.uleb128 0x19
+ 1731 00f7 49       		.uleb128 0x49
+ 1732 00f8 13       		.uleb128 0x13
+ 1733 00f9 11       		.uleb128 0x11
+ 1734 00fa 01       		.uleb128 0x1
+ 1735 00fb 12       		.uleb128 0x12
+ 1736 00fc 06       		.uleb128 0x6
+ 1737 00fd 40       		.uleb128 0x40
+ 1738 00fe 18       		.uleb128 0x18
+ 1739 00ff 9742     		.uleb128 0x2117
+ 1740 0101 19       		.uleb128 0x19
+ 1741 0102 01       		.uleb128 0x1
+ 1742 0103 13       		.uleb128 0x13
+ 1743 0104 00       		.byte	0
+ 1744 0105 00       		.byte	0
+ 1745 0106 14       		.uleb128 0x14
+ 1746 0107 05       		.uleb128 0x5
+ 1747 0108 00       		.byte	0
+ 1748 0109 03       		.uleb128 0x3
+ 1749 010a 0E       		.uleb128 0xe
+ 1750 010b 3A       		.uleb128 0x3a
+ 1751 010c 0B       		.uleb128 0xb
+ 1752 010d 3B       		.uleb128 0x3b
+ 1753 010e 05       		.uleb128 0x5
+ 1754 010f 49       		.uleb128 0x49
+ 1755 0110 13       		.uleb128 0x13
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 41
+
+
+ 1756 0111 02       		.uleb128 0x2
+ 1757 0112 18       		.uleb128 0x18
+ 1758 0113 00       		.byte	0
+ 1759 0114 00       		.byte	0
+ 1760 0115 15       		.uleb128 0x15
+ 1761 0116 05       		.uleb128 0x5
+ 1762 0117 00       		.byte	0
+ 1763 0118 03       		.uleb128 0x3
+ 1764 0119 08       		.uleb128 0x8
+ 1765 011a 3A       		.uleb128 0x3a
+ 1766 011b 0B       		.uleb128 0xb
+ 1767 011c 3B       		.uleb128 0x3b
+ 1768 011d 05       		.uleb128 0x5
+ 1769 011e 49       		.uleb128 0x49
+ 1770 011f 13       		.uleb128 0x13
+ 1771 0120 02       		.uleb128 0x2
+ 1772 0121 18       		.uleb128 0x18
+ 1773 0122 00       		.byte	0
+ 1774 0123 00       		.byte	0
+ 1775 0124 16       		.uleb128 0x16
+ 1776 0125 34       		.uleb128 0x34
+ 1777 0126 00       		.byte	0
+ 1778 0127 03       		.uleb128 0x3
+ 1779 0128 0E       		.uleb128 0xe
+ 1780 0129 3A       		.uleb128 0x3a
+ 1781 012a 0B       		.uleb128 0xb
+ 1782 012b 3B       		.uleb128 0x3b
+ 1783 012c 05       		.uleb128 0x5
+ 1784 012d 49       		.uleb128 0x49
+ 1785 012e 13       		.uleb128 0x13
+ 1786 012f 02       		.uleb128 0x2
+ 1787 0130 18       		.uleb128 0x18
+ 1788 0131 00       		.byte	0
+ 1789 0132 00       		.byte	0
+ 1790 0133 17       		.uleb128 0x17
+ 1791 0134 2E       		.uleb128 0x2e
+ 1792 0135 01       		.byte	0x1
+ 1793 0136 3F       		.uleb128 0x3f
+ 1794 0137 19       		.uleb128 0x19
+ 1795 0138 03       		.uleb128 0x3
+ 1796 0139 0E       		.uleb128 0xe
+ 1797 013a 3A       		.uleb128 0x3a
+ 1798 013b 0B       		.uleb128 0xb
+ 1799 013c 3B       		.uleb128 0x3b
+ 1800 013d 05       		.uleb128 0x5
+ 1801 013e 27       		.uleb128 0x27
+ 1802 013f 19       		.uleb128 0x19
+ 1803 0140 11       		.uleb128 0x11
+ 1804 0141 01       		.uleb128 0x1
+ 1805 0142 12       		.uleb128 0x12
+ 1806 0143 06       		.uleb128 0x6
+ 1807 0144 40       		.uleb128 0x40
+ 1808 0145 18       		.uleb128 0x18
+ 1809 0146 9642     		.uleb128 0x2116
+ 1810 0148 19       		.uleb128 0x19
+ 1811 0149 01       		.uleb128 0x1
+ 1812 014a 13       		.uleb128 0x13
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 42
+
+
+ 1813 014b 00       		.byte	0
+ 1814 014c 00       		.byte	0
+ 1815 014d 18       		.uleb128 0x18
+ 1816 014e 2E       		.uleb128 0x2e
+ 1817 014f 00       		.byte	0
+ 1818 0150 3F       		.uleb128 0x3f
+ 1819 0151 19       		.uleb128 0x19
+ 1820 0152 03       		.uleb128 0x3
+ 1821 0153 0E       		.uleb128 0xe
+ 1822 0154 3A       		.uleb128 0x3a
+ 1823 0155 0B       		.uleb128 0xb
+ 1824 0156 3B       		.uleb128 0x3b
+ 1825 0157 05       		.uleb128 0x5
+ 1826 0158 27       		.uleb128 0x27
+ 1827 0159 19       		.uleb128 0x19
+ 1828 015a 11       		.uleb128 0x11
+ 1829 015b 01       		.uleb128 0x1
+ 1830 015c 12       		.uleb128 0x12
+ 1831 015d 06       		.uleb128 0x6
+ 1832 015e 40       		.uleb128 0x40
+ 1833 015f 18       		.uleb128 0x18
+ 1834 0160 9742     		.uleb128 0x2117
+ 1835 0162 19       		.uleb128 0x19
+ 1836 0163 00       		.byte	0
+ 1837 0164 00       		.byte	0
+ 1838 0165 19       		.uleb128 0x19
+ 1839 0166 34       		.uleb128 0x34
+ 1840 0167 00       		.byte	0
+ 1841 0168 03       		.uleb128 0x3
+ 1842 0169 0E       		.uleb128 0xe
+ 1843 016a 3A       		.uleb128 0x3a
+ 1844 016b 0B       		.uleb128 0xb
+ 1845 016c 3B       		.uleb128 0x3b
+ 1846 016d 0B       		.uleb128 0xb
+ 1847 016e 49       		.uleb128 0x49
+ 1848 016f 13       		.uleb128 0x13
+ 1849 0170 3F       		.uleb128 0x3f
+ 1850 0171 19       		.uleb128 0x19
+ 1851 0172 02       		.uleb128 0x2
+ 1852 0173 18       		.uleb128 0x18
+ 1853 0174 00       		.byte	0
+ 1854 0175 00       		.byte	0
+ 1855 0176 1A       		.uleb128 0x1a
+ 1856 0177 34       		.uleb128 0x34
+ 1857 0178 00       		.byte	0
+ 1858 0179 03       		.uleb128 0x3
+ 1859 017a 0E       		.uleb128 0xe
+ 1860 017b 3A       		.uleb128 0x3a
+ 1861 017c 0B       		.uleb128 0xb
+ 1862 017d 3B       		.uleb128 0x3b
+ 1863 017e 05       		.uleb128 0x5
+ 1864 017f 49       		.uleb128 0x49
+ 1865 0180 13       		.uleb128 0x13
+ 1866 0181 3F       		.uleb128 0x3f
+ 1867 0182 19       		.uleb128 0x19
+ 1868 0183 3C       		.uleb128 0x3c
+ 1869 0184 19       		.uleb128 0x19
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 43
+
+
+ 1870 0185 00       		.byte	0
+ 1871 0186 00       		.byte	0
+ 1872 0187 1B       		.uleb128 0x1b
+ 1873 0188 26       		.uleb128 0x26
+ 1874 0189 00       		.byte	0
+ 1875 018a 49       		.uleb128 0x49
+ 1876 018b 13       		.uleb128 0x13
+ 1877 018c 00       		.byte	0
+ 1878 018d 00       		.byte	0
+ 1879 018e 00       		.byte	0
+ 1880              		.section	.debug_aranges,"",%progbits
+ 1881 0000 6C000000 		.4byte	0x6c
+ 1882 0004 0200     		.2byte	0x2
+ 1883 0006 00000000 		.4byte	.Ldebug_info0
+ 1884 000a 04       		.byte	0x4
+ 1885 000b 00       		.byte	0
+ 1886 000c 0000     		.2byte	0
+ 1887 000e 0000     		.2byte	0
+ 1888 0010 00000000 		.4byte	.LFB1
+ 1889 0014 0A000000 		.4byte	.LFE1-.LFB1
+ 1890 0018 00000000 		.4byte	.LFB2
+ 1891 001c 38000000 		.4byte	.LFE2-.LFB2
+ 1892 0020 00000000 		.4byte	.LFB3
+ 1893 0024 0A000000 		.4byte	.LFE3-.LFB3
+ 1894 0028 00000000 		.4byte	.LFB4
+ 1895 002c 10000000 		.4byte	.LFE4-.LFB4
+ 1896 0030 00000000 		.4byte	.LFB5
+ 1897 0034 10000000 		.4byte	.LFE5-.LFB5
+ 1898 0038 00000000 		.4byte	.LFB6
+ 1899 003c 10000000 		.4byte	.LFE6-.LFB6
+ 1900 0040 00000000 		.4byte	.LFB7
+ 1901 0044 2C010000 		.4byte	.LFE7-.LFB7
+ 1902 0048 00000000 		.4byte	.LFB8
+ 1903 004c 30000000 		.4byte	.LFE8-.LFB8
+ 1904 0050 00000000 		.4byte	.LFB9
+ 1905 0054 0A000000 		.4byte	.LFE9-.LFB9
+ 1906 0058 00000000 		.4byte	.LFB10
+ 1907 005c 36000000 		.4byte	.LFE10-.LFB10
+ 1908 0060 00000000 		.4byte	.LFB11
+ 1909 0064 64000000 		.4byte	.LFE11-.LFB11
+ 1910 0068 00000000 		.4byte	0
+ 1911 006c 00000000 		.4byte	0
+ 1912              		.section	.debug_ranges,"",%progbits
+ 1913              	.Ldebug_ranges0:
+ 1914 0000 00000000 		.4byte	.LFB1
+ 1915 0004 0A000000 		.4byte	.LFE1
+ 1916 0008 00000000 		.4byte	.LFB2
+ 1917 000c 38000000 		.4byte	.LFE2
+ 1918 0010 00000000 		.4byte	.LFB3
+ 1919 0014 0A000000 		.4byte	.LFE3
+ 1920 0018 00000000 		.4byte	.LFB4
+ 1921 001c 10000000 		.4byte	.LFE4
+ 1922 0020 00000000 		.4byte	.LFB5
+ 1923 0024 10000000 		.4byte	.LFE5
+ 1924 0028 00000000 		.4byte	.LFB6
+ 1925 002c 10000000 		.4byte	.LFE6
+ 1926 0030 00000000 		.4byte	.LFB7
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 44
+
+
+ 1927 0034 2C010000 		.4byte	.LFE7
+ 1928 0038 00000000 		.4byte	.LFB8
+ 1929 003c 30000000 		.4byte	.LFE8
+ 1930 0040 00000000 		.4byte	.LFB9
+ 1931 0044 0A000000 		.4byte	.LFE9
+ 1932 0048 00000000 		.4byte	.LFB10
+ 1933 004c 36000000 		.4byte	.LFE10
+ 1934 0050 00000000 		.4byte	.LFB11
+ 1935 0054 64000000 		.4byte	.LFE11
+ 1936 0058 00000000 		.4byte	0
+ 1937 005c 00000000 		.4byte	0
+ 1938              		.section	.debug_line,"",%progbits
+ 1939              	.Ldebug_line0:
+ 1940 0000 60020000 		.section	.debug_str,"MS",%progbits,1
+ 1940      02007501 
+ 1940      00000201 
+ 1940      FB0E0D00 
+ 1940      01010101 
+ 1941              	.LASF73:
+ 1942 0000 6F735F74 		.ascii	"os_tcb\000"
+ 1942      636200
+ 1943              	.LASF66:
+ 1944 0007 53746B55 		.ascii	"StkUsed\000"
+ 1944      73656400 
+ 1945              	.LASF14:
+ 1946 000f 4350555F 		.ascii	"CPU_REG32\000"
+ 1946      52454733 
+ 1946      3200
+ 1947              	.LASF115:
+ 1948 0019 636E7473 		.ascii	"cnts\000"
+ 1948      00
+ 1949              	.LASF63:
+ 1950 001e 54696D65 		.ascii	"TimeQuantaCtr\000"
+ 1950      5175616E 
+ 1950      74614374 
+ 1950      7200
+ 1951              	.LASF107:
+ 1952 002c 705F7374 		.ascii	"p_stk\000"
+ 1952      6B00
+ 1953              	.LASF76:
+ 1954 0032 4E627245 		.ascii	"NbrEntries\000"
+ 1954      6E747269 
+ 1954      657300
+ 1955              	.LASF8:
+ 1956 003d 4350555F 		.ascii	"CPU_INT32U\000"
+ 1956      494E5433 
+ 1956      325500
+ 1957              	.LASF117:
+ 1958 0048 4F535443 		.ascii	"OSTCBCurPtr\000"
+ 1958      42437572 
+ 1958      50747200 
+ 1959              	.LASF121:
+ 1960 0054 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1960      43313120 
+ 1960      352E342E 
+ 1960      31203230 
+ 1960      31363036 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 45
+
+
+ 1961 0087 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1961      20726576 
+ 1961      6973696F 
+ 1961      6E203233 
+ 1961      37373135 
+ 1962 00ba 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1962      66756E63 
+ 1962      74696F6E 
+ 1962      2D736563 
+ 1962      74696F6E 
+ 1963              	.LASF69:
+ 1964 00e2 44626750 		.ascii	"DbgPrevPtr\000"
+ 1964      72657650 
+ 1964      747200
+ 1965              	.LASF70:
+ 1966 00ed 4462674E 		.ascii	"DbgNextPtr\000"
+ 1966      65787450 
+ 1966      747200
+ 1967              	.LASF88:
+ 1968 00f8 48656164 		.ascii	"HeadPtr\000"
+ 1968      50747200 
+ 1969              	.LASF52:
+ 1970 0100 50656E64 		.ascii	"PendOn\000"
+ 1970      4F6E00
+ 1971              	.LASF57:
+ 1972 0107 50656E64 		.ascii	"PendDataTblEntries\000"
+ 1972      44617461 
+ 1972      54626C45 
+ 1972      6E747269 
+ 1972      657300
+ 1973              	.LASF89:
+ 1974 011a 5461696C 		.ascii	"TailPtr\000"
+ 1974      50747200 
+ 1975              	.LASF96:
+ 1976 0122 4F535374 		.ascii	"OSStatTaskHook\000"
+ 1976      61745461 
+ 1976      736B486F 
+ 1976      6F6B00
+ 1977              	.LASF37:
+ 1978 0131 4F535F54 		.ascii	"OS_TASK_PTR\000"
+ 1978      41534B5F 
+ 1978      50545200 
+ 1979              	.LASF60:
+ 1980 013d 5469636B 		.ascii	"TickCtrMatch\000"
+ 1980      4374724D 
+ 1980      61746368 
+ 1980      00
+ 1981              	.LASF91:
+ 1982 014a 6F735F70 		.ascii	"os_pend_obj\000"
+ 1982      656E645F 
+ 1982      6F626A00 
+ 1983              	.LASF27:
+ 1984 0156 4F535F4F 		.ascii	"OS_OBJ_QTY\000"
+ 1984      424A5F51 
+ 1984      545900
+ 1985              	.LASF30:
+ 1986 0161 4F535F50 		.ascii	"OS_PRIO\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 46
+
+
+ 1986      52494F00 
+ 1987              	.LASF12:
+ 1988 0169 666C6F61 		.ascii	"float\000"
+ 1988      7400
+ 1989              	.LASF79:
+ 1990 016f 6F735F70 		.ascii	"os_pend_data\000"
+ 1990      656E645F 
+ 1990      64617461 
+ 1990      00
+ 1991              	.LASF72:
+ 1992 017c 4F535F54 		.ascii	"OS_TICK_SPOKE\000"
+ 1992      49434B5F 
+ 1992      53504F4B 
+ 1992      4500
+ 1993              	.LASF111:
+ 1994 018a 6370755F 		.ascii	"cpu_sr\000"
+ 1994      737200
+ 1995              	.LASF10:
+ 1996 0191 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1996      206C6F6E 
+ 1996      6720756E 
+ 1996      7369676E 
+ 1996      65642069 
+ 1997              	.LASF101:
+ 1998 01a8 705F7461 		.ascii	"p_task\000"
+ 1998      736B00
+ 1999              	.LASF78:
+ 2000 01af 4F535F50 		.ascii	"OS_PEND_DATA\000"
+ 2000      454E445F 
+ 2000      44415441 
+ 2000      00
+ 2001              	.LASF3:
+ 2002 01bc 4350555F 		.ascii	"CPU_INT08U\000"
+ 2002      494E5430 
+ 2002      385500
+ 2003              	.LASF56:
+ 2004 01c7 53746B53 		.ascii	"StkSize\000"
+ 2004      697A6500 
+ 2005              	.LASF48:
+ 2006 01cf 53746B42 		.ascii	"StkBasePtr\000"
+ 2006      61736550 
+ 2006      747200
+ 2007              	.LASF32:
+ 2008 01da 4F535F52 		.ascii	"OS_REG\000"
+ 2008      454700
+ 2009              	.LASF35:
+ 2010 01e1 4F535F53 		.ascii	"OS_STATUS\000"
+ 2010      54415455 
+ 2010      5300
+ 2011              	.LASF99:
+ 2012 01eb 705F7463 		.ascii	"p_tcb\000"
+ 2012      6200
+ 2013              	.LASF25:
+ 2014 01f1 4F535F4D 		.ascii	"OS_MSG_SIZE\000"
+ 2014      53475F53 
+ 2014      495A4500 
+ 2015              	.LASF2:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 47
+
+
+ 2016 01fd 4350555F 		.ascii	"CPU_CHAR\000"
+ 2016      43484152 
+ 2016      00
+ 2017              	.LASF17:
+ 2018 0206 4350555F 		.ascii	"CPU_STK_SIZE\000"
+ 2018      53544B5F 
+ 2018      53495A45 
+ 2018      00
+ 2019              	.LASF59:
+ 2020 0213 5469636B 		.ascii	"TickCtrPrev\000"
+ 2020      43747250 
+ 2020      72657600 
+ 2021              	.LASF45:
+ 2022 021f 5469636B 		.ascii	"TickPrevPtr\000"
+ 2022      50726576 
+ 2022      50747200 
+ 2023              	.LASF97:
+ 2024 022b 4F535461 		.ascii	"OSTaskCreateHook\000"
+ 2024      736B4372 
+ 2024      65617465 
+ 2024      486F6F6B 
+ 2024      00
+ 2025              	.LASF113:
+ 2026 023c 6370755F 		.ascii	"cpu_freq\000"
+ 2026      66726571 
+ 2026      00
+ 2027              	.LASF112:
+ 2028 0245 4F535F43 		.ascii	"OS_CPU_SysTickInit\000"
+ 2028      50555F53 
+ 2028      79735469 
+ 2028      636B496E 
+ 2028      697400
+ 2029              	.LASF114:
+ 2030 0258 7072696F 		.ascii	"prio\000"
+ 2030      00
+ 2031              	.LASF43:
+ 2032 025d 50726576 		.ascii	"PrevPtr\000"
+ 2032      50747200 
+ 2033              	.LASF0:
+ 2034 0265 63686172 		.ascii	"char\000"
+ 2034      00
+ 2035              	.LASF28:
+ 2036 026a 4F535F4F 		.ascii	"OS_OBJ_TYPE\000"
+ 2036      424A5F54 
+ 2036      59504500 
+ 2037              	.LASF104:
+ 2038 0276 705F7374 		.ascii	"p_stk_limit\000"
+ 2038      6B5F6C69 
+ 2038      6D697400 
+ 2039              	.LASF54:
+ 2040 0282 5461736B 		.ascii	"TaskState\000"
+ 2040      53746174 
+ 2040      6500
+ 2041              	.LASF18:
+ 2042 028c 4350555F 		.ascii	"CPU_SR\000"
+ 2042      535200
+ 2043              	.LASF119:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 48
+
+
+ 2044 0293 4F534366 		.ascii	"OSCfg_ISRStkSize\000"
+ 2044      675F4953 
+ 2044      5253746B 
+ 2044      53697A65 
+ 2044      00
+ 2045              	.LASF31:
+ 2046 02a4 4F535F52 		.ascii	"OS_RATE_HZ\000"
+ 2046      4154455F 
+ 2046      485A00
+ 2047              	.LASF49:
+ 2048 02af 5461736B 		.ascii	"TaskEntryAddr\000"
+ 2048      456E7472 
+ 2048      79416464 
+ 2048      7200
+ 2049              	.LASF100:
+ 2050 02bd 4F535461 		.ascii	"OSTaskReturnHook\000"
+ 2050      736B5265 
+ 2050      7475726E 
+ 2050      486F6F6B 
+ 2050      00
+ 2051              	.LASF106:
+ 2052 02ce 4F535461 		.ascii	"OSTaskSwHook\000"
+ 2052      736B5377 
+ 2052      486F6F6B 
+ 2052      00
+ 2053              	.LASF47:
+ 2054 02db 4E616D65 		.ascii	"NamePtr\000"
+ 2054      50747200 
+ 2055              	.LASF53:
+ 2056 02e3 50656E64 		.ascii	"PendStatus\000"
+ 2056      53746174 
+ 2056      757300
+ 2057              	.LASF92:
+ 2058 02ee 54797065 		.ascii	"Type\000"
+ 2058      00
+ 2059              	.LASF24:
+ 2060 02f3 4350555F 		.ascii	"CPU_TS\000"
+ 2060      545300
+ 2061              	.LASF11:
+ 2062 02fa 6C6F6E67 		.ascii	"long long int\000"
+ 2062      206C6F6E 
+ 2062      6720696E 
+ 2062      7400
+ 2063              	.LASF39:
+ 2064 0308 53746B50 		.ascii	"StkPtr\000"
+ 2064      747200
+ 2065              	.LASF74:
+ 2066 030f 6F735F74 		.ascii	"os_tick_spoke\000"
+ 2066      69636B5F 
+ 2066      73706F6B 
+ 2066      6500
+ 2067              	.LASF110:
+ 2068 031d 53797354 		.ascii	"SysTick_Handler\000"
+ 2068      69636B5F 
+ 2068      48616E64 
+ 2068      6C657200 
+ 2069              	.LASF5:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 49
+
+
+ 2070 032d 4350555F 		.ascii	"CPU_INT16U\000"
+ 2070      494E5431 
+ 2070      365500
+ 2071              	.LASF36:
+ 2072 0338 4F535F54 		.ascii	"OS_TICK\000"
+ 2072      49434B00 
+ 2073              	.LASF123:
+ 2074 0340 433A5C55 		.ascii	"C:\\Users\\edulu.DESKTOP-961TG4K\\Documents\\PSoC C"
+ 2074      73657273 
+ 2074      5C656475 
+ 2074      6C752E44 
+ 2074      45534B54 
+ 2075 036f 72656174 		.ascii	"reator\\Micrium\\Examples\\Cypress\\CY8CKIT-044\\OS"
+ 2075      6F725C4D 
+ 2075      69637269 
+ 2075      756D5C45 
+ 2075      78616D70 
+ 2076 039d 335C5053 		.ascii	"3\\PSoC\\OS3.cydsn\000"
+ 2076      6F435C4F 
+ 2076      53332E63 
+ 2076      7964736E 
+ 2076      00
+ 2077              	.LASF23:
+ 2078 03ae 4350555F 		.ascii	"CPU_TS32\000"
+ 2078      54533332 
+ 2078      00
+ 2079              	.LASF65:
+ 2080 03b7 53757370 		.ascii	"SuspendCtr\000"
+ 2080      656E6443 
+ 2080      747200
+ 2081              	.LASF41:
+ 2082 03c2 53746B4C 		.ascii	"StkLimitPtr\000"
+ 2082      696D6974 
+ 2082      50747200 
+ 2083              	.LASF33:
+ 2084 03ce 4F535F53 		.ascii	"OS_SEM_CTR\000"
+ 2084      454D5F43 
+ 2084      545200
+ 2085              	.LASF80:
+ 2086 03d9 54434250 		.ascii	"TCBPtr\000"
+ 2086      747200
+ 2087              	.LASF44:
+ 2088 03e0 5469636B 		.ascii	"TickNextPtr\000"
+ 2088      4E657874 
+ 2088      50747200 
+ 2089              	.LASF82:
+ 2090 03ec 5264794F 		.ascii	"RdyObjPtr\000"
+ 2090      626A5074 
+ 2090      7200
+ 2091              	.LASF42:
+ 2092 03f6 4E657874 		.ascii	"NextPtr\000"
+ 2092      50747200 
+ 2093              	.LASF21:
+ 2094 03fe 6C6F6E67 		.ascii	"long double\000"
+ 2094      20646F75 
+ 2094      626C6500 
+ 2095              	.LASF85:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 50
+
+
+ 2096 040a 52647954 		.ascii	"RdyTS\000"
+ 2096      5300
+ 2097              	.LASF105:
+ 2098 0410 73746B5F 		.ascii	"stk_size\000"
+ 2098      73697A65 
+ 2098      00
+ 2099              	.LASF7:
+ 2100 0419 73686F72 		.ascii	"short int\000"
+ 2100      7420696E 
+ 2100      7400
+ 2101              	.LASF84:
+ 2102 0423 5264794D 		.ascii	"RdyMsgSize\000"
+ 2102      73675369 
+ 2102      7A6500
+ 2103              	.LASF68:
+ 2104 042e 496E7444 		.ascii	"IntDisTimeMax\000"
+ 2104      69735469 
+ 2104      6D654D61 
+ 2104      7800
+ 2105              	.LASF19:
+ 2106 043c 6C6F6E67 		.ascii	"long int\000"
+ 2106      20696E74 
+ 2106      00
+ 2107              	.LASF51:
+ 2108 0445 50656E64 		.ascii	"PendDataTblPtr\000"
+ 2108      44617461 
+ 2108      54626C50 
+ 2108      747200
+ 2109              	.LASF26:
+ 2110 0454 4F535F4E 		.ascii	"OS_NESTING_CTR\000"
+ 2110      45535449 
+ 2110      4E475F43 
+ 2110      545200
+ 2111              	.LASF90:
+ 2112 0463 4F535F50 		.ascii	"OS_PEND_OBJ\000"
+ 2112      454E445F 
+ 2112      4F424A00 
+ 2113              	.LASF93:
+ 2114 046f 50656E64 		.ascii	"PendList\000"
+ 2114      4C697374 
+ 2114      00
+ 2115              	.LASF58:
+ 2116 0478 53656D43 		.ascii	"SemCtr\000"
+ 2116      747200
+ 2117              	.LASF109:
+ 2118 047f 4F535469 		.ascii	"OSTimeTickHook\000"
+ 2118      6D655469 
+ 2118      636B486F 
+ 2118      6F6B00
+ 2119              	.LASF61:
+ 2120 048e 5469636B 		.ascii	"TickRemain\000"
+ 2120      52656D61 
+ 2120      696E00
+ 2121              	.LASF95:
+ 2122 0499 4F53496E 		.ascii	"OSInitHook\000"
+ 2122      6974486F 
+ 2122      6F6B00
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 51
+
+
+ 2123              	.LASF9:
+ 2124 04a4 756E7369 		.ascii	"unsigned int\000"
+ 2124      676E6564 
+ 2124      20696E74 
+ 2124      00
+ 2125              	.LASF94:
+ 2126 04b1 4F534964 		.ascii	"OSIdleTaskHook\000"
+ 2126      6C655461 
+ 2126      736B486F 
+ 2126      6F6B00
+ 2127              	.LASF83:
+ 2128 04c0 5264794D 		.ascii	"RdyMsgPtr\000"
+ 2128      73675074 
+ 2128      7200
+ 2129              	.LASF75:
+ 2130 04ca 46697273 		.ascii	"FirstPtr\000"
+ 2130      74507472 
+ 2130      00
+ 2131              	.LASF116:
+ 2132 04d3 4F535F43 		.ascii	"OS_CPU_ExceptStkBase\000"
+ 2132      50555F45 
+ 2132      78636570 
+ 2132      7453746B 
+ 2132      42617365 
+ 2133              	.LASF102:
+ 2134 04e8 705F6172 		.ascii	"p_arg\000"
+ 2134      6700
+ 2135              	.LASF40:
+ 2136 04ee 45787450 		.ascii	"ExtPtr\000"
+ 2136      747200
+ 2137              	.LASF22:
+ 2138 04f5 73697A65 		.ascii	"sizetype\000"
+ 2138      74797065 
+ 2138      00
+ 2139              	.LASF20:
+ 2140 04fe 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2140      20756E73 
+ 2140      69676E65 
+ 2140      6420696E 
+ 2140      7400
+ 2141              	.LASF122:
+ 2142 0510 2E2E5C2E 		.ascii	"..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Ports\\"
+ 2142      2E5C2E2E 
+ 2142      5C2E2E5C 
+ 2142      2E2E5C2E 
+ 2142      2E5C536F 
+ 2143 053a 41524D2D 		.ascii	"ARM-Cortex-M0\\Generic\\GNU\\os_cpu_c.c\000"
+ 2143      436F7274 
+ 2143      65782D4D 
+ 2143      305C4765 
+ 2143      6E657269 
+ 2144              	.LASF15:
+ 2145 055f 4350555F 		.ascii	"CPU_ADDR\000"
+ 2145      41444452 
+ 2145      00
+ 2146              	.LASF118:
+ 2147 0568 4F534366 		.ascii	"OSCfg_ISRStkBasePtr\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 52
+
+
+ 2147      675F4953 
+ 2147      5253746B 
+ 2147      42617365 
+ 2147      50747200 
+ 2148              	.LASF98:
+ 2149 057c 4F535461 		.ascii	"OSTaskDelHook\000"
+ 2149      736B4465 
+ 2149      6C486F6F 
+ 2149      6B00
+ 2150              	.LASF103:
+ 2151 058a 705F7374 		.ascii	"p_stk_base\000"
+ 2151      6B5F6261 
+ 2151      736500
+ 2152              	.LASF1:
+ 2153 0595 756E7369 		.ascii	"unsigned char\000"
+ 2153      676E6564 
+ 2153      20636861 
+ 2153      7200
+ 2154              	.LASF34:
+ 2155 05a3 4F535F53 		.ascii	"OS_STATE\000"
+ 2155      54415445 
+ 2155      00
+ 2156              	.LASF29:
+ 2157 05ac 4F535F4F 		.ascii	"OS_OPT\000"
+ 2157      505400
+ 2158              	.LASF46:
+ 2159 05b3 5469636B 		.ascii	"TickSpokePtr\000"
+ 2159      53706F6B 
+ 2159      65507472 
+ 2159      00
+ 2160              	.LASF71:
+ 2161 05c0 4462674E 		.ascii	"DbgNamePtr\000"
+ 2161      616D6550 
+ 2161      747200
+ 2162              	.LASF50:
+ 2163 05cb 5461736B 		.ascii	"TaskEntryArg\000"
+ 2163      456E7472 
+ 2163      79417267 
+ 2163      00
+ 2164              	.LASF124:
+ 2165 05d8 4F535461 		.ascii	"OSTaskStkInit\000"
+ 2165      736B5374 
+ 2165      6B496E69 
+ 2165      7400
+ 2166              	.LASF77:
+ 2167 05e6 4E627245 		.ascii	"NbrEntriesMax\000"
+ 2167      6E747269 
+ 2167      65734D61 
+ 2167      7800
+ 2168              	.LASF86:
+ 2169 05f4 4F535F50 		.ascii	"OS_PEND_LIST\000"
+ 2169      454E445F 
+ 2169      4C495354 
+ 2169      00
+ 2170              	.LASF4:
+ 2171 0601 7369676E 		.ascii	"signed char\000"
+ 2171      65642063 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbquJH.s 			page 53
+
+
+ 2171      68617200 
+ 2172              	.LASF6:
+ 2173 060d 73686F72 		.ascii	"short unsigned int\000"
+ 2173      7420756E 
+ 2173      7369676E 
+ 2173      65642069 
+ 2173      6E7400
+ 2174              	.LASF55:
+ 2175 0620 5072696F 		.ascii	"Prio\000"
+ 2175      00
+ 2176              	.LASF13:
+ 2177 0625 646F7562 		.ascii	"double\000"
+ 2177      6C6500
+ 2178              	.LASF81:
+ 2179 062c 50656E64 		.ascii	"PendObjPtr\000"
+ 2179      4F626A50 
+ 2179      747200
+ 2180              	.LASF38:
+ 2181 0637 4F535F54 		.ascii	"OS_TCB\000"
+ 2181      434200
+ 2182              	.LASF87:
+ 2183 063e 6F735F70 		.ascii	"os_pend_list\000"
+ 2183      656E645F 
+ 2183      6C697374 
+ 2183      00
+ 2184              	.LASF108:
+ 2185 064b 696E745F 		.ascii	"int_dis_time\000"
+ 2185      6469735F 
+ 2185      74696D65 
+ 2185      00
+ 2186              	.LASF64:
+ 2187 0658 52656754 		.ascii	"RegTbl\000"
+ 2187      626C00
+ 2188              	.LASF67:
+ 2189 065f 53746B46 		.ascii	"StkFree\000"
+ 2189      72656500 
+ 2190              	.LASF62:
+ 2191 0667 54696D65 		.ascii	"TimeQuanta\000"
+ 2191      5175616E 
+ 2191      746100
+ 2192              	.LASF120:
+ 2193 0672 4F534366 		.ascii	"OSCfg_TickRate_Hz\000"
+ 2193      675F5469 
+ 2193      636B5261 
+ 2193      74655F48 
+ 2193      7A00
+ 2194              	.LASF16:
+ 2195 0684 4350555F 		.ascii	"CPU_STK\000"
+ 2195      53544B00 
+ 2196              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

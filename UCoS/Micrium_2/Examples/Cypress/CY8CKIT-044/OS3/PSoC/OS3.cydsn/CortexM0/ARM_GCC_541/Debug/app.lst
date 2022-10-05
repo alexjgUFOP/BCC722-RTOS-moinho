@@ -1,0 +1,4241 @@
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"app.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.comm	uC_Probe_RGB_Val,4,4
+  20              		.global	uC_Probe_PB_Trigger
+  21              		.bss
+  22              		.type	uC_Probe_PB_Trigger, %object
+  23              		.size	uC_Probe_PB_Trigger, 1
+  24              	uC_Probe_PB_Trigger:
+  25 0000 00       		.space	1
+  26              		.comm	uC_Probe_Temp_Val,4,4
+  27              		.comm	uC_Probe_AmbientLight,2,2
+  28              		.comm	uC_Probe_Accel_X_Axis,2,2
+  29              		.comm	uC_Probe_Accel_Y_Axis,2,2
+  30              		.comm	uC_Probe_Accel_Z_Axis,2,2
+  31 0001 000000   		.align	2
+  32              	App_TaskStartTCB:
+  33 0004 00000000 		.space	124
+  33      00000000 
+  33      00000000 
+  33      00000000 
+  33      00000000 
+  34              		.align	2
+  35              	App_TaskStartStk:
+  36 0080 00000000 		.space	1024
+  36      00000000 
+  36      00000000 
+  36      00000000 
+  36      00000000 
+  37              		.align	2
+  38              	App_Demo_SensorTaskTCB:
+  39 0480 00000000 		.space	124
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  40              		.align	2
+  41              	App_Demo_SensorTaskStk:
+  42 04fc 00000000 		.space	1024
+  42      00000000 
+  42      00000000 
+  42      00000000 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 2
+
+
+  42      00000000 
+  43              		.align	1
+  44              	App_Demo_Ambient_InitVar:
+  45 08fc 0000     		.space	2
+  46              		.section	.rodata
+  47              		.align	2
+  48              	.LC1:
+  49 0000 41707020 		.ascii	"App Task Start\000"
+  49      5461736B 
+  49      20537461 
+  49      727400
+  50              		.section	.text.main,"ax",%progbits
+  51              		.align	2
+  52              		.global	main
+  53              		.code	16
+  54              		.thumb_func
+  55              		.type	main, %function
+  56              	main:
+  57              	.LFB33:
+  58              		.file 1 "..\\..\\app.c"
+   1:..\../app.c   **** /*
+   2:..\../app.c   **** ***************************************************************************************************
+   3:..\../app.c   **** *                                             EXAMPLE CODE
+   4:..\../app.c   **** *
+   5:..\../app.c   **** *                            (c) Copyright 2015; Micrium, Inc.; Weston, FL
+   6:..\../app.c   **** *
+   7:..\../app.c   **** *               This file is provided as an example on how to use Micrium products.
+   8:..\../app.c   **** *
+   9:..\../app.c   **** *               Please feel free to use any application code labeled as 'EXAMPLE CODE' in
+  10:..\../app.c   **** *               your application products.  Example code may be used as is, in whole or in
+  11:..\../app.c   **** *               part, or may be used as a reference only. This file can be modified as
+  12:..\../app.c   **** *               required to meet the end-product requirements.
+  13:..\../app.c   **** *
+  14:..\../app.c   **** *               Please help us continue to provide the Embedded community with the finest
+  15:..\../app.c   **** *               software available.  Your honesty is greatly appreciated.
+  16:..\../app.c   **** *
+  17:..\../app.c   **** *               You can find our product's user manual, API reference, release notes and
+  18:..\../app.c   **** *               more information at https://doc.micrium.com.
+  19:..\../app.c   **** *               You can contact us at www.micrium.com.
+  20:..\../app.c   **** ***************************************************************************************************
+  21:..\../app.c   **** */
+  22:..\../app.c   **** 
+  23:..\../app.c   **** /*
+  24:..\../app.c   **** ***************************************************************************************************
+  25:..\../app.c   **** *                                           APPLICATION CODE
+  26:..\../app.c   **** *
+  27:..\../app.c   **** *                                            CYPRESS PSoC4
+  28:..\../app.c   **** *                                               with the
+  29:..\../app.c   **** *                                      CY8CKIT-044 Development Kit
+  30:..\../app.c   **** *
+  31:..\../app.c   **** * Filename      : app.c
+  32:..\../app.c   **** * Version       : V1.00
+  33:..\../app.c   **** * Programmer(s) : DC
+  34:..\../app.c   **** ***************************************************************************************************
+  35:..\../app.c   **** */
+  36:..\../app.c   **** 
+  37:..\../app.c   **** /*
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 3
+
+
+  38:..\../app.c   **** ***************************************************************************************************
+  39:..\../app.c   **** *                                             INCLUDE FILES
+  40:..\../app.c   **** ***************************************************************************************************
+  41:..\../app.c   **** */
+  42:..\../app.c   **** 
+  43:..\../app.c   **** #include  "app_cfg.h"
+  44:..\../app.c   **** #include  <bsp.h>
+  45:..\../app.c   **** #include  <os.h>
+  46:..\../app.c   **** #include  <cpu.h>
+  47:..\../app.c   **** 
+  48:..\../app.c   **** #include  <lib_math.h>
+  49:..\../app.c   **** #include  <lib_mem.h>
+  50:..\../app.c   **** 
+  51:..\../app.c   **** 
+  52:..\../app.c   **** /*
+  53:..\../app.c   **** ***************************************************************************************************
+  54:..\../app.c   **** *                                             LOCAL DEFINES
+  55:..\../app.c   **** ***************************************************************************************************
+  56:..\../app.c   **** */
+  57:..\../app.c   ****                                                                 /* ---------------- TEMP SENSOR DEF
+  58:..\../app.c   **** #define  APP_TEMP_SENSOR_NUM                        0u
+  59:..\../app.c   **** 
+  60:..\../app.c   ****                                                                 /* --------------- AMBIENT LIGHT DE
+  61:..\../app.c   **** #define  APP_AMBIENT_DEMO_MAX_VAL                  50u          /* See 'App_Demo_TempAccel' Task No
+  62:..\../app.c   ****                                                                 
+  63:..\../app.c   **** 
+  64:..\../app.c   **** /*
+  65:..\../app.c   **** ***************************************************************************************************
+  66:..\../app.c   **** *                                            GLOBAL DEFINES
+  67:..\../app.c   **** ***************************************************************************************************
+  68:..\../app.c   **** */
+  69:..\../app.c   ****                                                                 /* -------------- uC/PROBE GLOBAL D
+  70:..\../app.c   **** CPU_INT32U   uC_Probe_RGB_Val;                                  /*  - RGB LED Color Value.         
+  71:..\../app.c   **** CPU_BOOLEAN  uC_Probe_PB_Trigger = DEF_OFF;                     /*  - RGB LED ON/OFF Push Button Tr
+  72:..\../app.c   **** CPU_FP32     uC_Probe_Temp_Val;                                 /*  - Temperature Sensor Value (*F)
+  73:..\../app.c   **** CPU_INT16U   uC_Probe_AmbientLight;                             /*  - Ambient Light Sensor Value.  
+  74:..\../app.c   **** CPU_INT16S   uC_Probe_Accel_X_Axis;                             /*  - Accelerometer X-Axis Value.  
+  75:..\../app.c   **** CPU_INT16S   uC_Probe_Accel_Y_Axis;                             /*  - Accelerometer Y-Axis Value.  
+  76:..\../app.c   **** CPU_INT16S   uC_Probe_Accel_Z_Axis;                             /*  - Accelerometer Z-Axis Value.  
+  77:..\../app.c   **** 
+  78:..\../app.c   **** 
+  79:..\../app.c   **** /*
+  80:..\../app.c   **** ***************************************************************************************************
+  81:..\../app.c   **** *                                            LOCAL VARIABLES
+  82:..\../app.c   **** ***************************************************************************************************
+  83:..\../app.c   **** */
+  84:..\../app.c   ****                                                                 /* ------------------ APP TASK VAR(
+  85:..\../app.c   **** static  OS_TCB      App_TaskStartTCB;
+  86:..\../app.c   **** static  CPU_STK     App_TaskStartStk[APP_CFG_TASK_START_STK_SIZE];
+  87:..\../app.c   **** 
+  88:..\../app.c   ****                                                                 /* ------------- TEMP & ACCEL TASK 
+  89:..\../app.c   **** static  OS_TCB      App_Demo_SensorTaskTCB;
+  90:..\../app.c   **** static  CPU_STK     App_Demo_SensorTaskStk[APP_CFG_SENSOR_TASK_STK_SIZE];
+  91:..\../app.c   **** 
+  92:..\../app.c   ****                                                                 /* --------------- MISCELLANEOUS VA
+  93:..\../app.c   **** static  CPU_INT16U  App_Demo_Ambient_InitVar;                   /*  - Ambient Light Initial DMA Sto
+  94:..\../app.c   **** 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 4
+
+
+  95:..\../app.c   **** 
+  96:..\../app.c   **** /*
+  97:..\../app.c   **** ***************************************************************************************************
+  98:..\../app.c   **** *                                         FUNCTION PROTOTYPES
+  99:..\../app.c   **** ***************************************************************************************************
+ 100:..\../app.c   **** */
+ 101:..\../app.c   **** 
+ 102:..\../app.c   **** static  void  App_TaskStart      (void *p_arg);
+ 103:..\../app.c   **** static  void  App_Demo_SensorTask(void *p_arg);
+ 104:..\../app.c   **** 
+ 105:..\../app.c   **** static  void  App_TaskCreate     (void);
+ 106:..\../app.c   **** static  void  App_ObjCreate      (void);
+ 107:..\../app.c   **** 
+ 108:..\../app.c   **** 
+ 109:..\../app.c   **** /*
+ 110:..\../app.c   **** ***************************************************************************************************
+ 111:..\../app.c   **** *                                                main()
+ 112:..\../app.c   **** *
+ 113:..\../app.c   **** * Description : This is the standard entry point for C code.  It is assumed that your code will cal
+ 114:..\../app.c   **** *               main() once you have performed all necessary initialization.
+ 115:..\../app.c   **** *
+ 116:..\../app.c   **** * Argument(s) : none
+ 117:..\../app.c   **** *
+ 118:..\../app.c   **** * Return(s)   : none
+ 119:..\../app.c   **** *
+ 120:..\../app.c   **** * Caller(s)   : Startup Code.
+ 121:..\../app.c   **** *
+ 122:..\../app.c   **** * Note(s)     : none.
+ 123:..\../app.c   **** ***************************************************************************************************
+ 124:..\../app.c   **** */
+ 125:..\../app.c   **** 
+ 126:..\../app.c   **** int  main (void)
+ 127:..\../app.c   **** {
+  59              		.loc 1 127 0
+  60              		.cfi_startproc
+  61              		@ args = 0, pretend = 0, frame = 8
+  62              		@ frame_needed = 1, uses_anonymous_args = 0
+  63 0000 80B5     		push	{r7, lr}
+  64              		.cfi_def_cfa_offset 8
+  65              		.cfi_offset 7, -8
+  66              		.cfi_offset 14, -4
+  67 0002 8CB0     		sub	sp, sp, #48
+  68              		.cfi_def_cfa_offset 56
+  69 0004 0AAF     		add	r7, sp, #40
+  70              		.cfi_def_cfa 7, 16
+ 128:..\../app.c   ****     OS_ERR  os_err;
+ 129:..\../app.c   **** 
+ 130:..\../app.c   **** 
+ 131:..\../app.c   ****     CPU_Init();                                                 /* Initialize the uC/CPU services  
+  71              		.loc 1 131 0
+  72 0006 FFF7FEFF 		bl	CPU_Init
+ 132:..\../app.c   **** 	Mem_Init();                                                 /* Initialize Memory Managment Module 
+  73              		.loc 1 132 0
+  74 000a FFF7FEFF 		bl	Mem_Init
+ 133:..\../app.c   ****     Math_Init();                                                /* Initialize Mathematical Module  
+  75              		.loc 1 133 0
+  76 000e FFF7FEFF 		bl	Math_Init
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 5
+
+
+ 134:..\../app.c   ****     
+ 135:..\../app.c   ****     BSP_Init();                                                 /* Initialize BSP Functions.       
+  77              		.loc 1 135 0
+  78 0012 FFF7FEFF 		bl	BSP_Init
+ 136:..\../app.c   ****     
+ 137:..\../app.c   ****     OSInit(&os_err);                                            /* Init uC/OS-III.                 
+  79              		.loc 1 137 0
+  80 0016 BB1D     		adds	r3, r7, #6
+  81 0018 1800     		movs	r0, r3
+  82 001a FFF7FEFF 		bl	OSInit
+ 138:..\../app.c   **** 
+ 139:..\../app.c   ****     OSTaskCreate(&App_TaskStartTCB,                             /* Create the start task           
+  83              		.loc 1 139 0
+  84 001e 0F4A     		ldr	r2, .L3
+  85 0020 0F49     		ldr	r1, .L3+4
+  86 0022 1048     		ldr	r0, .L3+8
+  87 0024 BB1D     		adds	r3, r7, #6
+  88 0026 0893     		str	r3, [sp, #32]
+  89 0028 0323     		movs	r3, #3
+  90 002a 0793     		str	r3, [sp, #28]
+  91 002c 0023     		movs	r3, #0
+  92 002e 0693     		str	r3, [sp, #24]
+  93 0030 0023     		movs	r3, #0
+  94 0032 0593     		str	r3, [sp, #20]
+  95 0034 0023     		movs	r3, #0
+  96 0036 0493     		str	r3, [sp, #16]
+  97 0038 8023     		movs	r3, #128
+  98 003a 5B00     		lsls	r3, r3, #1
+  99 003c 0393     		str	r3, [sp, #12]
+ 100 003e 1923     		movs	r3, #25
+ 101 0040 0293     		str	r3, [sp, #8]
+ 102 0042 094B     		ldr	r3, .L3+12
+ 103 0044 0193     		str	r3, [sp, #4]
+ 104 0046 0223     		movs	r3, #2
+ 105 0048 0093     		str	r3, [sp]
+ 106 004a 0023     		movs	r3, #0
+ 107 004c FFF7FEFF 		bl	OSTaskCreate
+ 140:..\../app.c   ****                  "App Task Start",
+ 141:..\../app.c   ****                   App_TaskStart,
+ 142:..\../app.c   ****                   0u,
+ 143:..\../app.c   ****                   APP_CFG_TASK_START_PRIO,
+ 144:..\../app.c   ****                  &App_TaskStartStk[0u],
+ 145:..\../app.c   ****                  (APP_CFG_TASK_START_STK_SIZE / 10u),
+ 146:..\../app.c   ****                   APP_CFG_TASK_START_STK_SIZE,
+ 147:..\../app.c   ****                   0u,
+ 148:..\../app.c   ****                   0u,
+ 149:..\../app.c   ****                   0u,
+ 150:..\../app.c   ****                  (OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+ 151:..\../app.c   ****                  &os_err);
+ 152:..\../app.c   **** 
+ 153:..\../app.c   ****     OSStart(&os_err);                                           /* Start multitasking (i.e. give co
+ 108              		.loc 1 153 0
+ 109 0050 BB1D     		adds	r3, r7, #6
+ 110 0052 1800     		movs	r0, r3
+ 111 0054 FFF7FEFF 		bl	OSStart
+ 112              	.L2:
+ 154:..\../app.c   ****     
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 6
+
+
+ 155:..\../app.c   ****     while (DEF_ON);                                             /* Should Never Get Here.          
+ 113              		.loc 1 155 0 discriminator 1
+ 114 0058 FEE7     		b	.L2
+ 115              	.L4:
+ 116 005a C046     		.align	2
+ 117              	.L3:
+ 118 005c 00000000 		.word	App_TaskStart
+ 119 0060 00000000 		.word	.LC1
+ 120 0064 04000000 		.word	App_TaskStartTCB
+ 121 0068 80000000 		.word	App_TaskStartStk
+ 122              		.cfi_endproc
+ 123              	.LFE33:
+ 124              		.size	main, .-main
+ 125              		.section	.text.App_TaskStart,"ax",%progbits
+ 126              		.align	2
+ 127              		.code	16
+ 128              		.thumb_func
+ 129              		.type	App_TaskStart, %function
+ 130              	App_TaskStart:
+ 131              	.LFB34:
+ 156:..\../app.c   **** }
+ 157:..\../app.c   **** 
+ 158:..\../app.c   **** 
+ 159:..\../app.c   **** /*
+ 160:..\../app.c   **** ***************************************************************************************************
+ 161:..\../app.c   **** *                                          App_TaskStart()
+ 162:..\../app.c   **** *
+ 163:..\../app.c   **** * Description : This is an example of a startup task.  As mentioned in the book's text, you MUST
+ 164:..\../app.c   **** *               initialize the ticker only once multitasking has started.
+ 165:..\../app.c   **** *
+ 166:..\../app.c   **** * Argument(s) : p_arg   is the argument passed to 'App_TaskStart()' by 'OSTaskCreate()'.
+ 167:..\../app.c   **** *
+ 168:..\../app.c   **** * Return(s)   : none
+ 169:..\../app.c   **** *
+ 170:..\../app.c   **** * Caller(s)   : main()
+ 171:..\../app.c   **** *
+ 172:..\../app.c   **** * Note(s)     : (1) The first line of code is used to prevent a compiler warning because 'p_arg' is
+ 173:..\../app.c   **** *                   used.  The compiler should not generate any code for this statement.
+ 174:..\../app.c   **** *
+ 175:..\../app.c   **** *               (2) App_TaskStart Task will manage the RGB LED as well as the Push Button to Turn O
+ 176:..\../app.c   **** *                   and OFF the RGB LED.
+ 177:..\../app.c   **** ***************************************************************************************************
+ 178:..\../app.c   **** */
+ 179:..\../app.c   **** 
+ 180:..\../app.c   **** void  App_TaskStart (void *p_arg)
+ 181:..\../app.c   **** {
+ 132              		.loc 1 181 0
+ 133              		.cfi_startproc
+ 134              		@ args = 0, pretend = 0, frame = 16
+ 135              		@ frame_needed = 1, uses_anonymous_args = 0
+ 136 0000 90B5     		push	{r4, r7, lr}
+ 137              		.cfi_def_cfa_offset 12
+ 138              		.cfi_offset 4, -12
+ 139              		.cfi_offset 7, -8
+ 140              		.cfi_offset 14, -4
+ 141 0002 87B0     		sub	sp, sp, #28
+ 142              		.cfi_def_cfa_offset 40
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 7
+
+
+ 143 0004 02AF     		add	r7, sp, #8
+ 144              		.cfi_def_cfa 7, 32
+ 145 0006 7860     		str	r0, [r7, #4]
+ 182:..\../app.c   ****     OS_ERR       os_err;
+ 183:..\../app.c   ****     CPU_BOOLEAN  pb_status;
+ 184:..\../app.c   ****     CPU_BOOLEAN  pb_prev;
+ 185:..\../app.c   ****     CPU_BOOLEAN  led_status;
+ 186:..\../app.c   ****         
+ 187:..\../app.c   **** 
+ 188:..\../app.c   ****    (void)p_arg;
+ 189:..\../app.c   ****     led_status = DEF_OFF;                                       /* Initialize Var(s).              
+ 146              		.loc 1 189 0
+ 147 0008 0E23     		movs	r3, #14
+ 148 000a FB18     		adds	r3, r7, r3
+ 149 000c 0022     		movs	r2, #0
+ 150 000e 1A70     		strb	r2, [r3]
+ 190:..\../app.c   **** 
+ 191:..\../app.c   ****     BSP_CPU_TickInit();                                         /* Initialize the Tick Interrupt.  
+ 151              		.loc 1 191 0
+ 152 0010 FFF7FEFF 		bl	BSP_CPU_TickInit
+ 192:..\../app.c   ****                                                                 /* --------------- ACCELEROMETER SE
+ 193:..\../app.c   ****     BSP_Accel_Init();                                           /* Init & Cfg I2C & Accelerometer a
+ 153              		.loc 1 193 0
+ 154 0014 FFF7FEFF 		bl	BSP_Accel_Init
+ 194:..\../app.c   **** 
+ 195:..\../app.c   **** #if (OS_CFG_STAT_TASK_EN > 0u)
+ 196:..\../app.c   ****     OSStatTaskCPUUsageInit(&os_err);
+ 155              		.loc 1 196 0
+ 156 0018 0A23     		movs	r3, #10
+ 157 001a FB18     		adds	r3, r7, r3
+ 158 001c 1800     		movs	r0, r3
+ 159 001e FFF7FEFF 		bl	OSStatTaskCPUUsageInit
+ 197:..\../app.c   **** #endif
+ 198:..\../app.c   **** 
+ 199:..\../app.c   **** #ifdef CPU_CFG_INT_DIS_MEAS_EN
+ 200:..\../app.c   ****     CPU_IntDisMeasMaxCurReset();
+ 160              		.loc 1 200 0
+ 161 0022 FFF7FEFF 		bl	CPU_IntDisMeasMaxCurReset
+ 201:..\../app.c   **** #endif
+ 202:..\../app.c   **** 
+ 203:..\../app.c   ****     APP_TRACE_INFO(("Creating Kernel Objects...\n\r"));
+ 204:..\../app.c   ****     App_ObjCreate();                                            /* Create Kernel Objects           
+ 162              		.loc 1 204 0
+ 163 0026 FFF7FEFF 		bl	App_ObjCreate
+ 205:..\../app.c   ****     
+ 206:..\../app.c   ****     APP_TRACE_INFO(("Creating Application Tasks...\n\r"));
+ 207:..\../app.c   ****     App_TaskCreate();                                           /* Create Application Tasks.       
+ 164              		.loc 1 207 0
+ 165 002a FFF7FEFF 		bl	App_TaskCreate
+ 208:..\../app.c   ****     
+ 209:..\../app.c   ****     BSP_RGB_Off();                                              /* Initially Turn off the RGB LED. 
+ 166              		.loc 1 209 0
+ 167 002e FFF7FEFF 		bl	BSP_RGB_Off
+ 168              	.L12:
+ 210:..\../app.c   ****     
+ 211:..\../app.c   ****     while (DEF_TRUE) {                                          /* Task body, always written as an 
+ 212:..\../app.c   ****         pb_status = BSP_PB_StatusGet();                         /* ------------- PUSH BUTTON (SW2) 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 8
+
+
+ 169              		.loc 1 212 0
+ 170 0032 0D23     		movs	r3, #13
+ 171 0034 FC18     		adds	r4, r7, r3
+ 172 0036 FFF7FEFF 		bl	BSP_PB_StatusGet
+ 173 003a 0300     		movs	r3, r0
+ 174 003c 2370     		strb	r3, [r4]
+ 213:..\../app.c   **** 		
+ 214:..\../app.c   ****         if((pb_status == DEF_OFF) && (pb_prev != DEF_OFF)) {    /* Push Button Triggers change on B
+ 175              		.loc 1 214 0
+ 176 003e 0D23     		movs	r3, #13
+ 177 0040 FB18     		adds	r3, r7, r3
+ 178 0042 1B78     		ldrb	r3, [r3]
+ 179 0044 002B     		cmp	r3, #0
+ 180 0046 0FD1     		bne	.L6
+ 181              		.loc 1 214 0 is_stmt 0 discriminator 1
+ 182 0048 0F23     		movs	r3, #15
+ 183 004a FB18     		adds	r3, r7, r3
+ 184 004c 1B78     		ldrb	r3, [r3]
+ 185 004e 002B     		cmp	r3, #0
+ 186 0050 0AD0     		beq	.L6
+ 215:..\../app.c   ****             if (uC_Probe_PB_Trigger == DEF_ON) {                /* If the Probe Button is Turned ON
+ 187              		.loc 1 215 0 is_stmt 1
+ 188 0052 214B     		ldr	r3, .L13
+ 189 0054 1B78     		ldrb	r3, [r3]
+ 190 0056 012B     		cmp	r3, #1
+ 191 0058 03D1     		bne	.L7
+ 216:..\../app.c   ****                 uC_Probe_PB_Trigger = DEF_OFF;
+ 192              		.loc 1 216 0
+ 193 005a 1F4B     		ldr	r3, .L13
+ 194 005c 0022     		movs	r2, #0
+ 195 005e 1A70     		strb	r2, [r3]
+ 196 0060 02E0     		b	.L6
+ 197              	.L7:
+ 217:..\../app.c   ****             } else {                                            /* If the Probe Button is Turned OF
+ 218:..\../app.c   ****                 uC_Probe_PB_Trigger = DEF_ON;
+ 198              		.loc 1 218 0
+ 199 0062 1D4B     		ldr	r3, .L13
+ 200 0064 0122     		movs	r2, #1
+ 201 0066 1A70     		strb	r2, [r3]
+ 202              	.L6:
+ 219:..\../app.c   ****             }
+ 220:..\../app.c   ****         }
+ 221:..\../app.c   ****         
+ 222:..\../app.c   ****         pb_prev = pb_status;                                    /* Set the Status as the Button's P
+ 203              		.loc 1 222 0
+ 204 0068 0F23     		movs	r3, #15
+ 205 006a FB18     		adds	r3, r7, r3
+ 206 006c 0D22     		movs	r2, #13
+ 207 006e BA18     		adds	r2, r7, r2
+ 208 0070 1278     		ldrb	r2, [r2]
+ 209 0072 1A70     		strb	r2, [r3]
+ 223:..\../app.c   ****         
+ 224:..\../app.c   ****         if (uC_Probe_PB_Trigger == DEF_ON) {                    /* ---------- uC/PROBE BUTTON TRIGG
+ 210              		.loc 1 224 0
+ 211 0074 184B     		ldr	r3, .L13
+ 212 0076 1B78     		ldrb	r3, [r3]
+ 213 0078 012B     		cmp	r3, #1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 9
+
+
+ 214 007a 0BD1     		bne	.L8
+ 225:..\../app.c   ****             if (led_status == DEF_INACTIVE) {                   /* if LED Status Flag is currently 
+ 215              		.loc 1 225 0
+ 216 007c 0E23     		movs	r3, #14
+ 217 007e FB18     		adds	r3, r7, r3
+ 218 0080 1B78     		ldrb	r3, [r3]
+ 219 0082 002B     		cmp	r3, #0
+ 220 0084 11D1     		bne	.L10
+ 226:..\../app.c   ****                 led_status = DEF_ACTIVE;                        /* ... Status Flag and Turn ON The 
+ 221              		.loc 1 226 0
+ 222 0086 0E23     		movs	r3, #14
+ 223 0088 FB18     		adds	r3, r7, r3
+ 224 008a 0122     		movs	r2, #1
+ 225 008c 1A70     		strb	r2, [r3]
+ 227:..\../app.c   ****                 BSP_RGB_On();
+ 226              		.loc 1 227 0
+ 227 008e FFF7FEFF 		bl	BSP_RGB_On
+ 228 0092 0AE0     		b	.L10
+ 229              	.L8:
+ 228:..\../app.c   ****             }
+ 229:..\../app.c   ****         } else {
+ 230:..\../app.c   ****             if (led_status == DEF_YES) {                        /* if LED Status Flag is currently 
+ 230              		.loc 1 230 0
+ 231 0094 0E23     		movs	r3, #14
+ 232 0096 FB18     		adds	r3, r7, r3
+ 233 0098 1B78     		ldrb	r3, [r3]
+ 234 009a 012B     		cmp	r3, #1
+ 235 009c 05D1     		bne	.L10
+ 231:..\../app.c   ****                 led_status = DEF_INACTIVE;                      /* .. Status Flag and Turn OFF The 
+ 236              		.loc 1 231 0
+ 237 009e 0E23     		movs	r3, #14
+ 238 00a0 FB18     		adds	r3, r7, r3
+ 239 00a2 0022     		movs	r2, #0
+ 240 00a4 1A70     		strb	r2, [r3]
+ 232:..\../app.c   ****                 BSP_RGB_Off();
+ 241              		.loc 1 232 0
+ 242 00a6 FFF7FEFF 		bl	BSP_RGB_Off
+ 243              	.L10:
+ 233:..\../app.c   ****             }
+ 234:..\../app.c   ****         }
+ 235:..\../app.c   ****         
+ 236:..\../app.c   ****         if (led_status == DEF_ACTIVE) {                         /* -------------- UPDATE RGB COLOR 
+ 244              		.loc 1 236 0
+ 245 00aa 0E23     		movs	r3, #14
+ 246 00ac FB18     		adds	r3, r7, r3
+ 247 00ae 1B78     		ldrb	r3, [r3]
+ 248 00b0 012B     		cmp	r3, #1
+ 249 00b2 04D1     		bne	.L11
+ 237:..\../app.c   ****             BSP_RGB_ColorSet(uC_Probe_RGB_Val);                 /* IF LED Status Flag is Active, Up
+ 250              		.loc 1 237 0
+ 251 00b4 094B     		ldr	r3, .L13+4
+ 252 00b6 1B68     		ldr	r3, [r3]
+ 253 00b8 1800     		movs	r0, r3
+ 254 00ba FFF7FEFF 		bl	BSP_RGB_ColorSet
+ 255              	.L11:
+ 238:..\../app.c   ****         }
+ 239:..\../app.c   ****         
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 10
+
+
+ 240:..\../app.c   ****         OSTimeDlyHMSM(0u, 0u, 0u, 100u, 
+ 256              		.loc 1 240 0
+ 257 00be 0A23     		movs	r3, #10
+ 258 00c0 FB18     		adds	r3, r7, r3
+ 259 00c2 0193     		str	r3, [sp, #4]
+ 260 00c4 0023     		movs	r3, #0
+ 261 00c6 0093     		str	r3, [sp]
+ 262 00c8 6423     		movs	r3, #100
+ 263 00ca 0022     		movs	r2, #0
+ 264 00cc 0021     		movs	r1, #0
+ 265 00ce 0020     		movs	r0, #0
+ 266 00d0 FFF7FEFF 		bl	OSTimeDlyHMSM
+ 241:..\../app.c   ****                       OS_OPT_TIME_HMSM_STRICT, &os_err);
+ 242:..\../app.c   ****     }
+ 267              		.loc 1 242 0
+ 268 00d4 ADE7     		b	.L12
+ 269              	.L14:
+ 270 00d6 C046     		.align	2
+ 271              	.L13:
+ 272 00d8 00000000 		.word	uC_Probe_PB_Trigger
+ 273 00dc 00000000 		.word	uC_Probe_RGB_Val
+ 274              		.cfi_endproc
+ 275              	.LFE34:
+ 276              		.size	App_TaskStart, .-App_TaskStart
+ 277              		.section	.rodata
+ 278 000f 00       		.align	2
+ 279              	.LC8:
+ 280 0010 44656D6F 		.ascii	"Demo: Sensor Task\000"
+ 280      3A205365 
+ 280      6E736F72 
+ 280      20546173 
+ 280      6B00
+ 281              		.section	.text.App_TaskCreate,"ax",%progbits
+ 282              		.align	2
+ 283              		.code	16
+ 284              		.thumb_func
+ 285              		.type	App_TaskCreate, %function
+ 286              	App_TaskCreate:
+ 287              	.LFB35:
+ 243:..\../app.c   **** }
+ 244:..\../app.c   **** 
+ 245:..\../app.c   **** 
+ 246:..\../app.c   **** /*
+ 247:..\../app.c   **** ***************************************************************************************************
+ 248:..\../app.c   **** *                                          App_TaskCreate()
+ 249:..\../app.c   **** *
+ 250:..\../app.c   **** * Description : Create Application Tasks.
+ 251:..\../app.c   **** *
+ 252:..\../app.c   **** * Argument(s) : none
+ 253:..\../app.c   **** *
+ 254:..\../app.c   **** * Return(s)   : none
+ 255:..\../app.c   **** *
+ 256:..\../app.c   **** * Caller(s)   : AppTaskStart()
+ 257:..\../app.c   **** *
+ 258:..\../app.c   **** * Note(s)     : (1) The Following Task(s) were created to simulate Cypress' CY8CKIT-044 Sensor Hub
+ 259:..\../app.c   **** *                   demo using Micrium's uC/OS-III Kernel.
+ 260:..\../app.c   **** *
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 11
+
+
+ 261:..\../app.c   **** *               (2) Although Multiple Tasks were used for this demo, One (1) Task can manage all 
+ 262:..\../app.c   **** *                   services required to simulate the demo. The use of Mutiple tasks is used as an
+ 263:..\../app.c   **** *                   example for Multitasking with uC/OS-III.
+ 264:..\../app.c   **** ***************************************************************************************************
+ 265:..\../app.c   **** */
+ 266:..\../app.c   **** 
+ 267:..\../app.c   **** void  App_TaskCreate (void)
+ 268:..\../app.c   **** {
+ 288              		.loc 1 268 0
+ 289              		.cfi_startproc
+ 290              		@ args = 0, pretend = 0, frame = 8
+ 291              		@ frame_needed = 1, uses_anonymous_args = 0
+ 292 0000 80B5     		push	{r7, lr}
+ 293              		.cfi_def_cfa_offset 8
+ 294              		.cfi_offset 7, -8
+ 295              		.cfi_offset 14, -4
+ 296 0002 8CB0     		sub	sp, sp, #48
+ 297              		.cfi_def_cfa_offset 56
+ 298 0004 0AAF     		add	r7, sp, #40
+ 299              		.cfi_def_cfa 7, 16
+ 269:..\../app.c   ****     OS_ERR  os_err;
+ 270:..\../app.c   ****     
+ 271:..\../app.c   ****     OSTaskCreate(&App_Demo_SensorTaskTCB,                       /* Task that Manages Temp, Accel & 
+ 300              		.loc 1 271 0
+ 301 0006 0E4A     		ldr	r2, .L16
+ 302 0008 0E49     		ldr	r1, .L16+4
+ 303 000a 0F48     		ldr	r0, .L16+8
+ 304 000c BB1D     		adds	r3, r7, #6
+ 305 000e 0893     		str	r3, [sp, #32]
+ 306 0010 0323     		movs	r3, #3
+ 307 0012 0793     		str	r3, [sp, #28]
+ 308 0014 0023     		movs	r3, #0
+ 309 0016 0693     		str	r3, [sp, #24]
+ 310 0018 0023     		movs	r3, #0
+ 311 001a 0593     		str	r3, [sp, #20]
+ 312 001c 0023     		movs	r3, #0
+ 313 001e 0493     		str	r3, [sp, #16]
+ 314 0020 8023     		movs	r3, #128
+ 315 0022 5B00     		lsls	r3, r3, #1
+ 316 0024 0393     		str	r3, [sp, #12]
+ 317 0026 1923     		movs	r3, #25
+ 318 0028 0293     		str	r3, [sp, #8]
+ 319 002a 084B     		ldr	r3, .L16+12
+ 320 002c 0193     		str	r3, [sp, #4]
+ 321 002e 0323     		movs	r3, #3
+ 322 0030 0093     		str	r3, [sp]
+ 323 0032 0023     		movs	r3, #0
+ 324 0034 FFF7FEFF 		bl	OSTaskCreate
+ 272:..\../app.c   ****                  "Demo: Sensor Task",
+ 273:..\../app.c   ****                   App_Demo_SensorTask,
+ 274:..\../app.c   ****                   0u,
+ 275:..\../app.c   ****                   APP_CFG_SENSOR_TASK_PRIO,
+ 276:..\../app.c   ****                  &App_Demo_SensorTaskStk[0u],
+ 277:..\../app.c   ****                  (APP_CFG_SENSOR_TASK_STK_SIZE / 10u),
+ 278:..\../app.c   ****                   APP_CFG_SENSOR_TASK_STK_SIZE,
+ 279:..\../app.c   ****                   0u,
+ 280:..\../app.c   ****                   0u,
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 12
+
+
+ 281:..\../app.c   ****                   0u,
+ 282:..\../app.c   ****                  (OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+ 283:..\../app.c   ****                  &os_err);
+ 284:..\../app.c   **** }
+ 325              		.loc 1 284 0
+ 326 0038 C046     		nop
+ 327 003a BD46     		mov	sp, r7
+ 328 003c 02B0     		add	sp, sp, #8
+ 329              		@ sp needed
+ 330 003e 80BD     		pop	{r7, pc}
+ 331              	.L17:
+ 332              		.align	2
+ 333              	.L16:
+ 334 0040 00000000 		.word	App_Demo_SensorTask
+ 335 0044 10000000 		.word	.LC8
+ 336 0048 80040000 		.word	App_Demo_SensorTaskTCB
+ 337 004c FC040000 		.word	App_Demo_SensorTaskStk
+ 338              		.cfi_endproc
+ 339              	.LFE35:
+ 340              		.size	App_TaskCreate, .-App_TaskCreate
+ 341              		.section	.text.App_ObjCreate,"ax",%progbits
+ 342              		.align	2
+ 343              		.code	16
+ 344              		.thumb_func
+ 345              		.type	App_ObjCreate, %function
+ 346              	App_ObjCreate:
+ 347              	.LFB36:
+ 285:..\../app.c   **** 
+ 286:..\../app.c   **** 
+ 287:..\../app.c   **** /*
+ 288:..\../app.c   **** ***************************************************************************************************
+ 289:..\../app.c   **** *                                          App_ObjCreate()
+ 290:..\../app.c   **** *
+ 291:..\../app.c   **** * Description : Create Application Kernel Objects Tasks.
+ 292:..\../app.c   **** *
+ 293:..\../app.c   **** * Argument(s) : none
+ 294:..\../app.c   **** *
+ 295:..\../app.c   **** * Return(s)   : none
+ 296:..\../app.c   **** *
+ 297:..\../app.c   **** * Caller(s)   : AppTaskStart()
+ 298:..\../app.c   **** *
+ 299:..\../app.c   **** * Note(s)     : none.
+ 300:..\../app.c   **** ***************************************************************************************************
+ 301:..\../app.c   **** */
+ 302:..\../app.c   **** 
+ 303:..\../app.c   **** void  App_ObjCreate (void)
+ 304:..\../app.c   **** {
+ 348              		.loc 1 304 0
+ 349              		.cfi_startproc
+ 350              		@ args = 0, pretend = 0, frame = 0
+ 351              		@ frame_needed = 1, uses_anonymous_args = 0
+ 352 0000 80B5     		push	{r7, lr}
+ 353              		.cfi_def_cfa_offset 8
+ 354              		.cfi_offset 7, -8
+ 355              		.cfi_offset 14, -4
+ 356 0002 00AF     		add	r7, sp, #0
+ 357              		.cfi_def_cfa_register 7
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 13
+
+
+ 305:..\../app.c   ****     
+ 306:..\../app.c   **** }
+ 358              		.loc 1 306 0
+ 359 0004 C046     		nop
+ 360 0006 BD46     		mov	sp, r7
+ 361              		@ sp needed
+ 362 0008 80BD     		pop	{r7, pc}
+ 363              		.cfi_endproc
+ 364              	.LFE36:
+ 365              		.size	App_ObjCreate, .-App_ObjCreate
+ 366 000a C046     		.section	.text.App_Demo_SensorTask,"ax",%progbits
+ 367              		.align	2
+ 368              		.code	16
+ 369              		.thumb_func
+ 370              		.type	App_Demo_SensorTask, %function
+ 371              	App_Demo_SensorTask:
+ 372              	.LFB37:
+ 307:..\../app.c   **** 
+ 308:..\../app.c   **** 
+ 309:..\../app.c   **** /*
+ 310:..\../app.c   **** ***************************************************************************************************
+ 311:..\../app.c   **** ***************************************************************************************************
+ 312:..\../app.c   **** *                                             LOCAL TASKS
+ 313:..\../app.c   **** ***************************************************************************************************
+ 314:..\../app.c   **** ***************************************************************************************************
+ 315:..\../app.c   **** */
+ 316:..\../app.c   **** 
+ 317:..\../app.c   **** /*
+ 318:..\../app.c   **** ***************************************************************************************************
+ 319:..\../app.c   **** *                                        App_Demo_SensorTask()
+ 320:..\../app.c   **** *
+ 321:..\../app.c   **** * Description : Manage CY8CKIT-044's Temperature Sensor, Ambient Light Sensor, and I2C Communicatio
+ 322:..\../app.c   **** *               to the KXTJ2-1009 3-Axis Accelerometer.
+ 323:..\../app.c   **** *
+ 324:..\../app.c   **** * Argument(s) : none
+ 325:..\../app.c   **** *
+ 326:..\../app.c   **** * Return(s)   : none
+ 327:..\../app.c   **** *
+ 328:..\../app.c   **** * Caller(s)   : AppTaskStart()
+ 329:..\../app.c   **** *
+ 330:..\../app.c   **** * Note(s)     : (1) The use/start of the DMA Component also sets the source of the Global Variable 
+ 331:..\../app.c   **** *                   will be used to house the Ambient Light data Autiomatically that uC/Probe will
+ 332:..\../app.c   **** *                   Display.
+ 333:..\../app.c   **** *
+ 334:..\../app.c   **** *               (2) The Ambient Light Sensor can go to a max range of 2000, however in normal 'indo
+ 335:..\../app.c   **** *                   light the Light doesn't go higher than 50. For this reason, an initial Variable
+ 336:..\../app.c   **** *                   was introduced to regulate the Probe Variable. When surrounded in Total Darknes
+ 337:..\../app.c   **** *                   the Ambient Light Sensor cannot successfully read the proper Lighting value, an
+ 338:..\../app.c   **** *                   simulate a variable overflow. To keep this from occurring, a check has been int
+ 339:..\../app.c   **** *                   to check if the 'Light Value' is greater than the configured range (50), the
+ 340:..\../app.c   **** *                   uC/Probe variable will be defaulted to '0'.
+ 341:..\../app.c   **** ***************************************************************************************************
+ 342:..\../app.c   **** */
+ 343:..\../app.c   **** 
+ 344:..\../app.c   **** void  App_Demo_SensorTask (void *p_arg)
+ 345:..\../app.c   **** {
+ 373              		.loc 1 345 0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 14
+
+
+ 374              		.cfi_startproc
+ 375              		@ args = 0, pretend = 0, frame = 16
+ 376              		@ frame_needed = 1, uses_anonymous_args = 0
+ 377 0000 80B5     		push	{r7, lr}
+ 378              		.cfi_def_cfa_offset 8
+ 379              		.cfi_offset 7, -8
+ 380              		.cfi_offset 14, -4
+ 381 0002 86B0     		sub	sp, sp, #24
+ 382              		.cfi_def_cfa_offset 32
+ 383 0004 02AF     		add	r7, sp, #8
+ 384              		.cfi_def_cfa 7, 24
+ 385 0006 7860     		str	r0, [r7, #4]
+ 386              	.L20:
+ 346:..\../app.c   ****     OS_ERR      os_err;
+ 347:..\../app.c   ****     CPU_INT08U  temp_status;
+ 348:..\../app.c   ****     CPU_INT16U  temp_val;
+ 349:..\../app.c   ****     CPU_FP32    temp_conv;
+ 350:..\../app.c   ****     
+ 351:..\../app.c   ****     
+ 352:..\../app.c   ****     (void)p_arg;
+ 353:..\../app.c   ****                                                                 /* ---------------- AMBIENT LIGHT I
+ 354:..\../app.c   ****                                                                 /* Enable the DMA Component and set
+ 355:..\../app.c   ****                                                                 /* .. DMA transfer as well as the D
+ 356:..\../app.c   **** //    DMA_Start((void *)ADC_SAR_CHAN0_RESULT_PTR, &App_Demo_Ambient_InitVar);
+ 357:..\../app.c   ****     
+ 358:..\../app.c   ****    // ADC_StartConvert();                                         /* Start ADC Conversions, Save to
+ 359:..\../app.c   ****     
+ 360:..\../app.c   ****     while (DEF_TRUE) {                                          /* Task body, always written as an 
+ 361:..\../app.c   ****           
+ 362:..\../app.c   ****         /* ----------------- TEMP SENSOR READ ----------------- */
+ 363:..\../app.c   ****        /* temp_status = Temp_Sensor_ConversionStatus();           /* Get the Temperature Sensor's C
+ 364:..\../app.c   ****         
+ 365:..\../app.c   ****         //if (temp_status == Temp_Sensor_STATUS_COMPLETE) {       /* If Conversion is Complete, Rd 
+ 366:..\../app.c   ****                                                                 /* Temperature Returned is in (*C).
+ 367:..\../app.c   ****          //   temp_val          = Temp_Sensor_GetTemperature(APP_TEMP_SENSOR_NUM);
+ 368:..\../app.c   ****          //   temp_conv         = (temp_val / 100u);              /* Temp Value must be Factored Do
+ 369:..\../app.c   ****          //   uC_Probe_Temp_Val = ((temp_conv * 1.8) + 32u);      /* Convert Temp from (*C) to (*F)
+ 370:..\../app.c   ****             
+ 371:..\../app.c   ****        //     Temp_Sensor_Trigger();                              /* Trigger next conversion when t
+ 372:..\../app.c   ****        // }
+ 373:..\../app.c   ****                                                                 /* --------------- AMBIENT LIGHT SE
+ 374:..\../app.c   ****        // if (App_Demo_Ambient_InitVar > APP_AMBIENT_DEMO_MAX_VAL) {
+ 375:..\../app.c   ****         //    uC_Probe_AmbientLight = 0u;                         /* See Note (2).                 
+ 376:..\../app.c   ****        // } else {
+ 377:..\../app.c   ****        //     uC_Probe_AmbientLight = App_Demo_Ambient_InitVar;
+ 378:..\../app.c   ****         //}
+ 379:..\../app.c   ****         
+ 380:..\../app.c   ****                                                                 /* --------------- ACCELEROMETER SE
+ 381:..\../app.c   ****        // BSP_Accel_Rd(&uC_Probe_Accel_X_Axis,                    /* Read Accelerometer's X, Y, & Z
+ 382:..\../app.c   ****         //             &uC_Probe_Accel_Y_Axis,
+ 383:..\../app.c   ****         //             &uC_Probe_Accel_Z_Axis);
+ 384:..\../app.c   ****       
+ 385:..\../app.c   ****         
+ 386:..\../app.c   ****         OSTimeDlyHMSM(0u, 0u, 0u, 50u,
+ 387              		.loc 1 386 0 discriminator 1
+ 388 0008 0E23     		movs	r3, #14
+ 389 000a FB18     		adds	r3, r7, r3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 15
+
+
+ 390 000c 0193     		str	r3, [sp, #4]
+ 391 000e 0023     		movs	r3, #0
+ 392 0010 0093     		str	r3, [sp]
+ 393 0012 3223     		movs	r3, #50
+ 394 0014 0022     		movs	r2, #0
+ 395 0016 0021     		movs	r1, #0
+ 396 0018 0020     		movs	r0, #0
+ 397 001a FFF7FEFF 		bl	OSTimeDlyHMSM
+ 387:..\../app.c   ****                       OS_OPT_TIME_HMSM_STRICT, &os_err);
+ 388:..\../app.c   ****     }
+ 398              		.loc 1 388 0 discriminator 1
+ 399 001e F3E7     		b	.L20
+ 400              		.cfi_endproc
+ 401              	.LFE37:
+ 402              		.size	App_Demo_SensorTask, .-App_Demo_SensorTask
+ 403              		.text
+ 404              	.Letext0:
+ 405              		.file 2 "..\\..\\..\\..\\..\\..\\Software\\uC-CPU\\ARM-Cortex-M0\\GNU/cpu.h"
+ 406              		.file 3 "..\\..\\..\\..\\..\\..\\Software\\uC-CPU/cpu_core.h"
+ 407              		.file 4 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source/os_type.h"
+ 408              		.file 5 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source/os.h"
+ 409              		.section	.debug_info,"",%progbits
+ 410              	.Ldebug_info0:
+ 411 0000 9C0B0000 		.4byte	0xb9c
+ 412 0004 0400     		.2byte	0x4
+ 413 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 414 000a 04       		.byte	0x4
+ 415 000b 01       		.uleb128 0x1
+ 416 000c 5E020000 		.4byte	.LASF279
+ 417 0010 0C       		.byte	0xc
+ 418 0011 830C0000 		.4byte	.LASF280
+ 419 0015 670A0000 		.4byte	.LASF281
+ 420 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 421 001d 00000000 		.4byte	0
+ 422 0021 00000000 		.4byte	.Ldebug_line0
+ 423 0025 02       		.uleb128 0x2
+ 424 0026 01       		.byte	0x1
+ 425 0027 06       		.byte	0x6
+ 426 0028 A2100000 		.4byte	.LASF0
+ 427 002c 02       		.uleb128 0x2
+ 428 002d 01       		.byte	0x1
+ 429 002e 08       		.byte	0x8
+ 430 002f 5E0F0000 		.4byte	.LASF1
+ 431 0033 02       		.uleb128 0x2
+ 432 0034 02       		.byte	0x2
+ 433 0035 05       		.byte	0x5
+ 434 0036 130D0000 		.4byte	.LASF2
+ 435 003a 02       		.uleb128 0x2
+ 436 003b 02       		.byte	0x2
+ 437 003c 07       		.byte	0x7
+ 438 003d C2100000 		.4byte	.LASF3
+ 439 0041 02       		.uleb128 0x2
+ 440 0042 04       		.byte	0x4
+ 441 0043 05       		.byte	0x5
+ 442 0044 4C0D0000 		.4byte	.LASF4
+ 443 0048 02       		.uleb128 0x2
+ 444 0049 04       		.byte	0x4
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 16
+
+
+ 445 004a 07       		.byte	0x7
+ 446 004b AA0E0000 		.4byte	.LASF5
+ 447 004f 02       		.uleb128 0x2
+ 448 0050 08       		.byte	0x8
+ 449 0051 05       		.byte	0x5
+ 450 0052 2C090000 		.4byte	.LASF6
+ 451 0056 02       		.uleb128 0x2
+ 452 0057 08       		.byte	0x8
+ 453 0058 07       		.byte	0x7
+ 454 0059 38050000 		.4byte	.LASF7
+ 455 005d 03       		.uleb128 0x3
+ 456 005e 04       		.byte	0x4
+ 457 005f 05       		.byte	0x5
+ 458 0060 696E7400 		.ascii	"int\000"
+ 459 0064 02       		.uleb128 0x2
+ 460 0065 04       		.byte	0x4
+ 461 0066 07       		.byte	0x7
+ 462 0067 B4010000 		.4byte	.LASF8
+ 463 006b 02       		.uleb128 0x2
+ 464 006c 08       		.byte	0x8
+ 465 006d 04       		.byte	0x4
+ 466 006e 3A0C0000 		.4byte	.LASF9
+ 467 0072 04       		.uleb128 0x4
+ 468 0073 04       		.byte	0x4
+ 469 0074 02       		.uleb128 0x2
+ 470 0075 04       		.byte	0x4
+ 471 0076 07       		.byte	0x7
+ 472 0077 A10E0000 		.4byte	.LASF10
+ 473 007b 02       		.uleb128 0x2
+ 474 007c 01       		.byte	0x1
+ 475 007d 08       		.byte	0x8
+ 476 007e 3C080000 		.4byte	.LASF11
+ 477 0082 05       		.uleb128 0x5
+ 478 0083 05070000 		.4byte	.LASF12
+ 479 0087 02       		.byte	0x2
+ 480 0088 7C       		.byte	0x7c
+ 481 0089 7B000000 		.4byte	0x7b
+ 482 008d 05       		.uleb128 0x5
+ 483 008e 270F0000 		.4byte	.LASF13
+ 484 0092 02       		.byte	0x2
+ 485 0093 7D       		.byte	0x7d
+ 486 0094 2C000000 		.4byte	0x2c
+ 487 0098 05       		.uleb128 0x5
+ 488 0099 F5050000 		.4byte	.LASF14
+ 489 009d 02       		.byte	0x2
+ 490 009e 7E       		.byte	0x7e
+ 491 009f 2C000000 		.4byte	0x2c
+ 492 00a3 05       		.uleb128 0x5
+ 493 00a4 B5090000 		.4byte	.LASF15
+ 494 00a8 02       		.byte	0x2
+ 495 00a9 80       		.byte	0x80
+ 496 00aa 3A000000 		.4byte	0x3a
+ 497 00ae 05       		.uleb128 0x5
+ 498 00af 93090000 		.4byte	.LASF16
+ 499 00b3 02       		.byte	0x2
+ 500 00b4 81       		.byte	0x81
+ 501 00b5 33000000 		.4byte	0x33
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 17
+
+
+ 502 00b9 05       		.uleb128 0x5
+ 503 00ba 2F060000 		.4byte	.LASF17
+ 504 00be 02       		.byte	0x2
+ 505 00bf 82       		.byte	0x82
+ 506 00c0 64000000 		.4byte	0x64
+ 507 00c4 05       		.uleb128 0x5
+ 508 00c5 26060000 		.4byte	.LASF18
+ 509 00c9 02       		.byte	0x2
+ 510 00ca 87       		.byte	0x87
+ 511 00cb CF000000 		.4byte	0xcf
+ 512 00cf 02       		.uleb128 0x2
+ 513 00d0 04       		.byte	0x4
+ 514 00d1 04       		.byte	0x4
+ 515 00d2 9C040000 		.4byte	.LASF19
+ 516 00d6 02       		.uleb128 0x2
+ 517 00d7 08       		.byte	0x8
+ 518 00d8 04       		.byte	0x4
+ 519 00d9 4A110000 		.4byte	.LASF20
+ 520 00dd 06       		.uleb128 0x6
+ 521 00de 04       		.byte	0x4
+ 522 00df E3000000 		.4byte	0xe3
+ 523 00e3 07       		.uleb128 0x7
+ 524 00e4 EE000000 		.4byte	0xee
+ 525 00e8 08       		.uleb128 0x8
+ 526 00e9 72000000 		.4byte	0x72
+ 527 00ed 00       		.byte	0
+ 528 00ee 05       		.uleb128 0x5
+ 529 00ef E10E0000 		.4byte	.LASF21
+ 530 00f3 02       		.byte	0x2
+ 531 00f4 BA       		.byte	0xba
+ 532 00f5 B9000000 		.4byte	0xb9
+ 533 00f9 05       		.uleb128 0x5
+ 534 00fa B1120000 		.4byte	.LASF22
+ 535 00fe 02       		.byte	0x2
+ 536 00ff E5       		.byte	0xe5
+ 537 0100 B9000000 		.4byte	0xb9
+ 538 0104 05       		.uleb128 0x5
+ 539 0105 25070000 		.4byte	.LASF23
+ 540 0109 02       		.byte	0x2
+ 541 010a E6       		.byte	0xe6
+ 542 010b EE000000 		.4byte	0xee
+ 543 010f 05       		.uleb128 0x5
+ 544 0110 D50A0000 		.4byte	.LASF24
+ 545 0114 03       		.byte	0x3
+ 546 0115 C4       		.byte	0xc4
+ 547 0116 B9000000 		.4byte	0xb9
+ 548 011a 05       		.uleb128 0x5
+ 549 011b 25090000 		.4byte	.LASF25
+ 550 011f 03       		.byte	0x3
+ 551 0120 C7       		.byte	0xc7
+ 552 0121 0F010000 		.4byte	0x10f
+ 553 0125 05       		.uleb128 0x5
+ 554 0126 B6060000 		.4byte	.LASF26
+ 555 012a 04       		.byte	0x4
+ 556 012b 40       		.byte	0x40
+ 557 012c A3000000 		.4byte	0xa3
+ 558 0130 05       		.uleb128 0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 18
+
+
+ 559 0131 A60D0000 		.4byte	.LASF27
+ 560 0135 04       		.byte	0x4
+ 561 0136 42       		.byte	0x42
+ 562 0137 98000000 		.4byte	0x98
+ 563 013b 05       		.uleb128 0x5
+ 564 013c 62040000 		.4byte	.LASF28
+ 565 0140 04       		.byte	0x4
+ 566 0141 44       		.byte	0x44
+ 567 0142 A3000000 		.4byte	0xa3
+ 568 0146 05       		.uleb128 0x5
+ 569 0147 41080000 		.4byte	.LASF29
+ 570 014b 04       		.byte	0x4
+ 571 014c 45       		.byte	0x45
+ 572 014d B9000000 		.4byte	0xb9
+ 573 0151 05       		.uleb128 0x5
+ 574 0152 940F0000 		.4byte	.LASF30
+ 575 0156 04       		.byte	0x4
+ 576 0157 47       		.byte	0x47
+ 577 0158 A3000000 		.4byte	0xa3
+ 578 015c 05       		.uleb128 0x5
+ 579 015d 94040000 		.4byte	.LASF31
+ 580 0161 04       		.byte	0x4
+ 581 0162 49       		.byte	0x49
+ 582 0163 98000000 		.4byte	0x98
+ 583 0167 05       		.uleb128 0x5
+ 584 0168 5B060000 		.4byte	.LASF32
+ 585 016c 04       		.byte	0x4
+ 586 016d 4F       		.byte	0x4f
+ 587 016e B9000000 		.4byte	0xb9
+ 588 0172 05       		.uleb128 0x5
+ 589 0173 0C0B0000 		.4byte	.LASF33
+ 590 0177 04       		.byte	0x4
+ 591 0178 52       		.byte	0x52
+ 592 0179 B9000000 		.4byte	0xb9
+ 593 017d 05       		.uleb128 0x5
+ 594 017e 8B0F0000 		.4byte	.LASF34
+ 595 0182 04       		.byte	0x4
+ 596 0183 54       		.byte	0x54
+ 597 0184 98000000 		.4byte	0x98
+ 598 0188 05       		.uleb128 0x5
+ 599 0189 6E060000 		.4byte	.LASF35
+ 600 018d 04       		.byte	0x4
+ 601 018e 56       		.byte	0x56
+ 602 018f 98000000 		.4byte	0x98
+ 603 0193 05       		.uleb128 0x5
+ 604 0194 1E0A0000 		.4byte	.LASF36
+ 605 0198 04       		.byte	0x4
+ 606 0199 58       		.byte	0x58
+ 607 019a B9000000 		.4byte	0xb9
+ 608 019e 09       		.uleb128 0x9
+ 609 019f 56010000 		.4byte	.LASF256
+ 610 01a3 02       		.byte	0x2
+ 611 01a4 3A000000 		.4byte	0x3a
+ 612 01a8 05       		.byte	0x5
+ 613 01a9 A501     		.2byte	0x1a5
+ 614 01ab 16060000 		.4byte	0x616
+ 615 01af 0A       		.uleb128 0xa
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 19
+
+
+ 616 01b0 EE100000 		.4byte	.LASF37
+ 617 01b4 00       		.byte	0
+ 618 01b5 0B       		.uleb128 0xb
+ 619 01b6 64000000 		.4byte	.LASF38
+ 620 01ba 1027     		.2byte	0x2710
+ 621 01bc 0B       		.uleb128 0xb
+ 622 01bd 51030000 		.4byte	.LASF39
+ 623 01c1 1127     		.2byte	0x2711
+ 624 01c3 0B       		.uleb128 0xb
+ 625 01c4 6D000000 		.4byte	.LASF40
+ 626 01c8 F82A     		.2byte	0x2af8
+ 627 01ca 0B       		.uleb128 0xb
+ 628 01cb 76000000 		.4byte	.LASF41
+ 629 01cf E02E     		.2byte	0x2ee0
+ 630 01d1 0B       		.uleb128 0xb
+ 631 01d2 85010000 		.4byte	.LASF42
+ 632 01d6 E12E     		.2byte	0x2ee1
+ 633 01d8 0B       		.uleb128 0xb
+ 634 01d9 7F000000 		.4byte	.LASF43
+ 635 01dd C832     		.2byte	0x32c8
+ 636 01df 0B       		.uleb128 0xb
+ 637 01e0 18080000 		.4byte	.LASF44
+ 638 01e4 C932     		.2byte	0x32c9
+ 639 01e6 0B       		.uleb128 0xb
+ 640 01e7 88000000 		.4byte	.LASF45
+ 641 01eb B036     		.2byte	0x36b0
+ 642 01ed 0B       		.uleb128 0xb
+ 643 01ee 91000000 		.4byte	.LASF46
+ 644 01f2 983A     		.2byte	0x3a98
+ 645 01f4 0B       		.uleb128 0xb
+ 646 01f5 AE100000 		.4byte	.LASF47
+ 647 01f9 993A     		.2byte	0x3a99
+ 648 01fb 0B       		.uleb128 0xb
+ 649 01fc 91070000 		.4byte	.LASF48
+ 650 0200 FD3A     		.2byte	0x3afd
+ 651 0202 0B       		.uleb128 0xb
+ 652 0203 810E0000 		.4byte	.LASF49
+ 653 0207 FE3A     		.2byte	0x3afe
+ 654 0209 0B       		.uleb128 0xb
+ 655 020a 48090000 		.4byte	.LASF50
+ 656 020e FF3A     		.2byte	0x3aff
+ 657 0210 0B       		.uleb128 0xb
+ 658 0211 34110000 		.4byte	.LASF51
+ 659 0215 003B     		.2byte	0x3b00
+ 660 0217 0B       		.uleb128 0xb
+ 661 0218 9A000000 		.4byte	.LASF52
+ 662 021c 803E     		.2byte	0x3e80
+ 663 021e 0B       		.uleb128 0xb
+ 664 021f A3000000 		.4byte	.LASF53
+ 665 0223 6842     		.2byte	0x4268
+ 666 0225 0B       		.uleb128 0xb
+ 667 0226 AC000000 		.4byte	.LASF54
+ 668 022a 5046     		.2byte	0x4650
+ 669 022c 0B       		.uleb128 0xb
+ 670 022d 2C040000 		.4byte	.LASF55
+ 671 0231 5146     		.2byte	0x4651
+ 672 0233 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 20
+
+
+ 673 0234 25030000 		.4byte	.LASF56
+ 674 0238 5246     		.2byte	0x4652
+ 675 023a 0B       		.uleb128 0xb
+ 676 023b F7030000 		.4byte	.LASF57
+ 677 023f 5346     		.2byte	0x4653
+ 678 0241 0B       		.uleb128 0xb
+ 679 0242 73010000 		.4byte	.LASF58
+ 680 0246 5446     		.2byte	0x4654
+ 681 0248 0B       		.uleb128 0xb
+ 682 0249 47100000 		.4byte	.LASF59
+ 683 024d 5546     		.2byte	0x4655
+ 684 024f 0B       		.uleb128 0xb
+ 685 0250 B50B0000 		.4byte	.LASF60
+ 686 0254 5646     		.2byte	0x4656
+ 687 0256 0B       		.uleb128 0xb
+ 688 0257 B5000000 		.4byte	.LASF61
+ 689 025b 384A     		.2byte	0x4a38
+ 690 025d 0B       		.uleb128 0xb
+ 691 025e BE000000 		.4byte	.LASF62
+ 692 0262 204E     		.2byte	0x4e20
+ 693 0264 0B       		.uleb128 0xb
+ 694 0265 C7000000 		.4byte	.LASF63
+ 695 0269 0852     		.2byte	0x5208
+ 696 026b 0B       		.uleb128 0xb
+ 697 026c DD0C0000 		.4byte	.LASF64
+ 698 0270 0952     		.2byte	0x5209
+ 699 0272 0B       		.uleb128 0xb
+ 700 0273 D0000000 		.4byte	.LASF65
+ 701 0277 F055     		.2byte	0x55f0
+ 702 0279 0B       		.uleb128 0xb
+ 703 027a A70F0000 		.4byte	.LASF66
+ 704 027e B956     		.2byte	0x56b9
+ 705 0280 0B       		.uleb128 0xb
+ 706 0281 260A0000 		.4byte	.LASF67
+ 707 0285 BA56     		.2byte	0x56ba
+ 708 0287 0B       		.uleb128 0xb
+ 709 0288 BD0C0000 		.4byte	.LASF68
+ 710 028c BB56     		.2byte	0x56bb
+ 711 028e 0B       		.uleb128 0xb
+ 712 028f C0070000 		.4byte	.LASF69
+ 713 0293 BC56     		.2byte	0x56bc
+ 714 0295 0B       		.uleb128 0xb
+ 715 0296 DC090000 		.4byte	.LASF70
+ 716 029a BD56     		.2byte	0x56bd
+ 717 029c 0B       		.uleb128 0xb
+ 718 029d A40C0000 		.4byte	.LASF71
+ 719 02a1 BE56     		.2byte	0x56be
+ 720 02a3 0B       		.uleb128 0xb
+ 721 02a4 4E0A0000 		.4byte	.LASF72
+ 722 02a8 BF56     		.2byte	0x56bf
+ 723 02aa 0B       		.uleb128 0xb
+ 724 02ab DD040000 		.4byte	.LASF73
+ 725 02af C056     		.2byte	0x56c0
+ 726 02b1 0B       		.uleb128 0xb
+ 727 02b2 CC110000 		.4byte	.LASF74
+ 728 02b6 C156     		.2byte	0x56c1
+ 729 02b8 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 21
+
+
+ 730 02b9 99120000 		.4byte	.LASF75
+ 731 02bd C256     		.2byte	0x56c2
+ 732 02bf 0B       		.uleb128 0xb
+ 733 02c0 280D0000 		.4byte	.LASF76
+ 734 02c4 1D57     		.2byte	0x571d
+ 735 02c6 0B       		.uleb128 0xb
+ 736 02c7 850D0000 		.4byte	.LASF77
+ 737 02cb 1E57     		.2byte	0x571e
+ 738 02cd 0B       		.uleb128 0xb
+ 739 02ce 9F060000 		.4byte	.LASF78
+ 740 02d2 8157     		.2byte	0x5781
+ 741 02d4 0B       		.uleb128 0xb
+ 742 02d5 480E0000 		.4byte	.LASF79
+ 743 02d9 8257     		.2byte	0x5782
+ 744 02db 0B       		.uleb128 0xb
+ 745 02dc 7B030000 		.4byte	.LASF80
+ 746 02e0 8357     		.2byte	0x5783
+ 747 02e2 0B       		.uleb128 0xb
+ 748 02e3 D9000000 		.4byte	.LASF81
+ 749 02e7 D859     		.2byte	0x59d8
+ 750 02e9 0B       		.uleb128 0xb
+ 751 02ea 62060000 		.4byte	.LASF82
+ 752 02ee D959     		.2byte	0x59d9
+ 753 02f0 0B       		.uleb128 0xb
+ 754 02f1 B7040000 		.4byte	.LASF83
+ 755 02f5 DA59     		.2byte	0x59da
+ 756 02f7 0B       		.uleb128 0xb
+ 757 02f8 E2000000 		.4byte	.LASF84
+ 758 02fc C05D     		.2byte	0x5dc0
+ 759 02fe 0B       		.uleb128 0xb
+ 760 02ff C3030000 		.4byte	.LASF85
+ 761 0303 C15D     		.2byte	0x5dc1
+ 762 0305 0B       		.uleb128 0xb
+ 763 0306 16090000 		.4byte	.LASF86
+ 764 030a C25D     		.2byte	0x5dc2
+ 765 030c 0B       		.uleb128 0xb
+ 766 030d F4090000 		.4byte	.LASF87
+ 767 0311 C35D     		.2byte	0x5dc3
+ 768 0313 0B       		.uleb128 0xb
+ 769 0314 E20D0000 		.4byte	.LASF88
+ 770 0318 C45D     		.2byte	0x5dc4
+ 771 031a 0B       		.uleb128 0xb
+ 772 031b 5F080000 		.4byte	.LASF89
+ 773 031f 255E     		.2byte	0x5e25
+ 774 0321 0B       		.uleb128 0xb
+ 775 0322 460C0000 		.4byte	.LASF90
+ 776 0326 895E     		.2byte	0x5e89
+ 777 0328 0B       		.uleb128 0xb
+ 778 0329 32070000 		.4byte	.LASF91
+ 779 032d 8A5E     		.2byte	0x5e8a
+ 780 032f 0B       		.uleb128 0xb
+ 781 0330 EB000000 		.4byte	.LASF92
+ 782 0334 A861     		.2byte	0x61a8
+ 783 0336 0B       		.uleb128 0xb
+ 784 0337 51110000 		.4byte	.LASF93
+ 785 033b A961     		.2byte	0x61a9
+ 786 033d 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 22
+
+
+ 787 033e CB0E0000 		.4byte	.LASF94
+ 788 0342 AA61     		.2byte	0x61aa
+ 789 0344 0B       		.uleb128 0xb
+ 790 0345 310E0000 		.4byte	.LASF95
+ 791 0349 AB61     		.2byte	0x61ab
+ 792 034b 0B       		.uleb128 0xb
+ 793 034c 9E090000 		.4byte	.LASF96
+ 794 0350 AC61     		.2byte	0x61ac
+ 795 0352 0B       		.uleb128 0xb
+ 796 0353 9D110000 		.4byte	.LASF97
+ 797 0357 AD61     		.2byte	0x61ad
+ 798 0359 0B       		.uleb128 0xb
+ 799 035a DC0F0000 		.4byte	.LASF98
+ 800 035e AE61     		.2byte	0x61ae
+ 801 0360 0B       		.uleb128 0xb
+ 802 0361 4B020000 		.4byte	.LASF99
+ 803 0365 AF61     		.2byte	0x61af
+ 804 0367 0B       		.uleb128 0xb
+ 805 0368 EB010000 		.4byte	.LASF100
+ 806 036c B061     		.2byte	0x61b0
+ 807 036e 0B       		.uleb128 0xb
+ 808 036f A2040000 		.4byte	.LASF101
+ 809 0373 0D62     		.2byte	0x620d
+ 810 0375 0B       		.uleb128 0xb
+ 811 0376 EA0E0000 		.4byte	.LASF102
+ 812 037a 0E62     		.2byte	0x620e
+ 813 037c 0B       		.uleb128 0xb
+ 814 037d 87120000 		.4byte	.LASF103
+ 815 0381 7162     		.2byte	0x6271
+ 816 0383 0B       		.uleb128 0xb
+ 817 0384 91110000 		.4byte	.LASF104
+ 818 0388 7262     		.2byte	0x6272
+ 819 038a 0B       		.uleb128 0xb
+ 820 038b 07000000 		.4byte	.LASF105
+ 821 038f 7362     		.2byte	0x6273
+ 822 0391 0B       		.uleb128 0xb
+ 823 0392 0A0C0000 		.4byte	.LASF106
+ 824 0396 D562     		.2byte	0x62d5
+ 825 0398 0B       		.uleb128 0xb
+ 826 0399 F4000000 		.4byte	.LASF107
+ 827 039d 9065     		.2byte	0x6590
+ 828 039f 0B       		.uleb128 0xb
+ 829 03a0 1A100000 		.4byte	.LASF108
+ 830 03a4 9165     		.2byte	0x6591
+ 831 03a6 0B       		.uleb128 0xb
+ 832 03a7 85040000 		.4byte	.LASF109
+ 833 03ab 9265     		.2byte	0x6592
+ 834 03ad 0B       		.uleb128 0xb
+ 835 03ae 27080000 		.4byte	.LASF110
+ 836 03b2 9365     		.2byte	0x6593
+ 837 03b4 0B       		.uleb128 0xb
+ 838 03b5 72090000 		.4byte	.LASF111
+ 839 03b9 9465     		.2byte	0x6594
+ 840 03bb 0B       		.uleb128 0xb
+ 841 03bc FD000000 		.4byte	.LASF112
+ 842 03c0 7869     		.2byte	0x6978
+ 843 03c2 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 23
+
+
+ 844 03c3 080A0000 		.4byte	.LASF113
+ 845 03c7 7969     		.2byte	0x6979
+ 846 03c9 0B       		.uleb128 0xb
+ 847 03ca 8F0C0000 		.4byte	.LASF114
+ 848 03ce 7A69     		.2byte	0x697a
+ 849 03d0 0B       		.uleb128 0xb
+ 850 03d1 C0090000 		.4byte	.LASF115
+ 851 03d5 7B69     		.2byte	0x697b
+ 852 03d7 0B       		.uleb128 0xb
+ 853 03d8 06010000 		.4byte	.LASF116
+ 854 03dc 606D     		.2byte	0x6d60
+ 855 03de 0B       		.uleb128 0xb
+ 856 03df 89080000 		.4byte	.LASF117
+ 857 03e3 616D     		.2byte	0x6d61
+ 858 03e5 0B       		.uleb128 0xb
+ 859 03e6 02080000 		.4byte	.LASF118
+ 860 03ea 626D     		.2byte	0x6d62
+ 861 03ec 0B       		.uleb128 0xb
+ 862 03ed 07110000 		.4byte	.LASF119
+ 863 03f1 636D     		.2byte	0x6d63
+ 864 03f3 0B       		.uleb128 0xb
+ 865 03f4 79110000 		.4byte	.LASF120
+ 866 03f8 646D     		.2byte	0x6d64
+ 867 03fa 0B       		.uleb128 0xb
+ 868 03fb 550D0000 		.4byte	.LASF121
+ 869 03ff 656D     		.2byte	0x6d65
+ 870 0401 0B       		.uleb128 0xb
+ 871 0402 10120000 		.4byte	.LASF122
+ 872 0406 C56D     		.2byte	0x6dc5
+ 873 0408 0B       		.uleb128 0xb
+ 874 0409 FA110000 		.4byte	.LASF123
+ 875 040d C66D     		.2byte	0x6dc6
+ 876 040f 0B       		.uleb128 0xb
+ 877 0410 35020000 		.4byte	.LASF124
+ 878 0414 296E     		.2byte	0x6e29
+ 879 0416 0B       		.uleb128 0xb
+ 880 0417 B7080000 		.4byte	.LASF125
+ 881 041b 2A6E     		.2byte	0x6e2a
+ 882 041d 0B       		.uleb128 0xb
+ 883 041e 79070000 		.4byte	.LASF126
+ 884 0422 2B6E     		.2byte	0x6e2b
+ 885 0424 0B       		.uleb128 0xb
+ 886 0425 640E0000 		.4byte	.LASF127
+ 887 0429 2C6E     		.2byte	0x6e2c
+ 888 042b 0B       		.uleb128 0xb
+ 889 042c 1D0C0000 		.4byte	.LASF128
+ 890 0430 2D6E     		.2byte	0x6e2d
+ 891 0432 0B       		.uleb128 0xb
+ 892 0433 BD0F0000 		.4byte	.LASF129
+ 893 0437 2E6E     		.2byte	0x6e2e
+ 894 0439 0B       		.uleb128 0xb
+ 895 043a C1010000 		.4byte	.LASF130
+ 896 043e 2F6E     		.2byte	0x6e2f
+ 897 0440 0B       		.uleb128 0xb
+ 898 0441 330F0000 		.4byte	.LASF131
+ 899 0445 306E     		.2byte	0x6e30
+ 900 0447 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 24
+
+
+ 901 0448 0E0F0000 		.4byte	.LASF132
+ 902 044c 316E     		.2byte	0x6e31
+ 903 044e 0B       		.uleb128 0xb
+ 904 044f 0F010000 		.4byte	.LASF133
+ 905 0453 4871     		.2byte	0x7148
+ 906 0455 0B       		.uleb128 0xb
+ 907 0456 03020000 		.4byte	.LASF134
+ 908 045a 4971     		.2byte	0x7149
+ 909 045c 0B       		.uleb128 0xb
+ 910 045d 0E070000 		.4byte	.LASF135
+ 911 0461 4A71     		.2byte	0x714a
+ 912 0463 0B       		.uleb128 0xb
+ 913 0464 7C100000 		.4byte	.LASF136
+ 914 0468 4B71     		.2byte	0x714b
+ 915 046a 0B       		.uleb128 0xb
+ 916 046b 1F120000 		.4byte	.LASF137
+ 917 046f 4C71     		.2byte	0x714c
+ 918 0471 0B       		.uleb128 0xb
+ 919 0472 BC050000 		.4byte	.LASF138
+ 920 0476 4D71     		.2byte	0x714d
+ 921 0478 0B       		.uleb128 0xb
+ 922 0479 F60B0000 		.4byte	.LASF139
+ 923 047d 4E71     		.2byte	0x714e
+ 924 047f 0B       		.uleb128 0xb
+ 925 0480 550B0000 		.4byte	.LASF140
+ 926 0484 4F71     		.2byte	0x714f
+ 927 0486 0B       		.uleb128 0xb
+ 928 0487 360A0000 		.4byte	.LASF141
+ 929 048b 5071     		.2byte	0x7150
+ 930 048d 0B       		.uleb128 0xb
+ 931 048e 06030000 		.4byte	.LASF142
+ 932 0492 5171     		.2byte	0x7151
+ 933 0494 0B       		.uleb128 0xb
+ 934 0495 3F0B0000 		.4byte	.LASF143
+ 935 0499 5271     		.2byte	0x7152
+ 936 049b 0B       		.uleb128 0xb
+ 937 049c EC020000 		.4byte	.LASF144
+ 938 04a0 5371     		.2byte	0x7153
+ 939 04a2 0B       		.uleb128 0xb
+ 940 04a3 6C0F0000 		.4byte	.LASF145
+ 941 04a7 5471     		.2byte	0x7154
+ 942 04a9 0B       		.uleb128 0xb
+ 943 04aa D4010000 		.4byte	.LASF146
+ 944 04ae 5571     		.2byte	0x7155
+ 945 04b0 0B       		.uleb128 0xb
+ 946 04b1 6D040000 		.4byte	.LASF147
+ 947 04b5 5671     		.2byte	0x7156
+ 948 04b7 0B       		.uleb128 0xb
+ 949 04b8 C10D0000 		.4byte	.LASF148
+ 950 04bc 5771     		.2byte	0x7157
+ 951 04be 0B       		.uleb128 0xb
+ 952 04bf 4F050000 		.4byte	.LASF149
+ 953 04c3 5871     		.2byte	0x7158
+ 954 04c5 0B       		.uleb128 0xb
+ 955 04c6 F50C0000 		.4byte	.LASF150
+ 956 04ca 5971     		.2byte	0x7159
+ 957 04cc 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 25
+
+
+ 958 04cd E4110000 		.4byte	.LASF151
+ 959 04d1 5A71     		.2byte	0x715a
+ 960 04d3 0B       		.uleb128 0xb
+ 961 04d4 DE030000 		.4byte	.LASF152
+ 962 04d8 5B71     		.2byte	0x715b
+ 963 04da 0B       		.uleb128 0xb
+ 964 04db 9C050000 		.4byte	.LASF153
+ 965 04df 5C71     		.2byte	0x715c
+ 966 04e1 0B       		.uleb128 0xb
+ 967 04e2 63030000 		.4byte	.LASF154
+ 968 04e6 5D71     		.2byte	0x715d
+ 969 04e8 0B       		.uleb128 0xb
+ 970 04e9 810B0000 		.4byte	.LASF155
+ 971 04ed 5E71     		.2byte	0x715e
+ 972 04ef 0B       		.uleb128 0xb
+ 973 04f0 3D030000 		.4byte	.LASF156
+ 974 04f4 5F71     		.2byte	0x715f
+ 975 04f6 0B       		.uleb128 0xb
+ 976 04f7 00060000 		.4byte	.LASF157
+ 977 04fb AD71     		.2byte	0x71ad
+ 978 04fd 0B       		.uleb128 0xb
+ 979 04fe 22050000 		.4byte	.LASF158
+ 980 0502 C071     		.2byte	0x71c0
+ 981 0504 0B       		.uleb128 0xb
+ 982 0505 D30B0000 		.4byte	.LASF159
+ 983 0509 C171     		.2byte	0x71c1
+ 984 050b 0B       		.uleb128 0xb
+ 985 050c D5100000 		.4byte	.LASF160
+ 986 0510 C271     		.2byte	0x71c2
+ 987 0512 0B       		.uleb128 0xb
+ 988 0513 4D080000 		.4byte	.LASF161
+ 989 0517 C371     		.2byte	0x71c3
+ 990 0519 0B       		.uleb128 0xb
+ 991 051a 82060000 		.4byte	.LASF162
+ 992 051e C471     		.2byte	0x71c4
+ 993 0520 0B       		.uleb128 0xb
+ 994 0521 6E120000 		.4byte	.LASF163
+ 995 0525 1172     		.2byte	0x7211
+ 996 0527 0B       		.uleb128 0xb
+ 997 0528 6D0D0000 		.4byte	.LASF164
+ 998 052c 1272     		.2byte	0x7212
+ 999 052e 0B       		.uleb128 0xb
+ 1000 052f 97010000 		.4byte	.LASF165
+ 1001 0533 1372     		.2byte	0x7213
+ 1002 0535 0B       		.uleb128 0xb
+ 1003 0536 22000000 		.4byte	.LASF166
+ 1004 053a 1472     		.2byte	0x7214
+ 1005 053c 0B       		.uleb128 0xb
+ 1006 053d FA0E0000 		.4byte	.LASF167
+ 1007 0541 7572     		.2byte	0x7275
+ 1008 0543 0B       		.uleb128 0xb
+ 1009 0544 53120000 		.4byte	.LASF168
+ 1010 0548 7672     		.2byte	0x7276
+ 1011 054a 0B       		.uleb128 0xb
+ 1012 054b 34120000 		.4byte	.LASF169
+ 1013 054f 7772     		.2byte	0x7277
+ 1014 0551 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 26
+
+
+ 1015 0552 C2060000 		.4byte	.LASF170
+ 1016 0556 7872     		.2byte	0x7278
+ 1017 0558 0B       		.uleb128 0xb
+ 1018 0559 48000000 		.4byte	.LASF171
+ 1019 055d 7972     		.2byte	0x7279
+ 1020 055f 0B       		.uleb128 0xb
+ 1021 0560 60100000 		.4byte	.LASF172
+ 1022 0564 7A72     		.2byte	0x727a
+ 1023 0566 0B       		.uleb128 0xb
+ 1024 0567 3A060000 		.4byte	.LASF173
+ 1025 056b 7B72     		.2byte	0x727b
+ 1026 056d 0B       		.uleb128 0xb
+ 1027 056e D0080000 		.4byte	.LASF174
+ 1028 0572 7C72     		.2byte	0x727c
+ 1029 0574 0B       		.uleb128 0xb
+ 1030 0575 6F0C0000 		.4byte	.LASF175
+ 1031 0579 7D72     		.2byte	0x727d
+ 1032 057b 0B       		.uleb128 0xb
+ 1033 057c 58070000 		.4byte	.LASF176
+ 1034 0580 7E72     		.2byte	0x727e
+ 1035 0582 0B       		.uleb128 0xb
+ 1036 0583 7C0F0000 		.4byte	.LASF177
+ 1037 0587 D972     		.2byte	0x72d9
+ 1038 0589 0B       		.uleb128 0xb
+ 1039 058a 0E050000 		.4byte	.LASF178
+ 1040 058e 3D73     		.2byte	0x733d
+ 1041 0590 0B       		.uleb128 0xb
+ 1042 0591 D8070000 		.4byte	.LASF179
+ 1043 0595 3E73     		.2byte	0x733e
+ 1044 0597 0B       		.uleb128 0xb
+ 1045 0598 4B040000 		.4byte	.LASF180
+ 1046 059c 3F73     		.2byte	0x733f
+ 1047 059e 0B       		.uleb128 0xb
+ 1048 059f 3C010000 		.4byte	.LASF181
+ 1049 05a3 4073     		.2byte	0x7340
+ 1050 05a5 0B       		.uleb128 0xb
+ 1051 05a6 90030000 		.4byte	.LASF182
+ 1052 05aa 4173     		.2byte	0x7341
+ 1053 05ac 0B       		.uleb128 0xb
+ 1054 05ad 7C050000 		.4byte	.LASF183
+ 1055 05b1 4273     		.2byte	0x7342
+ 1056 05b3 0B       		.uleb128 0xb
+ 1057 05b4 39000000 		.4byte	.LASF184
+ 1058 05b8 4373     		.2byte	0x7343
+ 1059 05ba 0B       		.uleb128 0xb
+ 1060 05bb F7040000 		.4byte	.LASF185
+ 1061 05bf 4473     		.2byte	0x7344
+ 1062 05c1 0B       		.uleb128 0xb
+ 1063 05c2 DC060000 		.4byte	.LASF186
+ 1064 05c6 4573     		.2byte	0x7345
+ 1065 05c8 0B       		.uleb128 0xb
+ 1066 05c9 690B0000 		.4byte	.LASF187
+ 1067 05cd 4673     		.2byte	0x7346
+ 1068 05cf 0B       		.uleb128 0xb
+ 1069 05d0 DE050000 		.4byte	.LASF188
+ 1070 05d4 4773     		.2byte	0x7347
+ 1071 05d6 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 27
+
+
+ 1072 05d7 170B0000 		.4byte	.LASF189
+ 1073 05db 4873     		.2byte	0x7348
+ 1074 05dd 0B       		.uleb128 0xb
+ 1075 05de 4B0F0000 		.4byte	.LASF190
+ 1076 05e2 4973     		.2byte	0x7349
+ 1077 05e4 0B       		.uleb128 0xb
+ 1078 05e5 18010000 		.4byte	.LASF191
+ 1079 05e9 3075     		.2byte	0x7530
+ 1080 05eb 0B       		.uleb128 0xb
+ 1081 05ec 21010000 		.4byte	.LASF192
+ 1082 05f0 1879     		.2byte	0x7918
+ 1083 05f2 0B       		.uleb128 0xb
+ 1084 05f3 2A010000 		.4byte	.LASF193
+ 1085 05f7 007D     		.2byte	0x7d00
+ 1086 05f9 0B       		.uleb128 0xb
+ 1087 05fa 33010000 		.4byte	.LASF194
+ 1088 05fe E880     		.2byte	0x80e8
+ 1089 0600 0B       		.uleb128 0xb
+ 1090 0601 D30F0000 		.4byte	.LASF195
+ 1091 0605 D084     		.2byte	0x84d0
+ 1092 0607 0B       		.uleb128 0xb
+ 1093 0608 05090000 		.4byte	.LASF196
+ 1094 060c D184     		.2byte	0x84d1
+ 1095 060e 0B       		.uleb128 0xb
+ 1096 060f EC0F0000 		.4byte	.LASF197
+ 1097 0613 B888     		.2byte	0x88b8
+ 1098 0615 00       		.byte	0
+ 1099 0616 0C       		.uleb128 0xc
+ 1100 0617 1B000000 		.4byte	.LASF198
+ 1101 061b 05       		.byte	0x5
+ 1102 061c 7202     		.2byte	0x272
+ 1103 061e 9E010000 		.4byte	0x19e
+ 1104 0622 0C       		.uleb128 0xc
+ 1105 0623 9B0F0000 		.4byte	.LASF199
+ 1106 0627 05       		.byte	0x5
+ 1107 0628 8E02     		.2byte	0x28e
+ 1108 062a DD000000 		.4byte	0xdd
+ 1109 062e 0C       		.uleb128 0xc
+ 1110 062f B8110000 		.4byte	.LASF200
+ 1111 0633 05       		.byte	0x5
+ 1112 0634 9002     		.2byte	0x290
+ 1113 0636 3A060000 		.4byte	0x63a
+ 1114 063a 0D       		.uleb128 0xd
+ 1115 063b 00000000 		.4byte	.LASF235
+ 1116 063f 7C       		.byte	0x7c
+ 1117 0640 05       		.byte	0x5
+ 1118 0641 AB03     		.2byte	0x3ab
+ 1119 0643 0E080000 		.4byte	0x80e
+ 1120 0647 0E       		.uleb128 0xe
+ 1121 0648 5D090000 		.4byte	.LASF201
+ 1122 064c 05       		.byte	0x5
+ 1123 064d AC03     		.2byte	0x3ac
+ 1124 064f 92090000 		.4byte	0x992
+ 1125 0653 00       		.byte	0
+ 1126 0654 0E       		.uleb128 0xe
+ 1127 0655 9A0E0000 		.4byte	.LASF202
+ 1128 0659 05       		.byte	0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 28
+
+
+ 1129 065a AE03     		.2byte	0x3ae
+ 1130 065c 72000000 		.4byte	0x72
+ 1131 0660 04       		.byte	0x4
+ 1132 0661 0E       		.uleb128 0xe
+ 1133 0662 E90A0000 		.4byte	.LASF203
+ 1134 0666 05       		.byte	0x5
+ 1135 0667 B003     		.2byte	0x3b0
+ 1136 0669 92090000 		.4byte	0x992
+ 1137 066d 08       		.byte	0x8
+ 1138 066e 0E       		.uleb128 0xe
+ 1139 066f 320C0000 		.4byte	.LASF204
+ 1140 0673 05       		.byte	0x5
+ 1141 0674 B203     		.2byte	0x3b2
+ 1142 0676 7A090000 		.4byte	0x97a
+ 1143 067a 0C       		.byte	0xc
+ 1144 067b 0E       		.uleb128 0xe
+ 1145 067c 34080000 		.4byte	.LASF205
+ 1146 0680 05       		.byte	0x5
+ 1147 0681 B303     		.2byte	0x3b3
+ 1148 0683 7A090000 		.4byte	0x97a
+ 1149 0687 10       		.byte	0x10
+ 1150 0688 0E       		.uleb128 0xe
+ 1151 0689 330B0000 		.4byte	.LASF206
+ 1152 068d 05       		.byte	0x5
+ 1153 068e B503     		.2byte	0x3b5
+ 1154 0690 7A090000 		.4byte	0x97a
+ 1155 0694 14       		.byte	0x14
+ 1156 0695 0E       		.uleb128 0xe
+ 1157 0696 6D070000 		.4byte	.LASF207
+ 1158 069a 05       		.byte	0x5
+ 1159 069b B603     		.2byte	0x3b6
+ 1160 069d 7A090000 		.4byte	0x97a
+ 1161 06a1 18       		.byte	0x18
+ 1162 06a2 0E       		.uleb128 0xe
+ 1163 06a3 F50F0000 		.4byte	.LASF208
+ 1164 06a7 05       		.byte	0x5
+ 1165 06a8 B803     		.2byte	0x3b8
+ 1166 06aa 98090000 		.4byte	0x998
+ 1167 06ae 1C       		.byte	0x1c
+ 1168 06af 0E       		.uleb128 0xe
+ 1169 06b0 E4080000 		.4byte	.LASF209
+ 1170 06b4 05       		.byte	0x5
+ 1171 06b5 BA03     		.2byte	0x3ba
+ 1172 06b7 8C090000 		.4byte	0x98c
+ 1173 06bb 20       		.byte	0x20
+ 1174 06bc 0E       		.uleb128 0xe
+ 1175 06bd 1B060000 		.4byte	.LASF210
+ 1176 06c1 05       		.byte	0x5
+ 1177 06c2 BC03     		.2byte	0x3bc
+ 1178 06c4 92090000 		.4byte	0x992
+ 1179 06c8 24       		.byte	0x24
+ 1180 06c9 0E       		.uleb128 0xe
+ 1181 06ca A9080000 		.4byte	.LASF211
+ 1182 06ce 05       		.byte	0x5
+ 1183 06cf C203     		.2byte	0x3c2
+ 1184 06d1 22060000 		.4byte	0x622
+ 1185 06d5 28       		.byte	0x28
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 29
+
+
+ 1186 06d6 0E       		.uleb128 0xe
+ 1187 06d7 0D100000 		.4byte	.LASF212
+ 1188 06db 05       		.byte	0x5
+ 1189 06dc C303     		.2byte	0x3c3
+ 1190 06de 72000000 		.4byte	0x72
+ 1191 06e2 2C       		.byte	0x2c
+ 1192 06e3 0E       		.uleb128 0xe
+ 1193 06e4 F20D0000 		.4byte	.LASF213
+ 1194 06e8 05       		.byte	0x5
+ 1195 06e9 C503     		.2byte	0x3c5
+ 1196 06eb 80090000 		.4byte	0x980
+ 1197 06ef 30       		.byte	0x30
+ 1198 06f0 0E       		.uleb128 0xe
+ 1199 06f1 A9030000 		.4byte	.LASF214
+ 1200 06f5 05       		.byte	0x5
+ 1201 06f6 C603     		.2byte	0x3c6
+ 1202 06f8 7D010000 		.4byte	0x17d
+ 1203 06fc 34       		.byte	0x34
+ 1204 06fd 0E       		.uleb128 0xe
+ 1205 06fe EC080000 		.4byte	.LASF215
+ 1206 0702 05       		.byte	0x5
+ 1207 0703 C703     		.2byte	0x3c7
+ 1208 0705 88010000 		.4byte	0x188
+ 1209 0709 35       		.byte	0x35
+ 1210 070a 0E       		.uleb128 0xe
+ 1211 070b 78060000 		.4byte	.LASF216
+ 1212 070f 05       		.byte	0x5
+ 1213 0710 C903     		.2byte	0x3c9
+ 1214 0712 7D010000 		.4byte	0x17d
+ 1215 0716 36       		.byte	0x36
+ 1216 0717 0E       		.uleb128 0xe
+ 1217 0718 45110000 		.4byte	.LASF217
+ 1218 071c 05       		.byte	0x5
+ 1219 071d CA03     		.2byte	0x3ca
+ 1220 071f 5C010000 		.4byte	0x15c
+ 1221 0723 37       		.byte	0x37
+ 1222 0724 0E       		.uleb128 0xe
+ 1223 0725 13060000 		.4byte	.LASF218
+ 1224 0729 05       		.byte	0x5
+ 1225 072a CB03     		.2byte	0x3cb
+ 1226 072c 04010000 		.4byte	0x104
+ 1227 0730 38       		.byte	0x38
+ 1228 0731 0F       		.uleb128 0xf
+ 1229 0732 4F707400 		.ascii	"Opt\000"
+ 1230 0736 05       		.byte	0x5
+ 1231 0737 CC03     		.2byte	0x3cc
+ 1232 0739 51010000 		.4byte	0x151
+ 1233 073d 3C       		.byte	0x3c
+ 1234 073e 0E       		.uleb128 0xe
+ 1235 073f B0030000 		.4byte	.LASF219
+ 1236 0743 05       		.byte	0x5
+ 1237 0744 CE03     		.2byte	0x3ce
+ 1238 0746 3B010000 		.4byte	0x13b
+ 1239 074a 3E       		.byte	0x3e
+ 1240 074b 0F       		.uleb128 0xf
+ 1241 074c 545300   		.ascii	"TS\000"
+ 1242 074f 05       		.byte	0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 30
+
+
+ 1243 0750 D003     		.2byte	0x3d0
+ 1244 0752 1A010000 		.4byte	0x11a
+ 1245 0756 40       		.byte	0x40
+ 1246 0757 0E       		.uleb128 0xe
+ 1247 0758 010E0000 		.4byte	.LASF220
+ 1248 075c 05       		.byte	0x5
+ 1249 075d D203     		.2byte	0x3d2
+ 1250 075f 72010000 		.4byte	0x172
+ 1251 0763 44       		.byte	0x44
+ 1252 0764 0E       		.uleb128 0xe
+ 1253 0765 4C070000 		.4byte	.LASF221
+ 1254 0769 05       		.byte	0x5
+ 1255 076a D503     		.2byte	0x3d5
+ 1256 076c 93010000 		.4byte	0x193
+ 1257 0770 48       		.byte	0x48
+ 1258 0771 0E       		.uleb128 0xe
+ 1259 0772 09040000 		.4byte	.LASF222
+ 1260 0776 05       		.byte	0x5
+ 1261 0777 D603     		.2byte	0x3d6
+ 1262 0779 93010000 		.4byte	0x193
+ 1263 077d 4C       		.byte	0x4c
+ 1264 077e 0E       		.uleb128 0xe
+ 1265 077f 1E0E0000 		.4byte	.LASF223
+ 1266 0783 05       		.byte	0x5
+ 1267 0784 D703     		.2byte	0x3d7
+ 1268 0786 93010000 		.4byte	0x193
+ 1269 078a 50       		.byte	0x50
+ 1270 078b 0E       		.uleb128 0xe
+ 1271 078c 48120000 		.4byte	.LASF224
+ 1272 0790 05       		.byte	0x5
+ 1273 0791 D903     		.2byte	0x3d9
+ 1274 0793 93010000 		.4byte	0x193
+ 1275 0797 54       		.byte	0x54
+ 1276 0798 0E       		.uleb128 0xe
+ 1277 0799 F7080000 		.4byte	.LASF225
+ 1278 079d 05       		.byte	0x5
+ 1279 079e DA03     		.2byte	0x3da
+ 1280 07a0 93010000 		.4byte	0x193
+ 1281 07a4 58       		.byte	0x58
+ 1282 07a5 0E       		.uleb128 0xe
+ 1283 07a6 09120000 		.4byte	.LASF226
+ 1284 07aa 05       		.byte	0x5
+ 1285 07ab EA03     		.2byte	0x3ea
+ 1286 07ad 9E090000 		.4byte	0x99e
+ 1287 07b1 5C       		.byte	0x5c
+ 1288 07b2 0E       		.uleb128 0xe
+ 1289 07b3 DE0A0000 		.4byte	.LASF227
+ 1290 07b7 05       		.byte	0x5
+ 1291 07b8 F403     		.2byte	0x3f4
+ 1292 07ba 30010000 		.4byte	0x130
+ 1293 07be 60       		.byte	0x60
+ 1294 07bf 0E       		.uleb128 0xe
+ 1295 07c0 63050000 		.4byte	.LASF228
+ 1296 07c4 05       		.byte	0x5
+ 1297 07c5 0504     		.2byte	0x405
+ 1298 07c7 04010000 		.4byte	0x104
+ 1299 07cb 64       		.byte	0x64
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 31
+
+
+ 1300 07cc 0E       		.uleb128 0xe
+ 1301 07cd 44070000 		.4byte	.LASF229
+ 1302 07d1 05       		.byte	0x5
+ 1303 07d2 0604     		.2byte	0x406
+ 1304 07d4 04010000 		.4byte	0x104
+ 1305 07d8 68       		.byte	0x68
+ 1306 07d9 0E       		.uleb128 0xe
+ 1307 07da 3E0D0000 		.4byte	.LASF230
+ 1308 07de 05       		.byte	0x5
+ 1309 07df 0A04     		.2byte	0x40a
+ 1310 07e1 1A010000 		.4byte	0x11a
+ 1311 07e5 6C       		.byte	0x6c
+ 1312 07e6 0E       		.uleb128 0xe
+ 1313 07e7 1A030000 		.4byte	.LASF231
+ 1314 07eb 05       		.byte	0x5
+ 1315 07ec 1104     		.2byte	0x411
+ 1316 07ee 7A090000 		.4byte	0x97a
+ 1317 07f2 70       		.byte	0x70
+ 1318 07f3 0E       		.uleb128 0xe
+ 1319 07f4 32030000 		.4byte	.LASF232
+ 1320 07f8 05       		.byte	0x5
+ 1321 07f9 1204     		.2byte	0x412
+ 1322 07fb 7A090000 		.4byte	0x97a
+ 1323 07ff 74       		.byte	0x74
+ 1324 0800 0E       		.uleb128 0xe
+ 1325 0801 02100000 		.4byte	.LASF233
+ 1326 0805 05       		.byte	0x5
+ 1327 0806 1304     		.2byte	0x413
+ 1328 0808 8C090000 		.4byte	0x98c
+ 1329 080c 78       		.byte	0x78
+ 1330 080d 00       		.byte	0
+ 1331 080e 0C       		.uleb128 0xc
+ 1332 080f CF040000 		.4byte	.LASF234
+ 1333 0813 05       		.byte	0x5
+ 1334 0814 9E02     		.2byte	0x29e
+ 1335 0816 1A080000 		.4byte	0x81a
+ 1336 081a 0D       		.uleb128 0xd
+ 1337 081b 64090000 		.4byte	.LASF236
+ 1338 081f 08       		.byte	0x8
+ 1339 0820 05       		.byte	0x5
+ 1340 0821 1E04     		.2byte	0x41e
+ 1341 0823 4F080000 		.4byte	0x84f
+ 1342 0827 0E       		.uleb128 0xe
+ 1343 0828 5B0E0000 		.4byte	.LASF237
+ 1344 082c 05       		.byte	0x5
+ 1345 082d 1F04     		.2byte	0x41f
+ 1346 082f 7A090000 		.4byte	0x97a
+ 1347 0833 00       		.byte	0
+ 1348 0834 0E       		.uleb128 0xe
+ 1349 0835 68010000 		.4byte	.LASF238
+ 1350 0839 05       		.byte	0x5
+ 1351 083a 2004     		.2byte	0x420
+ 1352 083c 3B010000 		.4byte	0x13b
+ 1353 0840 04       		.byte	0x4
+ 1354 0841 0E       		.uleb128 0xe
+ 1355 0842 39100000 		.4byte	.LASF239
+ 1356 0846 05       		.byte	0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 32
+
+
+ 1357 0847 2104     		.2byte	0x421
+ 1358 0849 3B010000 		.4byte	0x13b
+ 1359 084d 06       		.byte	0x6
+ 1360 084e 00       		.byte	0
+ 1361 084f 0C       		.uleb128 0xc
+ 1362 0850 8F050000 		.4byte	.LASF240
+ 1363 0854 05       		.byte	0x5
+ 1364 0855 A502     		.2byte	0x2a5
+ 1365 0857 5B080000 		.4byte	0x85b
+ 1366 085b 0D       		.uleb128 0xd
+ 1367 085c FA100000 		.4byte	.LASF241
+ 1368 0860 20       		.byte	0x20
+ 1369 0861 05       		.byte	0x5
+ 1370 0862 DD02     		.2byte	0x2dd
+ 1371 0864 D1080000 		.4byte	0x8d1
+ 1372 0868 0E       		.uleb128 0xe
+ 1373 0869 34080000 		.4byte	.LASF205
+ 1374 086d 05       		.byte	0x5
+ 1375 086e DE02     		.2byte	0x2de
+ 1376 0870 80090000 		.4byte	0x980
+ 1377 0874 00       		.byte	0
+ 1378 0875 0E       		.uleb128 0xe
+ 1379 0876 320C0000 		.4byte	.LASF204
+ 1380 087a 05       		.byte	0x5
+ 1381 087b DF02     		.2byte	0x2df
+ 1382 087d 80090000 		.4byte	0x980
+ 1383 0881 04       		.byte	0x4
+ 1384 0882 0E       		.uleb128 0xe
+ 1385 0883 8C090000 		.4byte	.LASF242
+ 1386 0887 05       		.byte	0x5
+ 1387 0888 E002     		.2byte	0x2e0
+ 1388 088a 7A090000 		.4byte	0x97a
+ 1389 088e 08       		.byte	0x8
+ 1390 088f 0E       		.uleb128 0xe
+ 1391 0890 AD110000 		.4byte	.LASF243
+ 1392 0894 05       		.byte	0x5
+ 1393 0895 E102     		.2byte	0x2e1
+ 1394 0897 86090000 		.4byte	0x986
+ 1395 089b 0C       		.byte	0xc
+ 1396 089c 0E       		.uleb128 0xe
+ 1397 089d AB0B0000 		.4byte	.LASF244
+ 1398 08a1 05       		.byte	0x5
+ 1399 08a2 E202     		.2byte	0x2e2
+ 1400 08a4 86090000 		.4byte	0x986
+ 1401 08a8 10       		.byte	0x10
+ 1402 08a9 0E       		.uleb128 0xe
+ 1403 08aa 16040000 		.4byte	.LASF245
+ 1404 08ae 05       		.byte	0x5
+ 1405 08af E302     		.2byte	0x2e3
+ 1406 08b1 72000000 		.4byte	0x72
+ 1407 08b5 14       		.byte	0x14
+ 1408 08b6 0E       		.uleb128 0xe
+ 1409 08b7 1D0D0000 		.4byte	.LASF246
+ 1410 08bb 05       		.byte	0x5
+ 1411 08bc E402     		.2byte	0x2e4
+ 1412 08be 25010000 		.4byte	0x125
+ 1413 08c2 18       		.byte	0x18
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 33
+
+
+ 1414 08c3 0E       		.uleb128 0xe
+ 1415 08c4 D70C0000 		.4byte	.LASF247
+ 1416 08c8 05       		.byte	0x5
+ 1417 08c9 E502     		.2byte	0x2e5
+ 1418 08cb 1A010000 		.4byte	0x11a
+ 1419 08cf 1C       		.byte	0x1c
+ 1420 08d0 00       		.byte	0
+ 1421 08d1 0C       		.uleb128 0xc
+ 1422 08d2 8C100000 		.4byte	.LASF248
+ 1423 08d6 05       		.byte	0x5
+ 1424 08d7 A602     		.2byte	0x2a6
+ 1425 08d9 DD080000 		.4byte	0x8dd
+ 1426 08dd 0D       		.uleb128 0xd
+ 1427 08de BF110000 		.4byte	.LASF249
+ 1428 08e2 0C       		.byte	0xc
+ 1429 08e3 05       		.byte	0x5
+ 1430 08e4 E902     		.2byte	0x2e9
+ 1431 08e6 12090000 		.4byte	0x912
+ 1432 08ea 0E       		.uleb128 0xe
+ 1433 08eb 290E0000 		.4byte	.LASF250
+ 1434 08ef 05       		.byte	0x5
+ 1435 08f0 EA02     		.2byte	0x2ea
+ 1436 08f2 80090000 		.4byte	0x980
+ 1437 08f6 00       		.byte	0
+ 1438 08f7 0E       		.uleb128 0xe
+ 1439 08f8 D6030000 		.4byte	.LASF251
+ 1440 08fc 05       		.byte	0x5
+ 1441 08fd EB02     		.2byte	0x2eb
+ 1442 08ff 80090000 		.4byte	0x980
+ 1443 0903 04       		.byte	0x4
+ 1444 0904 0E       		.uleb128 0xe
+ 1445 0905 68010000 		.4byte	.LASF238
+ 1446 0909 05       		.byte	0x5
+ 1447 090a EC02     		.2byte	0x2ec
+ 1448 090c 3B010000 		.4byte	0x13b
+ 1449 0910 08       		.byte	0x8
+ 1450 0911 00       		.byte	0
+ 1451 0912 0C       		.uleb128 0xc
+ 1452 0913 B50D0000 		.4byte	.LASF252
+ 1453 0917 05       		.byte	0x5
+ 1454 0918 A702     		.2byte	0x2a7
+ 1455 091a 1E090000 		.4byte	0x91e
+ 1456 091e 0D       		.uleb128 0xd
+ 1457 091f 20040000 		.4byte	.LASF253
+ 1458 0923 20       		.byte	0x20
+ 1459 0924 05       		.byte	0x5
+ 1460 0925 FF02     		.2byte	0x2ff
+ 1461 0927 7A090000 		.4byte	0x97a
+ 1462 092b 0E       		.uleb128 0xe
+ 1463 092c 5C0C0000 		.4byte	.LASF254
+ 1464 0930 05       		.byte	0x5
+ 1465 0931 0003     		.2byte	0x300
+ 1466 0933 46010000 		.4byte	0x146
+ 1467 0937 00       		.byte	0
+ 1468 0938 0E       		.uleb128 0xe
+ 1469 0939 E4080000 		.4byte	.LASF209
+ 1470 093d 05       		.byte	0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 34
+
+
+ 1471 093e 0103     		.2byte	0x301
+ 1472 0940 8C090000 		.4byte	0x98c
+ 1473 0944 04       		.byte	0x4
+ 1474 0945 0E       		.uleb128 0xe
+ 1475 0946 D90D0000 		.4byte	.LASF255
+ 1476 094a 05       		.byte	0x5
+ 1477 094b 0203     		.2byte	0x302
+ 1478 094d D1080000 		.4byte	0x8d1
+ 1479 0951 08       		.byte	0x8
+ 1480 0952 0E       		.uleb128 0xe
+ 1481 0953 1A030000 		.4byte	.LASF231
+ 1482 0957 05       		.byte	0x5
+ 1483 0958 0403     		.2byte	0x304
+ 1484 095a 72000000 		.4byte	0x72
+ 1485 095e 14       		.byte	0x14
+ 1486 095f 0E       		.uleb128 0xe
+ 1487 0960 32030000 		.4byte	.LASF232
+ 1488 0964 05       		.byte	0x5
+ 1489 0965 0503     		.2byte	0x305
+ 1490 0967 72000000 		.4byte	0x72
+ 1491 096b 18       		.byte	0x18
+ 1492 096c 0E       		.uleb128 0xe
+ 1493 096d 02100000 		.4byte	.LASF233
+ 1494 0971 05       		.byte	0x5
+ 1495 0972 0603     		.2byte	0x306
+ 1496 0974 8C090000 		.4byte	0x98c
+ 1497 0978 1C       		.byte	0x1c
+ 1498 0979 00       		.byte	0
+ 1499 097a 06       		.uleb128 0x6
+ 1500 097b 04       		.byte	0x4
+ 1501 097c 2E060000 		.4byte	0x62e
+ 1502 0980 06       		.uleb128 0x6
+ 1503 0981 04       		.byte	0x4
+ 1504 0982 4F080000 		.4byte	0x84f
+ 1505 0986 06       		.uleb128 0x6
+ 1506 0987 04       		.byte	0x4
+ 1507 0988 12090000 		.4byte	0x912
+ 1508 098c 06       		.uleb128 0x6
+ 1509 098d 04       		.byte	0x4
+ 1510 098e 82000000 		.4byte	0x82
+ 1511 0992 06       		.uleb128 0x6
+ 1512 0993 04       		.byte	0x4
+ 1513 0994 F9000000 		.4byte	0xf9
+ 1514 0998 06       		.uleb128 0x6
+ 1515 0999 04       		.byte	0x4
+ 1516 099a 0E080000 		.4byte	0x80e
+ 1517 099e 10       		.uleb128 0x10
+ 1518 099f 67010000 		.4byte	0x167
+ 1519 09a3 AE090000 		.4byte	0x9ae
+ 1520 09a7 11       		.uleb128 0x11
+ 1521 09a8 74000000 		.4byte	0x74
+ 1522 09ac 00       		.byte	0
+ 1523 09ad 00       		.byte	0
+ 1524 09ae 12       		.uleb128 0x12
+ 1525 09af 950E0000 		.4byte	.LASF282
+ 1526 09b3 01       		.byte	0x1
+ 1527 09b4 7E       		.byte	0x7e
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 35
+
+
+ 1528 09b5 5D000000 		.4byte	0x5d
+ 1529 09b9 00000000 		.4byte	.LFB33
+ 1530 09bd 6C000000 		.4byte	.LFE33-.LFB33
+ 1531 09c1 01       		.uleb128 0x1
+ 1532 09c2 9C       		.byte	0x9c
+ 1533 09c3 D6090000 		.4byte	0x9d6
+ 1534 09c7 13       		.uleb128 0x13
+ 1535 09c8 56010000 		.4byte	.LASF256
+ 1536 09cc 01       		.byte	0x1
+ 1537 09cd 80       		.byte	0x80
+ 1538 09ce 16060000 		.4byte	0x616
+ 1539 09d2 02       		.uleb128 0x2
+ 1540 09d3 91       		.byte	0x91
+ 1541 09d4 76       		.sleb128 -10
+ 1542 09d5 00       		.byte	0
+ 1543 09d6 14       		.uleb128 0x14
+ 1544 09d7 3A090000 		.4byte	.LASF260
+ 1545 09db 01       		.byte	0x1
+ 1546 09dc B4       		.byte	0xb4
+ 1547 09dd 00000000 		.4byte	.LFB34
+ 1548 09e1 E0000000 		.4byte	.LFE34-.LFB34
+ 1549 09e5 01       		.uleb128 0x1
+ 1550 09e6 9C       		.byte	0x9c
+ 1551 09e7 320A0000 		.4byte	0xa32
+ 1552 09eb 15       		.uleb128 0x15
+ 1553 09ec 0D0D0000 		.4byte	.LASF263
+ 1554 09f0 01       		.byte	0x1
+ 1555 09f1 B4       		.byte	0xb4
+ 1556 09f2 72000000 		.4byte	0x72
+ 1557 09f6 02       		.uleb128 0x2
+ 1558 09f7 91       		.byte	0x91
+ 1559 09f8 64       		.sleb128 -28
+ 1560 09f9 13       		.uleb128 0x13
+ 1561 09fa 56010000 		.4byte	.LASF256
+ 1562 09fe 01       		.byte	0x1
+ 1563 09ff B6       		.byte	0xb6
+ 1564 0a00 16060000 		.4byte	0x616
+ 1565 0a04 02       		.uleb128 0x2
+ 1566 0a05 91       		.byte	0x91
+ 1567 0a06 6A       		.sleb128 -22
+ 1568 0a07 13       		.uleb128 0x13
+ 1569 0a08 D4050000 		.4byte	.LASF257
+ 1570 0a0c 01       		.byte	0x1
+ 1571 0a0d B7       		.byte	0xb7
+ 1572 0a0e 8D000000 		.4byte	0x8d
+ 1573 0a12 02       		.uleb128 0x2
+ 1574 0a13 91       		.byte	0x91
+ 1575 0a14 6D       		.sleb128 -19
+ 1576 0a15 13       		.uleb128 0x13
+ 1577 0a16 9E0D0000 		.4byte	.LASF258
+ 1578 0a1a 01       		.byte	0x1
+ 1579 0a1b B8       		.byte	0xb8
+ 1580 0a1c 8D000000 		.4byte	0x8d
+ 1581 0a20 02       		.uleb128 0x2
+ 1582 0a21 91       		.byte	0x91
+ 1583 0a22 6F       		.sleb128 -17
+ 1584 0a23 13       		.uleb128 0x13
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 36
+
+
+ 1585 0a24 5D010000 		.4byte	.LASF259
+ 1586 0a28 01       		.byte	0x1
+ 1587 0a29 B9       		.byte	0xb9
+ 1588 0a2a 8D000000 		.4byte	0x8d
+ 1589 0a2e 02       		.uleb128 0x2
+ 1590 0a2f 91       		.byte	0x91
+ 1591 0a30 6E       		.sleb128 -18
+ 1592 0a31 00       		.byte	0
+ 1593 0a32 16       		.uleb128 0x16
+ 1594 0a33 BC0E0000 		.4byte	.LASF261
+ 1595 0a37 01       		.byte	0x1
+ 1596 0a38 0B01     		.2byte	0x10b
+ 1597 0a3a 00000000 		.4byte	.LFB35
+ 1598 0a3e 50000000 		.4byte	.LFE35-.LFB35
+ 1599 0a42 01       		.uleb128 0x1
+ 1600 0a43 9C       		.byte	0x9c
+ 1601 0a44 580A0000 		.4byte	0xa58
+ 1602 0a48 17       		.uleb128 0x17
+ 1603 0a49 56010000 		.4byte	.LASF256
+ 1604 0a4d 01       		.byte	0x1
+ 1605 0a4e 0D01     		.2byte	0x10d
+ 1606 0a50 16060000 		.4byte	0x616
+ 1607 0a54 02       		.uleb128 0x2
+ 1608 0a55 91       		.byte	0x91
+ 1609 0a56 76       		.sleb128 -10
+ 1610 0a57 00       		.byte	0
+ 1611 0a58 18       		.uleb128 0x18
+ 1612 0a59 610C0000 		.4byte	.LASF283
+ 1613 0a5d 01       		.byte	0x1
+ 1614 0a5e 2F01     		.2byte	0x12f
+ 1615 0a60 00000000 		.4byte	.LFB36
+ 1616 0a64 0A000000 		.4byte	.LFE36-.LFB36
+ 1617 0a68 01       		.uleb128 0x1
+ 1618 0a69 9C       		.byte	0x9c
+ 1619 0a6a 16       		.uleb128 0x16
+ 1620 0a6b E20B0000 		.4byte	.LASF262
+ 1621 0a6f 01       		.byte	0x1
+ 1622 0a70 5801     		.2byte	0x158
+ 1623 0a72 00000000 		.4byte	.LFB37
+ 1624 0a76 20000000 		.4byte	.LFE37-.LFB37
+ 1625 0a7a 01       		.uleb128 0x1
+ 1626 0a7b 9C       		.byte	0x9c
+ 1627 0a7c C30A0000 		.4byte	0xac3
+ 1628 0a80 19       		.uleb128 0x19
+ 1629 0a81 0D0D0000 		.4byte	.LASF263
+ 1630 0a85 01       		.byte	0x1
+ 1631 0a86 5801     		.2byte	0x158
+ 1632 0a88 72000000 		.4byte	0x72
+ 1633 0a8c 02       		.uleb128 0x2
+ 1634 0a8d 91       		.byte	0x91
+ 1635 0a8e 6C       		.sleb128 -20
+ 1636 0a8f 17       		.uleb128 0x17
+ 1637 0a90 56010000 		.4byte	.LASF256
+ 1638 0a94 01       		.byte	0x1
+ 1639 0a95 5A01     		.2byte	0x15a
+ 1640 0a97 16060000 		.4byte	0x616
+ 1641 0a9b 02       		.uleb128 0x2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 37
+
+
+ 1642 0a9c 91       		.byte	0x91
+ 1643 0a9d 76       		.sleb128 -10
+ 1644 0a9e 1A       		.uleb128 0x1a
+ 1645 0a9f 80090000 		.4byte	.LASF264
+ 1646 0aa3 01       		.byte	0x1
+ 1647 0aa4 5B01     		.2byte	0x15b
+ 1648 0aa6 98000000 		.4byte	0x98
+ 1649 0aaa 1A       		.uleb128 0x1a
+ 1650 0aab 99100000 		.4byte	.LASF265
+ 1651 0aaf 01       		.byte	0x1
+ 1652 0ab0 5C01     		.2byte	0x15c
+ 1653 0ab2 A3000000 		.4byte	0xa3
+ 1654 0ab6 1A       		.uleb128 0x1a
+ 1655 0ab7 B9120000 		.4byte	.LASF266
+ 1656 0abb 01       		.byte	0x1
+ 1657 0abc 5D01     		.2byte	0x15d
+ 1658 0abe C4000000 		.4byte	0xc4
+ 1659 0ac2 00       		.byte	0
+ 1660 0ac3 13       		.uleb128 0x13
+ 1661 0ac4 28100000 		.4byte	.LASF267
+ 1662 0ac8 01       		.byte	0x1
+ 1663 0ac9 55       		.byte	0x55
+ 1664 0aca 2E060000 		.4byte	0x62e
+ 1665 0ace 05       		.uleb128 0x5
+ 1666 0acf 03       		.byte	0x3
+ 1667 0ad0 04000000 		.4byte	App_TaskStartTCB
+ 1668 0ad4 10       		.uleb128 0x10
+ 1669 0ad5 F9000000 		.4byte	0xf9
+ 1670 0ad9 E40A0000 		.4byte	0xae4
+ 1671 0add 11       		.uleb128 0x11
+ 1672 0ade 74000000 		.4byte	0x74
+ 1673 0ae2 FF       		.byte	0xff
+ 1674 0ae3 00       		.byte	0
+ 1675 0ae4 13       		.uleb128 0x13
+ 1676 0ae5 9A0B0000 		.4byte	.LASF268
+ 1677 0ae9 01       		.byte	0x1
+ 1678 0aea 56       		.byte	0x56
+ 1679 0aeb D40A0000 		.4byte	0xad4
+ 1680 0aef 05       		.uleb128 0x5
+ 1681 0af0 03       		.byte	0x3
+ 1682 0af1 80000000 		.4byte	App_TaskStartStk
+ 1683 0af5 13       		.uleb128 0x13
+ 1684 0af6 F50A0000 		.4byte	.LASF269
+ 1685 0afa 01       		.byte	0x1
+ 1686 0afb 59       		.byte	0x59
+ 1687 0afc 2E060000 		.4byte	0x62e
+ 1688 0b00 05       		.uleb128 0x5
+ 1689 0b01 03       		.byte	0x3
+ 1690 0b02 80040000 		.4byte	App_Demo_SensorTaskTCB
+ 1691 0b06 13       		.uleb128 0x13
+ 1692 0b07 72080000 		.4byte	.LASF270
+ 1693 0b0b 01       		.byte	0x1
+ 1694 0b0c 5A       		.byte	0x5a
+ 1695 0b0d D40A0000 		.4byte	0xad4
+ 1696 0b11 05       		.uleb128 0x5
+ 1697 0b12 03       		.byte	0x3
+ 1698 0b13 FC040000 		.4byte	App_Demo_SensorTaskStk
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 38
+
+
+ 1699 0b17 13       		.uleb128 0x13
+ 1700 0b18 1B110000 		.4byte	.LASF271
+ 1701 0b1c 01       		.byte	0x1
+ 1702 0b1d 5D       		.byte	0x5d
+ 1703 0b1e A3000000 		.4byte	0xa3
+ 1704 0b22 05       		.uleb128 0x5
+ 1705 0b23 03       		.byte	0x3
+ 1706 0b24 FC080000 		.4byte	App_Demo_Ambient_InitVar
+ 1707 0b28 1B       		.uleb128 0x1b
+ 1708 0b29 6B050000 		.4byte	.LASF272
+ 1709 0b2d 01       		.byte	0x1
+ 1710 0b2e 46       		.byte	0x46
+ 1711 0b2f B9000000 		.4byte	0xb9
+ 1712 0b33 05       		.uleb128 0x5
+ 1713 0b34 03       		.byte	0x3
+ 1714 0b35 00000000 		.4byte	uC_Probe_RGB_Val
+ 1715 0b39 1B       		.uleb128 0x1b
+ 1716 0b3a F1060000 		.4byte	.LASF273
+ 1717 0b3e 01       		.byte	0x1
+ 1718 0b3f 47       		.byte	0x47
+ 1719 0b40 8D000000 		.4byte	0x8d
+ 1720 0b44 05       		.uleb128 0x5
+ 1721 0b45 03       		.byte	0x3
+ 1722 0b46 00000000 		.4byte	uC_Probe_PB_Trigger
+ 1723 0b4a 1B       		.uleb128 0x1b
+ 1724 0b4b F0070000 		.4byte	.LASF274
+ 1725 0b4f 01       		.byte	0x1
+ 1726 0b50 48       		.byte	0x48
+ 1727 0b51 C4000000 		.4byte	0xc4
+ 1728 0b55 05       		.uleb128 0x5
+ 1729 0b56 03       		.byte	0x3
+ 1730 0b57 00000000 		.4byte	uC_Probe_Temp_Val
+ 1731 0b5b 1B       		.uleb128 0x1b
+ 1732 0b5c 63110000 		.4byte	.LASF275
+ 1733 0b60 01       		.byte	0x1
+ 1734 0b61 49       		.byte	0x49
+ 1735 0b62 A3000000 		.4byte	0xa3
+ 1736 0b66 05       		.uleb128 0x5
+ 1737 0b67 03       		.byte	0x3
+ 1738 0b68 00000000 		.4byte	uC_Probe_AmbientLight
+ 1739 0b6c 1B       		.uleb128 0x1b
+ 1740 0b6d 1F020000 		.4byte	.LASF276
+ 1741 0b71 01       		.byte	0x1
+ 1742 0b72 4A       		.byte	0x4a
+ 1743 0b73 AE000000 		.4byte	0xae
+ 1744 0b77 05       		.uleb128 0x5
+ 1745 0b78 03       		.byte	0x3
+ 1746 0b79 00000000 		.4byte	uC_Probe_Accel_X_Axis
+ 1747 0b7d 1B       		.uleb128 0x1b
+ 1748 0b7e 080E0000 		.4byte	.LASF277
+ 1749 0b82 01       		.byte	0x1
+ 1750 0b83 4B       		.byte	0x4b
+ 1751 0b84 AE000000 		.4byte	0xae
+ 1752 0b88 05       		.uleb128 0x5
+ 1753 0b89 03       		.byte	0x3
+ 1754 0b8a 00000000 		.4byte	uC_Probe_Accel_Y_Axis
+ 1755 0b8e 1B       		.uleb128 0x1b
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 39
+
+
+ 1756 0b8f AA070000 		.4byte	.LASF278
+ 1757 0b93 01       		.byte	0x1
+ 1758 0b94 4C       		.byte	0x4c
+ 1759 0b95 AE000000 		.4byte	0xae
+ 1760 0b99 05       		.uleb128 0x5
+ 1761 0b9a 03       		.byte	0x3
+ 1762 0b9b 00000000 		.4byte	uC_Probe_Accel_Z_Axis
+ 1763 0b9f 00       		.byte	0
+ 1764              		.section	.debug_abbrev,"",%progbits
+ 1765              	.Ldebug_abbrev0:
+ 1766 0000 01       		.uleb128 0x1
+ 1767 0001 11       		.uleb128 0x11
+ 1768 0002 01       		.byte	0x1
+ 1769 0003 25       		.uleb128 0x25
+ 1770 0004 0E       		.uleb128 0xe
+ 1771 0005 13       		.uleb128 0x13
+ 1772 0006 0B       		.uleb128 0xb
+ 1773 0007 03       		.uleb128 0x3
+ 1774 0008 0E       		.uleb128 0xe
+ 1775 0009 1B       		.uleb128 0x1b
+ 1776 000a 0E       		.uleb128 0xe
+ 1777 000b 55       		.uleb128 0x55
+ 1778 000c 17       		.uleb128 0x17
+ 1779 000d 11       		.uleb128 0x11
+ 1780 000e 01       		.uleb128 0x1
+ 1781 000f 10       		.uleb128 0x10
+ 1782 0010 17       		.uleb128 0x17
+ 1783 0011 00       		.byte	0
+ 1784 0012 00       		.byte	0
+ 1785 0013 02       		.uleb128 0x2
+ 1786 0014 24       		.uleb128 0x24
+ 1787 0015 00       		.byte	0
+ 1788 0016 0B       		.uleb128 0xb
+ 1789 0017 0B       		.uleb128 0xb
+ 1790 0018 3E       		.uleb128 0x3e
+ 1791 0019 0B       		.uleb128 0xb
+ 1792 001a 03       		.uleb128 0x3
+ 1793 001b 0E       		.uleb128 0xe
+ 1794 001c 00       		.byte	0
+ 1795 001d 00       		.byte	0
+ 1796 001e 03       		.uleb128 0x3
+ 1797 001f 24       		.uleb128 0x24
+ 1798 0020 00       		.byte	0
+ 1799 0021 0B       		.uleb128 0xb
+ 1800 0022 0B       		.uleb128 0xb
+ 1801 0023 3E       		.uleb128 0x3e
+ 1802 0024 0B       		.uleb128 0xb
+ 1803 0025 03       		.uleb128 0x3
+ 1804 0026 08       		.uleb128 0x8
+ 1805 0027 00       		.byte	0
+ 1806 0028 00       		.byte	0
+ 1807 0029 04       		.uleb128 0x4
+ 1808 002a 0F       		.uleb128 0xf
+ 1809 002b 00       		.byte	0
+ 1810 002c 0B       		.uleb128 0xb
+ 1811 002d 0B       		.uleb128 0xb
+ 1812 002e 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 40
+
+
+ 1813 002f 00       		.byte	0
+ 1814 0030 05       		.uleb128 0x5
+ 1815 0031 16       		.uleb128 0x16
+ 1816 0032 00       		.byte	0
+ 1817 0033 03       		.uleb128 0x3
+ 1818 0034 0E       		.uleb128 0xe
+ 1819 0035 3A       		.uleb128 0x3a
+ 1820 0036 0B       		.uleb128 0xb
+ 1821 0037 3B       		.uleb128 0x3b
+ 1822 0038 0B       		.uleb128 0xb
+ 1823 0039 49       		.uleb128 0x49
+ 1824 003a 13       		.uleb128 0x13
+ 1825 003b 00       		.byte	0
+ 1826 003c 00       		.byte	0
+ 1827 003d 06       		.uleb128 0x6
+ 1828 003e 0F       		.uleb128 0xf
+ 1829 003f 00       		.byte	0
+ 1830 0040 0B       		.uleb128 0xb
+ 1831 0041 0B       		.uleb128 0xb
+ 1832 0042 49       		.uleb128 0x49
+ 1833 0043 13       		.uleb128 0x13
+ 1834 0044 00       		.byte	0
+ 1835 0045 00       		.byte	0
+ 1836 0046 07       		.uleb128 0x7
+ 1837 0047 15       		.uleb128 0x15
+ 1838 0048 01       		.byte	0x1
+ 1839 0049 27       		.uleb128 0x27
+ 1840 004a 19       		.uleb128 0x19
+ 1841 004b 01       		.uleb128 0x1
+ 1842 004c 13       		.uleb128 0x13
+ 1843 004d 00       		.byte	0
+ 1844 004e 00       		.byte	0
+ 1845 004f 08       		.uleb128 0x8
+ 1846 0050 05       		.uleb128 0x5
+ 1847 0051 00       		.byte	0
+ 1848 0052 49       		.uleb128 0x49
+ 1849 0053 13       		.uleb128 0x13
+ 1850 0054 00       		.byte	0
+ 1851 0055 00       		.byte	0
+ 1852 0056 09       		.uleb128 0x9
+ 1853 0057 04       		.uleb128 0x4
+ 1854 0058 01       		.byte	0x1
+ 1855 0059 03       		.uleb128 0x3
+ 1856 005a 0E       		.uleb128 0xe
+ 1857 005b 0B       		.uleb128 0xb
+ 1858 005c 0B       		.uleb128 0xb
+ 1859 005d 49       		.uleb128 0x49
+ 1860 005e 13       		.uleb128 0x13
+ 1861 005f 3A       		.uleb128 0x3a
+ 1862 0060 0B       		.uleb128 0xb
+ 1863 0061 3B       		.uleb128 0x3b
+ 1864 0062 05       		.uleb128 0x5
+ 1865 0063 01       		.uleb128 0x1
+ 1866 0064 13       		.uleb128 0x13
+ 1867 0065 00       		.byte	0
+ 1868 0066 00       		.byte	0
+ 1869 0067 0A       		.uleb128 0xa
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 41
+
+
+ 1870 0068 28       		.uleb128 0x28
+ 1871 0069 00       		.byte	0
+ 1872 006a 03       		.uleb128 0x3
+ 1873 006b 0E       		.uleb128 0xe
+ 1874 006c 1C       		.uleb128 0x1c
+ 1875 006d 0B       		.uleb128 0xb
+ 1876 006e 00       		.byte	0
+ 1877 006f 00       		.byte	0
+ 1878 0070 0B       		.uleb128 0xb
+ 1879 0071 28       		.uleb128 0x28
+ 1880 0072 00       		.byte	0
+ 1881 0073 03       		.uleb128 0x3
+ 1882 0074 0E       		.uleb128 0xe
+ 1883 0075 1C       		.uleb128 0x1c
+ 1884 0076 05       		.uleb128 0x5
+ 1885 0077 00       		.byte	0
+ 1886 0078 00       		.byte	0
+ 1887 0079 0C       		.uleb128 0xc
+ 1888 007a 16       		.uleb128 0x16
+ 1889 007b 00       		.byte	0
+ 1890 007c 03       		.uleb128 0x3
+ 1891 007d 0E       		.uleb128 0xe
+ 1892 007e 3A       		.uleb128 0x3a
+ 1893 007f 0B       		.uleb128 0xb
+ 1894 0080 3B       		.uleb128 0x3b
+ 1895 0081 05       		.uleb128 0x5
+ 1896 0082 49       		.uleb128 0x49
+ 1897 0083 13       		.uleb128 0x13
+ 1898 0084 00       		.byte	0
+ 1899 0085 00       		.byte	0
+ 1900 0086 0D       		.uleb128 0xd
+ 1901 0087 13       		.uleb128 0x13
+ 1902 0088 01       		.byte	0x1
+ 1903 0089 03       		.uleb128 0x3
+ 1904 008a 0E       		.uleb128 0xe
+ 1905 008b 0B       		.uleb128 0xb
+ 1906 008c 0B       		.uleb128 0xb
+ 1907 008d 3A       		.uleb128 0x3a
+ 1908 008e 0B       		.uleb128 0xb
+ 1909 008f 3B       		.uleb128 0x3b
+ 1910 0090 05       		.uleb128 0x5
+ 1911 0091 01       		.uleb128 0x1
+ 1912 0092 13       		.uleb128 0x13
+ 1913 0093 00       		.byte	0
+ 1914 0094 00       		.byte	0
+ 1915 0095 0E       		.uleb128 0xe
+ 1916 0096 0D       		.uleb128 0xd
+ 1917 0097 00       		.byte	0
+ 1918 0098 03       		.uleb128 0x3
+ 1919 0099 0E       		.uleb128 0xe
+ 1920 009a 3A       		.uleb128 0x3a
+ 1921 009b 0B       		.uleb128 0xb
+ 1922 009c 3B       		.uleb128 0x3b
+ 1923 009d 05       		.uleb128 0x5
+ 1924 009e 49       		.uleb128 0x49
+ 1925 009f 13       		.uleb128 0x13
+ 1926 00a0 38       		.uleb128 0x38
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 42
+
+
+ 1927 00a1 0B       		.uleb128 0xb
+ 1928 00a2 00       		.byte	0
+ 1929 00a3 00       		.byte	0
+ 1930 00a4 0F       		.uleb128 0xf
+ 1931 00a5 0D       		.uleb128 0xd
+ 1932 00a6 00       		.byte	0
+ 1933 00a7 03       		.uleb128 0x3
+ 1934 00a8 08       		.uleb128 0x8
+ 1935 00a9 3A       		.uleb128 0x3a
+ 1936 00aa 0B       		.uleb128 0xb
+ 1937 00ab 3B       		.uleb128 0x3b
+ 1938 00ac 05       		.uleb128 0x5
+ 1939 00ad 49       		.uleb128 0x49
+ 1940 00ae 13       		.uleb128 0x13
+ 1941 00af 38       		.uleb128 0x38
+ 1942 00b0 0B       		.uleb128 0xb
+ 1943 00b1 00       		.byte	0
+ 1944 00b2 00       		.byte	0
+ 1945 00b3 10       		.uleb128 0x10
+ 1946 00b4 01       		.uleb128 0x1
+ 1947 00b5 01       		.byte	0x1
+ 1948 00b6 49       		.uleb128 0x49
+ 1949 00b7 13       		.uleb128 0x13
+ 1950 00b8 01       		.uleb128 0x1
+ 1951 00b9 13       		.uleb128 0x13
+ 1952 00ba 00       		.byte	0
+ 1953 00bb 00       		.byte	0
+ 1954 00bc 11       		.uleb128 0x11
+ 1955 00bd 21       		.uleb128 0x21
+ 1956 00be 00       		.byte	0
+ 1957 00bf 49       		.uleb128 0x49
+ 1958 00c0 13       		.uleb128 0x13
+ 1959 00c1 2F       		.uleb128 0x2f
+ 1960 00c2 0B       		.uleb128 0xb
+ 1961 00c3 00       		.byte	0
+ 1962 00c4 00       		.byte	0
+ 1963 00c5 12       		.uleb128 0x12
+ 1964 00c6 2E       		.uleb128 0x2e
+ 1965 00c7 01       		.byte	0x1
+ 1966 00c8 3F       		.uleb128 0x3f
+ 1967 00c9 19       		.uleb128 0x19
+ 1968 00ca 03       		.uleb128 0x3
+ 1969 00cb 0E       		.uleb128 0xe
+ 1970 00cc 3A       		.uleb128 0x3a
+ 1971 00cd 0B       		.uleb128 0xb
+ 1972 00ce 3B       		.uleb128 0x3b
+ 1973 00cf 0B       		.uleb128 0xb
+ 1974 00d0 27       		.uleb128 0x27
+ 1975 00d1 19       		.uleb128 0x19
+ 1976 00d2 49       		.uleb128 0x49
+ 1977 00d3 13       		.uleb128 0x13
+ 1978 00d4 11       		.uleb128 0x11
+ 1979 00d5 01       		.uleb128 0x1
+ 1980 00d6 12       		.uleb128 0x12
+ 1981 00d7 06       		.uleb128 0x6
+ 1982 00d8 40       		.uleb128 0x40
+ 1983 00d9 18       		.uleb128 0x18
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 43
+
+
+ 1984 00da 9642     		.uleb128 0x2116
+ 1985 00dc 19       		.uleb128 0x19
+ 1986 00dd 01       		.uleb128 0x1
+ 1987 00de 13       		.uleb128 0x13
+ 1988 00df 00       		.byte	0
+ 1989 00e0 00       		.byte	0
+ 1990 00e1 13       		.uleb128 0x13
+ 1991 00e2 34       		.uleb128 0x34
+ 1992 00e3 00       		.byte	0
+ 1993 00e4 03       		.uleb128 0x3
+ 1994 00e5 0E       		.uleb128 0xe
+ 1995 00e6 3A       		.uleb128 0x3a
+ 1996 00e7 0B       		.uleb128 0xb
+ 1997 00e8 3B       		.uleb128 0x3b
+ 1998 00e9 0B       		.uleb128 0xb
+ 1999 00ea 49       		.uleb128 0x49
+ 2000 00eb 13       		.uleb128 0x13
+ 2001 00ec 02       		.uleb128 0x2
+ 2002 00ed 18       		.uleb128 0x18
+ 2003 00ee 00       		.byte	0
+ 2004 00ef 00       		.byte	0
+ 2005 00f0 14       		.uleb128 0x14
+ 2006 00f1 2E       		.uleb128 0x2e
+ 2007 00f2 01       		.byte	0x1
+ 2008 00f3 03       		.uleb128 0x3
+ 2009 00f4 0E       		.uleb128 0xe
+ 2010 00f5 3A       		.uleb128 0x3a
+ 2011 00f6 0B       		.uleb128 0xb
+ 2012 00f7 3B       		.uleb128 0x3b
+ 2013 00f8 0B       		.uleb128 0xb
+ 2014 00f9 27       		.uleb128 0x27
+ 2015 00fa 19       		.uleb128 0x19
+ 2016 00fb 11       		.uleb128 0x11
+ 2017 00fc 01       		.uleb128 0x1
+ 2018 00fd 12       		.uleb128 0x12
+ 2019 00fe 06       		.uleb128 0x6
+ 2020 00ff 40       		.uleb128 0x40
+ 2021 0100 18       		.uleb128 0x18
+ 2022 0101 9642     		.uleb128 0x2116
+ 2023 0103 19       		.uleb128 0x19
+ 2024 0104 01       		.uleb128 0x1
+ 2025 0105 13       		.uleb128 0x13
+ 2026 0106 00       		.byte	0
+ 2027 0107 00       		.byte	0
+ 2028 0108 15       		.uleb128 0x15
+ 2029 0109 05       		.uleb128 0x5
+ 2030 010a 00       		.byte	0
+ 2031 010b 03       		.uleb128 0x3
+ 2032 010c 0E       		.uleb128 0xe
+ 2033 010d 3A       		.uleb128 0x3a
+ 2034 010e 0B       		.uleb128 0xb
+ 2035 010f 3B       		.uleb128 0x3b
+ 2036 0110 0B       		.uleb128 0xb
+ 2037 0111 49       		.uleb128 0x49
+ 2038 0112 13       		.uleb128 0x13
+ 2039 0113 02       		.uleb128 0x2
+ 2040 0114 18       		.uleb128 0x18
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 44
+
+
+ 2041 0115 00       		.byte	0
+ 2042 0116 00       		.byte	0
+ 2043 0117 16       		.uleb128 0x16
+ 2044 0118 2E       		.uleb128 0x2e
+ 2045 0119 01       		.byte	0x1
+ 2046 011a 03       		.uleb128 0x3
+ 2047 011b 0E       		.uleb128 0xe
+ 2048 011c 3A       		.uleb128 0x3a
+ 2049 011d 0B       		.uleb128 0xb
+ 2050 011e 3B       		.uleb128 0x3b
+ 2051 011f 05       		.uleb128 0x5
+ 2052 0120 27       		.uleb128 0x27
+ 2053 0121 19       		.uleb128 0x19
+ 2054 0122 11       		.uleb128 0x11
+ 2055 0123 01       		.uleb128 0x1
+ 2056 0124 12       		.uleb128 0x12
+ 2057 0125 06       		.uleb128 0x6
+ 2058 0126 40       		.uleb128 0x40
+ 2059 0127 18       		.uleb128 0x18
+ 2060 0128 9642     		.uleb128 0x2116
+ 2061 012a 19       		.uleb128 0x19
+ 2062 012b 01       		.uleb128 0x1
+ 2063 012c 13       		.uleb128 0x13
+ 2064 012d 00       		.byte	0
+ 2065 012e 00       		.byte	0
+ 2066 012f 17       		.uleb128 0x17
+ 2067 0130 34       		.uleb128 0x34
+ 2068 0131 00       		.byte	0
+ 2069 0132 03       		.uleb128 0x3
+ 2070 0133 0E       		.uleb128 0xe
+ 2071 0134 3A       		.uleb128 0x3a
+ 2072 0135 0B       		.uleb128 0xb
+ 2073 0136 3B       		.uleb128 0x3b
+ 2074 0137 05       		.uleb128 0x5
+ 2075 0138 49       		.uleb128 0x49
+ 2076 0139 13       		.uleb128 0x13
+ 2077 013a 02       		.uleb128 0x2
+ 2078 013b 18       		.uleb128 0x18
+ 2079 013c 00       		.byte	0
+ 2080 013d 00       		.byte	0
+ 2081 013e 18       		.uleb128 0x18
+ 2082 013f 2E       		.uleb128 0x2e
+ 2083 0140 00       		.byte	0
+ 2084 0141 03       		.uleb128 0x3
+ 2085 0142 0E       		.uleb128 0xe
+ 2086 0143 3A       		.uleb128 0x3a
+ 2087 0144 0B       		.uleb128 0xb
+ 2088 0145 3B       		.uleb128 0x3b
+ 2089 0146 05       		.uleb128 0x5
+ 2090 0147 27       		.uleb128 0x27
+ 2091 0148 19       		.uleb128 0x19
+ 2092 0149 11       		.uleb128 0x11
+ 2093 014a 01       		.uleb128 0x1
+ 2094 014b 12       		.uleb128 0x12
+ 2095 014c 06       		.uleb128 0x6
+ 2096 014d 40       		.uleb128 0x40
+ 2097 014e 18       		.uleb128 0x18
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 45
+
+
+ 2098 014f 9742     		.uleb128 0x2117
+ 2099 0151 19       		.uleb128 0x19
+ 2100 0152 00       		.byte	0
+ 2101 0153 00       		.byte	0
+ 2102 0154 19       		.uleb128 0x19
+ 2103 0155 05       		.uleb128 0x5
+ 2104 0156 00       		.byte	0
+ 2105 0157 03       		.uleb128 0x3
+ 2106 0158 0E       		.uleb128 0xe
+ 2107 0159 3A       		.uleb128 0x3a
+ 2108 015a 0B       		.uleb128 0xb
+ 2109 015b 3B       		.uleb128 0x3b
+ 2110 015c 05       		.uleb128 0x5
+ 2111 015d 49       		.uleb128 0x49
+ 2112 015e 13       		.uleb128 0x13
+ 2113 015f 02       		.uleb128 0x2
+ 2114 0160 18       		.uleb128 0x18
+ 2115 0161 00       		.byte	0
+ 2116 0162 00       		.byte	0
+ 2117 0163 1A       		.uleb128 0x1a
+ 2118 0164 34       		.uleb128 0x34
+ 2119 0165 00       		.byte	0
+ 2120 0166 03       		.uleb128 0x3
+ 2121 0167 0E       		.uleb128 0xe
+ 2122 0168 3A       		.uleb128 0x3a
+ 2123 0169 0B       		.uleb128 0xb
+ 2124 016a 3B       		.uleb128 0x3b
+ 2125 016b 05       		.uleb128 0x5
+ 2126 016c 49       		.uleb128 0x49
+ 2127 016d 13       		.uleb128 0x13
+ 2128 016e 00       		.byte	0
+ 2129 016f 00       		.byte	0
+ 2130 0170 1B       		.uleb128 0x1b
+ 2131 0171 34       		.uleb128 0x34
+ 2132 0172 00       		.byte	0
+ 2133 0173 03       		.uleb128 0x3
+ 2134 0174 0E       		.uleb128 0xe
+ 2135 0175 3A       		.uleb128 0x3a
+ 2136 0176 0B       		.uleb128 0xb
+ 2137 0177 3B       		.uleb128 0x3b
+ 2138 0178 0B       		.uleb128 0xb
+ 2139 0179 49       		.uleb128 0x49
+ 2140 017a 13       		.uleb128 0x13
+ 2141 017b 3F       		.uleb128 0x3f
+ 2142 017c 19       		.uleb128 0x19
+ 2143 017d 02       		.uleb128 0x2
+ 2144 017e 18       		.uleb128 0x18
+ 2145 017f 00       		.byte	0
+ 2146 0180 00       		.byte	0
+ 2147 0181 00       		.byte	0
+ 2148              		.section	.debug_aranges,"",%progbits
+ 2149 0000 3C000000 		.4byte	0x3c
+ 2150 0004 0200     		.2byte	0x2
+ 2151 0006 00000000 		.4byte	.Ldebug_info0
+ 2152 000a 04       		.byte	0x4
+ 2153 000b 00       		.byte	0
+ 2154 000c 0000     		.2byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 46
+
+
+ 2155 000e 0000     		.2byte	0
+ 2156 0010 00000000 		.4byte	.LFB33
+ 2157 0014 6C000000 		.4byte	.LFE33-.LFB33
+ 2158 0018 00000000 		.4byte	.LFB34
+ 2159 001c E0000000 		.4byte	.LFE34-.LFB34
+ 2160 0020 00000000 		.4byte	.LFB35
+ 2161 0024 50000000 		.4byte	.LFE35-.LFB35
+ 2162 0028 00000000 		.4byte	.LFB36
+ 2163 002c 0A000000 		.4byte	.LFE36-.LFB36
+ 2164 0030 00000000 		.4byte	.LFB37
+ 2165 0034 20000000 		.4byte	.LFE37-.LFB37
+ 2166 0038 00000000 		.4byte	0
+ 2167 003c 00000000 		.4byte	0
+ 2168              		.section	.debug_ranges,"",%progbits
+ 2169              	.Ldebug_ranges0:
+ 2170 0000 00000000 		.4byte	.LFB33
+ 2171 0004 6C000000 		.4byte	.LFE33
+ 2172 0008 00000000 		.4byte	.LFB34
+ 2173 000c E0000000 		.4byte	.LFE34
+ 2174 0010 00000000 		.4byte	.LFB35
+ 2175 0014 50000000 		.4byte	.LFE35
+ 2176 0018 00000000 		.4byte	.LFB36
+ 2177 001c 0A000000 		.4byte	.LFE36
+ 2178 0020 00000000 		.4byte	.LFB37
+ 2179 0024 20000000 		.4byte	.LFE37
+ 2180 0028 00000000 		.4byte	0
+ 2181 002c 00000000 		.4byte	0
+ 2182              		.section	.debug_line,"",%progbits
+ 2183              	.Ldebug_line0:
+ 2184 0000 66010000 		.section	.debug_str,"MS",%progbits,1
+ 2184      0200CF00 
+ 2184      00000201 
+ 2184      FB0E0D00 
+ 2184      01010101 
+ 2185              	.LASF235:
+ 2186 0000 6F735F74 		.ascii	"os_tcb\000"
+ 2186      636200
+ 2187              	.LASF105:
+ 2188 0007 4F535F45 		.ascii	"OS_ERR_PRIO_INVALID\000"
+ 2188      52525F50 
+ 2188      52494F5F 
+ 2188      494E5641 
+ 2188      4C494400 
+ 2189              	.LASF198:
+ 2190 001b 4F535F45 		.ascii	"OS_ERR\000"
+ 2190      525200
+ 2191              	.LASF166:
+ 2192 0022 4F535F45 		.ascii	"OS_ERR_TICK_WHEEL_SIZE\000"
+ 2192      52525F54 
+ 2192      49434B5F 
+ 2192      57484545 
+ 2192      4C5F5349 
+ 2193              	.LASF184:
+ 2194 0039 4F535F45 		.ascii	"OS_ERR_TMR_ISR\000"
+ 2194      52525F54 
+ 2194      4D525F49 
+ 2194      535200
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 47
+
+
+ 2195              	.LASF171:
+ 2196 0048 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_MINUTES\000"
+ 2196      52525F54 
+ 2196      494D455F 
+ 2196      494E5641 
+ 2196      4C49445F 
+ 2197              	.LASF38:
+ 2198 0064 4F535F45 		.ascii	"OS_ERR_A\000"
+ 2198      52525F41 
+ 2198      00
+ 2199              	.LASF40:
+ 2200 006d 4F535F45 		.ascii	"OS_ERR_B\000"
+ 2200      52525F42 
+ 2200      00
+ 2201              	.LASF41:
+ 2202 0076 4F535F45 		.ascii	"OS_ERR_C\000"
+ 2202      52525F43 
+ 2202      00
+ 2203              	.LASF43:
+ 2204 007f 4F535F45 		.ascii	"OS_ERR_D\000"
+ 2204      52525F44 
+ 2204      00
+ 2205              	.LASF45:
+ 2206 0088 4F535F45 		.ascii	"OS_ERR_E\000"
+ 2206      52525F45 
+ 2206      00
+ 2207              	.LASF46:
+ 2208 0091 4F535F45 		.ascii	"OS_ERR_F\000"
+ 2208      52525F46 
+ 2208      00
+ 2209              	.LASF52:
+ 2210 009a 4F535F45 		.ascii	"OS_ERR_G\000"
+ 2210      52525F47 
+ 2210      00
+ 2211              	.LASF53:
+ 2212 00a3 4F535F45 		.ascii	"OS_ERR_H\000"
+ 2212      52525F48 
+ 2212      00
+ 2213              	.LASF54:
+ 2214 00ac 4F535F45 		.ascii	"OS_ERR_I\000"
+ 2214      52525F49 
+ 2214      00
+ 2215              	.LASF61:
+ 2216 00b5 4F535F45 		.ascii	"OS_ERR_J\000"
+ 2216      52525F4A 
+ 2216      00
+ 2217              	.LASF62:
+ 2218 00be 4F535F45 		.ascii	"OS_ERR_K\000"
+ 2218      52525F4B 
+ 2218      00
+ 2219              	.LASF63:
+ 2220 00c7 4F535F45 		.ascii	"OS_ERR_L\000"
+ 2220      52525F4C 
+ 2220      00
+ 2221              	.LASF65:
+ 2222 00d0 4F535F45 		.ascii	"OS_ERR_M\000"
+ 2222      52525F4D 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 48
+
+
+ 2222      00
+ 2223              	.LASF81:
+ 2224 00d9 4F535F45 		.ascii	"OS_ERR_N\000"
+ 2224      52525F4E 
+ 2224      00
+ 2225              	.LASF84:
+ 2226 00e2 4F535F45 		.ascii	"OS_ERR_O\000"
+ 2226      52525F4F 
+ 2226      00
+ 2227              	.LASF92:
+ 2228 00eb 4F535F45 		.ascii	"OS_ERR_P\000"
+ 2228      52525F50 
+ 2228      00
+ 2229              	.LASF107:
+ 2230 00f4 4F535F45 		.ascii	"OS_ERR_Q\000"
+ 2230      52525F51 
+ 2230      00
+ 2231              	.LASF112:
+ 2232 00fd 4F535F45 		.ascii	"OS_ERR_R\000"
+ 2232      52525F52 
+ 2232      00
+ 2233              	.LASF116:
+ 2234 0106 4F535F45 		.ascii	"OS_ERR_S\000"
+ 2234      52525F53 
+ 2234      00
+ 2235              	.LASF133:
+ 2236 010f 4F535F45 		.ascii	"OS_ERR_T\000"
+ 2236      52525F54 
+ 2236      00
+ 2237              	.LASF191:
+ 2238 0118 4F535F45 		.ascii	"OS_ERR_U\000"
+ 2238      52525F55 
+ 2238      00
+ 2239              	.LASF192:
+ 2240 0121 4F535F45 		.ascii	"OS_ERR_V\000"
+ 2240      52525F56 
+ 2240      00
+ 2241              	.LASF193:
+ 2242 012a 4F535F45 		.ascii	"OS_ERR_W\000"
+ 2242      52525F57 
+ 2242      00
+ 2243              	.LASF194:
+ 2244 0133 4F535F45 		.ascii	"OS_ERR_X\000"
+ 2244      52525F58 
+ 2244      00
+ 2245              	.LASF181:
+ 2246 013c 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_PERIOD\000"
+ 2246      52525F54 
+ 2246      4D525F49 
+ 2246      4E56414C 
+ 2246      49445F50 
+ 2247              	.LASF256:
+ 2248 0156 6F735F65 		.ascii	"os_err\000"
+ 2248      727200
+ 2249              	.LASF259:
+ 2250 015d 6C65645F 		.ascii	"led_status\000"
+ 2250      73746174 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 49
+
+
+ 2250      757300
+ 2251              	.LASF238:
+ 2252 0168 4E627245 		.ascii	"NbrEntries\000"
+ 2252      6E747269 
+ 2252      657300
+ 2253              	.LASF58:
+ 2254 0173 4F535F45 		.ascii	"OS_ERR_INT_Q_SIZE\000"
+ 2254      52525F49 
+ 2254      4E545F51 
+ 2254      5F53495A 
+ 2254      4500
+ 2255              	.LASF42:
+ 2256 0185 4F535F45 		.ascii	"OS_ERR_CREATE_ISR\000"
+ 2256      52525F43 
+ 2256      52454154 
+ 2256      455F4953 
+ 2256      5200
+ 2257              	.LASF165:
+ 2258 0197 4F535F45 		.ascii	"OS_ERR_TICK_STK_SIZE_INVALID\000"
+ 2258      52525F54 
+ 2258      49434B5F 
+ 2258      53544B5F 
+ 2258      53495A45 
+ 2259              	.LASF8:
+ 2260 01b4 756E7369 		.ascii	"unsigned int\000"
+ 2260      676E6564 
+ 2260      20696E74 
+ 2260      00
+ 2261              	.LASF130:
+ 2262 01c1 4F535F45 		.ascii	"OS_ERR_STK_INVALID\000"
+ 2262      52525F53 
+ 2262      544B5F49 
+ 2262      4E56414C 
+ 2262      494400
+ 2263              	.LASF146:
+ 2264 01d4 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_ISR\000"
+ 2264      52525F54 
+ 2264      41534B5F 
+ 2264      52455355 
+ 2264      4D455F49 
+ 2265              	.LASF100:
+ 2266 01eb 4F535F45 		.ascii	"OS_ERR_PEND_WOULD_BLOCK\000"
+ 2266      52525F50 
+ 2266      454E445F 
+ 2266      574F554C 
+ 2266      445F424C 
+ 2267              	.LASF134:
+ 2268 0203 4F535F45 		.ascii	"OS_ERR_TASK_CHANGE_PRIO_ISR\000"
+ 2268      52525F54 
+ 2268      41534B5F 
+ 2268      4348414E 
+ 2268      47455F50 
+ 2269              	.LASF276:
+ 2270 021f 75435F50 		.ascii	"uC_Probe_Accel_X_Axis\000"
+ 2270      726F6265 
+ 2270      5F416363 
+ 2270      656C5F58 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 50
+
+
+ 2270      5F417869 
+ 2271              	.LASF124:
+ 2272 0235 4F535F45 		.ascii	"OS_ERR_STAT_RESET_ISR\000"
+ 2272      52525F53 
+ 2272      5441545F 
+ 2272      52455345 
+ 2272      545F4953 
+ 2273              	.LASF99:
+ 2274 024b 4F535F45 		.ascii	"OS_ERR_PEND_LOCKED\000"
+ 2274      52525F50 
+ 2274      454E445F 
+ 2274      4C4F434B 
+ 2274      454400
+ 2275              	.LASF279:
+ 2276 025e 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2276      43313120 
+ 2276      352E342E 
+ 2276      31203230 
+ 2276      31363036 
+ 2277 0291 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 2277      20726576 
+ 2277      6973696F 
+ 2277      6E203233 
+ 2277      37373135 
+ 2278 02c4 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 2278      66756E63 
+ 2278      74696F6E 
+ 2278      2D736563 
+ 2278      74696F6E 
+ 2279              	.LASF144:
+ 2280 02ec 4F535F45 		.ascii	"OS_ERR_TASK_NOT_SUSPENDED\000"
+ 2280      52525F54 
+ 2280      41534B5F 
+ 2280      4E4F545F 
+ 2280      53555350 
+ 2281              	.LASF142:
+ 2282 0306 4F535F45 		.ascii	"OS_ERR_TASK_NOT_DLY\000"
+ 2282      52525F54 
+ 2282      41534B5F 
+ 2282      4E4F545F 
+ 2282      444C5900 
+ 2283              	.LASF231:
+ 2284 031a 44626750 		.ascii	"DbgPrevPtr\000"
+ 2284      72657650 
+ 2284      747200
+ 2285              	.LASF56:
+ 2286 0325 4F535F45 		.ascii	"OS_ERR_INT_Q\000"
+ 2286      52525F49 
+ 2286      4E545F51 
+ 2286      00
+ 2287              	.LASF232:
+ 2288 0332 4462674E 		.ascii	"DbgNextPtr\000"
+ 2288      65787450 
+ 2288      747200
+ 2289              	.LASF156:
+ 2290 033d 4F535F45 		.ascii	"OS_ERR_TASK_WAITING\000"
+ 2290      52525F54 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 51
+
+
+ 2290      41534B5F 
+ 2290      57414954 
+ 2290      494E4700 
+ 2291              	.LASF39:
+ 2292 0351 4F535F45 		.ascii	"OS_ERR_ACCEPT_ISR\000"
+ 2292      52525F41 
+ 2292      43434550 
+ 2292      545F4953 
+ 2292      5200
+ 2293              	.LASF154:
+ 2294 0363 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_ISR\000"
+ 2294      52525F54 
+ 2294      41534B5F 
+ 2294      53555350 
+ 2294      454E445F 
+ 2295              	.LASF80:
+ 2296 037b 4F535F45 		.ascii	"OS_ERR_MUTEX_NESTING\000"
+ 2296      52525F4D 
+ 2296      55544558 
+ 2296      5F4E4553 
+ 2296      54494E47 
+ 2297              	.LASF182:
+ 2298 0390 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_STATE\000"
+ 2298      52525F54 
+ 2298      4D525F49 
+ 2298      4E56414C 
+ 2298      49445F53 
+ 2299              	.LASF214:
+ 2300 03a9 50656E64 		.ascii	"PendOn\000"
+ 2300      4F6E00
+ 2301              	.LASF219:
+ 2302 03b0 50656E64 		.ascii	"PendDataTblEntries\000"
+ 2302      44617461 
+ 2302      54626C45 
+ 2302      6E747269 
+ 2302      657300
+ 2303              	.LASF85:
+ 2304 03c3 4F535F45 		.ascii	"OS_ERR_OBJ_CREATED\000"
+ 2304      52525F4F 
+ 2304      424A5F43 
+ 2304      52454154 
+ 2304      454400
+ 2305              	.LASF251:
+ 2306 03d6 5461696C 		.ascii	"TailPtr\000"
+ 2306      50747200 
+ 2307              	.LASF152:
+ 2308 03de 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_IDLE\000"
+ 2308      52525F54 
+ 2308      41534B5F 
+ 2308      53555350 
+ 2308      454E445F 
+ 2309              	.LASF57:
+ 2310 03f7 4F535F45 		.ascii	"OS_ERR_INT_Q_FULL\000"
+ 2310      52525F49 
+ 2310      4E545F51 
+ 2310      5F46554C 
+ 2310      4C00
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 52
+
+
+ 2311              	.LASF222:
+ 2312 0409 5469636B 		.ascii	"TickCtrMatch\000"
+ 2312      4374724D 
+ 2312      61746368 
+ 2312      00
+ 2313              	.LASF245:
+ 2314 0416 5264794D 		.ascii	"RdyMsgPtr\000"
+ 2314      73675074 
+ 2314      7200
+ 2315              	.LASF253:
+ 2316 0420 6F735F70 		.ascii	"os_pend_obj\000"
+ 2316      656E645F 
+ 2316      6F626A00 
+ 2317              	.LASF55:
+ 2318 042c 4F535F45 		.ascii	"OS_ERR_ILLEGAL_CREATE_RUN_TIME\000"
+ 2318      52525F49 
+ 2318      4C4C4547 
+ 2318      414C5F43 
+ 2318      52454154 
+ 2319              	.LASF180:
+ 2320 044b 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_DLY\000"
+ 2320      52525F54 
+ 2320      4D525F49 
+ 2320      4E56414C 
+ 2320      49445F44 
+ 2321              	.LASF28:
+ 2322 0462 4F535F4F 		.ascii	"OS_OBJ_QTY\000"
+ 2322      424A5F51 
+ 2322      545900
+ 2323              	.LASF147:
+ 2324 046d 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_PRIO\000"
+ 2324      52525F54 
+ 2324      41534B5F 
+ 2324      52455355 
+ 2324      4D455F50 
+ 2325              	.LASF109:
+ 2326 0485 4F535F45 		.ascii	"OS_ERR_Q_EMPTY\000"
+ 2326      52525F51 
+ 2326      5F454D50 
+ 2326      545900
+ 2327              	.LASF31:
+ 2328 0494 4F535F50 		.ascii	"OS_PRIO\000"
+ 2328      52494F00 
+ 2329              	.LASF19:
+ 2330 049c 666C6F61 		.ascii	"float\000"
+ 2330      7400
+ 2331              	.LASF101:
+ 2332 04a2 4F535F45 		.ascii	"OS_ERR_POST_NULL_PTR\000"
+ 2332      52525F50 
+ 2332      4F53545F 
+ 2332      4E554C4C 
+ 2332      5F505452 
+ 2333              	.LASF83:
+ 2334 04b7 4F535F45 		.ascii	"OS_ERR_NO_MORE_ID_AVAIL\000"
+ 2334      52525F4E 
+ 2334      4F5F4D4F 
+ 2334      52455F49 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 53
+
+
+ 2334      445F4156 
+ 2335              	.LASF234:
+ 2336 04cf 4F535F54 		.ascii	"OS_TICK_SPOKE\000"
+ 2336      49434B5F 
+ 2336      53504F4B 
+ 2336      4500
+ 2337              	.LASF73:
+ 2338 04dd 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_DATA\000"
+ 2338      52525F4D 
+ 2338      454D5F49 
+ 2338      4E56414C 
+ 2338      49445F50 
+ 2339              	.LASF185:
+ 2340 04f7 4F535F45 		.ascii	"OS_ERR_TMR_NO_CALLBACK\000"
+ 2340      52525F54 
+ 2340      4D525F4E 
+ 2340      4F5F4341 
+ 2340      4C4C4241 
+ 2341              	.LASF178:
+ 2342 050e 4F535F45 		.ascii	"OS_ERR_TMR_INACTIVE\000"
+ 2342      52525F54 
+ 2342      4D525F49 
+ 2342      4E414354 
+ 2342      49564500 
+ 2343              	.LASF158:
+ 2344 0522 4F535F45 		.ascii	"OS_ERR_TLS_ID_INVALID\000"
+ 2344      52525F54 
+ 2344      4C535F49 
+ 2344      445F494E 
+ 2344      56414C49 
+ 2345              	.LASF7:
+ 2346 0538 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2346      206C6F6E 
+ 2346      6720756E 
+ 2346      7369676E 
+ 2346      65642069 
+ 2347              	.LASF149:
+ 2348 054f 4F535F45 		.ascii	"OS_ERR_TASK_RUNNING\000"
+ 2348      52525F54 
+ 2348      41534B5F 
+ 2348      52554E4E 
+ 2348      494E4700 
+ 2349              	.LASF228:
+ 2350 0563 53746B55 		.ascii	"StkUsed\000"
+ 2350      73656400 
+ 2351              	.LASF272:
+ 2352 056b 75435F50 		.ascii	"uC_Probe_RGB_Val\000"
+ 2352      726F6265 
+ 2352      5F524742 
+ 2352      5F56616C 
+ 2352      00
+ 2353              	.LASF183:
+ 2354 057c 4F535F45 		.ascii	"OS_ERR_TMR_INVALID\000"
+ 2354      52525F54 
+ 2354      4D525F49 
+ 2354      4E56414C 
+ 2354      494400
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 54
+
+
+ 2355              	.LASF240:
+ 2356 058f 4F535F50 		.ascii	"OS_PEND_DATA\000"
+ 2356      454E445F 
+ 2356      44415441 
+ 2356      00
+ 2357              	.LASF153:
+ 2358 059c 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_INT_HANDLER\000"
+ 2358      52525F54 
+ 2358      41534B5F 
+ 2358      53555350 
+ 2358      454E445F 
+ 2359              	.LASF138:
+ 2360 05bc 4F535F45 		.ascii	"OS_ERR_TASK_DEL_INVALID\000"
+ 2360      52525F54 
+ 2360      41534B5F 
+ 2360      44454C5F 
+ 2360      494E5641 
+ 2361              	.LASF257:
+ 2362 05d4 70625F73 		.ascii	"pb_status\000"
+ 2362      74617475 
+ 2362      7300
+ 2363              	.LASF188:
+ 2364 05de 4F535F45 		.ascii	"OS_ERR_TMR_STK_INVALID\000"
+ 2364      52525F54 
+ 2364      4D525F53 
+ 2364      544B5F49 
+ 2364      4E56414C 
+ 2365              	.LASF14:
+ 2366 05f5 4350555F 		.ascii	"CPU_INT08U\000"
+ 2366      494E5430 
+ 2366      385500
+ 2367              	.LASF157:
+ 2368 0600 4F535F45 		.ascii	"OS_ERR_TCB_INVALID\000"
+ 2368      52525F54 
+ 2368      43425F49 
+ 2368      4E56414C 
+ 2368      494400
+ 2369              	.LASF218:
+ 2370 0613 53746B53 		.ascii	"StkSize\000"
+ 2370      697A6500 
+ 2371              	.LASF210:
+ 2372 061b 53746B42 		.ascii	"StkBasePtr\000"
+ 2372      61736550 
+ 2372      747200
+ 2373              	.LASF18:
+ 2374 0626 4350555F 		.ascii	"CPU_FP32\000"
+ 2374      46503332 
+ 2374      00
+ 2375              	.LASF17:
+ 2376 062f 4350555F 		.ascii	"CPU_INT32U\000"
+ 2376      494E5433 
+ 2376      325500
+ 2377              	.LASF173:
+ 2378 063a 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_MILLISECONDS\000"
+ 2378      52525F54 
+ 2378      494D455F 
+ 2378      494E5641 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 55
+
+
+ 2378      4C49445F 
+ 2379              	.LASF32:
+ 2380 065b 4F535F52 		.ascii	"OS_REG\000"
+ 2380      454700
+ 2381              	.LASF82:
+ 2382 0662 4F535F45 		.ascii	"OS_ERR_NAME\000"
+ 2382      52525F4E 
+ 2382      414D4500 
+ 2383              	.LASF35:
+ 2384 066e 4F535F53 		.ascii	"OS_STATUS\000"
+ 2384      54415455 
+ 2384      5300
+ 2385              	.LASF216:
+ 2386 0678 5461736B 		.ascii	"TaskState\000"
+ 2386      53746174 
+ 2386      6500
+ 2387              	.LASF162:
+ 2388 0682 4F535F45 		.ascii	"OS_ERR_TLS_DESTRUCT_ASSIGNED\000"
+ 2388      52525F54 
+ 2388      4C535F44 
+ 2388      45535452 
+ 2388      5543545F 
+ 2389              	.LASF78:
+ 2390 069f 4F535F45 		.ascii	"OS_ERR_MUTEX_NOT_OWNER\000"
+ 2390      52525F4D 
+ 2390      55544558 
+ 2390      5F4E4F54 
+ 2390      5F4F574E 
+ 2391              	.LASF26:
+ 2392 06b6 4F535F4D 		.ascii	"OS_MSG_SIZE\000"
+ 2392      53475F53 
+ 2392      495A4500 
+ 2393              	.LASF170:
+ 2394 06c2 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_HOURS\000"
+ 2394      52525F54 
+ 2394      494D455F 
+ 2394      494E5641 
+ 2394      4C49445F 
+ 2395              	.LASF186:
+ 2396 06dc 4F535F45 		.ascii	"OS_ERR_TMR_NON_AVAIL\000"
+ 2396      52525F54 
+ 2396      4D525F4E 
+ 2396      4F4E5F41 
+ 2396      5641494C 
+ 2397              	.LASF273:
+ 2398 06f1 75435F50 		.ascii	"uC_Probe_PB_Trigger\000"
+ 2398      726F6265 
+ 2398      5F50425F 
+ 2398      54726967 
+ 2398      67657200 
+ 2399              	.LASF12:
+ 2400 0705 4350555F 		.ascii	"CPU_CHAR\000"
+ 2400      43484152 
+ 2400      00
+ 2401              	.LASF135:
+ 2402 070e 4F535F45 		.ascii	"OS_ERR_TASK_CREATE_ISR\000"
+ 2402      52525F54 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 56
+
+
+ 2402      41534B5F 
+ 2402      43524541 
+ 2402      54455F49 
+ 2403              	.LASF23:
+ 2404 0725 4350555F 		.ascii	"CPU_STK_SIZE\000"
+ 2404      53544B5F 
+ 2404      53495A45 
+ 2404      00
+ 2405              	.LASF91:
+ 2406 0732 4F535F45 		.ascii	"OS_ERR_OS_RUNNING\000"
+ 2406      52525F4F 
+ 2406      535F5255 
+ 2406      4E4E494E 
+ 2406      4700
+ 2407              	.LASF229:
+ 2408 0744 53746B46 		.ascii	"StkFree\000"
+ 2408      72656500 
+ 2409              	.LASF221:
+ 2410 074c 5469636B 		.ascii	"TickCtrPrev\000"
+ 2410      43747250 
+ 2410      72657600 
+ 2411              	.LASF176:
+ 2412 0758 4F535F45 		.ascii	"OS_ERR_TIME_ZERO_DLY\000"
+ 2412      52525F54 
+ 2412      494D455F 
+ 2412      5A45524F 
+ 2412      5F444C59 
+ 2413              	.LASF207:
+ 2414 076d 5469636B 		.ascii	"TickPrevPtr\000"
+ 2414      50726576 
+ 2414      50747200 
+ 2415              	.LASF126:
+ 2416 0779 4F535F45 		.ascii	"OS_ERR_STAT_STK_INVALID\000"
+ 2416      52525F53 
+ 2416      5441545F 
+ 2416      53544B5F 
+ 2416      494E5641 
+ 2417              	.LASF48:
+ 2418 0791 4F535F45 		.ascii	"OS_ERR_FLAG_GRP_DEPLETED\000"
+ 2418      52525F46 
+ 2418      4C41475F 
+ 2418      4752505F 
+ 2418      4445504C 
+ 2419              	.LASF278:
+ 2420 07aa 75435F50 		.ascii	"uC_Probe_Accel_Z_Axis\000"
+ 2420      726F6265 
+ 2420      5F416363 
+ 2420      656C5F5A 
+ 2420      5F417869 
+ 2421              	.LASF69:
+ 2422 07c0 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_BLKS\000"
+ 2422      52525F4D 
+ 2422      454D5F49 
+ 2422      4E56414C 
+ 2422      49445F42 
+ 2423              	.LASF179:
+ 2424 07d8 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_DEST\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 57
+
+
+ 2424      52525F54 
+ 2424      4D525F49 
+ 2424      4E56414C 
+ 2424      49445F44 
+ 2425              	.LASF274:
+ 2426 07f0 75435F50 		.ascii	"uC_Probe_Temp_Val\000"
+ 2426      726F6265 
+ 2426      5F54656D 
+ 2426      705F5661 
+ 2426      6C00
+ 2427              	.LASF118:
+ 2428 0802 4F535F45 		.ascii	"OS_ERR_SCHED_LOCK_ISR\000"
+ 2428      52525F53 
+ 2428      43484544 
+ 2428      5F4C4F43 
+ 2428      4B5F4953 
+ 2429              	.LASF44:
+ 2430 0818 4F535F45 		.ascii	"OS_ERR_DEL_ISR\000"
+ 2430      52525F44 
+ 2430      454C5F49 
+ 2430      535200
+ 2431              	.LASF110:
+ 2432 0827 4F535F45 		.ascii	"OS_ERR_Q_MAX\000"
+ 2432      52525F51 
+ 2432      5F4D4158 
+ 2432      00
+ 2433              	.LASF205:
+ 2434 0834 50726576 		.ascii	"PrevPtr\000"
+ 2434      50747200 
+ 2435              	.LASF11:
+ 2436 083c 63686172 		.ascii	"char\000"
+ 2436      00
+ 2437              	.LASF29:
+ 2438 0841 4F535F4F 		.ascii	"OS_OBJ_TYPE\000"
+ 2438      424A5F54 
+ 2438      59504500 
+ 2439              	.LASF161:
+ 2440 084d 4F535F45 		.ascii	"OS_ERR_TLS_NOT_EN\000"
+ 2440      52525F54 
+ 2440      4C535F4E 
+ 2440      4F545F45 
+ 2440      4E00
+ 2441              	.LASF89:
+ 2442 085f 4F535F45 		.ascii	"OS_ERR_OPT_INVALID\000"
+ 2442      52525F4F 
+ 2442      50545F49 
+ 2442      4E56414C 
+ 2442      494400
+ 2443              	.LASF270:
+ 2444 0872 4170705F 		.ascii	"App_Demo_SensorTaskStk\000"
+ 2444      44656D6F 
+ 2444      5F53656E 
+ 2444      736F7254 
+ 2444      61736B53 
+ 2445              	.LASF117:
+ 2446 0889 4F535F45 		.ascii	"OS_ERR_SCHED_INVALID_TIME_SLICE\000"
+ 2446      52525F53 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 58
+
+
+ 2446      43484544 
+ 2446      5F494E56 
+ 2446      414C4944 
+ 2447              	.LASF211:
+ 2448 08a9 5461736B 		.ascii	"TaskEntryAddr\000"
+ 2448      456E7472 
+ 2448      79416464 
+ 2448      7200
+ 2449              	.LASF125:
+ 2450 08b7 4F535F45 		.ascii	"OS_ERR_STAT_PRIO_INVALID\000"
+ 2450      52525F53 
+ 2450      5441545F 
+ 2450      5052494F 
+ 2450      5F494E56 
+ 2451              	.LASF174:
+ 2452 08d0 4F535F45 		.ascii	"OS_ERR_TIME_NOT_DLY\000"
+ 2452      52525F54 
+ 2452      494D455F 
+ 2452      4E4F545F 
+ 2452      444C5900 
+ 2453              	.LASF209:
+ 2454 08e4 4E616D65 		.ascii	"NamePtr\000"
+ 2454      50747200 
+ 2455              	.LASF215:
+ 2456 08ec 50656E64 		.ascii	"PendStatus\000"
+ 2456      53746174 
+ 2456      757300
+ 2457              	.LASF225:
+ 2458 08f7 54696D65 		.ascii	"TimeQuantaCtr\000"
+ 2458      5175616E 
+ 2458      74614374 
+ 2458      7200
+ 2459              	.LASF196:
+ 2460 0905 4F535F45 		.ascii	"OS_ERR_YIELD_ISR\000"
+ 2460      52525F59 
+ 2460      49454C44 
+ 2460      5F495352 
+ 2460      00
+ 2461              	.LASF86:
+ 2462 0916 4F535F45 		.ascii	"OS_ERR_OBJ_DEL\000"
+ 2462      52525F4F 
+ 2462      424A5F44 
+ 2462      454C00
+ 2463              	.LASF25:
+ 2464 0925 4350555F 		.ascii	"CPU_TS\000"
+ 2464      545300
+ 2465              	.LASF6:
+ 2466 092c 6C6F6E67 		.ascii	"long long int\000"
+ 2466      206C6F6E 
+ 2466      6720696E 
+ 2466      7400
+ 2467              	.LASF260:
+ 2468 093a 4170705F 		.ascii	"App_TaskStart\000"
+ 2468      5461736B 
+ 2468      53746172 
+ 2468      7400
+ 2469              	.LASF50:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 59
+
+
+ 2470 0948 4F535F45 		.ascii	"OS_ERR_FLAG_PEND_OPT\000"
+ 2470      52525F46 
+ 2470      4C41475F 
+ 2470      50454E44 
+ 2470      5F4F5054 
+ 2471              	.LASF201:
+ 2472 095d 53746B50 		.ascii	"StkPtr\000"
+ 2472      747200
+ 2473              	.LASF236:
+ 2474 0964 6F735F74 		.ascii	"os_tick_spoke\000"
+ 2474      69636B5F 
+ 2474      73706F6B 
+ 2474      6500
+ 2475              	.LASF111:
+ 2476 0972 4F535F45 		.ascii	"OS_ERR_Q_SIZE\000"
+ 2476      52525F51 
+ 2476      5F53495A 
+ 2476      4500
+ 2477              	.LASF264:
+ 2478 0980 74656D70 		.ascii	"temp_status\000"
+ 2478      5F737461 
+ 2478      74757300 
+ 2479              	.LASF242:
+ 2480 098c 54434250 		.ascii	"TCBPtr\000"
+ 2480      747200
+ 2481              	.LASF16:
+ 2482 0993 4350555F 		.ascii	"CPU_INT16S\000"
+ 2482      494E5431 
+ 2482      365300
+ 2483              	.LASF96:
+ 2484 099e 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_SELF\000"
+ 2484      52525F50 
+ 2484      454E445F 
+ 2484      41424F52 
+ 2484      545F5345 
+ 2485              	.LASF15:
+ 2486 09b5 4350555F 		.ascii	"CPU_INT16U\000"
+ 2486      494E5431 
+ 2486      365500
+ 2487              	.LASF115:
+ 2488 09c0 4F535F45 		.ascii	"OS_ERR_ROUND_ROBIN_DISABLED\000"
+ 2488      52525F52 
+ 2488      4F554E44 
+ 2488      5F524F42 
+ 2488      494E5F44 
+ 2489              	.LASF70:
+ 2490 09dc 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_PART\000"
+ 2490      52525F4D 
+ 2490      454D5F49 
+ 2490      4E56414C 
+ 2490      49445F50 
+ 2491              	.LASF87:
+ 2492 09f4 4F535F45 		.ascii	"OS_ERR_OBJ_PTR_NULL\000"
+ 2492      52525F4F 
+ 2492      424A5F50 
+ 2492      54525F4E 
+ 2492      554C4C00 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 60
+
+
+ 2493              	.LASF113:
+ 2494 0a08 4F535F45 		.ascii	"OS_ERR_REG_ID_INVALID\000"
+ 2494      52525F52 
+ 2494      45475F49 
+ 2494      445F494E 
+ 2494      56414C49 
+ 2495              	.LASF36:
+ 2496 0a1e 4F535F54 		.ascii	"OS_TICK\000"
+ 2496      49434B00 
+ 2497              	.LASF67:
+ 2498 0a26 4F535F45 		.ascii	"OS_ERR_MEM_FULL\000"
+ 2498      52525F4D 
+ 2498      454D5F46 
+ 2498      554C4C00 
+ 2499              	.LASF141:
+ 2500 0a36 4F535F45 		.ascii	"OS_ERR_TASK_NO_MORE_TCB\000"
+ 2500      52525F54 
+ 2500      41534B5F 
+ 2500      4E4F5F4D 
+ 2500      4F52455F 
+ 2501              	.LASF72:
+ 2502 0a4e 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_MEM\000"
+ 2502      52525F4D 
+ 2502      454D5F49 
+ 2502      4E56414C 
+ 2502      49445F50 
+ 2503              	.LASF281:
+ 2504 0a67 433A5C55 		.ascii	"C:\\Users\\edulu.DESKTOP-961TG4K\\Documents\\PSoC C"
+ 2504      73657273 
+ 2504      5C656475 
+ 2504      6C752E44 
+ 2504      45534B54 
+ 2505 0a96 72656174 		.ascii	"reator\\Micrium\\Examples\\Cypress\\CY8CKIT-044\\OS"
+ 2505      6F725C4D 
+ 2505      69637269 
+ 2505      756D5C45 
+ 2505      78616D70 
+ 2506 0ac4 335C5053 		.ascii	"3\\PSoC\\OS3.cydsn\000"
+ 2506      6F435C4F 
+ 2506      53332E63 
+ 2506      7964736E 
+ 2506      00
+ 2507              	.LASF24:
+ 2508 0ad5 4350555F 		.ascii	"CPU_TS32\000"
+ 2508      54533332 
+ 2508      00
+ 2509              	.LASF227:
+ 2510 0ade 53757370 		.ascii	"SuspendCtr\000"
+ 2510      656E6443 
+ 2510      747200
+ 2511              	.LASF203:
+ 2512 0ae9 53746B4C 		.ascii	"StkLimitPtr\000"
+ 2512      696D6974 
+ 2512      50747200 
+ 2513              	.LASF269:
+ 2514 0af5 4170705F 		.ascii	"App_Demo_SensorTaskTCB\000"
+ 2514      44656D6F 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 61
+
+
+ 2514      5F53656E 
+ 2514      736F7254 
+ 2514      61736B54 
+ 2515              	.LASF33:
+ 2516 0b0c 4F535F53 		.ascii	"OS_SEM_CTR\000"
+ 2516      454D5F43 
+ 2516      545200
+ 2517              	.LASF189:
+ 2518 0b17 4F535F45 		.ascii	"OS_ERR_TMR_STK_SIZE_INVALID\000"
+ 2518      52525F54 
+ 2518      4D525F53 
+ 2518      544B5F53 
+ 2518      495A455F 
+ 2519              	.LASF206:
+ 2520 0b33 5469636B 		.ascii	"TickNextPtr\000"
+ 2520      4E657874 
+ 2520      50747200 
+ 2521              	.LASF143:
+ 2522 0b3f 4F535F45 		.ascii	"OS_ERR_TASK_NOT_EXIST\000"
+ 2522      52525F54 
+ 2522      41534B5F 
+ 2522      4E4F545F 
+ 2522      45584953 
+ 2523              	.LASF140:
+ 2524 0b55 4F535F45 		.ascii	"OS_ERR_TASK_INVALID\000"
+ 2524      52525F54 
+ 2524      41534B5F 
+ 2524      494E5641 
+ 2524      4C494400 
+ 2525              	.LASF187:
+ 2526 0b69 4F535F45 		.ascii	"OS_ERR_TMR_PRIO_INVALID\000"
+ 2526      52525F54 
+ 2526      4D525F50 
+ 2526      52494F5F 
+ 2526      494E5641 
+ 2527              	.LASF155:
+ 2528 0b81 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_PRIO\000"
+ 2528      52525F54 
+ 2528      41534B5F 
+ 2528      53555350 
+ 2528      454E445F 
+ 2529              	.LASF268:
+ 2530 0b9a 4170705F 		.ascii	"App_TaskStartStk\000"
+ 2530      5461736B 
+ 2530      53746172 
+ 2530      7453746B 
+ 2530      00
+ 2531              	.LASF244:
+ 2532 0bab 5264794F 		.ascii	"RdyObjPtr\000"
+ 2532      626A5074 
+ 2532      7200
+ 2533              	.LASF60:
+ 2534 0bb5 4F535F45 		.ascii	"OS_ERR_INT_Q_STK_SIZE_INVALID\000"
+ 2534      52525F49 
+ 2534      4E545F51 
+ 2534      5F53544B 
+ 2534      5F53495A 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 62
+
+
+ 2535              	.LASF159:
+ 2536 0bd3 4F535F45 		.ascii	"OS_ERR_TLS_ISR\000"
+ 2536      52525F54 
+ 2536      4C535F49 
+ 2536      535200
+ 2537              	.LASF262:
+ 2538 0be2 4170705F 		.ascii	"App_Demo_SensorTask\000"
+ 2538      44656D6F 
+ 2538      5F53656E 
+ 2538      736F7254 
+ 2538      61736B00 
+ 2539              	.LASF139:
+ 2540 0bf6 4F535F45 		.ascii	"OS_ERR_TASK_DEL_ISR\000"
+ 2540      52525F54 
+ 2540      41534B5F 
+ 2540      44454C5F 
+ 2540      49535200 
+ 2541              	.LASF106:
+ 2542 0c0a 4F535F45 		.ascii	"OS_ERR_PTR_INVALID\000"
+ 2542      52525F50 
+ 2542      54525F49 
+ 2542      4E56414C 
+ 2542      494400
+ 2543              	.LASF128:
+ 2544 0c1d 4F535F45 		.ascii	"OS_ERR_STATE_INVALID\000"
+ 2544      52525F53 
+ 2544      54415445 
+ 2544      5F494E56 
+ 2544      414C4944 
+ 2545              	.LASF204:
+ 2546 0c32 4E657874 		.ascii	"NextPtr\000"
+ 2546      50747200 
+ 2547              	.LASF9:
+ 2548 0c3a 6C6F6E67 		.ascii	"long double\000"
+ 2548      20646F75 
+ 2548      626C6500 
+ 2549              	.LASF90:
+ 2550 0c46 4F535F45 		.ascii	"OS_ERR_OS_NOT_RUNNING\000"
+ 2550      52525F4F 
+ 2550      535F4E4F 
+ 2550      545F5255 
+ 2550      4E4E494E 
+ 2551              	.LASF254:
+ 2552 0c5c 54797065 		.ascii	"Type\000"
+ 2552      00
+ 2553              	.LASF283:
+ 2554 0c61 4170705F 		.ascii	"App_ObjCreate\000"
+ 2554      4F626A43 
+ 2554      72656174 
+ 2554      6500
+ 2555              	.LASF175:
+ 2556 0c6f 4F535F45 		.ascii	"OS_ERR_TIME_SET_ISR\000"
+ 2556      52525F54 
+ 2556      494D455F 
+ 2556      5345545F 
+ 2556      49535200 
+ 2557              	.LASF280:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 63
+
+
+ 2558 0c83 2E2E5C2E 		.ascii	"..\\..\\app.c\000"
+ 2558      2E5C6170 
+ 2558      702E6300 
+ 2559              	.LASF114:
+ 2560 0c8f 4F535F45 		.ascii	"OS_ERR_ROUND_ROBIN_1\000"
+ 2560      52525F52 
+ 2560      4F554E44 
+ 2560      5F524F42 
+ 2560      494E5F31 
+ 2561              	.LASF71:
+ 2562 0ca4 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_BLK\000"
+ 2562      52525F4D 
+ 2562      454D5F49 
+ 2562      4E56414C 
+ 2562      49445F50 
+ 2563              	.LASF68:
+ 2564 0cbd 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_ADDR\000"
+ 2564      52525F4D 
+ 2564      454D5F49 
+ 2564      4E56414C 
+ 2564      49445F50 
+ 2565              	.LASF247:
+ 2566 0cd7 52647954 		.ascii	"RdyTS\000"
+ 2566      5300
+ 2567              	.LASF64:
+ 2568 0cdd 4F535F45 		.ascii	"OS_ERR_LOCK_NESTING_OVF\000"
+ 2568      52525F4C 
+ 2568      4F434B5F 
+ 2568      4E455354 
+ 2568      494E475F 
+ 2569              	.LASF150:
+ 2570 0cf5 4F535F45 		.ascii	"OS_ERR_TASK_STK_CHK_ISR\000"
+ 2570      52525F54 
+ 2570      41534B5F 
+ 2570      53544B5F 
+ 2570      43484B5F 
+ 2571              	.LASF263:
+ 2572 0d0d 705F6172 		.ascii	"p_arg\000"
+ 2572      6700
+ 2573              	.LASF2:
+ 2574 0d13 73686F72 		.ascii	"short int\000"
+ 2574      7420696E 
+ 2574      7400
+ 2575              	.LASF246:
+ 2576 0d1d 5264794D 		.ascii	"RdyMsgSize\000"
+ 2576      73675369 
+ 2576      7A6500
+ 2577              	.LASF76:
+ 2578 0d28 4F535F45 		.ascii	"OS_ERR_MSG_POOL_EMPTY\000"
+ 2578      52525F4D 
+ 2578      53475F50 
+ 2578      4F4F4C5F 
+ 2578      454D5054 
+ 2579              	.LASF230:
+ 2580 0d3e 496E7444 		.ascii	"IntDisTimeMax\000"
+ 2580      69735469 
+ 2580      6D654D61 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 64
+
+
+ 2580      7800
+ 2581              	.LASF4:
+ 2582 0d4c 6C6F6E67 		.ascii	"long int\000"
+ 2582      20696E74 
+ 2582      00
+ 2583              	.LASF121:
+ 2584 0d55 4F535F45 		.ascii	"OS_ERR_SCHED_UNLOCK_ISR\000"
+ 2584      52525F53 
+ 2584      43484544 
+ 2584      5F554E4C 
+ 2584      4F434B5F 
+ 2585              	.LASF164:
+ 2586 0d6d 4F535F45 		.ascii	"OS_ERR_TICK_STK_INVALID\000"
+ 2586      52525F54 
+ 2586      49434B5F 
+ 2586      53544B5F 
+ 2586      494E5641 
+ 2587              	.LASF77:
+ 2588 0d85 4F535F45 		.ascii	"OS_ERR_MSG_POOL_NULL_PTR\000"
+ 2588      52525F4D 
+ 2588      53475F50 
+ 2588      4F4F4C5F 
+ 2588      4E554C4C 
+ 2589              	.LASF258:
+ 2590 0d9e 70625F70 		.ascii	"pb_prev\000"
+ 2590      72657600 
+ 2591              	.LASF27:
+ 2592 0da6 4F535F4E 		.ascii	"OS_NESTING_CTR\000"
+ 2592      45535449 
+ 2592      4E475F43 
+ 2592      545200
+ 2593              	.LASF252:
+ 2594 0db5 4F535F50 		.ascii	"OS_PEND_OBJ\000"
+ 2594      454E445F 
+ 2594      4F424A00 
+ 2595              	.LASF148:
+ 2596 0dc1 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_SELF\000"
+ 2596      52525F54 
+ 2596      41534B5F 
+ 2596      52455355 
+ 2596      4D455F53 
+ 2597              	.LASF255:
+ 2598 0dd9 50656E64 		.ascii	"PendList\000"
+ 2598      4C697374 
+ 2598      00
+ 2599              	.LASF88:
+ 2600 0de2 4F535F45 		.ascii	"OS_ERR_OBJ_TYPE\000"
+ 2600      52525F4F 
+ 2600      424A5F54 
+ 2600      59504500 
+ 2601              	.LASF213:
+ 2602 0df2 50656E64 		.ascii	"PendDataTblPtr\000"
+ 2602      44617461 
+ 2602      54626C50 
+ 2602      747200
+ 2603              	.LASF220:
+ 2604 0e01 53656D43 		.ascii	"SemCtr\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 65
+
+
+ 2604      747200
+ 2605              	.LASF277:
+ 2606 0e08 75435F50 		.ascii	"uC_Probe_Accel_Y_Axis\000"
+ 2606      726F6265 
+ 2606      5F416363 
+ 2606      656C5F59 
+ 2606      5F417869 
+ 2607              	.LASF223:
+ 2608 0e1e 5469636B 		.ascii	"TickRemain\000"
+ 2608      52656D61 
+ 2608      696E00
+ 2609              	.LASF250:
+ 2610 0e29 48656164 		.ascii	"HeadPtr\000"
+ 2610      50747200 
+ 2611              	.LASF95:
+ 2612 0e31 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_NONE\000"
+ 2612      52525F50 
+ 2612      454E445F 
+ 2612      41424F52 
+ 2612      545F4E4F 
+ 2613              	.LASF79:
+ 2614 0e48 4F535F45 		.ascii	"OS_ERR_MUTEX_OWNER\000"
+ 2614      52525F4D 
+ 2614      55544558 
+ 2614      5F4F574E 
+ 2614      455200
+ 2615              	.LASF237:
+ 2616 0e5b 46697273 		.ascii	"FirstPtr\000"
+ 2616      74507472 
+ 2616      00
+ 2617              	.LASF127:
+ 2618 0e64 4F535F45 		.ascii	"OS_ERR_STAT_STK_SIZE_INVALID\000"
+ 2618      52525F53 
+ 2618      5441545F 
+ 2618      53544B5F 
+ 2618      53495A45 
+ 2619              	.LASF49:
+ 2620 0e81 4F535F45 		.ascii	"OS_ERR_FLAG_NOT_RDY\000"
+ 2620      52525F46 
+ 2620      4C41475F 
+ 2620      4E4F545F 
+ 2620      52445900 
+ 2621              	.LASF282:
+ 2622 0e95 6D61696E 		.ascii	"main\000"
+ 2622      00
+ 2623              	.LASF202:
+ 2624 0e9a 45787450 		.ascii	"ExtPtr\000"
+ 2624      747200
+ 2625              	.LASF10:
+ 2626 0ea1 73697A65 		.ascii	"sizetype\000"
+ 2626      74797065 
+ 2626      00
+ 2627              	.LASF5:
+ 2628 0eaa 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2628      20756E73 
+ 2628      69676E65 
+ 2628      6420696E 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 66
+
+
+ 2628      7400
+ 2629              	.LASF261:
+ 2630 0ebc 4170705F 		.ascii	"App_TaskCreate\000"
+ 2630      5461736B 
+ 2630      43726561 
+ 2630      746500
+ 2631              	.LASF94:
+ 2632 0ecb 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_ISR\000"
+ 2632      52525F50 
+ 2632      454E445F 
+ 2632      41424F52 
+ 2632      545F4953 
+ 2633              	.LASF21:
+ 2634 0ee1 4350555F 		.ascii	"CPU_ADDR\000"
+ 2634      41444452 
+ 2634      00
+ 2635              	.LASF102:
+ 2636 0eea 4F535F45 		.ascii	"OS_ERR_POST_ISR\000"
+ 2636      52525F50 
+ 2636      4F53545F 
+ 2636      49535200 
+ 2637              	.LASF167:
+ 2638 0efa 4F535F45 		.ascii	"OS_ERR_TIME_DLY_ISR\000"
+ 2638      52525F54 
+ 2638      494D455F 
+ 2638      444C595F 
+ 2638      49535200 
+ 2639              	.LASF132:
+ 2640 0f0e 4F535F45 		.ascii	"OS_ERR_STK_LIMIT_INVALID\000"
+ 2640      52525F53 
+ 2640      544B5F4C 
+ 2640      494D4954 
+ 2640      5F494E56 
+ 2641              	.LASF13:
+ 2642 0f27 4350555F 		.ascii	"CPU_BOOLEAN\000"
+ 2642      424F4F4C 
+ 2642      45414E00 
+ 2643              	.LASF131:
+ 2644 0f33 4F535F45 		.ascii	"OS_ERR_STK_SIZE_INVALID\000"
+ 2644      52525F53 
+ 2644      544B5F53 
+ 2644      495A455F 
+ 2644      494E5641 
+ 2645              	.LASF190:
+ 2646 0f4b 4F535F45 		.ascii	"OS_ERR_TMR_STOPPED\000"
+ 2646      52525F54 
+ 2646      4D525F53 
+ 2646      544F5050 
+ 2646      454400
+ 2647              	.LASF1:
+ 2648 0f5e 756E7369 		.ascii	"unsigned char\000"
+ 2648      676E6564 
+ 2648      20636861 
+ 2648      7200
+ 2649              	.LASF145:
+ 2650 0f6c 4F535F45 		.ascii	"OS_ERR_TASK_OPT\000"
+ 2650      52525F54 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 67
+
+
+ 2650      41534B5F 
+ 2650      4F505400 
+ 2651              	.LASF177:
+ 2652 0f7c 4F535F45 		.ascii	"OS_ERR_TIMEOUT\000"
+ 2652      52525F54 
+ 2652      494D454F 
+ 2652      555400
+ 2653              	.LASF34:
+ 2654 0f8b 4F535F53 		.ascii	"OS_STATE\000"
+ 2654      54415445 
+ 2654      00
+ 2655              	.LASF30:
+ 2656 0f94 4F535F4F 		.ascii	"OS_OPT\000"
+ 2656      505400
+ 2657              	.LASF199:
+ 2658 0f9b 4F535F54 		.ascii	"OS_TASK_PTR\000"
+ 2658      41534B5F 
+ 2658      50545200 
+ 2659              	.LASF66:
+ 2660 0fa7 4F535F45 		.ascii	"OS_ERR_MEM_CREATE_ISR\000"
+ 2660      52525F4D 
+ 2660      454D5F43 
+ 2660      52454154 
+ 2660      455F4953 
+ 2661              	.LASF129:
+ 2662 0fbd 4F535F45 		.ascii	"OS_ERR_STATUS_INVALID\000"
+ 2662      52525F53 
+ 2662      54415455 
+ 2662      535F494E 
+ 2662      56414C49 
+ 2663              	.LASF195:
+ 2664 0fd3 4F535F45 		.ascii	"OS_ERR_Y\000"
+ 2664      52525F59 
+ 2664      00
+ 2665              	.LASF98:
+ 2666 0fdc 4F535F45 		.ascii	"OS_ERR_PEND_ISR\000"
+ 2666      52525F50 
+ 2666      454E445F 
+ 2666      49535200 
+ 2667              	.LASF197:
+ 2668 0fec 4F535F45 		.ascii	"OS_ERR_Z\000"
+ 2668      52525F5A 
+ 2668      00
+ 2669              	.LASF208:
+ 2670 0ff5 5469636B 		.ascii	"TickSpokePtr\000"
+ 2670      53706F6B 
+ 2670      65507472 
+ 2670      00
+ 2671              	.LASF233:
+ 2672 1002 4462674E 		.ascii	"DbgNamePtr\000"
+ 2672      616D6550 
+ 2672      747200
+ 2673              	.LASF212:
+ 2674 100d 5461736B 		.ascii	"TaskEntryArg\000"
+ 2674      456E7472 
+ 2674      79417267 
+ 2674      00
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 68
+
+
+ 2675              	.LASF108:
+ 2676 101a 4F535F45 		.ascii	"OS_ERR_Q_FULL\000"
+ 2676      52525F51 
+ 2676      5F46554C 
+ 2676      4C00
+ 2677              	.LASF267:
+ 2678 1028 4170705F 		.ascii	"App_TaskStartTCB\000"
+ 2678      5461736B 
+ 2678      53746172 
+ 2678      74544342 
+ 2678      00
+ 2679              	.LASF239:
+ 2680 1039 4E627245 		.ascii	"NbrEntriesMax\000"
+ 2680      6E747269 
+ 2680      65734D61 
+ 2680      7800
+ 2681              	.LASF59:
+ 2682 1047 4F535F45 		.ascii	"OS_ERR_INT_Q_STK_INVALID\000"
+ 2682      52525F49 
+ 2682      4E545F51 
+ 2682      5F53544B 
+ 2682      5F494E56 
+ 2683              	.LASF172:
+ 2684 1060 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_SECONDS\000"
+ 2684      52525F54 
+ 2684      494D455F 
+ 2684      494E5641 
+ 2684      4C49445F 
+ 2685              	.LASF136:
+ 2686 107c 4F535F45 		.ascii	"OS_ERR_TASK_DEL\000"
+ 2686      52525F54 
+ 2686      41534B5F 
+ 2686      44454C00 
+ 2687              	.LASF248:
+ 2688 108c 4F535F50 		.ascii	"OS_PEND_LIST\000"
+ 2688      454E445F 
+ 2688      4C495354 
+ 2688      00
+ 2689              	.LASF265:
+ 2690 1099 74656D70 		.ascii	"temp_val\000"
+ 2690      5F76616C 
+ 2690      00
+ 2691              	.LASF0:
+ 2692 10a2 7369676E 		.ascii	"signed char\000"
+ 2692      65642063 
+ 2692      68617200 
+ 2693              	.LASF47:
+ 2694 10ae 4F535F45 		.ascii	"OS_ERR_FATAL_RETURN\000"
+ 2694      52525F46 
+ 2694      4154414C 
+ 2694      5F524554 
+ 2694      55524E00 
+ 2695              	.LASF3:
+ 2696 10c2 73686F72 		.ascii	"short unsigned int\000"
+ 2696      7420756E 
+ 2696      7369676E 
+ 2696      65642069 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 69
+
+
+ 2696      6E7400
+ 2697              	.LASF160:
+ 2698 10d5 4F535F45 		.ascii	"OS_ERR_TLS_NO_MORE_AVAIL\000"
+ 2698      52525F54 
+ 2698      4C535F4E 
+ 2698      4F5F4D4F 
+ 2698      52455F41 
+ 2699              	.LASF37:
+ 2700 10ee 4F535F45 		.ascii	"OS_ERR_NONE\000"
+ 2700      52525F4E 
+ 2700      4F4E4500 
+ 2701              	.LASF241:
+ 2702 10fa 6F735F70 		.ascii	"os_pend_data\000"
+ 2702      656E645F 
+ 2702      64617461 
+ 2702      00
+ 2703              	.LASF119:
+ 2704 1107 4F535F45 		.ascii	"OS_ERR_SCHED_LOCKED\000"
+ 2704      52525F53 
+ 2704      43484544 
+ 2704      5F4C4F43 
+ 2704      4B454400 
+ 2705              	.LASF271:
+ 2706 111b 4170705F 		.ascii	"App_Demo_Ambient_InitVar\000"
+ 2706      44656D6F 
+ 2706      5F416D62 
+ 2706      69656E74 
+ 2706      5F496E69 
+ 2707              	.LASF51:
+ 2708 1134 4F535F45 		.ascii	"OS_ERR_FLUSH_ISR\000"
+ 2708      52525F46 
+ 2708      4C555348 
+ 2708      5F495352 
+ 2708      00
+ 2709              	.LASF217:
+ 2710 1145 5072696F 		.ascii	"Prio\000"
+ 2710      00
+ 2711              	.LASF20:
+ 2712 114a 646F7562 		.ascii	"double\000"
+ 2712      6C6500
+ 2713              	.LASF93:
+ 2714 1151 4F535F45 		.ascii	"OS_ERR_PEND_ABORT\000"
+ 2714      52525F50 
+ 2714      454E445F 
+ 2714      41424F52 
+ 2714      5400
+ 2715              	.LASF275:
+ 2716 1163 75435F50 		.ascii	"uC_Probe_AmbientLight\000"
+ 2716      726F6265 
+ 2716      5F416D62 
+ 2716      69656E74 
+ 2716      4C696768 
+ 2717              	.LASF120:
+ 2718 1179 4F535F45 		.ascii	"OS_ERR_SCHED_NOT_LOCKED\000"
+ 2718      52525F53 
+ 2718      43484544 
+ 2718      5F4E4F54 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 70
+
+
+ 2718      5F4C4F43 
+ 2719              	.LASF104:
+ 2720 1191 4F535F45 		.ascii	"OS_ERR_PRIO\000"
+ 2720      52525F50 
+ 2720      52494F00 
+ 2721              	.LASF97:
+ 2722 119d 4F535F45 		.ascii	"OS_ERR_PEND_DEL\000"
+ 2722      52525F50 
+ 2722      454E445F 
+ 2722      44454C00 
+ 2723              	.LASF243:
+ 2724 11ad 50656E64 		.ascii	"PendObjPtr\000"
+ 2724      4F626A50 
+ 2724      747200
+ 2725              	.LASF200:
+ 2726 11b8 4F535F54 		.ascii	"OS_TCB\000"
+ 2726      434200
+ 2727              	.LASF249:
+ 2728 11bf 6F735F70 		.ascii	"os_pend_list\000"
+ 2728      656E645F 
+ 2728      6C697374 
+ 2728      00
+ 2729              	.LASF74:
+ 2730 11cc 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_SIZE\000"
+ 2730      52525F4D 
+ 2730      454D5F49 
+ 2730      4E56414C 
+ 2730      49445F53 
+ 2731              	.LASF151:
+ 2732 11e4 4F535F45 		.ascii	"OS_ERR_TASK_SUSPENDED\000"
+ 2732      52525F54 
+ 2732      41534B5F 
+ 2732      53555350 
+ 2732      454E4445 
+ 2733              	.LASF123:
+ 2734 11fa 4F535F45 		.ascii	"OS_ERR_SET_ISR\000"
+ 2734      52525F53 
+ 2734      45545F49 
+ 2734      535200
+ 2735              	.LASF226:
+ 2736 1209 52656754 		.ascii	"RegTbl\000"
+ 2736      626C00
+ 2737              	.LASF122:
+ 2738 1210 4F535F45 		.ascii	"OS_ERR_SEM_OVF\000"
+ 2738      52525F53 
+ 2738      454D5F4F 
+ 2738      564600
+ 2739              	.LASF137:
+ 2740 121f 4F535F45 		.ascii	"OS_ERR_TASK_DEL_IDLE\000"
+ 2740      52525F54 
+ 2740      41534B5F 
+ 2740      44454C5F 
+ 2740      49444C45 
+ 2741              	.LASF169:
+ 2742 1234 4F535F45 		.ascii	"OS_ERR_TIME_GET_ISR\000"
+ 2742      52525F54 
+ 2742      494D455F 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccL99LDy.s 			page 71
+
+
+ 2742      4745545F 
+ 2742      49535200 
+ 2743              	.LASF224:
+ 2744 1248 54696D65 		.ascii	"TimeQuanta\000"
+ 2744      5175616E 
+ 2744      746100
+ 2745              	.LASF168:
+ 2746 1253 4F535F45 		.ascii	"OS_ERR_TIME_DLY_RESUME_ISR\000"
+ 2746      52525F54 
+ 2746      494D455F 
+ 2746      444C595F 
+ 2746      52455355 
+ 2747              	.LASF163:
+ 2748 126e 4F535F45 		.ascii	"OS_ERR_TICK_PRIO_INVALID\000"
+ 2748      52525F54 
+ 2748      49434B5F 
+ 2748      5052494F 
+ 2748      5F494E56 
+ 2749              	.LASF103:
+ 2750 1287 4F535F45 		.ascii	"OS_ERR_PRIO_EXIST\000"
+ 2750      52525F50 
+ 2750      52494F5F 
+ 2750      45584953 
+ 2750      5400
+ 2751              	.LASF75:
+ 2752 1299 4F535F45 		.ascii	"OS_ERR_MEM_NO_FREE_BLKS\000"
+ 2752      52525F4D 
+ 2752      454D5F4E 
+ 2752      4F5F4652 
+ 2752      45455F42 
+ 2753              	.LASF22:
+ 2754 12b1 4350555F 		.ascii	"CPU_STK\000"
+ 2754      53544B00 
+ 2755              	.LASF266:
+ 2756 12b9 74656D70 		.ascii	"temp_conv\000"
+ 2756      5F636F6E 
+ 2756      7600
+ 2757              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

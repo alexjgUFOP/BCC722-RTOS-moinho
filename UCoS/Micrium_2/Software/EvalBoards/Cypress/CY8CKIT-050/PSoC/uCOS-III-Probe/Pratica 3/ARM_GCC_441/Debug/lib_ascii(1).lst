@@ -1,0 +1,3221 @@
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"lib_ascii.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 AF010000 		.text
+  20      02007100 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.section	.text.ASCII_IsAlpha,"ax",%progbits
+  24              		.align	2
+  25              		.global	ASCII_IsAlpha
+  26              		.thumb
+  27              		.thumb_func
+  28              		.type	ASCII_IsAlpha, %function
+  29              	ASCII_IsAlpha:
+  30              	.LFB0:
+  31              		.file 1 "C:\\Micrium\\Software\\uC-LIB\\lib_ascii.c"
+   1:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+   2:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+   3:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                                uC/LIB
+   4:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                        CUSTOM LIBRARY MODULES
+   5:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+   6:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                          (c) Copyright 2004-2012; Micrium, Inc.; Weston, FL
+   7:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+   8:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               All rights reserved.  Protected by international copyright laws.
+   9:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  10:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               uC/LIB is provided in source form to registered licensees ONLY.  It is 
+  11:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               illegal to distribute this source code to any third party unless you receive 
+  12:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               written permission by an authorized Micrium representative.  Knowledge of 
+  13:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               the source code may NOT be used to develop a similar product.
+  14:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  15:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               Please help us continue to provide the Embedded community with the finest 
+  16:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               software available.  Your honesty is greatly appreciated.
+  17:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  18:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               You can contact us at www.micrium.com.
+  19:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+  20:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+  21:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+  22:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 2
+
+
+  23:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+  24:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  25:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                     ASCII CHARACTER OPERATIONS
+  26:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  27:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Filename      : lib_ascii.c
+  28:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Version       : V1.37.00
+  29:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Programmer(s) : BAN
+  30:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                 ITJ
+  31:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+  32:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)       : (1) NO compiler-supplied standard library functions are used in library or produc
+  33:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  34:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                     (a) ALL standard library functions are implemented in the custom library modu
+  35:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  36:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                         (1) \<Custom Library Directory>\lib_*.*
+  37:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  38:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                         (2) \<Custom Library Directory>\Ports\<cpu>\<compiler>\lib*_a.*
+  39:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  40:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                               where
+  41:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                       <Custom Library Directory>      directory path for custom l
+  42:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                       <cpu>                           directory name for specific
+  43:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                       <compiler>                      directory name for specific
+  44:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  45:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                     (b) Product-specific library functions are implemented in individual products
+  46:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  47:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  48:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                 (2) (a) ECMA-6 '7-Bit coded Character Set' (6th edition), which corresponds to th
+  49:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                         3rd edition of ISO 646, specifies several versions of a 7-bit character s
+  50:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  51:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                         (1) THE GENERAL VERSION, which allows characters at 0x23 and 0x24 to be g
+  52:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                             set alternate form and allows the characters 0x40, 0x5B, 0x5D, 0x60, 
+  53:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                             0x7D to be assigned a "unique graphic character" or to be declared as
+  54:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                             All other characters are explicitly specified.
+  55:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  56:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                         (2) THE INTERNATIONAL REFERENCE VERSION, which explicitly specifies all c
+  57:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                             in the 7-bit character set.
+  58:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  59:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                         (3) NATIONAL & APPLICATION-ORIENTED VERSIONS, which may be derived from t
+  60:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                             standard in specified ways.
+  61:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  62:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                     (b) The character set represented in this file reproduces the Internation Ref
+  63:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                         Version.  This is identical to the 7-bit character set which occupies Uni
+  64:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                         characters 0x0000 through 0x007F.  The character names are taken from v5.
+  65:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                         Unicode specification, with certain abbreviations so that the resulting #
+  66:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                         names will not violate ANSI C naming restriction :
+  67:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+  68:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                         (1) For the Latin capital & lowercase letters, the name components 'LETTE
+  69:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                             & 'LETTER_SMALL' are replaced by 'UPPER' & 'LOWER', respectively.
+  70:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+  71:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+  72:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+  73:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+  74:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+  75:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+  76:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                            INCLUDE FILES
+  77:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+  78:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+  79:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 3
+
+
+  80:C:\Micrium\Software\uC-LIB\lib_ascii.c **** #define    MICRIUM_SOURCE
+  81:C:\Micrium\Software\uC-LIB\lib_ascii.c **** #define    LIB_ASCII_MODULE
+  82:C:\Micrium\Software\uC-LIB\lib_ascii.c **** #include  <lib_ascii.h>
+  83:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+  84:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+  85:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*$PAGE*/
+  86:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+  87:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+  88:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                            LOCAL DEFINES
+  89:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+  90:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+  91:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+  92:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+  93:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+  94:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+  95:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                           LOCAL CONSTANTS
+  96:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+  97:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+  98:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+  99:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 100:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 101:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 102:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                          LOCAL DATA TYPES
+ 103:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 104:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 105:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 106:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 107:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 108:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 109:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                            LOCAL TABLES
+ 110:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 111:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 112:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 113:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 114:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 115:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 116:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                       LOCAL GLOBAL VARIABLES
+ 117:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 118:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 119:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 120:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 121:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 122:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 123:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                      LOCAL FUNCTION PROTOTYPES
+ 124:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 125:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 126:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 127:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 128:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 129:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 130:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                     LOCAL CONFIGURATION ERRORS
+ 131:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 132:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 133:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 134:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 135:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*$PAGE*/
+ 136:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 4
+
+
+ 137:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 138:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                           ASCII_IsAlpha()
+ 139:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 140:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine whether a character is an alphabetic character.
+ 141:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 142:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to examine.
+ 143:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 144:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if character is     an alphabetic character.
+ 145:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 146:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,	 if character is NOT an alphabetic character.
+ 147:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 148:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 149:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 150:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) ISO/IEC 9899:TC2, Section 7.4.1.2.(2) states that "isalpha() returns true only 
+ 151:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   characters for which isupper() or islower() is true".
+ 152:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 153:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 154:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 155:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_IsAlpha (CPU_CHAR  c)
+ 156:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+  32              		.loc 1 156 0
+  33              		.cfi_startproc
+  34              		@ args = 0, pretend = 0, frame = 16
+  35              		@ frame_needed = 1, uses_anonymous_args = 0
+  36              		@ link register save eliminated.
+  37 0000 80B4     		push	{r7}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 4
+  40 0002 85B0     		sub	sp, sp, #20
+  41              	.LCFI1:
+  42              		.cfi_def_cfa_offset 24
+  43 0004 00AF     		add	r7, sp, #0
+  44              		.cfi_offset 7, -4
+  45              	.LCFI2:
+  46              		.cfi_def_cfa_register 7
+  47 0006 0346     		mov	r3, r0
+  48 0008 FB71     		strb	r3, [r7, #7]
+ 157:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  alpha;
+ 158:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 159:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 160:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     alpha = ASCII_IS_ALPHA(c);
+  49              		.loc 1 160 0
+  50 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  51 000c 402B     		cmp	r3, #64
+  52 000e 02D9     		bls	.L2
+  53 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  54 0012 5A2B     		cmp	r3, #90
+  55 0014 05D9     		bls	.L3
+  56              	.L2:
+  57 0016 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  58 0018 602B     		cmp	r3, #96
+  59 001a 05D9     		bls	.L4
+  60 001c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  61 001e 7A2B     		cmp	r3, #122
+  62 0020 02D8     		bhi	.L4
+  63              	.L3:
+  64 0022 4FF00103 		mov	r3, #1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 5
+
+
+  65 0026 01E0     		b	.L5
+  66              	.L4:
+  67 0028 4FF00003 		mov	r3, #0
+  68              	.L5:
+  69 002c FB73     		strb	r3, [r7, #15]
+ 161:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 162:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (alpha);
+  70              		.loc 1 162 0
+  71 002e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 163:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+  72              		.loc 1 163 0
+  73 0030 1846     		mov	r0, r3
+  74 0032 07F11407 		add	r7, r7, #20
+  75 0036 BD46     		mov	sp, r7
+  76 0038 80BC     		pop	{r7}
+  77 003a 7047     		bx	lr
+  78              		.cfi_endproc
+  79              	.LFE0:
+  80              		.size	ASCII_IsAlpha, .-ASCII_IsAlpha
+  81              		.section	.text.ASCII_IsAlphaNum,"ax",%progbits
+  82              		.align	2
+  83              		.global	ASCII_IsAlphaNum
+  84              		.thumb
+  85              		.thumb_func
+  86              		.type	ASCII_IsAlphaNum, %function
+  87              	ASCII_IsAlphaNum:
+  88              	.LFB1:
+ 164:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 165:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 166:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 167:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 168:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                         ASCII_IsAlphaNum()
+ 169:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 170:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine whether a character is an alphanumeric character.
+ 171:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 172:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to examine.
+ 173:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 174:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if character is     an alphanumeric character.
+ 175:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 176:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,	 if character is NOT an alphanumeric character.
+ 177:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 178:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 179:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 180:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) ISO/IEC 9899:TC2, Section 7.4.1.1.(2) states that "isalnum() ... tests for any 
+ 181:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   for which isalpha() or isdigit() is true".
+ 182:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 183:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 184:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 185:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_IsAlphaNum (CPU_CHAR  c)
+ 186:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+  89              		.loc 1 186 0
+  90              		.cfi_startproc
+  91              		@ args = 0, pretend = 0, frame = 16
+  92              		@ frame_needed = 1, uses_anonymous_args = 0
+  93              		@ link register save eliminated.
+  94 0000 80B4     		push	{r7}
+  95              	.LCFI3:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 6
+
+
+  96              		.cfi_def_cfa_offset 4
+  97 0002 85B0     		sub	sp, sp, #20
+  98              	.LCFI4:
+  99              		.cfi_def_cfa_offset 24
+ 100 0004 00AF     		add	r7, sp, #0
+ 101              		.cfi_offset 7, -4
+ 102              	.LCFI5:
+ 103              		.cfi_def_cfa_register 7
+ 104 0006 0346     		mov	r3, r0
+ 105 0008 FB71     		strb	r3, [r7, #7]
+ 187:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  alpha_num;
+ 188:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 189:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 190:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     alpha_num = ASCII_IS_ALPHA_NUM(c);
+ 106              		.loc 1 190 0
+ 107 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 108 000c 402B     		cmp	r3, #64
+ 109 000e 02D9     		bls	.L8
+ 110 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 111 0012 5A2B     		cmp	r3, #90
+ 112 0014 0BD9     		bls	.L9
+ 113              	.L8:
+ 114 0016 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 115 0018 602B     		cmp	r3, #96
+ 116 001a 02D9     		bls	.L10
+ 117 001c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 118 001e 7A2B     		cmp	r3, #122
+ 119 0020 05D9     		bls	.L9
+ 120              	.L10:
+ 121 0022 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 122 0024 2F2B     		cmp	r3, #47
+ 123 0026 05D9     		bls	.L11
+ 124 0028 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 125 002a 392B     		cmp	r3, #57
+ 126 002c 02D8     		bhi	.L11
+ 127              	.L9:
+ 128 002e 4FF00103 		mov	r3, #1
+ 129 0032 01E0     		b	.L12
+ 130              	.L11:
+ 131 0034 4FF00003 		mov	r3, #0
+ 132              	.L12:
+ 133 0038 FB73     		strb	r3, [r7, #15]
+ 191:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 192:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (alpha_num);
+ 134              		.loc 1 192 0
+ 135 003a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 193:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 136              		.loc 1 193 0
+ 137 003c 1846     		mov	r0, r3
+ 138 003e 07F11407 		add	r7, r7, #20
+ 139 0042 BD46     		mov	sp, r7
+ 140 0044 80BC     		pop	{r7}
+ 141 0046 7047     		bx	lr
+ 142              		.cfi_endproc
+ 143              	.LFE1:
+ 144              		.size	ASCII_IsAlphaNum, .-ASCII_IsAlphaNum
+ 145              		.section	.text.ASCII_IsLower,"ax",%progbits
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 7
+
+
+ 146              		.align	2
+ 147              		.global	ASCII_IsLower
+ 148              		.thumb
+ 149              		.thumb_func
+ 150              		.type	ASCII_IsLower, %function
+ 151              	ASCII_IsLower:
+ 152              	.LFB2:
+ 194:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 195:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 196:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*$PAGE*/
+ 197:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 198:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 199:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                           ASCII_IsLower()
+ 200:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 201:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine whether a character is a lowercase alphabetic character.
+ 202:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 203:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to examine.
+ 204:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 205:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if character is     a lowercase alphabetic character.
+ 206:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 207:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,	 if character is NOT a lowercase alphabetic character.
+ 208:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 209:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 210:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 211:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) ISO/IEC 9899:TC2, Section 7.4.1.7.(2)  states that "islower() returns true only
+ 212:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   the lowercase letters".
+ 213:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 214:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 215:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 216:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_IsLower (CPU_CHAR  c)
+ 217:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 153              		.loc 1 217 0
+ 154              		.cfi_startproc
+ 155              		@ args = 0, pretend = 0, frame = 16
+ 156              		@ frame_needed = 1, uses_anonymous_args = 0
+ 157              		@ link register save eliminated.
+ 158 0000 80B4     		push	{r7}
+ 159              	.LCFI6:
+ 160              		.cfi_def_cfa_offset 4
+ 161 0002 85B0     		sub	sp, sp, #20
+ 162              	.LCFI7:
+ 163              		.cfi_def_cfa_offset 24
+ 164 0004 00AF     		add	r7, sp, #0
+ 165              		.cfi_offset 7, -4
+ 166              	.LCFI8:
+ 167              		.cfi_def_cfa_register 7
+ 168 0006 0346     		mov	r3, r0
+ 169 0008 FB71     		strb	r3, [r7, #7]
+ 218:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  lower;
+ 219:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 220:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 221:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     lower = ASCII_IS_LOWER(c);
+ 170              		.loc 1 221 0
+ 171 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 172 000c 602B     		cmp	r3, #96
+ 173 000e 05D9     		bls	.L15
+ 174 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 8
+
+
+ 175 0012 7A2B     		cmp	r3, #122
+ 176 0014 02D8     		bhi	.L15
+ 177 0016 4FF00103 		mov	r3, #1
+ 178 001a 01E0     		b	.L16
+ 179              	.L15:
+ 180 001c 4FF00003 		mov	r3, #0
+ 181              	.L16:
+ 182 0020 FB73     		strb	r3, [r7, #15]
+ 222:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 223:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (lower);
+ 183              		.loc 1 223 0
+ 184 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 224:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 185              		.loc 1 224 0
+ 186 0024 1846     		mov	r0, r3
+ 187 0026 07F11407 		add	r7, r7, #20
+ 188 002a BD46     		mov	sp, r7
+ 189 002c 80BC     		pop	{r7}
+ 190 002e 7047     		bx	lr
+ 191              		.cfi_endproc
+ 192              	.LFE2:
+ 193              		.size	ASCII_IsLower, .-ASCII_IsLower
+ 194              		.section	.text.ASCII_IsUpper,"ax",%progbits
+ 195              		.align	2
+ 196              		.global	ASCII_IsUpper
+ 197              		.thumb
+ 198              		.thumb_func
+ 199              		.type	ASCII_IsUpper, %function
+ 200              	ASCII_IsUpper:
+ 201              	.LFB3:
+ 225:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 226:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 227:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 228:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 229:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                           ASCII_IsUpper()
+ 230:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 231:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine whether a character is an uppercase alphabetic character.
+ 232:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 233:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to examine.
+ 234:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 235:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if character is     an uppercase alphabetic character.
+ 236:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 237:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,	 if character is NOT an uppercase alphabetic character.
+ 238:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 239:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 240:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 241:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) ISO/IEC 9899:TC2, Section 7.4.1.11.(2) states that "isupper() returns true only
+ 242:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   the uppercase letters".
+ 243:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 244:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 245:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 246:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_IsUpper (CPU_CHAR  c)
+ 247:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 202              		.loc 1 247 0
+ 203              		.cfi_startproc
+ 204              		@ args = 0, pretend = 0, frame = 16
+ 205              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 9
+
+
+ 206              		@ link register save eliminated.
+ 207 0000 80B4     		push	{r7}
+ 208              	.LCFI9:
+ 209              		.cfi_def_cfa_offset 4
+ 210 0002 85B0     		sub	sp, sp, #20
+ 211              	.LCFI10:
+ 212              		.cfi_def_cfa_offset 24
+ 213 0004 00AF     		add	r7, sp, #0
+ 214              		.cfi_offset 7, -4
+ 215              	.LCFI11:
+ 216              		.cfi_def_cfa_register 7
+ 217 0006 0346     		mov	r3, r0
+ 218 0008 FB71     		strb	r3, [r7, #7]
+ 248:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  upper;
+ 249:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 250:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 251:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     upper = ASCII_IS_UPPER(c);
+ 219              		.loc 1 251 0
+ 220 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 221 000c 402B     		cmp	r3, #64
+ 222 000e 05D9     		bls	.L19
+ 223 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 224 0012 5A2B     		cmp	r3, #90
+ 225 0014 02D8     		bhi	.L19
+ 226 0016 4FF00103 		mov	r3, #1
+ 227 001a 01E0     		b	.L20
+ 228              	.L19:
+ 229 001c 4FF00003 		mov	r3, #0
+ 230              	.L20:
+ 231 0020 FB73     		strb	r3, [r7, #15]
+ 252:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 253:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (upper);
+ 232              		.loc 1 253 0
+ 233 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 254:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 234              		.loc 1 254 0
+ 235 0024 1846     		mov	r0, r3
+ 236 0026 07F11407 		add	r7, r7, #20
+ 237 002a BD46     		mov	sp, r7
+ 238 002c 80BC     		pop	{r7}
+ 239 002e 7047     		bx	lr
+ 240              		.cfi_endproc
+ 241              	.LFE3:
+ 242              		.size	ASCII_IsUpper, .-ASCII_IsUpper
+ 243              		.section	.text.ASCII_IsDig,"ax",%progbits
+ 244              		.align	2
+ 245              		.global	ASCII_IsDig
+ 246              		.thumb
+ 247              		.thumb_func
+ 248              		.type	ASCII_IsDig, %function
+ 249              	ASCII_IsDig:
+ 250              	.LFB4:
+ 255:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 256:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 257:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*$PAGE*/
+ 258:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 259:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 10
+
+
+ 260:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                            ASCII_IsDig()
+ 261:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 262:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine whether a character is a decimal-digit character.
+ 263:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 264:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to examine.
+ 265:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 266:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if character is     a decimal-digit character.
+ 267:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 268:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,	 if character is NOT a decimal-digit character.
+ 269:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 270:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 271:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 272:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) ISO/IEC 9899:TC2, Section 7.4.1.5.(2)  states that "isdigit()  ... tests for an
+ 273:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   decimal-digit character".
+ 274:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 275:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 276:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 277:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_IsDig (CPU_CHAR  c)
+ 278:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 251              		.loc 1 278 0
+ 252              		.cfi_startproc
+ 253              		@ args = 0, pretend = 0, frame = 16
+ 254              		@ frame_needed = 1, uses_anonymous_args = 0
+ 255              		@ link register save eliminated.
+ 256 0000 80B4     		push	{r7}
+ 257              	.LCFI12:
+ 258              		.cfi_def_cfa_offset 4
+ 259 0002 85B0     		sub	sp, sp, #20
+ 260              	.LCFI13:
+ 261              		.cfi_def_cfa_offset 24
+ 262 0004 00AF     		add	r7, sp, #0
+ 263              		.cfi_offset 7, -4
+ 264              	.LCFI14:
+ 265              		.cfi_def_cfa_register 7
+ 266 0006 0346     		mov	r3, r0
+ 267 0008 FB71     		strb	r3, [r7, #7]
+ 279:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  dig;
+ 280:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 281:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 282:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     dig = ASCII_IS_DIG(c);
+ 268              		.loc 1 282 0
+ 269 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 270 000c 2F2B     		cmp	r3, #47
+ 271 000e 05D9     		bls	.L23
+ 272 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 273 0012 392B     		cmp	r3, #57
+ 274 0014 02D8     		bhi	.L23
+ 275 0016 4FF00103 		mov	r3, #1
+ 276 001a 01E0     		b	.L24
+ 277              	.L23:
+ 278 001c 4FF00003 		mov	r3, #0
+ 279              	.L24:
+ 280 0020 FB73     		strb	r3, [r7, #15]
+ 283:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 284:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (dig);
+ 281              		.loc 1 284 0
+ 282 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 11
+
+
+ 285:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 283              		.loc 1 285 0
+ 284 0024 1846     		mov	r0, r3
+ 285 0026 07F11407 		add	r7, r7, #20
+ 286 002a BD46     		mov	sp, r7
+ 287 002c 80BC     		pop	{r7}
+ 288 002e 7047     		bx	lr
+ 289              		.cfi_endproc
+ 290              	.LFE4:
+ 291              		.size	ASCII_IsDig, .-ASCII_IsDig
+ 292              		.section	.text.ASCII_IsDigOct,"ax",%progbits
+ 293              		.align	2
+ 294              		.global	ASCII_IsDigOct
+ 295              		.thumb
+ 296              		.thumb_func
+ 297              		.type	ASCII_IsDigOct, %function
+ 298              	ASCII_IsDigOct:
+ 299              	.LFB5:
+ 286:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 287:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 288:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 289:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 290:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                          ASCII_IsDigOct()
+ 291:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 292:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine whether a character is an octal-digit character.
+ 293:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 294:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to examine.
+ 295:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 296:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if character is     an octal-digit character.
+ 297:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 298:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,	 if character is NOT an octal-digit character.
+ 299:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 300:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 301:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 302:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : none.
+ 303:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 304:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 305:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 306:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_IsDigOct (CPU_CHAR  c)
+ 307:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 300              		.loc 1 307 0
+ 301              		.cfi_startproc
+ 302              		@ args = 0, pretend = 0, frame = 16
+ 303              		@ frame_needed = 1, uses_anonymous_args = 0
+ 304              		@ link register save eliminated.
+ 305 0000 80B4     		push	{r7}
+ 306              	.LCFI15:
+ 307              		.cfi_def_cfa_offset 4
+ 308 0002 85B0     		sub	sp, sp, #20
+ 309              	.LCFI16:
+ 310              		.cfi_def_cfa_offset 24
+ 311 0004 00AF     		add	r7, sp, #0
+ 312              		.cfi_offset 7, -4
+ 313              	.LCFI17:
+ 314              		.cfi_def_cfa_register 7
+ 315 0006 0346     		mov	r3, r0
+ 316 0008 FB71     		strb	r3, [r7, #7]
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 12
+
+
+ 308:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  dig_oct;
+ 309:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 310:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 311:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     dig_oct = ASCII_IS_DIG_OCT(c);
+ 317              		.loc 1 311 0
+ 318 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 319 000c 2F2B     		cmp	r3, #47
+ 320 000e 05D9     		bls	.L27
+ 321 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 322 0012 372B     		cmp	r3, #55
+ 323 0014 02D8     		bhi	.L27
+ 324 0016 4FF00103 		mov	r3, #1
+ 325 001a 01E0     		b	.L28
+ 326              	.L27:
+ 327 001c 4FF00003 		mov	r3, #0
+ 328              	.L28:
+ 329 0020 FB73     		strb	r3, [r7, #15]
+ 312:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 313:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (dig_oct);
+ 330              		.loc 1 313 0
+ 331 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 314:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 332              		.loc 1 314 0
+ 333 0024 1846     		mov	r0, r3
+ 334 0026 07F11407 		add	r7, r7, #20
+ 335 002a BD46     		mov	sp, r7
+ 336 002c 80BC     		pop	{r7}
+ 337 002e 7047     		bx	lr
+ 338              		.cfi_endproc
+ 339              	.LFE5:
+ 340              		.size	ASCII_IsDigOct, .-ASCII_IsDigOct
+ 341              		.section	.text.ASCII_IsDigHex,"ax",%progbits
+ 342              		.align	2
+ 343              		.global	ASCII_IsDigHex
+ 344              		.thumb
+ 345              		.thumb_func
+ 346              		.type	ASCII_IsDigHex, %function
+ 347              	ASCII_IsDigHex:
+ 348              	.LFB6:
+ 315:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 316:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 317:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 318:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 319:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                          ASCII_IsDigHex()
+ 320:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 321:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine whether a character is a hexadecimal-digit character.
+ 322:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 323:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to examine.
+ 324:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 325:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if character is     a hexadecimal-digit character.
+ 326:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 327:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,	 if character is NOT a hexadecimal-digit character.
+ 328:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 329:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 330:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 331:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) ISO/IEC 9899:TC2, Section 7.4.1.12.(2) states that "isxdigit() ... tests for an
+ 332:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   hexadecimal-digit character".
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 13
+
+
+ 333:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 334:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 335:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 336:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_IsDigHex (CPU_CHAR  c)
+ 337:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 349              		.loc 1 337 0
+ 350              		.cfi_startproc
+ 351              		@ args = 0, pretend = 0, frame = 16
+ 352              		@ frame_needed = 1, uses_anonymous_args = 0
+ 353              		@ link register save eliminated.
+ 354 0000 80B4     		push	{r7}
+ 355              	.LCFI18:
+ 356              		.cfi_def_cfa_offset 4
+ 357 0002 85B0     		sub	sp, sp, #20
+ 358              	.LCFI19:
+ 359              		.cfi_def_cfa_offset 24
+ 360 0004 00AF     		add	r7, sp, #0
+ 361              		.cfi_offset 7, -4
+ 362              	.LCFI20:
+ 363              		.cfi_def_cfa_register 7
+ 364 0006 0346     		mov	r3, r0
+ 365 0008 FB71     		strb	r3, [r7, #7]
+ 338:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  dig_hex;
+ 339:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 340:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 341:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     dig_hex = ASCII_IS_DIG_HEX(c);
+ 366              		.loc 1 341 0
+ 367 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 368 000c 2F2B     		cmp	r3, #47
+ 369 000e 02D9     		bls	.L31
+ 370 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 371 0012 392B     		cmp	r3, #57
+ 372 0014 0BD9     		bls	.L32
+ 373              	.L31:
+ 374 0016 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 375 0018 402B     		cmp	r3, #64
+ 376 001a 02D9     		bls	.L33
+ 377 001c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 378 001e 462B     		cmp	r3, #70
+ 379 0020 05D9     		bls	.L32
+ 380              	.L33:
+ 381 0022 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 382 0024 602B     		cmp	r3, #96
+ 383 0026 05D9     		bls	.L34
+ 384 0028 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 385 002a 662B     		cmp	r3, #102
+ 386 002c 02D8     		bhi	.L34
+ 387              	.L32:
+ 388 002e 4FF00103 		mov	r3, #1
+ 389 0032 01E0     		b	.L35
+ 390              	.L34:
+ 391 0034 4FF00003 		mov	r3, #0
+ 392              	.L35:
+ 393 0038 FB73     		strb	r3, [r7, #15]
+ 342:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 343:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (dig_hex);
+ 394              		.loc 1 343 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 14
+
+
+ 395 003a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 344:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 396              		.loc 1 344 0
+ 397 003c 1846     		mov	r0, r3
+ 398 003e 07F11407 		add	r7, r7, #20
+ 399 0042 BD46     		mov	sp, r7
+ 400 0044 80BC     		pop	{r7}
+ 401 0046 7047     		bx	lr
+ 402              		.cfi_endproc
+ 403              	.LFE6:
+ 404              		.size	ASCII_IsDigHex, .-ASCII_IsDigHex
+ 405              		.section	.text.ASCII_IsBlank,"ax",%progbits
+ 406              		.align	2
+ 407              		.global	ASCII_IsBlank
+ 408              		.thumb
+ 409              		.thumb_func
+ 410              		.type	ASCII_IsBlank, %function
+ 411              	ASCII_IsBlank:
+ 412              	.LFB7:
+ 345:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 346:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 347:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*$PAGE*/
+ 348:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 349:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 350:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                           ASCII_IsBlank()
+ 351:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 352:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine whether a character is a standard blank character.
+ 353:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 354:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to examine.
+ 355:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 356:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if character is     a standard blank character.
+ 357:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 358:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,	 if character is NOT a standard blank character.
+ 359:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 360:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 361:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 362:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) (a) ISO/IEC 9899:TC2, Section 7.4.1.3.(2) states that "isblank() returns true o
+ 363:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       the standard blank characters".
+ 364:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 365:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   (b) ISO/IEC 9899:TC2, Section 7.4.1.3.(2) defines "the standard blank character
+ 366:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       the "space (' '), and horizontal tab ('\t')".
+ 367:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 368:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 369:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 370:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_IsBlank (CPU_CHAR  c)
+ 371:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 413              		.loc 1 371 0
+ 414              		.cfi_startproc
+ 415              		@ args = 0, pretend = 0, frame = 16
+ 416              		@ frame_needed = 1, uses_anonymous_args = 0
+ 417              		@ link register save eliminated.
+ 418 0000 80B4     		push	{r7}
+ 419              	.LCFI21:
+ 420              		.cfi_def_cfa_offset 4
+ 421 0002 85B0     		sub	sp, sp, #20
+ 422              	.LCFI22:
+ 423              		.cfi_def_cfa_offset 24
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 15
+
+
+ 424 0004 00AF     		add	r7, sp, #0
+ 425              		.cfi_offset 7, -4
+ 426              	.LCFI23:
+ 427              		.cfi_def_cfa_register 7
+ 428 0006 0346     		mov	r3, r0
+ 429 0008 FB71     		strb	r3, [r7, #7]
+ 372:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  blank;
+ 373:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 374:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 375:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     blank = ASCII_IS_BLANK(c);
+ 430              		.loc 1 375 0
+ 431 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 432 000c 202B     		cmp	r3, #32
+ 433 000e 02D0     		beq	.L38
+ 434 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 435 0012 092B     		cmp	r3, #9
+ 436 0014 02D1     		bne	.L39
+ 437              	.L38:
+ 438 0016 4FF00103 		mov	r3, #1
+ 439 001a 01E0     		b	.L40
+ 440              	.L39:
+ 441 001c 4FF00003 		mov	r3, #0
+ 442              	.L40:
+ 443 0020 FB73     		strb	r3, [r7, #15]
+ 376:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 377:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (blank);
+ 444              		.loc 1 377 0
+ 445 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 378:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 446              		.loc 1 378 0
+ 447 0024 1846     		mov	r0, r3
+ 448 0026 07F11407 		add	r7, r7, #20
+ 449 002a BD46     		mov	sp, r7
+ 450 002c 80BC     		pop	{r7}
+ 451 002e 7047     		bx	lr
+ 452              		.cfi_endproc
+ 453              	.LFE7:
+ 454              		.size	ASCII_IsBlank, .-ASCII_IsBlank
+ 455              		.section	.text.ASCII_IsSpace,"ax",%progbits
+ 456              		.align	2
+ 457              		.global	ASCII_IsSpace
+ 458              		.thumb
+ 459              		.thumb_func
+ 460              		.type	ASCII_IsSpace, %function
+ 461              	ASCII_IsSpace:
+ 462              	.LFB8:
+ 379:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 380:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 381:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 382:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 383:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                           ASCII_IsSpace()
+ 384:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 385:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine whether a character is a white-space character.
+ 386:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 387:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to examine.
+ 388:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 389:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if character is     a white-space character.
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 16
+
+
+ 390:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 391:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,	 if character is NOT a white-space character.
+ 392:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 393:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 394:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 395:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) (a) ISO/IEC 9899:TC2, Section 7.4.1.10.(2) states that "isspace() returns true 
+ 396:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       for the standard white-space characters".
+ 397:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 398:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   (b) ISO/IEC 9899:TC2, Section 7.4.1.10.(2) defines "the standard white-space ch
+ 399:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       as the "space (' '), form feed ('\f'), new-line ('\n'), carriage return ('\
+ 400:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       horizontal tab ('\t'), and vertical tab ('\v')".
+ 401:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 402:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 403:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 404:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_IsSpace (CPU_CHAR  c)
+ 405:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 463              		.loc 1 405 0
+ 464              		.cfi_startproc
+ 465              		@ args = 0, pretend = 0, frame = 16
+ 466              		@ frame_needed = 1, uses_anonymous_args = 0
+ 467              		@ link register save eliminated.
+ 468 0000 80B4     		push	{r7}
+ 469              	.LCFI24:
+ 470              		.cfi_def_cfa_offset 4
+ 471 0002 85B0     		sub	sp, sp, #20
+ 472              	.LCFI25:
+ 473              		.cfi_def_cfa_offset 24
+ 474 0004 00AF     		add	r7, sp, #0
+ 475              		.cfi_offset 7, -4
+ 476              	.LCFI26:
+ 477              		.cfi_def_cfa_register 7
+ 478 0006 0346     		mov	r3, r0
+ 479 0008 FB71     		strb	r3, [r7, #7]
+ 406:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  space;
+ 407:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 408:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 409:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     space = ASCII_IS_SPACE(c);
+ 480              		.loc 1 409 0
+ 481 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 482 000c 202B     		cmp	r3, #32
+ 483 000e 0ED0     		beq	.L43
+ 484 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 485 0012 0D2B     		cmp	r3, #13
+ 486 0014 0BD0     		beq	.L43
+ 487 0016 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 488 0018 0A2B     		cmp	r3, #10
+ 489 001a 08D0     		beq	.L43
+ 490 001c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 491 001e 0C2B     		cmp	r3, #12
+ 492 0020 05D0     		beq	.L43
+ 493 0022 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 494 0024 092B     		cmp	r3, #9
+ 495 0026 02D0     		beq	.L43
+ 496 0028 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 497 002a 0B2B     		cmp	r3, #11
+ 498 002c 02D1     		bne	.L44
+ 499              	.L43:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 17
+
+
+ 500 002e 4FF00103 		mov	r3, #1
+ 501 0032 01E0     		b	.L45
+ 502              	.L44:
+ 503 0034 4FF00003 		mov	r3, #0
+ 504              	.L45:
+ 505 0038 FB73     		strb	r3, [r7, #15]
+ 410:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 411:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (space);
+ 506              		.loc 1 411 0
+ 507 003a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 412:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 508              		.loc 1 412 0
+ 509 003c 1846     		mov	r0, r3
+ 510 003e 07F11407 		add	r7, r7, #20
+ 511 0042 BD46     		mov	sp, r7
+ 512 0044 80BC     		pop	{r7}
+ 513 0046 7047     		bx	lr
+ 514              		.cfi_endproc
+ 515              	.LFE8:
+ 516              		.size	ASCII_IsSpace, .-ASCII_IsSpace
+ 517              		.section	.text.ASCII_IsPrint,"ax",%progbits
+ 518              		.align	2
+ 519              		.global	ASCII_IsPrint
+ 520              		.thumb
+ 521              		.thumb_func
+ 522              		.type	ASCII_IsPrint, %function
+ 523              	ASCII_IsPrint:
+ 524              	.LFB9:
+ 413:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 414:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 415:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*$PAGE*/
+ 416:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 417:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 418:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                           ASCII_IsPrint()
+ 419:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 420:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine whether a character is a printing character.
+ 421:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 422:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to examine.
+ 423:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 424:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if character is     a printing character.
+ 425:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 426:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,	 if character is NOT a printing character.
+ 427:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 428:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 429:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 430:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) (a) ISO/IEC 9899:TC2, Section 7.4.1.8.(2) states that "isprint() ... tests for 
+ 431:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       printing character including space (' ')".
+ 432:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 433:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   (b) ISO/IEC 9899:TC2, Section 7.4.(3), Note 169, states that in "the seven-bit 
+ 434:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       ASCII character set, the printing characters are those whose values lie fro
+ 435:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       0x20 (space) through 0x7E (tilde)".
+ 436:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 437:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 438:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 439:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_IsPrint (CPU_CHAR  c)
+ 440:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 525              		.loc 1 440 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 18
+
+
+ 526              		.cfi_startproc
+ 527              		@ args = 0, pretend = 0, frame = 16
+ 528              		@ frame_needed = 1, uses_anonymous_args = 0
+ 529              		@ link register save eliminated.
+ 530 0000 80B4     		push	{r7}
+ 531              	.LCFI27:
+ 532              		.cfi_def_cfa_offset 4
+ 533 0002 85B0     		sub	sp, sp, #20
+ 534              	.LCFI28:
+ 535              		.cfi_def_cfa_offset 24
+ 536 0004 00AF     		add	r7, sp, #0
+ 537              		.cfi_offset 7, -4
+ 538              	.LCFI29:
+ 539              		.cfi_def_cfa_register 7
+ 540 0006 0346     		mov	r3, r0
+ 541 0008 FB71     		strb	r3, [r7, #7]
+ 441:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  print;
+ 442:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 443:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 444:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     print = ASCII_IS_PRINT(c);
+ 542              		.loc 1 444 0
+ 543 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 544 000c 1F2B     		cmp	r3, #31
+ 545 000e 05D9     		bls	.L48
+ 546 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 547 0012 7E2B     		cmp	r3, #126
+ 548 0014 02D8     		bhi	.L48
+ 549 0016 4FF00103 		mov	r3, #1
+ 550 001a 01E0     		b	.L49
+ 551              	.L48:
+ 552 001c 4FF00003 		mov	r3, #0
+ 553              	.L49:
+ 554 0020 FB73     		strb	r3, [r7, #15]
+ 445:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 446:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (print);
+ 555              		.loc 1 446 0
+ 556 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 447:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 557              		.loc 1 447 0
+ 558 0024 1846     		mov	r0, r3
+ 559 0026 07F11407 		add	r7, r7, #20
+ 560 002a BD46     		mov	sp, r7
+ 561 002c 80BC     		pop	{r7}
+ 562 002e 7047     		bx	lr
+ 563              		.cfi_endproc
+ 564              	.LFE9:
+ 565              		.size	ASCII_IsPrint, .-ASCII_IsPrint
+ 566              		.section	.text.ASCII_IsGraph,"ax",%progbits
+ 567              		.align	2
+ 568              		.global	ASCII_IsGraph
+ 569              		.thumb
+ 570              		.thumb_func
+ 571              		.type	ASCII_IsGraph, %function
+ 572              	ASCII_IsGraph:
+ 573              	.LFB10:
+ 448:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 449:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 19
+
+
+ 450:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 451:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 452:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                           ASCII_IsGraph()
+ 453:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 454:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine whether a character is any printing character except a space character.
+ 455:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 456:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to examine.
+ 457:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 458:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if character is     a graphic character.
+ 459:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 460:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,	 if character is NOT a graphic character.
+ 461:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 462:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 463:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 464:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) (a) ISO/IEC 9899:TC2, Section 7.4.1.6.(2) states that "isgraph() ... tests for 
+ 465:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       printing character except space (' ')".
+ 466:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 467:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   (b) ISO/IEC 9899:TC2, Section 7.4.(3), Note 169, states that in "the seven-bit 
+ 468:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       ASCII character set, the printing characters are those whose values lie fro
+ 469:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       0x20 (space) through 0x7E (tilde)".
+ 470:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 471:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 472:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 473:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_IsGraph (CPU_CHAR  c)
+ 474:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 574              		.loc 1 474 0
+ 575              		.cfi_startproc
+ 576              		@ args = 0, pretend = 0, frame = 16
+ 577              		@ frame_needed = 1, uses_anonymous_args = 0
+ 578              		@ link register save eliminated.
+ 579 0000 80B4     		push	{r7}
+ 580              	.LCFI30:
+ 581              		.cfi_def_cfa_offset 4
+ 582 0002 85B0     		sub	sp, sp, #20
+ 583              	.LCFI31:
+ 584              		.cfi_def_cfa_offset 24
+ 585 0004 00AF     		add	r7, sp, #0
+ 586              		.cfi_offset 7, -4
+ 587              	.LCFI32:
+ 588              		.cfi_def_cfa_register 7
+ 589 0006 0346     		mov	r3, r0
+ 590 0008 FB71     		strb	r3, [r7, #7]
+ 475:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  graph;
+ 476:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 477:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 478:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     graph = ASCII_IS_GRAPH(c);
+ 591              		.loc 1 478 0
+ 592 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 593 000c 202B     		cmp	r3, #32
+ 594 000e 05D9     		bls	.L52
+ 595 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 596 0012 7E2B     		cmp	r3, #126
+ 597 0014 02D8     		bhi	.L52
+ 598 0016 4FF00103 		mov	r3, #1
+ 599 001a 01E0     		b	.L53
+ 600              	.L52:
+ 601 001c 4FF00003 		mov	r3, #0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 20
+
+
+ 602              	.L53:
+ 603 0020 FB73     		strb	r3, [r7, #15]
+ 479:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 480:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (graph);
+ 604              		.loc 1 480 0
+ 605 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 481:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 606              		.loc 1 481 0
+ 607 0024 1846     		mov	r0, r3
+ 608 0026 07F11407 		add	r7, r7, #20
+ 609 002a BD46     		mov	sp, r7
+ 610 002c 80BC     		pop	{r7}
+ 611 002e 7047     		bx	lr
+ 612              		.cfi_endproc
+ 613              	.LFE10:
+ 614              		.size	ASCII_IsGraph, .-ASCII_IsGraph
+ 615              		.section	.text.ASCII_IsPunct,"ax",%progbits
+ 616              		.align	2
+ 617              		.global	ASCII_IsPunct
+ 618              		.thumb
+ 619              		.thumb_func
+ 620              		.type	ASCII_IsPunct, %function
+ 621              	ASCII_IsPunct:
+ 622              	.LFB11:
+ 482:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 483:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 484:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*$PAGE*/
+ 485:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 486:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 487:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                           ASCII_IsPunct()
+ 488:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 489:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine whether a character is a punctuation character.
+ 490:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 491:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to examine.
+ 492:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 493:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if character is     a punctuation character.
+ 494:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 495:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,	 if character is NOT a punctuation character.
+ 496:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 497:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 498:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 499:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) ISO/IEC 9899:TC2, Section 7.4.1.9.(2) states that "ispunct() returns true for e
+ 500:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   printing character for which neither isspace() nor isalnum() is true".
+ 501:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 502:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 503:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 504:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_IsPunct (CPU_CHAR  c)
+ 505:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 623              		.loc 1 505 0
+ 624              		.cfi_startproc
+ 625              		@ args = 0, pretend = 0, frame = 16
+ 626              		@ frame_needed = 1, uses_anonymous_args = 0
+ 627              		@ link register save eliminated.
+ 628 0000 80B4     		push	{r7}
+ 629              	.LCFI33:
+ 630              		.cfi_def_cfa_offset 4
+ 631 0002 85B0     		sub	sp, sp, #20
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 21
+
+
+ 632              	.LCFI34:
+ 633              		.cfi_def_cfa_offset 24
+ 634 0004 00AF     		add	r7, sp, #0
+ 635              		.cfi_offset 7, -4
+ 636              	.LCFI35:
+ 637              		.cfi_def_cfa_register 7
+ 638 0006 0346     		mov	r3, r0
+ 639 0008 FB71     		strb	r3, [r7, #7]
+ 506:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  punct;
+ 507:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 508:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 509:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     punct = ASCII_IS_PUNCT(c);
+ 640              		.loc 1 509 0
+ 641 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 642 000c 1F2B     		cmp	r3, #31
+ 643 000e 29D9     		bls	.L56
+ 644 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 645 0012 7E2B     		cmp	r3, #126
+ 646 0014 26D8     		bhi	.L56
+ 647 0016 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 648 0018 202B     		cmp	r3, #32
+ 649 001a 23D0     		beq	.L56
+ 650 001c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 651 001e 0D2B     		cmp	r3, #13
+ 652 0020 20D0     		beq	.L56
+ 653 0022 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 654 0024 0A2B     		cmp	r3, #10
+ 655 0026 1DD0     		beq	.L56
+ 656 0028 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 657 002a 0C2B     		cmp	r3, #12
+ 658 002c 1AD0     		beq	.L56
+ 659 002e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 660 0030 092B     		cmp	r3, #9
+ 661 0032 17D0     		beq	.L56
+ 662 0034 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 663 0036 0B2B     		cmp	r3, #11
+ 664 0038 14D0     		beq	.L56
+ 665 003a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 666 003c 402B     		cmp	r3, #64
+ 667 003e 02D9     		bls	.L57
+ 668 0040 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 669 0042 5A2B     		cmp	r3, #90
+ 670 0044 0ED9     		bls	.L56
+ 671              	.L57:
+ 672 0046 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 673 0048 602B     		cmp	r3, #96
+ 674 004a 02D9     		bls	.L58
+ 675 004c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 676 004e 7A2B     		cmp	r3, #122
+ 677 0050 08D9     		bls	.L56
+ 678              	.L58:
+ 679 0052 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 680 0054 2F2B     		cmp	r3, #47
+ 681 0056 02D9     		bls	.L59
+ 682 0058 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 683 005a 392B     		cmp	r3, #57
+ 684 005c 02D9     		bls	.L56
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 22
+
+
+ 685              	.L59:
+ 686 005e 4FF00103 		mov	r3, #1
+ 687 0062 01E0     		b	.L60
+ 688              	.L56:
+ 689 0064 4FF00003 		mov	r3, #0
+ 690              	.L60:
+ 691 0068 FB73     		strb	r3, [r7, #15]
+ 510:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 511:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (punct);
+ 692              		.loc 1 511 0
+ 693 006a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 512:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 694              		.loc 1 512 0
+ 695 006c 1846     		mov	r0, r3
+ 696 006e 07F11407 		add	r7, r7, #20
+ 697 0072 BD46     		mov	sp, r7
+ 698 0074 80BC     		pop	{r7}
+ 699 0076 7047     		bx	lr
+ 700              		.cfi_endproc
+ 701              	.LFE11:
+ 702              		.size	ASCII_IsPunct, .-ASCII_IsPunct
+ 703              		.section	.text.ASCII_IsCtrl,"ax",%progbits
+ 704              		.align	2
+ 705              		.global	ASCII_IsCtrl
+ 706              		.thumb
+ 707              		.thumb_func
+ 708              		.type	ASCII_IsCtrl, %function
+ 709              	ASCII_IsCtrl:
+ 710              	.LFB12:
+ 513:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 514:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 515:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 516:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 517:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                           ASCII_IsCtrl()
+ 518:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 519:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine whether a character is a control character.
+ 520:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 521:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to examine.
+ 522:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 523:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if character is     a control character.
+ 524:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 525:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,	 if character is NOT a control character.
+ 526:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 527:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 528:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 529:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) (a) ISO/IEC 9899:TC2, Section 7.4.1.4.(2) states that "iscntrl() ... tests for 
+ 530:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       control character".
+ 531:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 532:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   (b) ISO/IEC 9899:TC2, Section 7.4.(3), Note 169, states that in "the seven-bit 
+ 533:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       ASCII character set, ... the control characters are those whose values lie 
+ 534:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       0 (NUL) through 0x1F (US), and the character 0x7F (DEL)".
+ 535:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 536:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 537:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 538:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_IsCtrl (CPU_CHAR  c)
+ 539:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 711              		.loc 1 539 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 23
+
+
+ 712              		.cfi_startproc
+ 713              		@ args = 0, pretend = 0, frame = 16
+ 714              		@ frame_needed = 1, uses_anonymous_args = 0
+ 715              		@ link register save eliminated.
+ 716 0000 80B4     		push	{r7}
+ 717              	.LCFI36:
+ 718              		.cfi_def_cfa_offset 4
+ 719 0002 85B0     		sub	sp, sp, #20
+ 720              	.LCFI37:
+ 721              		.cfi_def_cfa_offset 24
+ 722 0004 00AF     		add	r7, sp, #0
+ 723              		.cfi_offset 7, -4
+ 724              	.LCFI38:
+ 725              		.cfi_def_cfa_register 7
+ 726 0006 0346     		mov	r3, r0
+ 727 0008 FB71     		strb	r3, [r7, #7]
+ 540:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  ctrl;
+ 541:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 542:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 543:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     ctrl = ASCII_IS_CTRL(c);
+ 728              		.loc 1 543 0
+ 729 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 730 000c 5BB2     		sxtb	r3, r3
+ 731 000e 002B     		cmp	r3, #0
+ 732 0010 02DB     		blt	.L63
+ 733 0012 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 734 0014 1F2B     		cmp	r3, #31
+ 735 0016 02D9     		bls	.L64
+ 736              	.L63:
+ 737 0018 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 738 001a 7F2B     		cmp	r3, #127
+ 739 001c 02D1     		bne	.L65
+ 740              	.L64:
+ 741 001e 4FF00103 		mov	r3, #1
+ 742 0022 01E0     		b	.L66
+ 743              	.L65:
+ 744 0024 4FF00003 		mov	r3, #0
+ 745              	.L66:
+ 746 0028 FB73     		strb	r3, [r7, #15]
+ 544:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 545:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (ctrl);
+ 747              		.loc 1 545 0
+ 748 002a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 546:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 749              		.loc 1 546 0
+ 750 002c 1846     		mov	r0, r3
+ 751 002e 07F11407 		add	r7, r7, #20
+ 752 0032 BD46     		mov	sp, r7
+ 753 0034 80BC     		pop	{r7}
+ 754 0036 7047     		bx	lr
+ 755              		.cfi_endproc
+ 756              	.LFE12:
+ 757              		.size	ASCII_IsCtrl, .-ASCII_IsCtrl
+ 758              		.section	.text.ASCII_ToLower,"ax",%progbits
+ 759              		.align	2
+ 760              		.global	ASCII_ToLower
+ 761              		.thumb
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 24
+
+
+ 762              		.thumb_func
+ 763              		.type	ASCII_ToLower, %function
+ 764              	ASCII_ToLower:
+ 765              	.LFB13:
+ 547:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 548:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 549:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*$PAGE*/
+ 550:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 551:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 552:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                           ASCII_ToLower()
+ 553:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 554:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Convert uppercase alphabetic character to its corresponding lowercase alphabetic ch
+ 555:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 556:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to convert.
+ 557:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 558:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : Lowercase equivalent of 'c', if character 'c' is an uppercase character (see Note #
+ 559:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 560:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               Character 'c',               otherwise                                  (see Note #
+ 561:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 562:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 563:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 564:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) (a) ISO/IEC 9899:TC2, Section 7.4.2.1.(2) states that "tolower() ... converts a
+ 565:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       uppercase letter to a corresponding lowercase letter".
+ 566:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 567:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   (b) ISO/IEC 9899:TC2, Section 7.4.2.1.(3) states that :
+ 568:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 569:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       (1) (A) "if the argument is a character for which isupper() is true and the
+ 570:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                one or more corresponding characters ... for which islower() is tr
+ 571:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                           (B) "tolower() ... returns one of the corresponding characters;" ...
+ 572:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 573:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       (2) "otherwise, the argument is returned unchanged."
+ 574:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 575:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 576:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 577:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_CHAR  ASCII_ToLower (CPU_CHAR  c)
+ 578:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 766              		.loc 1 578 0
+ 767              		.cfi_startproc
+ 768              		@ args = 0, pretend = 0, frame = 16
+ 769              		@ frame_needed = 1, uses_anonymous_args = 0
+ 770              		@ link register save eliminated.
+ 771 0000 80B4     		push	{r7}
+ 772              	.LCFI39:
+ 773              		.cfi_def_cfa_offset 4
+ 774 0002 85B0     		sub	sp, sp, #20
+ 775              	.LCFI40:
+ 776              		.cfi_def_cfa_offset 24
+ 777 0004 00AF     		add	r7, sp, #0
+ 778              		.cfi_offset 7, -4
+ 779              	.LCFI41:
+ 780              		.cfi_def_cfa_register 7
+ 781 0006 0346     		mov	r3, r0
+ 782 0008 FB71     		strb	r3, [r7, #7]
+ 579:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_CHAR  lower;
+ 580:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 581:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 582:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     lower = ASCII_TO_LOWER(c);
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 25
+
+
+ 783              		.loc 1 582 0
+ 784 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 785 000c 402B     		cmp	r3, #64
+ 786 000e 07D9     		bls	.L69
+ 787 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 788 0012 5A2B     		cmp	r3, #90
+ 789 0014 04D8     		bhi	.L69
+ 790 0016 FB79     		ldrb	r3, [r7, #7]
+ 791 0018 03F12003 		add	r3, r3, #32
+ 792 001c DBB2     		uxtb	r3, r3
+ 793 001e 00E0     		b	.L70
+ 794              	.L69:
+ 795 0020 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 796              	.L70:
+ 797 0022 FB73     		strb	r3, [r7, #15]
+ 583:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 584:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (lower);
+ 798              		.loc 1 584 0
+ 799 0024 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 585:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 800              		.loc 1 585 0
+ 801 0026 1846     		mov	r0, r3
+ 802 0028 07F11407 		add	r7, r7, #20
+ 803 002c BD46     		mov	sp, r7
+ 804 002e 80BC     		pop	{r7}
+ 805 0030 7047     		bx	lr
+ 806              		.cfi_endproc
+ 807              	.LFE13:
+ 808              		.size	ASCII_ToLower, .-ASCII_ToLower
+ 809 0032 00BF     		.section	.text.ASCII_ToUpper,"ax",%progbits
+ 810              		.align	2
+ 811              		.global	ASCII_ToUpper
+ 812              		.thumb
+ 813              		.thumb_func
+ 814              		.type	ASCII_ToUpper, %function
+ 815              	ASCII_ToUpper:
+ 816              	.LFB14:
+ 586:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 587:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 588:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 589:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 590:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                           ASCII_ToUpper()
+ 591:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 592:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Convert lowercase alphabetic character to its corresponding uppercase alphabetic ch
+ 593:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 594:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c           Character to convert.
+ 595:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 596:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : Uppercase equivalent of 'c', if character 'c' is a lowercase character (see Note #1
+ 597:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 598:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               Character 'c',               otherwise                                 (see Note #1
+ 599:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 600:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 601:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 602:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : (1) (a) ISO/IEC 9899:TC2, Section 7.4.2.2.(2) states that "toupper() ... converts a
+ 603:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       lowercase letter to a corresponding uppercase letter".
+ 604:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 605:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                   (b) ISO/IEC 9899:TC2, Section 7.4.2.2.(3) states that :
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 26
+
+
+ 606:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 607:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       (1) (A) "if the argument is a character for which islower() is true and the
+ 608:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                one or more corresponding characters ... for which isupper() is tr
+ 609:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                           (B) "toupper() ... returns one of the corresponding characters;" ...
+ 610:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 611:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                       (2) "otherwise, the argument is returned unchanged."
+ 612:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 613:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 614:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 615:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_CHAR  ASCII_ToUpper (CPU_CHAR  c)
+ 616:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 817              		.loc 1 616 0
+ 818              		.cfi_startproc
+ 819              		@ args = 0, pretend = 0, frame = 16
+ 820              		@ frame_needed = 1, uses_anonymous_args = 0
+ 821              		@ link register save eliminated.
+ 822 0000 80B4     		push	{r7}
+ 823              	.LCFI42:
+ 824              		.cfi_def_cfa_offset 4
+ 825 0002 85B0     		sub	sp, sp, #20
+ 826              	.LCFI43:
+ 827              		.cfi_def_cfa_offset 24
+ 828 0004 00AF     		add	r7, sp, #0
+ 829              		.cfi_offset 7, -4
+ 830              	.LCFI44:
+ 831              		.cfi_def_cfa_register 7
+ 832 0006 0346     		mov	r3, r0
+ 833 0008 FB71     		strb	r3, [r7, #7]
+ 617:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_CHAR  upper;
+ 618:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 619:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 620:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     upper = ASCII_TO_UPPER(c);
+ 834              		.loc 1 620 0
+ 835 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 836 000c 602B     		cmp	r3, #96
+ 837 000e 07D9     		bls	.L73
+ 838 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 839 0012 7A2B     		cmp	r3, #122
+ 840 0014 04D8     		bhi	.L73
+ 841 0016 FB79     		ldrb	r3, [r7, #7]
+ 842 0018 A3F12003 		sub	r3, r3, #32
+ 843 001c DBB2     		uxtb	r3, r3
+ 844 001e 00E0     		b	.L74
+ 845              	.L73:
+ 846 0020 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 847              	.L74:
+ 848 0022 FB73     		strb	r3, [r7, #15]
+ 621:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 622:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (upper);
+ 849              		.loc 1 622 0
+ 850 0024 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 623:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 851              		.loc 1 623 0
+ 852 0026 1846     		mov	r0, r3
+ 853 0028 07F11407 		add	r7, r7, #20
+ 854 002c BD46     		mov	sp, r7
+ 855 002e 80BC     		pop	{r7}
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 27
+
+
+ 856 0030 7047     		bx	lr
+ 857              		.cfi_endproc
+ 858              	.LFE14:
+ 859              		.size	ASCII_ToUpper, .-ASCII_ToUpper
+ 860 0032 00BF     		.section	.text.ASCII_Cmp,"ax",%progbits
+ 861              		.align	2
+ 862              		.global	ASCII_Cmp
+ 863              		.thumb
+ 864              		.thumb_func
+ 865              		.type	ASCII_Cmp, %function
+ 866              	ASCII_Cmp:
+ 867              	.LFB15:
+ 624:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 625:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 626:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*$PAGE*/
+ 627:C:\Micrium\Software\uC-LIB\lib_ascii.c **** /*
+ 628:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 629:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *                                             ASCII_Cmp()
+ 630:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 631:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Description : Determine if two characters are identical (case-insensitive).
+ 632:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 633:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Argument(s) : c1          First  character.
+ 634:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 635:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               c2          Second character.
+ 636:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 637:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Return(s)   : DEF_YES, if the characters are     identical.
+ 638:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 639:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *               DEF_NO,  if the characters are NOT identical.
+ 640:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 641:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Caller(s)   : Application.
+ 642:C:\Micrium\Software\uC-LIB\lib_ascii.c **** *
+ 643:C:\Micrium\Software\uC-LIB\lib_ascii.c **** * Note(s)     : none.
+ 644:C:\Micrium\Software\uC-LIB\lib_ascii.c **** ***************************************************************************************************
+ 645:C:\Micrium\Software\uC-LIB\lib_ascii.c **** */
+ 646:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 647:C:\Micrium\Software\uC-LIB\lib_ascii.c **** CPU_BOOLEAN  ASCII_Cmp (CPU_CHAR  c1,
+ 648:C:\Micrium\Software\uC-LIB\lib_ascii.c ****                         CPU_CHAR  c2)
+ 649:C:\Micrium\Software\uC-LIB\lib_ascii.c **** {
+ 868              		.loc 1 649 0
+ 869              		.cfi_startproc
+ 870              		@ args = 0, pretend = 0, frame = 16
+ 871              		@ frame_needed = 1, uses_anonymous_args = 0
+ 872 0000 80B5     		push	{r7, lr}
+ 873              	.LCFI45:
+ 874              		.cfi_def_cfa_offset 8
+ 875 0002 84B0     		sub	sp, sp, #16
+ 876              	.LCFI46:
+ 877              		.cfi_def_cfa_offset 24
+ 878 0004 00AF     		add	r7, sp, #0
+ 879              		.cfi_offset 14, -4
+ 880              		.cfi_offset 7, -8
+ 881              	.LCFI47:
+ 882              		.cfi_def_cfa_register 7
+ 883 0006 0246     		mov	r2, r0
+ 884 0008 0B46     		mov	r3, r1
+ 885 000a FA71     		strb	r2, [r7, #7]
+ 886 000c BB71     		strb	r3, [r7, #6]
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 28
+
+
+ 650:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_CHAR     c1_upper;
+ 651:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_CHAR     c2_upper;
+ 652:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     CPU_BOOLEAN  cmp;
+ 653:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 654:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 655:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     c1_upper =  ASCII_ToUpper(c1);
+ 887              		.loc 1 655 0
+ 888 000e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 889 0010 1846     		mov	r0, r3
+ 890 0012 FFF7FEFF 		bl	ASCII_ToUpper
+ 891 0016 0346     		mov	r3, r0
+ 892 0018 7B73     		strb	r3, [r7, #13]
+ 656:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     c2_upper =  ASCII_ToUpper(c2);
+ 893              		.loc 1 656 0
+ 894 001a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 895 001c 1846     		mov	r0, r3
+ 896 001e FFF7FEFF 		bl	ASCII_ToUpper
+ 897 0022 0346     		mov	r3, r0
+ 898 0024 BB73     		strb	r3, [r7, #14]
+ 657:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     cmp      = (c1_upper == c2_upper) ? (DEF_YES) : (DEF_NO);
+ 899              		.loc 1 657 0
+ 900 0026 7A7B     		ldrb	r2, [r7, #13]	@ zero_extendqisi2
+ 901 0028 BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 902 002a 9A42     		cmp	r2, r3
+ 903 002c 02D1     		bne	.L77
+ 904 002e 4FF00103 		mov	r3, #1
+ 905 0032 01E0     		b	.L78
+ 906              	.L77:
+ 907 0034 4FF00003 		mov	r3, #0
+ 908              	.L78:
+ 909 0038 FB73     		strb	r3, [r7, #15]
+ 658:C:\Micrium\Software\uC-LIB\lib_ascii.c **** 
+ 659:C:\Micrium\Software\uC-LIB\lib_ascii.c ****     return (cmp);
+ 910              		.loc 1 659 0
+ 911 003a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 660:C:\Micrium\Software\uC-LIB\lib_ascii.c **** }
+ 912              		.loc 1 660 0
+ 913 003c 1846     		mov	r0, r3
+ 914 003e 07F11007 		add	r7, r7, #16
+ 915 0042 BD46     		mov	sp, r7
+ 916 0044 80BD     		pop	{r7, pc}
+ 917              		.cfi_endproc
+ 918              	.LFE15:
+ 919              		.size	ASCII_Cmp, .-ASCII_Cmp
+ 920 0046 00BF     		.text
+ 921              	.Letext0:
+ 922              		.section	.debug_loc,"",%progbits
+ 923              	.Ldebug_loc0:
+ 924              	.LLST0:
+ 925 0000 00000000 		.4byte	.LFB0
+ 926 0004 02000000 		.4byte	.LCFI0
+ 927 0008 0100     		.2byte	0x1
+ 928 000a 5D       		.byte	0x5d
+ 929 000b 02000000 		.4byte	.LCFI0
+ 930 000f 04000000 		.4byte	.LCFI1
+ 931 0013 0200     		.2byte	0x2
+ 932 0015 7D       		.byte	0x7d
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 29
+
+
+ 933 0016 04       		.sleb128 4
+ 934 0017 04000000 		.4byte	.LCFI1
+ 935 001b 06000000 		.4byte	.LCFI2
+ 936 001f 0200     		.2byte	0x2
+ 937 0021 7D       		.byte	0x7d
+ 938 0022 18       		.sleb128 24
+ 939 0023 06000000 		.4byte	.LCFI2
+ 940 0027 3C000000 		.4byte	.LFE0
+ 941 002b 0200     		.2byte	0x2
+ 942 002d 77       		.byte	0x77
+ 943 002e 18       		.sleb128 24
+ 944 002f 00000000 		.4byte	0x0
+ 945 0033 00000000 		.4byte	0x0
+ 946              	.LLST1:
+ 947 0037 00000000 		.4byte	.LFB1
+ 948 003b 02000000 		.4byte	.LCFI3
+ 949 003f 0100     		.2byte	0x1
+ 950 0041 5D       		.byte	0x5d
+ 951 0042 02000000 		.4byte	.LCFI3
+ 952 0046 04000000 		.4byte	.LCFI4
+ 953 004a 0200     		.2byte	0x2
+ 954 004c 7D       		.byte	0x7d
+ 955 004d 04       		.sleb128 4
+ 956 004e 04000000 		.4byte	.LCFI4
+ 957 0052 06000000 		.4byte	.LCFI5
+ 958 0056 0200     		.2byte	0x2
+ 959 0058 7D       		.byte	0x7d
+ 960 0059 18       		.sleb128 24
+ 961 005a 06000000 		.4byte	.LCFI5
+ 962 005e 48000000 		.4byte	.LFE1
+ 963 0062 0200     		.2byte	0x2
+ 964 0064 77       		.byte	0x77
+ 965 0065 18       		.sleb128 24
+ 966 0066 00000000 		.4byte	0x0
+ 967 006a 00000000 		.4byte	0x0
+ 968              	.LLST2:
+ 969 006e 00000000 		.4byte	.LFB2
+ 970 0072 02000000 		.4byte	.LCFI6
+ 971 0076 0100     		.2byte	0x1
+ 972 0078 5D       		.byte	0x5d
+ 973 0079 02000000 		.4byte	.LCFI6
+ 974 007d 04000000 		.4byte	.LCFI7
+ 975 0081 0200     		.2byte	0x2
+ 976 0083 7D       		.byte	0x7d
+ 977 0084 04       		.sleb128 4
+ 978 0085 04000000 		.4byte	.LCFI7
+ 979 0089 06000000 		.4byte	.LCFI8
+ 980 008d 0200     		.2byte	0x2
+ 981 008f 7D       		.byte	0x7d
+ 982 0090 18       		.sleb128 24
+ 983 0091 06000000 		.4byte	.LCFI8
+ 984 0095 30000000 		.4byte	.LFE2
+ 985 0099 0200     		.2byte	0x2
+ 986 009b 77       		.byte	0x77
+ 987 009c 18       		.sleb128 24
+ 988 009d 00000000 		.4byte	0x0
+ 989 00a1 00000000 		.4byte	0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 30
+
+
+ 990              	.LLST3:
+ 991 00a5 00000000 		.4byte	.LFB3
+ 992 00a9 02000000 		.4byte	.LCFI9
+ 993 00ad 0100     		.2byte	0x1
+ 994 00af 5D       		.byte	0x5d
+ 995 00b0 02000000 		.4byte	.LCFI9
+ 996 00b4 04000000 		.4byte	.LCFI10
+ 997 00b8 0200     		.2byte	0x2
+ 998 00ba 7D       		.byte	0x7d
+ 999 00bb 04       		.sleb128 4
+ 1000 00bc 04000000 		.4byte	.LCFI10
+ 1001 00c0 06000000 		.4byte	.LCFI11
+ 1002 00c4 0200     		.2byte	0x2
+ 1003 00c6 7D       		.byte	0x7d
+ 1004 00c7 18       		.sleb128 24
+ 1005 00c8 06000000 		.4byte	.LCFI11
+ 1006 00cc 30000000 		.4byte	.LFE3
+ 1007 00d0 0200     		.2byte	0x2
+ 1008 00d2 77       		.byte	0x77
+ 1009 00d3 18       		.sleb128 24
+ 1010 00d4 00000000 		.4byte	0x0
+ 1011 00d8 00000000 		.4byte	0x0
+ 1012              	.LLST4:
+ 1013 00dc 00000000 		.4byte	.LFB4
+ 1014 00e0 02000000 		.4byte	.LCFI12
+ 1015 00e4 0100     		.2byte	0x1
+ 1016 00e6 5D       		.byte	0x5d
+ 1017 00e7 02000000 		.4byte	.LCFI12
+ 1018 00eb 04000000 		.4byte	.LCFI13
+ 1019 00ef 0200     		.2byte	0x2
+ 1020 00f1 7D       		.byte	0x7d
+ 1021 00f2 04       		.sleb128 4
+ 1022 00f3 04000000 		.4byte	.LCFI13
+ 1023 00f7 06000000 		.4byte	.LCFI14
+ 1024 00fb 0200     		.2byte	0x2
+ 1025 00fd 7D       		.byte	0x7d
+ 1026 00fe 18       		.sleb128 24
+ 1027 00ff 06000000 		.4byte	.LCFI14
+ 1028 0103 30000000 		.4byte	.LFE4
+ 1029 0107 0200     		.2byte	0x2
+ 1030 0109 77       		.byte	0x77
+ 1031 010a 18       		.sleb128 24
+ 1032 010b 00000000 		.4byte	0x0
+ 1033 010f 00000000 		.4byte	0x0
+ 1034              	.LLST5:
+ 1035 0113 00000000 		.4byte	.LFB5
+ 1036 0117 02000000 		.4byte	.LCFI15
+ 1037 011b 0100     		.2byte	0x1
+ 1038 011d 5D       		.byte	0x5d
+ 1039 011e 02000000 		.4byte	.LCFI15
+ 1040 0122 04000000 		.4byte	.LCFI16
+ 1041 0126 0200     		.2byte	0x2
+ 1042 0128 7D       		.byte	0x7d
+ 1043 0129 04       		.sleb128 4
+ 1044 012a 04000000 		.4byte	.LCFI16
+ 1045 012e 06000000 		.4byte	.LCFI17
+ 1046 0132 0200     		.2byte	0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 31
+
+
+ 1047 0134 7D       		.byte	0x7d
+ 1048 0135 18       		.sleb128 24
+ 1049 0136 06000000 		.4byte	.LCFI17
+ 1050 013a 30000000 		.4byte	.LFE5
+ 1051 013e 0200     		.2byte	0x2
+ 1052 0140 77       		.byte	0x77
+ 1053 0141 18       		.sleb128 24
+ 1054 0142 00000000 		.4byte	0x0
+ 1055 0146 00000000 		.4byte	0x0
+ 1056              	.LLST6:
+ 1057 014a 00000000 		.4byte	.LFB6
+ 1058 014e 02000000 		.4byte	.LCFI18
+ 1059 0152 0100     		.2byte	0x1
+ 1060 0154 5D       		.byte	0x5d
+ 1061 0155 02000000 		.4byte	.LCFI18
+ 1062 0159 04000000 		.4byte	.LCFI19
+ 1063 015d 0200     		.2byte	0x2
+ 1064 015f 7D       		.byte	0x7d
+ 1065 0160 04       		.sleb128 4
+ 1066 0161 04000000 		.4byte	.LCFI19
+ 1067 0165 06000000 		.4byte	.LCFI20
+ 1068 0169 0200     		.2byte	0x2
+ 1069 016b 7D       		.byte	0x7d
+ 1070 016c 18       		.sleb128 24
+ 1071 016d 06000000 		.4byte	.LCFI20
+ 1072 0171 48000000 		.4byte	.LFE6
+ 1073 0175 0200     		.2byte	0x2
+ 1074 0177 77       		.byte	0x77
+ 1075 0178 18       		.sleb128 24
+ 1076 0179 00000000 		.4byte	0x0
+ 1077 017d 00000000 		.4byte	0x0
+ 1078              	.LLST7:
+ 1079 0181 00000000 		.4byte	.LFB7
+ 1080 0185 02000000 		.4byte	.LCFI21
+ 1081 0189 0100     		.2byte	0x1
+ 1082 018b 5D       		.byte	0x5d
+ 1083 018c 02000000 		.4byte	.LCFI21
+ 1084 0190 04000000 		.4byte	.LCFI22
+ 1085 0194 0200     		.2byte	0x2
+ 1086 0196 7D       		.byte	0x7d
+ 1087 0197 04       		.sleb128 4
+ 1088 0198 04000000 		.4byte	.LCFI22
+ 1089 019c 06000000 		.4byte	.LCFI23
+ 1090 01a0 0200     		.2byte	0x2
+ 1091 01a2 7D       		.byte	0x7d
+ 1092 01a3 18       		.sleb128 24
+ 1093 01a4 06000000 		.4byte	.LCFI23
+ 1094 01a8 30000000 		.4byte	.LFE7
+ 1095 01ac 0200     		.2byte	0x2
+ 1096 01ae 77       		.byte	0x77
+ 1097 01af 18       		.sleb128 24
+ 1098 01b0 00000000 		.4byte	0x0
+ 1099 01b4 00000000 		.4byte	0x0
+ 1100              	.LLST8:
+ 1101 01b8 00000000 		.4byte	.LFB8
+ 1102 01bc 02000000 		.4byte	.LCFI24
+ 1103 01c0 0100     		.2byte	0x1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 32
+
+
+ 1104 01c2 5D       		.byte	0x5d
+ 1105 01c3 02000000 		.4byte	.LCFI24
+ 1106 01c7 04000000 		.4byte	.LCFI25
+ 1107 01cb 0200     		.2byte	0x2
+ 1108 01cd 7D       		.byte	0x7d
+ 1109 01ce 04       		.sleb128 4
+ 1110 01cf 04000000 		.4byte	.LCFI25
+ 1111 01d3 06000000 		.4byte	.LCFI26
+ 1112 01d7 0200     		.2byte	0x2
+ 1113 01d9 7D       		.byte	0x7d
+ 1114 01da 18       		.sleb128 24
+ 1115 01db 06000000 		.4byte	.LCFI26
+ 1116 01df 48000000 		.4byte	.LFE8
+ 1117 01e3 0200     		.2byte	0x2
+ 1118 01e5 77       		.byte	0x77
+ 1119 01e6 18       		.sleb128 24
+ 1120 01e7 00000000 		.4byte	0x0
+ 1121 01eb 00000000 		.4byte	0x0
+ 1122              	.LLST9:
+ 1123 01ef 00000000 		.4byte	.LFB9
+ 1124 01f3 02000000 		.4byte	.LCFI27
+ 1125 01f7 0100     		.2byte	0x1
+ 1126 01f9 5D       		.byte	0x5d
+ 1127 01fa 02000000 		.4byte	.LCFI27
+ 1128 01fe 04000000 		.4byte	.LCFI28
+ 1129 0202 0200     		.2byte	0x2
+ 1130 0204 7D       		.byte	0x7d
+ 1131 0205 04       		.sleb128 4
+ 1132 0206 04000000 		.4byte	.LCFI28
+ 1133 020a 06000000 		.4byte	.LCFI29
+ 1134 020e 0200     		.2byte	0x2
+ 1135 0210 7D       		.byte	0x7d
+ 1136 0211 18       		.sleb128 24
+ 1137 0212 06000000 		.4byte	.LCFI29
+ 1138 0216 30000000 		.4byte	.LFE9
+ 1139 021a 0200     		.2byte	0x2
+ 1140 021c 77       		.byte	0x77
+ 1141 021d 18       		.sleb128 24
+ 1142 021e 00000000 		.4byte	0x0
+ 1143 0222 00000000 		.4byte	0x0
+ 1144              	.LLST10:
+ 1145 0226 00000000 		.4byte	.LFB10
+ 1146 022a 02000000 		.4byte	.LCFI30
+ 1147 022e 0100     		.2byte	0x1
+ 1148 0230 5D       		.byte	0x5d
+ 1149 0231 02000000 		.4byte	.LCFI30
+ 1150 0235 04000000 		.4byte	.LCFI31
+ 1151 0239 0200     		.2byte	0x2
+ 1152 023b 7D       		.byte	0x7d
+ 1153 023c 04       		.sleb128 4
+ 1154 023d 04000000 		.4byte	.LCFI31
+ 1155 0241 06000000 		.4byte	.LCFI32
+ 1156 0245 0200     		.2byte	0x2
+ 1157 0247 7D       		.byte	0x7d
+ 1158 0248 18       		.sleb128 24
+ 1159 0249 06000000 		.4byte	.LCFI32
+ 1160 024d 30000000 		.4byte	.LFE10
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 33
+
+
+ 1161 0251 0200     		.2byte	0x2
+ 1162 0253 77       		.byte	0x77
+ 1163 0254 18       		.sleb128 24
+ 1164 0255 00000000 		.4byte	0x0
+ 1165 0259 00000000 		.4byte	0x0
+ 1166              	.LLST11:
+ 1167 025d 00000000 		.4byte	.LFB11
+ 1168 0261 02000000 		.4byte	.LCFI33
+ 1169 0265 0100     		.2byte	0x1
+ 1170 0267 5D       		.byte	0x5d
+ 1171 0268 02000000 		.4byte	.LCFI33
+ 1172 026c 04000000 		.4byte	.LCFI34
+ 1173 0270 0200     		.2byte	0x2
+ 1174 0272 7D       		.byte	0x7d
+ 1175 0273 04       		.sleb128 4
+ 1176 0274 04000000 		.4byte	.LCFI34
+ 1177 0278 06000000 		.4byte	.LCFI35
+ 1178 027c 0200     		.2byte	0x2
+ 1179 027e 7D       		.byte	0x7d
+ 1180 027f 18       		.sleb128 24
+ 1181 0280 06000000 		.4byte	.LCFI35
+ 1182 0284 78000000 		.4byte	.LFE11
+ 1183 0288 0200     		.2byte	0x2
+ 1184 028a 77       		.byte	0x77
+ 1185 028b 18       		.sleb128 24
+ 1186 028c 00000000 		.4byte	0x0
+ 1187 0290 00000000 		.4byte	0x0
+ 1188              	.LLST12:
+ 1189 0294 00000000 		.4byte	.LFB12
+ 1190 0298 02000000 		.4byte	.LCFI36
+ 1191 029c 0100     		.2byte	0x1
+ 1192 029e 5D       		.byte	0x5d
+ 1193 029f 02000000 		.4byte	.LCFI36
+ 1194 02a3 04000000 		.4byte	.LCFI37
+ 1195 02a7 0200     		.2byte	0x2
+ 1196 02a9 7D       		.byte	0x7d
+ 1197 02aa 04       		.sleb128 4
+ 1198 02ab 04000000 		.4byte	.LCFI37
+ 1199 02af 06000000 		.4byte	.LCFI38
+ 1200 02b3 0200     		.2byte	0x2
+ 1201 02b5 7D       		.byte	0x7d
+ 1202 02b6 18       		.sleb128 24
+ 1203 02b7 06000000 		.4byte	.LCFI38
+ 1204 02bb 38000000 		.4byte	.LFE12
+ 1205 02bf 0200     		.2byte	0x2
+ 1206 02c1 77       		.byte	0x77
+ 1207 02c2 18       		.sleb128 24
+ 1208 02c3 00000000 		.4byte	0x0
+ 1209 02c7 00000000 		.4byte	0x0
+ 1210              	.LLST13:
+ 1211 02cb 00000000 		.4byte	.LFB13
+ 1212 02cf 02000000 		.4byte	.LCFI39
+ 1213 02d3 0100     		.2byte	0x1
+ 1214 02d5 5D       		.byte	0x5d
+ 1215 02d6 02000000 		.4byte	.LCFI39
+ 1216 02da 04000000 		.4byte	.LCFI40
+ 1217 02de 0200     		.2byte	0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 34
+
+
+ 1218 02e0 7D       		.byte	0x7d
+ 1219 02e1 04       		.sleb128 4
+ 1220 02e2 04000000 		.4byte	.LCFI40
+ 1221 02e6 06000000 		.4byte	.LCFI41
+ 1222 02ea 0200     		.2byte	0x2
+ 1223 02ec 7D       		.byte	0x7d
+ 1224 02ed 18       		.sleb128 24
+ 1225 02ee 06000000 		.4byte	.LCFI41
+ 1226 02f2 32000000 		.4byte	.LFE13
+ 1227 02f6 0200     		.2byte	0x2
+ 1228 02f8 77       		.byte	0x77
+ 1229 02f9 18       		.sleb128 24
+ 1230 02fa 00000000 		.4byte	0x0
+ 1231 02fe 00000000 		.4byte	0x0
+ 1232              	.LLST14:
+ 1233 0302 00000000 		.4byte	.LFB14
+ 1234 0306 02000000 		.4byte	.LCFI42
+ 1235 030a 0100     		.2byte	0x1
+ 1236 030c 5D       		.byte	0x5d
+ 1237 030d 02000000 		.4byte	.LCFI42
+ 1238 0311 04000000 		.4byte	.LCFI43
+ 1239 0315 0200     		.2byte	0x2
+ 1240 0317 7D       		.byte	0x7d
+ 1241 0318 04       		.sleb128 4
+ 1242 0319 04000000 		.4byte	.LCFI43
+ 1243 031d 06000000 		.4byte	.LCFI44
+ 1244 0321 0200     		.2byte	0x2
+ 1245 0323 7D       		.byte	0x7d
+ 1246 0324 18       		.sleb128 24
+ 1247 0325 06000000 		.4byte	.LCFI44
+ 1248 0329 32000000 		.4byte	.LFE14
+ 1249 032d 0200     		.2byte	0x2
+ 1250 032f 77       		.byte	0x77
+ 1251 0330 18       		.sleb128 24
+ 1252 0331 00000000 		.4byte	0x0
+ 1253 0335 00000000 		.4byte	0x0
+ 1254              	.LLST15:
+ 1255 0339 00000000 		.4byte	.LFB15
+ 1256 033d 02000000 		.4byte	.LCFI45
+ 1257 0341 0100     		.2byte	0x1
+ 1258 0343 5D       		.byte	0x5d
+ 1259 0344 02000000 		.4byte	.LCFI45
+ 1260 0348 04000000 		.4byte	.LCFI46
+ 1261 034c 0200     		.2byte	0x2
+ 1262 034e 7D       		.byte	0x7d
+ 1263 034f 08       		.sleb128 8
+ 1264 0350 04000000 		.4byte	.LCFI46
+ 1265 0354 06000000 		.4byte	.LCFI47
+ 1266 0358 0200     		.2byte	0x2
+ 1267 035a 7D       		.byte	0x7d
+ 1268 035b 18       		.sleb128 24
+ 1269 035c 06000000 		.4byte	.LCFI47
+ 1270 0360 46000000 		.4byte	.LFE15
+ 1271 0364 0200     		.2byte	0x2
+ 1272 0366 77       		.byte	0x77
+ 1273 0367 18       		.sleb128 24
+ 1274 0368 00000000 		.4byte	0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 35
+
+
+ 1275 036c 00000000 		.4byte	0x0
+ 1276              		.file 2 "..\\..\\..\\..\\..\\..\\uC-CPU\\ARM-Cortex-M3\\GNU/cpu.h"
+ 1277              		.section	.debug_info
+ 1278 0000 56040000 		.4byte	0x456
+ 1279 0004 0200     		.2byte	0x2
+ 1280 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1281 000a 04       		.byte	0x4
+ 1282 000b 01       		.uleb128 0x1
+ 1283 000c 8D020000 		.4byte	.LASF41
+ 1284 0010 01       		.byte	0x1
+ 1285 0011 31010000 		.4byte	.LASF42
+ 1286 0015 87010000 		.4byte	.LASF43
+ 1287 0019 00000000 		.4byte	0x0
+ 1288 001d 00000000 		.4byte	0x0
+ 1289 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 1290 0025 00000000 		.4byte	.Ldebug_line0
+ 1291 0029 02       		.uleb128 0x2
+ 1292 002a 1B010000 		.4byte	.LASF0
+ 1293 002e 02       		.byte	0x2
+ 1294 002f 76       		.byte	0x76
+ 1295 0030 34000000 		.4byte	0x34
+ 1296 0034 03       		.uleb128 0x3
+ 1297 0035 01       		.byte	0x1
+ 1298 0036 08       		.byte	0x8
+ 1299 0037 79010000 		.4byte	.LASF2
+ 1300 003b 02       		.uleb128 0x2
+ 1301 003c AE000000 		.4byte	.LASF1
+ 1302 0040 02       		.byte	0x2
+ 1303 0041 77       		.byte	0x77
+ 1304 0042 46000000 		.4byte	0x46
+ 1305 0046 03       		.uleb128 0x3
+ 1306 0047 01       		.byte	0x1
+ 1307 0048 08       		.byte	0x8
+ 1308 0049 CD000000 		.4byte	.LASF3
+ 1309 004d 03       		.uleb128 0x3
+ 1310 004e 01       		.byte	0x1
+ 1311 004f 06       		.byte	0x6
+ 1312 0050 E1000000 		.4byte	.LASF4
+ 1313 0054 03       		.uleb128 0x3
+ 1314 0055 02       		.byte	0x2
+ 1315 0056 07       		.byte	0x7
+ 1316 0057 66010000 		.4byte	.LASF5
+ 1317 005b 03       		.uleb128 0x3
+ 1318 005c 02       		.byte	0x2
+ 1319 005d 05       		.byte	0x5
+ 1320 005e 14000000 		.4byte	.LASF6
+ 1321 0062 03       		.uleb128 0x3
+ 1322 0063 04       		.byte	0x4
+ 1323 0064 07       		.byte	0x7
+ 1324 0065 24010000 		.4byte	.LASF7
+ 1325 0069 04       		.uleb128 0x4
+ 1326 006a 04       		.byte	0x4
+ 1327 006b 05       		.byte	0x5
+ 1328 006c 696E7400 		.ascii	"int\000"
+ 1329 0070 03       		.uleb128 0x3
+ 1330 0071 08       		.byte	0x8
+ 1331 0072 07       		.byte	0x7
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 36
+
+
+ 1332 0073 FE000000 		.4byte	.LASF8
+ 1333 0077 03       		.uleb128 0x3
+ 1334 0078 08       		.byte	0x8
+ 1335 0079 05       		.byte	0x5
+ 1336 007a 8A000000 		.4byte	.LASF9
+ 1337 007e 03       		.uleb128 0x3
+ 1338 007f 04       		.byte	0x4
+ 1339 0080 04       		.byte	0x4
+ 1340 0081 62000000 		.4byte	.LASF10
+ 1341 0085 03       		.uleb128 0x3
+ 1342 0086 08       		.byte	0x8
+ 1343 0087 04       		.byte	0x4
+ 1344 0088 3A020000 		.4byte	.LASF11
+ 1345 008c 05       		.uleb128 0x5
+ 1346 008d 01       		.byte	0x1
+ 1347 008e 2C020000 		.4byte	.LASF12
+ 1348 0092 01       		.byte	0x1
+ 1349 0093 9B       		.byte	0x9b
+ 1350 0094 01       		.byte	0x1
+ 1351 0095 3B000000 		.4byte	0x3b
+ 1352 0099 00000000 		.4byte	.LFB0
+ 1353 009d 3C000000 		.4byte	.LFE0
+ 1354 00a1 00000000 		.4byte	.LLST0
+ 1355 00a5 C4000000 		.4byte	0xc4
+ 1356 00a9 06       		.uleb128 0x6
+ 1357 00aa 6300     		.ascii	"c\000"
+ 1358 00ac 01       		.byte	0x1
+ 1359 00ad 9B       		.byte	0x9b
+ 1360 00ae 29000000 		.4byte	0x29
+ 1361 00b2 02       		.byte	0x2
+ 1362 00b3 91       		.byte	0x91
+ 1363 00b4 6F       		.sleb128 -17
+ 1364 00b5 07       		.uleb128 0x7
+ 1365 00b6 41000000 		.4byte	.LASF14
+ 1366 00ba 01       		.byte	0x1
+ 1367 00bb 9D       		.byte	0x9d
+ 1368 00bc 3B000000 		.4byte	0x3b
+ 1369 00c0 02       		.byte	0x2
+ 1370 00c1 91       		.byte	0x91
+ 1371 00c2 77       		.sleb128 -9
+ 1372 00c3 00       		.byte	0x0
+ 1373 00c4 05       		.uleb128 0x5
+ 1374 00c5 01       		.byte	0x1
+ 1375 00c6 ED000000 		.4byte	.LASF13
+ 1376 00ca 01       		.byte	0x1
+ 1377 00cb B9       		.byte	0xb9
+ 1378 00cc 01       		.byte	0x1
+ 1379 00cd 3B000000 		.4byte	0x3b
+ 1380 00d1 00000000 		.4byte	.LFB1
+ 1381 00d5 48000000 		.4byte	.LFE1
+ 1382 00d9 37000000 		.4byte	.LLST1
+ 1383 00dd FC000000 		.4byte	0xfc
+ 1384 00e1 06       		.uleb128 0x6
+ 1385 00e2 6300     		.ascii	"c\000"
+ 1386 00e4 01       		.byte	0x1
+ 1387 00e5 B9       		.byte	0xb9
+ 1388 00e6 29000000 		.4byte	0x29
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 37
+
+
+ 1389 00ea 02       		.byte	0x2
+ 1390 00eb 91       		.byte	0x91
+ 1391 00ec 6F       		.sleb128 -17
+ 1392 00ed 07       		.uleb128 0x7
+ 1393 00ee 57020000 		.4byte	.LASF15
+ 1394 00f2 01       		.byte	0x1
+ 1395 00f3 BB       		.byte	0xbb
+ 1396 00f4 3B000000 		.4byte	0x3b
+ 1397 00f8 02       		.byte	0x2
+ 1398 00f9 91       		.byte	0x91
+ 1399 00fa 77       		.sleb128 -9
+ 1400 00fb 00       		.byte	0x0
+ 1401 00fc 05       		.uleb128 0x5
+ 1402 00fd 01       		.byte	0x1
+ 1403 00fe 61020000 		.4byte	.LASF16
+ 1404 0102 01       		.byte	0x1
+ 1405 0103 D8       		.byte	0xd8
+ 1406 0104 01       		.byte	0x1
+ 1407 0105 3B000000 		.4byte	0x3b
+ 1408 0109 00000000 		.4byte	.LFB2
+ 1409 010d 30000000 		.4byte	.LFE2
+ 1410 0111 6E000000 		.4byte	.LLST2
+ 1411 0115 34010000 		.4byte	0x134
+ 1412 0119 06       		.uleb128 0x6
+ 1413 011a 6300     		.ascii	"c\000"
+ 1414 011c 01       		.byte	0x1
+ 1415 011d D8       		.byte	0xd8
+ 1416 011e 29000000 		.4byte	0x29
+ 1417 0122 02       		.byte	0x2
+ 1418 0123 91       		.byte	0x91
+ 1419 0124 6F       		.sleb128 -17
+ 1420 0125 07       		.uleb128 0x7
+ 1421 0126 84000000 		.4byte	.LASF17
+ 1422 012a 01       		.byte	0x1
+ 1423 012b DA       		.byte	0xda
+ 1424 012c 3B000000 		.4byte	0x3b
+ 1425 0130 02       		.byte	0x2
+ 1426 0131 91       		.byte	0x91
+ 1427 0132 77       		.sleb128 -9
+ 1428 0133 00       		.byte	0x0
+ 1429 0134 05       		.uleb128 0x5
+ 1430 0135 01       		.byte	0x1
+ 1431 0136 06000000 		.4byte	.LASF18
+ 1432 013a 01       		.byte	0x1
+ 1433 013b F6       		.byte	0xf6
+ 1434 013c 01       		.byte	0x1
+ 1435 013d 3B000000 		.4byte	0x3b
+ 1436 0141 00000000 		.4byte	.LFB3
+ 1437 0145 30000000 		.4byte	.LFE3
+ 1438 0149 A5000000 		.4byte	.LLST3
+ 1439 014d 6C010000 		.4byte	0x16c
+ 1440 0151 06       		.uleb128 0x6
+ 1441 0152 6300     		.ascii	"c\000"
+ 1442 0154 01       		.byte	0x1
+ 1443 0155 F6       		.byte	0xf6
+ 1444 0156 29000000 		.4byte	0x29
+ 1445 015a 02       		.byte	0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 38
+
+
+ 1446 015b 91       		.byte	0x91
+ 1447 015c 6F       		.sleb128 -17
+ 1448 015d 07       		.uleb128 0x7
+ 1449 015e 00000000 		.4byte	.LASF19
+ 1450 0162 01       		.byte	0x1
+ 1451 0163 F8       		.byte	0xf8
+ 1452 0164 3B000000 		.4byte	0x3b
+ 1453 0168 02       		.byte	0x2
+ 1454 0169 91       		.byte	0x91
+ 1455 016a 77       		.sleb128 -9
+ 1456 016b 00       		.byte	0x0
+ 1457 016c 08       		.uleb128 0x8
+ 1458 016d 01       		.byte	0x1
+ 1459 016e 2C000000 		.4byte	.LASF20
+ 1460 0172 01       		.byte	0x1
+ 1461 0173 1501     		.2byte	0x115
+ 1462 0175 01       		.byte	0x1
+ 1463 0176 3B000000 		.4byte	0x3b
+ 1464 017a 00000000 		.4byte	.LFB4
+ 1465 017e 30000000 		.4byte	.LFE4
+ 1466 0182 DC000000 		.4byte	.LLST4
+ 1467 0186 A7010000 		.4byte	0x1a7
+ 1468 018a 09       		.uleb128 0x9
+ 1469 018b 6300     		.ascii	"c\000"
+ 1470 018d 01       		.byte	0x1
+ 1471 018e 1501     		.2byte	0x115
+ 1472 0190 29000000 		.4byte	0x29
+ 1473 0194 02       		.byte	0x2
+ 1474 0195 91       		.byte	0x91
+ 1475 0196 6F       		.sleb128 -17
+ 1476 0197 0A       		.uleb128 0xa
+ 1477 0198 64696700 		.ascii	"dig\000"
+ 1478 019c 01       		.byte	0x1
+ 1479 019d 1701     		.2byte	0x117
+ 1480 019f 3B000000 		.4byte	0x3b
+ 1481 01a3 02       		.byte	0x2
+ 1482 01a4 91       		.byte	0x91
+ 1483 01a5 77       		.sleb128 -9
+ 1484 01a6 00       		.byte	0x0
+ 1485 01a7 08       		.uleb128 0x8
+ 1486 01a8 01       		.byte	0x1
+ 1487 01a9 6F020000 		.4byte	.LASF21
+ 1488 01ad 01       		.byte	0x1
+ 1489 01ae 3201     		.2byte	0x132
+ 1490 01b0 01       		.byte	0x1
+ 1491 01b1 3B000000 		.4byte	0x3b
+ 1492 01b5 00000000 		.4byte	.LFB5
+ 1493 01b9 30000000 		.4byte	.LFE5
+ 1494 01bd 13010000 		.4byte	.LLST5
+ 1495 01c1 E2010000 		.4byte	0x1e2
+ 1496 01c5 09       		.uleb128 0x9
+ 1497 01c6 6300     		.ascii	"c\000"
+ 1498 01c8 01       		.byte	0x1
+ 1499 01c9 3201     		.2byte	0x132
+ 1500 01cb 29000000 		.4byte	0x29
+ 1501 01cf 02       		.byte	0x2
+ 1502 01d0 91       		.byte	0x91
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 39
+
+
+ 1503 01d1 6F       		.sleb128 -17
+ 1504 01d2 0B       		.uleb128 0xb
+ 1505 01d3 98000000 		.4byte	.LASF22
+ 1506 01d7 01       		.byte	0x1
+ 1507 01d8 3401     		.2byte	0x134
+ 1508 01da 3B000000 		.4byte	0x3b
+ 1509 01de 02       		.byte	0x2
+ 1510 01df 91       		.byte	0x91
+ 1511 01e0 77       		.sleb128 -9
+ 1512 01e1 00       		.byte	0x0
+ 1513 01e2 08       		.uleb128 0x8
+ 1514 01e3 01       		.byte	0x1
+ 1515 01e4 7E020000 		.4byte	.LASF23
+ 1516 01e8 01       		.byte	0x1
+ 1517 01e9 5001     		.2byte	0x150
+ 1518 01eb 01       		.byte	0x1
+ 1519 01ec 3B000000 		.4byte	0x3b
+ 1520 01f0 00000000 		.4byte	.LFB6
+ 1521 01f4 48000000 		.4byte	.LFE6
+ 1522 01f8 4A010000 		.4byte	.LLST6
+ 1523 01fc 1D020000 		.4byte	0x21d
+ 1524 0200 09       		.uleb128 0x9
+ 1525 0201 6300     		.ascii	"c\000"
+ 1526 0203 01       		.byte	0x1
+ 1527 0204 5001     		.2byte	0x150
+ 1528 0206 29000000 		.4byte	0x29
+ 1529 020a 02       		.byte	0x2
+ 1530 020b 91       		.byte	0x91
+ 1531 020c 6F       		.sleb128 -17
+ 1532 020d 0B       		.uleb128 0xb
+ 1533 020e 24020000 		.4byte	.LASF24
+ 1534 0212 01       		.byte	0x1
+ 1535 0213 5201     		.2byte	0x152
+ 1536 0215 3B000000 		.4byte	0x3b
+ 1537 0219 02       		.byte	0x2
+ 1538 021a 91       		.byte	0x91
+ 1539 021b 77       		.sleb128 -9
+ 1540 021c 00       		.byte	0x0
+ 1541 021d 08       		.uleb128 0x8
+ 1542 021e 01       		.byte	0x1
+ 1543 021f BF000000 		.4byte	.LASF25
+ 1544 0223 01       		.byte	0x1
+ 1545 0224 7201     		.2byte	0x172
+ 1546 0226 01       		.byte	0x1
+ 1547 0227 3B000000 		.4byte	0x3b
+ 1548 022b 00000000 		.4byte	.LFB7
+ 1549 022f 30000000 		.4byte	.LFE7
+ 1550 0233 81010000 		.4byte	.LLST7
+ 1551 0237 58020000 		.4byte	0x258
+ 1552 023b 09       		.uleb128 0x9
+ 1553 023c 6300     		.ascii	"c\000"
+ 1554 023e 01       		.byte	0x1
+ 1555 023f 7201     		.2byte	0x172
+ 1556 0241 29000000 		.4byte	0x29
+ 1557 0245 02       		.byte	0x2
+ 1558 0246 91       		.byte	0x91
+ 1559 0247 6F       		.sleb128 -17
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 40
+
+
+ 1560 0248 0B       		.uleb128 0xb
+ 1561 0249 99020000 		.4byte	.LASF26
+ 1562 024d 01       		.byte	0x1
+ 1563 024e 7401     		.2byte	0x174
+ 1564 0250 3B000000 		.4byte	0x3b
+ 1565 0254 02       		.byte	0x2
+ 1566 0255 91       		.byte	0x91
+ 1567 0256 77       		.sleb128 -9
+ 1568 0257 00       		.byte	0x0
+ 1569 0258 08       		.uleb128 0x8
+ 1570 0259 01       		.byte	0x1
+ 1571 025a 1E000000 		.4byte	.LASF27
+ 1572 025e 01       		.byte	0x1
+ 1573 025f 9401     		.2byte	0x194
+ 1574 0261 01       		.byte	0x1
+ 1575 0262 3B000000 		.4byte	0x3b
+ 1576 0266 00000000 		.4byte	.LFB8
+ 1577 026a 48000000 		.4byte	.LFE8
+ 1578 026e B8010000 		.4byte	.LLST8
+ 1579 0272 93020000 		.4byte	0x293
+ 1580 0276 09       		.uleb128 0x9
+ 1581 0277 6300     		.ascii	"c\000"
+ 1582 0279 01       		.byte	0x1
+ 1583 027a 9401     		.2byte	0x194
+ 1584 027c 29000000 		.4byte	0x29
+ 1585 0280 02       		.byte	0x2
+ 1586 0281 91       		.byte	0x91
+ 1587 0282 6F       		.sleb128 -17
+ 1588 0283 0B       		.uleb128 0xb
+ 1589 0284 DB000000 		.4byte	.LASF28
+ 1590 0288 01       		.byte	0x1
+ 1591 0289 9601     		.2byte	0x196
+ 1592 028b 3B000000 		.4byte	0x3b
+ 1593 028f 02       		.byte	0x2
+ 1594 0290 91       		.byte	0x91
+ 1595 0291 77       		.sleb128 -9
+ 1596 0292 00       		.byte	0x0
+ 1597 0293 08       		.uleb128 0x8
+ 1598 0294 01       		.byte	0x1
+ 1599 0295 47000000 		.4byte	.LASF29
+ 1600 0299 01       		.byte	0x1
+ 1601 029a B701     		.2byte	0x1b7
+ 1602 029c 01       		.byte	0x1
+ 1603 029d 3B000000 		.4byte	0x3b
+ 1604 02a1 00000000 		.4byte	.LFB9
+ 1605 02a5 30000000 		.4byte	.LFE9
+ 1606 02a9 EF010000 		.4byte	.LLST9
+ 1607 02ad CE020000 		.4byte	0x2ce
+ 1608 02b1 09       		.uleb128 0x9
+ 1609 02b2 6300     		.ascii	"c\000"
+ 1610 02b4 01       		.byte	0x1
+ 1611 02b5 B701     		.2byte	0x1b7
+ 1612 02b7 29000000 		.4byte	0x29
+ 1613 02bb 02       		.byte	0x2
+ 1614 02bc 91       		.byte	0x91
+ 1615 02bd 6F       		.sleb128 -17
+ 1616 02be 0B       		.uleb128 0xb
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 41
+
+
+ 1617 02bf 15010000 		.4byte	.LASF30
+ 1618 02c3 01       		.byte	0x1
+ 1619 02c4 B901     		.2byte	0x1b9
+ 1620 02c6 3B000000 		.4byte	0x3b
+ 1621 02ca 02       		.byte	0x2
+ 1622 02cb 91       		.byte	0x91
+ 1623 02cc 77       		.sleb128 -9
+ 1624 02cd 00       		.byte	0x0
+ 1625 02ce 08       		.uleb128 0x8
+ 1626 02cf 01       		.byte	0x1
+ 1627 02d0 68000000 		.4byte	.LASF31
+ 1628 02d4 01       		.byte	0x1
+ 1629 02d5 D901     		.2byte	0x1d9
+ 1630 02d7 01       		.byte	0x1
+ 1631 02d8 3B000000 		.4byte	0x3b
+ 1632 02dc 00000000 		.4byte	.LFB10
+ 1633 02e0 30000000 		.4byte	.LFE10
+ 1634 02e4 26020000 		.4byte	.LLST10
+ 1635 02e8 09030000 		.4byte	0x309
+ 1636 02ec 09       		.uleb128 0x9
+ 1637 02ed 6300     		.ascii	"c\000"
+ 1638 02ef 01       		.byte	0x1
+ 1639 02f0 D901     		.2byte	0x1d9
+ 1640 02f2 29000000 		.4byte	0x29
+ 1641 02f6 02       		.byte	0x2
+ 1642 02f7 91       		.byte	0x91
+ 1643 02f8 6F       		.sleb128 -17
+ 1644 02f9 0B       		.uleb128 0xb
+ 1645 02fa 41020000 		.4byte	.LASF32
+ 1646 02fe 01       		.byte	0x1
+ 1647 02ff DB01     		.2byte	0x1db
+ 1648 0301 3B000000 		.4byte	0x3b
+ 1649 0305 02       		.byte	0x2
+ 1650 0306 91       		.byte	0x91
+ 1651 0307 77       		.sleb128 -9
+ 1652 0308 00       		.byte	0x0
+ 1653 0309 08       		.uleb128 0x8
+ 1654 030a 01       		.byte	0x1
+ 1655 030b 76000000 		.4byte	.LASF33
+ 1656 030f 01       		.byte	0x1
+ 1657 0310 F801     		.2byte	0x1f8
+ 1658 0312 01       		.byte	0x1
+ 1659 0313 3B000000 		.4byte	0x3b
+ 1660 0317 00000000 		.4byte	.LFB11
+ 1661 031b 78000000 		.4byte	.LFE11
+ 1662 031f 5D020000 		.4byte	.LLST11
+ 1663 0323 44030000 		.4byte	0x344
+ 1664 0327 09       		.uleb128 0x9
+ 1665 0328 6300     		.ascii	"c\000"
+ 1666 032a 01       		.byte	0x1
+ 1667 032b F801     		.2byte	0x1f8
+ 1668 032d 29000000 		.4byte	0x29
+ 1669 0331 02       		.byte	0x2
+ 1670 0332 91       		.byte	0x91
+ 1671 0333 6F       		.sleb128 -17
+ 1672 0334 0B       		.uleb128 0xb
+ 1673 0335 47020000 		.4byte	.LASF34
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 42
+
+
+ 1674 0339 01       		.byte	0x1
+ 1675 033a FA01     		.2byte	0x1fa
+ 1676 033c 3B000000 		.4byte	0x3b
+ 1677 0340 02       		.byte	0x2
+ 1678 0341 91       		.byte	0x91
+ 1679 0342 77       		.sleb128 -9
+ 1680 0343 00       		.byte	0x0
+ 1681 0344 08       		.uleb128 0x8
+ 1682 0345 01       		.byte	0x1
+ 1683 0346 55000000 		.4byte	.LASF35
+ 1684 034a 01       		.byte	0x1
+ 1685 034b 1A02     		.2byte	0x21a
+ 1686 034d 01       		.byte	0x1
+ 1687 034e 3B000000 		.4byte	0x3b
+ 1688 0352 00000000 		.4byte	.LFB12
+ 1689 0356 38000000 		.4byte	.LFE12
+ 1690 035a 94020000 		.4byte	.LLST12
+ 1691 035e 7F030000 		.4byte	0x37f
+ 1692 0362 09       		.uleb128 0x9
+ 1693 0363 6300     		.ascii	"c\000"
+ 1694 0365 01       		.byte	0x1
+ 1695 0366 1A02     		.2byte	0x21a
+ 1696 0368 29000000 		.4byte	0x29
+ 1697 036c 02       		.byte	0x2
+ 1698 036d 91       		.byte	0x91
+ 1699 036e 6F       		.sleb128 -17
+ 1700 036f 0B       		.uleb128 0xb
+ 1701 0370 BA000000 		.4byte	.LASF36
+ 1702 0374 01       		.byte	0x1
+ 1703 0375 1C02     		.2byte	0x21c
+ 1704 0377 3B000000 		.4byte	0x3b
+ 1705 037b 02       		.byte	0x2
+ 1706 037c 91       		.byte	0x91
+ 1707 037d 77       		.sleb128 -9
+ 1708 037e 00       		.byte	0x0
+ 1709 037f 08       		.uleb128 0x8
+ 1710 0380 01       		.byte	0x1
+ 1711 0381 A0000000 		.4byte	.LASF37
+ 1712 0385 01       		.byte	0x1
+ 1713 0386 4102     		.2byte	0x241
+ 1714 0388 01       		.byte	0x1
+ 1715 0389 29000000 		.4byte	0x29
+ 1716 038d 00000000 		.4byte	.LFB13
+ 1717 0391 32000000 		.4byte	.LFE13
+ 1718 0395 CB020000 		.4byte	.LLST13
+ 1719 0399 BA030000 		.4byte	0x3ba
+ 1720 039d 09       		.uleb128 0x9
+ 1721 039e 6300     		.ascii	"c\000"
+ 1722 03a0 01       		.byte	0x1
+ 1723 03a1 4102     		.2byte	0x241
+ 1724 03a3 29000000 		.4byte	0x29
+ 1725 03a7 02       		.byte	0x2
+ 1726 03a8 91       		.byte	0x91
+ 1727 03a9 6F       		.sleb128 -17
+ 1728 03aa 0B       		.uleb128 0xb
+ 1729 03ab 84000000 		.4byte	.LASF17
+ 1730 03af 01       		.byte	0x1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 43
+
+
+ 1731 03b0 4302     		.2byte	0x243
+ 1732 03b2 29000000 		.4byte	0x29
+ 1733 03b6 02       		.byte	0x2
+ 1734 03b7 91       		.byte	0x91
+ 1735 03b8 77       		.sleb128 -9
+ 1736 03b9 00       		.byte	0x0
+ 1737 03ba 08       		.uleb128 0x8
+ 1738 03bb 01       		.byte	0x1
+ 1739 03bc 58010000 		.4byte	.LASF38
+ 1740 03c0 01       		.byte	0x1
+ 1741 03c1 6702     		.2byte	0x267
+ 1742 03c3 01       		.byte	0x1
+ 1743 03c4 29000000 		.4byte	0x29
+ 1744 03c8 00000000 		.4byte	.LFB14
+ 1745 03cc 32000000 		.4byte	.LFE14
+ 1746 03d0 02030000 		.4byte	.LLST14
+ 1747 03d4 F5030000 		.4byte	0x3f5
+ 1748 03d8 09       		.uleb128 0x9
+ 1749 03d9 6300     		.ascii	"c\000"
+ 1750 03db 01       		.byte	0x1
+ 1751 03dc 6702     		.2byte	0x267
+ 1752 03de 29000000 		.4byte	0x29
+ 1753 03e2 02       		.byte	0x2
+ 1754 03e3 91       		.byte	0x91
+ 1755 03e4 6F       		.sleb128 -17
+ 1756 03e5 0B       		.uleb128 0xb
+ 1757 03e6 00000000 		.4byte	.LASF19
+ 1758 03ea 01       		.byte	0x1
+ 1759 03eb 6902     		.2byte	0x269
+ 1760 03ed 29000000 		.4byte	0x29
+ 1761 03f1 02       		.byte	0x2
+ 1762 03f2 91       		.byte	0x91
+ 1763 03f3 77       		.sleb128 -9
+ 1764 03f4 00       		.byte	0x0
+ 1765 03f5 0C       		.uleb128 0xc
+ 1766 03f6 01       		.byte	0x1
+ 1767 03f7 4D020000 		.4byte	.LASF44
+ 1768 03fb 01       		.byte	0x1
+ 1769 03fc 8702     		.2byte	0x287
+ 1770 03fe 01       		.byte	0x1
+ 1771 03ff 3B000000 		.4byte	0x3b
+ 1772 0403 00000000 		.4byte	.LFB15
+ 1773 0407 46000000 		.4byte	.LFE15
+ 1774 040b 39030000 		.4byte	.LLST15
+ 1775 040f 09       		.uleb128 0x9
+ 1776 0410 633100   		.ascii	"c1\000"
+ 1777 0413 01       		.byte	0x1
+ 1778 0414 8702     		.2byte	0x287
+ 1779 0416 29000000 		.4byte	0x29
+ 1780 041a 02       		.byte	0x2
+ 1781 041b 91       		.byte	0x91
+ 1782 041c 6F       		.sleb128 -17
+ 1783 041d 09       		.uleb128 0x9
+ 1784 041e 633200   		.ascii	"c2\000"
+ 1785 0421 01       		.byte	0x1
+ 1786 0422 8802     		.2byte	0x288
+ 1787 0424 29000000 		.4byte	0x29
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 44
+
+
+ 1788 0428 02       		.byte	0x2
+ 1789 0429 91       		.byte	0x91
+ 1790 042a 6E       		.sleb128 -18
+ 1791 042b 0B       		.uleb128 0xb
+ 1792 042c 7E010000 		.4byte	.LASF39
+ 1793 0430 01       		.byte	0x1
+ 1794 0431 8A02     		.2byte	0x28a
+ 1795 0433 29000000 		.4byte	0x29
+ 1796 0437 02       		.byte	0x2
+ 1797 0438 91       		.byte	0x91
+ 1798 0439 75       		.sleb128 -11
+ 1799 043a 0B       		.uleb128 0xb
+ 1800 043b 38000000 		.4byte	.LASF40
+ 1801 043f 01       		.byte	0x1
+ 1802 0440 8B02     		.2byte	0x28b
+ 1803 0442 29000000 		.4byte	0x29
+ 1804 0446 02       		.byte	0x2
+ 1805 0447 91       		.byte	0x91
+ 1806 0448 76       		.sleb128 -10
+ 1807 0449 0A       		.uleb128 0xa
+ 1808 044a 636D7000 		.ascii	"cmp\000"
+ 1809 044e 01       		.byte	0x1
+ 1810 044f 8C02     		.2byte	0x28c
+ 1811 0451 3B000000 		.4byte	0x3b
+ 1812 0455 02       		.byte	0x2
+ 1813 0456 91       		.byte	0x91
+ 1814 0457 77       		.sleb128 -9
+ 1815 0458 00       		.byte	0x0
+ 1816 0459 00       		.byte	0x0
+ 1817              		.section	.debug_abbrev
+ 1818 0000 01       		.uleb128 0x1
+ 1819 0001 11       		.uleb128 0x11
+ 1820 0002 01       		.byte	0x1
+ 1821 0003 25       		.uleb128 0x25
+ 1822 0004 0E       		.uleb128 0xe
+ 1823 0005 13       		.uleb128 0x13
+ 1824 0006 0B       		.uleb128 0xb
+ 1825 0007 03       		.uleb128 0x3
+ 1826 0008 0E       		.uleb128 0xe
+ 1827 0009 1B       		.uleb128 0x1b
+ 1828 000a 0E       		.uleb128 0xe
+ 1829 000b 11       		.uleb128 0x11
+ 1830 000c 01       		.uleb128 0x1
+ 1831 000d 52       		.uleb128 0x52
+ 1832 000e 01       		.uleb128 0x1
+ 1833 000f 55       		.uleb128 0x55
+ 1834 0010 06       		.uleb128 0x6
+ 1835 0011 10       		.uleb128 0x10
+ 1836 0012 06       		.uleb128 0x6
+ 1837 0013 00       		.byte	0x0
+ 1838 0014 00       		.byte	0x0
+ 1839 0015 02       		.uleb128 0x2
+ 1840 0016 16       		.uleb128 0x16
+ 1841 0017 00       		.byte	0x0
+ 1842 0018 03       		.uleb128 0x3
+ 1843 0019 0E       		.uleb128 0xe
+ 1844 001a 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 45
+
+
+ 1845 001b 0B       		.uleb128 0xb
+ 1846 001c 3B       		.uleb128 0x3b
+ 1847 001d 0B       		.uleb128 0xb
+ 1848 001e 49       		.uleb128 0x49
+ 1849 001f 13       		.uleb128 0x13
+ 1850 0020 00       		.byte	0x0
+ 1851 0021 00       		.byte	0x0
+ 1852 0022 03       		.uleb128 0x3
+ 1853 0023 24       		.uleb128 0x24
+ 1854 0024 00       		.byte	0x0
+ 1855 0025 0B       		.uleb128 0xb
+ 1856 0026 0B       		.uleb128 0xb
+ 1857 0027 3E       		.uleb128 0x3e
+ 1858 0028 0B       		.uleb128 0xb
+ 1859 0029 03       		.uleb128 0x3
+ 1860 002a 0E       		.uleb128 0xe
+ 1861 002b 00       		.byte	0x0
+ 1862 002c 00       		.byte	0x0
+ 1863 002d 04       		.uleb128 0x4
+ 1864 002e 24       		.uleb128 0x24
+ 1865 002f 00       		.byte	0x0
+ 1866 0030 0B       		.uleb128 0xb
+ 1867 0031 0B       		.uleb128 0xb
+ 1868 0032 3E       		.uleb128 0x3e
+ 1869 0033 0B       		.uleb128 0xb
+ 1870 0034 03       		.uleb128 0x3
+ 1871 0035 08       		.uleb128 0x8
+ 1872 0036 00       		.byte	0x0
+ 1873 0037 00       		.byte	0x0
+ 1874 0038 05       		.uleb128 0x5
+ 1875 0039 2E       		.uleb128 0x2e
+ 1876 003a 01       		.byte	0x1
+ 1877 003b 3F       		.uleb128 0x3f
+ 1878 003c 0C       		.uleb128 0xc
+ 1879 003d 03       		.uleb128 0x3
+ 1880 003e 0E       		.uleb128 0xe
+ 1881 003f 3A       		.uleb128 0x3a
+ 1882 0040 0B       		.uleb128 0xb
+ 1883 0041 3B       		.uleb128 0x3b
+ 1884 0042 0B       		.uleb128 0xb
+ 1885 0043 27       		.uleb128 0x27
+ 1886 0044 0C       		.uleb128 0xc
+ 1887 0045 49       		.uleb128 0x49
+ 1888 0046 13       		.uleb128 0x13
+ 1889 0047 11       		.uleb128 0x11
+ 1890 0048 01       		.uleb128 0x1
+ 1891 0049 12       		.uleb128 0x12
+ 1892 004a 01       		.uleb128 0x1
+ 1893 004b 40       		.uleb128 0x40
+ 1894 004c 06       		.uleb128 0x6
+ 1895 004d 01       		.uleb128 0x1
+ 1896 004e 13       		.uleb128 0x13
+ 1897 004f 00       		.byte	0x0
+ 1898 0050 00       		.byte	0x0
+ 1899 0051 06       		.uleb128 0x6
+ 1900 0052 05       		.uleb128 0x5
+ 1901 0053 00       		.byte	0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 46
+
+
+ 1902 0054 03       		.uleb128 0x3
+ 1903 0055 08       		.uleb128 0x8
+ 1904 0056 3A       		.uleb128 0x3a
+ 1905 0057 0B       		.uleb128 0xb
+ 1906 0058 3B       		.uleb128 0x3b
+ 1907 0059 0B       		.uleb128 0xb
+ 1908 005a 49       		.uleb128 0x49
+ 1909 005b 13       		.uleb128 0x13
+ 1910 005c 02       		.uleb128 0x2
+ 1911 005d 0A       		.uleb128 0xa
+ 1912 005e 00       		.byte	0x0
+ 1913 005f 00       		.byte	0x0
+ 1914 0060 07       		.uleb128 0x7
+ 1915 0061 34       		.uleb128 0x34
+ 1916 0062 00       		.byte	0x0
+ 1917 0063 03       		.uleb128 0x3
+ 1918 0064 0E       		.uleb128 0xe
+ 1919 0065 3A       		.uleb128 0x3a
+ 1920 0066 0B       		.uleb128 0xb
+ 1921 0067 3B       		.uleb128 0x3b
+ 1922 0068 0B       		.uleb128 0xb
+ 1923 0069 49       		.uleb128 0x49
+ 1924 006a 13       		.uleb128 0x13
+ 1925 006b 02       		.uleb128 0x2
+ 1926 006c 0A       		.uleb128 0xa
+ 1927 006d 00       		.byte	0x0
+ 1928 006e 00       		.byte	0x0
+ 1929 006f 08       		.uleb128 0x8
+ 1930 0070 2E       		.uleb128 0x2e
+ 1931 0071 01       		.byte	0x1
+ 1932 0072 3F       		.uleb128 0x3f
+ 1933 0073 0C       		.uleb128 0xc
+ 1934 0074 03       		.uleb128 0x3
+ 1935 0075 0E       		.uleb128 0xe
+ 1936 0076 3A       		.uleb128 0x3a
+ 1937 0077 0B       		.uleb128 0xb
+ 1938 0078 3B       		.uleb128 0x3b
+ 1939 0079 05       		.uleb128 0x5
+ 1940 007a 27       		.uleb128 0x27
+ 1941 007b 0C       		.uleb128 0xc
+ 1942 007c 49       		.uleb128 0x49
+ 1943 007d 13       		.uleb128 0x13
+ 1944 007e 11       		.uleb128 0x11
+ 1945 007f 01       		.uleb128 0x1
+ 1946 0080 12       		.uleb128 0x12
+ 1947 0081 01       		.uleb128 0x1
+ 1948 0082 40       		.uleb128 0x40
+ 1949 0083 06       		.uleb128 0x6
+ 1950 0084 01       		.uleb128 0x1
+ 1951 0085 13       		.uleb128 0x13
+ 1952 0086 00       		.byte	0x0
+ 1953 0087 00       		.byte	0x0
+ 1954 0088 09       		.uleb128 0x9
+ 1955 0089 05       		.uleb128 0x5
+ 1956 008a 00       		.byte	0x0
+ 1957 008b 03       		.uleb128 0x3
+ 1958 008c 08       		.uleb128 0x8
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 47
+
+
+ 1959 008d 3A       		.uleb128 0x3a
+ 1960 008e 0B       		.uleb128 0xb
+ 1961 008f 3B       		.uleb128 0x3b
+ 1962 0090 05       		.uleb128 0x5
+ 1963 0091 49       		.uleb128 0x49
+ 1964 0092 13       		.uleb128 0x13
+ 1965 0093 02       		.uleb128 0x2
+ 1966 0094 0A       		.uleb128 0xa
+ 1967 0095 00       		.byte	0x0
+ 1968 0096 00       		.byte	0x0
+ 1969 0097 0A       		.uleb128 0xa
+ 1970 0098 34       		.uleb128 0x34
+ 1971 0099 00       		.byte	0x0
+ 1972 009a 03       		.uleb128 0x3
+ 1973 009b 08       		.uleb128 0x8
+ 1974 009c 3A       		.uleb128 0x3a
+ 1975 009d 0B       		.uleb128 0xb
+ 1976 009e 3B       		.uleb128 0x3b
+ 1977 009f 05       		.uleb128 0x5
+ 1978 00a0 49       		.uleb128 0x49
+ 1979 00a1 13       		.uleb128 0x13
+ 1980 00a2 02       		.uleb128 0x2
+ 1981 00a3 0A       		.uleb128 0xa
+ 1982 00a4 00       		.byte	0x0
+ 1983 00a5 00       		.byte	0x0
+ 1984 00a6 0B       		.uleb128 0xb
+ 1985 00a7 34       		.uleb128 0x34
+ 1986 00a8 00       		.byte	0x0
+ 1987 00a9 03       		.uleb128 0x3
+ 1988 00aa 0E       		.uleb128 0xe
+ 1989 00ab 3A       		.uleb128 0x3a
+ 1990 00ac 0B       		.uleb128 0xb
+ 1991 00ad 3B       		.uleb128 0x3b
+ 1992 00ae 05       		.uleb128 0x5
+ 1993 00af 49       		.uleb128 0x49
+ 1994 00b0 13       		.uleb128 0x13
+ 1995 00b1 02       		.uleb128 0x2
+ 1996 00b2 0A       		.uleb128 0xa
+ 1997 00b3 00       		.byte	0x0
+ 1998 00b4 00       		.byte	0x0
+ 1999 00b5 0C       		.uleb128 0xc
+ 2000 00b6 2E       		.uleb128 0x2e
+ 2001 00b7 01       		.byte	0x1
+ 2002 00b8 3F       		.uleb128 0x3f
+ 2003 00b9 0C       		.uleb128 0xc
+ 2004 00ba 03       		.uleb128 0x3
+ 2005 00bb 0E       		.uleb128 0xe
+ 2006 00bc 3A       		.uleb128 0x3a
+ 2007 00bd 0B       		.uleb128 0xb
+ 2008 00be 3B       		.uleb128 0x3b
+ 2009 00bf 05       		.uleb128 0x5
+ 2010 00c0 27       		.uleb128 0x27
+ 2011 00c1 0C       		.uleb128 0xc
+ 2012 00c2 49       		.uleb128 0x49
+ 2013 00c3 13       		.uleb128 0x13
+ 2014 00c4 11       		.uleb128 0x11
+ 2015 00c5 01       		.uleb128 0x1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 48
+
+
+ 2016 00c6 12       		.uleb128 0x12
+ 2017 00c7 01       		.uleb128 0x1
+ 2018 00c8 40       		.uleb128 0x40
+ 2019 00c9 06       		.uleb128 0x6
+ 2020 00ca 00       		.byte	0x0
+ 2021 00cb 00       		.byte	0x0
+ 2022 00cc 00       		.byte	0x0
+ 2023              		.section	.debug_pubnames,"",%progbits
+ 2024 0000 2C010000 		.4byte	0x12c
+ 2025 0004 0200     		.2byte	0x2
+ 2026 0006 00000000 		.4byte	.Ldebug_info0
+ 2027 000a 5A040000 		.4byte	0x45a
+ 2028 000e 8C000000 		.4byte	0x8c
+ 2029 0012 41534349 		.ascii	"ASCII_IsAlpha\000"
+ 2029      495F4973 
+ 2029      416C7068 
+ 2029      6100
+ 2030 0020 C4000000 		.4byte	0xc4
+ 2031 0024 41534349 		.ascii	"ASCII_IsAlphaNum\000"
+ 2031      495F4973 
+ 2031      416C7068 
+ 2031      614E756D 
+ 2031      00
+ 2032 0035 FC000000 		.4byte	0xfc
+ 2033 0039 41534349 		.ascii	"ASCII_IsLower\000"
+ 2033      495F4973 
+ 2033      4C6F7765 
+ 2033      7200
+ 2034 0047 34010000 		.4byte	0x134
+ 2035 004b 41534349 		.ascii	"ASCII_IsUpper\000"
+ 2035      495F4973 
+ 2035      55707065 
+ 2035      7200
+ 2036 0059 6C010000 		.4byte	0x16c
+ 2037 005d 41534349 		.ascii	"ASCII_IsDig\000"
+ 2037      495F4973 
+ 2037      44696700 
+ 2038 0069 A7010000 		.4byte	0x1a7
+ 2039 006d 41534349 		.ascii	"ASCII_IsDigOct\000"
+ 2039      495F4973 
+ 2039      4469674F 
+ 2039      637400
+ 2040 007c E2010000 		.4byte	0x1e2
+ 2041 0080 41534349 		.ascii	"ASCII_IsDigHex\000"
+ 2041      495F4973 
+ 2041      44696748 
+ 2041      657800
+ 2042 008f 1D020000 		.4byte	0x21d
+ 2043 0093 41534349 		.ascii	"ASCII_IsBlank\000"
+ 2043      495F4973 
+ 2043      426C616E 
+ 2043      6B00
+ 2044 00a1 58020000 		.4byte	0x258
+ 2045 00a5 41534349 		.ascii	"ASCII_IsSpace\000"
+ 2045      495F4973 
+ 2045      53706163 
+ 2045      6500
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 49
+
+
+ 2046 00b3 93020000 		.4byte	0x293
+ 2047 00b7 41534349 		.ascii	"ASCII_IsPrint\000"
+ 2047      495F4973 
+ 2047      5072696E 
+ 2047      7400
+ 2048 00c5 CE020000 		.4byte	0x2ce
+ 2049 00c9 41534349 		.ascii	"ASCII_IsGraph\000"
+ 2049      495F4973 
+ 2049      47726170 
+ 2049      6800
+ 2050 00d7 09030000 		.4byte	0x309
+ 2051 00db 41534349 		.ascii	"ASCII_IsPunct\000"
+ 2051      495F4973 
+ 2051      50756E63 
+ 2051      7400
+ 2052 00e9 44030000 		.4byte	0x344
+ 2053 00ed 41534349 		.ascii	"ASCII_IsCtrl\000"
+ 2053      495F4973 
+ 2053      4374726C 
+ 2053      00
+ 2054 00fa 7F030000 		.4byte	0x37f
+ 2055 00fe 41534349 		.ascii	"ASCII_ToLower\000"
+ 2055      495F546F 
+ 2055      4C6F7765 
+ 2055      7200
+ 2056 010c BA030000 		.4byte	0x3ba
+ 2057 0110 41534349 		.ascii	"ASCII_ToUpper\000"
+ 2057      495F546F 
+ 2057      55707065 
+ 2057      7200
+ 2058 011e F5030000 		.4byte	0x3f5
+ 2059 0122 41534349 		.ascii	"ASCII_Cmp\000"
+ 2059      495F436D 
+ 2059      7000
+ 2060 012c 00000000 		.4byte	0x0
+ 2061              		.section	.debug_aranges,"",%progbits
+ 2062 0000 94000000 		.4byte	0x94
+ 2063 0004 0200     		.2byte	0x2
+ 2064 0006 00000000 		.4byte	.Ldebug_info0
+ 2065 000a 04       		.byte	0x4
+ 2066 000b 00       		.byte	0x0
+ 2067 000c 0000     		.2byte	0x0
+ 2068 000e 0000     		.2byte	0x0
+ 2069 0010 00000000 		.4byte	.LFB0
+ 2070 0014 3C000000 		.4byte	.LFE0-.LFB0
+ 2071 0018 00000000 		.4byte	.LFB1
+ 2072 001c 48000000 		.4byte	.LFE1-.LFB1
+ 2073 0020 00000000 		.4byte	.LFB2
+ 2074 0024 30000000 		.4byte	.LFE2-.LFB2
+ 2075 0028 00000000 		.4byte	.LFB3
+ 2076 002c 30000000 		.4byte	.LFE3-.LFB3
+ 2077 0030 00000000 		.4byte	.LFB4
+ 2078 0034 30000000 		.4byte	.LFE4-.LFB4
+ 2079 0038 00000000 		.4byte	.LFB5
+ 2080 003c 30000000 		.4byte	.LFE5-.LFB5
+ 2081 0040 00000000 		.4byte	.LFB6
+ 2082 0044 48000000 		.4byte	.LFE6-.LFB6
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 50
+
+
+ 2083 0048 00000000 		.4byte	.LFB7
+ 2084 004c 30000000 		.4byte	.LFE7-.LFB7
+ 2085 0050 00000000 		.4byte	.LFB8
+ 2086 0054 48000000 		.4byte	.LFE8-.LFB8
+ 2087 0058 00000000 		.4byte	.LFB9
+ 2088 005c 30000000 		.4byte	.LFE9-.LFB9
+ 2089 0060 00000000 		.4byte	.LFB10
+ 2090 0064 30000000 		.4byte	.LFE10-.LFB10
+ 2091 0068 00000000 		.4byte	.LFB11
+ 2092 006c 78000000 		.4byte	.LFE11-.LFB11
+ 2093 0070 00000000 		.4byte	.LFB12
+ 2094 0074 38000000 		.4byte	.LFE12-.LFB12
+ 2095 0078 00000000 		.4byte	.LFB13
+ 2096 007c 32000000 		.4byte	.LFE13-.LFB13
+ 2097 0080 00000000 		.4byte	.LFB14
+ 2098 0084 32000000 		.4byte	.LFE14-.LFB14
+ 2099 0088 00000000 		.4byte	.LFB15
+ 2100 008c 46000000 		.4byte	.LFE15-.LFB15
+ 2101 0090 00000000 		.4byte	0x0
+ 2102 0094 00000000 		.4byte	0x0
+ 2103              		.section	.debug_ranges,"",%progbits
+ 2104              	.Ldebug_ranges0:
+ 2105 0000 00000000 		.4byte	.Ltext0
+ 2106 0004 00000000 		.4byte	.Letext0
+ 2107 0008 00000000 		.4byte	.LFB0
+ 2108 000c 3C000000 		.4byte	.LFE0
+ 2109 0010 00000000 		.4byte	.LFB1
+ 2110 0014 48000000 		.4byte	.LFE1
+ 2111 0018 00000000 		.4byte	.LFB2
+ 2112 001c 30000000 		.4byte	.LFE2
+ 2113 0020 00000000 		.4byte	.LFB3
+ 2114 0024 30000000 		.4byte	.LFE3
+ 2115 0028 00000000 		.4byte	.LFB4
+ 2116 002c 30000000 		.4byte	.LFE4
+ 2117 0030 00000000 		.4byte	.LFB5
+ 2118 0034 30000000 		.4byte	.LFE5
+ 2119 0038 00000000 		.4byte	.LFB6
+ 2120 003c 48000000 		.4byte	.LFE6
+ 2121 0040 00000000 		.4byte	.LFB7
+ 2122 0044 30000000 		.4byte	.LFE7
+ 2123 0048 00000000 		.4byte	.LFB8
+ 2124 004c 48000000 		.4byte	.LFE8
+ 2125 0050 00000000 		.4byte	.LFB9
+ 2126 0054 30000000 		.4byte	.LFE9
+ 2127 0058 00000000 		.4byte	.LFB10
+ 2128 005c 30000000 		.4byte	.LFE10
+ 2129 0060 00000000 		.4byte	.LFB11
+ 2130 0064 78000000 		.4byte	.LFE11
+ 2131 0068 00000000 		.4byte	.LFB12
+ 2132 006c 38000000 		.4byte	.LFE12
+ 2133 0070 00000000 		.4byte	.LFB13
+ 2134 0074 32000000 		.4byte	.LFE13
+ 2135 0078 00000000 		.4byte	.LFB14
+ 2136 007c 32000000 		.4byte	.LFE14
+ 2137 0080 00000000 		.4byte	.LFB15
+ 2138 0084 46000000 		.4byte	.LFE15
+ 2139 0088 00000000 		.4byte	0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 51
+
+
+ 2140 008c 00000000 		.4byte	0x0
+ 2141              		.section	.debug_str,"MS",%progbits,1
+ 2142              	.LASF19:
+ 2143 0000 75707065 		.ascii	"upper\000"
+ 2143      7200
+ 2144              	.LASF18:
+ 2145 0006 41534349 		.ascii	"ASCII_IsUpper\000"
+ 2145      495F4973 
+ 2145      55707065 
+ 2145      7200
+ 2146              	.LASF6:
+ 2147 0014 73686F72 		.ascii	"short int\000"
+ 2147      7420696E 
+ 2147      7400
+ 2148              	.LASF27:
+ 2149 001e 41534349 		.ascii	"ASCII_IsSpace\000"
+ 2149      495F4973 
+ 2149      53706163 
+ 2149      6500
+ 2150              	.LASF20:
+ 2151 002c 41534349 		.ascii	"ASCII_IsDig\000"
+ 2151      495F4973 
+ 2151      44696700 
+ 2152              	.LASF40:
+ 2153 0038 63325F75 		.ascii	"c2_upper\000"
+ 2153      70706572 
+ 2153      00
+ 2154              	.LASF14:
+ 2155 0041 616C7068 		.ascii	"alpha\000"
+ 2155      6100
+ 2156              	.LASF29:
+ 2157 0047 41534349 		.ascii	"ASCII_IsPrint\000"
+ 2157      495F4973 
+ 2157      5072696E 
+ 2157      7400
+ 2158              	.LASF35:
+ 2159 0055 41534349 		.ascii	"ASCII_IsCtrl\000"
+ 2159      495F4973 
+ 2159      4374726C 
+ 2159      00
+ 2160              	.LASF10:
+ 2161 0062 666C6F61 		.ascii	"float\000"
+ 2161      7400
+ 2162              	.LASF31:
+ 2163 0068 41534349 		.ascii	"ASCII_IsGraph\000"
+ 2163      495F4973 
+ 2163      47726170 
+ 2163      6800
+ 2164              	.LASF33:
+ 2165 0076 41534349 		.ascii	"ASCII_IsPunct\000"
+ 2165      495F4973 
+ 2165      50756E63 
+ 2165      7400
+ 2166              	.LASF17:
+ 2167 0084 6C6F7765 		.ascii	"lower\000"
+ 2167      7200
+ 2168              	.LASF9:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 52
+
+
+ 2169 008a 6C6F6E67 		.ascii	"long long int\000"
+ 2169      206C6F6E 
+ 2169      6720696E 
+ 2169      7400
+ 2170              	.LASF22:
+ 2171 0098 6469675F 		.ascii	"dig_oct\000"
+ 2171      6F637400 
+ 2172              	.LASF37:
+ 2173 00a0 41534349 		.ascii	"ASCII_ToLower\000"
+ 2173      495F546F 
+ 2173      4C6F7765 
+ 2173      7200
+ 2174              	.LASF1:
+ 2175 00ae 4350555F 		.ascii	"CPU_BOOLEAN\000"
+ 2175      424F4F4C 
+ 2175      45414E00 
+ 2176              	.LASF36:
+ 2177 00ba 6374726C 		.ascii	"ctrl\000"
+ 2177      00
+ 2178              	.LASF25:
+ 2179 00bf 41534349 		.ascii	"ASCII_IsBlank\000"
+ 2179      495F4973 
+ 2179      426C616E 
+ 2179      6B00
+ 2180              	.LASF3:
+ 2181 00cd 756E7369 		.ascii	"unsigned char\000"
+ 2181      676E6564 
+ 2181      20636861 
+ 2181      7200
+ 2182              	.LASF28:
+ 2183 00db 73706163 		.ascii	"space\000"
+ 2183      6500
+ 2184              	.LASF4:
+ 2185 00e1 7369676E 		.ascii	"signed char\000"
+ 2185      65642063 
+ 2185      68617200 
+ 2186              	.LASF13:
+ 2187 00ed 41534349 		.ascii	"ASCII_IsAlphaNum\000"
+ 2187      495F4973 
+ 2187      416C7068 
+ 2187      614E756D 
+ 2187      00
+ 2188              	.LASF8:
+ 2189 00fe 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2189      206C6F6E 
+ 2189      6720756E 
+ 2189      7369676E 
+ 2189      65642069 
+ 2190              	.LASF30:
+ 2191 0115 7072696E 		.ascii	"print\000"
+ 2191      7400
+ 2192              	.LASF0:
+ 2193 011b 4350555F 		.ascii	"CPU_CHAR\000"
+ 2193      43484152 
+ 2193      00
+ 2194              	.LASF7:
+ 2195 0124 756E7369 		.ascii	"unsigned int\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 53
+
+
+ 2195      676E6564 
+ 2195      20696E74 
+ 2195      00
+ 2196              	.LASF42:
+ 2197 0131 433A5C4D 		.ascii	"C:\\Micrium\\Software\\uC-LIB\\lib_ascii.c\000"
+ 2197      69637269 
+ 2197      756D5C53 
+ 2197      6F667477 
+ 2197      6172655C 
+ 2198              	.LASF38:
+ 2199 0158 41534349 		.ascii	"ASCII_ToUpper\000"
+ 2199      495F546F 
+ 2199      55707065 
+ 2199      7200
+ 2200              	.LASF5:
+ 2201 0166 73686F72 		.ascii	"short unsigned int\000"
+ 2201      7420756E 
+ 2201      7369676E 
+ 2201      65642069 
+ 2201      6E7400
+ 2202              	.LASF2:
+ 2203 0179 63686172 		.ascii	"char\000"
+ 2203      00
+ 2204              	.LASF39:
+ 2205 017e 63315F75 		.ascii	"c1_upper\000"
+ 2205      70706572 
+ 2205      00
+ 2206              	.LASF43:
+ 2207 0187 433A5C55 		.ascii	"C:\\Users\\daniel01\\Desktop\\CY8CKIT-050_uCOS-III\\"
+ 2207      73657273 
+ 2207      5C64616E 
+ 2207      69656C30 
+ 2207      315C4465 
+ 2208 01b6 43593843 		.ascii	"CY8CKIT-050_uCOS-III\\Micrium\\Software\\EvalBoards"
+ 2208      4B49542D 
+ 2208      3035305F 
+ 2208      75434F53 
+ 2208      2D494949 
+ 2209 01e6 5C437970 		.ascii	"\\Cypress\\CY8CKIT-050\\PSoC\\uCOS-III-Probe\\uCOS-"
+ 2209      72657373 
+ 2209      5C435938 
+ 2209      434B4954 
+ 2209      2D303530 
+ 2210 0214 4949492D 		.ascii	"III-Probe.cydsn\000"
+ 2210      50726F62 
+ 2210      652E6379 
+ 2210      64736E00 
+ 2211              	.LASF24:
+ 2212 0224 6469675F 		.ascii	"dig_hex\000"
+ 2212      68657800 
+ 2213              	.LASF12:
+ 2214 022c 41534349 		.ascii	"ASCII_IsAlpha\000"
+ 2214      495F4973 
+ 2214      416C7068 
+ 2214      6100
+ 2215              	.LASF11:
+ 2216 023a 646F7562 		.ascii	"double\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccQNbRx9.s 			page 54
+
+
+ 2216      6C6500
+ 2217              	.LASF32:
+ 2218 0241 67726170 		.ascii	"graph\000"
+ 2218      6800
+ 2219              	.LASF34:
+ 2220 0247 70756E63 		.ascii	"punct\000"
+ 2220      7400
+ 2221              	.LASF44:
+ 2222 024d 41534349 		.ascii	"ASCII_Cmp\000"
+ 2222      495F436D 
+ 2222      7000
+ 2223              	.LASF15:
+ 2224 0257 616C7068 		.ascii	"alpha_num\000"
+ 2224      615F6E75 
+ 2224      6D00
+ 2225              	.LASF16:
+ 2226 0261 41534349 		.ascii	"ASCII_IsLower\000"
+ 2226      495F4973 
+ 2226      4C6F7765 
+ 2226      7200
+ 2227              	.LASF21:
+ 2228 026f 41534349 		.ascii	"ASCII_IsDigOct\000"
+ 2228      495F4973 
+ 2228      4469674F 
+ 2228      637400
+ 2229              	.LASF23:
+ 2230 027e 41534349 		.ascii	"ASCII_IsDigHex\000"
+ 2230      495F4973 
+ 2230      44696748 
+ 2230      657800
+ 2231              	.LASF41:
+ 2232 028d 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 2232      4320342E 
+ 2232      342E3100 
+ 2233              	.LASF26:
+ 2234 0299 626C616E 		.ascii	"blank\000"
+ 2234      6B00
+ 2235              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

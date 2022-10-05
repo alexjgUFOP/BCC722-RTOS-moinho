@@ -1,0 +1,4903 @@
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"os_stat.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.OSStatReset,"ax",%progbits
+  20              		.align	2
+  21              		.global	OSStatReset
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	OSStatReset, %function
+  25              	OSStatReset:
+  26              	.LFB1:
+  27              		.file 1 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source\\os_stat.c"
+   1:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** /*
+   2:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** ***************************************************************************************************
+   3:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                                                      uC/OS-III
+   4:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                                                 The Real-Time Kernel
+   5:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+   6:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                                  (c) Copyright 2009-2012; Micrium, Inc.; Weston, FL
+   7:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                           All rights reserved.  Protected by international copyright laws.
+   8:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+   9:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                                                  STATISTICS MODULE
+  10:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+  11:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * File    : OS_STAT.C
+  12:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * By      : JJL
+  13:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Version : V3.03.01
+  14:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+  15:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * LICENSING TERMS:
+  16:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * ---------------
+  17:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *           uC/OS-III is provided in source form for FREE short-term evaluation, for educational us
+  18:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *           for peaceful research.  If you plan or intend to use uC/OS-III in a commercial applicat
+  19:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *           product then, you need to contact Micrium to properly license uC/OS-III for its use in 
+  20:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *           application/product.   We provide ALL the source code for your convenience and to help 
+  21:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *           experience uC/OS-III.  The fact that the source is provided does NOT mean that you can 
+  22:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *           it commercially without paying a licensing fee.
+  23:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+  24:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *           Knowledge of the source code may NOT be used to develop a similar product.
+  25:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+  26:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *           Please help us continue to provide the embedded community with the finest software avai
+  27:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *           Your honesty is greatly appreciated.
+  28:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+  29:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *           You can contact us at www.micrium.com, or by phone at +1 (954) 217-2036.
+  30:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** ***************************************************************************************************
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 2
+
+
+  31:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** */
+  32:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+  33:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #define  MICRIUM_SOURCE
+  34:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #include <os.h>
+  35:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+  36:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #ifdef VSC_INCLUDE_SOURCE_FILE_NAMES
+  37:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** const  CPU_CHAR  *os_stat__c = "$Id: $";
+  38:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+  39:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+  40:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+  41:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_STAT_TASK_EN > 0u
+  42:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+  43:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** /*
+  44:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** ***************************************************************************************************
+  45:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                                                   RESET STATISTICS
+  46:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+  47:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Description: This function is called by your application to reset the statistics.
+  48:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+  49:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Argument(s): p_err      is a pointer to a variable that will contain an error code returned by th
+  50:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+  51:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                             OS_ERR_NONE
+  52:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+  53:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Returns    : none
+  54:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** ***************************************************************************************************
+  55:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** */
+  56:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+  57:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** void  OSStatReset (OS_ERR  *p_err)
+  58:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** {
+  28              		.loc 1 58 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 16
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 7, -8
+  35              		.cfi_offset 14, -4
+  36 0002 84B0     		sub	sp, sp, #16
+  37              		.cfi_def_cfa_offset 24
+  38 0004 00AF     		add	r7, sp, #0
+  39              		.cfi_def_cfa_register 7
+  40 0006 7860     		str	r0, [r7, #4]
+  59:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if (OS_CFG_DBG_EN > 0u)
+  60:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_TCB      *p_tcb;
+  61:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if (OS_MSG_EN > 0u)
+  62:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_MSG_Q    *p_msg_q;
+  63:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+  64:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if (OS_CFG_Q_EN > 0u)
+  65:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_Q        *p_q;
+  66:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+  67:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+  68:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_SR_ALLOC();
+  41              		.loc 1 68 0
+  42 0008 0023     		movs	r3, #0
+  43 000a BB60     		str	r3, [r7, #8]
+  69:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+  70:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+  71:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 3
+
+
+  72:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #ifdef OS_SAFETY_CRITICAL
+  73:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     if (p_err == (OS_ERR *)0) {
+  74:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+  75:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         return;
+  76:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+  77:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+  78:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+  79:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_CRITICAL_ENTER();
+  44              		.loc 1 79 0
+  45 000c FFF7FEFF 		bl	CPU_SR_Save
+  46 0010 0300     		movs	r3, r0
+  47 0012 BB60     		str	r3, [r7, #8]
+  48 0014 FFF7FEFF 		bl	CPU_IntDisMeasStart
+  80:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_ISR_POST_DEFERRED_EN > 0u
+  81:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSIntQTaskTimeMax     = (CPU_TS    )0;                  /* Reset the task execution times      
+  82:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSIntQNbrEntriesMax   = (OS_OBJ_QTY)0;                  /* Reset the queue maximum number of en
+  83:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+  84:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+  85:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_STAT_TASK_EN > 0u
+  86:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSStatTaskCPUUsageMax = 0u;
+  49              		.loc 1 86 0
+  50 0018 224B     		ldr	r3, .L4
+  51 001a 0022     		movs	r2, #0
+  52 001c 1A80     		strh	r2, [r3]
+  87:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSStatTaskTimeMax     = (CPU_TS)0;
+  53              		.loc 1 87 0
+  54 001e 224B     		ldr	r3, .L4+4
+  55 0020 0022     		movs	r2, #0
+  56 0022 1A60     		str	r2, [r3]
+  88:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+  89:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+  90:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSTickTaskTimeMax     = (CPU_TS)0;
+  57              		.loc 1 90 0
+  58 0024 214B     		ldr	r3, .L4+8
+  59 0026 0022     		movs	r2, #0
+  60 0028 1A60     		str	r2, [r3]
+  91:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+  92:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_TMR_EN > 0u
+  93:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSTmrTaskTimeMax      = (CPU_TS)0;
+  61              		.loc 1 93 0
+  62 002a 214B     		ldr	r3, .L4+12
+  63 002c 0022     		movs	r2, #0
+  64 002e 1A60     		str	r2, [r3]
+  94:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+  95:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+  96:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #ifdef CPU_CFG_INT_DIS_MEAS_EN
+  97:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSIntDisTimeMax       = (CPU_TS)0;                      /* Reset the maximum interrupt disable 
+  65              		.loc 1 97 0
+  66 0030 204B     		ldr	r3, .L4+16
+  67 0032 0022     		movs	r2, #0
+  68 0034 1A60     		str	r2, [r3]
+  98:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+  99:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 100:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_SCHED_LOCK_TIME_MEAS_EN > 0u
+ 101:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSSchedLockTimeMax    = (CPU_TS)0;                      /* Reset the maximum scheduler lock tim
+ 102:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 103:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 4
+
+
+ 104:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_MSG_EN > 0u
+ 105:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSMsgPool.NbrUsedMax  = 0u;
+ 106:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 107:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_CRITICAL_EXIT();
+  69              		.loc 1 107 0
+  70 0036 FFF7FEFF 		bl	CPU_IntDisMeasStop
+  71 003a BB68     		ldr	r3, [r7, #8]
+  72 003c 1800     		movs	r0, r3
+  73 003e FFF7FEFF 		bl	CPU_SR_Restore
+ 108:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 109:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_DBG_EN > 0u
+ 110:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_CRITICAL_ENTER();
+  74              		.loc 1 110 0
+  75 0042 FFF7FEFF 		bl	CPU_SR_Save
+  76 0046 0300     		movs	r3, r0
+  77 0048 BB60     		str	r3, [r7, #8]
+  78 004a FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 111:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     p_tcb = OSTaskDbgListPtr;
+  79              		.loc 1 111 0
+  80 004e 1A4B     		ldr	r3, .L4+20
+  81 0050 1B68     		ldr	r3, [r3]
+  82 0052 FB60     		str	r3, [r7, #12]
+ 112:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_CRITICAL_EXIT();
+  83              		.loc 1 112 0
+  84 0054 FFF7FEFF 		bl	CPU_IntDisMeasStop
+  85 0058 BB68     		ldr	r3, [r7, #8]
+  86 005a 1800     		movs	r0, r3
+  87 005c FFF7FEFF 		bl	CPU_SR_Restore
+ 113:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     while (p_tcb != (OS_TCB *)0) {                          /* Reset per-Task statistics           
+  88              		.loc 1 113 0
+  89 0060 11E0     		b	.L2
+  90              	.L3:
+ 114:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         CPU_CRITICAL_ENTER();
+  91              		.loc 1 114 0
+  92 0062 FFF7FEFF 		bl	CPU_SR_Save
+  93 0066 0300     		movs	r3, r0
+  94 0068 BB60     		str	r3, [r7, #8]
+  95 006a FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 115:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 116:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #ifdef CPU_CFG_INT_DIS_MEAS_EN
+ 117:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_tcb->IntDisTimeMax    = (CPU_TS      )0;
+  96              		.loc 1 117 0
+  97 006e FB68     		ldr	r3, [r7, #12]
+  98 0070 0022     		movs	r2, #0
+  99 0072 DA66     		str	r2, [r3, #108]
+ 118:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 119:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 120:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_SCHED_LOCK_TIME_MEAS_EN > 0u
+ 121:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_tcb->SchedLockTimeMax = (CPU_TS      )0;
+ 122:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 123:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 124:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_TASK_PROFILE_EN > 0u
+ 125:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_TASK_Q_EN > 0u
+ 126:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_tcb->MsgQPendTimeMax  = (CPU_TS      )0;
+ 127:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 128:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_tcb->SemPendTimeMax   = (CPU_TS      )0;
+ 129:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_tcb->CtxSwCtr         = (OS_CTR      )0;
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 5
+
+
+ 130:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_tcb->CPUUsage         = (OS_CPU_USAGE)0;
+ 131:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_tcb->CPUUsageMax      = (OS_CPU_USAGE)0;
+ 132:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_tcb->CyclesTotal      = (OS_CYCLES   )0;
+ 133:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_tcb->CyclesTotalPrev  = (OS_CYCLES   )0;
+ 134:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_tcb->CyclesStart      =  OS_TS_GET();
+ 135:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 136:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 137:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_TASK_Q_EN > 0u
+ 138:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_msg_q                 = &p_tcb->MsgQ;
+ 139:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_msg_q->NbrEntriesMax  = (OS_MSG_QTY  )0;
+ 140:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 141:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_tcb                   = p_tcb->DbgNextPtr;
+ 100              		.loc 1 141 0
+ 101 0074 FB68     		ldr	r3, [r7, #12]
+ 102 0076 5B6F     		ldr	r3, [r3, #116]
+ 103 0078 FB60     		str	r3, [r7, #12]
+ 142:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         CPU_CRITICAL_EXIT();
+ 104              		.loc 1 142 0
+ 105 007a FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 106 007e BB68     		ldr	r3, [r7, #8]
+ 107 0080 1800     		movs	r0, r3
+ 108 0082 FFF7FEFF 		bl	CPU_SR_Restore
+ 109              	.L2:
+ 113:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         CPU_CRITICAL_ENTER();
+ 110              		.loc 1 113 0
+ 111 0086 FB68     		ldr	r3, [r7, #12]
+ 112 0088 002B     		cmp	r3, #0
+ 113 008a EAD1     		bne	.L3
+ 143:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 144:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 145:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 146:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if (OS_CFG_Q_EN > 0u) && (OS_CFG_DBG_EN > 0u)
+ 147:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_CRITICAL_ENTER();
+ 148:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     p_q = OSQDbgListPtr;
+ 149:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_CRITICAL_EXIT();
+ 150:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     while (p_q != (OS_Q *)0) {                              /* Reset message queues statistics     
+ 151:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         CPU_CRITICAL_ENTER();
+ 152:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_msg_q                = &p_q->MsgQ;
+ 153:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_msg_q->NbrEntriesMax = (OS_MSG_QTY)0;
+ 154:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_q                    = p_q->DbgNextPtr;
+ 155:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         CPU_CRITICAL_EXIT();
+ 156:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 157:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 158:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 159:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_TickListResetPeak();                                 /* Reset tick wheel statistics         
+ 114              		.loc 1 159 0
+ 115 008c FFF7FEFF 		bl	OS_TickListResetPeak
+ 160:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 161:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_TMR_EN > 0u
+ 162:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_TmrResetPeak();
+ 116              		.loc 1 162 0
+ 117 0090 FFF7FEFF 		bl	OS_TmrResetPeak
+ 163:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 164:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 165:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 166:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****    *p_err = OS_ERR_NONE;
+ 118              		.loc 1 166 0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 6
+
+
+ 119 0094 7B68     		ldr	r3, [r7, #4]
+ 120 0096 0022     		movs	r2, #0
+ 121 0098 1A80     		strh	r2, [r3]
+ 167:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** }
+ 122              		.loc 1 167 0
+ 123 009a C046     		nop
+ 124 009c BD46     		mov	sp, r7
+ 125 009e 04B0     		add	sp, sp, #16
+ 126              		@ sp needed
+ 127 00a0 80BD     		pop	{r7, pc}
+ 128              	.L5:
+ 129 00a2 C046     		.align	2
+ 130              	.L4:
+ 131 00a4 00000000 		.word	OSStatTaskCPUUsageMax
+ 132 00a8 00000000 		.word	OSStatTaskTimeMax
+ 133 00ac 00000000 		.word	OSTickTaskTimeMax
+ 134 00b0 00000000 		.word	OSTmrTaskTimeMax
+ 135 00b4 00000000 		.word	OSIntDisTimeMax
+ 136 00b8 00000000 		.word	OSTaskDbgListPtr
+ 137              		.cfi_endproc
+ 138              	.LFE1:
+ 139              		.size	OSStatReset, .-OSStatReset
+ 140              		.global	__aeabi_uidiv
+ 141              		.section	.text.OSStatTaskCPUUsageInit,"ax",%progbits
+ 142              		.align	2
+ 143              		.global	OSStatTaskCPUUsageInit
+ 144              		.code	16
+ 145              		.thumb_func
+ 146              		.type	OSStatTaskCPUUsageInit, %function
+ 147              	OSStatTaskCPUUsageInit:
+ 148              	.LFB2:
+ 168:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 169:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** /*$PAGE*/
+ 170:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** /*
+ 171:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** ***************************************************************************************************
+ 172:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                                                DETERMINE THE CPU CAPACITY
+ 173:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 174:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Description: This function is called by your application to establish CPU usage by first determin
+ 175:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *              counter would count to in 1/10 second if no other tasks were to execute during that 
+ 176:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *              then determined by a low priority task which keeps track of this 32-bit counter ever
+ 177:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *              time, with other tasks running.  CPU usage is determined by:
+ 178:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 179:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                                             OS_Stat_IdleCtr
+ 180:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                 CPU Usage (%) = 100 * (1 - ------------------)
+ 181:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                                            OS_Stat_IdleCtrMax
+ 182:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 183:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Argument(s): p_err      is a pointer to a variable that will contain an error code returned by th
+ 184:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 185:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                             OS_ERR_NONE
+ 186:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 187:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Returns    : none
+ 188:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** ***************************************************************************************************
+ 189:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** */
+ 190:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 191:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** void  OSStatTaskCPUUsageInit (OS_ERR  *p_err)
+ 192:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** {
+ 149              		.loc 1 192 0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 7
+
+
+ 150              		.cfi_startproc
+ 151              		@ args = 0, pretend = 0, frame = 24
+ 152              		@ frame_needed = 1, uses_anonymous_args = 0
+ 153 0000 80B5     		push	{r7, lr}
+ 154              		.cfi_def_cfa_offset 8
+ 155              		.cfi_offset 7, -8
+ 156              		.cfi_offset 14, -4
+ 157 0002 86B0     		sub	sp, sp, #24
+ 158              		.cfi_def_cfa_offset 32
+ 159 0004 00AF     		add	r7, sp, #0
+ 160              		.cfi_def_cfa_register 7
+ 161 0006 7860     		str	r0, [r7, #4]
+ 193:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_ERR   err;
+ 194:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_TICK  dly;
+ 195:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_SR_ALLOC();
+ 162              		.loc 1 195 0
+ 163 0008 0023     		movs	r3, #0
+ 164 000a 3B61     		str	r3, [r7, #16]
+ 196:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 197:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 198:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 199:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #ifdef OS_SAFETY_CRITICAL
+ 200:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     if (p_err == (OS_ERR *)0) {
+ 201:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 202:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         return;
+ 203:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 204:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 205:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 206:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if (OS_CFG_TMR_EN > 0u)
+ 207:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSTaskSuspend(&OSTmrTaskTCB, &err);
+ 165              		.loc 1 207 0
+ 166 000c 0E23     		movs	r3, #14
+ 167 000e FA18     		adds	r2, r7, r3
+ 168 0010 414B     		ldr	r3, .L14
+ 169 0012 1100     		movs	r1, r2
+ 170 0014 1800     		movs	r0, r3
+ 171 0016 FFF7FEFF 		bl	OSTaskSuspend
+ 208:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     if (err != OS_ERR_NONE) {
+ 172              		.loc 1 208 0
+ 173 001a 0E23     		movs	r3, #14
+ 174 001c FB18     		adds	r3, r7, r3
+ 175 001e 1B88     		ldrh	r3, [r3]
+ 176 0020 002B     		cmp	r3, #0
+ 177 0022 05D0     		beq	.L7
+ 209:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****        *p_err = err;
+ 178              		.loc 1 209 0
+ 179 0024 0E23     		movs	r3, #14
+ 180 0026 FB18     		adds	r3, r7, r3
+ 181 0028 1A88     		ldrh	r2, [r3]
+ 182 002a 7B68     		ldr	r3, [r7, #4]
+ 183 002c 1A80     		strh	r2, [r3]
+ 210:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         return;
+ 184              		.loc 1 210 0
+ 185 002e 6FE0     		b	.L6
+ 186              	.L7:
+ 211:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 212:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 8
+
+
+ 213:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 214:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSTimeDly((OS_TICK )2,                                  /* Synchronize with clock tick         
+ 187              		.loc 1 214 0
+ 188 0030 0E23     		movs	r3, #14
+ 189 0032 FB18     		adds	r3, r7, r3
+ 190 0034 1A00     		movs	r2, r3
+ 191 0036 0021     		movs	r1, #0
+ 192 0038 0220     		movs	r0, #2
+ 193 003a FFF7FEFF 		bl	OSTimeDly
+ 215:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****               (OS_OPT  )OS_OPT_TIME_DLY,
+ 216:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****               (OS_ERR *)&err);
+ 217:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     if (err != OS_ERR_NONE) {
+ 194              		.loc 1 217 0
+ 195 003e 0E23     		movs	r3, #14
+ 196 0040 FB18     		adds	r3, r7, r3
+ 197 0042 1B88     		ldrh	r3, [r3]
+ 198 0044 002B     		cmp	r3, #0
+ 199 0046 05D0     		beq	.L9
+ 218:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****        *p_err = err;
+ 200              		.loc 1 218 0
+ 201 0048 0E23     		movs	r3, #14
+ 202 004a FB18     		adds	r3, r7, r3
+ 203 004c 1A88     		ldrh	r2, [r3]
+ 204 004e 7B68     		ldr	r3, [r7, #4]
+ 205 0050 1A80     		strh	r2, [r3]
+ 219:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         return;
+ 206              		.loc 1 219 0
+ 207 0052 5DE0     		b	.L6
+ 208              	.L9:
+ 220:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 221:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_CRITICAL_ENTER();
+ 209              		.loc 1 221 0
+ 210 0054 FFF7FEFF 		bl	CPU_SR_Save
+ 211 0058 0300     		movs	r3, r0
+ 212 005a 3B61     		str	r3, [r7, #16]
+ 213 005c FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 222:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSStatTaskCtr = (OS_TICK)0;                             /* Clear idle counter                  
+ 214              		.loc 1 222 0
+ 215 0060 2E4B     		ldr	r3, .L14+4
+ 216 0062 0022     		movs	r2, #0
+ 217 0064 1A60     		str	r2, [r3]
+ 223:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_CRITICAL_EXIT();
+ 218              		.loc 1 223 0
+ 219 0066 FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 220 006a 3B69     		ldr	r3, [r7, #16]
+ 221 006c 1800     		movs	r0, r3
+ 222 006e FFF7FEFF 		bl	CPU_SR_Restore
+ 224:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 225:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     dly = (OS_TICK)0;
+ 223              		.loc 1 225 0
+ 224 0072 0023     		movs	r3, #0
+ 225 0074 7B61     		str	r3, [r7, #20]
+ 226:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     if (OSCfg_TickRate_Hz > OSCfg_StatTaskRate_Hz) {
+ 226              		.loc 1 226 0
+ 227 0076 2A4B     		ldr	r3, .L14+8
+ 228 0078 1A68     		ldr	r2, [r3]
+ 229 007a 2A4B     		ldr	r3, .L14+12
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 9
+
+
+ 230 007c 1B68     		ldr	r3, [r3]
+ 231 007e 9A42     		cmp	r2, r3
+ 232 0080 09D9     		bls	.L10
+ 227:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         dly = (OS_TICK)(OSCfg_TickRate_Hz / OSCfg_StatTaskRate_Hz);
+ 233              		.loc 1 227 0
+ 234 0082 274B     		ldr	r3, .L14+8
+ 235 0084 1A68     		ldr	r2, [r3]
+ 236 0086 274B     		ldr	r3, .L14+12
+ 237 0088 1B68     		ldr	r3, [r3]
+ 238 008a 1900     		movs	r1, r3
+ 239 008c 1000     		movs	r0, r2
+ 240 008e FFF7FEFF 		bl	__aeabi_uidiv
+ 241 0092 0300     		movs	r3, r0
+ 242 0094 7B61     		str	r3, [r7, #20]
+ 243              	.L10:
+ 228:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 229:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     if (dly == (OS_TICK)0) {
+ 244              		.loc 1 229 0
+ 245 0096 7B69     		ldr	r3, [r7, #20]
+ 246 0098 002B     		cmp	r3, #0
+ 247 009a 07D1     		bne	.L11
+ 230:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         dly =  (OS_TICK)(OSCfg_TickRate_Hz / (OS_RATE_HZ)10);
+ 248              		.loc 1 230 0
+ 249 009c 204B     		ldr	r3, .L14+8
+ 250 009e 1B68     		ldr	r3, [r3]
+ 251 00a0 0A21     		movs	r1, #10
+ 252 00a2 1800     		movs	r0, r3
+ 253 00a4 FFF7FEFF 		bl	__aeabi_uidiv
+ 254 00a8 0300     		movs	r3, r0
+ 255 00aa 7B61     		str	r3, [r7, #20]
+ 256              	.L11:
+ 231:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 232:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 233:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSTimeDly(dly,                                          /* Determine MAX. idle counter value   
+ 257              		.loc 1 233 0
+ 258 00ac 0E23     		movs	r3, #14
+ 259 00ae FA18     		adds	r2, r7, r3
+ 260 00b0 7B69     		ldr	r3, [r7, #20]
+ 261 00b2 0021     		movs	r1, #0
+ 262 00b4 1800     		movs	r0, r3
+ 263 00b6 FFF7FEFF 		bl	OSTimeDly
+ 234:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****               OS_OPT_TIME_DLY,
+ 235:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****               &err);
+ 236:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 237:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if (OS_CFG_TMR_EN > 0u)
+ 238:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSTaskResume(&OSTmrTaskTCB, &err);
+ 264              		.loc 1 238 0
+ 265 00ba 0E23     		movs	r3, #14
+ 266 00bc FA18     		adds	r2, r7, r3
+ 267 00be 164B     		ldr	r3, .L14
+ 268 00c0 1100     		movs	r1, r2
+ 269 00c2 1800     		movs	r0, r3
+ 270 00c4 FFF7FEFF 		bl	OSTaskResume
+ 239:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     if (err != OS_ERR_NONE) {
+ 271              		.loc 1 239 0
+ 272 00c8 0E23     		movs	r3, #14
+ 273 00ca FB18     		adds	r3, r7, r3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 10
+
+
+ 274 00cc 1B88     		ldrh	r3, [r3]
+ 275 00ce 002B     		cmp	r3, #0
+ 276 00d0 05D0     		beq	.L12
+ 240:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****        *p_err = err;
+ 277              		.loc 1 240 0
+ 278 00d2 0E23     		movs	r3, #14
+ 279 00d4 FB18     		adds	r3, r7, r3
+ 280 00d6 1A88     		ldrh	r2, [r3]
+ 281 00d8 7B68     		ldr	r3, [r7, #4]
+ 282 00da 1A80     		strh	r2, [r3]
+ 241:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         return;
+ 283              		.loc 1 241 0
+ 284 00dc 18E0     		b	.L6
+ 285              	.L12:
+ 242:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 243:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 244:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 245:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_CRITICAL_ENTER();
+ 286              		.loc 1 245 0
+ 287 00de FFF7FEFF 		bl	CPU_SR_Save
+ 288 00e2 0300     		movs	r3, r0
+ 289 00e4 3B61     		str	r3, [r7, #16]
+ 290 00e6 FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 246:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSStatTaskTimeMax = (CPU_TS)0;
+ 291              		.loc 1 246 0
+ 292 00ea 0F4B     		ldr	r3, .L14+16
+ 293 00ec 0022     		movs	r2, #0
+ 294 00ee 1A60     		str	r2, [r3]
+ 247:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 248:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSStatTaskCtrMax  = OSStatTaskCtr;                      /* Store maximum idle counter count    
+ 295              		.loc 1 248 0
+ 296 00f0 0A4B     		ldr	r3, .L14+4
+ 297 00f2 1A68     		ldr	r2, [r3]
+ 298 00f4 0D4B     		ldr	r3, .L14+20
+ 299 00f6 1A60     		str	r2, [r3]
+ 249:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSStatTaskRdy     = OS_STATE_RDY;
+ 300              		.loc 1 249 0
+ 301 00f8 0D4B     		ldr	r3, .L14+24
+ 302 00fa 0122     		movs	r2, #1
+ 303 00fc 1A70     		strb	r2, [r3]
+ 250:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_CRITICAL_EXIT();
+ 304              		.loc 1 250 0
+ 305 00fe FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 306 0102 3B69     		ldr	r3, [r7, #16]
+ 307 0104 1800     		movs	r0, r3
+ 308 0106 FFF7FEFF 		bl	CPU_SR_Restore
+ 251:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****    *p_err             = OS_ERR_NONE;
+ 309              		.loc 1 251 0
+ 310 010a 7B68     		ldr	r3, [r7, #4]
+ 311 010c 0022     		movs	r2, #0
+ 312 010e 1A80     		strh	r2, [r3]
+ 313              	.L6:
+ 252:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** }
+ 314              		.loc 1 252 0
+ 315 0110 BD46     		mov	sp, r7
+ 316 0112 06B0     		add	sp, sp, #24
+ 317              		@ sp needed
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 11
+
+
+ 318 0114 80BD     		pop	{r7, pc}
+ 319              	.L15:
+ 320 0116 C046     		.align	2
+ 321              	.L14:
+ 322 0118 00000000 		.word	OSTmrTaskTCB
+ 323 011c 00000000 		.word	OSStatTaskCtr
+ 324 0120 00000000 		.word	OSCfg_TickRate_Hz
+ 325 0124 00000000 		.word	OSCfg_StatTaskRate_Hz
+ 326 0128 00000000 		.word	OSStatTaskTimeMax
+ 327 012c 00000000 		.word	OSStatTaskCtrMax
+ 328 0130 00000000 		.word	OSStatTaskRdy
+ 329              		.cfi_endproc
+ 330              	.LFE2:
+ 331              		.size	OSStatTaskCPUUsageInit, .-OSStatTaskCPUUsageInit
+ 332              		.section	.text.OS_StatTask,"ax",%progbits
+ 333              		.align	2
+ 334              		.global	OS_StatTask
+ 335              		.code	16
+ 336              		.thumb_func
+ 337              		.type	OS_StatTask, %function
+ 338              	OS_StatTask:
+ 339              	.LFB3:
+ 253:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 254:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** /*$PAGE*/
+ 255:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** /*
+ 256:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** ***************************************************************************************************
+ 257:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                                                    STATISTICS TASK
+ 258:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 259:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Description: This task is internal to uC/OS-III and is used to compute some statistics about the 
+ 260:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *              environment.  Specifically, OS_StatTask() computes the CPU usage.  CPU usage is dete
+ 261:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 262:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                                                   OSStatTaskCtr
+ 263:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                 OSStatTaskCPUUsage = 100 * (1 - ------------------)     (units are in %)
+ 264:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                                                  OSStatTaskCtrMax
+ 265:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 266:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Arguments  : p_arg     this pointer is not used at this time.
+ 267:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 268:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Returns    : none
+ 269:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 270:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Note(s)    : 1) This task runs at a priority level higher than the idle task.
+ 271:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 272:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *              2) You can disable this task by setting the configuration #define OS_CFG_STAT_TASK_E
+ 273:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 274:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *              3) You MUST have at least a delay of 2/10 seconds to allow for the system to establi
+ 275:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                 for the idle counter.
+ 276:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 277:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *              4) This function is INTERNAL to uC/OS-III and your application should not call it.
+ 278:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** ***************************************************************************************************
+ 279:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** */
+ 280:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 281:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** void  OS_StatTask (void  *p_arg)
+ 282:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** {
+ 340              		.loc 1 282 0
+ 341              		.cfi_startproc
+ 342              		@ args = 0, pretend = 0, frame = 48
+ 343              		@ frame_needed = 1, uses_anonymous_args = 0
+ 344 0000 80B5     		push	{r7, lr}
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 12
+
+
+ 345              		.cfi_def_cfa_offset 8
+ 346              		.cfi_offset 7, -8
+ 347              		.cfi_offset 14, -4
+ 348 0002 8CB0     		sub	sp, sp, #48
+ 349              		.cfi_def_cfa_offset 56
+ 350 0004 00AF     		add	r7, sp, #0
+ 351              		.cfi_def_cfa_register 7
+ 352 0006 7860     		str	r0, [r7, #4]
+ 283:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_DBG_EN > 0u
+ 284:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_TASK_PROFILE_EN > 0u
+ 285:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_CPU_USAGE usage;
+ 286:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_CYCLES    cycles_total;
+ 287:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_CYCLES    cycles_div;
+ 288:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_CYCLES    cycles_mult;
+ 289:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_CYCLES    cycles_max;
+ 290:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 291:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_TCB      *p_tcb;
+ 292:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 293:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_TICK      ctr_max;
+ 294:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_TICK      ctr_mult;
+ 295:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_TICK      ctr_div;
+ 296:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_ERR       err;
+ 297:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OS_TICK      dly;
+ 298:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_TS       ts_start;
+ 299:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_TS       ts_end;
+ 300:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     CPU_SR_ALLOC();
+ 353              		.loc 1 300 0
+ 354 0008 0023     		movs	r3, #0
+ 355 000a FB61     		str	r3, [r7, #28]
+ 301:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 302:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 303:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 304:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     p_arg = p_arg;                                          /* Prevent compiler warning for not usi
+ 305:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     while (OSStatTaskRdy != DEF_TRUE) {
+ 356              		.loc 1 305 0
+ 357 000c 08E0     		b	.L17
+ 358              	.L18:
+ 306:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         OSTimeDly(2u * OSCfg_StatTaskRate_Hz,               /* Wait until statistic task is ready  
+ 359              		.loc 1 306 0
+ 360 000e 7A4B     		ldr	r3, .L33
+ 361 0010 1B68     		ldr	r3, [r3]
+ 362 0012 5B00     		lsls	r3, r3, #1
+ 363 0014 0E22     		movs	r2, #14
+ 364 0016 BA18     		adds	r2, r7, r2
+ 365 0018 0021     		movs	r1, #0
+ 366 001a 1800     		movs	r0, r3
+ 367 001c FFF7FEFF 		bl	OSTimeDly
+ 368              	.L17:
+ 305:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         OSTimeDly(2u * OSCfg_StatTaskRate_Hz,               /* Wait until statistic task is ready  
+ 369              		.loc 1 305 0
+ 370 0020 764B     		ldr	r3, .L33+4
+ 371 0022 1B78     		ldrb	r3, [r3]
+ 372 0024 012B     		cmp	r3, #1
+ 373 0026 F2D1     		bne	.L18
+ 307:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                   OS_OPT_TIME_DLY,
+ 308:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                   &err);
+ 309:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 13
+
+
+ 310:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSStatReset(&err);                                      /* Reset statistics                    
+ 374              		.loc 1 310 0
+ 375 0028 0E23     		movs	r3, #14
+ 376 002a FB18     		adds	r3, r7, r3
+ 377 002c 1800     		movs	r0, r3
+ 378 002e FFF7FEFF 		bl	OSStatReset
+ 311:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 312:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     dly = (OS_TICK)0;                                       /* Compute statistic task sleep delay  
+ 379              		.loc 1 312 0
+ 380 0032 0023     		movs	r3, #0
+ 381 0034 3B62     		str	r3, [r7, #32]
+ 313:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     if (OSCfg_TickRate_Hz > OSCfg_StatTaskRate_Hz) {
+ 382              		.loc 1 313 0
+ 383 0036 724B     		ldr	r3, .L33+8
+ 384 0038 1A68     		ldr	r2, [r3]
+ 385 003a 6F4B     		ldr	r3, .L33
+ 386 003c 1B68     		ldr	r3, [r3]
+ 387 003e 9A42     		cmp	r2, r3
+ 388 0040 09D9     		bls	.L19
+ 314:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         dly = (OS_TICK)(OSCfg_TickRate_Hz / OSCfg_StatTaskRate_Hz);
+ 389              		.loc 1 314 0
+ 390 0042 6F4B     		ldr	r3, .L33+8
+ 391 0044 1A68     		ldr	r2, [r3]
+ 392 0046 6C4B     		ldr	r3, .L33
+ 393 0048 1B68     		ldr	r3, [r3]
+ 394 004a 1900     		movs	r1, r3
+ 395 004c 1000     		movs	r0, r2
+ 396 004e FFF7FEFF 		bl	__aeabi_uidiv
+ 397 0052 0300     		movs	r3, r0
+ 398 0054 3B62     		str	r3, [r7, #32]
+ 399              	.L19:
+ 315:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 316:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     if (dly == (OS_TICK)0) {
+ 400              		.loc 1 316 0
+ 401 0056 3B6A     		ldr	r3, [r7, #32]
+ 402 0058 002B     		cmp	r3, #0
+ 403 005a 07D1     		bne	.L20
+ 317:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         dly =  (OS_TICK)(OSCfg_TickRate_Hz / (OS_RATE_HZ)10);
+ 404              		.loc 1 317 0
+ 405 005c 684B     		ldr	r3, .L33+8
+ 406 005e 1B68     		ldr	r3, [r3]
+ 407 0060 0A21     		movs	r1, #10
+ 408 0062 1800     		movs	r0, r3
+ 409 0064 FFF7FEFF 		bl	__aeabi_uidiv
+ 410 0068 0300     		movs	r3, r0
+ 411 006a 3B62     		str	r3, [r7, #32]
+ 412              	.L20:
+ 318:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 319:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 320:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     while (DEF_ON) {
+ 321:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         ts_start        = OS_TS_GET();
+ 413              		.loc 1 321 0
+ 414 006c FFF7FEFF 		bl	CPU_TS_TmrRd
+ 415 0070 0300     		movs	r3, r0
+ 416 0072 BB61     		str	r3, [r7, #24]
+ 322:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #ifdef  CPU_CFG_INT_DIS_MEAS_EN
+ 323:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         OSIntDisTimeMax = CPU_IntDisMeasMaxGet();
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 14
+
+
+ 417              		.loc 1 323 0
+ 418 0074 FFF7FEFF 		bl	CPU_IntDisMeasMaxGet
+ 419 0078 0200     		movs	r2, r0
+ 420 007a 624B     		ldr	r3, .L33+12
+ 421 007c 1A60     		str	r2, [r3]
+ 324:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 325:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 326:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         CPU_CRITICAL_ENTER();                               /* ----------------- OVERALL CPU USAGE 
+ 422              		.loc 1 326 0
+ 423 007e FFF7FEFF 		bl	CPU_SR_Save
+ 424 0082 0300     		movs	r3, r0
+ 425 0084 FB61     		str	r3, [r7, #28]
+ 426 0086 FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 327:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         OSStatTaskCtrRun   = OSStatTaskCtr;                 /* Obtain the of the stat counter for t
+ 427              		.loc 1 327 0
+ 428 008a 5F4B     		ldr	r3, .L33+16
+ 429 008c 1A68     		ldr	r2, [r3]
+ 430 008e 5F4B     		ldr	r3, .L33+20
+ 431 0090 1A60     		str	r2, [r3]
+ 328:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         OSStatTaskCtr      = (OS_TICK)0;                    /* Reset the stat counter for the next 
+ 432              		.loc 1 328 0
+ 433 0092 5D4B     		ldr	r3, .L33+16
+ 434 0094 0022     		movs	r2, #0
+ 435 0096 1A60     		str	r2, [r3]
+ 329:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         CPU_CRITICAL_EXIT();
+ 436              		.loc 1 329 0
+ 437 0098 FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 438 009c FB69     		ldr	r3, [r7, #28]
+ 439 009e 1800     		movs	r0, r3
+ 440 00a0 FFF7FEFF 		bl	CPU_SR_Restore
+ 330:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 331:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         if (OSStatTaskCtrMax > OSStatTaskCtrRun) {          /* Compute CPU Usage with best resoluti
+ 441              		.loc 1 331 0
+ 442 00a4 5A4B     		ldr	r3, .L33+24
+ 443 00a6 1A68     		ldr	r2, [r3]
+ 444 00a8 584B     		ldr	r3, .L33+20
+ 445 00aa 1B68     		ldr	r3, [r3]
+ 446 00ac 9A42     		cmp	r2, r3
+ 447 00ae 4FD9     		bls	.L21
+ 332:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             if (OSStatTaskCtrMax < 400000u) {                                        /*            
+ 448              		.loc 1 332 0
+ 449 00b0 574B     		ldr	r3, .L33+24
+ 450 00b2 1B68     		ldr	r3, [r3]
+ 451 00b4 574A     		ldr	r2, .L33+28
+ 452 00b6 9342     		cmp	r3, r2
+ 453 00b8 04D8     		bhi	.L22
+ 333:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 ctr_mult = 10000u;
+ 454              		.loc 1 333 0
+ 455 00ba 574B     		ldr	r3, .L33+32
+ 456 00bc BB62     		str	r3, [r7, #40]
+ 334:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 ctr_div  =     1u;
+ 457              		.loc 1 334 0
+ 458 00be 0123     		movs	r3, #1
+ 459 00c0 7B62     		str	r3, [r7, #36]
+ 460 00c2 23E0     		b	.L23
+ 461              	.L22:
+ 335:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             } else if (OSStatTaskCtrMax <   4000000u) {                              /*      400,00
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 15
+
+
+ 462              		.loc 1 335 0
+ 463 00c4 524B     		ldr	r3, .L33+24
+ 464 00c6 1B68     		ldr	r3, [r3]
+ 465 00c8 544A     		ldr	r2, .L33+36
+ 466 00ca 9342     		cmp	r3, r2
+ 467 00cc 05D8     		bhi	.L24
+ 336:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 ctr_mult =  1000u;
+ 468              		.loc 1 336 0
+ 469 00ce FA23     		movs	r3, #250
+ 470 00d0 9B00     		lsls	r3, r3, #2
+ 471 00d2 BB62     		str	r3, [r7, #40]
+ 337:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 ctr_div  =    10u;
+ 472              		.loc 1 337 0
+ 473 00d4 0A23     		movs	r3, #10
+ 474 00d6 7B62     		str	r3, [r7, #36]
+ 475 00d8 18E0     		b	.L23
+ 476              	.L24:
+ 338:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             } else if (OSStatTaskCtrMax <  40000000u) {                              /*    4,000,00
+ 477              		.loc 1 338 0
+ 478 00da 4D4B     		ldr	r3, .L33+24
+ 479 00dc 1B68     		ldr	r3, [r3]
+ 480 00de 504A     		ldr	r2, .L33+40
+ 481 00e0 9342     		cmp	r3, r2
+ 482 00e2 04D8     		bhi	.L25
+ 339:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 ctr_mult =   100u;
+ 483              		.loc 1 339 0
+ 484 00e4 6423     		movs	r3, #100
+ 485 00e6 BB62     		str	r3, [r7, #40]
+ 340:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 ctr_div  =   100u;
+ 486              		.loc 1 340 0
+ 487 00e8 6423     		movs	r3, #100
+ 488 00ea 7B62     		str	r3, [r7, #36]
+ 489 00ec 0EE0     		b	.L23
+ 490              	.L25:
+ 341:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             } else if (OSStatTaskCtrMax < 400000000u) {                              /*   40,000,00
+ 491              		.loc 1 341 0
+ 492 00ee 484B     		ldr	r3, .L33+24
+ 493 00f0 1B68     		ldr	r3, [r3]
+ 494 00f2 4C4A     		ldr	r2, .L33+44
+ 495 00f4 9342     		cmp	r3, r2
+ 496 00f6 05D8     		bhi	.L26
+ 342:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 ctr_mult =    10u;
+ 497              		.loc 1 342 0
+ 498 00f8 0A23     		movs	r3, #10
+ 499 00fa BB62     		str	r3, [r7, #40]
+ 343:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 ctr_div  =  1000u;
+ 500              		.loc 1 343 0
+ 501 00fc FA23     		movs	r3, #250
+ 502 00fe 9B00     		lsls	r3, r3, #2
+ 503 0100 7B62     		str	r3, [r7, #36]
+ 504 0102 03E0     		b	.L23
+ 505              	.L26:
+ 344:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             } else {                                                                 /*  400,000,00
+ 345:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 ctr_mult =     1u;
+ 506              		.loc 1 345 0
+ 507 0104 0123     		movs	r3, #1
+ 508 0106 BB62     		str	r3, [r7, #40]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 16
+
+
+ 346:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 ctr_div  = 10000u;
+ 509              		.loc 1 346 0
+ 510 0108 434B     		ldr	r3, .L33+32
+ 511 010a 7B62     		str	r3, [r7, #36]
+ 512              	.L23:
+ 347:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             }
+ 348:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             ctr_max            = OSStatTaskCtrMax / ctr_div;
+ 513              		.loc 1 348 0
+ 514 010c 404B     		ldr	r3, .L33+24
+ 515 010e 1B68     		ldr	r3, [r3]
+ 516 0110 796A     		ldr	r1, [r7, #36]
+ 517 0112 1800     		movs	r0, r3
+ 518 0114 FFF7FEFF 		bl	__aeabi_uidiv
+ 519 0118 0300     		movs	r3, r0
+ 520 011a 7B61     		str	r3, [r7, #20]
+ 349:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             OSStatTaskCPUUsage = (OS_CPU_USAGE)((OS_TICK)10000u - ctr_mult * OSStatTaskCtrRun / ctr
+ 521              		.loc 1 349 0
+ 522 011c 3B4B     		ldr	r3, .L33+20
+ 523 011e 1B68     		ldr	r3, [r3]
+ 524 0120 BA6A     		ldr	r2, [r7, #40]
+ 525 0122 5343     		muls	r3, r2
+ 526 0124 7969     		ldr	r1, [r7, #20]
+ 527 0126 1800     		movs	r0, r3
+ 528 0128 FFF7FEFF 		bl	__aeabi_uidiv
+ 529 012c 0300     		movs	r3, r0
+ 530 012e 9BB2     		uxth	r3, r3
+ 531 0130 394A     		ldr	r2, .L33+32
+ 532 0132 D31A     		subs	r3, r2, r3
+ 533 0134 9AB2     		uxth	r2, r3
+ 534 0136 3C4B     		ldr	r3, .L33+48
+ 535 0138 1A80     		strh	r2, [r3]
+ 350:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             if (OSStatTaskCPUUsageMax < OSStatTaskCPUUsage) {
+ 536              		.loc 1 350 0
+ 537 013a 3C4B     		ldr	r3, .L33+52
+ 538 013c 1A88     		ldrh	r2, [r3]
+ 539 013e 3A4B     		ldr	r3, .L33+48
+ 540 0140 1B88     		ldrh	r3, [r3]
+ 541 0142 9A42     		cmp	r2, r3
+ 542 0144 07D2     		bcs	.L28
+ 351:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 OSStatTaskCPUUsageMax = OSStatTaskCPUUsage;
+ 543              		.loc 1 351 0
+ 544 0146 384B     		ldr	r3, .L33+48
+ 545 0148 1A88     		ldrh	r2, [r3]
+ 546 014a 384B     		ldr	r3, .L33+52
+ 547 014c 1A80     		strh	r2, [r3]
+ 548 014e 02E0     		b	.L28
+ 549              	.L21:
+ 352:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             }
+ 353:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         } else {
+ 354:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             OSStatTaskCPUUsage = (OS_CPU_USAGE)10000u;
+ 550              		.loc 1 354 0
+ 551 0150 354B     		ldr	r3, .L33+48
+ 552 0152 314A     		ldr	r2, .L33+32
+ 553 0154 1A80     		strh	r2, [r3]
+ 554              	.L28:
+ 355:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         }
+ 356:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 17
+
+
+ 357:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         OSStatTaskHook();                                   /* Invoke user definable hook          
+ 555              		.loc 1 357 0
+ 556 0156 FFF7FEFF 		bl	OSStatTaskHook
+ 358:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 359:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 360:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_DBG_EN > 0u
+ 361:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_TASK_PROFILE_EN > 0u
+ 362:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         cycles_total = (OS_CYCLES)0;
+ 363:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 364:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         CPU_CRITICAL_ENTER();
+ 365:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_tcb = OSTaskDbgListPtr;
+ 366:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         CPU_CRITICAL_EXIT();
+ 367:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         while (p_tcb != (OS_TCB *)0) {                      /* ----------------- TOTAL CYCLES COUNT
+ 368:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             OS_CRITICAL_ENTER();
+ 369:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             p_tcb->CyclesTotalPrev =  p_tcb->CyclesTotal;   /* Save accumulated # cycles into a tem
+ 370:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             p_tcb->CyclesTotal     = (OS_CYCLES)0;          /* Reset total cycles for task for next
+ 371:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             OS_CRITICAL_EXIT();
+ 372:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 373:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             cycles_total          += p_tcb->CyclesTotalPrev;/* Perform sum of all task # cycles    
+ 374:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 375:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             CPU_CRITICAL_ENTER();
+ 376:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             p_tcb                  = p_tcb->DbgNextPtr;
+ 377:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             CPU_CRITICAL_EXIT();
+ 378:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         }
+ 379:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 380:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 381:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 382:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_TASK_PROFILE_EN > 0u
+ 383:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                                                             /* ------------- INDIVIDUAL TASK CPU US
+ 384:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         if (cycles_total > (OS_CYCLES)0u) {                                          /* 'cycles_tot
+ 385:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             if (cycles_total < 400000u) {                                            /*            
+ 386:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 cycles_mult = 10000u;
+ 387:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 cycles_div  =     1u;
+ 388:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             } else if (cycles_total <   4000000u) {                                  /*      400,00
+ 389:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 cycles_mult =  1000u;
+ 390:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 cycles_div  =    10u;
+ 391:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             } else if (cycles_total <  40000000u) {                                  /*    4,000,00
+ 392:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 cycles_mult =   100u;
+ 393:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 cycles_div  =   100u;
+ 394:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             } else if (cycles_total < 400000000u) {                                  /*   40,000,00
+ 395:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 cycles_mult =    10u;
+ 396:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 cycles_div  =  1000u;
+ 397:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             } else {                                                                 /*  400,000,00
+ 398:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 cycles_mult =     1u;
+ 399:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 cycles_div  = 10000u;
+ 400:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             }
+ 401:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             cycles_max  = cycles_total / cycles_div;
+ 402:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         } else {
+ 403:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             cycles_mult = 0u;
+ 404:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             cycles_max  = 1u;
+ 405:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         }
+ 406:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 407:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         CPU_CRITICAL_ENTER();
+ 557              		.loc 1 407 0
+ 558 015a FFF7FEFF 		bl	CPU_SR_Save
+ 559 015e 0300     		movs	r3, r0
+ 560 0160 FB61     		str	r3, [r7, #28]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 18
+
+
+ 561 0162 FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 408:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         p_tcb = OSTaskDbgListPtr;
+ 562              		.loc 1 408 0
+ 563 0166 324B     		ldr	r3, .L33+56
+ 564 0168 1B68     		ldr	r3, [r3]
+ 565 016a FB62     		str	r3, [r7, #44]
+ 409:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         CPU_CRITICAL_EXIT();
+ 566              		.loc 1 409 0
+ 567 016c FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 568 0170 FB69     		ldr	r3, [r7, #28]
+ 569 0172 1800     		movs	r0, r3
+ 570 0174 FFF7FEFF 		bl	CPU_SR_Restore
+ 410:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         while (p_tcb != (OS_TCB *)0) {
+ 571              		.loc 1 410 0
+ 572 0178 19E0     		b	.L29
+ 573              	.L30:
+ 411:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_TASK_PROFILE_EN > 0u                             /* Compute execution time of each task 
+ 412:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             usage = (OS_CPU_USAGE)(cycles_mult * p_tcb->CyclesTotalPrev / cycles_max);
+ 413:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             if (usage > 10000u) {
+ 414:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 usage = 10000u;
+ 415:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             }
+ 416:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             p_tcb->CPUUsage = usage;
+ 417:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             if (p_tcb->CPUUsageMax < usage) {               /* Detect peak CPU usage               
+ 418:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                 p_tcb->CPUUsageMax = usage;
+ 419:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             }
+ 420:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 421:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 422:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_STAT_TASK_STK_CHK_EN > 0u
+ 423:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             OSTaskStkChk( p_tcb,                            /* Compute stack usage of active tasks 
+ 574              		.loc 1 423 0
+ 575 017a FB6A     		ldr	r3, [r7, #44]
+ 576 017c 6833     		adds	r3, r3, #104
+ 577 017e 1900     		movs	r1, r3
+ 578 0180 FB6A     		ldr	r3, [r7, #44]
+ 579 0182 6433     		adds	r3, r3, #100
+ 580 0184 1A00     		movs	r2, r3
+ 581 0186 0E23     		movs	r3, #14
+ 582 0188 FB18     		adds	r3, r7, r3
+ 583 018a F86A     		ldr	r0, [r7, #44]
+ 584 018c FFF7FEFF 		bl	OSTaskStkChk
+ 424:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                          &p_tcb->StkFree,
+ 425:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                          &p_tcb->StkUsed,
+ 426:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                          &err);
+ 427:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 428:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 429:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             CPU_CRITICAL_ENTER();
+ 585              		.loc 1 429 0
+ 586 0190 FFF7FEFF 		bl	CPU_SR_Save
+ 587 0194 0300     		movs	r3, r0
+ 588 0196 FB61     		str	r3, [r7, #28]
+ 589 0198 FFF7FEFF 		bl	CPU_IntDisMeasStart
+ 430:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             p_tcb = p_tcb->DbgNextPtr;
+ 590              		.loc 1 430 0
+ 591 019c FB6A     		ldr	r3, [r7, #44]
+ 592 019e 5B6F     		ldr	r3, [r3, #116]
+ 593 01a0 FB62     		str	r3, [r7, #44]
+ 431:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             CPU_CRITICAL_EXIT();
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 19
+
+
+ 594              		.loc 1 431 0
+ 595 01a2 FFF7FEFF 		bl	CPU_IntDisMeasStop
+ 596 01a6 FB69     		ldr	r3, [r7, #28]
+ 597 01a8 1800     		movs	r0, r3
+ 598 01aa FFF7FEFF 		bl	CPU_SR_Restore
+ 599              	.L29:
+ 410:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #if OS_CFG_TASK_PROFILE_EN > 0u                             /* Compute execution time of each task 
+ 600              		.loc 1 410 0
+ 601 01ae FB6A     		ldr	r3, [r7, #44]
+ 602 01b0 002B     		cmp	r3, #0
+ 603 01b2 E2D1     		bne	.L30
+ 432:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         }
+ 433:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 434:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 435:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         if (OSStatResetFlag == DEF_TRUE) {                  /* Check if need to reset statistics   
+ 604              		.loc 1 435 0
+ 605 01b4 1F4B     		ldr	r3, .L33+60
+ 606 01b6 1B78     		ldrb	r3, [r3]
+ 607 01b8 012B     		cmp	r3, #1
+ 608 01ba 07D1     		bne	.L31
+ 436:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             OSStatResetFlag  = DEF_FALSE;
+ 609              		.loc 1 436 0
+ 610 01bc 1D4B     		ldr	r3, .L33+60
+ 611 01be 0022     		movs	r2, #0
+ 612 01c0 1A70     		strb	r2, [r3]
+ 437:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             OSStatReset(&err);
+ 613              		.loc 1 437 0
+ 614 01c2 0E23     		movs	r3, #14
+ 615 01c4 FB18     		adds	r3, r7, r3
+ 616 01c6 1800     		movs	r0, r3
+ 617 01c8 FFF7FEFF 		bl	OSStatReset
+ 618              	.L31:
+ 438:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         }
+ 439:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 440:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         ts_end = OS_TS_GET() - ts_start;                    /* Measure execution time of statistic 
+ 619              		.loc 1 440 0
+ 620 01cc FFF7FEFF 		bl	CPU_TS_TmrRd
+ 621 01d0 0200     		movs	r2, r0
+ 622 01d2 BB69     		ldr	r3, [r7, #24]
+ 623 01d4 D31A     		subs	r3, r2, r3
+ 624 01d6 3B61     		str	r3, [r7, #16]
+ 441:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         if (OSStatTaskTimeMax < ts_end) {
+ 625              		.loc 1 441 0
+ 626 01d8 174B     		ldr	r3, .L33+64
+ 627 01da 1A68     		ldr	r2, [r3]
+ 628 01dc 3B69     		ldr	r3, [r7, #16]
+ 629 01de 9A42     		cmp	r2, r3
+ 630 01e0 02D2     		bcs	.L32
+ 442:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****             OSStatTaskTimeMax = ts_end;
+ 631              		.loc 1 442 0
+ 632 01e2 154B     		ldr	r3, .L33+64
+ 633 01e4 3A69     		ldr	r2, [r7, #16]
+ 634 01e6 1A60     		str	r2, [r3]
+ 635              	.L32:
+ 443:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         }
+ 444:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 445:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         OSTimeDly(dly,
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 20
+
+
+ 636              		.loc 1 445 0
+ 637 01e8 0E23     		movs	r3, #14
+ 638 01ea FA18     		adds	r2, r7, r3
+ 639 01ec 3B6A     		ldr	r3, [r7, #32]
+ 640 01ee 0021     		movs	r1, #0
+ 641 01f0 1800     		movs	r0, r3
+ 642 01f2 FFF7FEFF 		bl	OSTimeDly
+ 446:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                   OS_OPT_TIME_DLY,
+ 447:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                   &err);
+ 448:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 643              		.loc 1 448 0
+ 644 01f6 39E7     		b	.L20
+ 645              	.L34:
+ 646              		.align	2
+ 647              	.L33:
+ 648 01f8 00000000 		.word	OSCfg_StatTaskRate_Hz
+ 649 01fc 00000000 		.word	OSStatTaskRdy
+ 650 0200 00000000 		.word	OSCfg_TickRate_Hz
+ 651 0204 00000000 		.word	OSIntDisTimeMax
+ 652 0208 00000000 		.word	OSStatTaskCtr
+ 653 020c 00000000 		.word	OSStatTaskCtrRun
+ 654 0210 00000000 		.word	OSStatTaskCtrMax
+ 655 0214 7F1A0600 		.word	399999
+ 656 0218 10270000 		.word	10000
+ 657 021c FF083D00 		.word	3999999
+ 658 0220 FF596202 		.word	39999999
+ 659 0224 FF83D717 		.word	399999999
+ 660 0228 00000000 		.word	OSStatTaskCPUUsage
+ 661 022c 00000000 		.word	OSStatTaskCPUUsageMax
+ 662 0230 00000000 		.word	OSTaskDbgListPtr
+ 663 0234 00000000 		.word	OSStatResetFlag
+ 664 0238 00000000 		.word	OSStatTaskTimeMax
+ 665              		.cfi_endproc
+ 666              	.LFE3:
+ 667              		.size	OS_StatTask, .-OS_StatTask
+ 668              		.section	.rodata
+ 669              		.align	2
+ 670              	.LC36:
+ 671 0000 75432F4F 		.ascii	"uC/OS-III Stat Task\000"
+ 671      532D4949 
+ 671      49205374 
+ 671      61742054 
+ 671      61736B00 
+ 672              		.section	.text.OS_StatTaskInit,"ax",%progbits
+ 673              		.align	2
+ 674              		.global	OS_StatTaskInit
+ 675              		.code	16
+ 676              		.thumb_func
+ 677              		.type	OS_StatTaskInit, %function
+ 678              	OS_StatTaskInit:
+ 679              	.LFB4:
+ 449:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** }
+ 450:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 451:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** /*$PAGE*/
+ 452:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** /*
+ 453:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** ***************************************************************************************************
+ 454:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                                              INITIALIZE THE STATISTICS
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 21
+
+
+ 455:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 456:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Description: This function is called by OSInit() to initialize the statistic task.
+ 457:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 458:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Argument(s): p_err     is a pointer to a variable that will contain an error code returned by thi
+ 459:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 460:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                            OS_ERR_STK_INVALID       If you specified a NULL stack pointer during 
+ 461:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                            OS_ERR_STK_SIZE_INVALID  If you didn't specify a large enough stack.
+ 462:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                            OS_ERR_PRIO_INVALID      If you specified a priority for the statistic
+ 463:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                                                     lower (i.e. higher number) than the idle task
+ 464:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *                            OS_ERR_xxx               An error code returned by OSTaskCreate()
+ 465:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 466:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Returns    : none
+ 467:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** *
+ 468:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** * Note(s)    : This function is INTERNAL to uC/OS-III and your application should not call it.
+ 469:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** ***************************************************************************************************
+ 470:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** */
+ 471:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 472:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** void  OS_StatTaskInit (OS_ERR  *p_err)
+ 473:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** {
+ 680              		.loc 1 473 0
+ 681              		.cfi_startproc
+ 682              		@ args = 0, pretend = 0, frame = 8
+ 683              		@ frame_needed = 1, uses_anonymous_args = 0
+ 684 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 685              		.cfi_def_cfa_offset 20
+ 686              		.cfi_offset 4, -20
+ 687              		.cfi_offset 5, -16
+ 688              		.cfi_offset 6, -12
+ 689              		.cfi_offset 7, -8
+ 690              		.cfi_offset 14, -4
+ 691 0002 8DB0     		sub	sp, sp, #52
+ 692              		.cfi_def_cfa_offset 72
+ 693 0004 0AAF     		add	r7, sp, #40
+ 694              		.cfi_def_cfa 7, 32
+ 695 0006 7860     		str	r0, [r7, #4]
+ 474:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #ifdef OS_SAFETY_CRITICAL
+ 475:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     if (p_err == (OS_ERR *)0) {
+ 476:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 477:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         return;
+ 478:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 479:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** #endif
+ 480:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 481:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSStatTaskCtr    = (OS_TICK)0;
+ 696              		.loc 1 481 0
+ 697 0008 254B     		ldr	r3, .L40
+ 698 000a 0022     		movs	r2, #0
+ 699 000c 1A60     		str	r2, [r3]
+ 482:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSStatTaskCtrRun = (OS_TICK)0;
+ 700              		.loc 1 482 0
+ 701 000e 254B     		ldr	r3, .L40+4
+ 702 0010 0022     		movs	r2, #0
+ 703 0012 1A60     		str	r2, [r3]
+ 483:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSStatTaskCtrMax = (OS_TICK)0;
+ 704              		.loc 1 483 0
+ 705 0014 244B     		ldr	r3, .L40+8
+ 706 0016 0022     		movs	r2, #0
+ 707 0018 1A60     		str	r2, [r3]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 22
+
+
+ 484:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSStatTaskRdy    = OS_STATE_NOT_RDY;                    /* Statistic task is not ready         
+ 708              		.loc 1 484 0
+ 709 001a 244B     		ldr	r3, .L40+12
+ 710 001c 0022     		movs	r2, #0
+ 711 001e 1A70     		strb	r2, [r3]
+ 485:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSStatResetFlag  = DEF_FALSE;
+ 712              		.loc 1 485 0
+ 713 0020 234B     		ldr	r3, .L40+16
+ 714 0022 0022     		movs	r2, #0
+ 715 0024 1A70     		strb	r2, [r3]
+ 486:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 487:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                                                             /* ---------------- CREATE THE STAT TAS
+ 488:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     if (OSCfg_StatTaskStkBasePtr == (CPU_STK *)0) {
+ 716              		.loc 1 488 0
+ 717 0026 234B     		ldr	r3, .L40+20
+ 718 0028 1B68     		ldr	r3, [r3]
+ 719 002a 002B     		cmp	r3, #0
+ 720 002c 03D1     		bne	.L36
+ 489:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****        *p_err = OS_ERR_STAT_STK_INVALID;
+ 721              		.loc 1 489 0
+ 722 002e 7B68     		ldr	r3, [r7, #4]
+ 723 0030 214A     		ldr	r2, .L40+24
+ 724 0032 1A80     		strh	r2, [r3]
+ 490:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         return;
+ 725              		.loc 1 490 0
+ 726 0034 31E0     		b	.L35
+ 727              	.L36:
+ 491:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 492:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 493:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     if (OSCfg_StatTaskStkSize < OSCfg_StkSizeMin) {
+ 728              		.loc 1 493 0
+ 729 0036 214B     		ldr	r3, .L40+28
+ 730 0038 1A68     		ldr	r2, [r3]
+ 731 003a 214B     		ldr	r3, .L40+32
+ 732 003c 1B68     		ldr	r3, [r3]
+ 733 003e 9A42     		cmp	r2, r3
+ 734 0040 03D2     		bcs	.L38
+ 494:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****        *p_err = OS_ERR_STAT_STK_SIZE_INVALID;
+ 735              		.loc 1 494 0
+ 736 0042 7B68     		ldr	r3, [r7, #4]
+ 737 0044 1F4A     		ldr	r2, .L40+36
+ 738 0046 1A80     		strh	r2, [r3]
+ 495:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         return;
+ 739              		.loc 1 495 0
+ 740 0048 27E0     		b	.L35
+ 741              	.L38:
+ 496:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 497:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 498:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     if (OSCfg_StatTaskPrio >= (OS_CFG_PRIO_MAX - 1u)) {
+ 742              		.loc 1 498 0
+ 743 004a 1F4B     		ldr	r3, .L40+40
+ 744 004c 1B78     		ldrb	r3, [r3]
+ 745 004e 1E2B     		cmp	r3, #30
+ 746 0050 03D9     		bls	.L39
+ 499:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****        *p_err = OS_ERR_STAT_PRIO_INVALID;
+ 747              		.loc 1 499 0
+ 748 0052 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 23
+
+
+ 749 0054 1D4A     		ldr	r2, .L40+44
+ 750 0056 1A80     		strh	r2, [r3]
+ 500:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****         return;
+ 751              		.loc 1 500 0
+ 752 0058 1FE0     		b	.L35
+ 753              	.L39:
+ 501:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     }
+ 502:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** 
+ 503:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****     OSTaskCreate((OS_TCB     *)&OSStatTaskTCB,
+ 754              		.loc 1 503 0
+ 755 005a 1B4B     		ldr	r3, .L40+40
+ 756 005c 1A78     		ldrb	r2, [r3]
+ 757 005e 154B     		ldr	r3, .L40+20
+ 758 0060 1968     		ldr	r1, [r3]
+ 759 0062 1B4B     		ldr	r3, .L40+48
+ 760 0064 1868     		ldr	r0, [r3]
+ 761 0066 154B     		ldr	r3, .L40+28
+ 762 0068 1B68     		ldr	r3, [r3]
+ 763 006a 1A4C     		ldr	r4, .L40+52
+ 764 006c A446     		mov	ip, r4
+ 765 006e 1A4E     		ldr	r6, .L40+56
+ 766 0070 1A4D     		ldr	r5, .L40+60
+ 767 0072 7C68     		ldr	r4, [r7, #4]
+ 768 0074 0894     		str	r4, [sp, #32]
+ 769 0076 0324     		movs	r4, #3
+ 770 0078 0794     		str	r4, [sp, #28]
+ 771 007a 0024     		movs	r4, #0
+ 772 007c 0694     		str	r4, [sp, #24]
+ 773 007e 0024     		movs	r4, #0
+ 774 0080 0594     		str	r4, [sp, #20]
+ 775 0082 0024     		movs	r4, #0
+ 776 0084 0494     		str	r4, [sp, #16]
+ 777 0086 0393     		str	r3, [sp, #12]
+ 778 0088 0290     		str	r0, [sp, #8]
+ 779 008a 0191     		str	r1, [sp, #4]
+ 780 008c 0092     		str	r2, [sp]
+ 781 008e 0023     		movs	r3, #0
+ 782 0090 6246     		mov	r2, ip
+ 783 0092 3100     		movs	r1, r6
+ 784 0094 2800     		movs	r0, r5
+ 785 0096 FFF7FEFF 		bl	OSTaskCreate
+ 786              	.L35:
+ 504:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                  (CPU_CHAR   *)((void *)"uC/OS-III Stat Task"),
+ 505:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                  (OS_TASK_PTR )OS_StatTask,
+ 506:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                  (void       *)0,
+ 507:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                  (OS_PRIO     )OSCfg_StatTaskPrio,
+ 508:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                  (CPU_STK    *)OSCfg_StatTaskStkBasePtr,
+ 509:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                  (CPU_STK_SIZE)OSCfg_StatTaskStkLimit,
+ 510:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                  (CPU_STK_SIZE)OSCfg_StatTaskStkSize,
+ 511:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                  (OS_MSG_QTY  )0,
+ 512:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                  (OS_TICK     )0,
+ 513:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                  (void       *)0,
+ 514:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+ 515:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c ****                  (OS_ERR     *)p_err);
+ 516:..\..\..\..\..\..\Software\uCOS-III\Source/os_stat.c **** }
+ 787              		.loc 1 516 0
+ 788 009a BD46     		mov	sp, r7
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 24
+
+
+ 789 009c 03B0     		add	sp, sp, #12
+ 790              		@ sp needed
+ 791 009e F0BD     		pop	{r4, r5, r6, r7, pc}
+ 792              	.L41:
+ 793              		.align	2
+ 794              	.L40:
+ 795 00a0 00000000 		.word	OSStatTaskCtr
+ 796 00a4 00000000 		.word	OSStatTaskCtrRun
+ 797 00a8 00000000 		.word	OSStatTaskCtrMax
+ 798 00ac 00000000 		.word	OSStatTaskRdy
+ 799 00b0 00000000 		.word	OSStatResetFlag
+ 800 00b4 00000000 		.word	OSCfg_StatTaskStkBasePtr
+ 801 00b8 2B6E0000 		.word	28203
+ 802 00bc 00000000 		.word	OSCfg_StatTaskStkSize
+ 803 00c0 00000000 		.word	OSCfg_StkSizeMin
+ 804 00c4 2C6E0000 		.word	28204
+ 805 00c8 00000000 		.word	OSCfg_StatTaskPrio
+ 806 00cc 2A6E0000 		.word	28202
+ 807 00d0 00000000 		.word	OSCfg_StatTaskStkLimit
+ 808 00d4 00000000 		.word	OS_StatTask
+ 809 00d8 00000000 		.word	.LC36
+ 810 00dc 00000000 		.word	OSStatTaskTCB
+ 811              		.cfi_endproc
+ 812              	.LFE4:
+ 813              		.size	OS_StatTaskInit, .-OS_StatTaskInit
+ 814              		.text
+ 815              	.Letext0:
+ 816              		.file 2 "..\\..\\..\\..\\..\\..\\Software\\uC-CPU\\ARM-Cortex-M0\\GNU/cpu.h"
+ 817              		.file 3 "..\\..\\..\\..\\..\\..\\Software\\uC-CPU/cpu_core.h"
+ 818              		.file 4 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source/os_type.h"
+ 819              		.file 5 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source/os.h"
+ 820              		.section	.debug_info,"",%progbits
+ 821              	.Ldebug_info0:
+ 822 0000 390C0000 		.4byte	0xc39
+ 823 0004 0400     		.2byte	0x4
+ 824 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 825 000a 04       		.byte	0x4
+ 826 000b 01       		.uleb128 0x1
+ 827 000c 5F020000 		.4byte	.LASF292
+ 828 0010 0C       		.byte	0xc
+ 829 0011 8D0F0000 		.4byte	.LASF293
+ 830 0015 980A0000 		.4byte	.LASF294
+ 831 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 832 001d 00000000 		.4byte	0
+ 833 0021 00000000 		.4byte	.Ldebug_line0
+ 834 0025 02       		.uleb128 0x2
+ 835 0026 37070000 		.4byte	.LASF0
+ 836 002a 02       		.byte	0x2
+ 837 002b 7C       		.byte	0x7c
+ 838 002c 30000000 		.4byte	0x30
+ 839 0030 03       		.uleb128 0x3
+ 840 0031 01       		.byte	0x1
+ 841 0032 08       		.byte	0x8
+ 842 0033 57080000 		.4byte	.LASF2
+ 843 0037 02       		.uleb128 0x2
+ 844 0038 690F0000 		.4byte	.LASF1
+ 845 003c 02       		.byte	0x2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 25
+
+
+ 846 003d 7D       		.byte	0x7d
+ 847 003e 42000000 		.4byte	0x42
+ 848 0042 03       		.uleb128 0x3
+ 849 0043 01       		.byte	0x1
+ 850 0044 08       		.byte	0x8
+ 851 0045 D50F0000 		.4byte	.LASF3
+ 852 0049 02       		.uleb128 0x2
+ 853 004a 29060000 		.4byte	.LASF4
+ 854 004e 02       		.byte	0x2
+ 855 004f 7E       		.byte	0x7e
+ 856 0050 42000000 		.4byte	0x42
+ 857 0054 03       		.uleb128 0x3
+ 858 0055 01       		.byte	0x1
+ 859 0056 06       		.byte	0x6
+ 860 0057 35110000 		.4byte	.LASF5
+ 861 005b 02       		.uleb128 0x2
+ 862 005c E6090000 		.4byte	.LASF6
+ 863 0060 02       		.byte	0x2
+ 864 0061 80       		.byte	0x80
+ 865 0062 66000000 		.4byte	0x66
+ 866 0066 03       		.uleb128 0x3
+ 867 0067 02       		.byte	0x2
+ 868 0068 07       		.byte	0x7
+ 869 0069 55110000 		.4byte	.LASF7
+ 870 006d 03       		.uleb128 0x3
+ 871 006e 02       		.byte	0x2
+ 872 006f 05       		.byte	0x5
+ 873 0070 120D0000 		.4byte	.LASF8
+ 874 0074 02       		.uleb128 0x2
+ 875 0075 BF010000 		.4byte	.LASF9
+ 876 0079 02       		.byte	0x2
+ 877 007a 82       		.byte	0x82
+ 878 007b 7F000000 		.4byte	0x7f
+ 879 007f 03       		.uleb128 0x3
+ 880 0080 04       		.byte	0x4
+ 881 0081 07       		.byte	0x7
+ 882 0082 710E0000 		.4byte	.LASF10
+ 883 0086 04       		.uleb128 0x4
+ 884 0087 04       		.byte	0x4
+ 885 0088 05       		.byte	0x5
+ 886 0089 696E7400 		.ascii	"int\000"
+ 887 008d 03       		.uleb128 0x3
+ 888 008e 08       		.byte	0x8
+ 889 008f 07       		.byte	0x7
+ 890 0090 87050000 		.4byte	.LASF11
+ 891 0094 03       		.uleb128 0x3
+ 892 0095 08       		.byte	0x8
+ 893 0096 05       		.byte	0x5
+ 894 0097 5B090000 		.4byte	.LASF12
+ 895 009b 03       		.uleb128 0x3
+ 896 009c 04       		.byte	0x4
+ 897 009d 04       		.byte	0x4
+ 898 009e CE040000 		.4byte	.LASF13
+ 899 00a2 03       		.uleb128 0x3
+ 900 00a3 08       		.byte	0x8
+ 901 00a4 04       		.byte	0x4
+ 902 00a5 DA110000 		.4byte	.LASF14
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 26
+
+
+ 903 00a9 05       		.uleb128 0x5
+ 904 00aa 04       		.byte	0x4
+ 905 00ab AF000000 		.4byte	0xaf
+ 906 00af 06       		.uleb128 0x6
+ 907 00b0 BA000000 		.4byte	0xba
+ 908 00b4 07       		.uleb128 0x7
+ 909 00b5 BA000000 		.4byte	0xba
+ 910 00b9 00       		.byte	0
+ 911 00ba 08       		.uleb128 0x8
+ 912 00bb 04       		.byte	0x4
+ 913 00bc 02       		.uleb128 0x2
+ 914 00bd 090F0000 		.4byte	.LASF15
+ 915 00c1 02       		.byte	0x2
+ 916 00c2 BA       		.byte	0xba
+ 917 00c3 74000000 		.4byte	0x74
+ 918 00c7 02       		.uleb128 0x2
+ 919 00c8 77130000 		.4byte	.LASF16
+ 920 00cc 02       		.byte	0x2
+ 921 00cd E5       		.byte	0xe5
+ 922 00ce 74000000 		.4byte	0x74
+ 923 00d2 02       		.uleb128 0x2
+ 924 00d3 57070000 		.4byte	.LASF17
+ 925 00d7 02       		.byte	0x2
+ 926 00d8 E6       		.byte	0xe6
+ 927 00d9 BC000000 		.4byte	0xbc
+ 928 00dd 09       		.uleb128 0x9
+ 929 00de 8D080000 		.4byte	.LASF18
+ 930 00e2 02       		.byte	0x2
+ 931 00e3 3301     		.2byte	0x133
+ 932 00e5 74000000 		.4byte	0x74
+ 933 00e9 03       		.uleb128 0x3
+ 934 00ea 04       		.byte	0x4
+ 935 00eb 05       		.byte	0x5
+ 936 00ec 6E0D0000 		.4byte	.LASF19
+ 937 00f0 03       		.uleb128 0x3
+ 938 00f1 04       		.byte	0x4
+ 939 00f2 07       		.byte	0x7
+ 940 00f3 E10E0000 		.4byte	.LASF20
+ 941 00f7 03       		.uleb128 0x3
+ 942 00f8 08       		.byte	0x8
+ 943 00f9 04       		.byte	0x4
+ 944 00fa 510C0000 		.4byte	.LASF21
+ 945 00fe 03       		.uleb128 0x3
+ 946 00ff 04       		.byte	0x4
+ 947 0100 07       		.byte	0x7
+ 948 0101 D80E0000 		.4byte	.LASF22
+ 949 0105 02       		.uleb128 0x2
+ 950 0106 060B0000 		.4byte	.LASF23
+ 951 010a 03       		.byte	0x3
+ 952 010b C4       		.byte	0xc4
+ 953 010c 74000000 		.4byte	0x74
+ 954 0110 02       		.uleb128 0x2
+ 955 0111 54090000 		.4byte	.LASF24
+ 956 0115 03       		.byte	0x3
+ 957 0116 C7       		.byte	0xc7
+ 958 0117 05010000 		.4byte	0x105
+ 959 011b 02       		.uleb128 0x2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 27
+
+
+ 960 011c 95010000 		.4byte	.LASF25
+ 961 0120 04       		.byte	0x4
+ 962 0121 30       		.byte	0x30
+ 963 0122 5B000000 		.4byte	0x5b
+ 964 0126 02       		.uleb128 0x2
+ 965 0127 64070000 		.4byte	.LASF26
+ 966 012b 04       		.byte	0x4
+ 967 012c 3F       		.byte	0x3f
+ 968 012d 5B000000 		.4byte	0x5b
+ 969 0131 02       		.uleb128 0x2
+ 970 0132 FC060000 		.4byte	.LASF27
+ 971 0136 04       		.byte	0x4
+ 972 0137 40       		.byte	0x40
+ 973 0138 5B000000 		.4byte	0x5b
+ 974 013c 02       		.uleb128 0x2
+ 975 013d C00D0000 		.4byte	.LASF28
+ 976 0141 04       		.byte	0x4
+ 977 0142 42       		.byte	0x42
+ 978 0143 49000000 		.4byte	0x49
+ 979 0147 02       		.uleb128 0x2
+ 980 0148 95040000 		.4byte	.LASF29
+ 981 014c 04       		.byte	0x4
+ 982 014d 44       		.byte	0x44
+ 983 014e 5B000000 		.4byte	0x5b
+ 984 0152 02       		.uleb128 0x2
+ 985 0153 5C080000 		.4byte	.LASF30
+ 986 0157 04       		.byte	0x4
+ 987 0158 45       		.byte	0x45
+ 988 0159 74000000 		.4byte	0x74
+ 989 015d 02       		.uleb128 0x2
+ 990 015e 29100000 		.4byte	.LASF31
+ 991 0162 04       		.byte	0x4
+ 992 0163 47       		.byte	0x47
+ 993 0164 5B000000 		.4byte	0x5b
+ 994 0168 02       		.uleb128 0x2
+ 995 0169 C6040000 		.4byte	.LASF32
+ 996 016d 04       		.byte	0x4
+ 997 016e 49       		.byte	0x49
+ 998 016f 49000000 		.4byte	0x49
+ 999 0173 02       		.uleb128 0x2
+ 1000 0174 B4080000 		.4byte	.LASF33
+ 1001 0178 04       		.byte	0x4
+ 1002 0179 4D       		.byte	0x4d
+ 1003 017a 74000000 		.4byte	0x74
+ 1004 017e 02       		.uleb128 0x2
+ 1005 017f 8A060000 		.4byte	.LASF34
+ 1006 0183 04       		.byte	0x4
+ 1007 0184 4F       		.byte	0x4f
+ 1008 0185 74000000 		.4byte	0x74
+ 1009 0189 02       		.uleb128 0x2
+ 1010 018a 260B0000 		.4byte	.LASF35
+ 1011 018e 04       		.byte	0x4
+ 1012 018f 52       		.byte	0x52
+ 1013 0190 74000000 		.4byte	0x74
+ 1014 0194 02       		.uleb128 0x2
+ 1015 0195 0E100000 		.4byte	.LASF36
+ 1016 0199 04       		.byte	0x4
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 28
+
+
+ 1017 019a 54       		.byte	0x54
+ 1018 019b 49000000 		.4byte	0x49
+ 1019 019f 02       		.uleb128 0x2
+ 1020 01a0 B4060000 		.4byte	.LASF37
+ 1021 01a4 04       		.byte	0x4
+ 1022 01a5 56       		.byte	0x56
+ 1023 01a6 49000000 		.4byte	0x49
+ 1024 01aa 02       		.uleb128 0x2
+ 1025 01ab 4F0A0000 		.4byte	.LASF38
+ 1026 01af 04       		.byte	0x4
+ 1027 01b0 58       		.byte	0x58
+ 1028 01b1 74000000 		.4byte	0x74
+ 1029 01b5 0A       		.uleb128 0xa
+ 1030 01b6 5F010000 		.4byte	.LASF295
+ 1031 01ba 02       		.byte	0x2
+ 1032 01bb 66000000 		.4byte	0x66
+ 1033 01bf 05       		.byte	0x5
+ 1034 01c0 A501     		.2byte	0x1a5
+ 1035 01c2 2D060000 		.4byte	0x62d
+ 1036 01c6 0B       		.uleb128 0xb
+ 1037 01c7 97110000 		.4byte	.LASF39
+ 1038 01cb 00       		.byte	0
+ 1039 01cc 0C       		.uleb128 0xc
+ 1040 01cd 6D000000 		.4byte	.LASF40
+ 1041 01d1 1027     		.2byte	0x2710
+ 1042 01d3 0C       		.uleb128 0xc
+ 1043 01d4 6B030000 		.4byte	.LASF41
+ 1044 01d8 1127     		.2byte	0x2711
+ 1045 01da 0C       		.uleb128 0xc
+ 1046 01db 76000000 		.4byte	.LASF42
+ 1047 01df F82A     		.2byte	0x2af8
+ 1048 01e1 0C       		.uleb128 0xc
+ 1049 01e2 7F000000 		.4byte	.LASF43
+ 1050 01e6 E02E     		.2byte	0x2ee0
+ 1051 01e8 0C       		.uleb128 0xc
+ 1052 01e9 83010000 		.4byte	.LASF44
+ 1053 01ed E12E     		.2byte	0x2ee1
+ 1054 01ef 0C       		.uleb128 0xc
+ 1055 01f0 88000000 		.4byte	.LASF45
+ 1056 01f4 C832     		.2byte	0x32c8
+ 1057 01f6 0C       		.uleb128 0xc
+ 1058 01f7 33080000 		.4byte	.LASF46
+ 1059 01fb C932     		.2byte	0x32c9
+ 1060 01fd 0C       		.uleb128 0xc
+ 1061 01fe 91000000 		.4byte	.LASF47
+ 1062 0202 B036     		.2byte	0x36b0
+ 1063 0204 0C       		.uleb128 0xc
+ 1064 0205 9A000000 		.4byte	.LASF48
+ 1065 0209 983A     		.2byte	0x3a98
+ 1066 020b 0C       		.uleb128 0xc
+ 1067 020c 41110000 		.4byte	.LASF49
+ 1068 0210 993A     		.2byte	0x3a99
+ 1069 0212 0C       		.uleb128 0xc
+ 1070 0213 CE070000 		.4byte	.LASF50
+ 1071 0217 FD3A     		.2byte	0x3afd
+ 1072 0219 0C       		.uleb128 0xc
+ 1073 021a B70E0000 		.4byte	.LASF51
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 29
+
+
+ 1074 021e FE3A     		.2byte	0x3afe
+ 1075 0220 0C       		.uleb128 0xc
+ 1076 0221 69090000 		.4byte	.LASF52
+ 1077 0225 FF3A     		.2byte	0x3aff
+ 1078 0227 0C       		.uleb128 0xc
+ 1079 0228 C4110000 		.4byte	.LASF53
+ 1080 022c 003B     		.2byte	0x3b00
+ 1081 022e 0C       		.uleb128 0xc
+ 1082 022f A3000000 		.4byte	.LASF54
+ 1083 0233 803E     		.2byte	0x3e80
+ 1084 0235 0C       		.uleb128 0xc
+ 1085 0236 AC000000 		.4byte	.LASF55
+ 1086 023a 6842     		.2byte	0x4268
+ 1087 023c 0C       		.uleb128 0xc
+ 1088 023d B5000000 		.4byte	.LASF56
+ 1089 0241 5046     		.2byte	0x4650
+ 1090 0243 0C       		.uleb128 0xc
+ 1091 0244 5F040000 		.4byte	.LASF57
+ 1092 0248 5146     		.2byte	0x4651
+ 1093 024a 0C       		.uleb128 0xc
+ 1094 024b 3F030000 		.4byte	.LASF58
+ 1095 024f 5246     		.2byte	0x4652
+ 1096 0251 0C       		.uleb128 0xc
+ 1097 0252 2A040000 		.4byte	.LASF59
+ 1098 0256 5346     		.2byte	0x4653
+ 1099 0258 0C       		.uleb128 0xc
+ 1100 0259 71010000 		.4byte	.LASF60
+ 1101 025d 5446     		.2byte	0x4654
+ 1102 025f 0C       		.uleb128 0xc
+ 1103 0260 E3100000 		.4byte	.LASF61
+ 1104 0264 5546     		.2byte	0x4655
+ 1105 0266 0C       		.uleb128 0xc
+ 1106 0267 E00B0000 		.4byte	.LASF62
+ 1107 026b 5646     		.2byte	0x4656
+ 1108 026d 0C       		.uleb128 0xc
+ 1109 026e BE000000 		.4byte	.LASF63
+ 1110 0272 384A     		.2byte	0x4a38
+ 1111 0274 0C       		.uleb128 0xc
+ 1112 0275 C7000000 		.4byte	.LASF64
+ 1113 0279 204E     		.2byte	0x4e20
+ 1114 027b 0C       		.uleb128 0xc
+ 1115 027c D0000000 		.4byte	.LASF65
+ 1116 0280 0852     		.2byte	0x5208
+ 1117 0282 0C       		.uleb128 0xc
+ 1118 0283 E20C0000 		.4byte	.LASF66
+ 1119 0287 0952     		.2byte	0x5209
+ 1120 0289 0C       		.uleb128 0xc
+ 1121 028a D9000000 		.4byte	.LASF67
+ 1122 028e F055     		.2byte	0x55f0
+ 1123 0290 0C       		.uleb128 0xc
+ 1124 0291 3C100000 		.4byte	.LASF68
+ 1125 0295 B956     		.2byte	0x56b9
+ 1126 0297 0C       		.uleb128 0xc
+ 1127 0298 570A0000 		.4byte	.LASF69
+ 1128 029c BA56     		.2byte	0x56ba
+ 1129 029e 0C       		.uleb128 0xc
+ 1130 029f BA0C0000 		.4byte	.LASF70
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 30
+
+
+ 1131 02a3 BB56     		.2byte	0x56bb
+ 1132 02a5 0C       		.uleb128 0xc
+ 1133 02a6 E7070000 		.4byte	.LASF71
+ 1134 02aa BC56     		.2byte	0x56bc
+ 1135 02ac 0C       		.uleb128 0xc
+ 1136 02ad 0D0A0000 		.4byte	.LASF72
+ 1137 02b1 BD56     		.2byte	0x56bd
+ 1138 02b3 0C       		.uleb128 0xc
+ 1139 02b4 A10C0000 		.4byte	.LASF73
+ 1140 02b8 BE56     		.2byte	0x56be
+ 1141 02ba 0C       		.uleb128 0xc
+ 1142 02bb 7F0A0000 		.4byte	.LASF74
+ 1143 02bf BF56     		.2byte	0x56bf
+ 1144 02c1 0C       		.uleb128 0xc
+ 1145 02c2 25050000 		.4byte	.LASF75
+ 1146 02c6 C056     		.2byte	0x56c0
+ 1147 02c8 0C       		.uleb128 0xc
+ 1148 02c9 57120000 		.4byte	.LASF76
+ 1149 02cd C156     		.2byte	0x56c1
+ 1150 02cf 0C       		.uleb128 0xc
+ 1151 02d0 5F130000 		.4byte	.LASF77
+ 1152 02d4 C256     		.2byte	0x56c2
+ 1153 02d6 0C       		.uleb128 0xc
+ 1154 02d7 370D0000 		.4byte	.LASF78
+ 1155 02db 1D57     		.2byte	0x571d
+ 1156 02dd 0C       		.uleb128 0xc
+ 1157 02de A70D0000 		.4byte	.LASF79
+ 1158 02e2 1E57     		.2byte	0x571e
+ 1159 02e4 0C       		.uleb128 0xc
+ 1160 02e5 E5060000 		.4byte	.LASF80
+ 1161 02e9 8157     		.2byte	0x5781
+ 1162 02eb 0C       		.uleb128 0xc
+ 1163 02ec 7E0E0000 		.4byte	.LASF81
+ 1164 02f0 8257     		.2byte	0x5782
+ 1165 02f2 0C       		.uleb128 0xc
+ 1166 02f3 95030000 		.4byte	.LASF82
+ 1167 02f7 8357     		.2byte	0x5783
+ 1168 02f9 0C       		.uleb128 0xc
+ 1169 02fa E2000000 		.4byte	.LASF83
+ 1170 02fe D859     		.2byte	0x59d8
+ 1171 0300 0C       		.uleb128 0xc
+ 1172 0301 91060000 		.4byte	.LASF84
+ 1173 0305 D959     		.2byte	0x59d9
+ 1174 0307 0C       		.uleb128 0xc
+ 1175 0308 FF040000 		.4byte	.LASF85
+ 1176 030c DA59     		.2byte	0x59da
+ 1177 030e 0C       		.uleb128 0xc
+ 1178 030f EB000000 		.4byte	.LASF86
+ 1179 0313 C05D     		.2byte	0x5dc0
+ 1180 0315 0C       		.uleb128 0xc
+ 1181 0316 F6030000 		.4byte	.LASF87
+ 1182 031a C15D     		.2byte	0x5dc1
+ 1183 031c 0C       		.uleb128 0xc
+ 1184 031d 45090000 		.4byte	.LASF88
+ 1185 0321 C25D     		.2byte	0x5dc2
+ 1186 0323 0C       		.uleb128 0xc
+ 1187 0324 250A0000 		.4byte	.LASF89
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 31
+
+
+ 1188 0328 C35D     		.2byte	0x5dc3
+ 1189 032a 0C       		.uleb128 0xc
+ 1190 032b FC0D0000 		.4byte	.LASF90
+ 1191 032f C45D     		.2byte	0x5dc4
+ 1192 0331 0C       		.uleb128 0xc
+ 1193 0332 7A080000 		.4byte	.LASF91
+ 1194 0336 255E     		.2byte	0x5e25
+ 1195 0338 0C       		.uleb128 0xc
+ 1196 0339 5D0C0000 		.4byte	.LASF92
+ 1197 033d 895E     		.2byte	0x5e89
+ 1198 033f 0C       		.uleb128 0xc
+ 1199 0340 6F070000 		.4byte	.LASF93
+ 1200 0344 8A5E     		.2byte	0x5e8a
+ 1201 0346 0C       		.uleb128 0xc
+ 1202 0347 F4000000 		.4byte	.LASF94
+ 1203 034b A861     		.2byte	0x61a8
+ 1204 034d 0C       		.uleb128 0xc
+ 1205 034e E1110000 		.4byte	.LASF95
+ 1206 0352 A961     		.2byte	0x61a9
+ 1207 0354 0C       		.uleb128 0xc
+ 1208 0355 F30E0000 		.4byte	.LASF96
+ 1209 0359 AA61     		.2byte	0x61aa
+ 1210 035b 0C       		.uleb128 0xc
+ 1211 035c 5A0E0000 		.4byte	.LASF97
+ 1212 0360 AB61     		.2byte	0x61ab
+ 1213 0362 0C       		.uleb128 0xc
+ 1214 0363 CF090000 		.4byte	.LASF98
+ 1215 0367 AC61     		.2byte	0x61ac
+ 1216 0369 0C       		.uleb128 0xc
+ 1217 036a 17120000 		.4byte	.LASF99
+ 1218 036e AD61     		.2byte	0x61ad
+ 1219 0370 0C       		.uleb128 0xc
+ 1220 0371 71100000 		.4byte	.LASF100
+ 1221 0375 AE61     		.2byte	0x61ae
+ 1222 0377 0C       		.uleb128 0xc
+ 1223 0378 4C020000 		.4byte	.LASF101
+ 1224 037c AF61     		.2byte	0x61af
+ 1225 037e 0C       		.uleb128 0xc
+ 1226 037f F4010000 		.4byte	.LASF102
+ 1227 0383 B061     		.2byte	0x61b0
+ 1228 0385 0C       		.uleb128 0xc
+ 1229 0386 EA040000 		.4byte	.LASF103
+ 1230 038a 0D62     		.2byte	0x620d
+ 1231 038c 0C       		.uleb128 0xc
+ 1232 038d 120F0000 		.4byte	.LASF104
+ 1233 0391 0E62     		.2byte	0x620e
+ 1234 0393 0C       		.uleb128 0xc
+ 1235 0394 3B130000 		.4byte	.LASF105
+ 1236 0398 7162     		.2byte	0x6271
+ 1237 039a 0C       		.uleb128 0xc
+ 1238 039b 0B120000 		.4byte	.LASF106
+ 1239 039f 7262     		.2byte	0x6272
+ 1240 03a1 0C       		.uleb128 0xc
+ 1241 03a2 07000000 		.4byte	.LASF107
+ 1242 03a6 7362     		.2byte	0x6273
+ 1243 03a8 0C       		.uleb128 0xc
+ 1244 03a9 210C0000 		.4byte	.LASF108
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 32
+
+
+ 1245 03ad D562     		.2byte	0x62d5
+ 1246 03af 0C       		.uleb128 0xc
+ 1247 03b0 FD000000 		.4byte	.LASF109
+ 1248 03b4 9065     		.2byte	0x6590
+ 1249 03b6 0C       		.uleb128 0xc
+ 1250 03b7 AF100000 		.4byte	.LASF110
+ 1251 03bb 9165     		.2byte	0x6591
+ 1252 03bd 0C       		.uleb128 0xc
+ 1253 03be 5A060000 		.4byte	.LASF111
+ 1254 03c2 9265     		.2byte	0x6592
+ 1255 03c4 0C       		.uleb128 0xc
+ 1256 03c5 42080000 		.4byte	.LASF112
+ 1257 03c9 9365     		.2byte	0x6593
+ 1258 03cb 0C       		.uleb128 0xc
+ 1259 03cc A4090000 		.4byte	.LASF113
+ 1260 03d0 9465     		.2byte	0x6594
+ 1261 03d2 0C       		.uleb128 0xc
+ 1262 03d3 06010000 		.4byte	.LASF114
+ 1263 03d7 7869     		.2byte	0x6978
+ 1264 03d9 0C       		.uleb128 0xc
+ 1265 03da 390A0000 		.4byte	.LASF115
+ 1266 03de 7969     		.2byte	0x6979
+ 1267 03e0 0C       		.uleb128 0xc
+ 1268 03e1 8C0C0000 		.4byte	.LASF116
+ 1269 03e5 7A69     		.2byte	0x697a
+ 1270 03e7 0C       		.uleb128 0xc
+ 1271 03e8 F1090000 		.4byte	.LASF117
+ 1272 03ec 7B69     		.2byte	0x697b
+ 1273 03ee 0C       		.uleb128 0xc
+ 1274 03ef 0F010000 		.4byte	.LASF118
+ 1275 03f3 606D     		.2byte	0x6d60
+ 1276 03f5 0C       		.uleb128 0xc
+ 1277 03f6 94080000 		.4byte	.LASF119
+ 1278 03fa 616D     		.2byte	0x6d61
+ 1279 03fc 0C       		.uleb128 0xc
+ 1280 03fd 1D080000 		.4byte	.LASF120
+ 1281 0401 626D     		.2byte	0x6d62
+ 1282 0403 0C       		.uleb128 0xc
+ 1283 0404 B0110000 		.4byte	.LASF121
+ 1284 0408 636D     		.2byte	0x6d63
+ 1285 040a 0C       		.uleb128 0xc
+ 1286 040b F3110000 		.4byte	.LASF122
+ 1287 040f 646D     		.2byte	0x6d64
+ 1288 0411 0C       		.uleb128 0xc
+ 1289 0412 770D0000 		.4byte	.LASF123
+ 1290 0416 656D     		.2byte	0x6d65
+ 1291 0418 0C       		.uleb128 0xc
+ 1292 0419 C4120000 		.4byte	.LASF124
+ 1293 041d C56D     		.2byte	0x6dc5
+ 1294 041f 0C       		.uleb128 0xc
+ 1295 0420 9B120000 		.4byte	.LASF125
+ 1296 0424 C66D     		.2byte	0x6dc6
+ 1297 0426 0C       		.uleb128 0xc
+ 1298 0427 36020000 		.4byte	.LASF126
+ 1299 042b 296E     		.2byte	0x6e29
+ 1300 042d 0C       		.uleb128 0xc
+ 1301 042e E6080000 		.4byte	.LASF127
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 33
+
+
+ 1302 0432 2A6E     		.2byte	0x6e2a
+ 1303 0434 0C       		.uleb128 0xc
+ 1304 0435 B6070000 		.4byte	.LASF128
+ 1305 0439 2B6E     		.2byte	0x6e2b
+ 1306 043b 0C       		.uleb128 0xc
+ 1307 043c 9A0E0000 		.4byte	.LASF129
+ 1308 0440 2C6E     		.2byte	0x6e2c
+ 1309 0442 0C       		.uleb128 0xc
+ 1310 0443 340C0000 		.4byte	.LASF130
+ 1311 0447 2D6E     		.2byte	0x6e2d
+ 1312 0449 0C       		.uleb128 0xc
+ 1313 044a 52100000 		.4byte	.LASF131
+ 1314 044e 2E6E     		.2byte	0x6e2e
+ 1315 0450 0C       		.uleb128 0xc
+ 1316 0451 CA010000 		.4byte	.LASF132
+ 1317 0455 2F6E     		.2byte	0x6e2f
+ 1318 0457 0C       		.uleb128 0xc
+ 1319 0458 750F0000 		.4byte	.LASF133
+ 1320 045c 306E     		.2byte	0x6e30
+ 1321 045e 0C       		.uleb128 0xc
+ 1322 045f 360F0000 		.4byte	.LASF134
+ 1323 0463 316E     		.2byte	0x6e31
+ 1324 0465 0C       		.uleb128 0xc
+ 1325 0466 18010000 		.4byte	.LASF135
+ 1326 046a 4871     		.2byte	0x7148
+ 1327 046c 0C       		.uleb128 0xc
+ 1328 046d 0C020000 		.4byte	.LASF136
+ 1329 0471 4971     		.2byte	0x7149
+ 1330 0473 0C       		.uleb128 0xc
+ 1331 0474 40070000 		.4byte	.LASF137
+ 1332 0478 4A71     		.2byte	0x714a
+ 1333 047a 0C       		.uleb128 0xc
+ 1334 047b 18110000 		.4byte	.LASF138
+ 1335 047f 4B71     		.2byte	0x714b
+ 1336 0481 0C       		.uleb128 0xc
+ 1337 0482 D3120000 		.4byte	.LASF139
+ 1338 0486 4C71     		.2byte	0x714c
+ 1339 0488 0C       		.uleb128 0xc
+ 1340 0489 FA050000 		.4byte	.LASF140
+ 1341 048d 4D71     		.2byte	0x714d
+ 1342 048f 0C       		.uleb128 0xc
+ 1343 0490 0D0C0000 		.4byte	.LASF141
+ 1344 0494 4E71     		.2byte	0x714e
+ 1345 0496 0C       		.uleb128 0xc
+ 1346 0497 800B0000 		.4byte	.LASF142
+ 1347 049b 4F71     		.2byte	0x714f
+ 1348 049d 0C       		.uleb128 0xc
+ 1349 049e 670A0000 		.4byte	.LASF143
+ 1350 04a2 5071     		.2byte	0x7150
+ 1351 04a4 0C       		.uleb128 0xc
+ 1352 04a5 14030000 		.4byte	.LASF144
+ 1353 04a9 5171     		.2byte	0x7151
+ 1354 04ab 0C       		.uleb128 0xc
+ 1355 04ac 590B0000 		.4byte	.LASF145
+ 1356 04b0 5271     		.2byte	0x7152
+ 1357 04b2 0C       		.uleb128 0xc
+ 1358 04b3 FA020000 		.4byte	.LASF146
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 34
+
+
+ 1359 04b7 5371     		.2byte	0x7153
+ 1360 04b9 0C       		.uleb128 0xc
+ 1361 04ba E30F0000 		.4byte	.LASF147
+ 1362 04be 5471     		.2byte	0x7154
+ 1363 04c0 0C       		.uleb128 0xc
+ 1364 04c1 DD010000 		.4byte	.LASF148
+ 1365 04c5 5571     		.2byte	0x7155
+ 1366 04c7 0C       		.uleb128 0xc
+ 1367 04c8 A0040000 		.4byte	.LASF149
+ 1368 04cc 5671     		.2byte	0x7156
+ 1369 04ce 0C       		.uleb128 0xc
+ 1370 04cf DB0D0000 		.4byte	.LASF150
+ 1371 04d3 5771     		.2byte	0x7157
+ 1372 04d5 0C       		.uleb128 0xc
+ 1373 04d6 9E050000 		.4byte	.LASF151
+ 1374 04da 5871     		.2byte	0x7158
+ 1375 04dc 0C       		.uleb128 0xc
+ 1376 04dd FA0C0000 		.4byte	.LASF152
+ 1377 04e1 5971     		.2byte	0x7159
+ 1378 04e3 0C       		.uleb128 0xc
+ 1379 04e4 6F120000 		.4byte	.LASF153
+ 1380 04e8 5A71     		.2byte	0x715a
+ 1381 04ea 0C       		.uleb128 0xc
+ 1382 04eb 11040000 		.4byte	.LASF154
+ 1383 04ef 5B71     		.2byte	0x715b
+ 1384 04f1 0C       		.uleb128 0xc
+ 1385 04f2 DA050000 		.4byte	.LASF155
+ 1386 04f6 5C71     		.2byte	0x715c
+ 1387 04f8 0C       		.uleb128 0xc
+ 1388 04f9 7D030000 		.4byte	.LASF156
+ 1389 04fd 5D71     		.2byte	0x715d
+ 1390 04ff 0C       		.uleb128 0xc
+ 1391 0500 AC0B0000 		.4byte	.LASF157
+ 1392 0504 5E71     		.2byte	0x715e
+ 1393 0506 0C       		.uleb128 0xc
+ 1394 0507 57030000 		.4byte	.LASF158
+ 1395 050b 5F71     		.2byte	0x715f
+ 1396 050d 0C       		.uleb128 0xc
+ 1397 050e 34060000 		.4byte	.LASF159
+ 1398 0512 AD71     		.2byte	0x71ad
+ 1399 0514 0C       		.uleb128 0xc
+ 1400 0515 71050000 		.4byte	.LASF160
+ 1401 0519 C071     		.2byte	0x71c0
+ 1402 051b 0C       		.uleb128 0xc
+ 1403 051c FE0B0000 		.4byte	.LASF161
+ 1404 0520 C171     		.2byte	0x71c1
+ 1405 0522 0C       		.uleb128 0xc
+ 1406 0523 6E110000 		.4byte	.LASF162
+ 1407 0527 C271     		.2byte	0x71c2
+ 1408 0529 0C       		.uleb128 0xc
+ 1409 052a 68080000 		.4byte	.LASF163
+ 1410 052e C371     		.2byte	0x71c3
+ 1411 0530 0C       		.uleb128 0xc
+ 1412 0531 C8060000 		.4byte	.LASF164
+ 1413 0535 C471     		.2byte	0x71c4
+ 1414 0537 0C       		.uleb128 0xc
+ 1415 0538 22130000 		.4byte	.LASF165
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 35
+
+
+ 1416 053c 1172     		.2byte	0x7211
+ 1417 053e 0C       		.uleb128 0xc
+ 1418 053f 8F0D0000 		.4byte	.LASF166
+ 1419 0543 1272     		.2byte	0x7212
+ 1420 0545 0C       		.uleb128 0xc
+ 1421 0546 A2010000 		.4byte	.LASF167
+ 1422 054a 1372     		.2byte	0x7213
+ 1423 054c 0C       		.uleb128 0xc
+ 1424 054d 22000000 		.4byte	.LASF168
+ 1425 0551 1472     		.2byte	0x7214
+ 1426 0553 0C       		.uleb128 0xc
+ 1427 0554 220F0000 		.4byte	.LASF169
+ 1428 0558 7572     		.2byte	0x7275
+ 1429 055a 0C       		.uleb128 0xc
+ 1430 055b 07130000 		.4byte	.LASF170
+ 1431 055f 7672     		.2byte	0x7276
+ 1432 0561 0C       		.uleb128 0xc
+ 1433 0562 E8120000 		.4byte	.LASF171
+ 1434 0566 7772     		.2byte	0x7277
+ 1435 0568 0C       		.uleb128 0xc
+ 1436 0569 08070000 		.4byte	.LASF172
+ 1437 056d 7872     		.2byte	0x7278
+ 1438 056f 0C       		.uleb128 0xc
+ 1439 0570 51000000 		.4byte	.LASF173
+ 1440 0574 7972     		.2byte	0x7279
+ 1441 0576 0C       		.uleb128 0xc
+ 1442 0577 FC100000 		.4byte	.LASF174
+ 1443 057b 7A72     		.2byte	0x727a
+ 1444 057d 0C       		.uleb128 0xc
+ 1445 057e 69060000 		.4byte	.LASF175
+ 1446 0582 7B72     		.2byte	0x727b
+ 1447 0584 0C       		.uleb128 0xc
+ 1448 0585 FF080000 		.4byte	.LASF176
+ 1449 0589 7C72     		.2byte	0x727c
+ 1450 058b 0C       		.uleb128 0xc
+ 1451 058c 780C0000 		.4byte	.LASF177
+ 1452 0590 7D72     		.2byte	0x727d
+ 1453 0592 0C       		.uleb128 0xc
+ 1454 0593 95070000 		.4byte	.LASF178
+ 1455 0597 7E72     		.2byte	0x727e
+ 1456 0599 0C       		.uleb128 0xc
+ 1457 059a F30F0000 		.4byte	.LASF179
+ 1458 059e D972     		.2byte	0x72d9
+ 1459 05a0 0C       		.uleb128 0xc
+ 1460 05a1 5D050000 		.4byte	.LASF180
+ 1461 05a5 3D73     		.2byte	0x733d
+ 1462 05a7 0C       		.uleb128 0xc
+ 1463 05a8 05080000 		.4byte	.LASF181
+ 1464 05ac 3E73     		.2byte	0x733e
+ 1465 05ae 0C       		.uleb128 0xc
+ 1466 05af 7E040000 		.4byte	.LASF182
+ 1467 05b3 3F73     		.2byte	0x733f
+ 1468 05b5 0C       		.uleb128 0xc
+ 1469 05b6 45010000 		.4byte	.LASF183
+ 1470 05ba 4073     		.2byte	0x7340
+ 1471 05bc 0C       		.uleb128 0xc
+ 1472 05bd B3030000 		.4byte	.LASF184
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 36
+
+
+ 1473 05c1 4173     		.2byte	0x7341
+ 1474 05c3 0C       		.uleb128 0xc
+ 1475 05c4 BA050000 		.4byte	.LASF185
+ 1476 05c8 4273     		.2byte	0x7342
+ 1477 05ca 0C       		.uleb128 0xc
+ 1478 05cb 42000000 		.4byte	.LASF186
+ 1479 05cf 4373     		.2byte	0x7343
+ 1480 05d1 0C       		.uleb128 0xc
+ 1481 05d2 46050000 		.4byte	.LASF187
+ 1482 05d6 4473     		.2byte	0x7344
+ 1483 05d8 0C       		.uleb128 0xc
+ 1484 05d9 22070000 		.4byte	.LASF188
+ 1485 05dd 4573     		.2byte	0x7345
+ 1486 05df 0C       		.uleb128 0xc
+ 1487 05e0 940B0000 		.4byte	.LASF189
+ 1488 05e4 4673     		.2byte	0x7346
+ 1489 05e6 0C       		.uleb128 0xc
+ 1490 05e7 12060000 		.4byte	.LASF190
+ 1491 05eb 4773     		.2byte	0x7347
+ 1492 05ed 0C       		.uleb128 0xc
+ 1493 05ee 310B0000 		.4byte	.LASF191
+ 1494 05f2 4873     		.2byte	0x7348
+ 1495 05f4 0C       		.uleb128 0xc
+ 1496 05f5 C20F0000 		.4byte	.LASF192
+ 1497 05f9 4973     		.2byte	0x7349
+ 1498 05fb 0C       		.uleb128 0xc
+ 1499 05fc 21010000 		.4byte	.LASF193
+ 1500 0600 3075     		.2byte	0x7530
+ 1501 0602 0C       		.uleb128 0xc
+ 1502 0603 2A010000 		.4byte	.LASF194
+ 1503 0607 1879     		.2byte	0x7918
+ 1504 0609 0C       		.uleb128 0xc
+ 1505 060a 33010000 		.4byte	.LASF195
+ 1506 060e 007D     		.2byte	0x7d00
+ 1507 0610 0C       		.uleb128 0xc
+ 1508 0611 3C010000 		.4byte	.LASF196
+ 1509 0615 E880     		.2byte	0x80e8
+ 1510 0617 0C       		.uleb128 0xc
+ 1511 0618 68100000 		.4byte	.LASF197
+ 1512 061c D084     		.2byte	0x84d0
+ 1513 061e 0C       		.uleb128 0xc
+ 1514 061f 34090000 		.4byte	.LASF198
+ 1515 0623 D184     		.2byte	0x84d1
+ 1516 0625 0C       		.uleb128 0xc
+ 1517 0626 81100000 		.4byte	.LASF199
+ 1518 062a B888     		.2byte	0x88b8
+ 1519 062c 00       		.byte	0
+ 1520 062d 09       		.uleb128 0x9
+ 1521 062e 1B000000 		.4byte	.LASF200
+ 1522 0632 05       		.byte	0x5
+ 1523 0633 7202     		.2byte	0x272
+ 1524 0635 B5010000 		.4byte	0x1b5
+ 1525 0639 09       		.uleb128 0x9
+ 1526 063a 30100000 		.4byte	.LASF201
+ 1527 063e 05       		.byte	0x5
+ 1528 063f 8E02     		.2byte	0x28e
+ 1529 0641 A9000000 		.4byte	0xa9
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 37
+
+
+ 1530 0645 09       		.uleb128 0x9
+ 1531 0646 32120000 		.4byte	.LASF202
+ 1532 064a 05       		.byte	0x5
+ 1533 064b 9002     		.2byte	0x290
+ 1534 064d 51060000 		.4byte	0x651
+ 1535 0651 0D       		.uleb128 0xd
+ 1536 0652 00000000 		.4byte	.LASF237
+ 1537 0656 7C       		.byte	0x7c
+ 1538 0657 05       		.byte	0x5
+ 1539 0658 AB03     		.2byte	0x3ab
+ 1540 065a 25080000 		.4byte	0x825
+ 1541 065e 0E       		.uleb128 0xe
+ 1542 065f 7E090000 		.4byte	.LASF203
+ 1543 0663 05       		.byte	0x5
+ 1544 0664 AC03     		.2byte	0x3ac
+ 1545 0666 A9090000 		.4byte	0x9a9
+ 1546 066a 00       		.byte	0
+ 1547 066b 0E       		.uleb128 0xe
+ 1548 066c D10E0000 		.4byte	.LASF204
+ 1549 0670 05       		.byte	0x5
+ 1550 0671 AE03     		.2byte	0x3ae
+ 1551 0673 BA000000 		.4byte	0xba
+ 1552 0677 04       		.byte	0x4
+ 1553 0678 0E       		.uleb128 0xe
+ 1554 0679 1A0B0000 		.4byte	.LASF205
+ 1555 067d 05       		.byte	0x5
+ 1556 067e B003     		.2byte	0x3b0
+ 1557 0680 A9090000 		.4byte	0x9a9
+ 1558 0684 08       		.byte	0x8
+ 1559 0685 0E       		.uleb128 0xe
+ 1560 0686 490C0000 		.4byte	.LASF206
+ 1561 068a 05       		.byte	0x5
+ 1562 068b B203     		.2byte	0x3b2
+ 1563 068d 91090000 		.4byte	0x991
+ 1564 0691 0C       		.byte	0xc
+ 1565 0692 0E       		.uleb128 0xe
+ 1566 0693 4F080000 		.4byte	.LASF207
+ 1567 0697 05       		.byte	0x5
+ 1568 0698 B303     		.2byte	0x3b3
+ 1569 069a 91090000 		.4byte	0x991
+ 1570 069e 10       		.byte	0x10
+ 1571 069f 0E       		.uleb128 0xe
+ 1572 06a0 4D0B0000 		.4byte	.LASF208
+ 1573 06a4 05       		.byte	0x5
+ 1574 06a5 B503     		.2byte	0x3b5
+ 1575 06a7 91090000 		.4byte	0x991
+ 1576 06ab 14       		.byte	0x14
+ 1577 06ac 0E       		.uleb128 0xe
+ 1578 06ad AA070000 		.4byte	.LASF209
+ 1579 06b1 05       		.byte	0x5
+ 1580 06b2 B603     		.2byte	0x3b6
+ 1581 06b4 91090000 		.4byte	0x991
+ 1582 06b8 18       		.byte	0x18
+ 1583 06b9 0E       		.uleb128 0xe
+ 1584 06ba 8A100000 		.4byte	.LASF210
+ 1585 06be 05       		.byte	0x5
+ 1586 06bf B803     		.2byte	0x3b8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 38
+
+
+ 1587 06c1 AF090000 		.4byte	0x9af
+ 1588 06c5 1C       		.byte	0x1c
+ 1589 06c6 0E       		.uleb128 0xe
+ 1590 06c7 13090000 		.4byte	.LASF211
+ 1591 06cb 05       		.byte	0x5
+ 1592 06cc BA03     		.2byte	0x3ba
+ 1593 06ce A3090000 		.4byte	0x9a3
+ 1594 06d2 20       		.byte	0x20
+ 1595 06d3 0E       		.uleb128 0xe
+ 1596 06d4 4F060000 		.4byte	.LASF212
+ 1597 06d8 05       		.byte	0x5
+ 1598 06d9 BC03     		.2byte	0x3bc
+ 1599 06db A9090000 		.4byte	0x9a9
+ 1600 06df 24       		.byte	0x24
+ 1601 06e0 0E       		.uleb128 0xe
+ 1602 06e1 BF080000 		.4byte	.LASF213
+ 1603 06e5 05       		.byte	0x5
+ 1604 06e6 C203     		.2byte	0x3c2
+ 1605 06e8 39060000 		.4byte	0x639
+ 1606 06ec 28       		.byte	0x28
+ 1607 06ed 0E       		.uleb128 0xe
+ 1608 06ee A2100000 		.4byte	.LASF214
+ 1609 06f2 05       		.byte	0x5
+ 1610 06f3 C303     		.2byte	0x3c3
+ 1611 06f5 BA000000 		.4byte	0xba
+ 1612 06f9 2C       		.byte	0x2c
+ 1613 06fa 0E       		.uleb128 0xe
+ 1614 06fb 0C0E0000 		.4byte	.LASF215
+ 1615 06ff 05       		.byte	0x5
+ 1616 0700 C503     		.2byte	0x3c5
+ 1617 0702 97090000 		.4byte	0x997
+ 1618 0706 30       		.byte	0x30
+ 1619 0707 0E       		.uleb128 0xe
+ 1620 0708 CC030000 		.4byte	.LASF216
+ 1621 070c 05       		.byte	0x5
+ 1622 070d C603     		.2byte	0x3c6
+ 1623 070f 94010000 		.4byte	0x194
+ 1624 0713 34       		.byte	0x34
+ 1625 0714 0E       		.uleb128 0xe
+ 1626 0715 1B090000 		.4byte	.LASF217
+ 1627 0719 05       		.byte	0x5
+ 1628 071a C703     		.2byte	0x3c7
+ 1629 071c 9F010000 		.4byte	0x19f
+ 1630 0720 35       		.byte	0x35
+ 1631 0721 0E       		.uleb128 0xe
+ 1632 0722 BE060000 		.4byte	.LASF218
+ 1633 0726 05       		.byte	0x5
+ 1634 0727 C903     		.2byte	0x3c9
+ 1635 0729 94010000 		.4byte	0x194
+ 1636 072d 36       		.byte	0x36
+ 1637 072e 0E       		.uleb128 0xe
+ 1638 072f D5110000 		.4byte	.LASF219
+ 1639 0733 05       		.byte	0x5
+ 1640 0734 CA03     		.2byte	0x3ca
+ 1641 0736 68010000 		.4byte	0x168
+ 1642 073a 37       		.byte	0x37
+ 1643 073b 0E       		.uleb128 0xe
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 39
+
+
+ 1644 073c 47060000 		.4byte	.LASF220
+ 1645 0740 05       		.byte	0x5
+ 1646 0741 CB03     		.2byte	0x3cb
+ 1647 0743 D2000000 		.4byte	0xd2
+ 1648 0747 38       		.byte	0x38
+ 1649 0748 0F       		.uleb128 0xf
+ 1650 0749 4F707400 		.ascii	"Opt\000"
+ 1651 074d 05       		.byte	0x5
+ 1652 074e CC03     		.2byte	0x3cc
+ 1653 0750 5D010000 		.4byte	0x15d
+ 1654 0754 3C       		.byte	0x3c
+ 1655 0755 0E       		.uleb128 0xe
+ 1656 0756 D3030000 		.4byte	.LASF221
+ 1657 075a 05       		.byte	0x5
+ 1658 075b CE03     		.2byte	0x3ce
+ 1659 075d 47010000 		.4byte	0x147
+ 1660 0761 3E       		.byte	0x3e
+ 1661 0762 0F       		.uleb128 0xf
+ 1662 0763 545300   		.ascii	"TS\000"
+ 1663 0766 05       		.byte	0x5
+ 1664 0767 D003     		.2byte	0x3d0
+ 1665 0769 10010000 		.4byte	0x110
+ 1666 076d 40       		.byte	0x40
+ 1667 076e 0E       		.uleb128 0xe
+ 1668 076f 1B0E0000 		.4byte	.LASF222
+ 1669 0773 05       		.byte	0x5
+ 1670 0774 D203     		.2byte	0x3d2
+ 1671 0776 89010000 		.4byte	0x189
+ 1672 077a 44       		.byte	0x44
+ 1673 077b 0E       		.uleb128 0xe
+ 1674 077c 89070000 		.4byte	.LASF223
+ 1675 0780 05       		.byte	0x5
+ 1676 0781 D503     		.2byte	0x3d5
+ 1677 0783 AA010000 		.4byte	0x1aa
+ 1678 0787 48       		.byte	0x48
+ 1679 0788 0E       		.uleb128 0xe
+ 1680 0789 3C040000 		.4byte	.LASF224
+ 1681 078d 05       		.byte	0x5
+ 1682 078e D603     		.2byte	0x3d6
+ 1683 0790 AA010000 		.4byte	0x1aa
+ 1684 0794 4C       		.byte	0x4c
+ 1685 0795 0E       		.uleb128 0xe
+ 1686 0796 470E0000 		.4byte	.LASF225
+ 1687 079a 05       		.byte	0x5
+ 1688 079b D703     		.2byte	0x3d7
+ 1689 079d AA010000 		.4byte	0x1aa
+ 1690 07a1 50       		.byte	0x50
+ 1691 07a2 0E       		.uleb128 0xe
+ 1692 07a3 FC120000 		.4byte	.LASF226
+ 1693 07a7 05       		.byte	0x5
+ 1694 07a8 D903     		.2byte	0x3d9
+ 1695 07aa AA010000 		.4byte	0x1aa
+ 1696 07ae 54       		.byte	0x54
+ 1697 07af 0E       		.uleb128 0xe
+ 1698 07b0 26090000 		.4byte	.LASF227
+ 1699 07b4 05       		.byte	0x5
+ 1700 07b5 DA03     		.2byte	0x3da
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 40
+
+
+ 1701 07b7 AA010000 		.4byte	0x1aa
+ 1702 07bb 58       		.byte	0x58
+ 1703 07bc 0E       		.uleb128 0xe
+ 1704 07bd BD120000 		.4byte	.LASF228
+ 1705 07c1 05       		.byte	0x5
+ 1706 07c2 EA03     		.2byte	0x3ea
+ 1707 07c4 B5090000 		.4byte	0x9b5
+ 1708 07c8 5C       		.byte	0x5c
+ 1709 07c9 0E       		.uleb128 0xe
+ 1710 07ca 0F0B0000 		.4byte	.LASF229
+ 1711 07ce 05       		.byte	0x5
+ 1712 07cf F403     		.2byte	0x3f4
+ 1713 07d1 3C010000 		.4byte	0x13c
+ 1714 07d5 60       		.byte	0x60
+ 1715 07d6 0E       		.uleb128 0xe
+ 1716 07d7 B2050000 		.4byte	.LASF230
+ 1717 07db 05       		.byte	0x5
+ 1718 07dc 0504     		.2byte	0x405
+ 1719 07de D2000000 		.4byte	0xd2
+ 1720 07e2 64       		.byte	0x64
+ 1721 07e3 0E       		.uleb128 0xe
+ 1722 07e4 81070000 		.4byte	.LASF231
+ 1723 07e8 05       		.byte	0x5
+ 1724 07e9 0604     		.2byte	0x406
+ 1725 07eb D2000000 		.4byte	0xd2
+ 1726 07ef 68       		.byte	0x68
+ 1727 07f0 0E       		.uleb128 0xe
+ 1728 07f1 4D0D0000 		.4byte	.LASF232
+ 1729 07f5 05       		.byte	0x5
+ 1730 07f6 0A04     		.2byte	0x40a
+ 1731 07f8 10010000 		.4byte	0x110
+ 1732 07fc 6C       		.byte	0x6c
+ 1733 07fd 0E       		.uleb128 0xe
+ 1734 07fe 28030000 		.4byte	.LASF233
+ 1735 0802 05       		.byte	0x5
+ 1736 0803 1104     		.2byte	0x411
+ 1737 0805 91090000 		.4byte	0x991
+ 1738 0809 70       		.byte	0x70
+ 1739 080a 0E       		.uleb128 0xe
+ 1740 080b 4C030000 		.4byte	.LASF234
+ 1741 080f 05       		.byte	0x5
+ 1742 0810 1204     		.2byte	0x412
+ 1743 0812 91090000 		.4byte	0x991
+ 1744 0816 74       		.byte	0x74
+ 1745 0817 0E       		.uleb128 0xe
+ 1746 0818 97100000 		.4byte	.LASF235
+ 1747 081c 05       		.byte	0x5
+ 1748 081d 1304     		.2byte	0x413
+ 1749 081f A3090000 		.4byte	0x9a3
+ 1750 0823 78       		.byte	0x78
+ 1751 0824 00       		.byte	0
+ 1752 0825 09       		.uleb128 0x9
+ 1753 0826 17050000 		.4byte	.LASF236
+ 1754 082a 05       		.byte	0x5
+ 1755 082b 9E02     		.2byte	0x29e
+ 1756 082d 31080000 		.4byte	0x831
+ 1757 0831 0D       		.uleb128 0xd
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 41
+
+
+ 1758 0832 85090000 		.4byte	.LASF238
+ 1759 0836 08       		.byte	0x8
+ 1760 0837 05       		.byte	0x5
+ 1761 0838 1E04     		.2byte	0x41e
+ 1762 083a 66080000 		.4byte	0x866
+ 1763 083e 0E       		.uleb128 0xe
+ 1764 083f 910E0000 		.4byte	.LASF239
+ 1765 0843 05       		.byte	0x5
+ 1766 0844 1F04     		.2byte	0x41f
+ 1767 0846 91090000 		.4byte	0x991
+ 1768 084a 00       		.byte	0
+ 1769 084b 0E       		.uleb128 0xe
+ 1770 084c 66010000 		.4byte	.LASF240
+ 1771 0850 05       		.byte	0x5
+ 1772 0851 2004     		.2byte	0x420
+ 1773 0853 47010000 		.4byte	0x147
+ 1774 0857 04       		.byte	0x4
+ 1775 0858 0E       		.uleb128 0xe
+ 1776 0859 CE100000 		.4byte	.LASF241
+ 1777 085d 05       		.byte	0x5
+ 1778 085e 2104     		.2byte	0x421
+ 1779 0860 47010000 		.4byte	0x147
+ 1780 0864 06       		.byte	0x6
+ 1781 0865 00       		.byte	0
+ 1782 0866 09       		.uleb128 0x9
+ 1783 0867 CD050000 		.4byte	.LASF242
+ 1784 086b 05       		.byte	0x5
+ 1785 086c A502     		.2byte	0x2a5
+ 1786 086e 72080000 		.4byte	0x872
+ 1787 0872 0D       		.uleb128 0xd
+ 1788 0873 A3110000 		.4byte	.LASF243
+ 1789 0877 20       		.byte	0x20
+ 1790 0878 05       		.byte	0x5
+ 1791 0879 DD02     		.2byte	0x2dd
+ 1792 087b E8080000 		.4byte	0x8e8
+ 1793 087f 0E       		.uleb128 0xe
+ 1794 0880 4F080000 		.4byte	.LASF207
+ 1795 0884 05       		.byte	0x5
+ 1796 0885 DE02     		.2byte	0x2de
+ 1797 0887 97090000 		.4byte	0x997
+ 1798 088b 00       		.byte	0
+ 1799 088c 0E       		.uleb128 0xe
+ 1800 088d 490C0000 		.4byte	.LASF206
+ 1801 0891 05       		.byte	0x5
+ 1802 0892 DF02     		.2byte	0x2df
+ 1803 0894 97090000 		.4byte	0x997
+ 1804 0898 04       		.byte	0x4
+ 1805 0899 0E       		.uleb128 0xe
+ 1806 089a C8090000 		.4byte	.LASF244
+ 1807 089e 05       		.byte	0x5
+ 1808 089f E002     		.2byte	0x2e0
+ 1809 08a1 91090000 		.4byte	0x991
+ 1810 08a5 08       		.byte	0x8
+ 1811 08a6 0E       		.uleb128 0xe
+ 1812 08a7 27120000 		.4byte	.LASF245
+ 1813 08ab 05       		.byte	0x5
+ 1814 08ac E102     		.2byte	0x2e1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 42
+
+
+ 1815 08ae 9D090000 		.4byte	0x99d
+ 1816 08b2 0C       		.byte	0xc
+ 1817 08b3 0E       		.uleb128 0xe
+ 1818 08b4 D60B0000 		.4byte	.LASF246
+ 1819 08b8 05       		.byte	0x5
+ 1820 08b9 E202     		.2byte	0x2e2
+ 1821 08bb 9D090000 		.4byte	0x99d
+ 1822 08bf 10       		.byte	0x10
+ 1823 08c0 0E       		.uleb128 0xe
+ 1824 08c1 49040000 		.4byte	.LASF247
+ 1825 08c5 05       		.byte	0x5
+ 1826 08c6 E302     		.2byte	0x2e3
+ 1827 08c8 BA000000 		.4byte	0xba
+ 1828 08cc 14       		.byte	0x14
+ 1829 08cd 0E       		.uleb128 0xe
+ 1830 08ce 1C0D0000 		.4byte	.LASF248
+ 1831 08d2 05       		.byte	0x5
+ 1832 08d3 E402     		.2byte	0x2e4
+ 1833 08d5 31010000 		.4byte	0x131
+ 1834 08d9 18       		.byte	0x18
+ 1835 08da 0E       		.uleb128 0xe
+ 1836 08db DC0C0000 		.4byte	.LASF249
+ 1837 08df 05       		.byte	0x5
+ 1838 08e0 E502     		.2byte	0x2e5
+ 1839 08e2 10010000 		.4byte	0x110
+ 1840 08e6 1C       		.byte	0x1c
+ 1841 08e7 00       		.byte	0
+ 1842 08e8 09       		.uleb128 0x9
+ 1843 08e9 28110000 		.4byte	.LASF250
+ 1844 08ed 05       		.byte	0x5
+ 1845 08ee A602     		.2byte	0x2a6
+ 1846 08f0 F4080000 		.4byte	0x8f4
+ 1847 08f4 0D       		.uleb128 0xd
+ 1848 08f5 4A120000 		.4byte	.LASF251
+ 1849 08f9 0C       		.byte	0xc
+ 1850 08fa 05       		.byte	0x5
+ 1851 08fb E902     		.2byte	0x2e9
+ 1852 08fd 29090000 		.4byte	0x929
+ 1853 0901 0E       		.uleb128 0xe
+ 1854 0902 520E0000 		.4byte	.LASF252
+ 1855 0906 05       		.byte	0x5
+ 1856 0907 EA02     		.2byte	0x2ea
+ 1857 0909 97090000 		.4byte	0x997
+ 1858 090d 00       		.byte	0
+ 1859 090e 0E       		.uleb128 0xe
+ 1860 090f 09040000 		.4byte	.LASF253
+ 1861 0913 05       		.byte	0x5
+ 1862 0914 EB02     		.2byte	0x2eb
+ 1863 0916 97090000 		.4byte	0x997
+ 1864 091a 04       		.byte	0x4
+ 1865 091b 0E       		.uleb128 0xe
+ 1866 091c 66010000 		.4byte	.LASF240
+ 1867 0920 05       		.byte	0x5
+ 1868 0921 EC02     		.2byte	0x2ec
+ 1869 0923 47010000 		.4byte	0x147
+ 1870 0927 08       		.byte	0x8
+ 1871 0928 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 43
+
+
+ 1872 0929 09       		.uleb128 0x9
+ 1873 092a CF0D0000 		.4byte	.LASF254
+ 1874 092e 05       		.byte	0x5
+ 1875 092f A702     		.2byte	0x2a7
+ 1876 0931 35090000 		.4byte	0x935
+ 1877 0935 0D       		.uleb128 0xd
+ 1878 0936 53040000 		.4byte	.LASF255
+ 1879 093a 20       		.byte	0x20
+ 1880 093b 05       		.byte	0x5
+ 1881 093c FF02     		.2byte	0x2ff
+ 1882 093e 91090000 		.4byte	0x991
+ 1883 0942 0E       		.uleb128 0xe
+ 1884 0943 730C0000 		.4byte	.LASF256
+ 1885 0947 05       		.byte	0x5
+ 1886 0948 0003     		.2byte	0x300
+ 1887 094a 52010000 		.4byte	0x152
+ 1888 094e 00       		.byte	0
+ 1889 094f 0E       		.uleb128 0xe
+ 1890 0950 13090000 		.4byte	.LASF211
+ 1891 0954 05       		.byte	0x5
+ 1892 0955 0103     		.2byte	0x301
+ 1893 0957 A3090000 		.4byte	0x9a3
+ 1894 095b 04       		.byte	0x4
+ 1895 095c 0E       		.uleb128 0xe
+ 1896 095d F30D0000 		.4byte	.LASF257
+ 1897 0961 05       		.byte	0x5
+ 1898 0962 0203     		.2byte	0x302
+ 1899 0964 E8080000 		.4byte	0x8e8
+ 1900 0968 08       		.byte	0x8
+ 1901 0969 0E       		.uleb128 0xe
+ 1902 096a 28030000 		.4byte	.LASF233
+ 1903 096e 05       		.byte	0x5
+ 1904 096f 0403     		.2byte	0x304
+ 1905 0971 BA000000 		.4byte	0xba
+ 1906 0975 14       		.byte	0x14
+ 1907 0976 0E       		.uleb128 0xe
+ 1908 0977 4C030000 		.4byte	.LASF234
+ 1909 097b 05       		.byte	0x5
+ 1910 097c 0503     		.2byte	0x305
+ 1911 097e BA000000 		.4byte	0xba
+ 1912 0982 18       		.byte	0x18
+ 1913 0983 0E       		.uleb128 0xe
+ 1914 0984 97100000 		.4byte	.LASF235
+ 1915 0988 05       		.byte	0x5
+ 1916 0989 0603     		.2byte	0x306
+ 1917 098b A3090000 		.4byte	0x9a3
+ 1918 098f 1C       		.byte	0x1c
+ 1919 0990 00       		.byte	0
+ 1920 0991 05       		.uleb128 0x5
+ 1921 0992 04       		.byte	0x4
+ 1922 0993 45060000 		.4byte	0x645
+ 1923 0997 05       		.uleb128 0x5
+ 1924 0998 04       		.byte	0x4
+ 1925 0999 66080000 		.4byte	0x866
+ 1926 099d 05       		.uleb128 0x5
+ 1927 099e 04       		.byte	0x4
+ 1928 099f 29090000 		.4byte	0x929
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 44
+
+
+ 1929 09a3 05       		.uleb128 0x5
+ 1930 09a4 04       		.byte	0x4
+ 1931 09a5 25000000 		.4byte	0x25
+ 1932 09a9 05       		.uleb128 0x5
+ 1933 09aa 04       		.byte	0x4
+ 1934 09ab C7000000 		.4byte	0xc7
+ 1935 09af 05       		.uleb128 0x5
+ 1936 09b0 04       		.byte	0x4
+ 1937 09b1 25080000 		.4byte	0x825
+ 1938 09b5 10       		.uleb128 0x10
+ 1939 09b6 7E010000 		.4byte	0x17e
+ 1940 09ba C5090000 		.4byte	0x9c5
+ 1941 09be 11       		.uleb128 0x11
+ 1942 09bf FE000000 		.4byte	0xfe
+ 1943 09c3 00       		.byte	0
+ 1944 09c4 00       		.byte	0
+ 1945 09c5 12       		.uleb128 0x12
+ 1946 09c6 33030000 		.4byte	.LASF260
+ 1947 09ca 01       		.byte	0x1
+ 1948 09cb 39       		.byte	0x39
+ 1949 09cc 00000000 		.4byte	.LFB1
+ 1950 09d0 BC000000 		.4byte	.LFE1-.LFB1
+ 1951 09d4 01       		.uleb128 0x1
+ 1952 09d5 9C       		.byte	0x9c
+ 1953 09d6 050A0000 		.4byte	0xa05
+ 1954 09da 13       		.uleb128 0x13
+ 1955 09db FF070000 		.4byte	.LASF262
+ 1956 09df 01       		.byte	0x1
+ 1957 09e0 39       		.byte	0x39
+ 1958 09e1 050A0000 		.4byte	0xa05
+ 1959 09e5 02       		.uleb128 0x2
+ 1960 09e6 91       		.byte	0x91
+ 1961 09e7 6C       		.sleb128 -20
+ 1962 09e8 14       		.uleb128 0x14
+ 1963 09e9 68110000 		.4byte	.LASF258
+ 1964 09ed 01       		.byte	0x1
+ 1965 09ee 3C       		.byte	0x3c
+ 1966 09ef 91090000 		.4byte	0x991
+ 1967 09f3 02       		.uleb128 0x2
+ 1968 09f4 91       		.byte	0x91
+ 1969 09f5 74       		.sleb128 -12
+ 1970 09f6 14       		.uleb128 0x14
+ 1971 09f7 3F050000 		.4byte	.LASF259
+ 1972 09fb 01       		.byte	0x1
+ 1973 09fc 44       		.byte	0x44
+ 1974 09fd DD000000 		.4byte	0xdd
+ 1975 0a01 02       		.uleb128 0x2
+ 1976 0a02 91       		.byte	0x91
+ 1977 0a03 70       		.sleb128 -16
+ 1978 0a04 00       		.byte	0
+ 1979 0a05 05       		.uleb128 0x5
+ 1980 0a06 04       		.byte	0x4
+ 1981 0a07 2D060000 		.4byte	0x62d
+ 1982 0a0b 12       		.uleb128 0x12
+ 1983 0a0c 300E0000 		.4byte	.LASF261
+ 1984 0a10 01       		.byte	0x1
+ 1985 0a11 BF       		.byte	0xbf
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 45
+
+
+ 1986 0a12 00000000 		.4byte	.LFB2
+ 1987 0a16 34010000 		.4byte	.LFE2-.LFB2
+ 1988 0a1a 01       		.uleb128 0x1
+ 1989 0a1b 9C       		.byte	0x9c
+ 1990 0a1c 590A0000 		.4byte	0xa59
+ 1991 0a20 13       		.uleb128 0x13
+ 1992 0a21 FF070000 		.4byte	.LASF262
+ 1993 0a25 01       		.byte	0x1
+ 1994 0a26 BF       		.byte	0xbf
+ 1995 0a27 050A0000 		.4byte	0xa05
+ 1996 0a2b 02       		.uleb128 0x2
+ 1997 0a2c 91       		.byte	0x91
+ 1998 0a2d 64       		.sleb128 -28
+ 1999 0a2e 15       		.uleb128 0x15
+ 2000 0a2f 65727200 		.ascii	"err\000"
+ 2001 0a33 01       		.byte	0x1
+ 2002 0a34 C1       		.byte	0xc1
+ 2003 0a35 2D060000 		.4byte	0x62d
+ 2004 0a39 02       		.uleb128 0x2
+ 2005 0a3a 91       		.byte	0x91
+ 2006 0a3b 6E       		.sleb128 -18
+ 2007 0a3c 15       		.uleb128 0x15
+ 2008 0a3d 646C7900 		.ascii	"dly\000"
+ 2009 0a41 01       		.byte	0x1
+ 2010 0a42 C2       		.byte	0xc2
+ 2011 0a43 AA010000 		.4byte	0x1aa
+ 2012 0a47 02       		.uleb128 0x2
+ 2013 0a48 91       		.byte	0x91
+ 2014 0a49 74       		.sleb128 -12
+ 2015 0a4a 14       		.uleb128 0x14
+ 2016 0a4b 3F050000 		.4byte	.LASF259
+ 2017 0a4f 01       		.byte	0x1
+ 2018 0a50 C3       		.byte	0xc3
+ 2019 0a51 DD000000 		.4byte	0xdd
+ 2020 0a55 02       		.uleb128 0x2
+ 2021 0a56 91       		.byte	0x91
+ 2022 0a57 70       		.sleb128 -16
+ 2023 0a58 00       		.byte	0
+ 2024 0a59 16       		.uleb128 0x16
+ 2025 0a5a 02100000 		.4byte	.LASF263
+ 2026 0a5e 01       		.byte	0x1
+ 2027 0a5f 1901     		.2byte	0x119
+ 2028 0a61 00000000 		.4byte	.LFB3
+ 2029 0a65 3C020000 		.4byte	.LFE3-.LFB3
+ 2030 0a69 01       		.uleb128 0x1
+ 2031 0a6a 9C       		.byte	0x9c
+ 2032 0a6b 060B0000 		.4byte	0xb06
+ 2033 0a6f 17       		.uleb128 0x17
+ 2034 0a70 CB0E0000 		.4byte	.LASF264
+ 2035 0a74 01       		.byte	0x1
+ 2036 0a75 1901     		.2byte	0x119
+ 2037 0a77 BA000000 		.4byte	0xba
+ 2038 0a7b 02       		.uleb128 0x2
+ 2039 0a7c 91       		.byte	0x91
+ 2040 0a7d 4C       		.sleb128 -52
+ 2041 0a7e 18       		.uleb128 0x18
+ 2042 0a7f 68110000 		.4byte	.LASF258
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 46
+
+
+ 2043 0a83 01       		.byte	0x1
+ 2044 0a84 2301     		.2byte	0x123
+ 2045 0a86 91090000 		.4byte	0x991
+ 2046 0a8a 02       		.uleb128 0x2
+ 2047 0a8b 91       		.byte	0x91
+ 2048 0a8c 74       		.sleb128 -12
+ 2049 0a8d 18       		.uleb128 0x18
+ 2050 0a8e D40C0000 		.4byte	.LASF265
+ 2051 0a92 01       		.byte	0x1
+ 2052 0a93 2501     		.2byte	0x125
+ 2053 0a95 AA010000 		.4byte	0x1aa
+ 2054 0a99 02       		.uleb128 0x2
+ 2055 0a9a 91       		.byte	0x91
+ 2056 0a9b 5C       		.sleb128 -36
+ 2057 0a9c 18       		.uleb128 0x18
+ 2058 0a9d 39000000 		.4byte	.LASF266
+ 2059 0aa1 01       		.byte	0x1
+ 2060 0aa2 2601     		.2byte	0x126
+ 2061 0aa4 AA010000 		.4byte	0x1aa
+ 2062 0aa8 02       		.uleb128 0x2
+ 2063 0aa9 91       		.byte	0x91
+ 2064 0aaa 70       		.sleb128 -16
+ 2065 0aab 18       		.uleb128 0x18
+ 2066 0aac 610F0000 		.4byte	.LASF267
+ 2067 0ab0 01       		.byte	0x1
+ 2068 0ab1 2701     		.2byte	0x127
+ 2069 0ab3 AA010000 		.4byte	0x1aa
+ 2070 0ab7 02       		.uleb128 0x2
+ 2071 0ab8 91       		.byte	0x91
+ 2072 0ab9 6C       		.sleb128 -20
+ 2073 0aba 19       		.uleb128 0x19
+ 2074 0abb 65727200 		.ascii	"err\000"
+ 2075 0abf 01       		.byte	0x1
+ 2076 0ac0 2801     		.2byte	0x128
+ 2077 0ac2 2D060000 		.4byte	0x62d
+ 2078 0ac6 02       		.uleb128 0x2
+ 2079 0ac7 91       		.byte	0x91
+ 2080 0ac8 56       		.sleb128 -42
+ 2081 0ac9 19       		.uleb128 0x19
+ 2082 0aca 646C7900 		.ascii	"dly\000"
+ 2083 0ace 01       		.byte	0x1
+ 2084 0acf 2901     		.2byte	0x129
+ 2085 0ad1 AA010000 		.4byte	0x1aa
+ 2086 0ad5 02       		.uleb128 0x2
+ 2087 0ad6 91       		.byte	0x91
+ 2088 0ad7 68       		.sleb128 -24
+ 2089 0ad8 18       		.uleb128 0x18
+ 2090 0ad9 AA030000 		.4byte	.LASF268
+ 2091 0add 01       		.byte	0x1
+ 2092 0ade 2A01     		.2byte	0x12a
+ 2093 0ae0 10010000 		.4byte	0x110
+ 2094 0ae4 02       		.uleb128 0x2
+ 2095 0ae5 91       		.byte	0x91
+ 2096 0ae6 60       		.sleb128 -32
+ 2097 0ae7 18       		.uleb128 0x18
+ 2098 0ae8 DC100000 		.4byte	.LASF269
+ 2099 0aec 01       		.byte	0x1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 47
+
+
+ 2100 0aed 2B01     		.2byte	0x12b
+ 2101 0aef 10010000 		.4byte	0x110
+ 2102 0af3 02       		.uleb128 0x2
+ 2103 0af4 91       		.byte	0x91
+ 2104 0af5 58       		.sleb128 -40
+ 2105 0af6 18       		.uleb128 0x18
+ 2106 0af7 3F050000 		.4byte	.LASF259
+ 2107 0afb 01       		.byte	0x1
+ 2108 0afc 2C01     		.2byte	0x12c
+ 2109 0afe DD000000 		.4byte	0xdd
+ 2110 0b02 02       		.uleb128 0x2
+ 2111 0b03 91       		.byte	0x91
+ 2112 0b04 64       		.sleb128 -28
+ 2113 0b05 00       		.byte	0
+ 2114 0b06 16       		.uleb128 0x16
+ 2115 0b07 270D0000 		.4byte	.LASF270
+ 2116 0b0b 01       		.byte	0x1
+ 2117 0b0c D801     		.2byte	0x1d8
+ 2118 0b0e 00000000 		.4byte	.LFB4
+ 2119 0b12 E0000000 		.4byte	.LFE4-.LFB4
+ 2120 0b16 01       		.uleb128 0x1
+ 2121 0b17 9C       		.byte	0x9c
+ 2122 0b18 2C0B0000 		.4byte	0xb2c
+ 2123 0b1c 17       		.uleb128 0x17
+ 2124 0b1d FF070000 		.4byte	.LASF262
+ 2125 0b21 01       		.byte	0x1
+ 2126 0b22 D801     		.2byte	0x1d8
+ 2127 0b24 050A0000 		.4byte	0xa05
+ 2128 0b28 02       		.uleb128 0x2
+ 2129 0b29 91       		.byte	0x91
+ 2130 0b2a 64       		.sleb128 -28
+ 2131 0b2b 00       		.byte	0
+ 2132 0b2c 1A       		.uleb128 0x1a
+ 2133 0b2d E6030000 		.4byte	.LASF271
+ 2134 0b31 05       		.byte	0x5
+ 2135 0b32 6104     		.2byte	0x461
+ 2136 0b34 10010000 		.4byte	0x110
+ 2137 0b38 1A       		.uleb128 0x1a
+ 2138 0b39 87110000 		.4byte	.LASF272
+ 2139 0b3d 05       		.byte	0x5
+ 2140 0b3e BC04     		.2byte	0x4bc
+ 2141 0b40 37000000 		.4byte	0x37
+ 2142 0b44 1A       		.uleb128 0x1a
+ 2143 0b45 AA120000 		.4byte	.LASF273
+ 2144 0b49 05       		.byte	0x5
+ 2145 0b4a BD04     		.2byte	0x4bd
+ 2146 0b4c 1B010000 		.4byte	0x11b
+ 2147 0b50 1A       		.uleb128 0x1a
+ 2148 0b51 B2090000 		.4byte	.LASF274
+ 2149 0b55 05       		.byte	0x5
+ 2150 0b56 BE04     		.2byte	0x4be
+ 2151 0b58 1B010000 		.4byte	0x11b
+ 2152 0b5c 1A       		.uleb128 0x1a
+ 2153 0b5d 28020000 		.4byte	.LASF275
+ 2154 0b61 05       		.byte	0x5
+ 2155 0b62 BF04     		.2byte	0x4bf
+ 2156 0b64 AA010000 		.4byte	0x1aa
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 48
+
+
+ 2157 0b68 1A       		.uleb128 0x1a
+ 2158 0b69 C50B0000 		.4byte	.LASF276
+ 2159 0b6d 05       		.byte	0x5
+ 2160 0b6e C004     		.2byte	0x4c0
+ 2161 0b70 AA010000 		.4byte	0x1aa
+ 2162 0b74 1A       		.uleb128 0x1a
+ 2163 0b75 BD100000 		.4byte	.LASF277
+ 2164 0b79 05       		.byte	0x5
+ 2165 0b7a C104     		.2byte	0x4c1
+ 2166 0b7c AA010000 		.4byte	0x1aa
+ 2167 0b80 1A       		.uleb128 0x1a
+ 2168 0b81 220E0000 		.4byte	.LASF278
+ 2169 0b85 05       		.byte	0x5
+ 2170 0b86 C204     		.2byte	0x4c2
+ 2171 0b88 37000000 		.4byte	0x37
+ 2172 0b8c 1A       		.uleb128 0x1a
+ 2173 0b8d B8040000 		.4byte	.LASF279
+ 2174 0b91 05       		.byte	0x5
+ 2175 0b92 C304     		.2byte	0x4c3
+ 2176 0b94 45060000 		.4byte	0x645
+ 2177 0b98 1A       		.uleb128 0x1a
+ 2178 0b99 17100000 		.4byte	.LASF280
+ 2179 0b9d 05       		.byte	0x5
+ 2180 0b9e C404     		.2byte	0x4c4
+ 2181 0ba0 10010000 		.4byte	0x110
+ 2182 0ba4 1A       		.uleb128 0x1a
+ 2183 0ba5 39120000 		.4byte	.LASF281
+ 2184 0ba9 05       		.byte	0x5
+ 2185 0baa CA04     		.2byte	0x4ca
+ 2186 0bac 91090000 		.4byte	0x991
+ 2187 0bb0 1A       		.uleb128 0x1a
+ 2188 0bb1 4F0F0000 		.4byte	.LASF282
+ 2189 0bb5 05       		.byte	0x5
+ 2190 0bb6 D504     		.2byte	0x4d5
+ 2191 0bb8 10010000 		.4byte	0x110
+ 2192 0bbc 1A       		.uleb128 0x1a
+ 2193 0bbd ED020000 		.4byte	.LASF283
+ 2194 0bc1 05       		.byte	0x5
+ 2195 0bc2 DD04     		.2byte	0x4dd
+ 2196 0bc4 45060000 		.4byte	0x645
+ 2197 0bc8 1A       		.uleb128 0x1a
+ 2198 0bc9 93090000 		.4byte	.LASF284
+ 2199 0bcd 05       		.byte	0x5
+ 2200 0bce DE04     		.2byte	0x4de
+ 2201 0bd0 10010000 		.4byte	0x110
+ 2202 0bd4 1A       		.uleb128 0x1a
+ 2203 0bd5 5B0D0000 		.4byte	.LASF285
+ 2204 0bd9 05       		.byte	0x5
+ 2205 0bda 0605     		.2byte	0x506
+ 2206 0bdc E00B0000 		.4byte	0xbe0
+ 2207 0be0 1B       		.uleb128 0x1b
+ 2208 0be1 68010000 		.4byte	0x168
+ 2209 0be5 1A       		.uleb128 0x1a
+ 2210 0be6 85120000 		.4byte	.LASF286
+ 2211 0bea 05       		.byte	0x5
+ 2212 0beb 0705     		.2byte	0x507
+ 2213 0bed F10B0000 		.4byte	0xbf1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 49
+
+
+ 2214 0bf1 1B       		.uleb128 0x1b
+ 2215 0bf2 73010000 		.4byte	0x173
+ 2216 0bf6 1A       		.uleb128 0x1a
+ 2217 0bf7 CD080000 		.4byte	.LASF287
+ 2218 0bfb 05       		.byte	0x5
+ 2219 0bfc 0805     		.2byte	0x508
+ 2220 0bfe 020C0000 		.4byte	0xc02
+ 2221 0c02 1B       		.uleb128 0x1b
+ 2222 0c03 A9090000 		.4byte	0x9a9
+ 2223 0c07 1A       		.uleb128 0x1a
+ 2224 0c08 9D060000 		.4byte	.LASF288
+ 2225 0c0c 05       		.byte	0x5
+ 2226 0c0d 0905     		.2byte	0x509
+ 2227 0c0f 130C0000 		.4byte	0xc13
+ 2228 0c13 1B       		.uleb128 0x1b
+ 2229 0c14 D2000000 		.4byte	0xd2
+ 2230 0c18 1A       		.uleb128 0x1a
+ 2231 0c19 D4040000 		.4byte	.LASF289
+ 2232 0c1d 05       		.byte	0x5
+ 2233 0c1e 0A05     		.2byte	0x50a
+ 2234 0c20 130C0000 		.4byte	0xc13
+ 2235 0c24 1A       		.uleb128 0x1a
+ 2236 0c25 6F0B0000 		.4byte	.LASF290
+ 2237 0c29 05       		.byte	0x5
+ 2238 0c2a 0D05     		.2byte	0x50d
+ 2239 0c2c 130C0000 		.4byte	0xc13
+ 2240 0c30 1A       		.uleb128 0x1a
+ 2241 0c31 4D130000 		.4byte	.LASF291
+ 2242 0c35 05       		.byte	0x5
+ 2243 0c36 0F05     		.2byte	0x50f
+ 2244 0c38 F10B0000 		.4byte	0xbf1
+ 2245 0c3c 00       		.byte	0
+ 2246              		.section	.debug_abbrev,"",%progbits
+ 2247              	.Ldebug_abbrev0:
+ 2248 0000 01       		.uleb128 0x1
+ 2249 0001 11       		.uleb128 0x11
+ 2250 0002 01       		.byte	0x1
+ 2251 0003 25       		.uleb128 0x25
+ 2252 0004 0E       		.uleb128 0xe
+ 2253 0005 13       		.uleb128 0x13
+ 2254 0006 0B       		.uleb128 0xb
+ 2255 0007 03       		.uleb128 0x3
+ 2256 0008 0E       		.uleb128 0xe
+ 2257 0009 1B       		.uleb128 0x1b
+ 2258 000a 0E       		.uleb128 0xe
+ 2259 000b 55       		.uleb128 0x55
+ 2260 000c 17       		.uleb128 0x17
+ 2261 000d 11       		.uleb128 0x11
+ 2262 000e 01       		.uleb128 0x1
+ 2263 000f 10       		.uleb128 0x10
+ 2264 0010 17       		.uleb128 0x17
+ 2265 0011 00       		.byte	0
+ 2266 0012 00       		.byte	0
+ 2267 0013 02       		.uleb128 0x2
+ 2268 0014 16       		.uleb128 0x16
+ 2269 0015 00       		.byte	0
+ 2270 0016 03       		.uleb128 0x3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 50
+
+
+ 2271 0017 0E       		.uleb128 0xe
+ 2272 0018 3A       		.uleb128 0x3a
+ 2273 0019 0B       		.uleb128 0xb
+ 2274 001a 3B       		.uleb128 0x3b
+ 2275 001b 0B       		.uleb128 0xb
+ 2276 001c 49       		.uleb128 0x49
+ 2277 001d 13       		.uleb128 0x13
+ 2278 001e 00       		.byte	0
+ 2279 001f 00       		.byte	0
+ 2280 0020 03       		.uleb128 0x3
+ 2281 0021 24       		.uleb128 0x24
+ 2282 0022 00       		.byte	0
+ 2283 0023 0B       		.uleb128 0xb
+ 2284 0024 0B       		.uleb128 0xb
+ 2285 0025 3E       		.uleb128 0x3e
+ 2286 0026 0B       		.uleb128 0xb
+ 2287 0027 03       		.uleb128 0x3
+ 2288 0028 0E       		.uleb128 0xe
+ 2289 0029 00       		.byte	0
+ 2290 002a 00       		.byte	0
+ 2291 002b 04       		.uleb128 0x4
+ 2292 002c 24       		.uleb128 0x24
+ 2293 002d 00       		.byte	0
+ 2294 002e 0B       		.uleb128 0xb
+ 2295 002f 0B       		.uleb128 0xb
+ 2296 0030 3E       		.uleb128 0x3e
+ 2297 0031 0B       		.uleb128 0xb
+ 2298 0032 03       		.uleb128 0x3
+ 2299 0033 08       		.uleb128 0x8
+ 2300 0034 00       		.byte	0
+ 2301 0035 00       		.byte	0
+ 2302 0036 05       		.uleb128 0x5
+ 2303 0037 0F       		.uleb128 0xf
+ 2304 0038 00       		.byte	0
+ 2305 0039 0B       		.uleb128 0xb
+ 2306 003a 0B       		.uleb128 0xb
+ 2307 003b 49       		.uleb128 0x49
+ 2308 003c 13       		.uleb128 0x13
+ 2309 003d 00       		.byte	0
+ 2310 003e 00       		.byte	0
+ 2311 003f 06       		.uleb128 0x6
+ 2312 0040 15       		.uleb128 0x15
+ 2313 0041 01       		.byte	0x1
+ 2314 0042 27       		.uleb128 0x27
+ 2315 0043 19       		.uleb128 0x19
+ 2316 0044 01       		.uleb128 0x1
+ 2317 0045 13       		.uleb128 0x13
+ 2318 0046 00       		.byte	0
+ 2319 0047 00       		.byte	0
+ 2320 0048 07       		.uleb128 0x7
+ 2321 0049 05       		.uleb128 0x5
+ 2322 004a 00       		.byte	0
+ 2323 004b 49       		.uleb128 0x49
+ 2324 004c 13       		.uleb128 0x13
+ 2325 004d 00       		.byte	0
+ 2326 004e 00       		.byte	0
+ 2327 004f 08       		.uleb128 0x8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 51
+
+
+ 2328 0050 0F       		.uleb128 0xf
+ 2329 0051 00       		.byte	0
+ 2330 0052 0B       		.uleb128 0xb
+ 2331 0053 0B       		.uleb128 0xb
+ 2332 0054 00       		.byte	0
+ 2333 0055 00       		.byte	0
+ 2334 0056 09       		.uleb128 0x9
+ 2335 0057 16       		.uleb128 0x16
+ 2336 0058 00       		.byte	0
+ 2337 0059 03       		.uleb128 0x3
+ 2338 005a 0E       		.uleb128 0xe
+ 2339 005b 3A       		.uleb128 0x3a
+ 2340 005c 0B       		.uleb128 0xb
+ 2341 005d 3B       		.uleb128 0x3b
+ 2342 005e 05       		.uleb128 0x5
+ 2343 005f 49       		.uleb128 0x49
+ 2344 0060 13       		.uleb128 0x13
+ 2345 0061 00       		.byte	0
+ 2346 0062 00       		.byte	0
+ 2347 0063 0A       		.uleb128 0xa
+ 2348 0064 04       		.uleb128 0x4
+ 2349 0065 01       		.byte	0x1
+ 2350 0066 03       		.uleb128 0x3
+ 2351 0067 0E       		.uleb128 0xe
+ 2352 0068 0B       		.uleb128 0xb
+ 2353 0069 0B       		.uleb128 0xb
+ 2354 006a 49       		.uleb128 0x49
+ 2355 006b 13       		.uleb128 0x13
+ 2356 006c 3A       		.uleb128 0x3a
+ 2357 006d 0B       		.uleb128 0xb
+ 2358 006e 3B       		.uleb128 0x3b
+ 2359 006f 05       		.uleb128 0x5
+ 2360 0070 01       		.uleb128 0x1
+ 2361 0071 13       		.uleb128 0x13
+ 2362 0072 00       		.byte	0
+ 2363 0073 00       		.byte	0
+ 2364 0074 0B       		.uleb128 0xb
+ 2365 0075 28       		.uleb128 0x28
+ 2366 0076 00       		.byte	0
+ 2367 0077 03       		.uleb128 0x3
+ 2368 0078 0E       		.uleb128 0xe
+ 2369 0079 1C       		.uleb128 0x1c
+ 2370 007a 0B       		.uleb128 0xb
+ 2371 007b 00       		.byte	0
+ 2372 007c 00       		.byte	0
+ 2373 007d 0C       		.uleb128 0xc
+ 2374 007e 28       		.uleb128 0x28
+ 2375 007f 00       		.byte	0
+ 2376 0080 03       		.uleb128 0x3
+ 2377 0081 0E       		.uleb128 0xe
+ 2378 0082 1C       		.uleb128 0x1c
+ 2379 0083 05       		.uleb128 0x5
+ 2380 0084 00       		.byte	0
+ 2381 0085 00       		.byte	0
+ 2382 0086 0D       		.uleb128 0xd
+ 2383 0087 13       		.uleb128 0x13
+ 2384 0088 01       		.byte	0x1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 52
+
+
+ 2385 0089 03       		.uleb128 0x3
+ 2386 008a 0E       		.uleb128 0xe
+ 2387 008b 0B       		.uleb128 0xb
+ 2388 008c 0B       		.uleb128 0xb
+ 2389 008d 3A       		.uleb128 0x3a
+ 2390 008e 0B       		.uleb128 0xb
+ 2391 008f 3B       		.uleb128 0x3b
+ 2392 0090 05       		.uleb128 0x5
+ 2393 0091 01       		.uleb128 0x1
+ 2394 0092 13       		.uleb128 0x13
+ 2395 0093 00       		.byte	0
+ 2396 0094 00       		.byte	0
+ 2397 0095 0E       		.uleb128 0xe
+ 2398 0096 0D       		.uleb128 0xd
+ 2399 0097 00       		.byte	0
+ 2400 0098 03       		.uleb128 0x3
+ 2401 0099 0E       		.uleb128 0xe
+ 2402 009a 3A       		.uleb128 0x3a
+ 2403 009b 0B       		.uleb128 0xb
+ 2404 009c 3B       		.uleb128 0x3b
+ 2405 009d 05       		.uleb128 0x5
+ 2406 009e 49       		.uleb128 0x49
+ 2407 009f 13       		.uleb128 0x13
+ 2408 00a0 38       		.uleb128 0x38
+ 2409 00a1 0B       		.uleb128 0xb
+ 2410 00a2 00       		.byte	0
+ 2411 00a3 00       		.byte	0
+ 2412 00a4 0F       		.uleb128 0xf
+ 2413 00a5 0D       		.uleb128 0xd
+ 2414 00a6 00       		.byte	0
+ 2415 00a7 03       		.uleb128 0x3
+ 2416 00a8 08       		.uleb128 0x8
+ 2417 00a9 3A       		.uleb128 0x3a
+ 2418 00aa 0B       		.uleb128 0xb
+ 2419 00ab 3B       		.uleb128 0x3b
+ 2420 00ac 05       		.uleb128 0x5
+ 2421 00ad 49       		.uleb128 0x49
+ 2422 00ae 13       		.uleb128 0x13
+ 2423 00af 38       		.uleb128 0x38
+ 2424 00b0 0B       		.uleb128 0xb
+ 2425 00b1 00       		.byte	0
+ 2426 00b2 00       		.byte	0
+ 2427 00b3 10       		.uleb128 0x10
+ 2428 00b4 01       		.uleb128 0x1
+ 2429 00b5 01       		.byte	0x1
+ 2430 00b6 49       		.uleb128 0x49
+ 2431 00b7 13       		.uleb128 0x13
+ 2432 00b8 01       		.uleb128 0x1
+ 2433 00b9 13       		.uleb128 0x13
+ 2434 00ba 00       		.byte	0
+ 2435 00bb 00       		.byte	0
+ 2436 00bc 11       		.uleb128 0x11
+ 2437 00bd 21       		.uleb128 0x21
+ 2438 00be 00       		.byte	0
+ 2439 00bf 49       		.uleb128 0x49
+ 2440 00c0 13       		.uleb128 0x13
+ 2441 00c1 2F       		.uleb128 0x2f
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 53
+
+
+ 2442 00c2 0B       		.uleb128 0xb
+ 2443 00c3 00       		.byte	0
+ 2444 00c4 00       		.byte	0
+ 2445 00c5 12       		.uleb128 0x12
+ 2446 00c6 2E       		.uleb128 0x2e
+ 2447 00c7 01       		.byte	0x1
+ 2448 00c8 3F       		.uleb128 0x3f
+ 2449 00c9 19       		.uleb128 0x19
+ 2450 00ca 03       		.uleb128 0x3
+ 2451 00cb 0E       		.uleb128 0xe
+ 2452 00cc 3A       		.uleb128 0x3a
+ 2453 00cd 0B       		.uleb128 0xb
+ 2454 00ce 3B       		.uleb128 0x3b
+ 2455 00cf 0B       		.uleb128 0xb
+ 2456 00d0 27       		.uleb128 0x27
+ 2457 00d1 19       		.uleb128 0x19
+ 2458 00d2 11       		.uleb128 0x11
+ 2459 00d3 01       		.uleb128 0x1
+ 2460 00d4 12       		.uleb128 0x12
+ 2461 00d5 06       		.uleb128 0x6
+ 2462 00d6 40       		.uleb128 0x40
+ 2463 00d7 18       		.uleb128 0x18
+ 2464 00d8 9642     		.uleb128 0x2116
+ 2465 00da 19       		.uleb128 0x19
+ 2466 00db 01       		.uleb128 0x1
+ 2467 00dc 13       		.uleb128 0x13
+ 2468 00dd 00       		.byte	0
+ 2469 00de 00       		.byte	0
+ 2470 00df 13       		.uleb128 0x13
+ 2471 00e0 05       		.uleb128 0x5
+ 2472 00e1 00       		.byte	0
+ 2473 00e2 03       		.uleb128 0x3
+ 2474 00e3 0E       		.uleb128 0xe
+ 2475 00e4 3A       		.uleb128 0x3a
+ 2476 00e5 0B       		.uleb128 0xb
+ 2477 00e6 3B       		.uleb128 0x3b
+ 2478 00e7 0B       		.uleb128 0xb
+ 2479 00e8 49       		.uleb128 0x49
+ 2480 00e9 13       		.uleb128 0x13
+ 2481 00ea 02       		.uleb128 0x2
+ 2482 00eb 18       		.uleb128 0x18
+ 2483 00ec 00       		.byte	0
+ 2484 00ed 00       		.byte	0
+ 2485 00ee 14       		.uleb128 0x14
+ 2486 00ef 34       		.uleb128 0x34
+ 2487 00f0 00       		.byte	0
+ 2488 00f1 03       		.uleb128 0x3
+ 2489 00f2 0E       		.uleb128 0xe
+ 2490 00f3 3A       		.uleb128 0x3a
+ 2491 00f4 0B       		.uleb128 0xb
+ 2492 00f5 3B       		.uleb128 0x3b
+ 2493 00f6 0B       		.uleb128 0xb
+ 2494 00f7 49       		.uleb128 0x49
+ 2495 00f8 13       		.uleb128 0x13
+ 2496 00f9 02       		.uleb128 0x2
+ 2497 00fa 18       		.uleb128 0x18
+ 2498 00fb 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 54
+
+
+ 2499 00fc 00       		.byte	0
+ 2500 00fd 15       		.uleb128 0x15
+ 2501 00fe 34       		.uleb128 0x34
+ 2502 00ff 00       		.byte	0
+ 2503 0100 03       		.uleb128 0x3
+ 2504 0101 08       		.uleb128 0x8
+ 2505 0102 3A       		.uleb128 0x3a
+ 2506 0103 0B       		.uleb128 0xb
+ 2507 0104 3B       		.uleb128 0x3b
+ 2508 0105 0B       		.uleb128 0xb
+ 2509 0106 49       		.uleb128 0x49
+ 2510 0107 13       		.uleb128 0x13
+ 2511 0108 02       		.uleb128 0x2
+ 2512 0109 18       		.uleb128 0x18
+ 2513 010a 00       		.byte	0
+ 2514 010b 00       		.byte	0
+ 2515 010c 16       		.uleb128 0x16
+ 2516 010d 2E       		.uleb128 0x2e
+ 2517 010e 01       		.byte	0x1
+ 2518 010f 3F       		.uleb128 0x3f
+ 2519 0110 19       		.uleb128 0x19
+ 2520 0111 03       		.uleb128 0x3
+ 2521 0112 0E       		.uleb128 0xe
+ 2522 0113 3A       		.uleb128 0x3a
+ 2523 0114 0B       		.uleb128 0xb
+ 2524 0115 3B       		.uleb128 0x3b
+ 2525 0116 05       		.uleb128 0x5
+ 2526 0117 27       		.uleb128 0x27
+ 2527 0118 19       		.uleb128 0x19
+ 2528 0119 11       		.uleb128 0x11
+ 2529 011a 01       		.uleb128 0x1
+ 2530 011b 12       		.uleb128 0x12
+ 2531 011c 06       		.uleb128 0x6
+ 2532 011d 40       		.uleb128 0x40
+ 2533 011e 18       		.uleb128 0x18
+ 2534 011f 9642     		.uleb128 0x2116
+ 2535 0121 19       		.uleb128 0x19
+ 2536 0122 01       		.uleb128 0x1
+ 2537 0123 13       		.uleb128 0x13
+ 2538 0124 00       		.byte	0
+ 2539 0125 00       		.byte	0
+ 2540 0126 17       		.uleb128 0x17
+ 2541 0127 05       		.uleb128 0x5
+ 2542 0128 00       		.byte	0
+ 2543 0129 03       		.uleb128 0x3
+ 2544 012a 0E       		.uleb128 0xe
+ 2545 012b 3A       		.uleb128 0x3a
+ 2546 012c 0B       		.uleb128 0xb
+ 2547 012d 3B       		.uleb128 0x3b
+ 2548 012e 05       		.uleb128 0x5
+ 2549 012f 49       		.uleb128 0x49
+ 2550 0130 13       		.uleb128 0x13
+ 2551 0131 02       		.uleb128 0x2
+ 2552 0132 18       		.uleb128 0x18
+ 2553 0133 00       		.byte	0
+ 2554 0134 00       		.byte	0
+ 2555 0135 18       		.uleb128 0x18
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 55
+
+
+ 2556 0136 34       		.uleb128 0x34
+ 2557 0137 00       		.byte	0
+ 2558 0138 03       		.uleb128 0x3
+ 2559 0139 0E       		.uleb128 0xe
+ 2560 013a 3A       		.uleb128 0x3a
+ 2561 013b 0B       		.uleb128 0xb
+ 2562 013c 3B       		.uleb128 0x3b
+ 2563 013d 05       		.uleb128 0x5
+ 2564 013e 49       		.uleb128 0x49
+ 2565 013f 13       		.uleb128 0x13
+ 2566 0140 02       		.uleb128 0x2
+ 2567 0141 18       		.uleb128 0x18
+ 2568 0142 00       		.byte	0
+ 2569 0143 00       		.byte	0
+ 2570 0144 19       		.uleb128 0x19
+ 2571 0145 34       		.uleb128 0x34
+ 2572 0146 00       		.byte	0
+ 2573 0147 03       		.uleb128 0x3
+ 2574 0148 08       		.uleb128 0x8
+ 2575 0149 3A       		.uleb128 0x3a
+ 2576 014a 0B       		.uleb128 0xb
+ 2577 014b 3B       		.uleb128 0x3b
+ 2578 014c 05       		.uleb128 0x5
+ 2579 014d 49       		.uleb128 0x49
+ 2580 014e 13       		.uleb128 0x13
+ 2581 014f 02       		.uleb128 0x2
+ 2582 0150 18       		.uleb128 0x18
+ 2583 0151 00       		.byte	0
+ 2584 0152 00       		.byte	0
+ 2585 0153 1A       		.uleb128 0x1a
+ 2586 0154 34       		.uleb128 0x34
+ 2587 0155 00       		.byte	0
+ 2588 0156 03       		.uleb128 0x3
+ 2589 0157 0E       		.uleb128 0xe
+ 2590 0158 3A       		.uleb128 0x3a
+ 2591 0159 0B       		.uleb128 0xb
+ 2592 015a 3B       		.uleb128 0x3b
+ 2593 015b 05       		.uleb128 0x5
+ 2594 015c 49       		.uleb128 0x49
+ 2595 015d 13       		.uleb128 0x13
+ 2596 015e 3F       		.uleb128 0x3f
+ 2597 015f 19       		.uleb128 0x19
+ 2598 0160 3C       		.uleb128 0x3c
+ 2599 0161 19       		.uleb128 0x19
+ 2600 0162 00       		.byte	0
+ 2601 0163 00       		.byte	0
+ 2602 0164 1B       		.uleb128 0x1b
+ 2603 0165 26       		.uleb128 0x26
+ 2604 0166 00       		.byte	0
+ 2605 0167 49       		.uleb128 0x49
+ 2606 0168 13       		.uleb128 0x13
+ 2607 0169 00       		.byte	0
+ 2608 016a 00       		.byte	0
+ 2609 016b 00       		.byte	0
+ 2610              		.section	.debug_aranges,"",%progbits
+ 2611 0000 34000000 		.4byte	0x34
+ 2612 0004 0200     		.2byte	0x2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 56
+
+
+ 2613 0006 00000000 		.4byte	.Ldebug_info0
+ 2614 000a 04       		.byte	0x4
+ 2615 000b 00       		.byte	0
+ 2616 000c 0000     		.2byte	0
+ 2617 000e 0000     		.2byte	0
+ 2618 0010 00000000 		.4byte	.LFB1
+ 2619 0014 BC000000 		.4byte	.LFE1-.LFB1
+ 2620 0018 00000000 		.4byte	.LFB2
+ 2621 001c 34010000 		.4byte	.LFE2-.LFB2
+ 2622 0020 00000000 		.4byte	.LFB3
+ 2623 0024 3C020000 		.4byte	.LFE3-.LFB3
+ 2624 0028 00000000 		.4byte	.LFB4
+ 2625 002c E0000000 		.4byte	.LFE4-.LFB4
+ 2626 0030 00000000 		.4byte	0
+ 2627 0034 00000000 		.4byte	0
+ 2628              		.section	.debug_ranges,"",%progbits
+ 2629              	.Ldebug_ranges0:
+ 2630 0000 00000000 		.4byte	.LFB1
+ 2631 0004 BC000000 		.4byte	.LFE1
+ 2632 0008 00000000 		.4byte	.LFB2
+ 2633 000c 34010000 		.4byte	.LFE2
+ 2634 0010 00000000 		.4byte	.LFB3
+ 2635 0014 3C020000 		.4byte	.LFE3
+ 2636 0018 00000000 		.4byte	.LFB4
+ 2637 001c E0000000 		.4byte	.LFE4
+ 2638 0020 00000000 		.4byte	0
+ 2639 0024 00000000 		.4byte	0
+ 2640              		.section	.debug_line,"",%progbits
+ 2641              	.Ldebug_line0:
+ 2642 0000 A4010000 		.section	.debug_str,"MS",%progbits,1
+ 2642      0200CD00 
+ 2642      00000201 
+ 2642      FB0E0D00 
+ 2642      01010101 
+ 2643              	.LASF237:
+ 2644 0000 6F735F74 		.ascii	"os_tcb\000"
+ 2644      636200
+ 2645              	.LASF107:
+ 2646 0007 4F535F45 		.ascii	"OS_ERR_PRIO_INVALID\000"
+ 2646      52525F50 
+ 2646      52494F5F 
+ 2646      494E5641 
+ 2646      4C494400 
+ 2647              	.LASF200:
+ 2648 001b 4F535F45 		.ascii	"OS_ERR\000"
+ 2648      525200
+ 2649              	.LASF168:
+ 2650 0022 4F535F45 		.ascii	"OS_ERR_TICK_WHEEL_SIZE\000"
+ 2650      52525F54 
+ 2650      49434B5F 
+ 2650      57484545 
+ 2650      4C5F5349 
+ 2651              	.LASF266:
+ 2652 0039 6374725F 		.ascii	"ctr_mult\000"
+ 2652      6D756C74 
+ 2652      00
+ 2653              	.LASF186:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 57
+
+
+ 2654 0042 4F535F45 		.ascii	"OS_ERR_TMR_ISR\000"
+ 2654      52525F54 
+ 2654      4D525F49 
+ 2654      535200
+ 2655              	.LASF173:
+ 2656 0051 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_MINUTES\000"
+ 2656      52525F54 
+ 2656      494D455F 
+ 2656      494E5641 
+ 2656      4C49445F 
+ 2657              	.LASF40:
+ 2658 006d 4F535F45 		.ascii	"OS_ERR_A\000"
+ 2658      52525F41 
+ 2658      00
+ 2659              	.LASF42:
+ 2660 0076 4F535F45 		.ascii	"OS_ERR_B\000"
+ 2660      52525F42 
+ 2660      00
+ 2661              	.LASF43:
+ 2662 007f 4F535F45 		.ascii	"OS_ERR_C\000"
+ 2662      52525F43 
+ 2662      00
+ 2663              	.LASF45:
+ 2664 0088 4F535F45 		.ascii	"OS_ERR_D\000"
+ 2664      52525F44 
+ 2664      00
+ 2665              	.LASF47:
+ 2666 0091 4F535F45 		.ascii	"OS_ERR_E\000"
+ 2666      52525F45 
+ 2666      00
+ 2667              	.LASF48:
+ 2668 009a 4F535F45 		.ascii	"OS_ERR_F\000"
+ 2668      52525F46 
+ 2668      00
+ 2669              	.LASF54:
+ 2670 00a3 4F535F45 		.ascii	"OS_ERR_G\000"
+ 2670      52525F47 
+ 2670      00
+ 2671              	.LASF55:
+ 2672 00ac 4F535F45 		.ascii	"OS_ERR_H\000"
+ 2672      52525F48 
+ 2672      00
+ 2673              	.LASF56:
+ 2674 00b5 4F535F45 		.ascii	"OS_ERR_I\000"
+ 2674      52525F49 
+ 2674      00
+ 2675              	.LASF63:
+ 2676 00be 4F535F45 		.ascii	"OS_ERR_J\000"
+ 2676      52525F4A 
+ 2676      00
+ 2677              	.LASF64:
+ 2678 00c7 4F535F45 		.ascii	"OS_ERR_K\000"
+ 2678      52525F4B 
+ 2678      00
+ 2679              	.LASF65:
+ 2680 00d0 4F535F45 		.ascii	"OS_ERR_L\000"
+ 2680      52525F4C 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 58
+
+
+ 2680      00
+ 2681              	.LASF67:
+ 2682 00d9 4F535F45 		.ascii	"OS_ERR_M\000"
+ 2682      52525F4D 
+ 2682      00
+ 2683              	.LASF83:
+ 2684 00e2 4F535F45 		.ascii	"OS_ERR_N\000"
+ 2684      52525F4E 
+ 2684      00
+ 2685              	.LASF86:
+ 2686 00eb 4F535F45 		.ascii	"OS_ERR_O\000"
+ 2686      52525F4F 
+ 2686      00
+ 2687              	.LASF94:
+ 2688 00f4 4F535F45 		.ascii	"OS_ERR_P\000"
+ 2688      52525F50 
+ 2688      00
+ 2689              	.LASF109:
+ 2690 00fd 4F535F45 		.ascii	"OS_ERR_Q\000"
+ 2690      52525F51 
+ 2690      00
+ 2691              	.LASF114:
+ 2692 0106 4F535F45 		.ascii	"OS_ERR_R\000"
+ 2692      52525F52 
+ 2692      00
+ 2693              	.LASF118:
+ 2694 010f 4F535F45 		.ascii	"OS_ERR_S\000"
+ 2694      52525F53 
+ 2694      00
+ 2695              	.LASF135:
+ 2696 0118 4F535F45 		.ascii	"OS_ERR_T\000"
+ 2696      52525F54 
+ 2696      00
+ 2697              	.LASF193:
+ 2698 0121 4F535F45 		.ascii	"OS_ERR_U\000"
+ 2698      52525F55 
+ 2698      00
+ 2699              	.LASF194:
+ 2700 012a 4F535F45 		.ascii	"OS_ERR_V\000"
+ 2700      52525F56 
+ 2700      00
+ 2701              	.LASF195:
+ 2702 0133 4F535F45 		.ascii	"OS_ERR_W\000"
+ 2702      52525F57 
+ 2702      00
+ 2703              	.LASF196:
+ 2704 013c 4F535F45 		.ascii	"OS_ERR_X\000"
+ 2704      52525F58 
+ 2704      00
+ 2705              	.LASF183:
+ 2706 0145 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_PERIOD\000"
+ 2706      52525F54 
+ 2706      4D525F49 
+ 2706      4E56414C 
+ 2706      49445F50 
+ 2707              	.LASF295:
+ 2708 015f 6F735F65 		.ascii	"os_err\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 59
+
+
+ 2708      727200
+ 2709              	.LASF240:
+ 2710 0166 4E627245 		.ascii	"NbrEntries\000"
+ 2710      6E747269 
+ 2710      657300
+ 2711              	.LASF60:
+ 2712 0171 4F535F45 		.ascii	"OS_ERR_INT_Q_SIZE\000"
+ 2712      52525F49 
+ 2712      4E545F51 
+ 2712      5F53495A 
+ 2712      4500
+ 2713              	.LASF44:
+ 2714 0183 4F535F45 		.ascii	"OS_ERR_CREATE_ISR\000"
+ 2714      52525F43 
+ 2714      52454154 
+ 2714      455F4953 
+ 2714      5200
+ 2715              	.LASF25:
+ 2716 0195 4F535F43 		.ascii	"OS_CPU_USAGE\000"
+ 2716      50555F55 
+ 2716      53414745 
+ 2716      00
+ 2717              	.LASF167:
+ 2718 01a2 4F535F45 		.ascii	"OS_ERR_TICK_STK_SIZE_INVALID\000"
+ 2718      52525F54 
+ 2718      49434B5F 
+ 2718      53544B5F 
+ 2718      53495A45 
+ 2719              	.LASF9:
+ 2720 01bf 4350555F 		.ascii	"CPU_INT32U\000"
+ 2720      494E5433 
+ 2720      325500
+ 2721              	.LASF132:
+ 2722 01ca 4F535F45 		.ascii	"OS_ERR_STK_INVALID\000"
+ 2722      52525F53 
+ 2722      544B5F49 
+ 2722      4E56414C 
+ 2722      494400
+ 2723              	.LASF148:
+ 2724 01dd 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_ISR\000"
+ 2724      52525F54 
+ 2724      41534B5F 
+ 2724      52455355 
+ 2724      4D455F49 
+ 2725              	.LASF102:
+ 2726 01f4 4F535F45 		.ascii	"OS_ERR_PEND_WOULD_BLOCK\000"
+ 2726      52525F50 
+ 2726      454E445F 
+ 2726      574F554C 
+ 2726      445F424C 
+ 2727              	.LASF136:
+ 2728 020c 4F535F45 		.ascii	"OS_ERR_TASK_CHANGE_PRIO_ISR\000"
+ 2728      52525F54 
+ 2728      41534B5F 
+ 2728      4348414E 
+ 2728      47455F50 
+ 2729              	.LASF275:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 60
+
+
+ 2730 0228 4F535374 		.ascii	"OSStatTaskCtr\000"
+ 2730      61745461 
+ 2730      736B4374 
+ 2730      7200
+ 2731              	.LASF126:
+ 2732 0236 4F535F45 		.ascii	"OS_ERR_STAT_RESET_ISR\000"
+ 2732      52525F53 
+ 2732      5441545F 
+ 2732      52455345 
+ 2732      545F4953 
+ 2733              	.LASF101:
+ 2734 024c 4F535F45 		.ascii	"OS_ERR_PEND_LOCKED\000"
+ 2734      52525F50 
+ 2734      454E445F 
+ 2734      4C4F434B 
+ 2734      454400
+ 2735              	.LASF292:
+ 2736 025f 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2736      43313120 
+ 2736      352E342E 
+ 2736      31203230 
+ 2736      31363036 
+ 2737 0292 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 2737      20726576 
+ 2737      6973696F 
+ 2737      6E203233 
+ 2737      37373135 
+ 2738 02c5 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 2738      66756E63 
+ 2738      74696F6E 
+ 2738      2D736563 
+ 2738      74696F6E 
+ 2739              	.LASF283:
+ 2740 02ed 4F53546D 		.ascii	"OSTmrTaskTCB\000"
+ 2740      72546173 
+ 2740      6B544342 
+ 2740      00
+ 2741              	.LASF146:
+ 2742 02fa 4F535F45 		.ascii	"OS_ERR_TASK_NOT_SUSPENDED\000"
+ 2742      52525F54 
+ 2742      41534B5F 
+ 2742      4E4F545F 
+ 2742      53555350 
+ 2743              	.LASF144:
+ 2744 0314 4F535F45 		.ascii	"OS_ERR_TASK_NOT_DLY\000"
+ 2744      52525F54 
+ 2744      41534B5F 
+ 2744      4E4F545F 
+ 2744      444C5900 
+ 2745              	.LASF233:
+ 2746 0328 44626750 		.ascii	"DbgPrevPtr\000"
+ 2746      72657650 
+ 2746      747200
+ 2747              	.LASF260:
+ 2748 0333 4F535374 		.ascii	"OSStatReset\000"
+ 2748      61745265 
+ 2748      73657400 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 61
+
+
+ 2749              	.LASF58:
+ 2750 033f 4F535F45 		.ascii	"OS_ERR_INT_Q\000"
+ 2750      52525F49 
+ 2750      4E545F51 
+ 2750      00
+ 2751              	.LASF234:
+ 2752 034c 4462674E 		.ascii	"DbgNextPtr\000"
+ 2752      65787450 
+ 2752      747200
+ 2753              	.LASF158:
+ 2754 0357 4F535F45 		.ascii	"OS_ERR_TASK_WAITING\000"
+ 2754      52525F54 
+ 2754      41534B5F 
+ 2754      57414954 
+ 2754      494E4700 
+ 2755              	.LASF41:
+ 2756 036b 4F535F45 		.ascii	"OS_ERR_ACCEPT_ISR\000"
+ 2756      52525F41 
+ 2756      43434550 
+ 2756      545F4953 
+ 2756      5200
+ 2757              	.LASF156:
+ 2758 037d 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_ISR\000"
+ 2758      52525F54 
+ 2758      41534B5F 
+ 2758      53555350 
+ 2758      454E445F 
+ 2759              	.LASF82:
+ 2760 0395 4F535F45 		.ascii	"OS_ERR_MUTEX_NESTING\000"
+ 2760      52525F4D 
+ 2760      55544558 
+ 2760      5F4E4553 
+ 2760      54494E47 
+ 2761              	.LASF268:
+ 2762 03aa 74735F73 		.ascii	"ts_start\000"
+ 2762      74617274 
+ 2762      00
+ 2763              	.LASF184:
+ 2764 03b3 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_STATE\000"
+ 2764      52525F54 
+ 2764      4D525F49 
+ 2764      4E56414C 
+ 2764      49445F53 
+ 2765              	.LASF216:
+ 2766 03cc 50656E64 		.ascii	"PendOn\000"
+ 2766      4F6E00
+ 2767              	.LASF221:
+ 2768 03d3 50656E64 		.ascii	"PendDataTblEntries\000"
+ 2768      44617461 
+ 2768      54626C45 
+ 2768      6E747269 
+ 2768      657300
+ 2769              	.LASF271:
+ 2770 03e6 4F53496E 		.ascii	"OSIntDisTimeMax\000"
+ 2770      74446973 
+ 2770      54696D65 
+ 2770      4D617800 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 62
+
+
+ 2771              	.LASF87:
+ 2772 03f6 4F535F45 		.ascii	"OS_ERR_OBJ_CREATED\000"
+ 2772      52525F4F 
+ 2772      424A5F43 
+ 2772      52454154 
+ 2772      454400
+ 2773              	.LASF253:
+ 2774 0409 5461696C 		.ascii	"TailPtr\000"
+ 2774      50747200 
+ 2775              	.LASF154:
+ 2776 0411 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_IDLE\000"
+ 2776      52525F54 
+ 2776      41534B5F 
+ 2776      53555350 
+ 2776      454E445F 
+ 2777              	.LASF59:
+ 2778 042a 4F535F45 		.ascii	"OS_ERR_INT_Q_FULL\000"
+ 2778      52525F49 
+ 2778      4E545F51 
+ 2778      5F46554C 
+ 2778      4C00
+ 2779              	.LASF224:
+ 2780 043c 5469636B 		.ascii	"TickCtrMatch\000"
+ 2780      4374724D 
+ 2780      61746368 
+ 2780      00
+ 2781              	.LASF247:
+ 2782 0449 5264794D 		.ascii	"RdyMsgPtr\000"
+ 2782      73675074 
+ 2782      7200
+ 2783              	.LASF255:
+ 2784 0453 6F735F70 		.ascii	"os_pend_obj\000"
+ 2784      656E645F 
+ 2784      6F626A00 
+ 2785              	.LASF57:
+ 2786 045f 4F535F45 		.ascii	"OS_ERR_ILLEGAL_CREATE_RUN_TIME\000"
+ 2786      52525F49 
+ 2786      4C4C4547 
+ 2786      414C5F43 
+ 2786      52454154 
+ 2787              	.LASF182:
+ 2788 047e 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_DLY\000"
+ 2788      52525F54 
+ 2788      4D525F49 
+ 2788      4E56414C 
+ 2788      49445F44 
+ 2789              	.LASF29:
+ 2790 0495 4F535F4F 		.ascii	"OS_OBJ_QTY\000"
+ 2790      424A5F51 
+ 2790      545900
+ 2791              	.LASF149:
+ 2792 04a0 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_PRIO\000"
+ 2792      52525F54 
+ 2792      41534B5F 
+ 2792      52455355 
+ 2792      4D455F50 
+ 2793              	.LASF279:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 63
+
+
+ 2794 04b8 4F535374 		.ascii	"OSStatTaskTCB\000"
+ 2794      61745461 
+ 2794      736B5443 
+ 2794      4200
+ 2795              	.LASF32:
+ 2796 04c6 4F535F50 		.ascii	"OS_PRIO\000"
+ 2796      52494F00 
+ 2797              	.LASF13:
+ 2798 04ce 666C6F61 		.ascii	"float\000"
+ 2798      7400
+ 2799              	.LASF289:
+ 2800 04d4 4F534366 		.ascii	"OSCfg_StatTaskStkSize\000"
+ 2800      675F5374 
+ 2800      61745461 
+ 2800      736B5374 
+ 2800      6B53697A 
+ 2801              	.LASF103:
+ 2802 04ea 4F535F45 		.ascii	"OS_ERR_POST_NULL_PTR\000"
+ 2802      52525F50 
+ 2802      4F53545F 
+ 2802      4E554C4C 
+ 2802      5F505452 
+ 2803              	.LASF85:
+ 2804 04ff 4F535F45 		.ascii	"OS_ERR_NO_MORE_ID_AVAIL\000"
+ 2804      52525F4E 
+ 2804      4F5F4D4F 
+ 2804      52455F49 
+ 2804      445F4156 
+ 2805              	.LASF236:
+ 2806 0517 4F535F54 		.ascii	"OS_TICK_SPOKE\000"
+ 2806      49434B5F 
+ 2806      53504F4B 
+ 2806      4500
+ 2807              	.LASF75:
+ 2808 0525 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_DATA\000"
+ 2808      52525F4D 
+ 2808      454D5F49 
+ 2808      4E56414C 
+ 2808      49445F50 
+ 2809              	.LASF259:
+ 2810 053f 6370755F 		.ascii	"cpu_sr\000"
+ 2810      737200
+ 2811              	.LASF187:
+ 2812 0546 4F535F45 		.ascii	"OS_ERR_TMR_NO_CALLBACK\000"
+ 2812      52525F54 
+ 2812      4D525F4E 
+ 2812      4F5F4341 
+ 2812      4C4C4241 
+ 2813              	.LASF180:
+ 2814 055d 4F535F45 		.ascii	"OS_ERR_TMR_INACTIVE\000"
+ 2814      52525F54 
+ 2814      4D525F49 
+ 2814      4E414354 
+ 2814      49564500 
+ 2815              	.LASF160:
+ 2816 0571 4F535F45 		.ascii	"OS_ERR_TLS_ID_INVALID\000"
+ 2816      52525F54 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 64
+
+
+ 2816      4C535F49 
+ 2816      445F494E 
+ 2816      56414C49 
+ 2817              	.LASF11:
+ 2818 0587 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2818      206C6F6E 
+ 2818      6720756E 
+ 2818      7369676E 
+ 2818      65642069 
+ 2819              	.LASF151:
+ 2820 059e 4F535F45 		.ascii	"OS_ERR_TASK_RUNNING\000"
+ 2820      52525F54 
+ 2820      41534B5F 
+ 2820      52554E4E 
+ 2820      494E4700 
+ 2821              	.LASF230:
+ 2822 05b2 53746B55 		.ascii	"StkUsed\000"
+ 2822      73656400 
+ 2823              	.LASF185:
+ 2824 05ba 4F535F45 		.ascii	"OS_ERR_TMR_INVALID\000"
+ 2824      52525F54 
+ 2824      4D525F49 
+ 2824      4E56414C 
+ 2824      494400
+ 2825              	.LASF242:
+ 2826 05cd 4F535F50 		.ascii	"OS_PEND_DATA\000"
+ 2826      454E445F 
+ 2826      44415441 
+ 2826      00
+ 2827              	.LASF155:
+ 2828 05da 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_INT_HANDLER\000"
+ 2828      52525F54 
+ 2828      41534B5F 
+ 2828      53555350 
+ 2828      454E445F 
+ 2829              	.LASF140:
+ 2830 05fa 4F535F45 		.ascii	"OS_ERR_TASK_DEL_INVALID\000"
+ 2830      52525F54 
+ 2830      41534B5F 
+ 2830      44454C5F 
+ 2830      494E5641 
+ 2831              	.LASF190:
+ 2832 0612 4F535F45 		.ascii	"OS_ERR_TMR_STK_INVALID\000"
+ 2832      52525F54 
+ 2832      4D525F53 
+ 2832      544B5F49 
+ 2832      4E56414C 
+ 2833              	.LASF4:
+ 2834 0629 4350555F 		.ascii	"CPU_INT08U\000"
+ 2834      494E5430 
+ 2834      385500
+ 2835              	.LASF159:
+ 2836 0634 4F535F45 		.ascii	"OS_ERR_TCB_INVALID\000"
+ 2836      52525F54 
+ 2836      43425F49 
+ 2836      4E56414C 
+ 2836      494400
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 65
+
+
+ 2837              	.LASF220:
+ 2838 0647 53746B53 		.ascii	"StkSize\000"
+ 2838      697A6500 
+ 2839              	.LASF212:
+ 2840 064f 53746B42 		.ascii	"StkBasePtr\000"
+ 2840      61736550 
+ 2840      747200
+ 2841              	.LASF111:
+ 2842 065a 4F535F45 		.ascii	"OS_ERR_Q_EMPTY\000"
+ 2842      52525F51 
+ 2842      5F454D50 
+ 2842      545900
+ 2843              	.LASF175:
+ 2844 0669 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_MILLISECONDS\000"
+ 2844      52525F54 
+ 2844      494D455F 
+ 2844      494E5641 
+ 2844      4C49445F 
+ 2845              	.LASF34:
+ 2846 068a 4F535F52 		.ascii	"OS_REG\000"
+ 2846      454700
+ 2847              	.LASF84:
+ 2848 0691 4F535F45 		.ascii	"OS_ERR_NAME\000"
+ 2848      52525F4E 
+ 2848      414D4500 
+ 2849              	.LASF288:
+ 2850 069d 4F534366 		.ascii	"OSCfg_StatTaskStkLimit\000"
+ 2850      675F5374 
+ 2850      61745461 
+ 2850      736B5374 
+ 2850      6B4C696D 
+ 2851              	.LASF37:
+ 2852 06b4 4F535F53 		.ascii	"OS_STATUS\000"
+ 2852      54415455 
+ 2852      5300
+ 2853              	.LASF218:
+ 2854 06be 5461736B 		.ascii	"TaskState\000"
+ 2854      53746174 
+ 2854      6500
+ 2855              	.LASF164:
+ 2856 06c8 4F535F45 		.ascii	"OS_ERR_TLS_DESTRUCT_ASSIGNED\000"
+ 2856      52525F54 
+ 2856      4C535F44 
+ 2856      45535452 
+ 2856      5543545F 
+ 2857              	.LASF80:
+ 2858 06e5 4F535F45 		.ascii	"OS_ERR_MUTEX_NOT_OWNER\000"
+ 2858      52525F4D 
+ 2858      55544558 
+ 2858      5F4E4F54 
+ 2858      5F4F574E 
+ 2859              	.LASF27:
+ 2860 06fc 4F535F4D 		.ascii	"OS_MSG_SIZE\000"
+ 2860      53475F53 
+ 2860      495A4500 
+ 2861              	.LASF172:
+ 2862 0708 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_HOURS\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 66
+
+
+ 2862      52525F54 
+ 2862      494D455F 
+ 2862      494E5641 
+ 2862      4C49445F 
+ 2863              	.LASF188:
+ 2864 0722 4F535F45 		.ascii	"OS_ERR_TMR_NON_AVAIL\000"
+ 2864      52525F54 
+ 2864      4D525F4E 
+ 2864      4F4E5F41 
+ 2864      5641494C 
+ 2865              	.LASF0:
+ 2866 0737 4350555F 		.ascii	"CPU_CHAR\000"
+ 2866      43484152 
+ 2866      00
+ 2867              	.LASF137:
+ 2868 0740 4F535F45 		.ascii	"OS_ERR_TASK_CREATE_ISR\000"
+ 2868      52525F54 
+ 2868      41534B5F 
+ 2868      43524541 
+ 2868      54455F49 
+ 2869              	.LASF17:
+ 2870 0757 4350555F 		.ascii	"CPU_STK_SIZE\000"
+ 2870      53544B5F 
+ 2870      53495A45 
+ 2870      00
+ 2871              	.LASF26:
+ 2872 0764 4F535F4D 		.ascii	"OS_MSG_QTY\000"
+ 2872      53475F51 
+ 2872      545900
+ 2873              	.LASF93:
+ 2874 076f 4F535F45 		.ascii	"OS_ERR_OS_RUNNING\000"
+ 2874      52525F4F 
+ 2874      535F5255 
+ 2874      4E4E494E 
+ 2874      4700
+ 2875              	.LASF231:
+ 2876 0781 53746B46 		.ascii	"StkFree\000"
+ 2876      72656500 
+ 2877              	.LASF223:
+ 2878 0789 5469636B 		.ascii	"TickCtrPrev\000"
+ 2878      43747250 
+ 2878      72657600 
+ 2879              	.LASF178:
+ 2880 0795 4F535F45 		.ascii	"OS_ERR_TIME_ZERO_DLY\000"
+ 2880      52525F54 
+ 2880      494D455F 
+ 2880      5A45524F 
+ 2880      5F444C59 
+ 2881              	.LASF209:
+ 2882 07aa 5469636B 		.ascii	"TickPrevPtr\000"
+ 2882      50726576 
+ 2882      50747200 
+ 2883              	.LASF128:
+ 2884 07b6 4F535F45 		.ascii	"OS_ERR_STAT_STK_INVALID\000"
+ 2884      52525F53 
+ 2884      5441545F 
+ 2884      53544B5F 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 67
+
+
+ 2884      494E5641 
+ 2885              	.LASF50:
+ 2886 07ce 4F535F45 		.ascii	"OS_ERR_FLAG_GRP_DEPLETED\000"
+ 2886      52525F46 
+ 2886      4C41475F 
+ 2886      4752505F 
+ 2886      4445504C 
+ 2887              	.LASF71:
+ 2888 07e7 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_BLKS\000"
+ 2888      52525F4D 
+ 2888      454D5F49 
+ 2888      4E56414C 
+ 2888      49445F42 
+ 2889              	.LASF262:
+ 2890 07ff 705F6572 		.ascii	"p_err\000"
+ 2890      7200
+ 2891              	.LASF181:
+ 2892 0805 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_DEST\000"
+ 2892      52525F54 
+ 2892      4D525F49 
+ 2892      4E56414C 
+ 2892      49445F44 
+ 2893              	.LASF120:
+ 2894 081d 4F535F45 		.ascii	"OS_ERR_SCHED_LOCK_ISR\000"
+ 2894      52525F53 
+ 2894      43484544 
+ 2894      5F4C4F43 
+ 2894      4B5F4953 
+ 2895              	.LASF46:
+ 2896 0833 4F535F45 		.ascii	"OS_ERR_DEL_ISR\000"
+ 2896      52525F44 
+ 2896      454C5F49 
+ 2896      535200
+ 2897              	.LASF112:
+ 2898 0842 4F535F45 		.ascii	"OS_ERR_Q_MAX\000"
+ 2898      52525F51 
+ 2898      5F4D4158 
+ 2898      00
+ 2899              	.LASF207:
+ 2900 084f 50726576 		.ascii	"PrevPtr\000"
+ 2900      50747200 
+ 2901              	.LASF2:
+ 2902 0857 63686172 		.ascii	"char\000"
+ 2902      00
+ 2903              	.LASF30:
+ 2904 085c 4F535F4F 		.ascii	"OS_OBJ_TYPE\000"
+ 2904      424A5F54 
+ 2904      59504500 
+ 2905              	.LASF163:
+ 2906 0868 4F535F45 		.ascii	"OS_ERR_TLS_NOT_EN\000"
+ 2906      52525F54 
+ 2906      4C535F4E 
+ 2906      4F545F45 
+ 2906      4E00
+ 2907              	.LASF91:
+ 2908 087a 4F535F45 		.ascii	"OS_ERR_OPT_INVALID\000"
+ 2908      52525F4F 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 68
+
+
+ 2908      50545F49 
+ 2908      4E56414C 
+ 2908      494400
+ 2909              	.LASF18:
+ 2910 088d 4350555F 		.ascii	"CPU_SR\000"
+ 2910      535200
+ 2911              	.LASF119:
+ 2912 0894 4F535F45 		.ascii	"OS_ERR_SCHED_INVALID_TIME_SLICE\000"
+ 2912      52525F53 
+ 2912      43484544 
+ 2912      5F494E56 
+ 2912      414C4944 
+ 2913              	.LASF33:
+ 2914 08b4 4F535F52 		.ascii	"OS_RATE_HZ\000"
+ 2914      4154455F 
+ 2914      485A00
+ 2915              	.LASF213:
+ 2916 08bf 5461736B 		.ascii	"TaskEntryAddr\000"
+ 2916      456E7472 
+ 2916      79416464 
+ 2916      7200
+ 2917              	.LASF287:
+ 2918 08cd 4F534366 		.ascii	"OSCfg_StatTaskStkBasePtr\000"
+ 2918      675F5374 
+ 2918      61745461 
+ 2918      736B5374 
+ 2918      6B426173 
+ 2919              	.LASF127:
+ 2920 08e6 4F535F45 		.ascii	"OS_ERR_STAT_PRIO_INVALID\000"
+ 2920      52525F53 
+ 2920      5441545F 
+ 2920      5052494F 
+ 2920      5F494E56 
+ 2921              	.LASF176:
+ 2922 08ff 4F535F45 		.ascii	"OS_ERR_TIME_NOT_DLY\000"
+ 2922      52525F54 
+ 2922      494D455F 
+ 2922      4E4F545F 
+ 2922      444C5900 
+ 2923              	.LASF211:
+ 2924 0913 4E616D65 		.ascii	"NamePtr\000"
+ 2924      50747200 
+ 2925              	.LASF217:
+ 2926 091b 50656E64 		.ascii	"PendStatus\000"
+ 2926      53746174 
+ 2926      757300
+ 2927              	.LASF227:
+ 2928 0926 54696D65 		.ascii	"TimeQuantaCtr\000"
+ 2928      5175616E 
+ 2928      74614374 
+ 2928      7200
+ 2929              	.LASF198:
+ 2930 0934 4F535F45 		.ascii	"OS_ERR_YIELD_ISR\000"
+ 2930      52525F59 
+ 2930      49454C44 
+ 2930      5F495352 
+ 2930      00
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 69
+
+
+ 2931              	.LASF88:
+ 2932 0945 4F535F45 		.ascii	"OS_ERR_OBJ_DEL\000"
+ 2932      52525F4F 
+ 2932      424A5F44 
+ 2932      454C00
+ 2933              	.LASF24:
+ 2934 0954 4350555F 		.ascii	"CPU_TS\000"
+ 2934      545300
+ 2935              	.LASF12:
+ 2936 095b 6C6F6E67 		.ascii	"long long int\000"
+ 2936      206C6F6E 
+ 2936      6720696E 
+ 2936      7400
+ 2937              	.LASF52:
+ 2938 0969 4F535F45 		.ascii	"OS_ERR_FLAG_PEND_OPT\000"
+ 2938      52525F46 
+ 2938      4C41475F 
+ 2938      50454E44 
+ 2938      5F4F5054 
+ 2939              	.LASF203:
+ 2940 097e 53746B50 		.ascii	"StkPtr\000"
+ 2940      747200
+ 2941              	.LASF238:
+ 2942 0985 6F735F74 		.ascii	"os_tick_spoke\000"
+ 2942      69636B5F 
+ 2942      73706F6B 
+ 2942      6500
+ 2943              	.LASF284:
+ 2944 0993 4F53546D 		.ascii	"OSTmrTaskTimeMax\000"
+ 2944      72546173 
+ 2944      6B54696D 
+ 2944      654D6178 
+ 2944      00
+ 2945              	.LASF113:
+ 2946 09a4 4F535F45 		.ascii	"OS_ERR_Q_SIZE\000"
+ 2946      52525F51 
+ 2946      5F53495A 
+ 2946      4500
+ 2947              	.LASF274:
+ 2948 09b2 4F535374 		.ascii	"OSStatTaskCPUUsageMax\000"
+ 2948      61745461 
+ 2948      736B4350 
+ 2948      55557361 
+ 2948      67654D61 
+ 2949              	.LASF244:
+ 2950 09c8 54434250 		.ascii	"TCBPtr\000"
+ 2950      747200
+ 2951              	.LASF98:
+ 2952 09cf 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_SELF\000"
+ 2952      52525F50 
+ 2952      454E445F 
+ 2952      41424F52 
+ 2952      545F5345 
+ 2953              	.LASF6:
+ 2954 09e6 4350555F 		.ascii	"CPU_INT16U\000"
+ 2954      494E5431 
+ 2954      365500
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 70
+
+
+ 2955              	.LASF117:
+ 2956 09f1 4F535F45 		.ascii	"OS_ERR_ROUND_ROBIN_DISABLED\000"
+ 2956      52525F52 
+ 2956      4F554E44 
+ 2956      5F524F42 
+ 2956      494E5F44 
+ 2957              	.LASF72:
+ 2958 0a0d 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_PART\000"
+ 2958      52525F4D 
+ 2958      454D5F49 
+ 2958      4E56414C 
+ 2958      49445F50 
+ 2959              	.LASF89:
+ 2960 0a25 4F535F45 		.ascii	"OS_ERR_OBJ_PTR_NULL\000"
+ 2960      52525F4F 
+ 2960      424A5F50 
+ 2960      54525F4E 
+ 2960      554C4C00 
+ 2961              	.LASF115:
+ 2962 0a39 4F535F45 		.ascii	"OS_ERR_REG_ID_INVALID\000"
+ 2962      52525F52 
+ 2962      45475F49 
+ 2962      445F494E 
+ 2962      56414C49 
+ 2963              	.LASF38:
+ 2964 0a4f 4F535F54 		.ascii	"OS_TICK\000"
+ 2964      49434B00 
+ 2965              	.LASF69:
+ 2966 0a57 4F535F45 		.ascii	"OS_ERR_MEM_FULL\000"
+ 2966      52525F4D 
+ 2966      454D5F46 
+ 2966      554C4C00 
+ 2967              	.LASF143:
+ 2968 0a67 4F535F45 		.ascii	"OS_ERR_TASK_NO_MORE_TCB\000"
+ 2968      52525F54 
+ 2968      41534B5F 
+ 2968      4E4F5F4D 
+ 2968      4F52455F 
+ 2969              	.LASF74:
+ 2970 0a7f 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_MEM\000"
+ 2970      52525F4D 
+ 2970      454D5F49 
+ 2970      4E56414C 
+ 2970      49445F50 
+ 2971              	.LASF294:
+ 2972 0a98 433A5C55 		.ascii	"C:\\Users\\edulu.DESKTOP-961TG4K\\Documents\\PSoC C"
+ 2972      73657273 
+ 2972      5C656475 
+ 2972      6C752E44 
+ 2972      45534B54 
+ 2973 0ac7 72656174 		.ascii	"reator\\Micrium\\Examples\\Cypress\\CY8CKIT-044\\OS"
+ 2973      6F725C4D 
+ 2973      69637269 
+ 2973      756D5C45 
+ 2973      78616D70 
+ 2974 0af5 335C5053 		.ascii	"3\\PSoC\\OS3.cydsn\000"
+ 2974      6F435C4F 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 71
+
+
+ 2974      53332E63 
+ 2974      7964736E 
+ 2974      00
+ 2975              	.LASF23:
+ 2976 0b06 4350555F 		.ascii	"CPU_TS32\000"
+ 2976      54533332 
+ 2976      00
+ 2977              	.LASF229:
+ 2978 0b0f 53757370 		.ascii	"SuspendCtr\000"
+ 2978      656E6443 
+ 2978      747200
+ 2979              	.LASF205:
+ 2980 0b1a 53746B4C 		.ascii	"StkLimitPtr\000"
+ 2980      696D6974 
+ 2980      50747200 
+ 2981              	.LASF35:
+ 2982 0b26 4F535F53 		.ascii	"OS_SEM_CTR\000"
+ 2982      454D5F43 
+ 2982      545200
+ 2983              	.LASF191:
+ 2984 0b31 4F535F45 		.ascii	"OS_ERR_TMR_STK_SIZE_INVALID\000"
+ 2984      52525F54 
+ 2984      4D525F53 
+ 2984      544B5F53 
+ 2984      495A455F 
+ 2985              	.LASF208:
+ 2986 0b4d 5469636B 		.ascii	"TickNextPtr\000"
+ 2986      4E657874 
+ 2986      50747200 
+ 2987              	.LASF145:
+ 2988 0b59 4F535F45 		.ascii	"OS_ERR_TASK_NOT_EXIST\000"
+ 2988      52525F54 
+ 2988      41534B5F 
+ 2988      4E4F545F 
+ 2988      45584953 
+ 2989              	.LASF290:
+ 2990 0b6f 4F534366 		.ascii	"OSCfg_StkSizeMin\000"
+ 2990      675F5374 
+ 2990      6B53697A 
+ 2990      654D696E 
+ 2990      00
+ 2991              	.LASF142:
+ 2992 0b80 4F535F45 		.ascii	"OS_ERR_TASK_INVALID\000"
+ 2992      52525F54 
+ 2992      41534B5F 
+ 2992      494E5641 
+ 2992      4C494400 
+ 2993              	.LASF189:
+ 2994 0b94 4F535F45 		.ascii	"OS_ERR_TMR_PRIO_INVALID\000"
+ 2994      52525F54 
+ 2994      4D525F50 
+ 2994      52494F5F 
+ 2994      494E5641 
+ 2995              	.LASF157:
+ 2996 0bac 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_PRIO\000"
+ 2996      52525F54 
+ 2996      41534B5F 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 72
+
+
+ 2996      53555350 
+ 2996      454E445F 
+ 2997              	.LASF276:
+ 2998 0bc5 4F535374 		.ascii	"OSStatTaskCtrMax\000"
+ 2998      61745461 
+ 2998      736B4374 
+ 2998      724D6178 
+ 2998      00
+ 2999              	.LASF246:
+ 3000 0bd6 5264794F 		.ascii	"RdyObjPtr\000"
+ 3000      626A5074 
+ 3000      7200
+ 3001              	.LASF62:
+ 3002 0be0 4F535F45 		.ascii	"OS_ERR_INT_Q_STK_SIZE_INVALID\000"
+ 3002      52525F49 
+ 3002      4E545F51 
+ 3002      5F53544B 
+ 3002      5F53495A 
+ 3003              	.LASF161:
+ 3004 0bfe 4F535F45 		.ascii	"OS_ERR_TLS_ISR\000"
+ 3004      52525F54 
+ 3004      4C535F49 
+ 3004      535200
+ 3005              	.LASF141:
+ 3006 0c0d 4F535F45 		.ascii	"OS_ERR_TASK_DEL_ISR\000"
+ 3006      52525F54 
+ 3006      41534B5F 
+ 3006      44454C5F 
+ 3006      49535200 
+ 3007              	.LASF108:
+ 3008 0c21 4F535F45 		.ascii	"OS_ERR_PTR_INVALID\000"
+ 3008      52525F50 
+ 3008      54525F49 
+ 3008      4E56414C 
+ 3008      494400
+ 3009              	.LASF130:
+ 3010 0c34 4F535F45 		.ascii	"OS_ERR_STATE_INVALID\000"
+ 3010      52525F53 
+ 3010      54415445 
+ 3010      5F494E56 
+ 3010      414C4944 
+ 3011              	.LASF206:
+ 3012 0c49 4E657874 		.ascii	"NextPtr\000"
+ 3012      50747200 
+ 3013              	.LASF21:
+ 3014 0c51 6C6F6E67 		.ascii	"long double\000"
+ 3014      20646F75 
+ 3014      626C6500 
+ 3015              	.LASF92:
+ 3016 0c5d 4F535F45 		.ascii	"OS_ERR_OS_NOT_RUNNING\000"
+ 3016      52525F4F 
+ 3016      535F4E4F 
+ 3016      545F5255 
+ 3016      4E4E494E 
+ 3017              	.LASF256:
+ 3018 0c73 54797065 		.ascii	"Type\000"
+ 3018      00
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 73
+
+
+ 3019              	.LASF177:
+ 3020 0c78 4F535F45 		.ascii	"OS_ERR_TIME_SET_ISR\000"
+ 3020      52525F54 
+ 3020      494D455F 
+ 3020      5345545F 
+ 3020      49535200 
+ 3021              	.LASF116:
+ 3022 0c8c 4F535F45 		.ascii	"OS_ERR_ROUND_ROBIN_1\000"
+ 3022      52525F52 
+ 3022      4F554E44 
+ 3022      5F524F42 
+ 3022      494E5F31 
+ 3023              	.LASF73:
+ 3024 0ca1 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_BLK\000"
+ 3024      52525F4D 
+ 3024      454D5F49 
+ 3024      4E56414C 
+ 3024      49445F50 
+ 3025              	.LASF70:
+ 3026 0cba 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_ADDR\000"
+ 3026      52525F4D 
+ 3026      454D5F49 
+ 3026      4E56414C 
+ 3026      49445F50 
+ 3027              	.LASF265:
+ 3028 0cd4 6374725F 		.ascii	"ctr_max\000"
+ 3028      6D617800 
+ 3029              	.LASF249:
+ 3030 0cdc 52647954 		.ascii	"RdyTS\000"
+ 3030      5300
+ 3031              	.LASF66:
+ 3032 0ce2 4F535F45 		.ascii	"OS_ERR_LOCK_NESTING_OVF\000"
+ 3032      52525F4C 
+ 3032      4F434B5F 
+ 3032      4E455354 
+ 3032      494E475F 
+ 3033              	.LASF152:
+ 3034 0cfa 4F535F45 		.ascii	"OS_ERR_TASK_STK_CHK_ISR\000"
+ 3034      52525F54 
+ 3034      41534B5F 
+ 3034      53544B5F 
+ 3034      43484B5F 
+ 3035              	.LASF8:
+ 3036 0d12 73686F72 		.ascii	"short int\000"
+ 3036      7420696E 
+ 3036      7400
+ 3037              	.LASF248:
+ 3038 0d1c 5264794D 		.ascii	"RdyMsgSize\000"
+ 3038      73675369 
+ 3038      7A6500
+ 3039              	.LASF270:
+ 3040 0d27 4F535F53 		.ascii	"OS_StatTaskInit\000"
+ 3040      74617454 
+ 3040      61736B49 
+ 3040      6E697400 
+ 3041              	.LASF78:
+ 3042 0d37 4F535F45 		.ascii	"OS_ERR_MSG_POOL_EMPTY\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 74
+
+
+ 3042      52525F4D 
+ 3042      53475F50 
+ 3042      4F4F4C5F 
+ 3042      454D5054 
+ 3043              	.LASF232:
+ 3044 0d4d 496E7444 		.ascii	"IntDisTimeMax\000"
+ 3044      69735469 
+ 3044      6D654D61 
+ 3044      7800
+ 3045              	.LASF285:
+ 3046 0d5b 4F534366 		.ascii	"OSCfg_StatTaskPrio\000"
+ 3046      675F5374 
+ 3046      61745461 
+ 3046      736B5072 
+ 3046      696F00
+ 3047              	.LASF19:
+ 3048 0d6e 6C6F6E67 		.ascii	"long int\000"
+ 3048      20696E74 
+ 3048      00
+ 3049              	.LASF123:
+ 3050 0d77 4F535F45 		.ascii	"OS_ERR_SCHED_UNLOCK_ISR\000"
+ 3050      52525F53 
+ 3050      43484544 
+ 3050      5F554E4C 
+ 3050      4F434B5F 
+ 3051              	.LASF166:
+ 3052 0d8f 4F535F45 		.ascii	"OS_ERR_TICK_STK_INVALID\000"
+ 3052      52525F54 
+ 3052      49434B5F 
+ 3052      53544B5F 
+ 3052      494E5641 
+ 3053              	.LASF79:
+ 3054 0da7 4F535F45 		.ascii	"OS_ERR_MSG_POOL_NULL_PTR\000"
+ 3054      52525F4D 
+ 3054      53475F50 
+ 3054      4F4F4C5F 
+ 3054      4E554C4C 
+ 3055              	.LASF28:
+ 3056 0dc0 4F535F4E 		.ascii	"OS_NESTING_CTR\000"
+ 3056      45535449 
+ 3056      4E475F43 
+ 3056      545200
+ 3057              	.LASF254:
+ 3058 0dcf 4F535F50 		.ascii	"OS_PEND_OBJ\000"
+ 3058      454E445F 
+ 3058      4F424A00 
+ 3059              	.LASF150:
+ 3060 0ddb 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_SELF\000"
+ 3060      52525F54 
+ 3060      41534B5F 
+ 3060      52455355 
+ 3060      4D455F53 
+ 3061              	.LASF257:
+ 3062 0df3 50656E64 		.ascii	"PendList\000"
+ 3062      4C697374 
+ 3062      00
+ 3063              	.LASF90:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 75
+
+
+ 3064 0dfc 4F535F45 		.ascii	"OS_ERR_OBJ_TYPE\000"
+ 3064      52525F4F 
+ 3064      424A5F54 
+ 3064      59504500 
+ 3065              	.LASF215:
+ 3066 0e0c 50656E64 		.ascii	"PendDataTblPtr\000"
+ 3066      44617461 
+ 3066      54626C50 
+ 3066      747200
+ 3067              	.LASF222:
+ 3068 0e1b 53656D43 		.ascii	"SemCtr\000"
+ 3068      747200
+ 3069              	.LASF278:
+ 3070 0e22 4F535374 		.ascii	"OSStatTaskRdy\000"
+ 3070      61745461 
+ 3070      736B5264 
+ 3070      7900
+ 3071              	.LASF261:
+ 3072 0e30 4F535374 		.ascii	"OSStatTaskCPUUsageInit\000"
+ 3072      61745461 
+ 3072      736B4350 
+ 3072      55557361 
+ 3072      6765496E 
+ 3073              	.LASF225:
+ 3074 0e47 5469636B 		.ascii	"TickRemain\000"
+ 3074      52656D61 
+ 3074      696E00
+ 3075              	.LASF252:
+ 3076 0e52 48656164 		.ascii	"HeadPtr\000"
+ 3076      50747200 
+ 3077              	.LASF97:
+ 3078 0e5a 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_NONE\000"
+ 3078      52525F50 
+ 3078      454E445F 
+ 3078      41424F52 
+ 3078      545F4E4F 
+ 3079              	.LASF10:
+ 3080 0e71 756E7369 		.ascii	"unsigned int\000"
+ 3080      676E6564 
+ 3080      20696E74 
+ 3080      00
+ 3081              	.LASF81:
+ 3082 0e7e 4F535F45 		.ascii	"OS_ERR_MUTEX_OWNER\000"
+ 3082      52525F4D 
+ 3082      55544558 
+ 3082      5F4F574E 
+ 3082      455200
+ 3083              	.LASF239:
+ 3084 0e91 46697273 		.ascii	"FirstPtr\000"
+ 3084      74507472 
+ 3084      00
+ 3085              	.LASF129:
+ 3086 0e9a 4F535F45 		.ascii	"OS_ERR_STAT_STK_SIZE_INVALID\000"
+ 3086      52525F53 
+ 3086      5441545F 
+ 3086      53544B5F 
+ 3086      53495A45 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 76
+
+
+ 3087              	.LASF51:
+ 3088 0eb7 4F535F45 		.ascii	"OS_ERR_FLAG_NOT_RDY\000"
+ 3088      52525F46 
+ 3088      4C41475F 
+ 3088      4E4F545F 
+ 3088      52445900 
+ 3089              	.LASF264:
+ 3090 0ecb 705F6172 		.ascii	"p_arg\000"
+ 3090      6700
+ 3091              	.LASF204:
+ 3092 0ed1 45787450 		.ascii	"ExtPtr\000"
+ 3092      747200
+ 3093              	.LASF22:
+ 3094 0ed8 73697A65 		.ascii	"sizetype\000"
+ 3094      74797065 
+ 3094      00
+ 3095              	.LASF20:
+ 3096 0ee1 6C6F6E67 		.ascii	"long unsigned int\000"
+ 3096      20756E73 
+ 3096      69676E65 
+ 3096      6420696E 
+ 3096      7400
+ 3097              	.LASF96:
+ 3098 0ef3 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_ISR\000"
+ 3098      52525F50 
+ 3098      454E445F 
+ 3098      41424F52 
+ 3098      545F4953 
+ 3099              	.LASF15:
+ 3100 0f09 4350555F 		.ascii	"CPU_ADDR\000"
+ 3100      41444452 
+ 3100      00
+ 3101              	.LASF104:
+ 3102 0f12 4F535F45 		.ascii	"OS_ERR_POST_ISR\000"
+ 3102      52525F50 
+ 3102      4F53545F 
+ 3102      49535200 
+ 3103              	.LASF169:
+ 3104 0f22 4F535F45 		.ascii	"OS_ERR_TIME_DLY_ISR\000"
+ 3104      52525F54 
+ 3104      494D455F 
+ 3104      444C595F 
+ 3104      49535200 
+ 3105              	.LASF134:
+ 3106 0f36 4F535F45 		.ascii	"OS_ERR_STK_LIMIT_INVALID\000"
+ 3106      52525F53 
+ 3106      544B5F4C 
+ 3106      494D4954 
+ 3106      5F494E56 
+ 3107              	.LASF282:
+ 3108 0f4f 4F535469 		.ascii	"OSTickTaskTimeMax\000"
+ 3108      636B5461 
+ 3108      736B5469 
+ 3108      6D654D61 
+ 3108      7800
+ 3109              	.LASF267:
+ 3110 0f61 6374725F 		.ascii	"ctr_div\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 77
+
+
+ 3110      64697600 
+ 3111              	.LASF1:
+ 3112 0f69 4350555F 		.ascii	"CPU_BOOLEAN\000"
+ 3112      424F4F4C 
+ 3112      45414E00 
+ 3113              	.LASF133:
+ 3114 0f75 4F535F45 		.ascii	"OS_ERR_STK_SIZE_INVALID\000"
+ 3114      52525F53 
+ 3114      544B5F53 
+ 3114      495A455F 
+ 3114      494E5641 
+ 3115              	.LASF293:
+ 3116 0f8d 2E2E5C2E 		.ascii	"..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source\\"
+ 3116      2E5C2E2E 
+ 3116      5C2E2E5C 
+ 3116      2E2E5C2E 
+ 3116      2E5C536F 
+ 3117 0fb8 6F735F73 		.ascii	"os_stat.c\000"
+ 3117      7461742E 
+ 3117      6300
+ 3118              	.LASF192:
+ 3119 0fc2 4F535F45 		.ascii	"OS_ERR_TMR_STOPPED\000"
+ 3119      52525F54 
+ 3119      4D525F53 
+ 3119      544F5050 
+ 3119      454400
+ 3120              	.LASF3:
+ 3121 0fd5 756E7369 		.ascii	"unsigned char\000"
+ 3121      676E6564 
+ 3121      20636861 
+ 3121      7200
+ 3122              	.LASF147:
+ 3123 0fe3 4F535F45 		.ascii	"OS_ERR_TASK_OPT\000"
+ 3123      52525F54 
+ 3123      41534B5F 
+ 3123      4F505400 
+ 3124              	.LASF179:
+ 3125 0ff3 4F535F45 		.ascii	"OS_ERR_TIMEOUT\000"
+ 3125      52525F54 
+ 3125      494D454F 
+ 3125      555400
+ 3126              	.LASF263:
+ 3127 1002 4F535F53 		.ascii	"OS_StatTask\000"
+ 3127      74617454 
+ 3127      61736B00 
+ 3128              	.LASF36:
+ 3129 100e 4F535F53 		.ascii	"OS_STATE\000"
+ 3129      54415445 
+ 3129      00
+ 3130              	.LASF280:
+ 3131 1017 4F535374 		.ascii	"OSStatTaskTimeMax\000"
+ 3131      61745461 
+ 3131      736B5469 
+ 3131      6D654D61 
+ 3131      7800
+ 3132              	.LASF31:
+ 3133 1029 4F535F4F 		.ascii	"OS_OPT\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 78
+
+
+ 3133      505400
+ 3134              	.LASF201:
+ 3135 1030 4F535F54 		.ascii	"OS_TASK_PTR\000"
+ 3135      41534B5F 
+ 3135      50545200 
+ 3136              	.LASF68:
+ 3137 103c 4F535F45 		.ascii	"OS_ERR_MEM_CREATE_ISR\000"
+ 3137      52525F4D 
+ 3137      454D5F43 
+ 3137      52454154 
+ 3137      455F4953 
+ 3138              	.LASF131:
+ 3139 1052 4F535F45 		.ascii	"OS_ERR_STATUS_INVALID\000"
+ 3139      52525F53 
+ 3139      54415455 
+ 3139      535F494E 
+ 3139      56414C49 
+ 3140              	.LASF197:
+ 3141 1068 4F535F45 		.ascii	"OS_ERR_Y\000"
+ 3141      52525F59 
+ 3141      00
+ 3142              	.LASF100:
+ 3143 1071 4F535F45 		.ascii	"OS_ERR_PEND_ISR\000"
+ 3143      52525F50 
+ 3143      454E445F 
+ 3143      49535200 
+ 3144              	.LASF199:
+ 3145 1081 4F535F45 		.ascii	"OS_ERR_Z\000"
+ 3145      52525F5A 
+ 3145      00
+ 3146              	.LASF210:
+ 3147 108a 5469636B 		.ascii	"TickSpokePtr\000"
+ 3147      53706F6B 
+ 3147      65507472 
+ 3147      00
+ 3148              	.LASF235:
+ 3149 1097 4462674E 		.ascii	"DbgNamePtr\000"
+ 3149      616D6550 
+ 3149      747200
+ 3150              	.LASF214:
+ 3151 10a2 5461736B 		.ascii	"TaskEntryArg\000"
+ 3151      456E7472 
+ 3151      79417267 
+ 3151      00
+ 3152              	.LASF110:
+ 3153 10af 4F535F45 		.ascii	"OS_ERR_Q_FULL\000"
+ 3153      52525F51 
+ 3153      5F46554C 
+ 3153      4C00
+ 3154              	.LASF277:
+ 3155 10bd 4F535374 		.ascii	"OSStatTaskCtrRun\000"
+ 3155      61745461 
+ 3155      736B4374 
+ 3155      7252756E 
+ 3155      00
+ 3156              	.LASF241:
+ 3157 10ce 4E627245 		.ascii	"NbrEntriesMax\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 79
+
+
+ 3157      6E747269 
+ 3157      65734D61 
+ 3157      7800
+ 3158              	.LASF269:
+ 3159 10dc 74735F65 		.ascii	"ts_end\000"
+ 3159      6E6400
+ 3160              	.LASF61:
+ 3161 10e3 4F535F45 		.ascii	"OS_ERR_INT_Q_STK_INVALID\000"
+ 3161      52525F49 
+ 3161      4E545F51 
+ 3161      5F53544B 
+ 3161      5F494E56 
+ 3162              	.LASF174:
+ 3163 10fc 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_SECONDS\000"
+ 3163      52525F54 
+ 3163      494D455F 
+ 3163      494E5641 
+ 3163      4C49445F 
+ 3164              	.LASF138:
+ 3165 1118 4F535F45 		.ascii	"OS_ERR_TASK_DEL\000"
+ 3165      52525F54 
+ 3165      41534B5F 
+ 3165      44454C00 
+ 3166              	.LASF250:
+ 3167 1128 4F535F50 		.ascii	"OS_PEND_LIST\000"
+ 3167      454E445F 
+ 3167      4C495354 
+ 3167      00
+ 3168              	.LASF5:
+ 3169 1135 7369676E 		.ascii	"signed char\000"
+ 3169      65642063 
+ 3169      68617200 
+ 3170              	.LASF49:
+ 3171 1141 4F535F45 		.ascii	"OS_ERR_FATAL_RETURN\000"
+ 3171      52525F46 
+ 3171      4154414C 
+ 3171      5F524554 
+ 3171      55524E00 
+ 3172              	.LASF7:
+ 3173 1155 73686F72 		.ascii	"short unsigned int\000"
+ 3173      7420756E 
+ 3173      7369676E 
+ 3173      65642069 
+ 3173      6E7400
+ 3174              	.LASF258:
+ 3175 1168 705F7463 		.ascii	"p_tcb\000"
+ 3175      6200
+ 3176              	.LASF162:
+ 3177 116e 4F535F45 		.ascii	"OS_ERR_TLS_NO_MORE_AVAIL\000"
+ 3177      52525F54 
+ 3177      4C535F4E 
+ 3177      4F5F4D4F 
+ 3177      52455F41 
+ 3178              	.LASF272:
+ 3179 1187 4F535374 		.ascii	"OSStatResetFlag\000"
+ 3179      61745265 
+ 3179      73657446 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 80
+
+
+ 3179      6C616700 
+ 3180              	.LASF39:
+ 3181 1197 4F535F45 		.ascii	"OS_ERR_NONE\000"
+ 3181      52525F4E 
+ 3181      4F4E4500 
+ 3182              	.LASF243:
+ 3183 11a3 6F735F70 		.ascii	"os_pend_data\000"
+ 3183      656E645F 
+ 3183      64617461 
+ 3183      00
+ 3184              	.LASF121:
+ 3185 11b0 4F535F45 		.ascii	"OS_ERR_SCHED_LOCKED\000"
+ 3185      52525F53 
+ 3185      43484544 
+ 3185      5F4C4F43 
+ 3185      4B454400 
+ 3186              	.LASF53:
+ 3187 11c4 4F535F45 		.ascii	"OS_ERR_FLUSH_ISR\000"
+ 3187      52525F46 
+ 3187      4C555348 
+ 3187      5F495352 
+ 3187      00
+ 3188              	.LASF219:
+ 3189 11d5 5072696F 		.ascii	"Prio\000"
+ 3189      00
+ 3190              	.LASF14:
+ 3191 11da 646F7562 		.ascii	"double\000"
+ 3191      6C6500
+ 3192              	.LASF95:
+ 3193 11e1 4F535F45 		.ascii	"OS_ERR_PEND_ABORT\000"
+ 3193      52525F50 
+ 3193      454E445F 
+ 3193      41424F52 
+ 3193      5400
+ 3194              	.LASF122:
+ 3195 11f3 4F535F45 		.ascii	"OS_ERR_SCHED_NOT_LOCKED\000"
+ 3195      52525F53 
+ 3195      43484544 
+ 3195      5F4E4F54 
+ 3195      5F4C4F43 
+ 3196              	.LASF106:
+ 3197 120b 4F535F45 		.ascii	"OS_ERR_PRIO\000"
+ 3197      52525F50 
+ 3197      52494F00 
+ 3198              	.LASF99:
+ 3199 1217 4F535F45 		.ascii	"OS_ERR_PEND_DEL\000"
+ 3199      52525F50 
+ 3199      454E445F 
+ 3199      44454C00 
+ 3200              	.LASF245:
+ 3201 1227 50656E64 		.ascii	"PendObjPtr\000"
+ 3201      4F626A50 
+ 3201      747200
+ 3202              	.LASF202:
+ 3203 1232 4F535F54 		.ascii	"OS_TCB\000"
+ 3203      434200
+ 3204              	.LASF281:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 81
+
+
+ 3205 1239 4F535461 		.ascii	"OSTaskDbgListPtr\000"
+ 3205      736B4462 
+ 3205      674C6973 
+ 3205      74507472 
+ 3205      00
+ 3206              	.LASF251:
+ 3207 124a 6F735F70 		.ascii	"os_pend_list\000"
+ 3207      656E645F 
+ 3207      6C697374 
+ 3207      00
+ 3208              	.LASF76:
+ 3209 1257 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_SIZE\000"
+ 3209      52525F4D 
+ 3209      454D5F49 
+ 3209      4E56414C 
+ 3209      49445F53 
+ 3210              	.LASF153:
+ 3211 126f 4F535F45 		.ascii	"OS_ERR_TASK_SUSPENDED\000"
+ 3211      52525F54 
+ 3211      41534B5F 
+ 3211      53555350 
+ 3211      454E4445 
+ 3212              	.LASF286:
+ 3213 1285 4F534366 		.ascii	"OSCfg_StatTaskRate_Hz\000"
+ 3213      675F5374 
+ 3213      61745461 
+ 3213      736B5261 
+ 3213      74655F48 
+ 3214              	.LASF125:
+ 3215 129b 4F535F45 		.ascii	"OS_ERR_SET_ISR\000"
+ 3215      52525F53 
+ 3215      45545F49 
+ 3215      535200
+ 3216              	.LASF273:
+ 3217 12aa 4F535374 		.ascii	"OSStatTaskCPUUsage\000"
+ 3217      61745461 
+ 3217      736B4350 
+ 3217      55557361 
+ 3217      676500
+ 3218              	.LASF228:
+ 3219 12bd 52656754 		.ascii	"RegTbl\000"
+ 3219      626C00
+ 3220              	.LASF124:
+ 3221 12c4 4F535F45 		.ascii	"OS_ERR_SEM_OVF\000"
+ 3221      52525F53 
+ 3221      454D5F4F 
+ 3221      564600
+ 3222              	.LASF139:
+ 3223 12d3 4F535F45 		.ascii	"OS_ERR_TASK_DEL_IDLE\000"
+ 3223      52525F54 
+ 3223      41534B5F 
+ 3223      44454C5F 
+ 3223      49444C45 
+ 3224              	.LASF171:
+ 3225 12e8 4F535F45 		.ascii	"OS_ERR_TIME_GET_ISR\000"
+ 3225      52525F54 
+ 3225      494D455F 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccsKkxps.s 			page 82
+
+
+ 3225      4745545F 
+ 3225      49535200 
+ 3226              	.LASF226:
+ 3227 12fc 54696D65 		.ascii	"TimeQuanta\000"
+ 3227      5175616E 
+ 3227      746100
+ 3228              	.LASF170:
+ 3229 1307 4F535F45 		.ascii	"OS_ERR_TIME_DLY_RESUME_ISR\000"
+ 3229      52525F54 
+ 3229      494D455F 
+ 3229      444C595F 
+ 3229      52455355 
+ 3230              	.LASF165:
+ 3231 1322 4F535F45 		.ascii	"OS_ERR_TICK_PRIO_INVALID\000"
+ 3231      52525F54 
+ 3231      49434B5F 
+ 3231      5052494F 
+ 3231      5F494E56 
+ 3232              	.LASF105:
+ 3233 133b 4F535F45 		.ascii	"OS_ERR_PRIO_EXIST\000"
+ 3233      52525F50 
+ 3233      52494F5F 
+ 3233      45584953 
+ 3233      5400
+ 3234              	.LASF291:
+ 3235 134d 4F534366 		.ascii	"OSCfg_TickRate_Hz\000"
+ 3235      675F5469 
+ 3235      636B5261 
+ 3235      74655F48 
+ 3235      7A00
+ 3236              	.LASF77:
+ 3237 135f 4F535F45 		.ascii	"OS_ERR_MEM_NO_FREE_BLKS\000"
+ 3237      52525F4D 
+ 3237      454D5F4E 
+ 3237      4F5F4652 
+ 3237      45455F42 
+ 3238              	.LASF16:
+ 3239 1377 4350555F 		.ascii	"CPU_STK\000"
+ 3239      53544B00 
+ 3240              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

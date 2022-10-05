@@ -1,0 +1,3508 @@
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"os_mem.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.OSMemCreate,"ax",%progbits
+  20              		.align	2
+  21              		.global	OSMemCreate
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	OSMemCreate, %function
+  25              	OSMemCreate:
+  26              	.LFB0:
+  27              		.file 1 "..\\..\\..\\..\\..\\..\\uCOS-III\\Source\\os_mem.c"
+   1:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** /*
+   2:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** ***************************************************************************************************
+   3:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                                      uC/OS-III
+   4:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                                 The Real-Time Kernel
+   5:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+   6:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                  (c) Copyright 2009-2012; Micrium, Inc.; Weston, FL
+   7:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                           All rights reserved.  Protected by international copyright laws.
+   8:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+   9:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                             MEMORY PARTITION MANAGEMENT
+  10:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+  11:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * File    : OS_MEM.C
+  12:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * By      : JJL
+  13:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Version : V3.03.01
+  14:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+  15:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * LICENSING TERMS:
+  16:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * ---------------
+  17:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *           uC/OS-III is provided in source form for FREE short-term evaluation, for educational us
+  18:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *           for peaceful research.  If you plan or intend to use uC/OS-III in a commercial applicat
+  19:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *           product then, you need to contact Micrium to properly license uC/OS-III for its use in 
+  20:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *           application/product.   We provide ALL the source code for your convenience and to help 
+  21:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *           experience uC/OS-III.  The fact that the source is provided does NOT mean that you can 
+  22:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *           it commercially without paying a licensing fee.
+  23:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+  24:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *           Knowledge of the source code may NOT be used to develop a similar product.
+  25:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+  26:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *           Please help us continue to provide the embedded community with the finest software avai
+  27:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *           Your honesty is greatly appreciated.
+  28:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+  29:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *           You can contact us at www.micrium.com, or by phone at +1 (954) 217-2036.
+  30:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** ***************************************************************************************************
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 2
+
+
+  31:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** */
+  32:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+  33:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #define   MICRIUM_SOURCE
+  34:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #include  <os.h>
+  35:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+  36:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #ifdef VSC_INCLUDE_SOURCE_FILE_NAMES
+  37:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** const  CPU_CHAR  *os_mem__c = "$Id: $";
+  38:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+  39:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+  40:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+  41:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #if OS_CFG_MEM_EN > 0u
+  42:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** /*
+  43:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** ***************************************************************************************************
+  44:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                               CREATE A MEMORY PARTITION
+  45:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+  46:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Description : Create a fixed-sized memory partition that will be managed by uC/OS-III.
+  47:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+  48:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Arguments   : p_mem    is a pointer to a memory partition control block which is allocated in use
+  49:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+  50:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *               p_name   is a pointer to an ASCII string to provide a name to the memory partition.
+  51:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+  52:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *               p_addr   is the starting address of the memory partition
+  53:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+  54:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *               n_blks   is the number of memory blocks to create from the partition.
+  55:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+  56:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *               blk_size is the size (in bytes) of each block in the memory partition.
+  57:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+  58:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *               p_err    is a pointer to a variable containing an error message which will be set b
+  59:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                        either:
+  60:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+  61:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                            OS_ERR_NONE                    if the memory partition has been create
+  62:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                            OS_ERR_ILLEGAL_CREATE_RUN_TIME if you are trying to create the memory 
+  63:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                                             called OSSafetyCriticalStart().
+  64:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                            OS_ERR_MEM_INVALID_BLKS        user specified an invalid number of blo
+  65:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                            OS_ERR_MEM_INVALID_P_ADDR      if you are specifying an invalid addres
+  66:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                                           storage of the partition or, the block 
+  67:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                                           pointer boundary
+  68:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                            OS_ERR_MEM_INVALID_SIZE        user specified an invalid block size
+  69:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                                             - must be greater than the size of a 
+  70:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                                             - must be able to hold an integral nu
+  71:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Returns    : none
+  72:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** ***************************************************************************************************
+  73:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** */
+  74:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+  75:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** void  OSMemCreate (OS_MEM       *p_mem,
+  76:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****                    CPU_CHAR     *p_name,
+  77:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****                    void         *p_addr,
+  78:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****                    OS_MEM_QTY    n_blks,
+  79:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****                    OS_MEM_SIZE   blk_size,
+  80:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****                    OS_ERR       *p_err)
+  81:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** {
+  28              		.loc 1 81 0
+  29              		.cfi_startproc
+  30              		@ args = 8, pretend = 0, frame = 40
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 3
+
+
+  34              		.cfi_offset 7, -8
+  35              		.cfi_offset 14, -4
+  36 0002 8AB0     		sub	sp, sp, #40
+  37              		.cfi_def_cfa_offset 48
+  38 0004 00AF     		add	r7, sp, #0
+  39              		.cfi_def_cfa_register 7
+  40 0006 F860     		str	r0, [r7, #12]
+  41 0008 B960     		str	r1, [r7, #8]
+  42 000a 7A60     		str	r2, [r7, #4]
+  43 000c 7B80     		strh	r3, [r7, #2]	@ movhi
+  82:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #if OS_CFG_ARG_CHK_EN > 0u
+  83:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     CPU_DATA       align_msk;
+  84:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+  85:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     OS_MEM_QTY     i;
+  86:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     OS_MEM_QTY     loops;
+  87:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     CPU_INT08U    *p_blk;
+  88:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     void         **p_link;
+  89:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     CPU_SR_ALLOC();
+  44              		.loc 1 89 0
+  45 000e 0023     		movs	r3, #0
+  46 0010 BB61     		str	r3, [r7, #24]
+  90:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+  91:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+  92:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+  93:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #ifdef OS_SAFETY_CRITICAL
+  94:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (p_err == (OS_ERR *)0) {
+  95:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+  96:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return;
+  97:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+  98:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+  99:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 100:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #ifdef OS_SAFETY_CRITICAL_IEC61508
+ 101:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (OSSafetyCriticalStartFlag == DEF_TRUE) {
+ 102:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****        *p_err = OS_ERR_ILLEGAL_CREATE_RUN_TIME;
+ 103:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return;
+ 104:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 105:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+ 106:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 107:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #if OS_CFG_CALLED_FROM_ISR_CHK_EN > 0u
+ 108:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (OSIntNestingCtr > (OS_NESTING_CTR)0) {              /* Not allowed to call from an ISR     
+  47              		.loc 1 108 0
+  48 0012 404B     		ldr	r3, .L11
+  49 0014 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  50 0016 002B     		cmp	r3, #0
+  51 0018 04D0     		beq	.L2
+ 109:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****        *p_err = OS_ERR_MEM_CREATE_ISR;
+  52              		.loc 1 109 0
+  53 001a 7B6B     		ldr	r3, [r7, #52]
+  54 001c 45F2B962 		movw	r2, #22201
+  55 0020 1A80     		strh	r2, [r3]	@ movhi
+ 110:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return;
+  56              		.loc 1 110 0
+  57 0022 74E0     		b	.L1
+  58              	.L2:
+ 111:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 112:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+ 113:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 4
+
+
+ 114:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #if OS_CFG_ARG_CHK_EN > 0u
+ 115:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (p_addr == (void *)0) {                              /* Must pass a valid address for the me
+  59              		.loc 1 115 0
+  60 0024 7B68     		ldr	r3, [r7, #4]
+  61 0026 002B     		cmp	r3, #0
+  62 0028 04D1     		bne	.L4
+ 116:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****        *p_err   = OS_ERR_MEM_INVALID_P_ADDR;
+  63              		.loc 1 116 0
+  64 002a 7B6B     		ldr	r3, [r7, #52]
+  65 002c 45F2BB62 		movw	r2, #22203
+  66 0030 1A80     		strh	r2, [r3]	@ movhi
+ 117:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return;
+  67              		.loc 1 117 0
+  68 0032 6CE0     		b	.L1
+  69              	.L4:
+ 118:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 119:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (n_blks < (OS_MEM_QTY)2) {                           /* Must have at least 2 blocks per part
+  70              		.loc 1 119 0
+  71 0034 7B88     		ldrh	r3, [r7, #2]
+  72 0036 012B     		cmp	r3, #1
+  73 0038 04D8     		bhi	.L5
+ 120:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****        *p_err = OS_ERR_MEM_INVALID_BLKS;
+  74              		.loc 1 120 0
+  75 003a 7B6B     		ldr	r3, [r7, #52]
+  76 003c 45F2BC62 		movw	r2, #22204
+  77 0040 1A80     		strh	r2, [r3]	@ movhi
+ 121:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return;
+  78              		.loc 1 121 0
+  79 0042 64E0     		b	.L1
+  80              	.L5:
+ 122:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 123:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (blk_size < sizeof(void *)) {                        /* Must contain space for at least a po
+  81              		.loc 1 123 0
+  82 0044 3B8E     		ldrh	r3, [r7, #48]
+  83 0046 032B     		cmp	r3, #3
+  84 0048 04D8     		bhi	.L6
+ 124:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****        *p_err = OS_ERR_MEM_INVALID_SIZE;
+  85              		.loc 1 124 0
+  86 004a 7B6B     		ldr	r3, [r7, #52]
+  87 004c 45F2C162 		movw	r2, #22209
+  88 0050 1A80     		strh	r2, [r3]	@ movhi
+ 125:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return;
+  89              		.loc 1 125 0
+  90 0052 5CE0     		b	.L1
+  91              	.L6:
+ 126:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 127:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     align_msk = sizeof(void *) - 1u;
+  92              		.loc 1 127 0
+  93 0054 0323     		movs	r3, #3
+  94 0056 7B61     		str	r3, [r7, #20]
+ 128:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (align_msk > 0u) {
+  95              		.loc 1 128 0
+  96 0058 7B69     		ldr	r3, [r7, #20]
+  97 005a 002B     		cmp	r3, #0
+  98 005c 13D0     		beq	.L7
+ 129:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         if (((CPU_ADDR)p_addr & align_msk) != 0u){          /* Must be pointer size aligned        
+  99              		.loc 1 129 0
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 5
+
+
+ 100 005e 7A68     		ldr	r2, [r7, #4]
+ 101 0060 7B69     		ldr	r3, [r7, #20]
+ 102 0062 1340     		ands	r3, r3, r2
+ 103 0064 002B     		cmp	r3, #0
+ 104 0066 04D0     		beq	.L8
+ 130:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****            *p_err = OS_ERR_MEM_INVALID_P_ADDR;
+ 105              		.loc 1 130 0
+ 106 0068 7B6B     		ldr	r3, [r7, #52]
+ 107 006a 45F2BB62 		movw	r2, #22203
+ 108 006e 1A80     		strh	r2, [r3]	@ movhi
+ 131:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****             return;
+ 109              		.loc 1 131 0
+ 110 0070 4DE0     		b	.L1
+ 111              	.L8:
+ 132:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         }
+ 133:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         if ((blk_size & align_msk) != 0u) {                 /* Block size must be a multiple addres
+ 112              		.loc 1 133 0
+ 113 0072 3A8E     		ldrh	r2, [r7, #48]
+ 114 0074 7B69     		ldr	r3, [r7, #20]
+ 115 0076 1340     		ands	r3, r3, r2
+ 116 0078 002B     		cmp	r3, #0
+ 117 007a 04D0     		beq	.L7
+ 134:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****            *p_err = OS_ERR_MEM_INVALID_SIZE;
+ 118              		.loc 1 134 0
+ 119 007c 7B6B     		ldr	r3, [r7, #52]
+ 120 007e 45F2C162 		movw	r2, #22209
+ 121 0082 1A80     		strh	r2, [r3]	@ movhi
+ 135:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****             return;
+ 122              		.loc 1 135 0
+ 123 0084 43E0     		b	.L1
+ 124              	.L7:
+ 136:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         }
+ 137:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 138:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+ 139:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 140:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_link = (void **)p_addr;                               /* Create linked list of free memory bl
+ 125              		.loc 1 140 0
+ 126 0086 7B68     		ldr	r3, [r7, #4]
+ 127 0088 FB61     		str	r3, [r7, #28]
+ 141:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_blk  = (CPU_INT08U *)p_addr;
+ 128              		.loc 1 141 0
+ 129 008a 7B68     		ldr	r3, [r7, #4]
+ 130 008c 3B62     		str	r3, [r7, #32]
+ 142:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     loops  = n_blks - 1u;
+ 131              		.loc 1 142 0
+ 132 008e 7B88     		ldrh	r3, [r7, #2]	@ movhi
+ 133 0090 013B     		subs	r3, r3, #1
+ 134 0092 7B82     		strh	r3, [r7, #18]	@ movhi
+ 143:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     for (i = 0u; i < loops; i++) {
+ 135              		.loc 1 143 0
+ 136 0094 0023     		movs	r3, #0
+ 137 0096 FB84     		strh	r3, [r7, #38]	@ movhi
+ 138 0098 0BE0     		b	.L9
+ 139              	.L10:
+ 144:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         p_blk +=  blk_size;
+ 140              		.loc 1 144 0 discriminator 3
+ 141 009a 3B8E     		ldrh	r3, [r7, #48]
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 6
+
+
+ 142 009c 3A6A     		ldr	r2, [r7, #32]
+ 143 009e 1344     		add	r3, r3, r2
+ 144 00a0 3B62     		str	r3, [r7, #32]
+ 145:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****        *p_link = (void  *)p_blk;                            /* Save pointer to NEXT block in CURREN
+ 145              		.loc 1 145 0 discriminator 3
+ 146 00a2 FB69     		ldr	r3, [r7, #28]
+ 147 00a4 3A6A     		ldr	r2, [r7, #32]
+ 148 00a6 1A60     		str	r2, [r3]
+ 146:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         p_link = (void **)(void *)p_blk;                    /* Position     to NEXT block          
+ 149              		.loc 1 146 0 discriminator 3
+ 150 00a8 3B6A     		ldr	r3, [r7, #32]
+ 151 00aa FB61     		str	r3, [r7, #28]
+ 143:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         p_blk +=  blk_size;
+ 152              		.loc 1 143 0 discriminator 3
+ 153 00ac FB8C     		ldrh	r3, [r7, #38]
+ 154 00ae 0133     		adds	r3, r3, #1
+ 155 00b0 FB84     		strh	r3, [r7, #38]	@ movhi
+ 156              	.L9:
+ 143:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         p_blk +=  blk_size;
+ 157              		.loc 1 143 0 is_stmt 0 discriminator 1
+ 158 00b2 FA8C     		ldrh	r2, [r7, #38]
+ 159 00b4 7B8A     		ldrh	r3, [r7, #18]
+ 160 00b6 9A42     		cmp	r2, r3
+ 161 00b8 EFD3     		bcc	.L10
+ 147:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 148:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****    *p_link             = (void *)0;                         /* Last memory block points to NULL    
+ 162              		.loc 1 148 0 is_stmt 1
+ 163 00ba FB69     		ldr	r3, [r7, #28]
+ 164 00bc 0022     		movs	r2, #0
+ 165 00be 1A60     		str	r2, [r3]
+ 149:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 150:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     OS_CRITICAL_ENTER();
+ 166              		.loc 1 150 0
+ 167 00c0 FFF7FEFF 		bl	CPU_SR_Save
+ 168 00c4 B861     		str	r0, [r7, #24]
+ 151:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_mem->Type        = OS_OBJ_TYPE_MEM;                   /* Set the type of object              
+ 169              		.loc 1 151 0
+ 170 00c6 FB68     		ldr	r3, [r7, #12]
+ 171 00c8 134A     		ldr	r2, .L11+4
+ 172 00ca 1A60     		str	r2, [r3]
+ 152:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_mem->NamePtr     = p_name;                            /* Save name of memory partition       
+ 173              		.loc 1 152 0
+ 174 00cc FB68     		ldr	r3, [r7, #12]
+ 175 00ce BA68     		ldr	r2, [r7, #8]
+ 176 00d0 9A60     		str	r2, [r3, #8]
+ 153:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_mem->AddrPtr     = p_addr;                            /* Store start address of memory partit
+ 177              		.loc 1 153 0
+ 178 00d2 FB68     		ldr	r3, [r7, #12]
+ 179 00d4 7A68     		ldr	r2, [r7, #4]
+ 180 00d6 5A60     		str	r2, [r3, #4]
+ 154:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_mem->FreeListPtr = p_addr;                            /* Initialize pointer to pool of free b
+ 181              		.loc 1 154 0
+ 182 00d8 FB68     		ldr	r3, [r7, #12]
+ 183 00da 7A68     		ldr	r2, [r7, #4]
+ 184 00dc DA60     		str	r2, [r3, #12]
+ 155:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_mem->NbrFree     = n_blks;                            /* Store number of free blocks in MCB  
+ 185              		.loc 1 155 0
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 7
+
+
+ 186 00de FB68     		ldr	r3, [r7, #12]
+ 187 00e0 7A88     		ldrh	r2, [r7, #2]	@ movhi
+ 188 00e2 9A82     		strh	r2, [r3, #20]	@ movhi
+ 156:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_mem->NbrMax      = n_blks;
+ 189              		.loc 1 156 0
+ 190 00e4 FB68     		ldr	r3, [r7, #12]
+ 191 00e6 7A88     		ldrh	r2, [r7, #2]	@ movhi
+ 192 00e8 5A82     		strh	r2, [r3, #18]	@ movhi
+ 157:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_mem->BlkSize     = blk_size;                          /* Store block size of each memory bloc
+ 193              		.loc 1 157 0
+ 194 00ea FB68     		ldr	r3, [r7, #12]
+ 195 00ec 3A8E     		ldrh	r2, [r7, #48]	@ movhi
+ 196 00ee 1A82     		strh	r2, [r3, #16]	@ movhi
+ 158:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 159:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #if OS_CFG_DBG_EN > 0u
+ 160:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     OS_MemDbgListAdd(p_mem);
+ 197              		.loc 1 160 0
+ 198 00f0 F868     		ldr	r0, [r7, #12]
+ 199 00f2 FFF7FEFF 		bl	OS_MemDbgListAdd
+ 161:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+ 162:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 163:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     OSMemQty++;
+ 200              		.loc 1 163 0
+ 201 00f6 094B     		ldr	r3, .L11+8
+ 202 00f8 1B88     		ldrh	r3, [r3]
+ 203 00fa 0133     		adds	r3, r3, #1
+ 204 00fc 9AB2     		uxth	r2, r3
+ 205 00fe 074B     		ldr	r3, .L11+8
+ 206 0100 1A80     		strh	r2, [r3]	@ movhi
+ 164:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 165:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     OS_CRITICAL_EXIT_NO_SCHED();
+ 207              		.loc 1 165 0
+ 208 0102 B869     		ldr	r0, [r7, #24]
+ 209 0104 FFF7FEFF 		bl	CPU_SR_Restore
+ 166:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****    *p_err = OS_ERR_NONE;
+ 210              		.loc 1 166 0
+ 211 0108 7B6B     		ldr	r3, [r7, #52]
+ 212 010a 0022     		movs	r2, #0
+ 213 010c 1A80     		strh	r2, [r3]	@ movhi
+ 214              	.L1:
+ 167:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** }
+ 215              		.loc 1 167 0
+ 216 010e 2837     		adds	r7, r7, #40
+ 217              		.cfi_def_cfa_offset 8
+ 218 0110 BD46     		mov	sp, r7
+ 219              		.cfi_def_cfa_register 13
+ 220              		@ sp needed
+ 221 0112 80BD     		pop	{r7, pc}
+ 222              	.L12:
+ 223              		.align	2
+ 224              	.L11:
+ 225 0114 00000000 		.word	OSIntNestingCtr
+ 226 0118 4D454D20 		.word	541934925
+ 227 011c 00000000 		.word	OSMemQty
+ 228              		.cfi_endproc
+ 229              	.LFE0:
+ 230              		.size	OSMemCreate, .-OSMemCreate
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 8
+
+
+ 231              		.section	.text.OSMemGet,"ax",%progbits
+ 232              		.align	2
+ 233              		.global	OSMemGet
+ 234              		.thumb
+ 235              		.thumb_func
+ 236              		.type	OSMemGet, %function
+ 237              	OSMemGet:
+ 238              	.LFB1:
+ 168:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 169:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** /*$PAGE*/
+ 170:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** /*
+ 171:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** ***************************************************************************************************
+ 172:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                                  GET A MEMORY BLOCK
+ 173:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 174:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Description : Get a memory block from a partition
+ 175:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 176:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Arguments   : p_mem   is a pointer to the memory partition control block
+ 177:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 178:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *               p_err   is a pointer to a variable containing an error message which will be set by
+ 179:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                       either:
+ 180:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 181:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                       OS_ERR_NONE               if the memory partition has been created correctl
+ 182:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                       OS_ERR_MEM_INVALID_P_MEM  if you passed a NULL pointer for 'p_mem'
+ 183:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                       OS_ERR_MEM_NO_FREE_BLKS   if there are no more free memory blocks to alloca
+ 184:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 185:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Returns     : A pointer to a memory block if no error is detected
+ 186:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *               A pointer to NULL if an error is detected
+ 187:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** ***************************************************************************************************
+ 188:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** */
+ 189:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 190:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** void  *OSMemGet (OS_MEM  *p_mem,
+ 191:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****                  OS_ERR  *p_err)
+ 192:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** {
+ 239              		.loc 1 192 0
+ 240              		.cfi_startproc
+ 241              		@ args = 0, pretend = 0, frame = 16
+ 242              		@ frame_needed = 1, uses_anonymous_args = 0
+ 243 0000 80B5     		push	{r7, lr}
+ 244              		.cfi_def_cfa_offset 8
+ 245              		.cfi_offset 7, -8
+ 246              		.cfi_offset 14, -4
+ 247 0002 84B0     		sub	sp, sp, #16
+ 248              		.cfi_def_cfa_offset 24
+ 249 0004 00AF     		add	r7, sp, #0
+ 250              		.cfi_def_cfa_register 7
+ 251 0006 7860     		str	r0, [r7, #4]
+ 252 0008 3960     		str	r1, [r7]
+ 193:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     void    *p_blk;
+ 194:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     CPU_SR_ALLOC();
+ 253              		.loc 1 194 0
+ 254 000a 0023     		movs	r3, #0
+ 255 000c FB60     		str	r3, [r7, #12]
+ 195:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 196:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 197:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 198:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #ifdef OS_SAFETY_CRITICAL
+ 199:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (p_err == (OS_ERR *)0) {
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 9
+
+
+ 200:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 201:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return ((void *)0);
+ 202:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 203:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+ 204:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 205:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #if OS_CFG_ARG_CHK_EN > 0u
+ 206:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (p_mem == (OS_MEM *)0) {                             /* Must point to a valid memory partiti
+ 256              		.loc 1 206 0
+ 257 000e 7B68     		ldr	r3, [r7, #4]
+ 258 0010 002B     		cmp	r3, #0
+ 259 0012 05D1     		bne	.L14
+ 207:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****        *p_err  = OS_ERR_MEM_INVALID_P_MEM;
+ 260              		.loc 1 207 0
+ 261 0014 3B68     		ldr	r3, [r7]
+ 262 0016 45F2BF62 		movw	r2, #22207
+ 263 001a 1A80     		strh	r2, [r3]	@ movhi
+ 208:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return ((void *)0);
+ 264              		.loc 1 208 0
+ 265 001c 0023     		movs	r3, #0
+ 266 001e 23E0     		b	.L15
+ 267              	.L14:
+ 209:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 210:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+ 211:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 212:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     CPU_CRITICAL_ENTER();
+ 268              		.loc 1 212 0
+ 269 0020 FFF7FEFF 		bl	CPU_SR_Save
+ 270 0024 F860     		str	r0, [r7, #12]
+ 213:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (p_mem->NbrFree == (OS_MEM_QTY)0) {                  /* See if there are any free memory blo
+ 271              		.loc 1 213 0
+ 272 0026 7B68     		ldr	r3, [r7, #4]
+ 273 0028 9B8A     		ldrh	r3, [r3, #20]
+ 274 002a 002B     		cmp	r3, #0
+ 275 002c 08D1     		bne	.L16
+ 214:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         CPU_CRITICAL_EXIT();
+ 276              		.loc 1 214 0
+ 277 002e F868     		ldr	r0, [r7, #12]
+ 278 0030 FFF7FEFF 		bl	CPU_SR_Restore
+ 215:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****        *p_err = OS_ERR_MEM_NO_FREE_BLKS;                    /* No,  Notify caller of empty memory p
+ 279              		.loc 1 215 0
+ 280 0034 3B68     		ldr	r3, [r7]
+ 281 0036 45F2C262 		movw	r2, #22210
+ 282 003a 1A80     		strh	r2, [r3]	@ movhi
+ 216:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return ((void *)0);                                 /*      Return NULL pointer to caller  
+ 283              		.loc 1 216 0
+ 284 003c 0023     		movs	r3, #0
+ 285 003e 13E0     		b	.L15
+ 286              	.L16:
+ 217:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 218:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_blk              = p_mem->FreeListPtr;                /* Yes, point to next free memory block
+ 287              		.loc 1 218 0
+ 288 0040 7B68     		ldr	r3, [r7, #4]
+ 289 0042 DB68     		ldr	r3, [r3, #12]
+ 290 0044 BB60     		str	r3, [r7, #8]
+ 219:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_mem->FreeListPtr = *(void **)p_blk;                   /*      Adjust pointer to new free list
+ 291              		.loc 1 219 0
+ 292 0046 BB68     		ldr	r3, [r7, #8]
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 10
+
+
+ 293 0048 1A68     		ldr	r2, [r3]
+ 294 004a 7B68     		ldr	r3, [r7, #4]
+ 295 004c DA60     		str	r2, [r3, #12]
+ 220:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_mem->NbrFree--;                                       /*      One less memory block in this p
+ 296              		.loc 1 220 0
+ 297 004e 7B68     		ldr	r3, [r7, #4]
+ 298 0050 9B8A     		ldrh	r3, [r3, #20]
+ 299 0052 013B     		subs	r3, r3, #1
+ 300 0054 9AB2     		uxth	r2, r3
+ 301 0056 7B68     		ldr	r3, [r7, #4]
+ 302 0058 9A82     		strh	r2, [r3, #20]	@ movhi
+ 221:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     CPU_CRITICAL_EXIT();
+ 303              		.loc 1 221 0
+ 304 005a F868     		ldr	r0, [r7, #12]
+ 305 005c FFF7FEFF 		bl	CPU_SR_Restore
+ 222:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****    *p_err = OS_ERR_NONE;                                    /*      No error                       
+ 306              		.loc 1 222 0
+ 307 0060 3B68     		ldr	r3, [r7]
+ 308 0062 0022     		movs	r2, #0
+ 309 0064 1A80     		strh	r2, [r3]	@ movhi
+ 223:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     return (p_blk);                                         /*      Return memory block to caller  
+ 310              		.loc 1 223 0
+ 311 0066 BB68     		ldr	r3, [r7, #8]
+ 312              	.L15:
+ 224:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** }
+ 313              		.loc 1 224 0
+ 314 0068 1846     		mov	r0, r3
+ 315 006a 1037     		adds	r7, r7, #16
+ 316              		.cfi_def_cfa_offset 8
+ 317 006c BD46     		mov	sp, r7
+ 318              		.cfi_def_cfa_register 13
+ 319              		@ sp needed
+ 320 006e 80BD     		pop	{r7, pc}
+ 321              		.cfi_endproc
+ 322              	.LFE1:
+ 323              		.size	OSMemGet, .-OSMemGet
+ 324              		.section	.text.OSMemPut,"ax",%progbits
+ 325              		.align	2
+ 326              		.global	OSMemPut
+ 327              		.thumb
+ 328              		.thumb_func
+ 329              		.type	OSMemPut, %function
+ 330              	OSMemPut:
+ 331              	.LFB2:
+ 225:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 226:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** /*$PAGE*/
+ 227:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** /*
+ 228:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** ***************************************************************************************************
+ 229:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                                 RELEASE A MEMORY BLOCK
+ 230:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 231:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Description : Returns a memory block to a partition
+ 232:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 233:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Arguments   : p_mem    is a pointer to the memory partition control block
+ 234:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 235:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *               p_blk    is a pointer to the memory block being released.
+ 236:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 237:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *               p_err    is a pointer to a variable that will contain an error code returned by thi
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 11
+
+
+ 238:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 239:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                            OS_ERR_NONE               if the memory block was inserted into the pa
+ 240:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                            OS_ERR_MEM_FULL           if you are returning a memory block to an al
+ 241:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                                      partition (You freed more blocks than you al
+ 242:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                            OS_ERR_MEM_INVALID_P_BLK  if you passed a NULL pointer for the block t
+ 243:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                            OS_ERR_MEM_INVALID_P_MEM  if you passed a NULL pointer for 'p_mem'
+ 244:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** ***************************************************************************************************
+ 245:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** */
+ 246:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 247:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** void  OSMemPut (OS_MEM  *p_mem,
+ 248:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****                 void    *p_blk,
+ 249:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****                 OS_ERR  *p_err)
+ 250:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** {
+ 332              		.loc 1 250 0
+ 333              		.cfi_startproc
+ 334              		@ args = 0, pretend = 0, frame = 24
+ 335              		@ frame_needed = 1, uses_anonymous_args = 0
+ 336 0000 80B5     		push	{r7, lr}
+ 337              		.cfi_def_cfa_offset 8
+ 338              		.cfi_offset 7, -8
+ 339              		.cfi_offset 14, -4
+ 340 0002 86B0     		sub	sp, sp, #24
+ 341              		.cfi_def_cfa_offset 32
+ 342 0004 00AF     		add	r7, sp, #0
+ 343              		.cfi_def_cfa_register 7
+ 344 0006 F860     		str	r0, [r7, #12]
+ 345 0008 B960     		str	r1, [r7, #8]
+ 346 000a 7A60     		str	r2, [r7, #4]
+ 251:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     CPU_SR_ALLOC();
+ 347              		.loc 1 251 0
+ 348 000c 0023     		movs	r3, #0
+ 349 000e 7B61     		str	r3, [r7, #20]
+ 252:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 253:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 254:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 255:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #ifdef OS_SAFETY_CRITICAL
+ 256:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (p_err == (OS_ERR *)0) {
+ 257:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 258:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return;
+ 259:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 260:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+ 261:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 262:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #if OS_CFG_ARG_CHK_EN > 0u
+ 263:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (p_mem == (OS_MEM *)0) {                             /* Must point to a valid memory partiti
+ 350              		.loc 1 263 0
+ 351 0010 FB68     		ldr	r3, [r7, #12]
+ 352 0012 002B     		cmp	r3, #0
+ 353 0014 04D1     		bne	.L18
+ 264:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****        *p_err  = OS_ERR_MEM_INVALID_P_MEM;
+ 354              		.loc 1 264 0
+ 355 0016 7B68     		ldr	r3, [r7, #4]
+ 356 0018 45F2BF62 		movw	r2, #22207
+ 357 001c 1A80     		strh	r2, [r3]	@ movhi
+ 265:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return;
+ 358              		.loc 1 265 0
+ 359 001e 2BE0     		b	.L17
+ 360              	.L18:
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 12
+
+
+ 266:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 267:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (p_blk == (void *)0) {                               /* Must release a valid block          
+ 361              		.loc 1 267 0
+ 362 0020 BB68     		ldr	r3, [r7, #8]
+ 363 0022 002B     		cmp	r3, #0
+ 364 0024 04D1     		bne	.L20
+ 268:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****        *p_err  = OS_ERR_MEM_INVALID_P_BLK;
+ 365              		.loc 1 268 0
+ 366 0026 7B68     		ldr	r3, [r7, #4]
+ 367 0028 45F2BE62 		movw	r2, #22206
+ 368 002c 1A80     		strh	r2, [r3]	@ movhi
+ 269:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return;
+ 369              		.loc 1 269 0
+ 370 002e 23E0     		b	.L17
+ 371              	.L20:
+ 270:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 271:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+ 272:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 273:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     CPU_CRITICAL_ENTER();
+ 372              		.loc 1 273 0
+ 373 0030 FFF7FEFF 		bl	CPU_SR_Save
+ 374 0034 7861     		str	r0, [r7, #20]
+ 274:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (p_mem->NbrFree >= p_mem->NbrMax) {                  /* Make sure all blocks not already ret
+ 375              		.loc 1 274 0
+ 376 0036 FB68     		ldr	r3, [r7, #12]
+ 377 0038 9A8A     		ldrh	r2, [r3, #20]
+ 378 003a FB68     		ldr	r3, [r7, #12]
+ 379 003c 5B8A     		ldrh	r3, [r3, #18]
+ 380 003e 9A42     		cmp	r2, r3
+ 381 0040 07D3     		bcc	.L21
+ 275:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         CPU_CRITICAL_EXIT();
+ 382              		.loc 1 275 0
+ 383 0042 7869     		ldr	r0, [r7, #20]
+ 384 0044 FFF7FEFF 		bl	CPU_SR_Restore
+ 276:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****        *p_err = OS_ERR_MEM_FULL;
+ 385              		.loc 1 276 0
+ 386 0048 7B68     		ldr	r3, [r7, #4]
+ 387 004a 45F2BA62 		movw	r2, #22202
+ 388 004e 1A80     		strh	r2, [r3]	@ movhi
+ 277:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return;
+ 389              		.loc 1 277 0
+ 390 0050 12E0     		b	.L17
+ 391              	.L21:
+ 278:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 279:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     *(void **)p_blk    = p_mem->FreeListPtr;                /* Insert released block into free bloc
+ 392              		.loc 1 279 0
+ 393 0052 FB68     		ldr	r3, [r7, #12]
+ 394 0054 DA68     		ldr	r2, [r3, #12]
+ 395 0056 BB68     		ldr	r3, [r7, #8]
+ 396 0058 1A60     		str	r2, [r3]
+ 280:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_mem->FreeListPtr = p_blk;
+ 397              		.loc 1 280 0
+ 398 005a FB68     		ldr	r3, [r7, #12]
+ 399 005c BA68     		ldr	r2, [r7, #8]
+ 400 005e DA60     		str	r2, [r3, #12]
+ 281:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_mem->NbrFree++;                                       /* One more memory block in this partit
+ 401              		.loc 1 281 0
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 13
+
+
+ 402 0060 FB68     		ldr	r3, [r7, #12]
+ 403 0062 9B8A     		ldrh	r3, [r3, #20]
+ 404 0064 0133     		adds	r3, r3, #1
+ 405 0066 9AB2     		uxth	r2, r3
+ 406 0068 FB68     		ldr	r3, [r7, #12]
+ 407 006a 9A82     		strh	r2, [r3, #20]	@ movhi
+ 282:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     CPU_CRITICAL_EXIT();
+ 408              		.loc 1 282 0
+ 409 006c 7869     		ldr	r0, [r7, #20]
+ 410 006e FFF7FEFF 		bl	CPU_SR_Restore
+ 283:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****    *p_err              = OS_ERR_NONE;                       /* Notify caller that memory block was 
+ 411              		.loc 1 283 0
+ 412 0072 7B68     		ldr	r3, [r7, #4]
+ 413 0074 0022     		movs	r2, #0
+ 414 0076 1A80     		strh	r2, [r3]	@ movhi
+ 415              	.L17:
+ 284:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** }
+ 416              		.loc 1 284 0
+ 417 0078 1837     		adds	r7, r7, #24
+ 418              		.cfi_def_cfa_offset 8
+ 419 007a BD46     		mov	sp, r7
+ 420              		.cfi_def_cfa_register 13
+ 421              		@ sp needed
+ 422 007c 80BD     		pop	{r7, pc}
+ 423              		.cfi_endproc
+ 424              	.LFE2:
+ 425              		.size	OSMemPut, .-OSMemPut
+ 426 007e 00BF     		.section	.text.OS_MemDbgListAdd,"ax",%progbits
+ 427              		.align	2
+ 428              		.global	OS_MemDbgListAdd
+ 429              		.thumb
+ 430              		.thumb_func
+ 431              		.type	OS_MemDbgListAdd, %function
+ 432              	OS_MemDbgListAdd:
+ 433              	.LFB3:
+ 285:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 286:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** /*$PAGE*/
+ 287:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** /*
+ 288:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** ***************************************************************************************************
+ 289:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                           ADD MEMORY PARTITION TO DEBUG LIST
+ 290:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 291:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Description : This function is called by OSMemCreate() to add the memory partition to the debug t
+ 292:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 293:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Arguments   : p_mem    Is a pointer to the memory partition
+ 294:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 295:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Returns     : none
+ 296:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 297:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Note(s)    : This function is INTERNAL to uC/OS-III and your application should not call it.
+ 298:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** ***************************************************************************************************
+ 299:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** */
+ 300:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 301:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #if OS_CFG_DBG_EN > 0u
+ 302:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** void  OS_MemDbgListAdd (OS_MEM  *p_mem)
+ 303:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** {
+ 434              		.loc 1 303 0
+ 435              		.cfi_startproc
+ 436              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 14
+
+
+ 437              		@ frame_needed = 1, uses_anonymous_args = 0
+ 438              		@ link register save eliminated.
+ 439 0000 80B4     		push	{r7}
+ 440              		.cfi_def_cfa_offset 4
+ 441              		.cfi_offset 7, -4
+ 442 0002 83B0     		sub	sp, sp, #12
+ 443              		.cfi_def_cfa_offset 16
+ 444 0004 00AF     		add	r7, sp, #0
+ 445              		.cfi_def_cfa_register 7
+ 446 0006 7860     		str	r0, [r7, #4]
+ 304:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     p_mem->DbgPrevPtr               = (OS_MEM *)0;
+ 447              		.loc 1 304 0
+ 448 0008 7B68     		ldr	r3, [r7, #4]
+ 449 000a 0022     		movs	r2, #0
+ 450 000c 9A61     		str	r2, [r3, #24]
+ 305:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (OSMemDbgListPtr == (OS_MEM *)0) {
+ 451              		.loc 1 305 0
+ 452 000e 0C4B     		ldr	r3, .L25
+ 453 0010 1B68     		ldr	r3, [r3]
+ 454 0012 002B     		cmp	r3, #0
+ 455 0014 03D1     		bne	.L23
+ 306:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         p_mem->DbgNextPtr           = (OS_MEM *)0;
+ 456              		.loc 1 306 0
+ 457 0016 7B68     		ldr	r3, [r7, #4]
+ 458 0018 0022     		movs	r2, #0
+ 459 001a DA61     		str	r2, [r3, #28]
+ 460 001c 07E0     		b	.L24
+ 461              	.L23:
+ 307:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     } else {
+ 308:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         p_mem->DbgNextPtr           =  OSMemDbgListPtr;
+ 462              		.loc 1 308 0
+ 463 001e 084B     		ldr	r3, .L25
+ 464 0020 1A68     		ldr	r2, [r3]
+ 465 0022 7B68     		ldr	r3, [r7, #4]
+ 466 0024 DA61     		str	r2, [r3, #28]
+ 309:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         OSMemDbgListPtr->DbgPrevPtr =  p_mem;
+ 467              		.loc 1 309 0
+ 468 0026 064B     		ldr	r3, .L25
+ 469 0028 1B68     		ldr	r3, [r3]
+ 470 002a 7A68     		ldr	r2, [r7, #4]
+ 471 002c 9A61     		str	r2, [r3, #24]
+ 472              	.L24:
+ 310:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 311:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     OSMemDbgListPtr                 =  p_mem;
+ 473              		.loc 1 311 0
+ 474 002e 044A     		ldr	r2, .L25
+ 475 0030 7B68     		ldr	r3, [r7, #4]
+ 476 0032 1360     		str	r3, [r2]
+ 312:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** }
+ 477              		.loc 1 312 0
+ 478 0034 00BF     		nop
+ 479 0036 0C37     		adds	r7, r7, #12
+ 480              		.cfi_def_cfa_offset 4
+ 481 0038 BD46     		mov	sp, r7
+ 482              		.cfi_def_cfa_register 13
+ 483              		@ sp needed
+ 484 003a 80BC     		pop	{r7}
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 15
+
+
+ 485              		.cfi_restore 7
+ 486              		.cfi_def_cfa_offset 0
+ 487 003c 7047     		bx	lr
+ 488              	.L26:
+ 489 003e 00BF     		.align	2
+ 490              	.L25:
+ 491 0040 00000000 		.word	OSMemDbgListPtr
+ 492              		.cfi_endproc
+ 493              	.LFE3:
+ 494              		.size	OS_MemDbgListAdd, .-OS_MemDbgListAdd
+ 495              		.section	.text.OS_MemInit,"ax",%progbits
+ 496              		.align	2
+ 497              		.global	OS_MemInit
+ 498              		.thumb
+ 499              		.thumb_func
+ 500              		.type	OS_MemInit, %function
+ 501              	OS_MemInit:
+ 502              	.LFB4:
+ 313:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+ 314:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 315:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** /*$PAGE*/
+ 316:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** /*
+ 317:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** ***************************************************************************************************
+ 318:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *                                           INITIALIZE MEMORY PARTITION MANAGER
+ 319:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 320:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Description : This function is called by uC/OS-III to initialize the memory partition manager.  Y
+ 321:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *               application MUST NOT call this function.
+ 322:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 323:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Arguments   : none
+ 324:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 325:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Returns     : none
+ 326:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** *
+ 327:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** * Note(s)    : This function is INTERNAL to uC/OS-III and your application should not call it.
+ 328:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** ***************************************************************************************************
+ 329:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** */
+ 330:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 331:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** void  OS_MemInit (OS_ERR  *p_err)
+ 332:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** {
+ 503              		.loc 1 332 0
+ 504              		.cfi_startproc
+ 505              		@ args = 0, pretend = 0, frame = 8
+ 506              		@ frame_needed = 1, uses_anonymous_args = 0
+ 507              		@ link register save eliminated.
+ 508 0000 80B4     		push	{r7}
+ 509              		.cfi_def_cfa_offset 4
+ 510              		.cfi_offset 7, -4
+ 511 0002 83B0     		sub	sp, sp, #12
+ 512              		.cfi_def_cfa_offset 16
+ 513 0004 00AF     		add	r7, sp, #0
+ 514              		.cfi_def_cfa_register 7
+ 515 0006 7860     		str	r0, [r7, #4]
+ 333:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #ifdef OS_SAFETY_CRITICAL
+ 334:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     if (p_err == (OS_ERR *)0) {
+ 335:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 336:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****         return;
+ 337:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     }
+ 338:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 16
+
+
+ 339:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 340:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #if OS_CFG_DBG_EN > 0u
+ 341:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     OSMemDbgListPtr = (OS_MEM   *)0;
+ 516              		.loc 1 341 0
+ 517 0008 064B     		ldr	r3, .L28
+ 518 000a 0022     		movs	r2, #0
+ 519 000c 1A60     		str	r2, [r3]
+ 342:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** #endif
+ 343:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** 
+ 344:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****     OSMemQty        = (OS_OBJ_QTY)0;
+ 520              		.loc 1 344 0
+ 521 000e 064B     		ldr	r3, .L28+4
+ 522 0010 0022     		movs	r2, #0
+ 523 0012 1A80     		strh	r2, [r3]	@ movhi
+ 345:..\..\..\..\..\..\uCOS-III\Source/os_mem.c ****    *p_err           = OS_ERR_NONE;
+ 524              		.loc 1 345 0
+ 525 0014 7B68     		ldr	r3, [r7, #4]
+ 526 0016 0022     		movs	r2, #0
+ 527 0018 1A80     		strh	r2, [r3]	@ movhi
+ 346:..\..\..\..\..\..\uCOS-III\Source/os_mem.c **** }
+ 528              		.loc 1 346 0
+ 529 001a 00BF     		nop
+ 530 001c 0C37     		adds	r7, r7, #12
+ 531              		.cfi_def_cfa_offset 4
+ 532 001e BD46     		mov	sp, r7
+ 533              		.cfi_def_cfa_register 13
+ 534              		@ sp needed
+ 535 0020 80BC     		pop	{r7}
+ 536              		.cfi_restore 7
+ 537              		.cfi_def_cfa_offset 0
+ 538 0022 7047     		bx	lr
+ 539              	.L29:
+ 540              		.align	2
+ 541              	.L28:
+ 542 0024 00000000 		.word	OSMemDbgListPtr
+ 543 0028 00000000 		.word	OSMemQty
+ 544              		.cfi_endproc
+ 545              	.LFE4:
+ 546              		.size	OS_MemInit, .-OS_MemInit
+ 547              		.text
+ 548              	.Letext0:
+ 549              		.file 2 "..\\..\\..\\..\\..\\..\\uC-CPU\\ARM-Cortex-M3\\GNU/cpu.h"
+ 550              		.file 3 "..\\..\\..\\..\\..\\..\\uCOS-III\\Source/os_type.h"
+ 551              		.file 4 "..\\..\\..\\..\\..\\..\\uCOS-III\\Source/os.h"
+ 552              		.section	.debug_info,"",%progbits
+ 553              	.Ldebug_info0:
+ 554 0000 FA070000 		.4byte	0x7fa
+ 555 0004 0400     		.2byte	0x4
+ 556 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 557 000a 04       		.byte	0x4
+ 558 000b 01       		.uleb128 0x1
+ 559 000c 45020000 		.4byte	.LASF213
+ 560 0010 0C       		.byte	0xc
+ 561 0011 01030000 		.4byte	.LASF214
+ 562 0015 5E080000 		.4byte	.LASF215
+ 563 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 564 001d 00000000 		.4byte	0
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 17
+
+
+ 565 0021 00000000 		.4byte	.Ldebug_line0
+ 566 0025 02       		.uleb128 0x2
+ 567 0026 6A060000 		.4byte	.LASF2
+ 568 002a 02       		.byte	0x2
+ 569 002b 76       		.byte	0x76
+ 570 002c 30000000 		.4byte	0x30
+ 571 0030 03       		.uleb128 0x3
+ 572 0031 01       		.byte	0x1
+ 573 0032 08       		.byte	0x8
+ 574 0033 68070000 		.4byte	.LASF0
+ 575 0037 03       		.uleb128 0x3
+ 576 0038 01       		.byte	0x1
+ 577 0039 08       		.byte	0x8
+ 578 003a 2D0D0000 		.4byte	.LASF1
+ 579 003e 02       		.uleb128 0x2
+ 580 003f 82050000 		.4byte	.LASF3
+ 581 0043 02       		.byte	0x2
+ 582 0044 78       		.byte	0x78
+ 583 0045 37000000 		.4byte	0x37
+ 584 0049 03       		.uleb128 0x3
+ 585 004a 01       		.byte	0x1
+ 586 004b 06       		.byte	0x6
+ 587 004c 150E0000 		.4byte	.LASF4
+ 588 0050 02       		.uleb128 0x2
+ 589 0051 11090000 		.4byte	.LASF5
+ 590 0055 02       		.byte	0x2
+ 591 0056 7A       		.byte	0x7a
+ 592 0057 5B000000 		.4byte	0x5b
+ 593 005b 03       		.uleb128 0x3
+ 594 005c 02       		.byte	0x2
+ 595 005d 07       		.byte	0x7
+ 596 005e 350E0000 		.4byte	.LASF6
+ 597 0062 03       		.uleb128 0x3
+ 598 0063 02       		.byte	0x2
+ 599 0064 05       		.byte	0x5
+ 600 0065 7C0B0000 		.4byte	.LASF7
+ 601 0069 02       		.uleb128 0x2
+ 602 006a 9F010000 		.4byte	.LASF8
+ 603 006e 02       		.byte	0x2
+ 604 006f 7C       		.byte	0x7c
+ 605 0070 74000000 		.4byte	0x74
+ 606 0074 03       		.uleb128 0x3
+ 607 0075 04       		.byte	0x4
+ 608 0076 07       		.byte	0x7
+ 609 0077 5F0C0000 		.4byte	.LASF9
+ 610 007b 04       		.uleb128 0x4
+ 611 007c 04       		.byte	0x4
+ 612 007d 05       		.byte	0x5
+ 613 007e 696E7400 		.ascii	"int\000"
+ 614 0082 03       		.uleb128 0x3
+ 615 0083 08       		.byte	0x8
+ 616 0084 07       		.byte	0x7
+ 617 0085 F5040000 		.4byte	.LASF10
+ 618 0089 03       		.uleb128 0x3
+ 619 008a 08       		.byte	0x8
+ 620 008b 05       		.byte	0x5
+ 621 008c 26080000 		.4byte	.LASF11
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 18
+
+
+ 622 0090 03       		.uleb128 0x3
+ 623 0091 04       		.byte	0x4
+ 624 0092 04       		.byte	0x4
+ 625 0093 60040000 		.4byte	.LASF12
+ 626 0097 03       		.uleb128 0x3
+ 627 0098 08       		.byte	0x8
+ 628 0099 04       		.byte	0x4
+ 629 009a 920E0000 		.4byte	.LASF13
+ 630 009e 05       		.uleb128 0x5
+ 631 009f 04       		.byte	0x4
+ 632 00a0 02       		.uleb128 0x2
+ 633 00a1 D50C0000 		.4byte	.LASF14
+ 634 00a5 02       		.byte	0x2
+ 635 00a6 B5       		.byte	0xb5
+ 636 00a7 69000000 		.4byte	0x69
+ 637 00ab 02       		.uleb128 0x2
+ 638 00ac D0060000 		.4byte	.LASF15
+ 639 00b0 02       		.byte	0x2
+ 640 00b1 BE       		.byte	0xbe
+ 641 00b2 69000000 		.4byte	0x69
+ 642 00b6 06       		.uleb128 0x6
+ 643 00b7 9E070000 		.4byte	.LASF16
+ 644 00bb 02       		.byte	0x2
+ 645 00bc 2901     		.2byte	0x129
+ 646 00be 69000000 		.4byte	0x69
+ 647 00c2 07       		.uleb128 0x7
+ 648 00c3 04       		.byte	0x4
+ 649 00c4 9E000000 		.4byte	0x9e
+ 650 00c8 02       		.uleb128 0x2
+ 651 00c9 3D0C0000 		.4byte	.LASF17
+ 652 00cd 03       		.byte	0x3
+ 653 00ce 3C       		.byte	0x3c
+ 654 00cf 50000000 		.4byte	0x50
+ 655 00d3 02       		.uleb128 0x2
+ 656 00d4 090E0000 		.4byte	.LASF18
+ 657 00d8 03       		.byte	0x3
+ 658 00d9 3D       		.byte	0x3d
+ 659 00da 50000000 		.4byte	0x50
+ 660 00de 02       		.uleb128 0x2
+ 661 00df FA0B0000 		.4byte	.LASF19
+ 662 00e3 03       		.byte	0x3
+ 663 00e4 42       		.byte	0x42
+ 664 00e5 3E000000 		.4byte	0x3e
+ 665 00e9 02       		.uleb128 0x2
+ 666 00ea 3A020000 		.4byte	.LASF20
+ 667 00ee 03       		.byte	0x3
+ 668 00ef 44       		.byte	0x44
+ 669 00f0 50000000 		.4byte	0x50
+ 670 00f4 02       		.uleb128 0x2
+ 671 00f5 6D070000 		.4byte	.LASF21
+ 672 00f9 03       		.byte	0x3
+ 673 00fa 45       		.byte	0x45
+ 674 00fb 69000000 		.4byte	0x69
+ 675 00ff 08       		.uleb128 0x8
+ 676 0100 57010000 		.4byte	.LASF216
+ 677 0104 02       		.byte	0x2
+ 678 0105 5B000000 		.4byte	0x5b
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 19
+
+
+ 679 0109 04       		.byte	0x4
+ 680 010a A501     		.2byte	0x1a5
+ 681 010c 77050000 		.4byte	0x577
+ 682 0110 09       		.uleb128 0x9
+ 683 0111 610E0000 		.4byte	.LASF22
+ 684 0115 00       		.byte	0
+ 685 0116 0A       		.uleb128 0xa
+ 686 0117 65000000 		.4byte	.LASF23
+ 687 011b 1027     		.2byte	0x2710
+ 688 011d 0A       		.uleb128 0xa
+ 689 011e 58030000 		.4byte	.LASF24
+ 690 0122 1127     		.2byte	0x2711
+ 691 0124 0A       		.uleb128 0xa
+ 692 0125 6E000000 		.4byte	.LASF25
+ 693 0129 F82A     		.2byte	0x2af8
+ 694 012b 0A       		.uleb128 0xa
+ 695 012c 77000000 		.4byte	.LASF26
+ 696 0130 E02E     		.2byte	0x2ee0
+ 697 0132 0A       		.uleb128 0xa
+ 698 0133 70010000 		.4byte	.LASF27
+ 699 0137 E12E     		.2byte	0x2ee1
+ 700 0139 0A       		.uleb128 0xa
+ 701 013a 80000000 		.4byte	.LASF28
+ 702 013e C832     		.2byte	0x32c8
+ 703 0140 0A       		.uleb128 0xa
+ 704 0141 4C070000 		.4byte	.LASF29
+ 705 0145 C932     		.2byte	0x32c9
+ 706 0147 0A       		.uleb128 0xa
+ 707 0148 89000000 		.4byte	.LASF30
+ 708 014c B036     		.2byte	0x36b0
+ 709 014e 0A       		.uleb128 0xa
+ 710 014f 92000000 		.4byte	.LASF31
+ 711 0153 983A     		.2byte	0x3a98
+ 712 0155 0A       		.uleb128 0xa
+ 713 0156 210E0000 		.4byte	.LASF32
+ 714 015a 993A     		.2byte	0x3a99
+ 715 015c 0A       		.uleb128 0xa
+ 716 015d D9060000 		.4byte	.LASF33
+ 717 0161 FD3A     		.2byte	0x3afd
+ 718 0163 0A       		.uleb128 0xa
+ 719 0164 9C0C0000 		.4byte	.LASF34
+ 720 0168 FE3A     		.2byte	0x3afe
+ 721 016a 0A       		.uleb128 0xa
+ 722 016b 34080000 		.4byte	.LASF35
+ 723 016f FF3A     		.2byte	0x3aff
+ 724 0171 0A       		.uleb128 0xa
+ 725 0172 810E0000 		.4byte	.LASF36
+ 726 0176 003B     		.2byte	0x3b00
+ 727 0178 0A       		.uleb128 0xa
+ 728 0179 9B000000 		.4byte	.LASF37
+ 729 017d 803E     		.2byte	0x3e80
+ 730 017f 0A       		.uleb128 0xa
+ 731 0180 A4000000 		.4byte	.LASF38
+ 732 0184 6842     		.2byte	0x4268
+ 733 0186 0A       		.uleb128 0xa
+ 734 0187 AD000000 		.4byte	.LASF39
+ 735 018b 5046     		.2byte	0x4650
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 20
+
+
+ 736 018d 0A       		.uleb128 0xa
+ 737 018e F9030000 		.4byte	.LASF40
+ 738 0192 5146     		.2byte	0x4651
+ 739 0194 0A       		.uleb128 0xa
+ 740 0195 2C030000 		.4byte	.LASF41
+ 741 0199 5246     		.2byte	0x4652
+ 742 019b 0A       		.uleb128 0xa
+ 743 019c E7030000 		.4byte	.LASF42
+ 744 01a0 5346     		.2byte	0x4653
+ 745 01a2 0A       		.uleb128 0xa
+ 746 01a3 5E010000 		.4byte	.LASF43
+ 747 01a7 5446     		.2byte	0x4654
+ 748 01a9 0A       		.uleb128 0xa
+ 749 01aa C40D0000 		.4byte	.LASF44
+ 750 01ae 5546     		.2byte	0x4655
+ 751 01b0 0A       		.uleb128 0xa
+ 752 01b1 5B0A0000 		.4byte	.LASF45
+ 753 01b5 5646     		.2byte	0x4656
+ 754 01b7 0A       		.uleb128 0xa
+ 755 01b8 B6000000 		.4byte	.LASF46
+ 756 01bc 384A     		.2byte	0x4a38
+ 757 01be 0A       		.uleb128 0xa
+ 758 01bf BF000000 		.4byte	.LASF47
+ 759 01c3 204E     		.2byte	0x4e20
+ 760 01c5 0A       		.uleb128 0xa
+ 761 01c6 C8000000 		.4byte	.LASF48
+ 762 01ca 0852     		.2byte	0x5208
+ 763 01cc 0A       		.uleb128 0xa
+ 764 01cd 5B0B0000 		.4byte	.LASF49
+ 765 01d1 0952     		.2byte	0x5209
+ 766 01d3 0A       		.uleb128 0xa
+ 767 01d4 D1000000 		.4byte	.LASF50
+ 768 01d8 F055     		.2byte	0x55f0
+ 769 01da 0A       		.uleb128 0xa
+ 770 01db 600D0000 		.4byte	.LASF51
+ 771 01df B956     		.2byte	0x56b9
+ 772 01e1 0A       		.uleb128 0xa
+ 773 01e2 7A090000 		.4byte	.LASF52
+ 774 01e6 BA56     		.2byte	0x56ba
+ 775 01e8 0A       		.uleb128 0xa
+ 776 01e9 410B0000 		.4byte	.LASF53
+ 777 01ed BB56     		.2byte	0x56bb
+ 778 01ef 0A       		.uleb128 0xa
+ 779 01f0 F2060000 		.4byte	.LASF54
+ 780 01f4 BC56     		.2byte	0x56bc
+ 781 01f6 0A       		.uleb128 0xa
+ 782 01f7 38090000 		.4byte	.LASF55
+ 783 01fb BD56     		.2byte	0x56bd
+ 784 01fd 0A       		.uleb128 0xa
+ 785 01fe 280B0000 		.4byte	.LASF56
+ 786 0202 BE56     		.2byte	0x56be
+ 787 0204 0A       		.uleb128 0xa
+ 788 0205 A2090000 		.4byte	.LASF57
+ 789 0209 BF56     		.2byte	0x56bf
+ 790 020b 0A       		.uleb128 0xa
+ 791 020c 93040000 		.4byte	.LASF58
+ 792 0210 C056     		.2byte	0x56c0
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 21
+
+
+ 793 0212 0A       		.uleb128 0xa
+ 794 0213 DF0E0000 		.4byte	.LASF59
+ 795 0217 C156     		.2byte	0x56c1
+ 796 0219 0A       		.uleb128 0xa
+ 797 021a 9A0F0000 		.4byte	.LASF60
+ 798 021e C256     		.2byte	0x56c2
+ 799 0220 0A       		.uleb128 0xa
+ 800 0221 8D0B0000 		.4byte	.LASF61
+ 801 0225 1D57     		.2byte	0x571d
+ 802 0227 0A       		.uleb128 0xa
+ 803 0228 E10B0000 		.4byte	.LASF62
+ 804 022c 1E57     		.2byte	0x571e
+ 805 022e 0A       		.uleb128 0xa
+ 806 022f 19060000 		.4byte	.LASF63
+ 807 0233 8157     		.2byte	0x5781
+ 808 0235 0A       		.uleb128 0xa
+ 809 0236 6C0C0000 		.4byte	.LASF64
+ 810 023a 8257     		.2byte	0x5782
+ 811 023c 0A       		.uleb128 0xa
+ 812 023d 82030000 		.4byte	.LASF65
+ 813 0241 8357     		.2byte	0x5783
+ 814 0243 0A       		.uleb128 0xa
+ 815 0244 DA000000 		.4byte	.LASF66
+ 816 0248 D859     		.2byte	0x59d8
+ 817 024a 0A       		.uleb128 0xa
+ 818 024b E9050000 		.4byte	.LASF67
+ 819 024f D959     		.2byte	0x59d9
+ 820 0251 0A       		.uleb128 0xa
+ 821 0252 7B040000 		.4byte	.LASF68
+ 822 0256 DA59     		.2byte	0x59da
+ 823 0258 0A       		.uleb128 0xa
+ 824 0259 E3000000 		.4byte	.LASF69
+ 825 025d C05D     		.2byte	0x5dc0
+ 826 025f 0A       		.uleb128 0xa
+ 827 0260 B0030000 		.4byte	.LASF70
+ 828 0264 C15D     		.2byte	0x5dc1
+ 829 0266 0A       		.uleb128 0xa
+ 830 0267 17080000 		.4byte	.LASF71
+ 831 026b C25D     		.2byte	0x5dc2
+ 832 026d 0A       		.uleb128 0xa
+ 833 026e 50090000 		.4byte	.LASF72
+ 834 0272 C35D     		.2byte	0x5dc3
+ 835 0274 0A       		.uleb128 0xa
+ 836 0275 210C0000 		.4byte	.LASF73
+ 837 0279 C45D     		.2byte	0x5dc4
+ 838 027b 0A       		.uleb128 0xa
+ 839 027c 8B070000 		.4byte	.LASF74
+ 840 0280 255E     		.2byte	0x5e25
+ 841 0282 0A       		.uleb128 0xa
+ 842 0283 D90A0000 		.4byte	.LASF75
+ 843 0287 895E     		.2byte	0x5e89
+ 844 0289 0A       		.uleb128 0xa
+ 845 028a 91060000 		.4byte	.LASF76
+ 846 028e 8A5E     		.2byte	0x5e8a
+ 847 0290 0A       		.uleb128 0xa
+ 848 0291 EC000000 		.4byte	.LASF77
+ 849 0295 A861     		.2byte	0x61a8
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 22
+
+
+ 850 0297 0A       		.uleb128 0xa
+ 851 0298 990E0000 		.4byte	.LASF78
+ 852 029c A961     		.2byte	0x61a9
+ 853 029e 0A       		.uleb128 0xa
+ 854 029f BF0C0000 		.4byte	.LASF79
+ 855 02a3 AA61     		.2byte	0x61aa
+ 856 02a5 0A       		.uleb128 0xa
+ 857 02a6 480C0000 		.4byte	.LASF80
+ 858 02aa AB61     		.2byte	0x61ab
+ 859 02ac 0A       		.uleb128 0xa
+ 860 02ad FA080000 		.4byte	.LASF81
+ 861 02b1 AC61     		.2byte	0x61ac
+ 862 02b3 0A       		.uleb128 0xa
+ 863 02b4 CF0E0000 		.4byte	.LASF82
+ 864 02b8 AD61     		.2byte	0x61ad
+ 865 02ba 0A       		.uleb128 0xa
+ 866 02bb 9D0D0000 		.4byte	.LASF83
+ 867 02bf AE61     		.2byte	0x61ae
+ 868 02c1 0A       		.uleb128 0xa
+ 869 02c2 27020000 		.4byte	.LASF84
+ 870 02c6 AF61     		.2byte	0x61af
+ 871 02c8 0A       		.uleb128 0xa
+ 872 02c9 DD010000 		.4byte	.LASF85
+ 873 02cd B061     		.2byte	0x61b0
+ 874 02cf 0A       		.uleb128 0xa
+ 875 02d0 66040000 		.4byte	.LASF86
+ 876 02d4 0D62     		.2byte	0x620d
+ 877 02d6 0A       		.uleb128 0xa
+ 878 02d7 DE0C0000 		.4byte	.LASF87
+ 879 02db 0E62     		.2byte	0x620e
+ 880 02dd 0A       		.uleb128 0xa
+ 881 02de 880F0000 		.4byte	.LASF88
+ 882 02e2 7162     		.2byte	0x6271
+ 883 02e4 0A       		.uleb128 0xa
+ 884 02e5 C30E0000 		.4byte	.LASF89
+ 885 02e9 7262     		.2byte	0x6272
+ 886 02eb 0A       		.uleb128 0xa
+ 887 02ec 00000000 		.4byte	.LASF90
+ 888 02f0 7362     		.2byte	0x6273
+ 889 02f2 0A       		.uleb128 0xa
+ 890 02f3 9C0A0000 		.4byte	.LASF91
+ 891 02f7 D562     		.2byte	0x62d5
+ 892 02f9 0A       		.uleb128 0xa
+ 893 02fa F5000000 		.4byte	.LASF92
+ 894 02fe 9065     		.2byte	0x6590
+ 895 0300 0A       		.uleb128 0xa
+ 896 0301 B60D0000 		.4byte	.LASF93
+ 897 0305 9165     		.2byte	0x6591
+ 898 0307 0A       		.uleb128 0xa
+ 899 0308 B9050000 		.4byte	.LASF94
+ 900 030c 9265     		.2byte	0x6592
+ 901 030e 0A       		.uleb128 0xa
+ 902 030f 5B070000 		.4byte	.LASF95
+ 903 0313 9365     		.2byte	0x6593
+ 904 0315 0A       		.uleb128 0xa
+ 905 0316 50080000 		.4byte	.LASF96
+ 906 031a 9465     		.2byte	0x6594
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 23
+
+
+ 907 031c 0A       		.uleb128 0xa
+ 908 031d FE000000 		.4byte	.LASF97
+ 909 0321 7869     		.2byte	0x6978
+ 910 0323 0A       		.uleb128 0xa
+ 911 0324 64090000 		.4byte	.LASF98
+ 912 0328 7969     		.2byte	0x6979
+ 913 032a 0A       		.uleb128 0xa
+ 914 032b 130B0000 		.4byte	.LASF99
+ 915 032f 7A69     		.2byte	0x697a
+ 916 0331 0A       		.uleb128 0xa
+ 917 0332 1C090000 		.4byte	.LASF100
+ 918 0336 7B69     		.2byte	0x697b
+ 919 0338 0A       		.uleb128 0xa
+ 920 0339 07010000 		.4byte	.LASF101
+ 921 033d 606D     		.2byte	0x6d60
+ 922 033f 0A       		.uleb128 0xa
+ 923 0340 A5070000 		.4byte	.LASF102
+ 924 0344 616D     		.2byte	0x6d61
+ 925 0346 0A       		.uleb128 0xa
+ 926 0347 2F070000 		.4byte	.LASF103
+ 927 034b 626D     		.2byte	0x6d62
+ 928 034d 0A       		.uleb128 0xa
+ 929 034e 6D0E0000 		.4byte	.LASF104
+ 930 0352 636D     		.2byte	0x6d63
+ 931 0354 0A       		.uleb128 0xa
+ 932 0355 AB0E0000 		.4byte	.LASF105
+ 933 0359 646D     		.2byte	0x6d64
+ 934 035b 0A       		.uleb128 0xa
+ 935 035c AB0B0000 		.4byte	.LASF106
+ 936 0360 656D     		.2byte	0x6d65
+ 937 0362 0A       		.uleb128 0xa
+ 938 0363 1C0F0000 		.4byte	.LASF107
+ 939 0367 C56D     		.2byte	0x6dc5
+ 940 0369 0A       		.uleb128 0xa
+ 941 036a 0D0F0000 		.4byte	.LASF108
+ 942 036e C66D     		.2byte	0x6dc6
+ 943 0370 0A       		.uleb128 0xa
+ 944 0371 11020000 		.4byte	.LASF109
+ 945 0375 296E     		.2byte	0x6e29
+ 946 0377 0A       		.uleb128 0xa
+ 947 0378 C5070000 		.4byte	.LASF110
+ 948 037c 2A6E     		.2byte	0x6e2a
+ 949 037e 0A       		.uleb128 0xa
+ 950 037f B8060000 		.4byte	.LASF111
+ 951 0383 2B6E     		.2byte	0x6e2b
+ 952 0385 0A       		.uleb128 0xa
+ 953 0386 7F0C0000 		.4byte	.LASF112
+ 954 038a 2C6E     		.2byte	0x6e2c
+ 955 038c 0A       		.uleb128 0xa
+ 956 038d AF0A0000 		.4byte	.LASF113
+ 957 0391 2D6E     		.2byte	0x6e2d
+ 958 0393 0A       		.uleb128 0xa
+ 959 0394 7E0D0000 		.4byte	.LASF114
+ 960 0398 2E6E     		.2byte	0x6e2e
+ 961 039a 0A       		.uleb128 0xa
+ 962 039b AA010000 		.4byte	.LASF115
+ 963 039f 2F6E     		.2byte	0x6e2f
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 24
+
+
+ 964 03a1 0A       		.uleb128 0xa
+ 965 03a2 020D0000 		.4byte	.LASF116
+ 966 03a6 306E     		.2byte	0x6e30
+ 967 03a8 0A       		.uleb128 0xa
+ 968 03a9 47040000 		.4byte	.LASF117
+ 969 03ad 316E     		.2byte	0x6e31
+ 970 03af 0A       		.uleb128 0xa
+ 971 03b0 10010000 		.4byte	.LASF118
+ 972 03b4 4871     		.2byte	0x7148
+ 973 03b6 0A       		.uleb128 0xa
+ 974 03b7 F5010000 		.4byte	.LASF119
+ 975 03bb 4971     		.2byte	0x7149
+ 976 03bd 0A       		.uleb128 0xa
+ 977 03be 73060000 		.4byte	.LASF120
+ 978 03c2 4A71     		.2byte	0x714a
+ 979 03c4 0A       		.uleb128 0xa
+ 980 03c5 F90D0000 		.4byte	.LASF121
+ 981 03c9 4B71     		.2byte	0x714b
+ 982 03cb 0A       		.uleb128 0xa
+ 983 03cc 2B0F0000 		.4byte	.LASF122
+ 984 03d0 4C71     		.2byte	0x714c
+ 985 03d2 0A       		.uleb128 0xa
+ 986 03d3 53050000 		.4byte	.LASF123
+ 987 03d7 4D71     		.2byte	0x714d
+ 988 03d9 0A       		.uleb128 0xa
+ 989 03da 880A0000 		.4byte	.LASF124
+ 990 03de 4E71     		.2byte	0x714e
+ 991 03e0 0A       		.uleb128 0xa
+ 992 03e1 160A0000 		.4byte	.LASF125
+ 993 03e5 4F71     		.2byte	0x714f
+ 994 03e7 0A       		.uleb128 0xa
+ 995 03e8 8A090000 		.4byte	.LASF126
+ 996 03ec 5071     		.2byte	0x7150
+ 997 03ee 0A       		.uleb128 0xa
+ 998 03ef ED020000 		.4byte	.LASF127
+ 999 03f3 5171     		.2byte	0x7151
+ 1000 03f5 0A       		.uleb128 0xa
+ 1001 03f6 EF090000 		.4byte	.LASF128
+ 1002 03fa 5271     		.2byte	0x7152
+ 1003 03fc 0A       		.uleb128 0xa
+ 1004 03fd D3020000 		.4byte	.LASF129
+ 1005 0401 5371     		.2byte	0x7153
+ 1006 0403 0A       		.uleb128 0xa
+ 1007 0404 3B0D0000 		.4byte	.LASF130
+ 1008 0408 5471     		.2byte	0x7154
+ 1009 040a 0A       		.uleb128 0xa
+ 1010 040b C6010000 		.4byte	.LASF131
+ 1011 040f 5571     		.2byte	0x7155
+ 1012 0411 0A       		.uleb128 0xa
+ 1013 0412 2F040000 		.4byte	.LASF132
+ 1014 0416 5671     		.2byte	0x7156
+ 1015 0418 0A       		.uleb128 0xa
+ 1016 0419 090C0000 		.4byte	.LASF133
+ 1017 041d 5771     		.2byte	0x7157
+ 1018 041f 0A       		.uleb128 0xa
+ 1019 0420 0C050000 		.4byte	.LASF134
+ 1020 0424 5871     		.2byte	0x7158
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 25
+
+
+ 1021 0426 0A       		.uleb128 0xa
+ 1022 0427 BB090000 		.4byte	.LASF135
+ 1023 042b 5971     		.2byte	0x7159
+ 1024 042d 0A       		.uleb128 0xa
+ 1025 042e F70E0000 		.4byte	.LASF136
+ 1026 0432 5A71     		.2byte	0x715a
+ 1027 0434 0A       		.uleb128 0xa
+ 1028 0435 CE030000 		.4byte	.LASF137
+ 1029 0439 5B71     		.2byte	0x715b
+ 1030 043b 0A       		.uleb128 0xa
+ 1031 043c 33050000 		.4byte	.LASF138
+ 1032 0440 5C71     		.2byte	0x715c
+ 1033 0442 0A       		.uleb128 0xa
+ 1034 0443 6A030000 		.4byte	.LASF139
+ 1035 0447 5D71     		.2byte	0x715d
+ 1036 0449 0A       		.uleb128 0xa
+ 1037 044a 420A0000 		.4byte	.LASF140
+ 1038 044e 5E71     		.2byte	0x715e
+ 1039 0450 0A       		.uleb128 0xa
+ 1040 0451 44030000 		.4byte	.LASF141
+ 1041 0455 5F71     		.2byte	0x715f
+ 1042 0457 0A       		.uleb128 0xa
+ 1043 0458 8D050000 		.4byte	.LASF142
+ 1044 045c AD71     		.2byte	0x71ad
+ 1045 045e 0A       		.uleb128 0xa
+ 1046 045f DF040000 		.4byte	.LASF143
+ 1047 0463 C071     		.2byte	0x71c0
+ 1048 0465 0A       		.uleb128 0xa
+ 1049 0466 790A0000 		.4byte	.LASF144
+ 1050 046a C171     		.2byte	0x71c1
+ 1051 046c 0A       		.uleb128 0xa
+ 1052 046d 480E0000 		.4byte	.LASF145
+ 1053 0471 C271     		.2byte	0x71c2
+ 1054 0473 0A       		.uleb128 0xa
+ 1055 0474 79070000 		.4byte	.LASF146
+ 1056 0478 C371     		.2byte	0x71c3
+ 1057 047a 0A       		.uleb128 0xa
+ 1058 047b F5050000 		.4byte	.LASF147
+ 1059 047f C471     		.2byte	0x71c4
+ 1060 0481 0A       		.uleb128 0xa
+ 1061 0482 6F0F0000 		.4byte	.LASF148
+ 1062 0486 1172     		.2byte	0x7211
+ 1063 0488 0A       		.uleb128 0xa
+ 1064 0489 C90B0000 		.4byte	.LASF149
+ 1065 048d 1272     		.2byte	0x7212
+ 1066 048f 0A       		.uleb128 0xa
+ 1067 0490 82010000 		.4byte	.LASF150
+ 1068 0494 1372     		.2byte	0x7213
+ 1069 0496 0A       		.uleb128 0xa
+ 1070 0497 23000000 		.4byte	.LASF151
+ 1071 049b 1472     		.2byte	0x7214
+ 1072 049d 0A       		.uleb128 0xa
+ 1073 049e EE0C0000 		.4byte	.LASF152
+ 1074 04a2 7572     		.2byte	0x7275
+ 1075 04a4 0A       		.uleb128 0xa
+ 1076 04a5 540F0000 		.4byte	.LASF153
+ 1077 04a9 7672     		.2byte	0x7276
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 26
+
+
+ 1078 04ab 0A       		.uleb128 0xa
+ 1079 04ac 400F0000 		.4byte	.LASF154
+ 1080 04b0 7772     		.2byte	0x7277
+ 1081 04b2 0A       		.uleb128 0xa
+ 1082 04b3 3B060000 		.4byte	.LASF155
+ 1083 04b7 7872     		.2byte	0x7278
+ 1084 04b9 0A       		.uleb128 0xa
+ 1085 04ba 49000000 		.4byte	.LASF156
+ 1086 04be 7972     		.2byte	0x7279
+ 1087 04c0 0A       		.uleb128 0xa
+ 1088 04c1 DD0D0000 		.4byte	.LASF157
+ 1089 04c5 7A72     		.2byte	0x727a
+ 1090 04c7 0A       		.uleb128 0xa
+ 1091 04c8 C8050000 		.4byte	.LASF158
+ 1092 04cc 7B72     		.2byte	0x727b
+ 1093 04ce 0A       		.uleb128 0xa
+ 1094 04cf DE070000 		.4byte	.LASF159
+ 1095 04d3 7C72     		.2byte	0x727c
+ 1096 04d5 0A       		.uleb128 0xa
+ 1097 04d6 FF0A0000 		.4byte	.LASF160
+ 1098 04da 7D72     		.2byte	0x727d
+ 1099 04dc 0A       		.uleb128 0xa
+ 1100 04dd A3060000 		.4byte	.LASF161
+ 1101 04e1 7E72     		.2byte	0x727e
+ 1102 04e3 0A       		.uleb128 0xa
+ 1103 04e4 4B0D0000 		.4byte	.LASF162
+ 1104 04e8 D972     		.2byte	0x72d9
+ 1105 04ea 0A       		.uleb128 0xa
+ 1106 04eb CB040000 		.4byte	.LASF163
+ 1107 04ef 3D73     		.2byte	0x733d
+ 1108 04f1 0A       		.uleb128 0xa
+ 1109 04f2 17070000 		.4byte	.LASF164
+ 1110 04f6 3E73     		.2byte	0x733e
+ 1111 04f8 0A       		.uleb128 0xa
+ 1112 04f9 18040000 		.4byte	.LASF165
+ 1113 04fd 3F73     		.2byte	0x733f
+ 1114 04ff 0A       		.uleb128 0xa
+ 1115 0500 3D010000 		.4byte	.LASF166
+ 1116 0504 4073     		.2byte	0x7340
+ 1117 0506 0A       		.uleb128 0xa
+ 1118 0507 97030000 		.4byte	.LASF167
+ 1119 050b 4173     		.2byte	0x7341
+ 1120 050d 0A       		.uleb128 0xa
+ 1121 050e 20050000 		.4byte	.LASF168
+ 1122 0512 4273     		.2byte	0x7342
+ 1123 0514 0A       		.uleb128 0xa
+ 1124 0515 3A000000 		.4byte	.LASF169
+ 1125 0519 4373     		.2byte	0x7343
+ 1126 051b 0A       		.uleb128 0xa
+ 1127 051c B4040000 		.4byte	.LASF170
+ 1128 0520 4473     		.2byte	0x7344
+ 1129 0522 0A       		.uleb128 0xa
+ 1130 0523 55060000 		.4byte	.LASF171
+ 1131 0527 4573     		.2byte	0x7345
+ 1132 0529 0A       		.uleb128 0xa
+ 1133 052a 2A0A0000 		.4byte	.LASF172
+ 1134 052e 4673     		.2byte	0x7346
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 27
+
+
+ 1135 0530 0A       		.uleb128 0xa
+ 1136 0531 6B050000 		.4byte	.LASF173
+ 1137 0535 4773     		.2byte	0x7347
+ 1138 0537 0A       		.uleb128 0xa
+ 1139 0538 D3090000 		.4byte	.LASF174
+ 1140 053c 4873     		.2byte	0x7348
+ 1141 053e 0A       		.uleb128 0xa
+ 1142 053f 1A0D0000 		.4byte	.LASF175
+ 1143 0543 4973     		.2byte	0x7349
+ 1144 0545 0A       		.uleb128 0xa
+ 1145 0546 19010000 		.4byte	.LASF176
+ 1146 054a 3075     		.2byte	0x7530
+ 1147 054c 0A       		.uleb128 0xa
+ 1148 054d 22010000 		.4byte	.LASF177
+ 1149 0551 1879     		.2byte	0x7918
+ 1150 0553 0A       		.uleb128 0xa
+ 1151 0554 2B010000 		.4byte	.LASF178
+ 1152 0558 007D     		.2byte	0x7d00
+ 1153 055a 0A       		.uleb128 0xa
+ 1154 055b 34010000 		.4byte	.LASF179
+ 1155 055f E880     		.2byte	0x80e8
+ 1156 0561 0A       		.uleb128 0xa
+ 1157 0562 940D0000 		.4byte	.LASF180
+ 1158 0566 D084     		.2byte	0x84d0
+ 1159 0568 0A       		.uleb128 0xa
+ 1160 0569 FF070000 		.4byte	.LASF181
+ 1161 056d D184     		.2byte	0x84d1
+ 1162 056f 0A       		.uleb128 0xa
+ 1163 0570 AD0D0000 		.4byte	.LASF182
+ 1164 0574 B888     		.2byte	0x88b8
+ 1165 0576 00       		.byte	0
+ 1166 0577 06       		.uleb128 0x6
+ 1167 0578 14000000 		.4byte	.LASF183
+ 1168 057c 04       		.byte	0x4
+ 1169 057d 7202     		.2byte	0x272
+ 1170 057f FF000000 		.4byte	0xff
+ 1171 0583 06       		.uleb128 0x6
+ 1172 0584 12060000 		.4byte	.LASF184
+ 1173 0588 04       		.byte	0x4
+ 1174 0589 8002     		.2byte	0x280
+ 1175 058b 8F050000 		.4byte	0x58f
+ 1176 058f 0B       		.uleb128 0xb
+ 1177 0590 8A060000 		.4byte	.LASF217
+ 1178 0594 20       		.byte	0x20
+ 1179 0595 04       		.byte	0x4
+ 1180 0596 2B03     		.2byte	0x32b
+ 1181 0598 12060000 		.4byte	0x612
+ 1182 059c 0C       		.uleb128 0xc
+ 1183 059d FA070000 		.4byte	.LASF185
+ 1184 05a1 04       		.byte	0x4
+ 1185 05a2 2C03     		.2byte	0x32c
+ 1186 05a4 F4000000 		.4byte	0xf4
+ 1187 05a8 00       		.byte	0
+ 1188 05a9 0C       		.uleb128 0xc
+ 1189 05aa A30B0000 		.4byte	.LASF186
+ 1190 05ae 04       		.byte	0x4
+ 1191 05af 2D03     		.2byte	0x32d
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 28
+
+
+ 1192 05b1 9E000000 		.4byte	0x9e
+ 1193 05b5 04       		.byte	0x4
+ 1194 05b6 0C       		.uleb128 0xc
+ 1195 05b7 F2070000 		.4byte	.LASF187
+ 1196 05bb 04       		.byte	0x4
+ 1197 05bc 2E03     		.2byte	0x32e
+ 1198 05be 12060000 		.4byte	0x612
+ 1199 05c2 08       		.byte	0x8
+ 1200 05c3 0C       		.uleb128 0xc
+ 1201 05c4 C40A0000 		.4byte	.LASF188
+ 1202 05c8 04       		.byte	0x4
+ 1203 05c9 2F03     		.2byte	0x32f
+ 1204 05cb 9E000000 		.4byte	0x9e
+ 1205 05cf 0C       		.byte	0xc
+ 1206 05d0 0C       		.uleb128 0xc
+ 1207 05d1 1B000000 		.4byte	.LASF189
+ 1208 05d5 04       		.byte	0x4
+ 1209 05d6 3003     		.2byte	0x330
+ 1210 05d8 D3000000 		.4byte	0xd3
+ 1211 05dc 10       		.byte	0x10
+ 1212 05dd 0C       		.uleb128 0xc
+ 1213 05de 45070000 		.4byte	.LASF190
+ 1214 05e2 04       		.byte	0x4
+ 1215 05e3 3103     		.2byte	0x331
+ 1216 05e5 C8000000 		.4byte	0xc8
+ 1217 05e9 12       		.byte	0x12
+ 1218 05ea 0C       		.uleb128 0xc
+ 1219 05eb 760D0000 		.4byte	.LASF191
+ 1220 05ef 04       		.byte	0x4
+ 1221 05f0 3203     		.2byte	0x332
+ 1222 05f2 C8000000 		.4byte	0xc8
+ 1223 05f6 14       		.byte	0x14
+ 1224 05f7 0C       		.uleb128 0xc
+ 1225 05f8 30060000 		.4byte	.LASF192
+ 1226 05fc 04       		.byte	0x4
+ 1227 05fd 3403     		.2byte	0x334
+ 1228 05ff 18060000 		.4byte	0x618
+ 1229 0603 18       		.byte	0x18
+ 1230 0604 0C       		.uleb128 0xc
+ 1231 0605 39030000 		.4byte	.LASF193
+ 1232 0609 04       		.byte	0x4
+ 1233 060a 3503     		.2byte	0x335
+ 1234 060c 18060000 		.4byte	0x618
+ 1235 0610 1C       		.byte	0x1c
+ 1236 0611 00       		.byte	0
+ 1237 0612 07       		.uleb128 0x7
+ 1238 0613 04       		.byte	0x4
+ 1239 0614 25000000 		.4byte	0x25
+ 1240 0618 07       		.uleb128 0x7
+ 1241 0619 04       		.byte	0x4
+ 1242 061a 83050000 		.4byte	0x583
+ 1243 061e 03       		.uleb128 0x3
+ 1244 061f 04       		.byte	0x4
+ 1245 0620 07       		.byte	0x7
+ 1246 0621 B00C0000 		.4byte	.LASF194
+ 1247 0625 0D       		.uleb128 0xd
+ 1248 0626 310C0000 		.4byte	.LASF206
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 29
+
+
+ 1249 062a 01       		.byte	0x1
+ 1250 062b 4B       		.byte	0x4b
+ 1251 062c 00000000 		.4byte	.LFB0
+ 1252 0630 20010000 		.4byte	.LFE0-.LFB0
+ 1253 0634 01       		.uleb128 0x1
+ 1254 0635 9C       		.byte	0x9c
+ 1255 0636 E1060000 		.4byte	0x6e1
+ 1256 063a 0E       		.uleb128 0xe
+ 1257 063b C30B0000 		.4byte	.LASF195
+ 1258 063f 01       		.byte	0x1
+ 1259 0640 4B       		.byte	0x4b
+ 1260 0641 18060000 		.4byte	0x618
+ 1261 0645 02       		.uleb128 0x2
+ 1262 0646 91       		.byte	0x91
+ 1263 0647 5C       		.sleb128 -36
+ 1264 0648 0E       		.uleb128 0xe
+ 1265 0649 10070000 		.4byte	.LASF196
+ 1266 064d 01       		.byte	0x1
+ 1267 064e 4C       		.byte	0x4c
+ 1268 064f 12060000 		.4byte	0x612
+ 1269 0653 02       		.uleb128 0x2
+ 1270 0654 91       		.byte	0x91
+ 1271 0655 58       		.sleb128 -40
+ 1272 0656 0E       		.uleb128 0xe
+ 1273 0657 49080000 		.4byte	.LASF197
+ 1274 065b 01       		.byte	0x1
+ 1275 065c 4D       		.byte	0x4d
+ 1276 065d 9E000000 		.4byte	0x9e
+ 1277 0661 02       		.uleb128 0x2
+ 1278 0662 91       		.byte	0x91
+ 1279 0663 54       		.sleb128 -44
+ 1280 0664 0E       		.uleb128 0xe
+ 1281 0665 860B0000 		.4byte	.LASF198
+ 1282 0669 01       		.byte	0x1
+ 1283 066a 4E       		.byte	0x4e
+ 1284 066b C8000000 		.4byte	0xc8
+ 1285 066f 02       		.uleb128 0x2
+ 1286 0670 91       		.byte	0x91
+ 1287 0671 52       		.sleb128 -46
+ 1288 0672 0E       		.uleb128 0xe
+ 1289 0673 BD010000 		.4byte	.LASF199
+ 1290 0677 01       		.byte	0x1
+ 1291 0678 4F       		.byte	0x4f
+ 1292 0679 D3000000 		.4byte	0xd3
+ 1293 067d 02       		.uleb128 0x2
+ 1294 067e 91       		.byte	0x91
+ 1295 067f 00       		.sleb128 0
+ 1296 0680 0E       		.uleb128 0xe
+ 1297 0681 0A070000 		.4byte	.LASF200
+ 1298 0685 01       		.byte	0x1
+ 1299 0686 50       		.byte	0x50
+ 1300 0687 E1060000 		.4byte	0x6e1
+ 1301 068b 02       		.uleb128 0x2
+ 1302 068c 91       		.byte	0x91
+ 1303 068d 04       		.sleb128 4
+ 1304 068e 0F       		.uleb128 0xf
+ 1305 068f B20F0000 		.4byte	.LASF201
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 30
+
+
+ 1306 0693 01       		.byte	0x1
+ 1307 0694 53       		.byte	0x53
+ 1308 0695 AB000000 		.4byte	0xab
+ 1309 0699 02       		.uleb128 0x2
+ 1310 069a 91       		.byte	0x91
+ 1311 069b 64       		.sleb128 -28
+ 1312 069c 10       		.uleb128 0x10
+ 1313 069d 6900     		.ascii	"i\000"
+ 1314 069f 01       		.byte	0x1
+ 1315 06a0 55       		.byte	0x55
+ 1316 06a1 C8000000 		.4byte	0xc8
+ 1317 06a5 02       		.uleb128 0x2
+ 1318 06a6 91       		.byte	0x91
+ 1319 06a7 76       		.sleb128 -10
+ 1320 06a8 0F       		.uleb128 0xf
+ 1321 06a9 5A0D0000 		.4byte	.LASF202
+ 1322 06ad 01       		.byte	0x1
+ 1323 06ae 56       		.byte	0x56
+ 1324 06af C8000000 		.4byte	0xc8
+ 1325 06b3 02       		.uleb128 0x2
+ 1326 06b4 91       		.byte	0x91
+ 1327 06b5 62       		.sleb128 -30
+ 1328 06b6 0F       		.uleb128 0xf
+ 1329 06b7 B90C0000 		.4byte	.LASF203
+ 1330 06bb 01       		.byte	0x1
+ 1331 06bc 57       		.byte	0x57
+ 1332 06bd E7060000 		.4byte	0x6e7
+ 1333 06c1 02       		.uleb128 0x2
+ 1334 06c2 91       		.byte	0x91
+ 1335 06c3 70       		.sleb128 -16
+ 1336 06c4 0F       		.uleb128 0xf
+ 1337 06c5 10080000 		.4byte	.LASF204
+ 1338 06c9 01       		.byte	0x1
+ 1339 06ca 58       		.byte	0x58
+ 1340 06cb C2000000 		.4byte	0xc2
+ 1341 06cf 02       		.uleb128 0x2
+ 1342 06d0 91       		.byte	0x91
+ 1343 06d1 6C       		.sleb128 -20
+ 1344 06d2 0F       		.uleb128 0xf
+ 1345 06d3 AD040000 		.4byte	.LASF205
+ 1346 06d7 01       		.byte	0x1
+ 1347 06d8 59       		.byte	0x59
+ 1348 06d9 B6000000 		.4byte	0xb6
+ 1349 06dd 02       		.uleb128 0x2
+ 1350 06de 91       		.byte	0x91
+ 1351 06df 68       		.sleb128 -24
+ 1352 06e0 00       		.byte	0
+ 1353 06e1 07       		.uleb128 0x7
+ 1354 06e2 04       		.byte	0x4
+ 1355 06e3 77050000 		.4byte	0x577
+ 1356 06e7 07       		.uleb128 0x7
+ 1357 06e8 04       		.byte	0x4
+ 1358 06e9 3E000000 		.4byte	0x3e
+ 1359 06ed 11       		.uleb128 0x11
+ 1360 06ee 730B0000 		.4byte	.LASF218
+ 1361 06f2 01       		.byte	0x1
+ 1362 06f3 BE       		.byte	0xbe
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 31
+
+
+ 1363 06f4 9E000000 		.4byte	0x9e
+ 1364 06f8 00000000 		.4byte	.LFB1
+ 1365 06fc 70000000 		.4byte	.LFE1-.LFB1
+ 1366 0700 01       		.uleb128 0x1
+ 1367 0701 9C       		.byte	0x9c
+ 1368 0702 3F070000 		.4byte	0x73f
+ 1369 0706 0E       		.uleb128 0xe
+ 1370 0707 C30B0000 		.4byte	.LASF195
+ 1371 070b 01       		.byte	0x1
+ 1372 070c BE       		.byte	0xbe
+ 1373 070d 18060000 		.4byte	0x618
+ 1374 0711 02       		.uleb128 0x2
+ 1375 0712 91       		.byte	0x91
+ 1376 0713 6C       		.sleb128 -20
+ 1377 0714 0E       		.uleb128 0xe
+ 1378 0715 0A070000 		.4byte	.LASF200
+ 1379 0719 01       		.byte	0x1
+ 1380 071a BF       		.byte	0xbf
+ 1381 071b E1060000 		.4byte	0x6e1
+ 1382 071f 02       		.uleb128 0x2
+ 1383 0720 91       		.byte	0x91
+ 1384 0721 68       		.sleb128 -24
+ 1385 0722 0F       		.uleb128 0xf
+ 1386 0723 B90C0000 		.4byte	.LASF203
+ 1387 0727 01       		.byte	0x1
+ 1388 0728 C1       		.byte	0xc1
+ 1389 0729 9E000000 		.4byte	0x9e
+ 1390 072d 02       		.uleb128 0x2
+ 1391 072e 91       		.byte	0x91
+ 1392 072f 70       		.sleb128 -16
+ 1393 0730 0F       		.uleb128 0xf
+ 1394 0731 AD040000 		.4byte	.LASF205
+ 1395 0735 01       		.byte	0x1
+ 1396 0736 C2       		.byte	0xc2
+ 1397 0737 B6000000 		.4byte	0xb6
+ 1398 073b 02       		.uleb128 0x2
+ 1399 073c 91       		.byte	0x91
+ 1400 073d 74       		.sleb128 -12
+ 1401 073e 00       		.byte	0
+ 1402 073f 0D       		.uleb128 0xd
+ 1403 0740 A0050000 		.4byte	.LASF207
+ 1404 0744 01       		.byte	0x1
+ 1405 0745 F7       		.byte	0xf7
+ 1406 0746 00000000 		.4byte	.LFB2
+ 1407 074a 7E000000 		.4byte	.LFE2-.LFB2
+ 1408 074e 01       		.uleb128 0x1
+ 1409 074f 9C       		.byte	0x9c
+ 1410 0750 8D070000 		.4byte	0x78d
+ 1411 0754 0E       		.uleb128 0xe
+ 1412 0755 C30B0000 		.4byte	.LASF195
+ 1413 0759 01       		.byte	0x1
+ 1414 075a F7       		.byte	0xf7
+ 1415 075b 18060000 		.4byte	0x618
+ 1416 075f 02       		.uleb128 0x2
+ 1417 0760 91       		.byte	0x91
+ 1418 0761 6C       		.sleb128 -20
+ 1419 0762 0E       		.uleb128 0xe
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 32
+
+
+ 1420 0763 B90C0000 		.4byte	.LASF203
+ 1421 0767 01       		.byte	0x1
+ 1422 0768 F8       		.byte	0xf8
+ 1423 0769 9E000000 		.4byte	0x9e
+ 1424 076d 02       		.uleb128 0x2
+ 1425 076e 91       		.byte	0x91
+ 1426 076f 68       		.sleb128 -24
+ 1427 0770 0E       		.uleb128 0xe
+ 1428 0771 0A070000 		.4byte	.LASF200
+ 1429 0775 01       		.byte	0x1
+ 1430 0776 F9       		.byte	0xf9
+ 1431 0777 E1060000 		.4byte	0x6e1
+ 1432 077b 02       		.uleb128 0x2
+ 1433 077c 91       		.byte	0x91
+ 1434 077d 64       		.sleb128 -28
+ 1435 077e 0F       		.uleb128 0xf
+ 1436 077f AD040000 		.4byte	.LASF205
+ 1437 0783 01       		.byte	0x1
+ 1438 0784 FB       		.byte	0xfb
+ 1439 0785 B6000000 		.4byte	0xb6
+ 1440 0789 02       		.uleb128 0x2
+ 1441 078a 91       		.byte	0x91
+ 1442 078b 74       		.sleb128 -12
+ 1443 078c 00       		.byte	0
+ 1444 078d 12       		.uleb128 0x12
+ 1445 078e 050A0000 		.4byte	.LASF208
+ 1446 0792 01       		.byte	0x1
+ 1447 0793 2E01     		.2byte	0x12e
+ 1448 0795 00000000 		.4byte	.LFB3
+ 1449 0799 44000000 		.4byte	.LFE3-.LFB3
+ 1450 079d 01       		.uleb128 0x1
+ 1451 079e 9C       		.byte	0x9c
+ 1452 079f B3070000 		.4byte	0x7b3
+ 1453 07a3 13       		.uleb128 0x13
+ 1454 07a4 C30B0000 		.4byte	.LASF195
+ 1455 07a8 01       		.byte	0x1
+ 1456 07a9 2E01     		.2byte	0x12e
+ 1457 07ab 18060000 		.4byte	0x618
+ 1458 07af 02       		.uleb128 0x2
+ 1459 07b0 91       		.byte	0x91
+ 1460 07b1 74       		.sleb128 -12
+ 1461 07b2 00       		.byte	0
+ 1462 07b3 12       		.uleb128 0x12
+ 1463 07b4 C3030000 		.4byte	.LASF209
+ 1464 07b8 01       		.byte	0x1
+ 1465 07b9 4B01     		.2byte	0x14b
+ 1466 07bb 00000000 		.4byte	.LFB4
+ 1467 07bf 2C000000 		.4byte	.LFE4-.LFB4
+ 1468 07c3 01       		.uleb128 0x1
+ 1469 07c4 9C       		.byte	0x9c
+ 1470 07c5 D9070000 		.4byte	0x7d9
+ 1471 07c9 13       		.uleb128 0x13
+ 1472 07ca 0A070000 		.4byte	.LASF200
+ 1473 07ce 01       		.byte	0x1
+ 1474 07cf 4B01     		.2byte	0x14b
+ 1475 07d1 E1060000 		.4byte	0x6e1
+ 1476 07d5 02       		.uleb128 0x2
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 33
+
+
+ 1477 07d6 91       		.byte	0x91
+ 1478 07d7 74       		.sleb128 -12
+ 1479 07d8 00       		.byte	0
+ 1480 07d9 14       		.uleb128 0x14
+ 1481 07da EF0A0000 		.4byte	.LASF210
+ 1482 07de 04       		.byte	0x4
+ 1483 07df 5F04     		.2byte	0x45f
+ 1484 07e1 DE000000 		.4byte	0xde
+ 1485 07e5 14       		.uleb128 0x14
+ 1486 07e6 A9050000 		.4byte	.LASF211
+ 1487 07ea 04       		.byte	0x4
+ 1488 07eb 7D04     		.2byte	0x47d
+ 1489 07ed 18060000 		.4byte	0x618
+ 1490 07f1 14       		.uleb128 0x14
+ 1491 07f2 D00A0000 		.4byte	.LASF212
+ 1492 07f6 04       		.byte	0x4
+ 1493 07f7 7F04     		.2byte	0x47f
+ 1494 07f9 E9000000 		.4byte	0xe9
+ 1495 07fd 00       		.byte	0
+ 1496              		.section	.debug_abbrev,"",%progbits
+ 1497              	.Ldebug_abbrev0:
+ 1498 0000 01       		.uleb128 0x1
+ 1499 0001 11       		.uleb128 0x11
+ 1500 0002 01       		.byte	0x1
+ 1501 0003 25       		.uleb128 0x25
+ 1502 0004 0E       		.uleb128 0xe
+ 1503 0005 13       		.uleb128 0x13
+ 1504 0006 0B       		.uleb128 0xb
+ 1505 0007 03       		.uleb128 0x3
+ 1506 0008 0E       		.uleb128 0xe
+ 1507 0009 1B       		.uleb128 0x1b
+ 1508 000a 0E       		.uleb128 0xe
+ 1509 000b 55       		.uleb128 0x55
+ 1510 000c 17       		.uleb128 0x17
+ 1511 000d 11       		.uleb128 0x11
+ 1512 000e 01       		.uleb128 0x1
+ 1513 000f 10       		.uleb128 0x10
+ 1514 0010 17       		.uleb128 0x17
+ 1515 0011 00       		.byte	0
+ 1516 0012 00       		.byte	0
+ 1517 0013 02       		.uleb128 0x2
+ 1518 0014 16       		.uleb128 0x16
+ 1519 0015 00       		.byte	0
+ 1520 0016 03       		.uleb128 0x3
+ 1521 0017 0E       		.uleb128 0xe
+ 1522 0018 3A       		.uleb128 0x3a
+ 1523 0019 0B       		.uleb128 0xb
+ 1524 001a 3B       		.uleb128 0x3b
+ 1525 001b 0B       		.uleb128 0xb
+ 1526 001c 49       		.uleb128 0x49
+ 1527 001d 13       		.uleb128 0x13
+ 1528 001e 00       		.byte	0
+ 1529 001f 00       		.byte	0
+ 1530 0020 03       		.uleb128 0x3
+ 1531 0021 24       		.uleb128 0x24
+ 1532 0022 00       		.byte	0
+ 1533 0023 0B       		.uleb128 0xb
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 34
+
+
+ 1534 0024 0B       		.uleb128 0xb
+ 1535 0025 3E       		.uleb128 0x3e
+ 1536 0026 0B       		.uleb128 0xb
+ 1537 0027 03       		.uleb128 0x3
+ 1538 0028 0E       		.uleb128 0xe
+ 1539 0029 00       		.byte	0
+ 1540 002a 00       		.byte	0
+ 1541 002b 04       		.uleb128 0x4
+ 1542 002c 24       		.uleb128 0x24
+ 1543 002d 00       		.byte	0
+ 1544 002e 0B       		.uleb128 0xb
+ 1545 002f 0B       		.uleb128 0xb
+ 1546 0030 3E       		.uleb128 0x3e
+ 1547 0031 0B       		.uleb128 0xb
+ 1548 0032 03       		.uleb128 0x3
+ 1549 0033 08       		.uleb128 0x8
+ 1550 0034 00       		.byte	0
+ 1551 0035 00       		.byte	0
+ 1552 0036 05       		.uleb128 0x5
+ 1553 0037 0F       		.uleb128 0xf
+ 1554 0038 00       		.byte	0
+ 1555 0039 0B       		.uleb128 0xb
+ 1556 003a 0B       		.uleb128 0xb
+ 1557 003b 00       		.byte	0
+ 1558 003c 00       		.byte	0
+ 1559 003d 06       		.uleb128 0x6
+ 1560 003e 16       		.uleb128 0x16
+ 1561 003f 00       		.byte	0
+ 1562 0040 03       		.uleb128 0x3
+ 1563 0041 0E       		.uleb128 0xe
+ 1564 0042 3A       		.uleb128 0x3a
+ 1565 0043 0B       		.uleb128 0xb
+ 1566 0044 3B       		.uleb128 0x3b
+ 1567 0045 05       		.uleb128 0x5
+ 1568 0046 49       		.uleb128 0x49
+ 1569 0047 13       		.uleb128 0x13
+ 1570 0048 00       		.byte	0
+ 1571 0049 00       		.byte	0
+ 1572 004a 07       		.uleb128 0x7
+ 1573 004b 0F       		.uleb128 0xf
+ 1574 004c 00       		.byte	0
+ 1575 004d 0B       		.uleb128 0xb
+ 1576 004e 0B       		.uleb128 0xb
+ 1577 004f 49       		.uleb128 0x49
+ 1578 0050 13       		.uleb128 0x13
+ 1579 0051 00       		.byte	0
+ 1580 0052 00       		.byte	0
+ 1581 0053 08       		.uleb128 0x8
+ 1582 0054 04       		.uleb128 0x4
+ 1583 0055 01       		.byte	0x1
+ 1584 0056 03       		.uleb128 0x3
+ 1585 0057 0E       		.uleb128 0xe
+ 1586 0058 0B       		.uleb128 0xb
+ 1587 0059 0B       		.uleb128 0xb
+ 1588 005a 49       		.uleb128 0x49
+ 1589 005b 13       		.uleb128 0x13
+ 1590 005c 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 35
+
+
+ 1591 005d 0B       		.uleb128 0xb
+ 1592 005e 3B       		.uleb128 0x3b
+ 1593 005f 05       		.uleb128 0x5
+ 1594 0060 01       		.uleb128 0x1
+ 1595 0061 13       		.uleb128 0x13
+ 1596 0062 00       		.byte	0
+ 1597 0063 00       		.byte	0
+ 1598 0064 09       		.uleb128 0x9
+ 1599 0065 28       		.uleb128 0x28
+ 1600 0066 00       		.byte	0
+ 1601 0067 03       		.uleb128 0x3
+ 1602 0068 0E       		.uleb128 0xe
+ 1603 0069 1C       		.uleb128 0x1c
+ 1604 006a 0B       		.uleb128 0xb
+ 1605 006b 00       		.byte	0
+ 1606 006c 00       		.byte	0
+ 1607 006d 0A       		.uleb128 0xa
+ 1608 006e 28       		.uleb128 0x28
+ 1609 006f 00       		.byte	0
+ 1610 0070 03       		.uleb128 0x3
+ 1611 0071 0E       		.uleb128 0xe
+ 1612 0072 1C       		.uleb128 0x1c
+ 1613 0073 05       		.uleb128 0x5
+ 1614 0074 00       		.byte	0
+ 1615 0075 00       		.byte	0
+ 1616 0076 0B       		.uleb128 0xb
+ 1617 0077 13       		.uleb128 0x13
+ 1618 0078 01       		.byte	0x1
+ 1619 0079 03       		.uleb128 0x3
+ 1620 007a 0E       		.uleb128 0xe
+ 1621 007b 0B       		.uleb128 0xb
+ 1622 007c 0B       		.uleb128 0xb
+ 1623 007d 3A       		.uleb128 0x3a
+ 1624 007e 0B       		.uleb128 0xb
+ 1625 007f 3B       		.uleb128 0x3b
+ 1626 0080 05       		.uleb128 0x5
+ 1627 0081 01       		.uleb128 0x1
+ 1628 0082 13       		.uleb128 0x13
+ 1629 0083 00       		.byte	0
+ 1630 0084 00       		.byte	0
+ 1631 0085 0C       		.uleb128 0xc
+ 1632 0086 0D       		.uleb128 0xd
+ 1633 0087 00       		.byte	0
+ 1634 0088 03       		.uleb128 0x3
+ 1635 0089 0E       		.uleb128 0xe
+ 1636 008a 3A       		.uleb128 0x3a
+ 1637 008b 0B       		.uleb128 0xb
+ 1638 008c 3B       		.uleb128 0x3b
+ 1639 008d 05       		.uleb128 0x5
+ 1640 008e 49       		.uleb128 0x49
+ 1641 008f 13       		.uleb128 0x13
+ 1642 0090 38       		.uleb128 0x38
+ 1643 0091 0B       		.uleb128 0xb
+ 1644 0092 00       		.byte	0
+ 1645 0093 00       		.byte	0
+ 1646 0094 0D       		.uleb128 0xd
+ 1647 0095 2E       		.uleb128 0x2e
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 36
+
+
+ 1648 0096 01       		.byte	0x1
+ 1649 0097 3F       		.uleb128 0x3f
+ 1650 0098 19       		.uleb128 0x19
+ 1651 0099 03       		.uleb128 0x3
+ 1652 009a 0E       		.uleb128 0xe
+ 1653 009b 3A       		.uleb128 0x3a
+ 1654 009c 0B       		.uleb128 0xb
+ 1655 009d 3B       		.uleb128 0x3b
+ 1656 009e 0B       		.uleb128 0xb
+ 1657 009f 27       		.uleb128 0x27
+ 1658 00a0 19       		.uleb128 0x19
+ 1659 00a1 11       		.uleb128 0x11
+ 1660 00a2 01       		.uleb128 0x1
+ 1661 00a3 12       		.uleb128 0x12
+ 1662 00a4 06       		.uleb128 0x6
+ 1663 00a5 40       		.uleb128 0x40
+ 1664 00a6 18       		.uleb128 0x18
+ 1665 00a7 9642     		.uleb128 0x2116
+ 1666 00a9 19       		.uleb128 0x19
+ 1667 00aa 01       		.uleb128 0x1
+ 1668 00ab 13       		.uleb128 0x13
+ 1669 00ac 00       		.byte	0
+ 1670 00ad 00       		.byte	0
+ 1671 00ae 0E       		.uleb128 0xe
+ 1672 00af 05       		.uleb128 0x5
+ 1673 00b0 00       		.byte	0
+ 1674 00b1 03       		.uleb128 0x3
+ 1675 00b2 0E       		.uleb128 0xe
+ 1676 00b3 3A       		.uleb128 0x3a
+ 1677 00b4 0B       		.uleb128 0xb
+ 1678 00b5 3B       		.uleb128 0x3b
+ 1679 00b6 0B       		.uleb128 0xb
+ 1680 00b7 49       		.uleb128 0x49
+ 1681 00b8 13       		.uleb128 0x13
+ 1682 00b9 02       		.uleb128 0x2
+ 1683 00ba 18       		.uleb128 0x18
+ 1684 00bb 00       		.byte	0
+ 1685 00bc 00       		.byte	0
+ 1686 00bd 0F       		.uleb128 0xf
+ 1687 00be 34       		.uleb128 0x34
+ 1688 00bf 00       		.byte	0
+ 1689 00c0 03       		.uleb128 0x3
+ 1690 00c1 0E       		.uleb128 0xe
+ 1691 00c2 3A       		.uleb128 0x3a
+ 1692 00c3 0B       		.uleb128 0xb
+ 1693 00c4 3B       		.uleb128 0x3b
+ 1694 00c5 0B       		.uleb128 0xb
+ 1695 00c6 49       		.uleb128 0x49
+ 1696 00c7 13       		.uleb128 0x13
+ 1697 00c8 02       		.uleb128 0x2
+ 1698 00c9 18       		.uleb128 0x18
+ 1699 00ca 00       		.byte	0
+ 1700 00cb 00       		.byte	0
+ 1701 00cc 10       		.uleb128 0x10
+ 1702 00cd 34       		.uleb128 0x34
+ 1703 00ce 00       		.byte	0
+ 1704 00cf 03       		.uleb128 0x3
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 37
+
+
+ 1705 00d0 08       		.uleb128 0x8
+ 1706 00d1 3A       		.uleb128 0x3a
+ 1707 00d2 0B       		.uleb128 0xb
+ 1708 00d3 3B       		.uleb128 0x3b
+ 1709 00d4 0B       		.uleb128 0xb
+ 1710 00d5 49       		.uleb128 0x49
+ 1711 00d6 13       		.uleb128 0x13
+ 1712 00d7 02       		.uleb128 0x2
+ 1713 00d8 18       		.uleb128 0x18
+ 1714 00d9 00       		.byte	0
+ 1715 00da 00       		.byte	0
+ 1716 00db 11       		.uleb128 0x11
+ 1717 00dc 2E       		.uleb128 0x2e
+ 1718 00dd 01       		.byte	0x1
+ 1719 00de 3F       		.uleb128 0x3f
+ 1720 00df 19       		.uleb128 0x19
+ 1721 00e0 03       		.uleb128 0x3
+ 1722 00e1 0E       		.uleb128 0xe
+ 1723 00e2 3A       		.uleb128 0x3a
+ 1724 00e3 0B       		.uleb128 0xb
+ 1725 00e4 3B       		.uleb128 0x3b
+ 1726 00e5 0B       		.uleb128 0xb
+ 1727 00e6 27       		.uleb128 0x27
+ 1728 00e7 19       		.uleb128 0x19
+ 1729 00e8 49       		.uleb128 0x49
+ 1730 00e9 13       		.uleb128 0x13
+ 1731 00ea 11       		.uleb128 0x11
+ 1732 00eb 01       		.uleb128 0x1
+ 1733 00ec 12       		.uleb128 0x12
+ 1734 00ed 06       		.uleb128 0x6
+ 1735 00ee 40       		.uleb128 0x40
+ 1736 00ef 18       		.uleb128 0x18
+ 1737 00f0 9642     		.uleb128 0x2116
+ 1738 00f2 19       		.uleb128 0x19
+ 1739 00f3 01       		.uleb128 0x1
+ 1740 00f4 13       		.uleb128 0x13
+ 1741 00f5 00       		.byte	0
+ 1742 00f6 00       		.byte	0
+ 1743 00f7 12       		.uleb128 0x12
+ 1744 00f8 2E       		.uleb128 0x2e
+ 1745 00f9 01       		.byte	0x1
+ 1746 00fa 3F       		.uleb128 0x3f
+ 1747 00fb 19       		.uleb128 0x19
+ 1748 00fc 03       		.uleb128 0x3
+ 1749 00fd 0E       		.uleb128 0xe
+ 1750 00fe 3A       		.uleb128 0x3a
+ 1751 00ff 0B       		.uleb128 0xb
+ 1752 0100 3B       		.uleb128 0x3b
+ 1753 0101 05       		.uleb128 0x5
+ 1754 0102 27       		.uleb128 0x27
+ 1755 0103 19       		.uleb128 0x19
+ 1756 0104 11       		.uleb128 0x11
+ 1757 0105 01       		.uleb128 0x1
+ 1758 0106 12       		.uleb128 0x12
+ 1759 0107 06       		.uleb128 0x6
+ 1760 0108 40       		.uleb128 0x40
+ 1761 0109 18       		.uleb128 0x18
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 38
+
+
+ 1762 010a 9742     		.uleb128 0x2117
+ 1763 010c 19       		.uleb128 0x19
+ 1764 010d 01       		.uleb128 0x1
+ 1765 010e 13       		.uleb128 0x13
+ 1766 010f 00       		.byte	0
+ 1767 0110 00       		.byte	0
+ 1768 0111 13       		.uleb128 0x13
+ 1769 0112 05       		.uleb128 0x5
+ 1770 0113 00       		.byte	0
+ 1771 0114 03       		.uleb128 0x3
+ 1772 0115 0E       		.uleb128 0xe
+ 1773 0116 3A       		.uleb128 0x3a
+ 1774 0117 0B       		.uleb128 0xb
+ 1775 0118 3B       		.uleb128 0x3b
+ 1776 0119 05       		.uleb128 0x5
+ 1777 011a 49       		.uleb128 0x49
+ 1778 011b 13       		.uleb128 0x13
+ 1779 011c 02       		.uleb128 0x2
+ 1780 011d 18       		.uleb128 0x18
+ 1781 011e 00       		.byte	0
+ 1782 011f 00       		.byte	0
+ 1783 0120 14       		.uleb128 0x14
+ 1784 0121 34       		.uleb128 0x34
+ 1785 0122 00       		.byte	0
+ 1786 0123 03       		.uleb128 0x3
+ 1787 0124 0E       		.uleb128 0xe
+ 1788 0125 3A       		.uleb128 0x3a
+ 1789 0126 0B       		.uleb128 0xb
+ 1790 0127 3B       		.uleb128 0x3b
+ 1791 0128 05       		.uleb128 0x5
+ 1792 0129 49       		.uleb128 0x49
+ 1793 012a 13       		.uleb128 0x13
+ 1794 012b 3F       		.uleb128 0x3f
+ 1795 012c 19       		.uleb128 0x19
+ 1796 012d 3C       		.uleb128 0x3c
+ 1797 012e 19       		.uleb128 0x19
+ 1798 012f 00       		.byte	0
+ 1799 0130 00       		.byte	0
+ 1800 0131 00       		.byte	0
+ 1801              		.section	.debug_aranges,"",%progbits
+ 1802 0000 3C000000 		.4byte	0x3c
+ 1803 0004 0200     		.2byte	0x2
+ 1804 0006 00000000 		.4byte	.Ldebug_info0
+ 1805 000a 04       		.byte	0x4
+ 1806 000b 00       		.byte	0
+ 1807 000c 0000     		.2byte	0
+ 1808 000e 0000     		.2byte	0
+ 1809 0010 00000000 		.4byte	.LFB0
+ 1810 0014 20010000 		.4byte	.LFE0-.LFB0
+ 1811 0018 00000000 		.4byte	.LFB1
+ 1812 001c 70000000 		.4byte	.LFE1-.LFB1
+ 1813 0020 00000000 		.4byte	.LFB2
+ 1814 0024 7E000000 		.4byte	.LFE2-.LFB2
+ 1815 0028 00000000 		.4byte	.LFB3
+ 1816 002c 44000000 		.4byte	.LFE3-.LFB3
+ 1817 0030 00000000 		.4byte	.LFB4
+ 1818 0034 2C000000 		.4byte	.LFE4-.LFB4
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 39
+
+
+ 1819 0038 00000000 		.4byte	0
+ 1820 003c 00000000 		.4byte	0
+ 1821              		.section	.debug_ranges,"",%progbits
+ 1822              	.Ldebug_ranges0:
+ 1823 0000 00000000 		.4byte	.LFB0
+ 1824 0004 20010000 		.4byte	.LFE0
+ 1825 0008 00000000 		.4byte	.LFB1
+ 1826 000c 70000000 		.4byte	.LFE1
+ 1827 0010 00000000 		.4byte	.LFB2
+ 1828 0014 7E000000 		.4byte	.LFE2
+ 1829 0018 00000000 		.4byte	.LFB3
+ 1830 001c 44000000 		.4byte	.LFE3
+ 1831 0020 00000000 		.4byte	.LFB4
+ 1832 0024 2C000000 		.4byte	.LFE4
+ 1833 0028 00000000 		.4byte	0
+ 1834 002c 00000000 		.4byte	0
+ 1835              		.section	.debug_line,"",%progbits
+ 1836              	.Ldebug_line0:
+ 1837 0000 57010000 		.section	.debug_str,"MS",%progbits,1
+ 1837      02008A00 
+ 1837      00000201 
+ 1837      FB0E0D00 
+ 1837      01010101 
+ 1838              	.LASF90:
+ 1839 0000 4F535F45 		.ascii	"OS_ERR_PRIO_INVALID\000"
+ 1839      52525F50 
+ 1839      52494F5F 
+ 1839      494E5641 
+ 1839      4C494400 
+ 1840              	.LASF183:
+ 1841 0014 4F535F45 		.ascii	"OS_ERR\000"
+ 1841      525200
+ 1842              	.LASF189:
+ 1843 001b 426C6B53 		.ascii	"BlkSize\000"
+ 1843      697A6500 
+ 1844              	.LASF151:
+ 1845 0023 4F535F45 		.ascii	"OS_ERR_TICK_WHEEL_SIZE\000"
+ 1845      52525F54 
+ 1845      49434B5F 
+ 1845      57484545 
+ 1845      4C5F5349 
+ 1846              	.LASF169:
+ 1847 003a 4F535F45 		.ascii	"OS_ERR_TMR_ISR\000"
+ 1847      52525F54 
+ 1847      4D525F49 
+ 1847      535200
+ 1848              	.LASF156:
+ 1849 0049 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_MINUTES\000"
+ 1849      52525F54 
+ 1849      494D455F 
+ 1849      494E5641 
+ 1849      4C49445F 
+ 1850              	.LASF23:
+ 1851 0065 4F535F45 		.ascii	"OS_ERR_A\000"
+ 1851      52525F41 
+ 1851      00
+ 1852              	.LASF25:
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 40
+
+
+ 1853 006e 4F535F45 		.ascii	"OS_ERR_B\000"
+ 1853      52525F42 
+ 1853      00
+ 1854              	.LASF26:
+ 1855 0077 4F535F45 		.ascii	"OS_ERR_C\000"
+ 1855      52525F43 
+ 1855      00
+ 1856              	.LASF28:
+ 1857 0080 4F535F45 		.ascii	"OS_ERR_D\000"
+ 1857      52525F44 
+ 1857      00
+ 1858              	.LASF30:
+ 1859 0089 4F535F45 		.ascii	"OS_ERR_E\000"
+ 1859      52525F45 
+ 1859      00
+ 1860              	.LASF31:
+ 1861 0092 4F535F45 		.ascii	"OS_ERR_F\000"
+ 1861      52525F46 
+ 1861      00
+ 1862              	.LASF37:
+ 1863 009b 4F535F45 		.ascii	"OS_ERR_G\000"
+ 1863      52525F47 
+ 1863      00
+ 1864              	.LASF38:
+ 1865 00a4 4F535F45 		.ascii	"OS_ERR_H\000"
+ 1865      52525F48 
+ 1865      00
+ 1866              	.LASF39:
+ 1867 00ad 4F535F45 		.ascii	"OS_ERR_I\000"
+ 1867      52525F49 
+ 1867      00
+ 1868              	.LASF46:
+ 1869 00b6 4F535F45 		.ascii	"OS_ERR_J\000"
+ 1869      52525F4A 
+ 1869      00
+ 1870              	.LASF47:
+ 1871 00bf 4F535F45 		.ascii	"OS_ERR_K\000"
+ 1871      52525F4B 
+ 1871      00
+ 1872              	.LASF48:
+ 1873 00c8 4F535F45 		.ascii	"OS_ERR_L\000"
+ 1873      52525F4C 
+ 1873      00
+ 1874              	.LASF50:
+ 1875 00d1 4F535F45 		.ascii	"OS_ERR_M\000"
+ 1875      52525F4D 
+ 1875      00
+ 1876              	.LASF66:
+ 1877 00da 4F535F45 		.ascii	"OS_ERR_N\000"
+ 1877      52525F4E 
+ 1877      00
+ 1878              	.LASF69:
+ 1879 00e3 4F535F45 		.ascii	"OS_ERR_O\000"
+ 1879      52525F4F 
+ 1879      00
+ 1880              	.LASF77:
+ 1881 00ec 4F535F45 		.ascii	"OS_ERR_P\000"
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 41
+
+
+ 1881      52525F50 
+ 1881      00
+ 1882              	.LASF92:
+ 1883 00f5 4F535F45 		.ascii	"OS_ERR_Q\000"
+ 1883      52525F51 
+ 1883      00
+ 1884              	.LASF97:
+ 1885 00fe 4F535F45 		.ascii	"OS_ERR_R\000"
+ 1885      52525F52 
+ 1885      00
+ 1886              	.LASF101:
+ 1887 0107 4F535F45 		.ascii	"OS_ERR_S\000"
+ 1887      52525F53 
+ 1887      00
+ 1888              	.LASF118:
+ 1889 0110 4F535F45 		.ascii	"OS_ERR_T\000"
+ 1889      52525F54 
+ 1889      00
+ 1890              	.LASF176:
+ 1891 0119 4F535F45 		.ascii	"OS_ERR_U\000"
+ 1891      52525F55 
+ 1891      00
+ 1892              	.LASF177:
+ 1893 0122 4F535F45 		.ascii	"OS_ERR_V\000"
+ 1893      52525F56 
+ 1893      00
+ 1894              	.LASF178:
+ 1895 012b 4F535F45 		.ascii	"OS_ERR_W\000"
+ 1895      52525F57 
+ 1895      00
+ 1896              	.LASF179:
+ 1897 0134 4F535F45 		.ascii	"OS_ERR_X\000"
+ 1897      52525F58 
+ 1897      00
+ 1898              	.LASF166:
+ 1899 013d 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_PERIOD\000"
+ 1899      52525F54 
+ 1899      4D525F49 
+ 1899      4E56414C 
+ 1899      49445F50 
+ 1900              	.LASF216:
+ 1901 0157 6F735F65 		.ascii	"os_err\000"
+ 1901      727200
+ 1902              	.LASF43:
+ 1903 015e 4F535F45 		.ascii	"OS_ERR_INT_Q_SIZE\000"
+ 1903      52525F49 
+ 1903      4E545F51 
+ 1903      5F53495A 
+ 1903      4500
+ 1904              	.LASF27:
+ 1905 0170 4F535F45 		.ascii	"OS_ERR_CREATE_ISR\000"
+ 1905      52525F43 
+ 1905      52454154 
+ 1905      455F4953 
+ 1905      5200
+ 1906              	.LASF150:
+ 1907 0182 4F535F45 		.ascii	"OS_ERR_TICK_STK_SIZE_INVALID\000"
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 42
+
+
+ 1907      52525F54 
+ 1907      49434B5F 
+ 1907      53544B5F 
+ 1907      53495A45 
+ 1908              	.LASF8:
+ 1909 019f 4350555F 		.ascii	"CPU_INT32U\000"
+ 1909      494E5433 
+ 1909      325500
+ 1910              	.LASF115:
+ 1911 01aa 4F535F45 		.ascii	"OS_ERR_STK_INVALID\000"
+ 1911      52525F53 
+ 1911      544B5F49 
+ 1911      4E56414C 
+ 1911      494400
+ 1912              	.LASF199:
+ 1913 01bd 626C6B5F 		.ascii	"blk_size\000"
+ 1913      73697A65 
+ 1913      00
+ 1914              	.LASF131:
+ 1915 01c6 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_ISR\000"
+ 1915      52525F54 
+ 1915      41534B5F 
+ 1915      52455355 
+ 1915      4D455F49 
+ 1916              	.LASF85:
+ 1917 01dd 4F535F45 		.ascii	"OS_ERR_PEND_WOULD_BLOCK\000"
+ 1917      52525F50 
+ 1917      454E445F 
+ 1917      574F554C 
+ 1917      445F424C 
+ 1918              	.LASF119:
+ 1919 01f5 4F535F45 		.ascii	"OS_ERR_TASK_CHANGE_PRIO_ISR\000"
+ 1919      52525F54 
+ 1919      41534B5F 
+ 1919      4348414E 
+ 1919      47455F50 
+ 1920              	.LASF109:
+ 1921 0211 4F535F45 		.ascii	"OS_ERR_STAT_RESET_ISR\000"
+ 1921      52525F53 
+ 1921      5441545F 
+ 1921      52455345 
+ 1921      545F4953 
+ 1922              	.LASF84:
+ 1923 0227 4F535F45 		.ascii	"OS_ERR_PEND_LOCKED\000"
+ 1923      52525F50 
+ 1923      454E445F 
+ 1923      4C4F434B 
+ 1923      454400
+ 1924              	.LASF20:
+ 1925 023a 4F535F4F 		.ascii	"OS_OBJ_QTY\000"
+ 1925      424A5F51 
+ 1925      545900
+ 1926              	.LASF213:
+ 1927 0245 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1927      43313120 
+ 1927      352E342E 
+ 1927      31203230 
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 43
+
+
+ 1927      31363036 
+ 1928 0278 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1928      20726576 
+ 1928      6973696F 
+ 1928      6E203233 
+ 1928      37373135 
+ 1929 02ab 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1929      66756E63 
+ 1929      74696F6E 
+ 1929      2D736563 
+ 1929      74696F6E 
+ 1930              	.LASF129:
+ 1931 02d3 4F535F45 		.ascii	"OS_ERR_TASK_NOT_SUSPENDED\000"
+ 1931      52525F54 
+ 1931      41534B5F 
+ 1931      4E4F545F 
+ 1931      53555350 
+ 1932              	.LASF127:
+ 1933 02ed 4F535F45 		.ascii	"OS_ERR_TASK_NOT_DLY\000"
+ 1933      52525F54 
+ 1933      41534B5F 
+ 1933      4E4F545F 
+ 1933      444C5900 
+ 1934              	.LASF214:
+ 1935 0301 2E2E5C2E 		.ascii	"..\\..\\..\\..\\..\\..\\uCOS-III\\Source\\os_mem.c\000"
+ 1935      2E5C2E2E 
+ 1935      5C2E2E5C 
+ 1935      2E2E5C2E 
+ 1935      2E5C7543 
+ 1936              	.LASF41:
+ 1937 032c 4F535F45 		.ascii	"OS_ERR_INT_Q\000"
+ 1937      52525F49 
+ 1937      4E545F51 
+ 1937      00
+ 1938              	.LASF193:
+ 1939 0339 4462674E 		.ascii	"DbgNextPtr\000"
+ 1939      65787450 
+ 1939      747200
+ 1940              	.LASF141:
+ 1941 0344 4F535F45 		.ascii	"OS_ERR_TASK_WAITING\000"
+ 1941      52525F54 
+ 1941      41534B5F 
+ 1941      57414954 
+ 1941      494E4700 
+ 1942              	.LASF24:
+ 1943 0358 4F535F45 		.ascii	"OS_ERR_ACCEPT_ISR\000"
+ 1943      52525F41 
+ 1943      43434550 
+ 1943      545F4953 
+ 1943      5200
+ 1944              	.LASF139:
+ 1945 036a 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_ISR\000"
+ 1945      52525F54 
+ 1945      41534B5F 
+ 1945      53555350 
+ 1945      454E445F 
+ 1946              	.LASF65:
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 44
+
+
+ 1947 0382 4F535F45 		.ascii	"OS_ERR_MUTEX_NESTING\000"
+ 1947      52525F4D 
+ 1947      55544558 
+ 1947      5F4E4553 
+ 1947      54494E47 
+ 1948              	.LASF167:
+ 1949 0397 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_STATE\000"
+ 1949      52525F54 
+ 1949      4D525F49 
+ 1949      4E56414C 
+ 1949      49445F53 
+ 1950              	.LASF70:
+ 1951 03b0 4F535F45 		.ascii	"OS_ERR_OBJ_CREATED\000"
+ 1951      52525F4F 
+ 1951      424A5F43 
+ 1951      52454154 
+ 1951      454400
+ 1952              	.LASF209:
+ 1953 03c3 4F535F4D 		.ascii	"OS_MemInit\000"
+ 1953      656D496E 
+ 1953      697400
+ 1954              	.LASF137:
+ 1955 03ce 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_IDLE\000"
+ 1955      52525F54 
+ 1955      41534B5F 
+ 1955      53555350 
+ 1955      454E445F 
+ 1956              	.LASF42:
+ 1957 03e7 4F535F45 		.ascii	"OS_ERR_INT_Q_FULL\000"
+ 1957      52525F49 
+ 1957      4E545F51 
+ 1957      5F46554C 
+ 1957      4C00
+ 1958              	.LASF40:
+ 1959 03f9 4F535F45 		.ascii	"OS_ERR_ILLEGAL_CREATE_RUN_TIME\000"
+ 1959      52525F49 
+ 1959      4C4C4547 
+ 1959      414C5F43 
+ 1959      52454154 
+ 1960              	.LASF165:
+ 1961 0418 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_DLY\000"
+ 1961      52525F54 
+ 1961      4D525F49 
+ 1961      4E56414C 
+ 1961      49445F44 
+ 1962              	.LASF132:
+ 1963 042f 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_PRIO\000"
+ 1963      52525F54 
+ 1963      41534B5F 
+ 1963      52455355 
+ 1963      4D455F50 
+ 1964              	.LASF117:
+ 1965 0447 4F535F45 		.ascii	"OS_ERR_STK_LIMIT_INVALID\000"
+ 1965      52525F53 
+ 1965      544B5F4C 
+ 1965      494D4954 
+ 1965      5F494E56 
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 45
+
+
+ 1966              	.LASF12:
+ 1967 0460 666C6F61 		.ascii	"float\000"
+ 1967      7400
+ 1968              	.LASF86:
+ 1969 0466 4F535F45 		.ascii	"OS_ERR_POST_NULL_PTR\000"
+ 1969      52525F50 
+ 1969      4F53545F 
+ 1969      4E554C4C 
+ 1969      5F505452 
+ 1970              	.LASF68:
+ 1971 047b 4F535F45 		.ascii	"OS_ERR_NO_MORE_ID_AVAIL\000"
+ 1971      52525F4E 
+ 1971      4F5F4D4F 
+ 1971      52455F49 
+ 1971      445F4156 
+ 1972              	.LASF58:
+ 1973 0493 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_DATA\000"
+ 1973      52525F4D 
+ 1973      454D5F49 
+ 1973      4E56414C 
+ 1973      49445F50 
+ 1974              	.LASF205:
+ 1975 04ad 6370755F 		.ascii	"cpu_sr\000"
+ 1975      737200
+ 1976              	.LASF170:
+ 1977 04b4 4F535F45 		.ascii	"OS_ERR_TMR_NO_CALLBACK\000"
+ 1977      52525F54 
+ 1977      4D525F4E 
+ 1977      4F5F4341 
+ 1977      4C4C4241 
+ 1978              	.LASF163:
+ 1979 04cb 4F535F45 		.ascii	"OS_ERR_TMR_INACTIVE\000"
+ 1979      52525F54 
+ 1979      4D525F49 
+ 1979      4E414354 
+ 1979      49564500 
+ 1980              	.LASF143:
+ 1981 04df 4F535F45 		.ascii	"OS_ERR_TLS_ID_INVALID\000"
+ 1981      52525F54 
+ 1981      4C535F49 
+ 1981      445F494E 
+ 1981      56414C49 
+ 1982              	.LASF10:
+ 1983 04f5 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1983      206C6F6E 
+ 1983      6720756E 
+ 1983      7369676E 
+ 1983      65642069 
+ 1984              	.LASF134:
+ 1985 050c 4F535F45 		.ascii	"OS_ERR_TASK_RUNNING\000"
+ 1985      52525F54 
+ 1985      41534B5F 
+ 1985      52554E4E 
+ 1985      494E4700 
+ 1986              	.LASF168:
+ 1987 0520 4F535F45 		.ascii	"OS_ERR_TMR_INVALID\000"
+ 1987      52525F54 
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 46
+
+
+ 1987      4D525F49 
+ 1987      4E56414C 
+ 1987      494400
+ 1988              	.LASF138:
+ 1989 0533 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_INT_HANDLER\000"
+ 1989      52525F54 
+ 1989      41534B5F 
+ 1989      53555350 
+ 1989      454E445F 
+ 1990              	.LASF123:
+ 1991 0553 4F535F45 		.ascii	"OS_ERR_TASK_DEL_INVALID\000"
+ 1991      52525F54 
+ 1991      41534B5F 
+ 1991      44454C5F 
+ 1991      494E5641 
+ 1992              	.LASF173:
+ 1993 056b 4F535F45 		.ascii	"OS_ERR_TMR_STK_INVALID\000"
+ 1993      52525F54 
+ 1993      4D525F53 
+ 1993      544B5F49 
+ 1993      4E56414C 
+ 1994              	.LASF3:
+ 1995 0582 4350555F 		.ascii	"CPU_INT08U\000"
+ 1995      494E5430 
+ 1995      385500
+ 1996              	.LASF142:
+ 1997 058d 4F535F45 		.ascii	"OS_ERR_TCB_INVALID\000"
+ 1997      52525F54 
+ 1997      43425F49 
+ 1997      4E56414C 
+ 1997      494400
+ 1998              	.LASF207:
+ 1999 05a0 4F534D65 		.ascii	"OSMemPut\000"
+ 1999      6D507574 
+ 1999      00
+ 2000              	.LASF211:
+ 2001 05a9 4F534D65 		.ascii	"OSMemDbgListPtr\000"
+ 2001      6D446267 
+ 2001      4C697374 
+ 2001      50747200 
+ 2002              	.LASF94:
+ 2003 05b9 4F535F45 		.ascii	"OS_ERR_Q_EMPTY\000"
+ 2003      52525F51 
+ 2003      5F454D50 
+ 2003      545900
+ 2004              	.LASF158:
+ 2005 05c8 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_MILLISECONDS\000"
+ 2005      52525F54 
+ 2005      494D455F 
+ 2005      494E5641 
+ 2005      4C49445F 
+ 2006              	.LASF67:
+ 2007 05e9 4F535F45 		.ascii	"OS_ERR_NAME\000"
+ 2007      52525F4E 
+ 2007      414D4500 
+ 2008              	.LASF147:
+ 2009 05f5 4F535F45 		.ascii	"OS_ERR_TLS_DESTRUCT_ASSIGNED\000"
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 47
+
+
+ 2009      52525F54 
+ 2009      4C535F44 
+ 2009      45535452 
+ 2009      5543545F 
+ 2010              	.LASF184:
+ 2011 0612 4F535F4D 		.ascii	"OS_MEM\000"
+ 2011      454D00
+ 2012              	.LASF63:
+ 2013 0619 4F535F45 		.ascii	"OS_ERR_MUTEX_NOT_OWNER\000"
+ 2013      52525F4D 
+ 2013      55544558 
+ 2013      5F4E4F54 
+ 2013      5F4F574E 
+ 2014              	.LASF192:
+ 2015 0630 44626750 		.ascii	"DbgPrevPtr\000"
+ 2015      72657650 
+ 2015      747200
+ 2016              	.LASF155:
+ 2017 063b 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_HOURS\000"
+ 2017      52525F54 
+ 2017      494D455F 
+ 2017      494E5641 
+ 2017      4C49445F 
+ 2018              	.LASF171:
+ 2019 0655 4F535F45 		.ascii	"OS_ERR_TMR_NON_AVAIL\000"
+ 2019      52525F54 
+ 2019      4D525F4E 
+ 2019      4F4E5F41 
+ 2019      5641494C 
+ 2020              	.LASF2:
+ 2021 066a 4350555F 		.ascii	"CPU_CHAR\000"
+ 2021      43484152 
+ 2021      00
+ 2022              	.LASF120:
+ 2023 0673 4F535F45 		.ascii	"OS_ERR_TASK_CREATE_ISR\000"
+ 2023      52525F54 
+ 2023      41534B5F 
+ 2023      43524541 
+ 2023      54455F49 
+ 2024              	.LASF217:
+ 2025 068a 6F735F6D 		.ascii	"os_mem\000"
+ 2025      656D00
+ 2026              	.LASF76:
+ 2027 0691 4F535F45 		.ascii	"OS_ERR_OS_RUNNING\000"
+ 2027      52525F4F 
+ 2027      535F5255 
+ 2027      4E4E494E 
+ 2027      4700
+ 2028              	.LASF161:
+ 2029 06a3 4F535F45 		.ascii	"OS_ERR_TIME_ZERO_DLY\000"
+ 2029      52525F54 
+ 2029      494D455F 
+ 2029      5A45524F 
+ 2029      5F444C59 
+ 2030              	.LASF111:
+ 2031 06b8 4F535F45 		.ascii	"OS_ERR_STAT_STK_INVALID\000"
+ 2031      52525F53 
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 48
+
+
+ 2031      5441545F 
+ 2031      53544B5F 
+ 2031      494E5641 
+ 2032              	.LASF15:
+ 2033 06d0 4350555F 		.ascii	"CPU_DATA\000"
+ 2033      44415441 
+ 2033      00
+ 2034              	.LASF33:
+ 2035 06d9 4F535F45 		.ascii	"OS_ERR_FLAG_GRP_DEPLETED\000"
+ 2035      52525F46 
+ 2035      4C41475F 
+ 2035      4752505F 
+ 2035      4445504C 
+ 2036              	.LASF54:
+ 2037 06f2 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_BLKS\000"
+ 2037      52525F4D 
+ 2037      454D5F49 
+ 2037      4E56414C 
+ 2037      49445F42 
+ 2038              	.LASF200:
+ 2039 070a 705F6572 		.ascii	"p_err\000"
+ 2039      7200
+ 2040              	.LASF196:
+ 2041 0710 705F6E61 		.ascii	"p_name\000"
+ 2041      6D6500
+ 2042              	.LASF164:
+ 2043 0717 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_DEST\000"
+ 2043      52525F54 
+ 2043      4D525F49 
+ 2043      4E56414C 
+ 2043      49445F44 
+ 2044              	.LASF103:
+ 2045 072f 4F535F45 		.ascii	"OS_ERR_SCHED_LOCK_ISR\000"
+ 2045      52525F53 
+ 2045      43484544 
+ 2045      5F4C4F43 
+ 2045      4B5F4953 
+ 2046              	.LASF190:
+ 2047 0745 4E62724D 		.ascii	"NbrMax\000"
+ 2047      617800
+ 2048              	.LASF29:
+ 2049 074c 4F535F45 		.ascii	"OS_ERR_DEL_ISR\000"
+ 2049      52525F44 
+ 2049      454C5F49 
+ 2049      535200
+ 2050              	.LASF95:
+ 2051 075b 4F535F45 		.ascii	"OS_ERR_Q_MAX\000"
+ 2051      52525F51 
+ 2051      5F4D4158 
+ 2051      00
+ 2052              	.LASF0:
+ 2053 0768 63686172 		.ascii	"char\000"
+ 2053      00
+ 2054              	.LASF21:
+ 2055 076d 4F535F4F 		.ascii	"OS_OBJ_TYPE\000"
+ 2055      424A5F54 
+ 2055      59504500 
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 49
+
+
+ 2056              	.LASF146:
+ 2057 0779 4F535F45 		.ascii	"OS_ERR_TLS_NOT_EN\000"
+ 2057      52525F54 
+ 2057      4C535F4E 
+ 2057      4F545F45 
+ 2057      4E00
+ 2058              	.LASF74:
+ 2059 078b 4F535F45 		.ascii	"OS_ERR_OPT_INVALID\000"
+ 2059      52525F4F 
+ 2059      50545F49 
+ 2059      4E56414C 
+ 2059      494400
+ 2060              	.LASF16:
+ 2061 079e 4350555F 		.ascii	"CPU_SR\000"
+ 2061      535200
+ 2062              	.LASF102:
+ 2063 07a5 4F535F45 		.ascii	"OS_ERR_SCHED_INVALID_TIME_SLICE\000"
+ 2063      52525F53 
+ 2063      43484544 
+ 2063      5F494E56 
+ 2063      414C4944 
+ 2064              	.LASF110:
+ 2065 07c5 4F535F45 		.ascii	"OS_ERR_STAT_PRIO_INVALID\000"
+ 2065      52525F53 
+ 2065      5441545F 
+ 2065      5052494F 
+ 2065      5F494E56 
+ 2066              	.LASF159:
+ 2067 07de 4F535F45 		.ascii	"OS_ERR_TIME_NOT_DLY\000"
+ 2067      52525F54 
+ 2067      494D455F 
+ 2067      4E4F545F 
+ 2067      444C5900 
+ 2068              	.LASF187:
+ 2069 07f2 4E616D65 		.ascii	"NamePtr\000"
+ 2069      50747200 
+ 2070              	.LASF185:
+ 2071 07fa 54797065 		.ascii	"Type\000"
+ 2071      00
+ 2072              	.LASF181:
+ 2073 07ff 4F535F45 		.ascii	"OS_ERR_YIELD_ISR\000"
+ 2073      52525F59 
+ 2073      49454C44 
+ 2073      5F495352 
+ 2073      00
+ 2074              	.LASF204:
+ 2075 0810 705F6C69 		.ascii	"p_link\000"
+ 2075      6E6B00
+ 2076              	.LASF71:
+ 2077 0817 4F535F45 		.ascii	"OS_ERR_OBJ_DEL\000"
+ 2077      52525F4F 
+ 2077      424A5F44 
+ 2077      454C00
+ 2078              	.LASF11:
+ 2079 0826 6C6F6E67 		.ascii	"long long int\000"
+ 2079      206C6F6E 
+ 2079      6720696E 
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 50
+
+
+ 2079      7400
+ 2080              	.LASF35:
+ 2081 0834 4F535F45 		.ascii	"OS_ERR_FLAG_PEND_OPT\000"
+ 2081      52525F46 
+ 2081      4C41475F 
+ 2081      50454E44 
+ 2081      5F4F5054 
+ 2082              	.LASF197:
+ 2083 0849 705F6164 		.ascii	"p_addr\000"
+ 2083      647200
+ 2084              	.LASF96:
+ 2085 0850 4F535F45 		.ascii	"OS_ERR_Q_SIZE\000"
+ 2085      52525F51 
+ 2085      5F53495A 
+ 2085      4500
+ 2086              	.LASF215:
+ 2087 085e 433A5C55 		.ascii	"C:\\Users\\Aluno\\Documents\\PSoC Creator\\BCC722-P"
+ 2087      73657273 
+ 2087      5C416C75 
+ 2087      6E6F5C44 
+ 2087      6F63756D 
+ 2088 088c 52415449 		.ascii	"RATICA-03\\UCoS\\Micrium_2\\Software\\EvalBoards\\C"
+ 2088      43412D30 
+ 2088      335C5543 
+ 2088      6F535C4D 
+ 2088      69637269 
+ 2089 08ba 79707265 		.ascii	"ypress\\CY8CKIT-050\\PSoC\\uCOS-III-Probe\\Pratica0"
+ 2089      73735C43 
+ 2089      5938434B 
+ 2089      49542D30 
+ 2089      35305C50 
+ 2090 08e9 332D7543 		.ascii	"3-uCOS-III.cydsn\000"
+ 2090      4F532D49 
+ 2090      49492E63 
+ 2090      7964736E 
+ 2090      00
+ 2091              	.LASF81:
+ 2092 08fa 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_SELF\000"
+ 2092      52525F50 
+ 2092      454E445F 
+ 2092      41424F52 
+ 2092      545F5345 
+ 2093              	.LASF5:
+ 2094 0911 4350555F 		.ascii	"CPU_INT16U\000"
+ 2094      494E5431 
+ 2094      365500
+ 2095              	.LASF100:
+ 2096 091c 4F535F45 		.ascii	"OS_ERR_ROUND_ROBIN_DISABLED\000"
+ 2096      52525F52 
+ 2096      4F554E44 
+ 2096      5F524F42 
+ 2096      494E5F44 
+ 2097              	.LASF55:
+ 2098 0938 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_PART\000"
+ 2098      52525F4D 
+ 2098      454D5F49 
+ 2098      4E56414C 
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 51
+
+
+ 2098      49445F50 
+ 2099              	.LASF72:
+ 2100 0950 4F535F45 		.ascii	"OS_ERR_OBJ_PTR_NULL\000"
+ 2100      52525F4F 
+ 2100      424A5F50 
+ 2100      54525F4E 
+ 2100      554C4C00 
+ 2101              	.LASF98:
+ 2102 0964 4F535F45 		.ascii	"OS_ERR_REG_ID_INVALID\000"
+ 2102      52525F52 
+ 2102      45475F49 
+ 2102      445F494E 
+ 2102      56414C49 
+ 2103              	.LASF52:
+ 2104 097a 4F535F45 		.ascii	"OS_ERR_MEM_FULL\000"
+ 2104      52525F4D 
+ 2104      454D5F46 
+ 2104      554C4C00 
+ 2105              	.LASF126:
+ 2106 098a 4F535F45 		.ascii	"OS_ERR_TASK_NO_MORE_TCB\000"
+ 2106      52525F54 
+ 2106      41534B5F 
+ 2106      4E4F5F4D 
+ 2106      4F52455F 
+ 2107              	.LASF57:
+ 2108 09a2 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_MEM\000"
+ 2108      52525F4D 
+ 2108      454D5F49 
+ 2108      4E56414C 
+ 2108      49445F50 
+ 2109              	.LASF135:
+ 2110 09bb 4F535F45 		.ascii	"OS_ERR_TASK_STK_CHK_ISR\000"
+ 2110      52525F54 
+ 2110      41534B5F 
+ 2110      53544B5F 
+ 2110      43484B5F 
+ 2111              	.LASF174:
+ 2112 09d3 4F535F45 		.ascii	"OS_ERR_TMR_STK_SIZE_INVALID\000"
+ 2112      52525F54 
+ 2112      4D525F53 
+ 2112      544B5F53 
+ 2112      495A455F 
+ 2113              	.LASF128:
+ 2114 09ef 4F535F45 		.ascii	"OS_ERR_TASK_NOT_EXIST\000"
+ 2114      52525F54 
+ 2114      41534B5F 
+ 2114      4E4F545F 
+ 2114      45584953 
+ 2115              	.LASF208:
+ 2116 0a05 4F535F4D 		.ascii	"OS_MemDbgListAdd\000"
+ 2116      656D4462 
+ 2116      674C6973 
+ 2116      74416464 
+ 2116      00
+ 2117              	.LASF125:
+ 2118 0a16 4F535F45 		.ascii	"OS_ERR_TASK_INVALID\000"
+ 2118      52525F54 
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 52
+
+
+ 2118      41534B5F 
+ 2118      494E5641 
+ 2118      4C494400 
+ 2119              	.LASF172:
+ 2120 0a2a 4F535F45 		.ascii	"OS_ERR_TMR_PRIO_INVALID\000"
+ 2120      52525F54 
+ 2120      4D525F50 
+ 2120      52494F5F 
+ 2120      494E5641 
+ 2121              	.LASF140:
+ 2122 0a42 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_PRIO\000"
+ 2122      52525F54 
+ 2122      41534B5F 
+ 2122      53555350 
+ 2122      454E445F 
+ 2123              	.LASF45:
+ 2124 0a5b 4F535F45 		.ascii	"OS_ERR_INT_Q_STK_SIZE_INVALID\000"
+ 2124      52525F49 
+ 2124      4E545F51 
+ 2124      5F53544B 
+ 2124      5F53495A 
+ 2125              	.LASF144:
+ 2126 0a79 4F535F45 		.ascii	"OS_ERR_TLS_ISR\000"
+ 2126      52525F54 
+ 2126      4C535F49 
+ 2126      535200
+ 2127              	.LASF124:
+ 2128 0a88 4F535F45 		.ascii	"OS_ERR_TASK_DEL_ISR\000"
+ 2128      52525F54 
+ 2128      41534B5F 
+ 2128      44454C5F 
+ 2128      49535200 
+ 2129              	.LASF91:
+ 2130 0a9c 4F535F45 		.ascii	"OS_ERR_PTR_INVALID\000"
+ 2130      52525F50 
+ 2130      54525F49 
+ 2130      4E56414C 
+ 2130      494400
+ 2131              	.LASF113:
+ 2132 0aaf 4F535F45 		.ascii	"OS_ERR_STATE_INVALID\000"
+ 2132      52525F53 
+ 2132      54415445 
+ 2132      5F494E56 
+ 2132      414C4944 
+ 2133              	.LASF188:
+ 2134 0ac4 46726565 		.ascii	"FreeListPtr\000"
+ 2134      4C697374 
+ 2134      50747200 
+ 2135              	.LASF212:
+ 2136 0ad0 4F534D65 		.ascii	"OSMemQty\000"
+ 2136      6D517479 
+ 2136      00
+ 2137              	.LASF75:
+ 2138 0ad9 4F535F45 		.ascii	"OS_ERR_OS_NOT_RUNNING\000"
+ 2138      52525F4F 
+ 2138      535F4E4F 
+ 2138      545F5255 
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 53
+
+
+ 2138      4E4E494E 
+ 2139              	.LASF210:
+ 2140 0aef 4F53496E 		.ascii	"OSIntNestingCtr\000"
+ 2140      744E6573 
+ 2140      74696E67 
+ 2140      43747200 
+ 2141              	.LASF160:
+ 2142 0aff 4F535F45 		.ascii	"OS_ERR_TIME_SET_ISR\000"
+ 2142      52525F54 
+ 2142      494D455F 
+ 2142      5345545F 
+ 2142      49535200 
+ 2143              	.LASF99:
+ 2144 0b13 4F535F45 		.ascii	"OS_ERR_ROUND_ROBIN_1\000"
+ 2144      52525F52 
+ 2144      4F554E44 
+ 2144      5F524F42 
+ 2144      494E5F31 
+ 2145              	.LASF56:
+ 2146 0b28 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_BLK\000"
+ 2146      52525F4D 
+ 2146      454D5F49 
+ 2146      4E56414C 
+ 2146      49445F50 
+ 2147              	.LASF53:
+ 2148 0b41 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_ADDR\000"
+ 2148      52525F4D 
+ 2148      454D5F49 
+ 2148      4E56414C 
+ 2148      49445F50 
+ 2149              	.LASF49:
+ 2150 0b5b 4F535F45 		.ascii	"OS_ERR_LOCK_NESTING_OVF\000"
+ 2150      52525F4C 
+ 2150      4F434B5F 
+ 2150      4E455354 
+ 2150      494E475F 
+ 2151              	.LASF218:
+ 2152 0b73 4F534D65 		.ascii	"OSMemGet\000"
+ 2152      6D476574 
+ 2152      00
+ 2153              	.LASF7:
+ 2154 0b7c 73686F72 		.ascii	"short int\000"
+ 2154      7420696E 
+ 2154      7400
+ 2155              	.LASF198:
+ 2156 0b86 6E5F626C 		.ascii	"n_blks\000"
+ 2156      6B7300
+ 2157              	.LASF61:
+ 2158 0b8d 4F535F45 		.ascii	"OS_ERR_MSG_POOL_EMPTY\000"
+ 2158      52525F4D 
+ 2158      53475F50 
+ 2158      4F4F4C5F 
+ 2158      454D5054 
+ 2159              	.LASF186:
+ 2160 0ba3 41646472 		.ascii	"AddrPtr\000"
+ 2160      50747200 
+ 2161              	.LASF106:
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 54
+
+
+ 2162 0bab 4F535F45 		.ascii	"OS_ERR_SCHED_UNLOCK_ISR\000"
+ 2162      52525F53 
+ 2162      43484544 
+ 2162      5F554E4C 
+ 2162      4F434B5F 
+ 2163              	.LASF195:
+ 2164 0bc3 705F6D65 		.ascii	"p_mem\000"
+ 2164      6D00
+ 2165              	.LASF149:
+ 2166 0bc9 4F535F45 		.ascii	"OS_ERR_TICK_STK_INVALID\000"
+ 2166      52525F54 
+ 2166      49434B5F 
+ 2166      53544B5F 
+ 2166      494E5641 
+ 2167              	.LASF62:
+ 2168 0be1 4F535F45 		.ascii	"OS_ERR_MSG_POOL_NULL_PTR\000"
+ 2168      52525F4D 
+ 2168      53475F50 
+ 2168      4F4F4C5F 
+ 2168      4E554C4C 
+ 2169              	.LASF19:
+ 2170 0bfa 4F535F4E 		.ascii	"OS_NESTING_CTR\000"
+ 2170      45535449 
+ 2170      4E475F43 
+ 2170      545200
+ 2171              	.LASF133:
+ 2172 0c09 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_SELF\000"
+ 2172      52525F54 
+ 2172      41534B5F 
+ 2172      52455355 
+ 2172      4D455F53 
+ 2173              	.LASF73:
+ 2174 0c21 4F535F45 		.ascii	"OS_ERR_OBJ_TYPE\000"
+ 2174      52525F4F 
+ 2174      424A5F54 
+ 2174      59504500 
+ 2175              	.LASF206:
+ 2176 0c31 4F534D65 		.ascii	"OSMemCreate\000"
+ 2176      6D437265 
+ 2176      61746500 
+ 2177              	.LASF17:
+ 2178 0c3d 4F535F4D 		.ascii	"OS_MEM_QTY\000"
+ 2178      454D5F51 
+ 2178      545900
+ 2179              	.LASF80:
+ 2180 0c48 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_NONE\000"
+ 2180      52525F50 
+ 2180      454E445F 
+ 2180      41424F52 
+ 2180      545F4E4F 
+ 2181              	.LASF9:
+ 2182 0c5f 756E7369 		.ascii	"unsigned int\000"
+ 2182      676E6564 
+ 2182      20696E74 
+ 2182      00
+ 2183              	.LASF64:
+ 2184 0c6c 4F535F45 		.ascii	"OS_ERR_MUTEX_OWNER\000"
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 55
+
+
+ 2184      52525F4D 
+ 2184      55544558 
+ 2184      5F4F574E 
+ 2184      455200
+ 2185              	.LASF112:
+ 2186 0c7f 4F535F45 		.ascii	"OS_ERR_STAT_STK_SIZE_INVALID\000"
+ 2186      52525F53 
+ 2186      5441545F 
+ 2186      53544B5F 
+ 2186      53495A45 
+ 2187              	.LASF34:
+ 2188 0c9c 4F535F45 		.ascii	"OS_ERR_FLAG_NOT_RDY\000"
+ 2188      52525F46 
+ 2188      4C41475F 
+ 2188      4E4F545F 
+ 2188      52445900 
+ 2189              	.LASF194:
+ 2190 0cb0 73697A65 		.ascii	"sizetype\000"
+ 2190      74797065 
+ 2190      00
+ 2191              	.LASF203:
+ 2192 0cb9 705F626C 		.ascii	"p_blk\000"
+ 2192      6B00
+ 2193              	.LASF79:
+ 2194 0cbf 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_ISR\000"
+ 2194      52525F50 
+ 2194      454E445F 
+ 2194      41424F52 
+ 2194      545F4953 
+ 2195              	.LASF14:
+ 2196 0cd5 4350555F 		.ascii	"CPU_ADDR\000"
+ 2196      41444452 
+ 2196      00
+ 2197              	.LASF87:
+ 2198 0cde 4F535F45 		.ascii	"OS_ERR_POST_ISR\000"
+ 2198      52525F50 
+ 2198      4F53545F 
+ 2198      49535200 
+ 2199              	.LASF152:
+ 2200 0cee 4F535F45 		.ascii	"OS_ERR_TIME_DLY_ISR\000"
+ 2200      52525F54 
+ 2200      494D455F 
+ 2200      444C595F 
+ 2200      49535200 
+ 2201              	.LASF116:
+ 2202 0d02 4F535F45 		.ascii	"OS_ERR_STK_SIZE_INVALID\000"
+ 2202      52525F53 
+ 2202      544B5F53 
+ 2202      495A455F 
+ 2202      494E5641 
+ 2203              	.LASF175:
+ 2204 0d1a 4F535F45 		.ascii	"OS_ERR_TMR_STOPPED\000"
+ 2204      52525F54 
+ 2204      4D525F53 
+ 2204      544F5050 
+ 2204      454400
+ 2205              	.LASF1:
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 56
+
+
+ 2206 0d2d 756E7369 		.ascii	"unsigned char\000"
+ 2206      676E6564 
+ 2206      20636861 
+ 2206      7200
+ 2207              	.LASF130:
+ 2208 0d3b 4F535F45 		.ascii	"OS_ERR_TASK_OPT\000"
+ 2208      52525F54 
+ 2208      41534B5F 
+ 2208      4F505400 
+ 2209              	.LASF162:
+ 2210 0d4b 4F535F45 		.ascii	"OS_ERR_TIMEOUT\000"
+ 2210      52525F54 
+ 2210      494D454F 
+ 2210      555400
+ 2211              	.LASF202:
+ 2212 0d5a 6C6F6F70 		.ascii	"loops\000"
+ 2212      7300
+ 2213              	.LASF51:
+ 2214 0d60 4F535F45 		.ascii	"OS_ERR_MEM_CREATE_ISR\000"
+ 2214      52525F4D 
+ 2214      454D5F43 
+ 2214      52454154 
+ 2214      455F4953 
+ 2215              	.LASF191:
+ 2216 0d76 4E627246 		.ascii	"NbrFree\000"
+ 2216      72656500 
+ 2217              	.LASF114:
+ 2218 0d7e 4F535F45 		.ascii	"OS_ERR_STATUS_INVALID\000"
+ 2218      52525F53 
+ 2218      54415455 
+ 2218      535F494E 
+ 2218      56414C49 
+ 2219              	.LASF180:
+ 2220 0d94 4F535F45 		.ascii	"OS_ERR_Y\000"
+ 2220      52525F59 
+ 2220      00
+ 2221              	.LASF83:
+ 2222 0d9d 4F535F45 		.ascii	"OS_ERR_PEND_ISR\000"
+ 2222      52525F50 
+ 2222      454E445F 
+ 2222      49535200 
+ 2223              	.LASF182:
+ 2224 0dad 4F535F45 		.ascii	"OS_ERR_Z\000"
+ 2224      52525F5A 
+ 2224      00
+ 2225              	.LASF93:
+ 2226 0db6 4F535F45 		.ascii	"OS_ERR_Q_FULL\000"
+ 2226      52525F51 
+ 2226      5F46554C 
+ 2226      4C00
+ 2227              	.LASF44:
+ 2228 0dc4 4F535F45 		.ascii	"OS_ERR_INT_Q_STK_INVALID\000"
+ 2228      52525F49 
+ 2228      4E545F51 
+ 2228      5F53544B 
+ 2228      5F494E56 
+ 2229              	.LASF157:
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 57
+
+
+ 2230 0ddd 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_SECONDS\000"
+ 2230      52525F54 
+ 2230      494D455F 
+ 2230      494E5641 
+ 2230      4C49445F 
+ 2231              	.LASF121:
+ 2232 0df9 4F535F45 		.ascii	"OS_ERR_TASK_DEL\000"
+ 2232      52525F54 
+ 2232      41534B5F 
+ 2232      44454C00 
+ 2233              	.LASF18:
+ 2234 0e09 4F535F4D 		.ascii	"OS_MEM_SIZE\000"
+ 2234      454D5F53 
+ 2234      495A4500 
+ 2235              	.LASF4:
+ 2236 0e15 7369676E 		.ascii	"signed char\000"
+ 2236      65642063 
+ 2236      68617200 
+ 2237              	.LASF32:
+ 2238 0e21 4F535F45 		.ascii	"OS_ERR_FATAL_RETURN\000"
+ 2238      52525F46 
+ 2238      4154414C 
+ 2238      5F524554 
+ 2238      55524E00 
+ 2239              	.LASF6:
+ 2240 0e35 73686F72 		.ascii	"short unsigned int\000"
+ 2240      7420756E 
+ 2240      7369676E 
+ 2240      65642069 
+ 2240      6E7400
+ 2241              	.LASF145:
+ 2242 0e48 4F535F45 		.ascii	"OS_ERR_TLS_NO_MORE_AVAIL\000"
+ 2242      52525F54 
+ 2242      4C535F4E 
+ 2242      4F5F4D4F 
+ 2242      52455F41 
+ 2243              	.LASF22:
+ 2244 0e61 4F535F45 		.ascii	"OS_ERR_NONE\000"
+ 2244      52525F4E 
+ 2244      4F4E4500 
+ 2245              	.LASF104:
+ 2246 0e6d 4F535F45 		.ascii	"OS_ERR_SCHED_LOCKED\000"
+ 2246      52525F53 
+ 2246      43484544 
+ 2246      5F4C4F43 
+ 2246      4B454400 
+ 2247              	.LASF36:
+ 2248 0e81 4F535F45 		.ascii	"OS_ERR_FLUSH_ISR\000"
+ 2248      52525F46 
+ 2248      4C555348 
+ 2248      5F495352 
+ 2248      00
+ 2249              	.LASF13:
+ 2250 0e92 646F7562 		.ascii	"double\000"
+ 2250      6C6500
+ 2251              	.LASF78:
+ 2252 0e99 4F535F45 		.ascii	"OS_ERR_PEND_ABORT\000"
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 58
+
+
+ 2252      52525F50 
+ 2252      454E445F 
+ 2252      41424F52 
+ 2252      5400
+ 2253              	.LASF105:
+ 2254 0eab 4F535F45 		.ascii	"OS_ERR_SCHED_NOT_LOCKED\000"
+ 2254      52525F53 
+ 2254      43484544 
+ 2254      5F4E4F54 
+ 2254      5F4C4F43 
+ 2255              	.LASF89:
+ 2256 0ec3 4F535F45 		.ascii	"OS_ERR_PRIO\000"
+ 2256      52525F50 
+ 2256      52494F00 
+ 2257              	.LASF82:
+ 2258 0ecf 4F535F45 		.ascii	"OS_ERR_PEND_DEL\000"
+ 2258      52525F50 
+ 2258      454E445F 
+ 2258      44454C00 
+ 2259              	.LASF59:
+ 2260 0edf 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_SIZE\000"
+ 2260      52525F4D 
+ 2260      454D5F49 
+ 2260      4E56414C 
+ 2260      49445F53 
+ 2261              	.LASF136:
+ 2262 0ef7 4F535F45 		.ascii	"OS_ERR_TASK_SUSPENDED\000"
+ 2262      52525F54 
+ 2262      41534B5F 
+ 2262      53555350 
+ 2262      454E4445 
+ 2263              	.LASF108:
+ 2264 0f0d 4F535F45 		.ascii	"OS_ERR_SET_ISR\000"
+ 2264      52525F53 
+ 2264      45545F49 
+ 2264      535200
+ 2265              	.LASF107:
+ 2266 0f1c 4F535F45 		.ascii	"OS_ERR_SEM_OVF\000"
+ 2266      52525F53 
+ 2266      454D5F4F 
+ 2266      564600
+ 2267              	.LASF122:
+ 2268 0f2b 4F535F45 		.ascii	"OS_ERR_TASK_DEL_IDLE\000"
+ 2268      52525F54 
+ 2268      41534B5F 
+ 2268      44454C5F 
+ 2268      49444C45 
+ 2269              	.LASF154:
+ 2270 0f40 4F535F45 		.ascii	"OS_ERR_TIME_GET_ISR\000"
+ 2270      52525F54 
+ 2270      494D455F 
+ 2270      4745545F 
+ 2270      49535200 
+ 2271              	.LASF153:
+ 2272 0f54 4F535F45 		.ascii	"OS_ERR_TIME_DLY_RESUME_ISR\000"
+ 2272      52525F54 
+ 2272      494D455F 
+ARM GAS  C:\Users\Aluno\AppData\Local\Temp\ccuJGA2e.s 			page 59
+
+
+ 2272      444C595F 
+ 2272      52455355 
+ 2273              	.LASF148:
+ 2274 0f6f 4F535F45 		.ascii	"OS_ERR_TICK_PRIO_INVALID\000"
+ 2274      52525F54 
+ 2274      49434B5F 
+ 2274      5052494F 
+ 2274      5F494E56 
+ 2275              	.LASF88:
+ 2276 0f88 4F535F45 		.ascii	"OS_ERR_PRIO_EXIST\000"
+ 2276      52525F50 
+ 2276      52494F5F 
+ 2276      45584953 
+ 2276      5400
+ 2277              	.LASF60:
+ 2278 0f9a 4F535F45 		.ascii	"OS_ERR_MEM_NO_FREE_BLKS\000"
+ 2278      52525F4D 
+ 2278      454D5F4E 
+ 2278      4F5F4652 
+ 2278      45455F42 
+ 2279              	.LASF201:
+ 2280 0fb2 616C6967 		.ascii	"align_msk\000"
+ 2280      6E5F6D73 
+ 2280      6B00
+ 2281              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

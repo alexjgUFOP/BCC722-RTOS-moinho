@@ -1,0 +1,1248 @@
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"lib_math.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 EF000000 		.text
+  20      02009700 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.comm	Math_RandSeedCur,4,4
+  24              		.section	.text.Math_Init,"ax",%progbits
+  25              		.align	2
+  26              		.global	Math_Init
+  27              		.thumb
+  28              		.thumb_func
+  29              		.type	Math_Init, %function
+  30              	Math_Init:
+  31              	.LFB0:
+  32              		.file 1 "C:\\Micrium\\Software\\uC-LIB\\lib_math.c"
+   1:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+   2:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+   3:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                                uC/LIB
+   4:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                        CUSTOM LIBRARY MODULES
+   5:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+   6:C:\Micrium\Software\uC-LIB\lib_math.c **** *                          (c) Copyright 2004-2012; Micrium, Inc.; Weston, FL
+   7:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+   8:C:\Micrium\Software\uC-LIB\lib_math.c **** *               All rights reserved.  Protected by international copyright laws.
+   9:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+  10:C:\Micrium\Software\uC-LIB\lib_math.c **** *               uC/LIB is provided in source form to registered licensees ONLY.  It is 
+  11:C:\Micrium\Software\uC-LIB\lib_math.c **** *               illegal to distribute this source code to any third party unless you receive 
+  12:C:\Micrium\Software\uC-LIB\lib_math.c **** *               written permission by an authorized Micrium representative.  Knowledge of 
+  13:C:\Micrium\Software\uC-LIB\lib_math.c **** *               the source code may NOT be used to develop a similar product.
+  14:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+  15:C:\Micrium\Software\uC-LIB\lib_math.c **** *               Please help us continue to provide the Embedded community with the finest 
+  16:C:\Micrium\Software\uC-LIB\lib_math.c **** *               software available.  Your honesty is greatly appreciated.
+  17:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+  18:C:\Micrium\Software\uC-LIB\lib_math.c **** *               You can contact us at www.micrium.com.
+  19:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  20:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+  21:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 2
+
+
+  22:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+  23:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  24:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+  25:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                        MATHEMATIC OPERATIONS
+  26:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+  27:C:\Micrium\Software\uC-LIB\lib_math.c **** * Filename      : lib_math.c
+  28:C:\Micrium\Software\uC-LIB\lib_math.c **** * Version       : V1.37.00
+  29:C:\Micrium\Software\uC-LIB\lib_math.c **** * Programmer(s) : SR
+  30:C:\Micrium\Software\uC-LIB\lib_math.c **** *                 ITJ
+  31:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  32:C:\Micrium\Software\uC-LIB\lib_math.c **** * Note(s)       : (1) NO compiler-supplied standard library functions are used in library or produc
+  33:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+  34:C:\Micrium\Software\uC-LIB\lib_math.c **** *                     (a) ALL standard library functions are implemented in the custom library modu
+  35:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+  36:C:\Micrium\Software\uC-LIB\lib_math.c **** *                         (1) \<Custom Library Directory>\lib_*.*
+  37:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+  38:C:\Micrium\Software\uC-LIB\lib_math.c **** *                         (2) \<Custom Library Directory>\Ports\<cpu>\<compiler>\lib*_a.*
+  39:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+  40:C:\Micrium\Software\uC-LIB\lib_math.c **** *                               where
+  41:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                       <Custom Library Directory>      directory path for custom l
+  42:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                       <cpu>                           directory name for specific
+  43:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                       <compiler>                      directory name for specific
+  44:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+  45:C:\Micrium\Software\uC-LIB\lib_math.c **** *                     (b) Product-specific library functions are implemented in individual products
+  46:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+  47:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  48:C:\Micrium\Software\uC-LIB\lib_math.c **** * Notice(s)     : (1) The Institute of Electrical and Electronics Engineers and The Open Group, hav
+  49:C:\Micrium\Software\uC-LIB\lib_math.c **** *                     us permission to reprint portions of their documentation.  Portions of this t
+  50:C:\Micrium\Software\uC-LIB\lib_math.c **** *                     reprinted and reproduced in electronic form from the IEEE Std 1003.1, 2004 Ed
+  51:C:\Micrium\Software\uC-LIB\lib_math.c **** *                     Standard for Information Technology -- Portable Operating System Interface (P
+  52:C:\Micrium\Software\uC-LIB\lib_math.c **** *                     The Open Group Base Specifications Issue 6, Copyright (C) 2001-2004 by the In
+  53:C:\Micrium\Software\uC-LIB\lib_math.c **** *                     of Electrical and Electronics Engineers, Inc and The Open Group.  In the even
+  54:C:\Micrium\Software\uC-LIB\lib_math.c **** *                     discrepancy between these versions and the original IEEE and The Open Group S
+  55:C:\Micrium\Software\uC-LIB\lib_math.c **** *                     the original IEEE and The Open Group Standard is the referee document.  The o
+  56:C:\Micrium\Software\uC-LIB\lib_math.c **** *                     Standard can be obtained online at http://www.opengroup.org/unix/online.html.
+  57:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  58:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+  59:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+  60:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+  61:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+  62:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  63:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                            INCLUDE FILES
+  64:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  65:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+  66:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+  67:C:\Micrium\Software\uC-LIB\lib_math.c **** #define    MICRIUM_SOURCE
+  68:C:\Micrium\Software\uC-LIB\lib_math.c **** #define    LIB_MATH_MODULE
+  69:C:\Micrium\Software\uC-LIB\lib_math.c **** #include  <lib_math.h>
+  70:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+  71:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+  72:C:\Micrium\Software\uC-LIB\lib_math.c **** /*$PAGE*/
+  73:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+  74:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  75:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                            LOCAL DEFINES
+  76:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  77:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+  78:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 3
+
+
+  79:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+  80:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+  81:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  82:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                           LOCAL CONSTANTS
+  83:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  84:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+  85:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+  86:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+  87:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+  88:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  89:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                          LOCAL DATA TYPES
+  90:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  91:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+  92:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+  93:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+  94:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+  95:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  96:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                            LOCAL TABLES
+  97:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+  98:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+  99:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 100:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 101:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+ 102:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 103:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                       LOCAL GLOBAL VARIABLES
+ 104:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 105:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+ 106:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 107:C:\Micrium\Software\uC-LIB\lib_math.c **** RAND_NBR  Math_RandSeedCur;                                     /* Cur rand nbr seed.              
+ 108:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 109:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 110:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+ 111:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 112:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                      LOCAL FUNCTION PROTOTYPES
+ 113:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 114:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+ 115:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 116:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 117:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+ 118:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 119:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                     LOCAL CONFIGURATION ERRORS
+ 120:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 121:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+ 122:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 123:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 124:C:\Micrium\Software\uC-LIB\lib_math.c **** /*$PAGE*/
+ 125:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+ 126:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 127:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                             Math_Init()
+ 128:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 129:C:\Micrium\Software\uC-LIB\lib_math.c **** * Description : (1) Initialize Mathematic Module :
+ 130:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 131:C:\Micrium\Software\uC-LIB\lib_math.c **** *                   (a) Initialize random number seed value
+ 132:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 133:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 134:C:\Micrium\Software\uC-LIB\lib_math.c **** * Argument(s) : none.
+ 135:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 4
+
+
+ 136:C:\Micrium\Software\uC-LIB\lib_math.c **** * Return(s)   : none.
+ 137:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 138:C:\Micrium\Software\uC-LIB\lib_math.c **** * Caller(s)   : Application.
+ 139:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 140:C:\Micrium\Software\uC-LIB\lib_math.c **** * Note(s)     : (2) IEEE Std 1003.1, 2004 Edition, Section 'rand() : DESCRIPTION' states that "if r
+ 141:C:\Micrium\Software\uC-LIB\lib_math.c **** *                   is called before any calls to srand() are made, the same sequence shall be gene
+ 142:C:\Micrium\Software\uC-LIB\lib_math.c **** *                   as when srand() is first called with a seed value of 1".
+ 143:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 144:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+ 145:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 146:C:\Micrium\Software\uC-LIB\lib_math.c **** void  Math_Init (void)
+ 147:C:\Micrium\Software\uC-LIB\lib_math.c **** {
+  33              		.loc 1 147 0
+  34              		.cfi_startproc
+  35              		@ args = 0, pretend = 0, frame = 0
+  36              		@ frame_needed = 1, uses_anonymous_args = 0
+  37 0000 80B5     		push	{r7, lr}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 8
+  40 0002 00AF     		add	r7, sp, #0
+  41              		.cfi_offset 14, -4
+  42              		.cfi_offset 7, -8
+  43              	.LCFI1:
+  44              		.cfi_def_cfa_register 7
+ 148:C:\Micrium\Software\uC-LIB\lib_math.c ****     Math_RandSetSeed((RAND_NBR)RAND_SEED_INIT_VAL);             /* See Note #2.                    
+  45              		.loc 1 148 0
+  46 0004 4FF00100 		mov	r0, #1
+  47 0008 FFF7FEFF 		bl	Math_RandSetSeed
+ 149:C:\Micrium\Software\uC-LIB\lib_math.c **** }
+  48              		.loc 1 149 0
+  49 000c 80BD     		pop	{r7, pc}
+  50              		.cfi_endproc
+  51              	.LFE0:
+  52              		.size	Math_Init, .-Math_Init
+  53 000e 00BF     		.section	.text.Math_RandSetSeed,"ax",%progbits
+  54              		.align	2
+  55              		.global	Math_RandSetSeed
+  56              		.thumb
+  57              		.thumb_func
+  58              		.type	Math_RandSetSeed, %function
+  59              	Math_RandSetSeed:
+  60              	.LFB1:
+ 150:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 151:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 152:C:\Micrium\Software\uC-LIB\lib_math.c **** /*$PAGE*/
+ 153:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+ 154:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 155:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                         Math_RandSetSeed()
+ 156:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 157:C:\Micrium\Software\uC-LIB\lib_math.c **** * Description : Set the current pseudo-random number generator seed.
+ 158:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 159:C:\Micrium\Software\uC-LIB\lib_math.c **** * Argument(s) : seed        Initial (or current) value to set for the pseudo-random number sequence
+ 160:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 161:C:\Micrium\Software\uC-LIB\lib_math.c **** * Return(s)   : none.
+ 162:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 163:C:\Micrium\Software\uC-LIB\lib_math.c **** * Caller(s)   : Application.
+ 164:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 5
+
+
+ 165:C:\Micrium\Software\uC-LIB\lib_math.c **** * Note(s)     : (1) IEEE Std 1003.1, 2004 Edition, Section 'rand() : DESCRIPTION' states that "sran
+ 166:C:\Micrium\Software\uC-LIB\lib_math.c **** *                   ... uses the argument as a seed for a new sequence of pseudo-random numbers to 
+ 167:C:\Micrium\Software\uC-LIB\lib_math.c **** *                   returned by subsequent calls to rand()".
+ 168:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 169:C:\Micrium\Software\uC-LIB\lib_math.c **** *               (2) 'Math_RandSeedCur' MUST always be accessed exclusively in critical sections.
+ 170:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 171:C:\Micrium\Software\uC-LIB\lib_math.c **** *                   See also 'Math_Rand()  Note #1b'.
+ 172:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 173:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+ 174:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 175:C:\Micrium\Software\uC-LIB\lib_math.c **** void  Math_RandSetSeed (RAND_NBR  seed)
+ 176:C:\Micrium\Software\uC-LIB\lib_math.c **** {
+  61              		.loc 1 176 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 16
+  64              		@ frame_needed = 1, uses_anonymous_args = 0
+  65 0000 80B5     		push	{r7, lr}
+  66              	.LCFI2:
+  67              		.cfi_def_cfa_offset 8
+  68 0002 84B0     		sub	sp, sp, #16
+  69              	.LCFI3:
+  70              		.cfi_def_cfa_offset 24
+  71 0004 00AF     		add	r7, sp, #0
+  72              		.cfi_offset 14, -4
+  73              		.cfi_offset 7, -8
+  74              	.LCFI4:
+  75              		.cfi_def_cfa_register 7
+  76 0006 7860     		str	r0, [r7, #4]
+ 177:C:\Micrium\Software\uC-LIB\lib_math.c ****     CPU_SR_ALLOC();
+  77              		.loc 1 177 0
+  78 0008 4FF00003 		mov	r3, #0
+  79 000c FB60     		str	r3, [r7, #12]
+ 178:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 179:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 180:C:\Micrium\Software\uC-LIB\lib_math.c ****     CPU_CRITICAL_ENTER();
+  80              		.loc 1 180 0
+  81 000e FFF7FEFF 		bl	CPU_SR_Save
+  82 0012 0346     		mov	r3, r0
+  83 0014 FB60     		str	r3, [r7, #12]
+ 181:C:\Micrium\Software\uC-LIB\lib_math.c ****     Math_RandSeedCur = seed;
+  84              		.loc 1 181 0
+  85 0016 40F20003 		movw	r3, #:lower16:Math_RandSeedCur
+  86 001a C0F20003 		movt	r3, #:upper16:Math_RandSeedCur
+  87 001e 7A68     		ldr	r2, [r7, #4]
+  88 0020 1A60     		str	r2, [r3, #0]
+ 182:C:\Micrium\Software\uC-LIB\lib_math.c ****     CPU_CRITICAL_EXIT();
+  89              		.loc 1 182 0
+  90 0022 F868     		ldr	r0, [r7, #12]
+  91 0024 FFF7FEFF 		bl	CPU_SR_Restore
+ 183:C:\Micrium\Software\uC-LIB\lib_math.c **** }
+  92              		.loc 1 183 0
+  93 0028 07F11007 		add	r7, r7, #16
+  94 002c BD46     		mov	sp, r7
+  95 002e 80BD     		pop	{r7, pc}
+  96              		.cfi_endproc
+  97              	.LFE1:
+  98              		.size	Math_RandSetSeed, .-Math_RandSetSeed
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 6
+
+
+  99              		.section	.text.Math_Rand,"ax",%progbits
+ 100              		.align	2
+ 101              		.global	Math_Rand
+ 102              		.thumb
+ 103              		.thumb_func
+ 104              		.type	Math_Rand, %function
+ 105              	Math_Rand:
+ 106              	.LFB2:
+ 184:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 185:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 186:C:\Micrium\Software\uC-LIB\lib_math.c **** /*$PAGE*/
+ 187:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+ 188:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 189:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                             Math_Rand()
+ 190:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 191:C:\Micrium\Software\uC-LIB\lib_math.c **** * Description : Calculate the next pseudo-random number.
+ 192:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 193:C:\Micrium\Software\uC-LIB\lib_math.c **** * Argument(s) : none.
+ 194:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 195:C:\Micrium\Software\uC-LIB\lib_math.c **** * Return(s)   : Next pseudo-random number in the sequence after 'Math_RandSeedCur'.
+ 196:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 197:C:\Micrium\Software\uC-LIB\lib_math.c **** * Caller(s)   : Application.
+ 198:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 199:C:\Micrium\Software\uC-LIB\lib_math.c **** * Note(s)     : (1) (a) The pseudo-random number generator is implemented as a Linear Congruential 
+ 200:C:\Micrium\Software\uC-LIB\lib_math.c **** *                       Generator (LCG).
+ 201:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 202:C:\Micrium\Software\uC-LIB\lib_math.c **** *                   (b) The pseudo-random number generated is in the range [0, RAND_LCG_PARAM_M].
+ 203:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 204:C:\Micrium\Software\uC-LIB\lib_math.c **** *                   See also 'Math_RandSeed()  Note #1'.
+ 205:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 206:C:\Micrium\Software\uC-LIB\lib_math.c **** *               (2) (a) IEEE Std 1003.1, 2004 Edition, Section 'rand() : DESCRIPTION' states that "
+ 207:C:\Micrium\Software\uC-LIB\lib_math.c **** *                       ... need not be reentrant ... [and] is not required to be thread-safe".
+ 208:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 209:C:\Micrium\Software\uC-LIB\lib_math.c **** *                   (b) However, in order to implement Math_Rand() as re-entrant; 'Math_RandSeedCur
+ 210:C:\Micrium\Software\uC-LIB\lib_math.c **** *                       always be accessed & updated exclusively in critical sections.
+ 211:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 212:C:\Micrium\Software\uC-LIB\lib_math.c **** *                   See also 'Math_RandSeed()  Note #2'.
+ 213:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 214:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+ 215:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 216:C:\Micrium\Software\uC-LIB\lib_math.c **** RAND_NBR  Math_Rand (void)
+ 217:C:\Micrium\Software\uC-LIB\lib_math.c **** {
+ 107              		.loc 1 217 0
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 16
+ 110              		@ frame_needed = 1, uses_anonymous_args = 0
+ 111 0000 80B5     		push	{r7, lr}
+ 112              	.LCFI5:
+ 113              		.cfi_def_cfa_offset 8
+ 114 0002 84B0     		sub	sp, sp, #16
+ 115              	.LCFI6:
+ 116              		.cfi_def_cfa_offset 24
+ 117 0004 00AF     		add	r7, sp, #0
+ 118              		.cfi_offset 14, -4
+ 119              		.cfi_offset 7, -8
+ 120              	.LCFI7:
+ 121              		.cfi_def_cfa_register 7
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 7
+
+
+ 218:C:\Micrium\Software\uC-LIB\lib_math.c ****     RAND_NBR  seed;
+ 219:C:\Micrium\Software\uC-LIB\lib_math.c ****     RAND_NBR  rand_nbr;
+ 220:C:\Micrium\Software\uC-LIB\lib_math.c ****     CPU_SR_ALLOC();
+ 122              		.loc 1 220 0
+ 123 0006 4FF00003 		mov	r3, #0
+ 124 000a FB60     		str	r3, [r7, #12]
+ 221:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 222:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 223:C:\Micrium\Software\uC-LIB\lib_math.c ****     CPU_CRITICAL_ENTER();
+ 125              		.loc 1 223 0
+ 126 000c FFF7FEFF 		bl	CPU_SR_Save
+ 127 0010 0346     		mov	r3, r0
+ 128 0012 FB60     		str	r3, [r7, #12]
+ 224:C:\Micrium\Software\uC-LIB\lib_math.c ****     seed             = Math_RandSeedCur;
+ 129              		.loc 1 224 0
+ 130 0014 40F20003 		movw	r3, #:lower16:Math_RandSeedCur
+ 131 0018 C0F20003 		movt	r3, #:upper16:Math_RandSeedCur
+ 132 001c 1B68     		ldr	r3, [r3, #0]
+ 133 001e 7B60     		str	r3, [r7, #4]
+ 225:C:\Micrium\Software\uC-LIB\lib_math.c ****     rand_nbr         = Math_RandSeed(seed);
+ 134              		.loc 1 225 0
+ 135 0020 7868     		ldr	r0, [r7, #4]
+ 136 0022 FFF7FEFF 		bl	Math_RandSeed
+ 137 0026 0346     		mov	r3, r0
+ 138 0028 BB60     		str	r3, [r7, #8]
+ 226:C:\Micrium\Software\uC-LIB\lib_math.c ****     Math_RandSeedCur = rand_nbr;
+ 139              		.loc 1 226 0
+ 140 002a 40F20003 		movw	r3, #:lower16:Math_RandSeedCur
+ 141 002e C0F20003 		movt	r3, #:upper16:Math_RandSeedCur
+ 142 0032 BA68     		ldr	r2, [r7, #8]
+ 143 0034 1A60     		str	r2, [r3, #0]
+ 227:C:\Micrium\Software\uC-LIB\lib_math.c ****     CPU_CRITICAL_EXIT();
+ 144              		.loc 1 227 0
+ 145 0036 F868     		ldr	r0, [r7, #12]
+ 146 0038 FFF7FEFF 		bl	CPU_SR_Restore
+ 228:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 229:C:\Micrium\Software\uC-LIB\lib_math.c ****     return (rand_nbr);
+ 147              		.loc 1 229 0
+ 148 003c BB68     		ldr	r3, [r7, #8]
+ 230:C:\Micrium\Software\uC-LIB\lib_math.c **** }
+ 149              		.loc 1 230 0
+ 150 003e 1846     		mov	r0, r3
+ 151 0040 07F11007 		add	r7, r7, #16
+ 152 0044 BD46     		mov	sp, r7
+ 153 0046 80BD     		pop	{r7, pc}
+ 154              		.cfi_endproc
+ 155              	.LFE2:
+ 156              		.size	Math_Rand, .-Math_Rand
+ 157              		.section	.text.Math_RandSeed,"ax",%progbits
+ 158              		.align	2
+ 159              		.global	Math_RandSeed
+ 160              		.thumb
+ 161              		.thumb_func
+ 162              		.type	Math_RandSeed, %function
+ 163              	Math_RandSeed:
+ 164              	.LFB3:
+ 231:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 8
+
+
+ 232:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 233:C:\Micrium\Software\uC-LIB\lib_math.c **** /*$PAGE*/
+ 234:C:\Micrium\Software\uC-LIB\lib_math.c **** /*
+ 235:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 236:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                           Math_RandSeed()
+ 237:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 238:C:\Micrium\Software\uC-LIB\lib_math.c **** * Description : Calculate the next pseudo-random number.
+ 239:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 240:C:\Micrium\Software\uC-LIB\lib_math.c **** * Argument(s) : seed        Initial (or current) value for the pseudo-random number sequence.
+ 241:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 242:C:\Micrium\Software\uC-LIB\lib_math.c **** * Return(s)   : Next pseudo-random number in the sequence after 'seed'.
+ 243:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 244:C:\Micrium\Software\uC-LIB\lib_math.c **** * Caller(s)   : Math_Rand(),
+ 245:C:\Micrium\Software\uC-LIB\lib_math.c **** *               Application.
+ 246:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 247:C:\Micrium\Software\uC-LIB\lib_math.c **** * Note(s)     : (1) (a) BSD/ANSI-C implements rand() as a Linear Congruential Generator (LCG) :
+ 248:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 249:C:\Micrium\Software\uC-LIB\lib_math.c **** *                       (A) random_number       =  [(a * random_number ) + b]  modulo m
+ 250:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                        n + 1                        n
+ 251:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 252:C:\Micrium\Software\uC-LIB\lib_math.c **** *                               where
+ 253:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                       (1) (a) random_number           Next     random number to g
+ 254:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                                            n+1
+ 255:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                           (b) random_number           Previous random number    g
+ 256:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                                            n
+ 257:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 258:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                       (2) a = RAND_LCG_PARAM_A        LCG multiplier
+ 259:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                       (3) b = RAND_LCG_PARAM_B        LCG incrementor
+ 260:C:\Micrium\Software\uC-LIB\lib_math.c **** *                                       (4) m = RAND_LCG_PARAM_M + 1    LCG modulus
+ 261:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 262:C:\Micrium\Software\uC-LIB\lib_math.c **** *                   (b) The pseudo-random number generated is in the range [0, RAND_LCG_PARAM_M].
+ 263:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 264:C:\Micrium\Software\uC-LIB\lib_math.c ****                     See also 'lib_math.h  RANDOM NUMBER DEFINES  Note #1b'.
+ 265:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 266:C:\Micrium\Software\uC-LIB\lib_math.c **** *               (2) (a) IEEE Std 1003.1, 2004 Edition, Section 'rand() : DESCRIPTION' states that "
+ 267:C:\Micrium\Software\uC-LIB\lib_math.c **** *                       ... need not be reentrant ... [and] is not required to be thread-safe".
+ 268:C:\Micrium\Software\uC-LIB\lib_math.c **** *
+ 269:C:\Micrium\Software\uC-LIB\lib_math.c **** *                   (b) However, Math_RandSeed() is re-entrant since it calculates the next random 
+ 270:C:\Micrium\Software\uC-LIB\lib_math.c **** *                       using ONLY local variables.
+ 271:C:\Micrium\Software\uC-LIB\lib_math.c **** ***************************************************************************************************
+ 272:C:\Micrium\Software\uC-LIB\lib_math.c **** */
+ 273:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 274:C:\Micrium\Software\uC-LIB\lib_math.c **** RAND_NBR  Math_RandSeed (RAND_NBR  seed)
+ 275:C:\Micrium\Software\uC-LIB\lib_math.c **** {
+ 165              		.loc 1 275 0
+ 166              		.cfi_startproc
+ 167              		@ args = 0, pretend = 0, frame = 16
+ 168              		@ frame_needed = 1, uses_anonymous_args = 0
+ 169              		@ link register save eliminated.
+ 170 0000 80B4     		push	{r7}
+ 171              	.LCFI8:
+ 172              		.cfi_def_cfa_offset 4
+ 173 0002 85B0     		sub	sp, sp, #20
+ 174              	.LCFI9:
+ 175              		.cfi_def_cfa_offset 24
+ 176 0004 00AF     		add	r7, sp, #0
+ 177              		.cfi_offset 7, -4
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 9
+
+
+ 178              	.LCFI10:
+ 179              		.cfi_def_cfa_register 7
+ 180 0006 7860     		str	r0, [r7, #4]
+ 276:C:\Micrium\Software\uC-LIB\lib_math.c ****     RAND_NBR  rand_nbr;
+ 277:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 278:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 279:C:\Micrium\Software\uC-LIB\lib_math.c ****     rand_nbr = (((RAND_NBR)RAND_LCG_PARAM_A * seed) + (RAND_NBR)RAND_LCG_PARAM_B)  %  ((RAND_NBR)RA
+ 181              		.loc 1 279 0
+ 182 0008 7A68     		ldr	r2, [r7, #4]
+ 183 000a 44F66D63 		movw	r3, #:lower16:1103515245
+ 184 000e C4F2C613 		movt	r3, #:upper16:1103515245
+ 185 0012 03FB02F3 		mul	r3, r3, r2
+ 186 0016 03F54053 		add	r3, r3, #12288
+ 187 001a 03F13903 		add	r3, r3, #57
+ 188 001e 23F00043 		bic	r3, r3, #-2147483648
+ 189 0022 FB60     		str	r3, [r7, #12]
+ 280:C:\Micrium\Software\uC-LIB\lib_math.c **** 
+ 281:C:\Micrium\Software\uC-LIB\lib_math.c ****     return (rand_nbr);
+ 190              		.loc 1 281 0
+ 191 0024 FB68     		ldr	r3, [r7, #12]
+ 282:C:\Micrium\Software\uC-LIB\lib_math.c **** }
+ 192              		.loc 1 282 0
+ 193 0026 1846     		mov	r0, r3
+ 194 0028 07F11407 		add	r7, r7, #20
+ 195 002c BD46     		mov	sp, r7
+ 196 002e 80BC     		pop	{r7}
+ 197 0030 7047     		bx	lr
+ 198              		.cfi_endproc
+ 199              	.LFE3:
+ 200              		.size	Math_RandSeed, .-Math_RandSeed
+ 201 0032 00BF     		.text
+ 202              	.Letext0:
+ 203              		.section	.debug_loc,"",%progbits
+ 204              	.Ldebug_loc0:
+ 205              	.LLST0:
+ 206 0000 00000000 		.4byte	.LFB0
+ 207 0004 02000000 		.4byte	.LCFI0
+ 208 0008 0100     		.2byte	0x1
+ 209 000a 5D       		.byte	0x5d
+ 210 000b 02000000 		.4byte	.LCFI0
+ 211 000f 04000000 		.4byte	.LCFI1
+ 212 0013 0200     		.2byte	0x2
+ 213 0015 7D       		.byte	0x7d
+ 214 0016 08       		.sleb128 8
+ 215 0017 04000000 		.4byte	.LCFI1
+ 216 001b 0E000000 		.4byte	.LFE0
+ 217 001f 0200     		.2byte	0x2
+ 218 0021 77       		.byte	0x77
+ 219 0022 08       		.sleb128 8
+ 220 0023 00000000 		.4byte	0x0
+ 221 0027 00000000 		.4byte	0x0
+ 222              	.LLST1:
+ 223 002b 00000000 		.4byte	.LFB1
+ 224 002f 02000000 		.4byte	.LCFI2
+ 225 0033 0100     		.2byte	0x1
+ 226 0035 5D       		.byte	0x5d
+ 227 0036 02000000 		.4byte	.LCFI2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 10
+
+
+ 228 003a 04000000 		.4byte	.LCFI3
+ 229 003e 0200     		.2byte	0x2
+ 230 0040 7D       		.byte	0x7d
+ 231 0041 08       		.sleb128 8
+ 232 0042 04000000 		.4byte	.LCFI3
+ 233 0046 06000000 		.4byte	.LCFI4
+ 234 004a 0200     		.2byte	0x2
+ 235 004c 7D       		.byte	0x7d
+ 236 004d 18       		.sleb128 24
+ 237 004e 06000000 		.4byte	.LCFI4
+ 238 0052 30000000 		.4byte	.LFE1
+ 239 0056 0200     		.2byte	0x2
+ 240 0058 77       		.byte	0x77
+ 241 0059 18       		.sleb128 24
+ 242 005a 00000000 		.4byte	0x0
+ 243 005e 00000000 		.4byte	0x0
+ 244              	.LLST2:
+ 245 0062 00000000 		.4byte	.LFB2
+ 246 0066 02000000 		.4byte	.LCFI5
+ 247 006a 0100     		.2byte	0x1
+ 248 006c 5D       		.byte	0x5d
+ 249 006d 02000000 		.4byte	.LCFI5
+ 250 0071 04000000 		.4byte	.LCFI6
+ 251 0075 0200     		.2byte	0x2
+ 252 0077 7D       		.byte	0x7d
+ 253 0078 08       		.sleb128 8
+ 254 0079 04000000 		.4byte	.LCFI6
+ 255 007d 06000000 		.4byte	.LCFI7
+ 256 0081 0200     		.2byte	0x2
+ 257 0083 7D       		.byte	0x7d
+ 258 0084 18       		.sleb128 24
+ 259 0085 06000000 		.4byte	.LCFI7
+ 260 0089 48000000 		.4byte	.LFE2
+ 261 008d 0200     		.2byte	0x2
+ 262 008f 77       		.byte	0x77
+ 263 0090 18       		.sleb128 24
+ 264 0091 00000000 		.4byte	0x0
+ 265 0095 00000000 		.4byte	0x0
+ 266              	.LLST3:
+ 267 0099 00000000 		.4byte	.LFB3
+ 268 009d 02000000 		.4byte	.LCFI8
+ 269 00a1 0100     		.2byte	0x1
+ 270 00a3 5D       		.byte	0x5d
+ 271 00a4 02000000 		.4byte	.LCFI8
+ 272 00a8 04000000 		.4byte	.LCFI9
+ 273 00ac 0200     		.2byte	0x2
+ 274 00ae 7D       		.byte	0x7d
+ 275 00af 04       		.sleb128 4
+ 276 00b0 04000000 		.4byte	.LCFI9
+ 277 00b4 06000000 		.4byte	.LCFI10
+ 278 00b8 0200     		.2byte	0x2
+ 279 00ba 7D       		.byte	0x7d
+ 280 00bb 18       		.sleb128 24
+ 281 00bc 06000000 		.4byte	.LCFI10
+ 282 00c0 32000000 		.4byte	.LFE3
+ 283 00c4 0200     		.2byte	0x2
+ 284 00c6 77       		.byte	0x77
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 11
+
+
+ 285 00c7 18       		.sleb128 24
+ 286 00c8 00000000 		.4byte	0x0
+ 287 00cc 00000000 		.4byte	0x0
+ 288              		.file 2 "..\\..\\..\\..\\..\\..\\uC-CPU\\ARM-Cortex-M3\\GNU/cpu.h"
+ 289              		.file 3 "..\\..\\..\\..\\..\\..\\uC-LIB/lib_math.h"
+ 290              		.section	.debug_info
+ 291 0000 77010000 		.4byte	0x177
+ 292 0004 0200     		.2byte	0x2
+ 293 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 294 000a 04       		.byte	0x4
+ 295 000b 01       		.uleb128 0x1
+ 296 000c B0000000 		.4byte	.LASF18
+ 297 0010 01       		.byte	0x1
+ 298 0011 6D000000 		.4byte	.LASF19
+ 299 0015 15010000 		.4byte	.LASF20
+ 300 0019 00000000 		.4byte	0x0
+ 301 001d 00000000 		.4byte	0x0
+ 302 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 303 0025 00000000 		.4byte	.Ldebug_line0
+ 304 0029 02       		.uleb128 0x2
+ 305 002a 01       		.byte	0x1
+ 306 002b 08       		.byte	0x8
+ 307 002c 61000000 		.4byte	.LASF0
+ 308 0030 02       		.uleb128 0x2
+ 309 0031 01       		.byte	0x1
+ 310 0032 08       		.byte	0x8
+ 311 0033 53000000 		.4byte	.LASF1
+ 312 0037 02       		.uleb128 0x2
+ 313 0038 01       		.byte	0x1
+ 314 0039 06       		.byte	0x6
+ 315 003a B2010000 		.4byte	.LASF2
+ 316 003e 02       		.uleb128 0x2
+ 317 003f 02       		.byte	0x2
+ 318 0040 07       		.byte	0x7
+ 319 0041 BC000000 		.4byte	.LASF3
+ 320 0045 02       		.uleb128 0x2
+ 321 0046 02       		.byte	0x2
+ 322 0047 05       		.byte	0x5
+ 323 0048 0B010000 		.4byte	.LASF4
+ 324 004c 03       		.uleb128 0x3
+ 325 004d 00010000 		.4byte	.LASF10
+ 326 0051 02       		.byte	0x2
+ 327 0052 7C       		.byte	0x7c
+ 328 0053 57000000 		.4byte	0x57
+ 329 0057 02       		.uleb128 0x2
+ 330 0058 04       		.byte	0x4
+ 331 0059 07       		.byte	0x7
+ 332 005a 0E000000 		.4byte	.LASF5
+ 333 005e 04       		.uleb128 0x4
+ 334 005f 04       		.byte	0x4
+ 335 0060 05       		.byte	0x5
+ 336 0061 696E7400 		.ascii	"int\000"
+ 337 0065 02       		.uleb128 0x2
+ 338 0066 08       		.byte	0x8
+ 339 0067 07       		.byte	0x7
+ 340 0068 3C000000 		.4byte	.LASF6
+ 341 006c 02       		.uleb128 0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 12
+
+
+ 342 006d 08       		.byte	0x8
+ 343 006e 05       		.byte	0x5
+ 344 006f 00000000 		.4byte	.LASF7
+ 345 0073 02       		.uleb128 0x2
+ 346 0074 04       		.byte	0x4
+ 347 0075 04       		.byte	0x4
+ 348 0076 E9000000 		.4byte	.LASF8
+ 349 007a 02       		.uleb128 0x2
+ 350 007b 08       		.byte	0x8
+ 351 007c 04       		.byte	0x4
+ 352 007d A9000000 		.4byte	.LASF9
+ 353 0081 05       		.uleb128 0x5
+ 354 0082 E2000000 		.4byte	.LASF11
+ 355 0086 02       		.byte	0x2
+ 356 0087 2901     		.2byte	0x129
+ 357 0089 4C000000 		.4byte	0x4c
+ 358 008d 03       		.uleb128 0x3
+ 359 008e D9000000 		.4byte	.LASF12
+ 360 0092 03       		.byte	0x3
+ 361 0093 BB       		.byte	0xbb
+ 362 0094 4C000000 		.4byte	0x4c
+ 363 0098 06       		.uleb128 0x6
+ 364 0099 01       		.byte	0x1
+ 365 009a 32000000 		.4byte	.LASF21
+ 366 009e 01       		.byte	0x1
+ 367 009f 92       		.byte	0x92
+ 368 00a0 01       		.byte	0x1
+ 369 00a1 00000000 		.4byte	.LFB0
+ 370 00a5 0E000000 		.4byte	.LFE0
+ 371 00a9 00000000 		.4byte	.LLST0
+ 372 00ad 07       		.uleb128 0x7
+ 373 00ae 01       		.byte	0x1
+ 374 00af 93000000 		.4byte	.LASF22
+ 375 00b3 01       		.byte	0x1
+ 376 00b4 AF       		.byte	0xaf
+ 377 00b5 01       		.byte	0x1
+ 378 00b6 00000000 		.4byte	.LFB1
+ 379 00ba 30000000 		.4byte	.LFE1
+ 380 00be 2B000000 		.4byte	.LLST1
+ 381 00c2 E3000000 		.4byte	0xe3
+ 382 00c6 08       		.uleb128 0x8
+ 383 00c7 A4000000 		.4byte	.LASF14
+ 384 00cb 01       		.byte	0x1
+ 385 00cc AF       		.byte	0xaf
+ 386 00cd 8D000000 		.4byte	0x8d
+ 387 00d1 02       		.byte	0x2
+ 388 00d2 91       		.byte	0x91
+ 389 00d3 6C       		.sleb128 -20
+ 390 00d4 09       		.uleb128 0x9
+ 391 00d5 66000000 		.4byte	.LASF13
+ 392 00d9 01       		.byte	0x1
+ 393 00da B1       		.byte	0xb1
+ 394 00db 81000000 		.4byte	0x81
+ 395 00df 02       		.byte	0x2
+ 396 00e0 91       		.byte	0x91
+ 397 00e1 74       		.sleb128 -12
+ 398 00e2 00       		.byte	0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 13
+
+
+ 399 00e3 0A       		.uleb128 0xa
+ 400 00e4 01       		.byte	0x1
+ 401 00e5 CF000000 		.4byte	.LASF16
+ 402 00e9 01       		.byte	0x1
+ 403 00ea D8       		.byte	0xd8
+ 404 00eb 01       		.byte	0x1
+ 405 00ec 8D000000 		.4byte	0x8d
+ 406 00f0 00000000 		.4byte	.LFB2
+ 407 00f4 48000000 		.4byte	.LFE2
+ 408 00f8 62000000 		.4byte	.LLST2
+ 409 00fc 2B010000 		.4byte	0x12b
+ 410 0100 09       		.uleb128 0x9
+ 411 0101 A4000000 		.4byte	.LASF14
+ 412 0105 01       		.byte	0x1
+ 413 0106 DA       		.byte	0xda
+ 414 0107 8D000000 		.4byte	0x8d
+ 415 010b 02       		.byte	0x2
+ 416 010c 91       		.byte	0x91
+ 417 010d 6C       		.sleb128 -20
+ 418 010e 09       		.uleb128 0x9
+ 419 010f 29000000 		.4byte	.LASF15
+ 420 0113 01       		.byte	0x1
+ 421 0114 DB       		.byte	0xdb
+ 422 0115 8D000000 		.4byte	0x8d
+ 423 0119 02       		.byte	0x2
+ 424 011a 91       		.byte	0x91
+ 425 011b 70       		.sleb128 -16
+ 426 011c 09       		.uleb128 0x9
+ 427 011d 66000000 		.4byte	.LASF13
+ 428 0121 01       		.byte	0x1
+ 429 0122 DC       		.byte	0xdc
+ 430 0123 81000000 		.4byte	0x81
+ 431 0127 02       		.byte	0x2
+ 432 0128 91       		.byte	0x91
+ 433 0129 74       		.sleb128 -12
+ 434 012a 00       		.byte	0x0
+ 435 012b 0B       		.uleb128 0xb
+ 436 012c 01       		.byte	0x1
+ 437 012d 1B000000 		.4byte	.LASF17
+ 438 0131 01       		.byte	0x1
+ 439 0132 1201     		.2byte	0x112
+ 440 0134 01       		.byte	0x1
+ 441 0135 8D000000 		.4byte	0x8d
+ 442 0139 00000000 		.4byte	.LFB3
+ 443 013d 32000000 		.4byte	.LFE3
+ 444 0141 99000000 		.4byte	.LLST3
+ 445 0145 68010000 		.4byte	0x168
+ 446 0149 0C       		.uleb128 0xc
+ 447 014a A4000000 		.4byte	.LASF14
+ 448 014e 01       		.byte	0x1
+ 449 014f 1201     		.2byte	0x112
+ 450 0151 8D000000 		.4byte	0x8d
+ 451 0155 02       		.byte	0x2
+ 452 0156 91       		.byte	0x91
+ 453 0157 6C       		.sleb128 -20
+ 454 0158 0D       		.uleb128 0xd
+ 455 0159 29000000 		.4byte	.LASF15
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 14
+
+
+ 456 015d 01       		.byte	0x1
+ 457 015e 1401     		.2byte	0x114
+ 458 0160 8D000000 		.4byte	0x8d
+ 459 0164 02       		.byte	0x2
+ 460 0165 91       		.byte	0x91
+ 461 0166 74       		.sleb128 -12
+ 462 0167 00       		.byte	0x0
+ 463 0168 0E       		.uleb128 0xe
+ 464 0169 EF000000 		.4byte	.LASF23
+ 465 016d 01       		.byte	0x1
+ 466 016e 6B       		.byte	0x6b
+ 467 016f 8D000000 		.4byte	0x8d
+ 468 0173 01       		.byte	0x1
+ 469 0174 05       		.byte	0x5
+ 470 0175 03       		.byte	0x3
+ 471 0176 00000000 		.4byte	Math_RandSeedCur
+ 472 017a 00       		.byte	0x0
+ 473              		.section	.debug_abbrev
+ 474 0000 01       		.uleb128 0x1
+ 475 0001 11       		.uleb128 0x11
+ 476 0002 01       		.byte	0x1
+ 477 0003 25       		.uleb128 0x25
+ 478 0004 0E       		.uleb128 0xe
+ 479 0005 13       		.uleb128 0x13
+ 480 0006 0B       		.uleb128 0xb
+ 481 0007 03       		.uleb128 0x3
+ 482 0008 0E       		.uleb128 0xe
+ 483 0009 1B       		.uleb128 0x1b
+ 484 000a 0E       		.uleb128 0xe
+ 485 000b 11       		.uleb128 0x11
+ 486 000c 01       		.uleb128 0x1
+ 487 000d 52       		.uleb128 0x52
+ 488 000e 01       		.uleb128 0x1
+ 489 000f 55       		.uleb128 0x55
+ 490 0010 06       		.uleb128 0x6
+ 491 0011 10       		.uleb128 0x10
+ 492 0012 06       		.uleb128 0x6
+ 493 0013 00       		.byte	0x0
+ 494 0014 00       		.byte	0x0
+ 495 0015 02       		.uleb128 0x2
+ 496 0016 24       		.uleb128 0x24
+ 497 0017 00       		.byte	0x0
+ 498 0018 0B       		.uleb128 0xb
+ 499 0019 0B       		.uleb128 0xb
+ 500 001a 3E       		.uleb128 0x3e
+ 501 001b 0B       		.uleb128 0xb
+ 502 001c 03       		.uleb128 0x3
+ 503 001d 0E       		.uleb128 0xe
+ 504 001e 00       		.byte	0x0
+ 505 001f 00       		.byte	0x0
+ 506 0020 03       		.uleb128 0x3
+ 507 0021 16       		.uleb128 0x16
+ 508 0022 00       		.byte	0x0
+ 509 0023 03       		.uleb128 0x3
+ 510 0024 0E       		.uleb128 0xe
+ 511 0025 3A       		.uleb128 0x3a
+ 512 0026 0B       		.uleb128 0xb
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 15
+
+
+ 513 0027 3B       		.uleb128 0x3b
+ 514 0028 0B       		.uleb128 0xb
+ 515 0029 49       		.uleb128 0x49
+ 516 002a 13       		.uleb128 0x13
+ 517 002b 00       		.byte	0x0
+ 518 002c 00       		.byte	0x0
+ 519 002d 04       		.uleb128 0x4
+ 520 002e 24       		.uleb128 0x24
+ 521 002f 00       		.byte	0x0
+ 522 0030 0B       		.uleb128 0xb
+ 523 0031 0B       		.uleb128 0xb
+ 524 0032 3E       		.uleb128 0x3e
+ 525 0033 0B       		.uleb128 0xb
+ 526 0034 03       		.uleb128 0x3
+ 527 0035 08       		.uleb128 0x8
+ 528 0036 00       		.byte	0x0
+ 529 0037 00       		.byte	0x0
+ 530 0038 05       		.uleb128 0x5
+ 531 0039 16       		.uleb128 0x16
+ 532 003a 00       		.byte	0x0
+ 533 003b 03       		.uleb128 0x3
+ 534 003c 0E       		.uleb128 0xe
+ 535 003d 3A       		.uleb128 0x3a
+ 536 003e 0B       		.uleb128 0xb
+ 537 003f 3B       		.uleb128 0x3b
+ 538 0040 05       		.uleb128 0x5
+ 539 0041 49       		.uleb128 0x49
+ 540 0042 13       		.uleb128 0x13
+ 541 0043 00       		.byte	0x0
+ 542 0044 00       		.byte	0x0
+ 543 0045 06       		.uleb128 0x6
+ 544 0046 2E       		.uleb128 0x2e
+ 545 0047 00       		.byte	0x0
+ 546 0048 3F       		.uleb128 0x3f
+ 547 0049 0C       		.uleb128 0xc
+ 548 004a 03       		.uleb128 0x3
+ 549 004b 0E       		.uleb128 0xe
+ 550 004c 3A       		.uleb128 0x3a
+ 551 004d 0B       		.uleb128 0xb
+ 552 004e 3B       		.uleb128 0x3b
+ 553 004f 0B       		.uleb128 0xb
+ 554 0050 27       		.uleb128 0x27
+ 555 0051 0C       		.uleb128 0xc
+ 556 0052 11       		.uleb128 0x11
+ 557 0053 01       		.uleb128 0x1
+ 558 0054 12       		.uleb128 0x12
+ 559 0055 01       		.uleb128 0x1
+ 560 0056 40       		.uleb128 0x40
+ 561 0057 06       		.uleb128 0x6
+ 562 0058 00       		.byte	0x0
+ 563 0059 00       		.byte	0x0
+ 564 005a 07       		.uleb128 0x7
+ 565 005b 2E       		.uleb128 0x2e
+ 566 005c 01       		.byte	0x1
+ 567 005d 3F       		.uleb128 0x3f
+ 568 005e 0C       		.uleb128 0xc
+ 569 005f 03       		.uleb128 0x3
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 16
+
+
+ 570 0060 0E       		.uleb128 0xe
+ 571 0061 3A       		.uleb128 0x3a
+ 572 0062 0B       		.uleb128 0xb
+ 573 0063 3B       		.uleb128 0x3b
+ 574 0064 0B       		.uleb128 0xb
+ 575 0065 27       		.uleb128 0x27
+ 576 0066 0C       		.uleb128 0xc
+ 577 0067 11       		.uleb128 0x11
+ 578 0068 01       		.uleb128 0x1
+ 579 0069 12       		.uleb128 0x12
+ 580 006a 01       		.uleb128 0x1
+ 581 006b 40       		.uleb128 0x40
+ 582 006c 06       		.uleb128 0x6
+ 583 006d 01       		.uleb128 0x1
+ 584 006e 13       		.uleb128 0x13
+ 585 006f 00       		.byte	0x0
+ 586 0070 00       		.byte	0x0
+ 587 0071 08       		.uleb128 0x8
+ 588 0072 05       		.uleb128 0x5
+ 589 0073 00       		.byte	0x0
+ 590 0074 03       		.uleb128 0x3
+ 591 0075 0E       		.uleb128 0xe
+ 592 0076 3A       		.uleb128 0x3a
+ 593 0077 0B       		.uleb128 0xb
+ 594 0078 3B       		.uleb128 0x3b
+ 595 0079 0B       		.uleb128 0xb
+ 596 007a 49       		.uleb128 0x49
+ 597 007b 13       		.uleb128 0x13
+ 598 007c 02       		.uleb128 0x2
+ 599 007d 0A       		.uleb128 0xa
+ 600 007e 00       		.byte	0x0
+ 601 007f 00       		.byte	0x0
+ 602 0080 09       		.uleb128 0x9
+ 603 0081 34       		.uleb128 0x34
+ 604 0082 00       		.byte	0x0
+ 605 0083 03       		.uleb128 0x3
+ 606 0084 0E       		.uleb128 0xe
+ 607 0085 3A       		.uleb128 0x3a
+ 608 0086 0B       		.uleb128 0xb
+ 609 0087 3B       		.uleb128 0x3b
+ 610 0088 0B       		.uleb128 0xb
+ 611 0089 49       		.uleb128 0x49
+ 612 008a 13       		.uleb128 0x13
+ 613 008b 02       		.uleb128 0x2
+ 614 008c 0A       		.uleb128 0xa
+ 615 008d 00       		.byte	0x0
+ 616 008e 00       		.byte	0x0
+ 617 008f 0A       		.uleb128 0xa
+ 618 0090 2E       		.uleb128 0x2e
+ 619 0091 01       		.byte	0x1
+ 620 0092 3F       		.uleb128 0x3f
+ 621 0093 0C       		.uleb128 0xc
+ 622 0094 03       		.uleb128 0x3
+ 623 0095 0E       		.uleb128 0xe
+ 624 0096 3A       		.uleb128 0x3a
+ 625 0097 0B       		.uleb128 0xb
+ 626 0098 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 17
+
+
+ 627 0099 0B       		.uleb128 0xb
+ 628 009a 27       		.uleb128 0x27
+ 629 009b 0C       		.uleb128 0xc
+ 630 009c 49       		.uleb128 0x49
+ 631 009d 13       		.uleb128 0x13
+ 632 009e 11       		.uleb128 0x11
+ 633 009f 01       		.uleb128 0x1
+ 634 00a0 12       		.uleb128 0x12
+ 635 00a1 01       		.uleb128 0x1
+ 636 00a2 40       		.uleb128 0x40
+ 637 00a3 06       		.uleb128 0x6
+ 638 00a4 01       		.uleb128 0x1
+ 639 00a5 13       		.uleb128 0x13
+ 640 00a6 00       		.byte	0x0
+ 641 00a7 00       		.byte	0x0
+ 642 00a8 0B       		.uleb128 0xb
+ 643 00a9 2E       		.uleb128 0x2e
+ 644 00aa 01       		.byte	0x1
+ 645 00ab 3F       		.uleb128 0x3f
+ 646 00ac 0C       		.uleb128 0xc
+ 647 00ad 03       		.uleb128 0x3
+ 648 00ae 0E       		.uleb128 0xe
+ 649 00af 3A       		.uleb128 0x3a
+ 650 00b0 0B       		.uleb128 0xb
+ 651 00b1 3B       		.uleb128 0x3b
+ 652 00b2 05       		.uleb128 0x5
+ 653 00b3 27       		.uleb128 0x27
+ 654 00b4 0C       		.uleb128 0xc
+ 655 00b5 49       		.uleb128 0x49
+ 656 00b6 13       		.uleb128 0x13
+ 657 00b7 11       		.uleb128 0x11
+ 658 00b8 01       		.uleb128 0x1
+ 659 00b9 12       		.uleb128 0x12
+ 660 00ba 01       		.uleb128 0x1
+ 661 00bb 40       		.uleb128 0x40
+ 662 00bc 06       		.uleb128 0x6
+ 663 00bd 01       		.uleb128 0x1
+ 664 00be 13       		.uleb128 0x13
+ 665 00bf 00       		.byte	0x0
+ 666 00c0 00       		.byte	0x0
+ 667 00c1 0C       		.uleb128 0xc
+ 668 00c2 05       		.uleb128 0x5
+ 669 00c3 00       		.byte	0x0
+ 670 00c4 03       		.uleb128 0x3
+ 671 00c5 0E       		.uleb128 0xe
+ 672 00c6 3A       		.uleb128 0x3a
+ 673 00c7 0B       		.uleb128 0xb
+ 674 00c8 3B       		.uleb128 0x3b
+ 675 00c9 05       		.uleb128 0x5
+ 676 00ca 49       		.uleb128 0x49
+ 677 00cb 13       		.uleb128 0x13
+ 678 00cc 02       		.uleb128 0x2
+ 679 00cd 0A       		.uleb128 0xa
+ 680 00ce 00       		.byte	0x0
+ 681 00cf 00       		.byte	0x0
+ 682 00d0 0D       		.uleb128 0xd
+ 683 00d1 34       		.uleb128 0x34
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 18
+
+
+ 684 00d2 00       		.byte	0x0
+ 685 00d3 03       		.uleb128 0x3
+ 686 00d4 0E       		.uleb128 0xe
+ 687 00d5 3A       		.uleb128 0x3a
+ 688 00d6 0B       		.uleb128 0xb
+ 689 00d7 3B       		.uleb128 0x3b
+ 690 00d8 05       		.uleb128 0x5
+ 691 00d9 49       		.uleb128 0x49
+ 692 00da 13       		.uleb128 0x13
+ 693 00db 02       		.uleb128 0x2
+ 694 00dc 0A       		.uleb128 0xa
+ 695 00dd 00       		.byte	0x0
+ 696 00de 00       		.byte	0x0
+ 697 00df 0E       		.uleb128 0xe
+ 698 00e0 34       		.uleb128 0x34
+ 699 00e1 00       		.byte	0x0
+ 700 00e2 03       		.uleb128 0x3
+ 701 00e3 0E       		.uleb128 0xe
+ 702 00e4 3A       		.uleb128 0x3a
+ 703 00e5 0B       		.uleb128 0xb
+ 704 00e6 3B       		.uleb128 0x3b
+ 705 00e7 0B       		.uleb128 0xb
+ 706 00e8 49       		.uleb128 0x49
+ 707 00e9 13       		.uleb128 0x13
+ 708 00ea 3F       		.uleb128 0x3f
+ 709 00eb 0C       		.uleb128 0xc
+ 710 00ec 02       		.uleb128 0x2
+ 711 00ed 0A       		.uleb128 0xa
+ 712 00ee 00       		.byte	0x0
+ 713 00ef 00       		.byte	0x0
+ 714 00f0 00       		.byte	0x0
+ 715              		.section	.debug_pubnames,"",%progbits
+ 716 0000 66000000 		.4byte	0x66
+ 717 0004 0200     		.2byte	0x2
+ 718 0006 00000000 		.4byte	.Ldebug_info0
+ 719 000a 7B010000 		.4byte	0x17b
+ 720 000e 98000000 		.4byte	0x98
+ 721 0012 4D617468 		.ascii	"Math_Init\000"
+ 721      5F496E69 
+ 721      7400
+ 722 001c AD000000 		.4byte	0xad
+ 723 0020 4D617468 		.ascii	"Math_RandSetSeed\000"
+ 723      5F52616E 
+ 723      64536574 
+ 723      53656564 
+ 723      00
+ 724 0031 E3000000 		.4byte	0xe3
+ 725 0035 4D617468 		.ascii	"Math_Rand\000"
+ 725      5F52616E 
+ 725      6400
+ 726 003f 2B010000 		.4byte	0x12b
+ 727 0043 4D617468 		.ascii	"Math_RandSeed\000"
+ 727      5F52616E 
+ 727      64536565 
+ 727      6400
+ 728 0051 68010000 		.4byte	0x168
+ 729 0055 4D617468 		.ascii	"Math_RandSeedCur\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 19
+
+
+ 729      5F52616E 
+ 729      64536565 
+ 729      64437572 
+ 729      00
+ 730 0066 00000000 		.4byte	0x0
+ 731              		.section	.debug_aranges,"",%progbits
+ 732 0000 34000000 		.4byte	0x34
+ 733 0004 0200     		.2byte	0x2
+ 734 0006 00000000 		.4byte	.Ldebug_info0
+ 735 000a 04       		.byte	0x4
+ 736 000b 00       		.byte	0x0
+ 737 000c 0000     		.2byte	0x0
+ 738 000e 0000     		.2byte	0x0
+ 739 0010 00000000 		.4byte	.LFB0
+ 740 0014 0E000000 		.4byte	.LFE0-.LFB0
+ 741 0018 00000000 		.4byte	.LFB1
+ 742 001c 30000000 		.4byte	.LFE1-.LFB1
+ 743 0020 00000000 		.4byte	.LFB2
+ 744 0024 48000000 		.4byte	.LFE2-.LFB2
+ 745 0028 00000000 		.4byte	.LFB3
+ 746 002c 32000000 		.4byte	.LFE3-.LFB3
+ 747 0030 00000000 		.4byte	0x0
+ 748 0034 00000000 		.4byte	0x0
+ 749              		.section	.debug_ranges,"",%progbits
+ 750              	.Ldebug_ranges0:
+ 751 0000 00000000 		.4byte	.Ltext0
+ 752 0004 00000000 		.4byte	.Letext0
+ 753 0008 00000000 		.4byte	.LFB0
+ 754 000c 0E000000 		.4byte	.LFE0
+ 755 0010 00000000 		.4byte	.LFB1
+ 756 0014 30000000 		.4byte	.LFE1
+ 757 0018 00000000 		.4byte	.LFB2
+ 758 001c 48000000 		.4byte	.LFE2
+ 759 0020 00000000 		.4byte	.LFB3
+ 760 0024 32000000 		.4byte	.LFE3
+ 761 0028 00000000 		.4byte	0x0
+ 762 002c 00000000 		.4byte	0x0
+ 763              		.section	.debug_str,"MS",%progbits,1
+ 764              	.LASF7:
+ 765 0000 6C6F6E67 		.ascii	"long long int\000"
+ 765      206C6F6E 
+ 765      6720696E 
+ 765      7400
+ 766              	.LASF5:
+ 767 000e 756E7369 		.ascii	"unsigned int\000"
+ 767      676E6564 
+ 767      20696E74 
+ 767      00
+ 768              	.LASF17:
+ 769 001b 4D617468 		.ascii	"Math_RandSeed\000"
+ 769      5F52616E 
+ 769      64536565 
+ 769      6400
+ 770              	.LASF15:
+ 771 0029 72616E64 		.ascii	"rand_nbr\000"
+ 771      5F6E6272 
+ 771      00
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 20
+
+
+ 772              	.LASF21:
+ 773 0032 4D617468 		.ascii	"Math_Init\000"
+ 773      5F496E69 
+ 773      7400
+ 774              	.LASF6:
+ 775 003c 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 775      206C6F6E 
+ 775      6720756E 
+ 775      7369676E 
+ 775      65642069 
+ 776              	.LASF1:
+ 777 0053 756E7369 		.ascii	"unsigned char\000"
+ 777      676E6564 
+ 777      20636861 
+ 777      7200
+ 778              	.LASF0:
+ 779 0061 63686172 		.ascii	"char\000"
+ 779      00
+ 780              	.LASF13:
+ 781 0066 6370755F 		.ascii	"cpu_sr\000"
+ 781      737200
+ 782              	.LASF19:
+ 783 006d 433A5C4D 		.ascii	"C:\\Micrium\\Software\\uC-LIB\\lib_math.c\000"
+ 783      69637269 
+ 783      756D5C53 
+ 783      6F667477 
+ 783      6172655C 
+ 784              	.LASF22:
+ 785 0093 4D617468 		.ascii	"Math_RandSetSeed\000"
+ 785      5F52616E 
+ 785      64536574 
+ 785      53656564 
+ 785      00
+ 786              	.LASF14:
+ 787 00a4 73656564 		.ascii	"seed\000"
+ 787      00
+ 788              	.LASF9:
+ 789 00a9 646F7562 		.ascii	"double\000"
+ 789      6C6500
+ 790              	.LASF18:
+ 791 00b0 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 791      4320342E 
+ 791      342E3100 
+ 792              	.LASF3:
+ 793 00bc 73686F72 		.ascii	"short unsigned int\000"
+ 793      7420756E 
+ 793      7369676E 
+ 793      65642069 
+ 793      6E7400
+ 794              	.LASF16:
+ 795 00cf 4D617468 		.ascii	"Math_Rand\000"
+ 795      5F52616E 
+ 795      6400
+ 796              	.LASF12:
+ 797 00d9 52414E44 		.ascii	"RAND_NBR\000"
+ 797      5F4E4252 
+ 797      00
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccMhmzKg.s 			page 21
+
+
+ 798              	.LASF11:
+ 799 00e2 4350555F 		.ascii	"CPU_SR\000"
+ 799      535200
+ 800              	.LASF8:
+ 801 00e9 666C6F61 		.ascii	"float\000"
+ 801      7400
+ 802              	.LASF23:
+ 803 00ef 4D617468 		.ascii	"Math_RandSeedCur\000"
+ 803      5F52616E 
+ 803      64536565 
+ 803      64437572 
+ 803      00
+ 804              	.LASF10:
+ 805 0100 4350555F 		.ascii	"CPU_INT32U\000"
+ 805      494E5433 
+ 805      325500
+ 806              	.LASF4:
+ 807 010b 73686F72 		.ascii	"short int\000"
+ 807      7420696E 
+ 807      7400
+ 808              	.LASF20:
+ 809 0115 433A5C55 		.ascii	"C:\\Users\\daniel01\\Desktop\\CY8CKIT-050_uCOS-III\\"
+ 809      73657273 
+ 809      5C64616E 
+ 809      69656C30 
+ 809      315C4465 
+ 810 0144 43593843 		.ascii	"CY8CKIT-050_uCOS-III\\Micrium\\Software\\EvalBoards"
+ 810      4B49542D 
+ 810      3035305F 
+ 810      75434F53 
+ 810      2D494949 
+ 811 0174 5C437970 		.ascii	"\\Cypress\\CY8CKIT-050\\PSoC\\uCOS-III-Probe\\uCOS-"
+ 811      72657373 
+ 811      5C435938 
+ 811      434B4954 
+ 811      2D303530 
+ 812 01a2 4949492D 		.ascii	"III-Probe.cydsn\000"
+ 812      50726F62 
+ 812      652E6379 
+ 812      64736E00 
+ 813              	.LASF2:
+ 814 01b2 7369676E 		.ascii	"signed char\000"
+ 814      65642063 
+ 814      68617200 
+ 815              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

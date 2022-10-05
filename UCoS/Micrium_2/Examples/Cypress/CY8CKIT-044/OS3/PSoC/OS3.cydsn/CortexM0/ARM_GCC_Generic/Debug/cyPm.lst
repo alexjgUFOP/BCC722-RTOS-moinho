@@ -1,0 +1,4255 @@
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"cyPm.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.CySysPmSleep,"ax",%progbits
+  16              		.align	1
+  17              		.global	CySysPmSleep
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  23              		.type	CySysPmSleep, %function
+  24              	CySysPmSleep:
+  25              	.LFB0:
+  26              		.file 1 "Generated_Source\\PSoC4\\cyPm.c"
+   1:Generated_Source\PSoC4/cyPm.c **** /***************************************************************************//**
+   2:Generated_Source\PSoC4/cyPm.c **** * \file cyPm.c
+   3:Generated_Source\PSoC4/cyPm.c **** * \version 5.80
+   4:Generated_Source\PSoC4/cyPm.c **** *
+   5:Generated_Source\PSoC4/cyPm.c **** * \brief Provides an API for the power management.
+   6:Generated_Source\PSoC4/cyPm.c **** *
+   7:Generated_Source\PSoC4/cyPm.c **** * \note Documentation of the API's in this file is located in the System
+   8:Generated_Source\PSoC4/cyPm.c **** * Reference Guide provided with PSoC Creator.
+   9:Generated_Source\PSoC4/cyPm.c **** *
+  10:Generated_Source\PSoC4/cyPm.c **** ********************************************************************************
+  11:Generated_Source\PSoC4/cyPm.c **** * \copyright
+  12:Generated_Source\PSoC4/cyPm.c **** * Copyright 2011-2018, Cypress Semiconductor Corporation.  All rights reserved.
+  13:Generated_Source\PSoC4/cyPm.c **** * You may use this file only in accordance with the license, terms, conditions,
+  14:Generated_Source\PSoC4/cyPm.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  15:Generated_Source\PSoC4/cyPm.c **** * the software package with which this file was provided.
+  16:Generated_Source\PSoC4/cyPm.c **** *******************************************************************************/
+  17:Generated_Source\PSoC4/cyPm.c **** 
+  18:Generated_Source\PSoC4/cyPm.c **** #include "cyPm.h"
+  19:Generated_Source\PSoC4/cyPm.c **** #include "CyLib.h"
+  20:Generated_Source\PSoC4/cyPm.c **** #include "CyFlash.h"
+  21:Generated_Source\PSoC4/cyPm.c **** 
+  22:Generated_Source\PSoC4/cyPm.c **** 
+  23:Generated_Source\PSoC4/cyPm.c **** /*******************************************************************************
+  24:Generated_Source\PSoC4/cyPm.c **** * Function Name: CySysPmSleep
+  25:Generated_Source\PSoC4/cyPm.c **** ****************************************************************************//**
+  26:Generated_Source\PSoC4/cyPm.c **** *
+  27:Generated_Source\PSoC4/cyPm.c **** * Puts the part into the Sleep state. This is a CPU-centric power mode.
+  28:Generated_Source\PSoC4/cyPm.c **** * It means that the CPU has indicated that it is in the sleep mode and
+  29:Generated_Source\PSoC4/cyPm.c **** * its main clock can be removed. It is identical to Active from a peripheral
+  30:Generated_Source\PSoC4/cyPm.c **** * point of view. Any enabled interrupts can cause wakeup from the Sleep mode.
+  31:Generated_Source\PSoC4/cyPm.c **** *
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 2
+
+
+  32:Generated_Source\PSoC4/cyPm.c **** *******************************************************************************/
+  33:Generated_Source\PSoC4/cyPm.c **** void CySysPmSleep(void)
+  34:Generated_Source\PSoC4/cyPm.c **** {
+  27              		.loc 1 34 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 10B5     		push	{r4, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 4, -8
+  34              		.cfi_offset 14, -4
+  35:Generated_Source\PSoC4/cyPm.c ****     uint8 interruptState;
+  35              		.loc 1 35 5 view .LVU1
+  36:Generated_Source\PSoC4/cyPm.c **** 
+  37:Generated_Source\PSoC4/cyPm.c ****     interruptState = CyEnterCriticalSection();
+  36              		.loc 1 37 5 view .LVU2
+  37              		.loc 1 37 22 is_stmt 0 view .LVU3
+  38 0002 FFF7FEFF 		bl	CyEnterCriticalSection
+  39              	.LVL0:
+  38:Generated_Source\PSoC4/cyPm.c **** 
+  39:Generated_Source\PSoC4/cyPm.c ****     /* CPU enters Sleep mode upon execution of WFI */
+  40:Generated_Source\PSoC4/cyPm.c ****     CY_PM_CPU_SCR_REG &= (uint32) (~CY_PM_CPU_SCR_SLEEPDEEP);
+  40              		.loc 1 40 5 is_stmt 1 view .LVU4
+  41              		.loc 1 40 23 is_stmt 0 view .LVU5
+  42 0006 044A     		ldr	r2, .L2
+  43 0008 1368     		ldr	r3, [r2]
+  44 000a 0421     		movs	r1, #4
+  45 000c 8B43     		bics	r3, r1
+  46 000e 1360     		str	r3, [r2]
+  41:Generated_Source\PSoC4/cyPm.c **** 
+  42:Generated_Source\PSoC4/cyPm.c ****     /* Sleep and wait for interrupt */
+  43:Generated_Source\PSoC4/cyPm.c ****     CY_PM_WFI;
+  47              		.loc 1 43 5 is_stmt 1 view .LVU6
+  48              		.syntax divided
+  49              	@ 43 "Generated_Source\PSoC4\cyPm.c" 1
+  50 0010 30BF     		WFI 
+  51              	
+  52              	@ 0 "" 2
+  44:Generated_Source\PSoC4/cyPm.c **** 
+  45:Generated_Source\PSoC4/cyPm.c ****     CyExitCriticalSection(interruptState);
+  53              		.loc 1 45 5 view .LVU7
+  54              		.thumb
+  55              		.syntax unified
+  56 0012 FFF7FEFF 		bl	CyExitCriticalSection
+  57              	.LVL1:
+  46:Generated_Source\PSoC4/cyPm.c **** }
+  58              		.loc 1 46 1 is_stmt 0 view .LVU8
+  59              		@ sp needed
+  60 0016 10BD     		pop	{r4, pc}
+  61              	.L3:
+  62              		.align	2
+  63              	.L2:
+  64 0018 10ED00E0 		.word	-536810224
+  65              		.cfi_endproc
+  66              	.LFE0:
+  67              		.size	CySysPmSleep, .-CySysPmSleep
+  68              		.section	.text.CySysPmDeepSleep,"ax",%progbits
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 3
+
+
+  69              		.align	1
+  70              		.global	CySysPmDeepSleep
+  71              		.syntax unified
+  72              		.code	16
+  73              		.thumb_func
+  74              		.fpu softvfp
+  75              		.type	CySysPmDeepSleep, %function
+  76              	CySysPmDeepSleep:
+  77              	.LFB1:
+  47:Generated_Source\PSoC4/cyPm.c **** 
+  48:Generated_Source\PSoC4/cyPm.c **** 
+  49:Generated_Source\PSoC4/cyPm.c **** /*******************************************************************************
+  50:Generated_Source\PSoC4/cyPm.c **** * Function Name: CySysPmDeepSleep
+  51:Generated_Source\PSoC4/cyPm.c **** ****************************************************************************//**
+  52:Generated_Source\PSoC4/cyPm.c **** *
+  53:Generated_Source\PSoC4/cyPm.c **** * Puts the part into the Deep Sleep state. If the firmware attempts to enter
+  54:Generated_Source\PSoC4/cyPm.c **** * this mode before the system is ready (that is, when
+  55:Generated_Source\PSoC4/cyPm.c **** * PWR_CONTROL.LPM_READY = 0), then the device will go into the Sleep mode
+  56:Generated_Source\PSoC4/cyPm.c **** * instead and automatically enter the originally intended mode when the
+  57:Generated_Source\PSoC4/cyPm.c **** * holdoff expires.
+  58:Generated_Source\PSoC4/cyPm.c **** *
+  59:Generated_Source\PSoC4/cyPm.c **** * The wakeup occurs when an interrupt is received from a DeepSleep or
+  60:Generated_Source\PSoC4/cyPm.c **** * Hibernate peripheral. For more details, see a corresponding
+  61:Generated_Source\PSoC4/cyPm.c **** * peripheral's datasheet.
+  62:Generated_Source\PSoC4/cyPm.c **** *
+  63:Generated_Source\PSoC4/cyPm.c **** *******************************************************************************/
+  64:Generated_Source\PSoC4/cyPm.c **** void CySysPmDeepSleep(void)
+  65:Generated_Source\PSoC4/cyPm.c **** {
+  78              		.loc 1 65 1 is_stmt 1 view -0
+  79              		.cfi_startproc
+  80              		@ args = 0, pretend = 0, frame = 8
+  81              		@ frame_needed = 0, uses_anonymous_args = 0
+  82 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  83              		.cfi_def_cfa_offset 20
+  84              		.cfi_offset 4, -20
+  85              		.cfi_offset 5, -16
+  86              		.cfi_offset 6, -12
+  87              		.cfi_offset 7, -8
+  88              		.cfi_offset 14, -4
+  89 0002 83B0     		sub	sp, sp, #12
+  90              		.cfi_def_cfa_offset 32
+  66:Generated_Source\PSoC4/cyPm.c ****     uint8 interruptState;
+  91              		.loc 1 66 5 view .LVU10
+  67:Generated_Source\PSoC4/cyPm.c ****     #if(CY_IP_SRSSV2)
+  68:Generated_Source\PSoC4/cyPm.c ****         volatile uint32 clkSelectReg;
+  92              		.loc 1 68 9 view .LVU11
+  69:Generated_Source\PSoC4/cyPm.c ****     #endif /* (CY_IP_SRSSV2) */
+  70:Generated_Source\PSoC4/cyPm.c ****     
+  71:Generated_Source\PSoC4/cyPm.c ****     #if(CY_IP_ECO_SRSSLT)
+  72:Generated_Source\PSoC4/cyPm.c ****         volatile uint32 pllResoreFlag = 0u;
+  73:Generated_Source\PSoC4/cyPm.c ****     #endif /* (CY_IP_ECO_SRSSLT) */
+  74:Generated_Source\PSoC4/cyPm.c **** 
+  75:Generated_Source\PSoC4/cyPm.c ****     #if (CY_IP_IMO_TRIMMABLE_BY_WCO)
+  76:Generated_Source\PSoC4/cyPm.c ****         uint32 regTmp = 0u;
+  77:Generated_Source\PSoC4/cyPm.c ****     #endif /* (CY_IP_IMO_TRIMMABLE_BY_WCO) */
+  78:Generated_Source\PSoC4/cyPm.c ****     
+  79:Generated_Source\PSoC4/cyPm.c ****     interruptState = CyEnterCriticalSection();
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 4
+
+
+  93              		.loc 1 79 5 view .LVU12
+  94              		.loc 1 79 22 is_stmt 0 view .LVU13
+  95 0004 FFF7FEFF 		bl	CyEnterCriticalSection
+  96              	.LVL2:
+  97 0008 0400     		movs	r4, r0
+  98              	.LVL3:
+  80:Generated_Source\PSoC4/cyPm.c **** 
+  81:Generated_Source\PSoC4/cyPm.c ****     #if(CY_IP_ECO_SRSSLT)
+  82:Generated_Source\PSoC4/cyPm.c ****         if(0u != (CY_SYS_ECO_CLK_SELECT_REG & CY_SYS_ECO_CLK_SELECT_ECO_PLL_MASK))
+  83:Generated_Source\PSoC4/cyPm.c ****         {
+  84:Generated_Source\PSoC4/cyPm.c ****             pllResoreFlag = 1u;
+  85:Generated_Source\PSoC4/cyPm.c ****             
+  86:Generated_Source\PSoC4/cyPm.c ****             /* Set default state = IMO for HFCLK_SEL bit mask */
+  87:Generated_Source\PSoC4/cyPm.c ****             CY_SYS_CLK_SELECT_REG &= (uint32)(~CY_SYS_CLK_SELECT_DIRECT_SEL_MASK);
+  88:Generated_Source\PSoC4/cyPm.c ****         }
+  89:Generated_Source\PSoC4/cyPm.c ****     #endif /* (CY_IP_ECO_SRSSLT) */
+  90:Generated_Source\PSoC4/cyPm.c **** 
+  91:Generated_Source\PSoC4/cyPm.c ****     #if(CY_IP_SRSSV2)
+  92:Generated_Source\PSoC4/cyPm.c ****         /* Device enters DeepSleep mode when CPU asserts SLEEPDEEP signal */
+  93:Generated_Source\PSoC4/cyPm.c ****         CY_PM_PWR_CONTROL_REG &= (uint32) (~CY_PM_PWR_CONTROL_HIBERNATE);
+  99              		.loc 1 93 9 is_stmt 1 view .LVU14
+ 100              		.loc 1 93 31 is_stmt 0 view .LVU15
+ 101 000a 134A     		ldr	r2, .L5
+ 102 000c 1368     		ldr	r3, [r2]
+ 103 000e 5B00     		lsls	r3, r3, #1
+ 104 0010 5B08     		lsrs	r3, r3, #1
+ 105 0012 1360     		str	r3, [r2]
+  94:Generated_Source\PSoC4/cyPm.c ****     #endif /* (CY_IP_SRSSV2) */
+  95:Generated_Source\PSoC4/cyPm.c **** 
+  96:Generated_Source\PSoC4/cyPm.c ****     #if (CY_IP_CPUSS && CY_IP_SRSSV2)
+  97:Generated_Source\PSoC4/cyPm.c ****         CY_PM_CPUSS_CONFIG_REG |= CY_PM_CPUSS_CONFIG_FLSH_ACC_BYPASS;
+ 106              		.loc 1 97 9 is_stmt 1 view .LVU16
+ 107              		.loc 1 97 32 is_stmt 0 view .LVU17
+ 108 0014 8025     		movs	r5, #128
+ 109 0016 ED05     		lsls	r5, r5, #23
+ 110 0018 2B68     		ldr	r3, [r5]
+ 111 001a 0226     		movs	r6, #2
+ 112 001c 3343     		orrs	r3, r6
+ 113 001e 2B60     		str	r3, [r5]
+  98:Generated_Source\PSoC4/cyPm.c ****     #endif /* (CY_IP_CPUSS && CY_IP_SRSSV2) */
+  99:Generated_Source\PSoC4/cyPm.c ****     
+ 100:Generated_Source\PSoC4/cyPm.c ****     #if (CY_IP_IMO_TRIMMABLE_BY_WCO)
+ 101:Generated_Source\PSoC4/cyPm.c ****         if (0u != (CY_SYS_CLK_WCO_CONFIG_REG & CY_SYS_CLK_WCO_CONFIG_DPLL_ENABLE))
+ 102:Generated_Source\PSoC4/cyPm.c ****         {
+ 103:Generated_Source\PSoC4/cyPm.c ****             regTmp  = CY_SYS_CLK_WCO_DPLL_REG & ~(CY_SYS_CLK_WCO_CONFIG_DPLL_LF_LIMIT_MASK);
+ 104:Generated_Source\PSoC4/cyPm.c ****             CY_SYS_CLK_WCO_DPLL_REG = (regTmp | (((CY_SYS_CLK_IMO_TRIM1_REG + CY_PM_WCO_DPLL_LF_LIM
+ 105:Generated_Source\PSoC4/cyPm.c ****                                                   CY_SYS_CLK_WCO_CONFIG_DPLL_LF_LIMIT_MAX) << 
+ 106:Generated_Source\PSoC4/cyPm.c ****                                                  CY_SYS_CLK_WCO_CONFIG_DPLL_LF_LIMIT_SHIFT));
+ 107:Generated_Source\PSoC4/cyPm.c ****         }
+ 108:Generated_Source\PSoC4/cyPm.c ****     #endif /* (CY_IP_IMO_TRIMMABLE_BY_WCO) */
+ 109:Generated_Source\PSoC4/cyPm.c **** 
+ 110:Generated_Source\PSoC4/cyPm.c ****     /* Adjust delay to wait for references to settle on wakeup from Deep Sleep */
+ 111:Generated_Source\PSoC4/cyPm.c ****     CY_PM_PWR_KEY_DELAY_REG = CY_SFLASH_DPSLP_KEY_DELAY_REG;
+ 114              		.loc 1 111 5 is_stmt 1 view .LVU18
+ 115              		.loc 1 111 31 is_stmt 0 view .LVU19
+ 116 0020 0E4B     		ldr	r3, .L5+4
+ 117 0022 1B88     		ldrh	r3, [r3]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 5
+
+
+ 118 0024 9BB2     		uxth	r3, r3
+ 119              		.loc 1 111 29 view .LVU20
+ 120 0026 0E4A     		ldr	r2, .L5+8
+ 121 0028 1360     		str	r3, [r2]
+ 112:Generated_Source\PSoC4/cyPm.c **** 
+ 113:Generated_Source\PSoC4/cyPm.c ****     /* CPU enters DeepSleep/Hibernate mode upon execution of WFI */
+ 114:Generated_Source\PSoC4/cyPm.c ****     CY_PM_CPU_SCR_REG |= CY_PM_CPU_SCR_SLEEPDEEP;
+ 122              		.loc 1 114 5 is_stmt 1 view .LVU21
+ 123              		.loc 1 114 23 is_stmt 0 view .LVU22
+ 124 002a 0E4A     		ldr	r2, .L5+12
+ 125 002c 1368     		ldr	r3, [r2]
+ 126 002e 0421     		movs	r1, #4
+ 127 0030 0B43     		orrs	r3, r1
+ 128 0032 1360     		str	r3, [r2]
+ 115:Generated_Source\PSoC4/cyPm.c **** 
+ 116:Generated_Source\PSoC4/cyPm.c ****     #if(CY_IP_SRSSV2)
+ 117:Generated_Source\PSoC4/cyPm.c ****         /* Preserve system clock configuration and
+ 118:Generated_Source\PSoC4/cyPm.c ****         * reduce sysclk to <=12 MHz (Cypress ID #158710, #179888).
+ 119:Generated_Source\PSoC4/cyPm.c ****         */
+ 120:Generated_Source\PSoC4/cyPm.c ****         clkSelectReg = CY_SYS_CLK_SELECT_REG;
+ 129              		.loc 1 120 9 is_stmt 1 view .LVU23
+ 130              		.loc 1 120 24 is_stmt 0 view .LVU24
+ 131 0034 0C4F     		ldr	r7, .L5+16
+ 132 0036 3B68     		ldr	r3, [r7]
+ 133              		.loc 1 120 22 view .LVU25
+ 134 0038 0193     		str	r3, [sp, #4]
+ 121:Generated_Source\PSoC4/cyPm.c ****         CySysClkWriteSysclkDiv(CY_SYS_CLK_SYSCLK_DIV4);
+ 135              		.loc 1 121 9 is_stmt 1 view .LVU26
+ 136 003a 0220     		movs	r0, #2
+ 137 003c FFF7FEFF 		bl	CySysClkWriteSysclkDiv
+ 138              	.LVL4:
+ 122:Generated_Source\PSoC4/cyPm.c ****     #endif /* (CY_IP_SRSSV2) */
+ 123:Generated_Source\PSoC4/cyPm.c ****     
+ 124:Generated_Source\PSoC4/cyPm.c ****     /* Sleep and wait for interrupt */
+ 125:Generated_Source\PSoC4/cyPm.c ****     CY_PM_WFI;
+ 139              		.loc 1 125 5 view .LVU27
+ 140              		.syntax divided
+ 141              	@ 125 "Generated_Source\PSoC4\cyPm.c" 1
+ 142 0040 30BF     		WFI 
+ 143              	
+ 144              	@ 0 "" 2
+ 126:Generated_Source\PSoC4/cyPm.c **** 
+ 127:Generated_Source\PSoC4/cyPm.c ****     #if(CY_IP_SRSSV2)
+ 128:Generated_Source\PSoC4/cyPm.c ****         /* Restore system clock configuration */
+ 129:Generated_Source\PSoC4/cyPm.c ****         CY_SYS_CLK_SELECT_REG = clkSelectReg;
+ 145              		.loc 1 129 9 view .LVU28
+ 146              		.loc 1 129 31 is_stmt 0 view .LVU29
+ 147              		.thumb
+ 148              		.syntax unified
+ 149 0042 019B     		ldr	r3, [sp, #4]
+ 150 0044 3B60     		str	r3, [r7]
+ 130:Generated_Source\PSoC4/cyPm.c ****     #endif /* (CY_IP_SRSSV2) */
+ 131:Generated_Source\PSoC4/cyPm.c **** 
+ 132:Generated_Source\PSoC4/cyPm.c ****     #if (CY_IP_IMO_TRIMMABLE_BY_WCO)
+ 133:Generated_Source\PSoC4/cyPm.c ****         if (0u != (CY_SYS_CLK_WCO_CONFIG_REG & CY_SYS_CLK_WCO_CONFIG_DPLL_ENABLE))
+ 134:Generated_Source\PSoC4/cyPm.c ****         {
+ 135:Generated_Source\PSoC4/cyPm.c ****             CyDelayUs(CY_PM_WCO_DPLL_WAKEUP_DELAY);
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 6
+
+
+ 136:Generated_Source\PSoC4/cyPm.c ****             regTmp  = CY_SYS_CLK_WCO_DPLL_REG & ~(CY_SYS_CLK_WCO_CONFIG_DPLL_LF_LIMIT_MASK);
+ 137:Generated_Source\PSoC4/cyPm.c ****             CY_SYS_CLK_WCO_DPLL_REG = (regTmp | (CY_SYS_CLK_WCO_CONFIG_DPLL_LF_LIMIT_MAX << 
+ 138:Generated_Source\PSoC4/cyPm.c ****                                                  CY_SYS_CLK_WCO_CONFIG_DPLL_LF_LIMIT_SHIFT));
+ 139:Generated_Source\PSoC4/cyPm.c ****         }
+ 140:Generated_Source\PSoC4/cyPm.c ****     #endif /* (CY_IP_IMO_TRIMMABLE_BY_WCO) */    
+ 141:Generated_Source\PSoC4/cyPm.c ****     
+ 142:Generated_Source\PSoC4/cyPm.c ****     #if (CY_IP_CPUSS && CY_IP_SRSSV2)
+ 143:Generated_Source\PSoC4/cyPm.c ****         CY_PM_CPUSS_CONFIG_REG &= (uint32) (~CY_PM_CPUSS_CONFIG_FLSH_ACC_BYPASS);
+ 151              		.loc 1 143 9 is_stmt 1 view .LVU30
+ 152              		.loc 1 143 32 is_stmt 0 view .LVU31
+ 153 0046 2B68     		ldr	r3, [r5]
+ 154 0048 B343     		bics	r3, r6
+ 155 004a 2B60     		str	r3, [r5]
+ 144:Generated_Source\PSoC4/cyPm.c ****     #endif /* (CY_IP_CPUSS && CY_IP_SRSSV2) */
+ 145:Generated_Source\PSoC4/cyPm.c **** 
+ 146:Generated_Source\PSoC4/cyPm.c ****     #if(CY_IP_ECO_SRSSLT)
+ 147:Generated_Source\PSoC4/cyPm.c ****         if(0u != pllResoreFlag)
+ 148:Generated_Source\PSoC4/cyPm.c ****         {
+ 149:Generated_Source\PSoC4/cyPm.c ****             CySysClkWriteHfclkDirect(CY_SYS_CLK_HFCLK_PLL0);
+ 150:Generated_Source\PSoC4/cyPm.c ****         }
+ 151:Generated_Source\PSoC4/cyPm.c ****     #endif /* (CY_IP_ECO_SRSSLT) */    
+ 152:Generated_Source\PSoC4/cyPm.c **** 
+ 153:Generated_Source\PSoC4/cyPm.c ****     CyExitCriticalSection(interruptState);
+ 156              		.loc 1 153 5 is_stmt 1 view .LVU32
+ 157 004c 2000     		movs	r0, r4
+ 158 004e FFF7FEFF 		bl	CyExitCriticalSection
+ 159              	.LVL5:
+ 154:Generated_Source\PSoC4/cyPm.c **** }
+ 160              		.loc 1 154 1 is_stmt 0 view .LVU33
+ 161 0052 03B0     		add	sp, sp, #12
+ 162              		@ sp needed
+ 163              	.LVL6:
+ 164              		.loc 1 154 1 view .LVU34
+ 165 0054 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 166              	.L6:
+ 167 0056 C046     		.align	2
+ 168              	.L5:
+ 169 0058 00000B40 		.word	1074462720
+ 170 005c 52F1FF0F 		.word	268431698
+ 171 0060 0C000B40 		.word	1074462732
+ 172 0064 10ED00E0 		.word	-536810224
+ 173 0068 00010B40 		.word	1074462976
+ 174              		.cfi_endproc
+ 175              	.LFE1:
+ 176              		.size	CySysPmDeepSleep, .-CySysPmDeepSleep
+ 177              		.section	.text.CySysPmHibernate,"ax",%progbits
+ 178              		.align	1
+ 179              		.global	CySysPmHibernate
+ 180              		.syntax unified
+ 181              		.code	16
+ 182              		.thumb_func
+ 183              		.fpu softvfp
+ 184              		.type	CySysPmHibernate, %function
+ 185              	CySysPmHibernate:
+ 186              	.LFB2:
+ 155:Generated_Source\PSoC4/cyPm.c **** 
+ 156:Generated_Source\PSoC4/cyPm.c **** 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 7
+
+
+ 157:Generated_Source\PSoC4/cyPm.c **** #if(CY_IP_SRSSV2)
+ 158:Generated_Source\PSoC4/cyPm.c **** 
+ 159:Generated_Source\PSoC4/cyPm.c ****     /*******************************************************************************
+ 160:Generated_Source\PSoC4/cyPm.c ****     * Function Name: CySysPmHibernate
+ 161:Generated_Source\PSoC4/cyPm.c ****     ****************************************************************************//**
+ 162:Generated_Source\PSoC4/cyPm.c ****     *
+ 163:Generated_Source\PSoC4/cyPm.c ****     * Puts the part into the Hibernate state. Only SRAM and UDBs are retained;
+ 164:Generated_Source\PSoC4/cyPm.c ****     * most internal supplies are off. Wakeup is possible from a pin or a hibernate
+ 165:Generated_Source\PSoC4/cyPm.c ****     * comparator only.
+ 166:Generated_Source\PSoC4/cyPm.c ****     *
+ 167:Generated_Source\PSoC4/cyPm.c ****     * It is expected that the firmware has already frozen the IO-Cells using
+ 168:Generated_Source\PSoC4/cyPm.c ****     * CySysPmFreezeIo() function before the call to this function. If this is
+ 169:Generated_Source\PSoC4/cyPm.c ****     * omitted, the IO-cells will be frozen in the same way as they are
+ 170:Generated_Source\PSoC4/cyPm.c ****     * in the Active to Deep Sleep transition, but will lose their state on wake up
+ 171:Generated_Source\PSoC4/cyPm.c ****     * (because of the reset occurring at that time).
+ 172:Generated_Source\PSoC4/cyPm.c ****     *
+ 173:Generated_Source\PSoC4/cyPm.c ****     * Because all the CPU state is lost, the CPU will start up at the reset vector.
+ 174:Generated_Source\PSoC4/cyPm.c ****     * To save the firmware state through the Hibernate low power mode, a
+ 175:Generated_Source\PSoC4/cyPm.c ****     * corresponding variable should be defined with CY_NOINIT attribute. It
+ 176:Generated_Source\PSoC4/cyPm.c ****     * prevents data from being initialized to zero on startup. The interrupt
+ 177:Generated_Source\PSoC4/cyPm.c ****     * cause of the hibernate peripheral is retained, such that it can be either
+ 178:Generated_Source\PSoC4/cyPm.c ****     * read by the firmware or cause an interrupt after the firmware has booted and
+ 179:Generated_Source\PSoC4/cyPm.c ****     * enabled the corresponding interrupt. To distinguish the wakeup from
+ 180:Generated_Source\PSoC4/cyPm.c ****     * the Hibernate mode and the general Reset event, the
+ 181:Generated_Source\PSoC4/cyPm.c ****     * \ref CySysPmGetResetReason() function could be used.
+ 182:Generated_Source\PSoC4/cyPm.c ****     *
+ 183:Generated_Source\PSoC4/cyPm.c ****     *******************************************************************************/
+ 184:Generated_Source\PSoC4/cyPm.c ****     void CySysPmHibernate(void)
+ 185:Generated_Source\PSoC4/cyPm.c ****     {
+ 187              		.loc 1 185 5 is_stmt 1 view -0
+ 188              		.cfi_startproc
+ 189              		@ args = 0, pretend = 0, frame = 0
+ 190              		@ frame_needed = 0, uses_anonymous_args = 0
+ 191 0000 10B5     		push	{r4, lr}
+ 192              		.cfi_def_cfa_offset 8
+ 193              		.cfi_offset 4, -8
+ 194              		.cfi_offset 14, -4
+ 186:Generated_Source\PSoC4/cyPm.c ****         uint8 interruptState;
+ 195              		.loc 1 186 9 view .LVU36
+ 187:Generated_Source\PSoC4/cyPm.c **** 
+ 188:Generated_Source\PSoC4/cyPm.c ****         interruptState = CyEnterCriticalSection();
+ 196              		.loc 1 188 9 view .LVU37
+ 197              		.loc 1 188 26 is_stmt 0 view .LVU38
+ 198 0002 FFF7FEFF 		bl	CyEnterCriticalSection
+ 199              	.LVL7:
+ 189:Generated_Source\PSoC4/cyPm.c **** 
+ 190:Generated_Source\PSoC4/cyPm.c ****         #if (CY_IP_HOBTO_DEVICE)
+ 191:Generated_Source\PSoC4/cyPm.c ****             /* Disable input buffers for all ports */
+ 192:Generated_Source\PSoC4/cyPm.c ****             CySysPmHibPinsDisableInputBuf();
+ 193:Generated_Source\PSoC4/cyPm.c ****         #endif /* (CY_IP_HOBTO_DEVICE) */
+ 194:Generated_Source\PSoC4/cyPm.c **** 
+ 195:Generated_Source\PSoC4/cyPm.c ****         /* Device enters Hibernate mode when CPU asserts SLEEPDEEP signal */
+ 196:Generated_Source\PSoC4/cyPm.c ****         CY_PM_PWR_CONTROL_REG |= CY_PM_PWR_CONTROL_HIBERNATE;
+ 200              		.loc 1 196 9 is_stmt 1 view .LVU39
+ 201              		.loc 1 196 31 is_stmt 0 view .LVU40
+ 202 0006 0D4A     		ldr	r2, .L8
+ 203 0008 1168     		ldr	r1, [r2]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 8
+
+
+ 204 000a 8023     		movs	r3, #128
+ 205 000c 1B06     		lsls	r3, r3, #24
+ 206 000e 0B43     		orrs	r3, r1
+ 207 0010 1360     		str	r3, [r2]
+ 197:Generated_Source\PSoC4/cyPm.c **** 
+ 198:Generated_Source\PSoC4/cyPm.c ****         /* Adjust delay to wait for references to settle on wakeup from hibernate */
+ 199:Generated_Source\PSoC4/cyPm.c ****         CY_PM_PWR_KEY_DELAY_REG = CY_SFLASH_HIB_KEY_DELAY_REG;
+ 208              		.loc 1 199 9 is_stmt 1 view .LVU41
+ 209              		.loc 1 199 35 is_stmt 0 view .LVU42
+ 210 0012 0B4B     		ldr	r3, .L8+4
+ 211 0014 1B88     		ldrh	r3, [r3]
+ 212 0016 9BB2     		uxth	r3, r3
+ 213              		.loc 1 199 33 view .LVU43
+ 214 0018 0A4A     		ldr	r2, .L8+8
+ 215 001a 1360     		str	r3, [r2]
+ 200:Generated_Source\PSoC4/cyPm.c **** 
+ 201:Generated_Source\PSoC4/cyPm.c ****         /* CPU enters DeepSleep/Hibernate mode upon execution of WFI */
+ 202:Generated_Source\PSoC4/cyPm.c ****         CY_PM_CPU_SCR_REG |= CY_PM_CPU_SCR_SLEEPDEEP;
+ 216              		.loc 1 202 9 is_stmt 1 view .LVU44
+ 217              		.loc 1 202 27 is_stmt 0 view .LVU45
+ 218 001c 0A4A     		ldr	r2, .L8+12
+ 219 001e 1368     		ldr	r3, [r2]
+ 220 0020 0421     		movs	r1, #4
+ 221 0022 0B43     		orrs	r3, r1
+ 222 0024 1360     		str	r3, [r2]
+ 203:Generated_Source\PSoC4/cyPm.c **** 
+ 204:Generated_Source\PSoC4/cyPm.c ****         /* Save token that will retain through a STOP/WAKEUP sequence
+ 205:Generated_Source\PSoC4/cyPm.c ****          * thus could be used by CySysPmGetResetReason() to differentiate
+ 206:Generated_Source\PSoC4/cyPm.c ****          * WAKEUP from a general RESET event.
+ 207:Generated_Source\PSoC4/cyPm.c ****          */
+ 208:Generated_Source\PSoC4/cyPm.c ****         CY_PM_PWR_STOP_REG = (CY_PM_PWR_STOP_REG & (uint32)(~CY_PM_PWR_STOP_TOKEN_MASK)) | CY_PM_PW
+ 223              		.loc 1 208 9 is_stmt 1 view .LVU46
+ 224              		.loc 1 208 31 is_stmt 0 view .LVU47
+ 225 0026 094A     		ldr	r2, .L8+16
+ 226 0028 1368     		ldr	r3, [r2]
+ 227              		.loc 1 208 50 view .LVU48
+ 228 002a FB31     		adds	r1, r1, #251
+ 229 002c 8B43     		bics	r3, r1
+ 230              		.loc 1 208 90 view .LVU49
+ 231 002e 0E39     		subs	r1, r1, #14
+ 232 0030 0B43     		orrs	r3, r1
+ 233              		.loc 1 208 28 view .LVU50
+ 234 0032 1360     		str	r3, [r2]
+ 209:Generated_Source\PSoC4/cyPm.c **** 
+ 210:Generated_Source\PSoC4/cyPm.c ****         /* Sleep and wait for interrupt. Wakeup from Hibernate is performed
+ 211:Generated_Source\PSoC4/cyPm.c ****          * through RESET state, causing a normal Boot procedure to occur.
+ 212:Generated_Source\PSoC4/cyPm.c ****          * The WFI instruction doesn't put the core to sleep if its wake condition
+ 213:Generated_Source\PSoC4/cyPm.c ****          * is true when the instruction is executed.
+ 214:Generated_Source\PSoC4/cyPm.c ****          */
+ 215:Generated_Source\PSoC4/cyPm.c ****         CY_PM_WFI;
+ 235              		.loc 1 215 9 is_stmt 1 view .LVU51
+ 236              		.syntax divided
+ 237              	@ 215 "Generated_Source\PSoC4\cyPm.c" 1
+ 238 0034 30BF     		WFI 
+ 239              	
+ 240              	@ 0 "" 2
+ 216:Generated_Source\PSoC4/cyPm.c **** 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 9
+
+
+ 217:Generated_Source\PSoC4/cyPm.c ****         CyExitCriticalSection(interruptState);
+ 241              		.loc 1 217 9 view .LVU52
+ 242              		.thumb
+ 243              		.syntax unified
+ 244 0036 FFF7FEFF 		bl	CyExitCriticalSection
+ 245              	.LVL8:
+ 218:Generated_Source\PSoC4/cyPm.c ****     }
+ 246              		.loc 1 218 5 is_stmt 0 view .LVU53
+ 247              		@ sp needed
+ 248 003a 10BD     		pop	{r4, pc}
+ 249              	.L9:
+ 250              		.align	2
+ 251              	.L8:
+ 252 003c 00000B40 		.word	1074462720
+ 253 0040 50F1FF0F 		.word	268431696
+ 254 0044 0C000B40 		.word	1074462732
+ 255 0048 10ED00E0 		.word	-536810224
+ 256 004c 2C000B40 		.word	1074462764
+ 257              		.cfi_endproc
+ 258              	.LFE2:
+ 259              		.size	CySysPmHibernate, .-CySysPmHibernate
+ 260              		.section	.text.CySysPmSetWakeupPolarity,"ax",%progbits
+ 261              		.align	1
+ 262              		.global	CySysPmSetWakeupPolarity
+ 263              		.syntax unified
+ 264              		.code	16
+ 265              		.thumb_func
+ 266              		.fpu softvfp
+ 267              		.type	CySysPmSetWakeupPolarity, %function
+ 268              	CySysPmSetWakeupPolarity:
+ 269              	.LVL9:
+ 270              	.LFB4:
+ 219:Generated_Source\PSoC4/cyPm.c **** 
+ 220:Generated_Source\PSoC4/cyPm.c **** 
+ 221:Generated_Source\PSoC4/cyPm.c ****     /*******************************************************************************
+ 222:Generated_Source\PSoC4/cyPm.c ****     * Function Name: CySysPmStop
+ 223:Generated_Source\PSoC4/cyPm.c ****     ****************************************************************************//**
+ 224:Generated_Source\PSoC4/cyPm.c ****     *
+ 225:Generated_Source\PSoC4/cyPm.c ****     * Puts the part into the Stop state. All internal supplies are off;
+ 226:Generated_Source\PSoC4/cyPm.c ****     * no state is retained.
+ 227:Generated_Source\PSoC4/cyPm.c ****     *
+ 228:Generated_Source\PSoC4/cyPm.c ****     * Wakeup from Stop is performed by toggling the wakeup pin, causing
+ 229:Generated_Source\PSoC4/cyPm.c ****     * a normal boot procedure to occur. To configure the wakeup pin,
+ 230:Generated_Source\PSoC4/cyPm.c ****     * the Digital Input Pin component should be placed on the schematic,
+ 231:Generated_Source\PSoC4/cyPm.c ****     * assigned to the wakeup pin, and resistively pulled up or down to the inverse
+ 232:Generated_Source\PSoC4/cyPm.c ****     * state of the wakeup polarity. To distinguish the wakeup from the Stop mode
+ 233:Generated_Source\PSoC4/cyPm.c ****     * and the general Reset event, \ref CySysPmGetResetReason() function could be
+ 234:Generated_Source\PSoC4/cyPm.c ****     * used.  The wakeup pin is active low by default. The wakeup pin polarity
+ 235:Generated_Source\PSoC4/cyPm.c ****     * could be changed with the \ref CySysPmSetWakeupPolarity() function.
+ 236:Generated_Source\PSoC4/cyPm.c ****     *
+ 237:Generated_Source\PSoC4/cyPm.c ****     * This function freezes IO cells implicitly. It is not possible to enter
+ 238:Generated_Source\PSoC4/cyPm.c ****     * the STOP mode before freezing the IO cells. The IO cells remain frozen after
+ 239:Generated_Source\PSoC4/cyPm.c ****     * awake from the Stop mode until the firmware unfreezes them after booting
+ 240:Generated_Source\PSoC4/cyPm.c ****     * explicitly with \ref CySysPmUnfreezeIo() function call.
+ 241:Generated_Source\PSoC4/cyPm.c ****     *
+ 242:Generated_Source\PSoC4/cyPm.c ****     *******************************************************************************/
+ 243:Generated_Source\PSoC4/cyPm.c ****     void CySysPmStop(void)
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 10
+
+
+ 244:Generated_Source\PSoC4/cyPm.c ****     {
+ 245:Generated_Source\PSoC4/cyPm.c ****         (void) CyEnterCriticalSection();
+ 246:Generated_Source\PSoC4/cyPm.c **** 
+ 247:Generated_Source\PSoC4/cyPm.c ****         /* Update token to indicate Stop mode transition. Preserve only polarity. */
+ 248:Generated_Source\PSoC4/cyPm.c ****         CY_PM_PWR_STOP_REG = (CY_PM_PWR_STOP_REG & CY_PM_PWR_STOP_POLARITY) | CY_PM_PWR_STOP_TOKEN_
+ 249:Generated_Source\PSoC4/cyPm.c **** 
+ 250:Generated_Source\PSoC4/cyPm.c ****         /* Freeze IO-Cells to save IO-Cell state */
+ 251:Generated_Source\PSoC4/cyPm.c ****         CySysPmFreezeIo();
+ 252:Generated_Source\PSoC4/cyPm.c **** 
+ 253:Generated_Source\PSoC4/cyPm.c ****         /* Initiates transition to Stop state */
+ 254:Generated_Source\PSoC4/cyPm.c ****         CY_PM_PWR_STOP_REG = CY_PM_PWR_STOP_REG | CY_PM_PWR_STOP_STOP;
+ 255:Generated_Source\PSoC4/cyPm.c **** 
+ 256:Generated_Source\PSoC4/cyPm.c ****         /* Depending on the clock frequency and internal timing delays,
+ 257:Generated_Source\PSoC4/cyPm.c ****          * the final AHB transaction may or may not complete. To guard against
+ 258:Generated_Source\PSoC4/cyPm.c ****          * accidentally executing an unintended instruction, it is recommended
+ 259:Generated_Source\PSoC4/cyPm.c ****          * to add 2 NOP cycles after the final write to the STOP register.
+ 260:Generated_Source\PSoC4/cyPm.c ****          */
+ 261:Generated_Source\PSoC4/cyPm.c ****         CY_NOP;
+ 262:Generated_Source\PSoC4/cyPm.c ****         CY_NOP;
+ 263:Generated_Source\PSoC4/cyPm.c **** 
+ 264:Generated_Source\PSoC4/cyPm.c ****         /* Should never get to this WFI instruction */
+ 265:Generated_Source\PSoC4/cyPm.c ****         CY_PM_WFI;
+ 266:Generated_Source\PSoC4/cyPm.c **** 
+ 267:Generated_Source\PSoC4/cyPm.c ****         /* Wakeup from Stop is performed by toggling of Wakeup pin,
+ 268:Generated_Source\PSoC4/cyPm.c ****          * causing a normal Boot procedure to occur. No need to exit
+ 269:Generated_Source\PSoC4/cyPm.c ****          * from the critical section.
+ 270:Generated_Source\PSoC4/cyPm.c ****          */
+ 271:Generated_Source\PSoC4/cyPm.c ****     }
+ 272:Generated_Source\PSoC4/cyPm.c **** 
+ 273:Generated_Source\PSoC4/cyPm.c **** 
+ 274:Generated_Source\PSoC4/cyPm.c ****     /*******************************************************************************
+ 275:Generated_Source\PSoC4/cyPm.c ****     * Function Name: CySysPmSetWakeupPolarity
+ 276:Generated_Source\PSoC4/cyPm.c ****     ****************************************************************************//**
+ 277:Generated_Source\PSoC4/cyPm.c ****     *
+ 278:Generated_Source\PSoC4/cyPm.c ****     * Wake up from the stop mode is performed by toggling the wakeup pin,
+ 279:Generated_Source\PSoC4/cyPm.c ****     * causing a normal boot procedure to occur. This function assigns
+ 280:Generated_Source\PSoC4/cyPm.c ****     * the wakeup pin active level. Setting the wakeup pin to this level will cause
+ 281:Generated_Source\PSoC4/cyPm.c ****     * the wakeup from stop mode. The wakeup pin is active low by default.
+ 282:Generated_Source\PSoC4/cyPm.c ****     *
+ 283:Generated_Source\PSoC4/cyPm.c ****     * \param polarity
+ 284:Generated_Source\PSoC4/cyPm.c ****     * - \ref CY_PM_STOP_WAKEUP_ACTIVE_LOW Logical zero will wakeup the chip
+ 285:Generated_Source\PSoC4/cyPm.c ****     * - \ref CY_PM_STOP_WAKEUP_ACTIVE_HIGH Logical one will wakeup the chip
+ 286:Generated_Source\PSoC4/cyPm.c ****     *
+ 287:Generated_Source\PSoC4/cyPm.c ****     *******************************************************************************/
+ 288:Generated_Source\PSoC4/cyPm.c ****     void CySysPmSetWakeupPolarity(uint32 polarity)
+ 289:Generated_Source\PSoC4/cyPm.c ****     {
+ 271              		.loc 1 289 5 is_stmt 1 view -0
+ 272              		.cfi_startproc
+ 273              		@ args = 0, pretend = 0, frame = 0
+ 274              		@ frame_needed = 0, uses_anonymous_args = 0
+ 275              		.loc 1 289 5 is_stmt 0 view .LVU55
+ 276 0000 10B5     		push	{r4, lr}
+ 277              		.cfi_def_cfa_offset 8
+ 278              		.cfi_offset 4, -8
+ 279              		.cfi_offset 14, -4
+ 280 0002 0400     		movs	r4, r0
+ 290:Generated_Source\PSoC4/cyPm.c ****         uint8 interruptState;
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 11
+
+
+ 281              		.loc 1 290 9 is_stmt 1 view .LVU56
+ 291:Generated_Source\PSoC4/cyPm.c **** 
+ 292:Generated_Source\PSoC4/cyPm.c ****         interruptState = CyEnterCriticalSection();
+ 282              		.loc 1 292 9 view .LVU57
+ 283              		.loc 1 292 26 is_stmt 0 view .LVU58
+ 284 0004 FFF7FEFF 		bl	CyEnterCriticalSection
+ 285              	.LVL10:
+ 293:Generated_Source\PSoC4/cyPm.c **** 
+ 294:Generated_Source\PSoC4/cyPm.c ****         CY_PM_PWR_STOP_REG = (CY_PM_STOP_WAKEUP_ACTIVE_LOW != polarity) ?
+ 286              		.loc 1 294 9 is_stmt 1 view .LVU59
+ 295:Generated_Source\PSoC4/cyPm.c ****                             (CY_PM_PWR_STOP_REG | CY_PM_PWR_STOP_POLARITY) :
+ 287              		.loc 1 295 76 is_stmt 0 view .LVU60
+ 288 0008 002C     		cmp	r4, #0
+ 289 000a 09D0     		beq	.L11
+ 290              		.loc 1 295 30 discriminator 1 view .LVU61
+ 291 000c 074B     		ldr	r3, .L13
+ 292 000e 1A68     		ldr	r2, [r3]
+ 293              		.loc 1 295 76 discriminator 1 view .LVU62
+ 294 0010 8023     		movs	r3, #128
+ 295 0012 5B02     		lsls	r3, r3, #9
+ 296 0014 1343     		orrs	r3, r2
+ 297              	.L12:
+ 294:Generated_Source\PSoC4/cyPm.c ****                             (CY_PM_PWR_STOP_REG | CY_PM_PWR_STOP_POLARITY) :
+ 298              		.loc 1 294 28 view .LVU63
+ 299 0016 054A     		ldr	r2, .L13
+ 300 0018 1360     		str	r3, [r2]
+ 296:Generated_Source\PSoC4/cyPm.c ****                             (CY_PM_PWR_STOP_REG & (uint32) (~CY_PM_PWR_STOP_POLARITY));
+ 297:Generated_Source\PSoC4/cyPm.c **** 
+ 298:Generated_Source\PSoC4/cyPm.c ****         CyExitCriticalSection(interruptState);
+ 301              		.loc 1 298 9 is_stmt 1 view .LVU64
+ 302 001a FFF7FEFF 		bl	CyExitCriticalSection
+ 303              	.LVL11:
+ 299:Generated_Source\PSoC4/cyPm.c ****     }
+ 304              		.loc 1 299 5 is_stmt 0 view .LVU65
+ 305              		@ sp needed
+ 306              	.LVL12:
+ 307              		.loc 1 299 5 view .LVU66
+ 308 001e 10BD     		pop	{r4, pc}
+ 309              	.LVL13:
+ 310              	.L11:
+ 296:Generated_Source\PSoC4/cyPm.c ****                             (CY_PM_PWR_STOP_REG & (uint32) (~CY_PM_PWR_STOP_POLARITY));
+ 311              		.loc 1 296 30 discriminator 2 view .LVU67
+ 312 0020 024B     		ldr	r3, .L13
+ 313 0022 1B68     		ldr	r3, [r3]
+ 295:Generated_Source\PSoC4/cyPm.c ****                             (CY_PM_PWR_STOP_REG & (uint32) (~CY_PM_PWR_STOP_POLARITY));
+ 314              		.loc 1 295 76 discriminator 2 view .LVU68
+ 315 0024 024A     		ldr	r2, .L13+4
+ 316 0026 1340     		ands	r3, r2
+ 317 0028 F5E7     		b	.L12
+ 318              	.L14:
+ 319 002a C046     		.align	2
+ 320              	.L13:
+ 321 002c 2C000B40 		.word	1074462764
+ 322 0030 FFFFFEFF 		.word	-65537
+ 323              		.cfi_endproc
+ 324              	.LFE4:
+ 325              		.size	CySysPmSetWakeupPolarity, .-CySysPmSetWakeupPolarity
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 12
+
+
+ 326              		.section	.text.CySysPmGetResetReason,"ax",%progbits
+ 327              		.align	1
+ 328              		.global	CySysPmGetResetReason
+ 329              		.syntax unified
+ 330              		.code	16
+ 331              		.thumb_func
+ 332              		.fpu softvfp
+ 333              		.type	CySysPmGetResetReason, %function
+ 334              	CySysPmGetResetReason:
+ 335              	.LFB5:
+ 300:Generated_Source\PSoC4/cyPm.c **** 
+ 301:Generated_Source\PSoC4/cyPm.c **** 
+ 302:Generated_Source\PSoC4/cyPm.c ****     /*******************************************************************************
+ 303:Generated_Source\PSoC4/cyPm.c ****     * Function Name: CySysPmGetResetReason
+ 304:Generated_Source\PSoC4/cyPm.c ****     ****************************************************************************//**
+ 305:Generated_Source\PSoC4/cyPm.c ****     *
+ 306:Generated_Source\PSoC4/cyPm.c ****     * Retrieves the last reset reason - transition from OFF/XRES/STOP/HIBERNATE to
+ 307:Generated_Source\PSoC4/cyPm.c ****     * the RESET state. Note that waking up from STOP using XRES will be perceived
+ 308:Generated_Source\PSoC4/cyPm.c ****     * as a general RESET.
+ 309:Generated_Source\PSoC4/cyPm.c ****     *
+ 310:Generated_Source\PSoC4/cyPm.c ****     * \return CY_PM_RESET_REASON_UNKN          Unknown reset reason.
+ 311:Generated_Source\PSoC4/cyPm.c ****     * \return CY_PM_RESET_REASON_XRES          Transition from OFF/XRES to RESET
+ 312:Generated_Source\PSoC4/cyPm.c ****     * \return CY_PM_RESET_REASON_WAKEUP_HIB    Transition/wakeup from HIBERNATE to RESET
+ 313:Generated_Source\PSoC4/cyPm.c ****     * \return CY_PM_RESET_REASON_WAKEUP_STOP   Transition/wakeup from STOP to RESET
+ 314:Generated_Source\PSoC4/cyPm.c ****     *
+ 315:Generated_Source\PSoC4/cyPm.c ****     *******************************************************************************/
+ 316:Generated_Source\PSoC4/cyPm.c ****     uint32 CySysPmGetResetReason(void)
+ 317:Generated_Source\PSoC4/cyPm.c ****     {
+ 336              		.loc 1 317 5 is_stmt 1 view -0
+ 337              		.cfi_startproc
+ 338              		@ args = 0, pretend = 0, frame = 0
+ 339              		@ frame_needed = 0, uses_anonymous_args = 0
+ 340              		@ link register save eliminated.
+ 318:Generated_Source\PSoC4/cyPm.c ****         uint32 reason = CY_PM_RESET_REASON_UNKN;
+ 341              		.loc 1 318 9 view .LVU70
+ 342              	.LVL14:
+ 319:Generated_Source\PSoC4/cyPm.c **** 
+ 320:Generated_Source\PSoC4/cyPm.c ****         switch(CY_PM_PWR_STOP_REG & CY_PM_PWR_STOP_TOKEN_MASK)
+ 343              		.loc 1 320 9 view .LVU71
+ 344              		.loc 1 320 16 is_stmt 0 view .LVU72
+ 345 0000 084B     		ldr	r3, .L20
+ 346 0002 1A68     		ldr	r2, [r3]
+ 347              		.loc 1 320 35 view .LVU73
+ 348 0004 FF23     		movs	r3, #255
+ 349 0006 1340     		ands	r3, r2
+ 350              		.loc 1 320 9 view .LVU74
+ 351 0008 F12B     		cmp	r3, #241
+ 352 000a 05D0     		beq	.L17
+ 353 000c F22B     		cmp	r3, #242
+ 354 000e 05D0     		beq	.L18
+ 355 0010 002B     		cmp	r3, #0
+ 356 0012 05D0     		beq	.L19
+ 318:Generated_Source\PSoC4/cyPm.c ****         uint32 reason = CY_PM_RESET_REASON_UNKN;
+ 357              		.loc 1 318 16 view .LVU75
+ 358 0014 0020     		movs	r0, #0
+ 359              	.LVL15:
+ 360              	.L15:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 13
+
+
+ 321:Generated_Source\PSoC4/cyPm.c ****         {
+ 322:Generated_Source\PSoC4/cyPm.c ****         /* Power up, XRES */
+ 323:Generated_Source\PSoC4/cyPm.c ****         case CY_PM_PWR_STOP_TOKEN_XRES:
+ 324:Generated_Source\PSoC4/cyPm.c ****             reason = CY_PM_RESET_REASON_XRES;
+ 325:Generated_Source\PSoC4/cyPm.c ****             break;
+ 326:Generated_Source\PSoC4/cyPm.c **** 
+ 327:Generated_Source\PSoC4/cyPm.c ****         /* Wakeup from Hibernate */
+ 328:Generated_Source\PSoC4/cyPm.c ****         case CY_PM_PWR_STOP_TOKEN_HIB:
+ 329:Generated_Source\PSoC4/cyPm.c ****             reason = CY_PM_RESET_REASON_WAKEUP_HIB;
+ 330:Generated_Source\PSoC4/cyPm.c ****             break;
+ 331:Generated_Source\PSoC4/cyPm.c **** 
+ 332:Generated_Source\PSoC4/cyPm.c ****         /* Wakeup from Stop (through WAKEUP pin assert) */
+ 333:Generated_Source\PSoC4/cyPm.c ****         case CY_PM_PWR_STOP_TOKEN_STOP:
+ 334:Generated_Source\PSoC4/cyPm.c ****             reason = CY_PM_RESET_REASON_WAKEUP_STOP;
+ 335:Generated_Source\PSoC4/cyPm.c ****             break;
+ 336:Generated_Source\PSoC4/cyPm.c **** 
+ 337:Generated_Source\PSoC4/cyPm.c ****         /* Unknown reason */
+ 338:Generated_Source\PSoC4/cyPm.c ****         default:
+ 339:Generated_Source\PSoC4/cyPm.c ****             break;
+ 340:Generated_Source\PSoC4/cyPm.c ****         }
+ 341:Generated_Source\PSoC4/cyPm.c **** 
+ 342:Generated_Source\PSoC4/cyPm.c ****         return (reason);
+ 343:Generated_Source\PSoC4/cyPm.c ****     }
+ 361              		.loc 1 343 5 view .LVU76
+ 362              		@ sp needed
+ 363 0016 7047     		bx	lr
+ 364              	.LVL16:
+ 365              	.L17:
+ 329:Generated_Source\PSoC4/cyPm.c ****             break;
+ 366              		.loc 1 329 20 view .LVU77
+ 367 0018 0220     		movs	r0, #2
+ 368 001a FCE7     		b	.L15
+ 369              	.L18:
+ 334:Generated_Source\PSoC4/cyPm.c ****             break;
+ 370              		.loc 1 334 20 view .LVU78
+ 371 001c 0320     		movs	r0, #3
+ 372 001e FAE7     		b	.L15
+ 373              	.L19:
+ 324:Generated_Source\PSoC4/cyPm.c ****             break;
+ 374              		.loc 1 324 20 view .LVU79
+ 375 0020 0120     		movs	r0, #1
+ 376              	.LVL17:
+ 342:Generated_Source\PSoC4/cyPm.c ****     }
+ 377              		.loc 1 342 9 is_stmt 1 view .LVU80
+ 342:Generated_Source\PSoC4/cyPm.c ****     }
+ 378              		.loc 1 342 16 is_stmt 0 view .LVU81
+ 379 0022 F8E7     		b	.L15
+ 380              	.L21:
+ 381              		.align	2
+ 382              	.L20:
+ 383 0024 2C000B40 		.word	1074462764
+ 384              		.cfi_endproc
+ 385              	.LFE5:
+ 386              		.size	CySysPmGetResetReason, .-CySysPmGetResetReason
+ 387              		.section	.text.CySysPmFreezeIo,"ax",%progbits
+ 388              		.align	1
+ 389              		.global	CySysPmFreezeIo
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 14
+
+
+ 390              		.syntax unified
+ 391              		.code	16
+ 392              		.thumb_func
+ 393              		.fpu softvfp
+ 394              		.type	CySysPmFreezeIo, %function
+ 395              	CySysPmFreezeIo:
+ 396              	.LFB6:
+ 344:Generated_Source\PSoC4/cyPm.c **** 
+ 345:Generated_Source\PSoC4/cyPm.c **** 
+ 346:Generated_Source\PSoC4/cyPm.c ****     /*******************************************************************************
+ 347:Generated_Source\PSoC4/cyPm.c ****     * Function Name: CySysPmFreezeIo
+ 348:Generated_Source\PSoC4/cyPm.c ****     ****************************************************************************//**
+ 349:Generated_Source\PSoC4/cyPm.c ****     *
+ 350:Generated_Source\PSoC4/cyPm.c ****     * Freezes IO-Cells directly to save the IO-Cell state on wake up from the
+ 351:Generated_Source\PSoC4/cyPm.c ****     * Hibernate or Stop state. It is not required to call this function before
+ 352:Generated_Source\PSoC4/cyPm.c ****     * entering the Stop mode, since \ref CySysPmStop() function freezes IO-Cells
+ 353:Generated_Source\PSoC4/cyPm.c ****     * implicitly.
+ 354:Generated_Source\PSoC4/cyPm.c ****     *
+ 355:Generated_Source\PSoC4/cyPm.c ****     * This API is not available for PSoC 4000 family of devices.
+ 356:Generated_Source\PSoC4/cyPm.c ****     *
+ 357:Generated_Source\PSoC4/cyPm.c ****     *******************************************************************************/
+ 358:Generated_Source\PSoC4/cyPm.c ****     void CySysPmFreezeIo(void)
+ 359:Generated_Source\PSoC4/cyPm.c ****     {
+ 397              		.loc 1 359 5 is_stmt 1 view -0
+ 398              		.cfi_startproc
+ 399              		@ args = 0, pretend = 0, frame = 0
+ 400              		@ frame_needed = 0, uses_anonymous_args = 0
+ 401 0000 10B5     		push	{r4, lr}
+ 402              		.cfi_def_cfa_offset 8
+ 403              		.cfi_offset 4, -8
+ 404              		.cfi_offset 14, -4
+ 360:Generated_Source\PSoC4/cyPm.c ****         uint8 interruptState;
+ 405              		.loc 1 360 9 view .LVU83
+ 361:Generated_Source\PSoC4/cyPm.c **** 
+ 362:Generated_Source\PSoC4/cyPm.c ****         interruptState = CyEnterCriticalSection();
+ 406              		.loc 1 362 9 view .LVU84
+ 407              		.loc 1 362 26 is_stmt 0 view .LVU85
+ 408 0002 FFF7FEFF 		bl	CyEnterCriticalSection
+ 409              	.LVL18:
+ 363:Generated_Source\PSoC4/cyPm.c **** 
+ 364:Generated_Source\PSoC4/cyPm.c ****         /* Check FREEZE state to avoid recurrent IO-Cells freeze attempt,
+ 365:Generated_Source\PSoC4/cyPm.c ****          * since the second call to this function will cause accidental switch
+ 366:Generated_Source\PSoC4/cyPm.c ****          * to the STOP mode (the system will enter STOP mode immediately after
+ 367:Generated_Source\PSoC4/cyPm.c ****          * writing to STOP bit since both UNLOCK and FREEZE have been set correctly
+ 368:Generated_Source\PSoC4/cyPm.c ****          * in a previous call to this function).
+ 369:Generated_Source\PSoC4/cyPm.c ****          */
+ 370:Generated_Source\PSoC4/cyPm.c ****         if (0u == (CY_PM_PWR_STOP_REG & CY_PM_PWR_STOP_FREEZE))
+ 410              		.loc 1 370 9 is_stmt 1 view .LVU86
+ 411              		.loc 1 370 20 is_stmt 0 view .LVU87
+ 412 0006 094B     		ldr	r3, .L24
+ 413 0008 1B68     		ldr	r3, [r3]
+ 414              		.loc 1 370 12 view .LVU88
+ 415 000a 9B03     		lsls	r3, r3, #14
+ 416 000c 0AD4     		bmi	.L23
+ 371:Generated_Source\PSoC4/cyPm.c ****         {
+ 372:Generated_Source\PSoC4/cyPm.c ****             /* Preserve last reset reason and disable overrides the next freeze command by peripher
+ 373:Generated_Source\PSoC4/cyPm.c ****             CY_PM_PWR_STOP_REG = CY_PM_PWR_STOP_STOP | CY_PM_PWR_STOP_FREEZE | CY_PM_PWR_STOP_UNLOC
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 15
+
+
+ 417              		.loc 1 373 13 is_stmt 1 view .LVU89
+ 374:Generated_Source\PSoC4/cyPm.c ****                                 (CY_PM_PWR_STOP_REG & (CY_PM_PWR_STOP_TOKEN_MASK | CY_PM_PWR_STOP_P
+ 418              		.loc 1 374 34 is_stmt 0 view .LVU90
+ 419 000e 074B     		ldr	r3, .L24
+ 420 0010 1A68     		ldr	r2, [r3]
+ 421              		.loc 1 374 53 view .LVU91
+ 422 0012 0749     		ldr	r1, .L24+4
+ 423 0014 1140     		ands	r1, r2
+ 373:Generated_Source\PSoC4/cyPm.c ****                                 (CY_PM_PWR_STOP_REG & (CY_PM_PWR_STOP_TOKEN_MASK | CY_PM_PWR_STOP_P
+ 424              		.loc 1 373 102 view .LVU92
+ 425 0016 074A     		ldr	r2, .L24+8
+ 426 0018 0A43     		orrs	r2, r1
+ 373:Generated_Source\PSoC4/cyPm.c ****                                 (CY_PM_PWR_STOP_REG & (CY_PM_PWR_STOP_TOKEN_MASK | CY_PM_PWR_STOP_P
+ 427              		.loc 1 373 32 view .LVU93
+ 428 001a 1A60     		str	r2, [r3]
+ 375:Generated_Source\PSoC4/cyPm.c **** 
+ 376:Generated_Source\PSoC4/cyPm.c ****             /* If reading after writing, read this register three times to delay
+ 377:Generated_Source\PSoC4/cyPm.c ****             *  enough time for internal settling.
+ 378:Generated_Source\PSoC4/cyPm.c ****             */
+ 379:Generated_Source\PSoC4/cyPm.c ****             (void) CY_PM_PWR_STOP_REG;
+ 429              		.loc 1 379 13 is_stmt 1 view .LVU94
+ 430 001c 1A68     		ldr	r2, [r3]
+ 380:Generated_Source\PSoC4/cyPm.c ****             (void) CY_PM_PWR_STOP_REG;
+ 431              		.loc 1 380 13 view .LVU95
+ 432 001e 1A68     		ldr	r2, [r3]
+ 381:Generated_Source\PSoC4/cyPm.c **** 
+ 382:Generated_Source\PSoC4/cyPm.c ****             /* Second write causes the freeze of IO-Cells to save IO-Cell state */
+ 383:Generated_Source\PSoC4/cyPm.c ****             CY_PM_PWR_STOP_REG = CY_PM_PWR_STOP_REG;
+ 433              		.loc 1 383 13 view .LVU96
+ 434              		.loc 1 383 34 is_stmt 0 view .LVU97
+ 435 0020 1A68     		ldr	r2, [r3]
+ 436              		.loc 1 383 32 view .LVU98
+ 437 0022 1A60     		str	r2, [r3]
+ 438              	.L23:
+ 384:Generated_Source\PSoC4/cyPm.c ****         }
+ 385:Generated_Source\PSoC4/cyPm.c **** 
+ 386:Generated_Source\PSoC4/cyPm.c ****         CyExitCriticalSection(interruptState);
+ 439              		.loc 1 386 9 is_stmt 1 view .LVU99
+ 440 0024 FFF7FEFF 		bl	CyExitCriticalSection
+ 441              	.LVL19:
+ 387:Generated_Source\PSoC4/cyPm.c ****     }
+ 442              		.loc 1 387 5 is_stmt 0 view .LVU100
+ 443              		@ sp needed
+ 444 0028 10BD     		pop	{r4, pc}
+ 445              	.L25:
+ 446 002a C046     		.align	2
+ 447              	.L24:
+ 448 002c 2C000B40 		.word	1074462764
+ 449 0030 FF000100 		.word	65791
+ 450 0034 003A0280 		.word	-2147337728
+ 451              		.cfi_endproc
+ 452              	.LFE6:
+ 453              		.size	CySysPmFreezeIo, .-CySysPmFreezeIo
+ 454              		.section	.text.CySysPmStop,"ax",%progbits
+ 455              		.align	1
+ 456              		.global	CySysPmStop
+ 457              		.syntax unified
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 16
+
+
+ 458              		.code	16
+ 459              		.thumb_func
+ 460              		.fpu softvfp
+ 461              		.type	CySysPmStop, %function
+ 462              	CySysPmStop:
+ 463              	.LFB3:
+ 244:Generated_Source\PSoC4/cyPm.c ****         (void) CyEnterCriticalSection();
+ 464              		.loc 1 244 5 is_stmt 1 view -0
+ 465              		.cfi_startproc
+ 466              		@ args = 0, pretend = 0, frame = 0
+ 467              		@ frame_needed = 0, uses_anonymous_args = 0
+ 468 0000 10B5     		push	{r4, lr}
+ 469              		.cfi_def_cfa_offset 8
+ 470              		.cfi_offset 4, -8
+ 471              		.cfi_offset 14, -4
+ 245:Generated_Source\PSoC4/cyPm.c **** 
+ 472              		.loc 1 245 9 view .LVU102
+ 245:Generated_Source\PSoC4/cyPm.c **** 
+ 473              		.loc 1 245 16 is_stmt 0 view .LVU103
+ 474 0002 FFF7FEFF 		bl	CyEnterCriticalSection
+ 475              	.LVL20:
+ 248:Generated_Source\PSoC4/cyPm.c **** 
+ 476              		.loc 1 248 9 is_stmt 1 view .LVU104
+ 248:Generated_Source\PSoC4/cyPm.c **** 
+ 477              		.loc 1 248 31 is_stmt 0 view .LVU105
+ 478 0006 094C     		ldr	r4, .L27
+ 479 0008 2368     		ldr	r3, [r4]
+ 248:Generated_Source\PSoC4/cyPm.c **** 
+ 480              		.loc 1 248 50 view .LVU106
+ 481 000a 8022     		movs	r2, #128
+ 482 000c 5202     		lsls	r2, r2, #9
+ 483 000e 1340     		ands	r3, r2
+ 248:Generated_Source\PSoC4/cyPm.c **** 
+ 484              		.loc 1 248 77 view .LVU107
+ 485 0010 F222     		movs	r2, #242
+ 486 0012 1343     		orrs	r3, r2
+ 248:Generated_Source\PSoC4/cyPm.c **** 
+ 487              		.loc 1 248 28 view .LVU108
+ 488 0014 2360     		str	r3, [r4]
+ 251:Generated_Source\PSoC4/cyPm.c **** 
+ 489              		.loc 1 251 9 is_stmt 1 view .LVU109
+ 490 0016 FFF7FEFF 		bl	CySysPmFreezeIo
+ 491              	.LVL21:
+ 254:Generated_Source\PSoC4/cyPm.c **** 
+ 492              		.loc 1 254 9 view .LVU110
+ 254:Generated_Source\PSoC4/cyPm.c **** 
+ 493              		.loc 1 254 30 is_stmt 0 view .LVU111
+ 494 001a 2268     		ldr	r2, [r4]
+ 254:Generated_Source\PSoC4/cyPm.c **** 
+ 495              		.loc 1 254 49 view .LVU112
+ 496 001c 8023     		movs	r3, #128
+ 497 001e 1B06     		lsls	r3, r3, #24
+ 498 0020 1343     		orrs	r3, r2
+ 254:Generated_Source\PSoC4/cyPm.c **** 
+ 499              		.loc 1 254 28 view .LVU113
+ 500 0022 2360     		str	r3, [r4]
+ 261:Generated_Source\PSoC4/cyPm.c ****         CY_NOP;
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 17
+
+
+ 501              		.loc 1 261 9 is_stmt 1 view .LVU114
+ 502              		.syntax divided
+ 503              	@ 261 "Generated_Source\PSoC4\cyPm.c" 1
+ 504 0024 C046     		NOP
+ 505              	
+ 506              	@ 0 "" 2
+ 262:Generated_Source\PSoC4/cyPm.c **** 
+ 507              		.loc 1 262 9 view .LVU115
+ 508              	@ 262 "Generated_Source\PSoC4\cyPm.c" 1
+ 509 0026 C046     		NOP
+ 510              	
+ 511              	@ 0 "" 2
+ 265:Generated_Source\PSoC4/cyPm.c **** 
+ 512              		.loc 1 265 9 view .LVU116
+ 513              	@ 265 "Generated_Source\PSoC4\cyPm.c" 1
+ 514 0028 30BF     		WFI 
+ 515              	
+ 516              	@ 0 "" 2
+ 271:Generated_Source\PSoC4/cyPm.c **** 
+ 517              		.loc 1 271 5 is_stmt 0 view .LVU117
+ 518              		.thumb
+ 519              		.syntax unified
+ 520              		@ sp needed
+ 521 002a 10BD     		pop	{r4, pc}
+ 522              	.L28:
+ 523              		.align	2
+ 524              	.L27:
+ 525 002c 2C000B40 		.word	1074462764
+ 526              		.cfi_endproc
+ 527              	.LFE3:
+ 528              		.size	CySysPmStop, .-CySysPmStop
+ 529              		.section	.text.CySysPmUnfreezeIo,"ax",%progbits
+ 530              		.align	1
+ 531              		.global	CySysPmUnfreezeIo
+ 532              		.syntax unified
+ 533              		.code	16
+ 534              		.thumb_func
+ 535              		.fpu softvfp
+ 536              		.type	CySysPmUnfreezeIo, %function
+ 537              	CySysPmUnfreezeIo:
+ 538              	.LFB7:
+ 388:Generated_Source\PSoC4/cyPm.c **** 
+ 389:Generated_Source\PSoC4/cyPm.c **** 
+ 390:Generated_Source\PSoC4/cyPm.c ****     /*******************************************************************************
+ 391:Generated_Source\PSoC4/cyPm.c ****     * Function Name: CySysPmUnfreezeIo
+ 392:Generated_Source\PSoC4/cyPm.c ****     ****************************************************************************//**
+ 393:Generated_Source\PSoC4/cyPm.c ****     *
+ 394:Generated_Source\PSoC4/cyPm.c ****     * The IO-Cells remain frozen after awake from Hibernate or Stop mode until
+ 395:Generated_Source\PSoC4/cyPm.c ****     * the firmware unfreezes them after booting. The call of this function
+ 396:Generated_Source\PSoC4/cyPm.c ****     * unfreezes IO-Cells explicitly.
+ 397:Generated_Source\PSoC4/cyPm.c ****     *
+ 398:Generated_Source\PSoC4/cyPm.c ****     * If the firmware intent is to retain the data value on the port, then the
+ 399:Generated_Source\PSoC4/cyPm.c ****     * value must be read and re-written to the data register before calling this
+ 400:Generated_Source\PSoC4/cyPm.c ****     * API. Furthermore, the drive mode must be re-programmed.  If this is not done,
+ 401:Generated_Source\PSoC4/cyPm.c ****     * the pin state will change to default state the moment the freeze is removed.
+ 402:Generated_Source\PSoC4/cyPm.c ****     *
+ 403:Generated_Source\PSoC4/cyPm.c ****     * This API is not available for PSoC 4000 family of devices.
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 18
+
+
+ 404:Generated_Source\PSoC4/cyPm.c ****     *
+ 405:Generated_Source\PSoC4/cyPm.c ****     *******************************************************************************/
+ 406:Generated_Source\PSoC4/cyPm.c ****     void CySysPmUnfreezeIo(void)
+ 407:Generated_Source\PSoC4/cyPm.c ****     {
+ 539              		.loc 1 407 5 is_stmt 1 view -0
+ 540              		.cfi_startproc
+ 541              		@ args = 0, pretend = 0, frame = 0
+ 542              		@ frame_needed = 0, uses_anonymous_args = 0
+ 543 0000 70B5     		push	{r4, r5, r6, lr}
+ 544              		.cfi_def_cfa_offset 16
+ 545              		.cfi_offset 4, -16
+ 546              		.cfi_offset 5, -12
+ 547              		.cfi_offset 6, -8
+ 548              		.cfi_offset 14, -4
+ 408:Generated_Source\PSoC4/cyPm.c ****         uint8 interruptState;
+ 549              		.loc 1 408 9 view .LVU119
+ 409:Generated_Source\PSoC4/cyPm.c **** 
+ 410:Generated_Source\PSoC4/cyPm.c ****         interruptState = CyEnterCriticalSection();
+ 550              		.loc 1 410 9 view .LVU120
+ 551              		.loc 1 410 26 is_stmt 0 view .LVU121
+ 552 0002 FFF7FEFF 		bl	CyEnterCriticalSection
+ 553              	.LVL22:
+ 411:Generated_Source\PSoC4/cyPm.c **** 
+ 412:Generated_Source\PSoC4/cyPm.c ****         /* Preserve last reset reason and wakeup polarity. Then, unfreeze I/O:
+ 413:Generated_Source\PSoC4/cyPm.c ****          * write PWR_STOP.FREEZE=0, .UNLOCK=0x3A, .STOP=0, .TOKEN
+ 414:Generated_Source\PSoC4/cyPm.c ****          */
+ 415:Generated_Source\PSoC4/cyPm.c ****         CY_PM_PWR_STOP_REG = CY_PM_PWR_STOP_UNLOCK |
+ 554              		.loc 1 415 9 is_stmt 1 view .LVU122
+ 416:Generated_Source\PSoC4/cyPm.c ****                             (CY_PM_PWR_STOP_REG & (CY_PM_PWR_STOP_TOKEN_MASK | CY_PM_PWR_STOP_POLAR
+ 555              		.loc 1 416 30 is_stmt 0 view .LVU123
+ 556 0006 084B     		ldr	r3, .L30
+ 557 0008 1C68     		ldr	r4, [r3]
+ 558              		.loc 1 416 49 view .LVU124
+ 559 000a 084D     		ldr	r5, .L30+4
+ 560 000c 2C40     		ands	r4, r5
+ 415:Generated_Source\PSoC4/cyPm.c ****                             (CY_PM_PWR_STOP_REG & (CY_PM_PWR_STOP_TOKEN_MASK | CY_PM_PWR_STOP_POLAR
+ 561              		.loc 1 415 52 view .LVU125
+ 562 000e E821     		movs	r1, #232
+ 563 0010 8901     		lsls	r1, r1, #6
+ 564 0012 2143     		orrs	r1, r4
+ 415:Generated_Source\PSoC4/cyPm.c ****                             (CY_PM_PWR_STOP_REG & (CY_PM_PWR_STOP_TOKEN_MASK | CY_PM_PWR_STOP_POLAR
+ 565              		.loc 1 415 28 view .LVU126
+ 566 0014 1960     		str	r1, [r3]
+ 417:Generated_Source\PSoC4/cyPm.c **** 
+ 418:Generated_Source\PSoC4/cyPm.c ****         /* If reading after writing, read this register three times to delay
+ 419:Generated_Source\PSoC4/cyPm.c ****         *  enough time for internal settling.
+ 420:Generated_Source\PSoC4/cyPm.c ****         */
+ 421:Generated_Source\PSoC4/cyPm.c ****         (void) CY_PM_PWR_STOP_REG;
+ 567              		.loc 1 421 9 is_stmt 1 view .LVU127
+ 568 0016 1A68     		ldr	r2, [r3]
+ 422:Generated_Source\PSoC4/cyPm.c ****         (void) CY_PM_PWR_STOP_REG;
+ 569              		.loc 1 422 9 view .LVU128
+ 570 0018 1A68     		ldr	r2, [r3]
+ 423:Generated_Source\PSoC4/cyPm.c **** 
+ 424:Generated_Source\PSoC4/cyPm.c ****         /* Lock STOP mode: write PWR_STOP.FREEZE=0, UNLOCK=0x00, STOP=0, .TOKEN */
+ 425:Generated_Source\PSoC4/cyPm.c ****         CY_PM_PWR_STOP_REG &= (CY_PM_PWR_STOP_TOKEN_MASK | CY_PM_PWR_STOP_POLARITY);
+ 571              		.loc 1 425 9 view .LVU129
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 19
+
+
+ 572              		.loc 1 425 28 is_stmt 0 view .LVU130
+ 573 001a 1A68     		ldr	r2, [r3]
+ 574 001c 2A40     		ands	r2, r5
+ 575 001e 1A60     		str	r2, [r3]
+ 426:Generated_Source\PSoC4/cyPm.c **** 
+ 427:Generated_Source\PSoC4/cyPm.c ****         CyExitCriticalSection(interruptState);
+ 576              		.loc 1 427 9 is_stmt 1 view .LVU131
+ 577 0020 FFF7FEFF 		bl	CyExitCriticalSection
+ 578              	.LVL23:
+ 428:Generated_Source\PSoC4/cyPm.c ****     }
+ 579              		.loc 1 428 5 is_stmt 0 view .LVU132
+ 580              		@ sp needed
+ 581 0024 70BD     		pop	{r4, r5, r6, pc}
+ 582              	.L31:
+ 583 0026 C046     		.align	2
+ 584              	.L30:
+ 585 0028 2C000B40 		.word	1074462764
+ 586 002c FF000100 		.word	65791
+ 587              		.cfi_endproc
+ 588              	.LFE7:
+ 589              		.size	CySysPmUnfreezeIo, .-CySysPmUnfreezeIo
+ 590              		.text
+ 591              	.Letext0:
+ 592              		.file 2 "Generated_Source\\PSoC4\\cytypes.h"
+ 593              		.file 3 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\
+ 594              		.file 4 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\
+ 595              		.file 5 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi
+ 596              		.file 6 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\
+ 597              		.file 7 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\
+ 598              		.file 8 "Generated_Source\\PSoC4\\CyLib.h"
+ 599              		.section	.debug_info,"",%progbits
+ 600              	.Ldebug_info0:
+ 601 0000 1B0C0000 		.4byte	0xc1b
+ 602 0004 0400     		.2byte	0x4
+ 603 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 604 000a 04       		.byte	0x4
+ 605 000b 01       		.uleb128 0x1
+ 606 000c 2D030000 		.4byte	.LASF147
+ 607 0010 0C       		.byte	0xc
+ 608 0011 5F050000 		.4byte	.LASF148
+ 609 0015 4E010000 		.4byte	.LASF149
+ 610 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 611 001d 00000000 		.4byte	0
+ 612 0021 00000000 		.4byte	.Ldebug_line0
+ 613 0025 02       		.uleb128 0x2
+ 614 0026 01       		.byte	0x1
+ 615 0027 06       		.byte	0x6
+ 616 0028 DA000000 		.4byte	.LASF0
+ 617 002c 02       		.uleb128 0x2
+ 618 002d 01       		.byte	0x1
+ 619 002e 08       		.byte	0x8
+ 620 002f 92040000 		.4byte	.LASF1
+ 621 0033 02       		.uleb128 0x2
+ 622 0034 02       		.byte	0x2
+ 623 0035 05       		.byte	0x5
+ 624 0036 C7040000 		.4byte	.LASF2
+ 625 003a 02       		.uleb128 0x2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 20
+
+
+ 626 003b 02       		.byte	0x2
+ 627 003c 07       		.byte	0x7
+ 628 003d CE020000 		.4byte	.LASF3
+ 629 0041 02       		.uleb128 0x2
+ 630 0042 04       		.byte	0x4
+ 631 0043 05       		.byte	0x5
+ 632 0044 1F010000 		.4byte	.LASF4
+ 633 0048 02       		.uleb128 0x2
+ 634 0049 04       		.byte	0x4
+ 635 004a 07       		.byte	0x7
+ 636 004b 89020000 		.4byte	.LASF5
+ 637 004f 02       		.uleb128 0x2
+ 638 0050 08       		.byte	0x8
+ 639 0051 05       		.byte	0x5
+ 640 0052 CC000000 		.4byte	.LASF6
+ 641 0056 02       		.uleb128 0x2
+ 642 0057 08       		.byte	0x8
+ 643 0058 07       		.byte	0x7
+ 644 0059 78000000 		.4byte	.LASF7
+ 645 005d 03       		.uleb128 0x3
+ 646 005e 04       		.byte	0x4
+ 647 005f 05       		.byte	0x5
+ 648 0060 696E7400 		.ascii	"int\000"
+ 649 0064 02       		.uleb128 0x2
+ 650 0065 04       		.byte	0x4
+ 651 0066 07       		.byte	0x7
+ 652 0067 65020000 		.4byte	.LASF8
+ 653 006b 04       		.uleb128 0x4
+ 654 006c CB010000 		.4byte	.LASF9
+ 655 0070 02       		.byte	0x2
+ 656 0071 E401     		.2byte	0x1e4
+ 657 0073 19       		.byte	0x19
+ 658 0074 2C000000 		.4byte	0x2c
+ 659 0078 05       		.uleb128 0x5
+ 660 0079 6B000000 		.4byte	0x6b
+ 661 007d 04       		.uleb128 0x4
+ 662 007e 0C000000 		.4byte	.LASF10
+ 663 0082 02       		.byte	0x2
+ 664 0083 E501     		.2byte	0x1e5
+ 665 0085 19       		.byte	0x19
+ 666 0086 3A000000 		.4byte	0x3a
+ 667 008a 06       		.uleb128 0x6
+ 668 008b 7D000000 		.4byte	0x7d
+ 669 008f 04       		.uleb128 0x4
+ 670 0090 16020000 		.4byte	.LASF11
+ 671 0094 02       		.byte	0x2
+ 672 0095 E601     		.2byte	0x1e6
+ 673 0097 19       		.byte	0x19
+ 674 0098 48000000 		.4byte	0x48
+ 675 009c 06       		.uleb128 0x6
+ 676 009d 8F000000 		.4byte	0x8f
+ 677 00a1 02       		.uleb128 0x2
+ 678 00a2 04       		.byte	0x4
+ 679 00a3 04       		.byte	0x4
+ 680 00a4 57040000 		.4byte	.LASF12
+ 681 00a8 02       		.uleb128 0x2
+ 682 00a9 08       		.byte	0x8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 21
+
+
+ 683 00aa 04       		.byte	0x4
+ 684 00ab E0010000 		.4byte	.LASF13
+ 685 00af 02       		.uleb128 0x2
+ 686 00b0 01       		.byte	0x1
+ 687 00b1 08       		.byte	0x8
+ 688 00b2 CB050000 		.4byte	.LASF14
+ 689 00b6 05       		.uleb128 0x5
+ 690 00b7 AF000000 		.4byte	0xaf
+ 691 00bb 04       		.uleb128 0x4
+ 692 00bc BC010000 		.4byte	.LASF15
+ 693 00c0 02       		.byte	0x2
+ 694 00c1 8F02     		.2byte	0x28f
+ 695 00c3 21       		.byte	0x21
+ 696 00c4 8A000000 		.4byte	0x8a
+ 697 00c8 04       		.uleb128 0x4
+ 698 00c9 E1030000 		.4byte	.LASF16
+ 699 00cd 02       		.byte	0x2
+ 700 00ce 9002     		.2byte	0x290
+ 701 00d0 21       		.byte	0x21
+ 702 00d1 9C000000 		.4byte	0x9c
+ 703 00d5 07       		.uleb128 0x7
+ 704 00d6 04       		.byte	0x4
+ 705 00d7 DB000000 		.4byte	0xdb
+ 706 00db 08       		.uleb128 0x8
+ 707 00dc 02       		.uleb128 0x2
+ 708 00dd 08       		.byte	0x8
+ 709 00de 04       		.byte	0x4
+ 710 00df FF030000 		.4byte	.LASF17
+ 711 00e3 09       		.uleb128 0x9
+ 712 00e4 1E030000 		.4byte	.LASF18
+ 713 00e8 03       		.byte	0x3
+ 714 00e9 22       		.byte	0x22
+ 715 00ea 19       		.byte	0x19
+ 716 00eb EF000000 		.4byte	0xef
+ 717 00ef 07       		.uleb128 0x7
+ 718 00f0 04       		.byte	0x4
+ 719 00f1 F5000000 		.4byte	0xf5
+ 720 00f5 0A       		.uleb128 0xa
+ 721 00f6 92050000 		.4byte	.LASF124
+ 722 00fa 09       		.uleb128 0x9
+ 723 00fb 3F040000 		.4byte	.LASF19
+ 724 00ff 04       		.byte	0x4
+ 725 0100 2C       		.byte	0x2c
+ 726 0101 0E       		.byte	0xe
+ 727 0102 41000000 		.4byte	0x41
+ 728 0106 09       		.uleb128 0x9
+ 729 0107 BC050000 		.4byte	.LASF20
+ 730 010b 04       		.byte	0x4
+ 731 010c 72       		.byte	0x72
+ 732 010d 0E       		.byte	0xe
+ 733 010e 41000000 		.4byte	0x41
+ 734 0112 04       		.uleb128 0x4
+ 735 0113 26030000 		.4byte	.LASF21
+ 736 0117 05       		.byte	0x5
+ 737 0118 6501     		.2byte	0x165
+ 738 011a 17       		.byte	0x17
+ 739 011b 64000000 		.4byte	0x64
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 22
+
+
+ 740 011f 0B       		.uleb128 0xb
+ 741 0120 04       		.byte	0x4
+ 742 0121 04       		.byte	0x4
+ 743 0122 A6       		.byte	0xa6
+ 744 0123 03       		.byte	0x3
+ 745 0124 41010000 		.4byte	0x141
+ 746 0128 0C       		.uleb128 0xc
+ 747 0129 18030000 		.4byte	.LASF22
+ 748 012d 04       		.byte	0x4
+ 749 012e A8       		.byte	0xa8
+ 750 012f 0C       		.byte	0xc
+ 751 0130 12010000 		.4byte	0x112
+ 752 0134 0C       		.uleb128 0xc
+ 753 0135 72020000 		.4byte	.LASF23
+ 754 0139 04       		.byte	0x4
+ 755 013a A9       		.byte	0xa9
+ 756 013b 13       		.byte	0x13
+ 757 013c 41010000 		.4byte	0x141
+ 758 0140 00       		.byte	0
+ 759 0141 0D       		.uleb128 0xd
+ 760 0142 2C000000 		.4byte	0x2c
+ 761 0146 51010000 		.4byte	0x151
+ 762 014a 0E       		.uleb128 0xe
+ 763 014b 64000000 		.4byte	0x64
+ 764 014f 03       		.byte	0x3
+ 765 0150 00       		.byte	0
+ 766 0151 0F       		.uleb128 0xf
+ 767 0152 08       		.byte	0x8
+ 768 0153 04       		.byte	0x4
+ 769 0154 A3       		.byte	0xa3
+ 770 0155 09       		.byte	0x9
+ 771 0156 75010000 		.4byte	0x175
+ 772 015a 10       		.uleb128 0x10
+ 773 015b 8A050000 		.4byte	.LASF24
+ 774 015f 04       		.byte	0x4
+ 775 0160 A5       		.byte	0xa5
+ 776 0161 07       		.byte	0x7
+ 777 0162 5D000000 		.4byte	0x5d
+ 778 0166 00       		.byte	0
+ 779 0167 10       		.uleb128 0x10
+ 780 0168 99050000 		.4byte	.LASF25
+ 781 016c 04       		.byte	0x4
+ 782 016d AA       		.byte	0xaa
+ 783 016e 05       		.byte	0x5
+ 784 016f 1F010000 		.4byte	0x11f
+ 785 0173 04       		.byte	0x4
+ 786 0174 00       		.byte	0
+ 787 0175 09       		.uleb128 0x9
+ 788 0176 EF040000 		.4byte	.LASF26
+ 789 017a 04       		.byte	0x4
+ 790 017b AB       		.byte	0xab
+ 791 017c 03       		.byte	0x3
+ 792 017d 51010000 		.4byte	0x151
+ 793 0181 09       		.uleb128 0x9
+ 794 0182 28020000 		.4byte	.LASF27
+ 795 0186 04       		.byte	0x4
+ 796 0187 AF       		.byte	0xaf
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 23
+
+
+ 797 0188 1B       		.byte	0x1b
+ 798 0189 E3000000 		.4byte	0xe3
+ 799 018d 11       		.uleb128 0x11
+ 800 018e 04       		.byte	0x4
+ 801 018f 07       		.uleb128 0x7
+ 802 0190 04       		.byte	0x4
+ 803 0191 AF000000 		.4byte	0xaf
+ 804 0195 09       		.uleb128 0x9
+ 805 0196 27060000 		.4byte	.LASF28
+ 806 019a 06       		.byte	0x6
+ 807 019b 16       		.byte	0x16
+ 808 019c 19       		.byte	0x19
+ 809 019d 48000000 		.4byte	0x48
+ 810 01a1 12       		.uleb128 0x12
+ 811 01a2 39020000 		.4byte	.LASF33
+ 812 01a6 18       		.byte	0x18
+ 813 01a7 06       		.byte	0x6
+ 814 01a8 2F       		.byte	0x2f
+ 815 01a9 08       		.byte	0x8
+ 816 01aa FB010000 		.4byte	0x1fb
+ 817 01ae 10       		.uleb128 0x10
+ 818 01af FE050000 		.4byte	.LASF29
+ 819 01b3 06       		.byte	0x6
+ 820 01b4 31       		.byte	0x31
+ 821 01b5 13       		.byte	0x13
+ 822 01b6 FB010000 		.4byte	0x1fb
+ 823 01ba 00       		.byte	0
+ 824 01bb 13       		.uleb128 0x13
+ 825 01bc 5F6B00   		.ascii	"_k\000"
+ 826 01bf 06       		.byte	0x6
+ 827 01c0 32       		.byte	0x32
+ 828 01c1 07       		.byte	0x7
+ 829 01c2 5D000000 		.4byte	0x5d
+ 830 01c6 04       		.byte	0x4
+ 831 01c7 10       		.uleb128 0x10
+ 832 01c8 1A060000 		.4byte	.LASF30
+ 833 01cc 06       		.byte	0x6
+ 834 01cd 32       		.byte	0x32
+ 835 01ce 0B       		.byte	0xb
+ 836 01cf 5D000000 		.4byte	0x5d
+ 837 01d3 08       		.byte	0x8
+ 838 01d4 10       		.uleb128 0x10
+ 839 01d5 22020000 		.4byte	.LASF31
+ 840 01d9 06       		.byte	0x6
+ 841 01da 32       		.byte	0x32
+ 842 01db 14       		.byte	0x14
+ 843 01dc 5D000000 		.4byte	0x5d
+ 844 01e0 0C       		.byte	0xc
+ 845 01e1 10       		.uleb128 0x10
+ 846 01e2 7D060000 		.4byte	.LASF32
+ 847 01e6 06       		.byte	0x6
+ 848 01e7 32       		.byte	0x32
+ 849 01e8 1B       		.byte	0x1b
+ 850 01e9 5D000000 		.4byte	0x5d
+ 851 01ed 10       		.byte	0x10
+ 852 01ee 13       		.uleb128 0x13
+ 853 01ef 5F7800   		.ascii	"_x\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 24
+
+
+ 854 01f2 06       		.byte	0x6
+ 855 01f3 33       		.byte	0x33
+ 856 01f4 0B       		.byte	0xb
+ 857 01f5 01020000 		.4byte	0x201
+ 858 01f9 14       		.byte	0x14
+ 859 01fa 00       		.byte	0
+ 860 01fb 07       		.uleb128 0x7
+ 861 01fc 04       		.byte	0x4
+ 862 01fd A1010000 		.4byte	0x1a1
+ 863 0201 0D       		.uleb128 0xd
+ 864 0202 95010000 		.4byte	0x195
+ 865 0206 11020000 		.4byte	0x211
+ 866 020a 0E       		.uleb128 0xe
+ 867 020b 64000000 		.4byte	0x64
+ 868 020f 00       		.byte	0
+ 869 0210 00       		.byte	0
+ 870 0211 12       		.uleb128 0x12
+ 871 0212 60020000 		.4byte	.LASF34
+ 872 0216 24       		.byte	0x24
+ 873 0217 06       		.byte	0x6
+ 874 0218 37       		.byte	0x37
+ 875 0219 08       		.byte	0x8
+ 876 021a 94020000 		.4byte	0x294
+ 877 021e 10       		.uleb128 0x10
+ 878 021f C3000000 		.4byte	.LASF35
+ 879 0223 06       		.byte	0x6
+ 880 0224 39       		.byte	0x39
+ 881 0225 09       		.byte	0x9
+ 882 0226 5D000000 		.4byte	0x5d
+ 883 022a 00       		.byte	0
+ 884 022b 10       		.uleb128 0x10
+ 885 022c D0050000 		.4byte	.LASF36
+ 886 0230 06       		.byte	0x6
+ 887 0231 3A       		.byte	0x3a
+ 888 0232 09       		.byte	0x9
+ 889 0233 5D000000 		.4byte	0x5d
+ 890 0237 04       		.byte	0x4
+ 891 0238 10       		.uleb128 0x10
+ 892 0239 F2000000 		.4byte	.LASF37
+ 893 023d 06       		.byte	0x6
+ 894 023e 3B       		.byte	0x3b
+ 895 023f 09       		.byte	0x9
+ 896 0240 5D000000 		.4byte	0x5d
+ 897 0244 08       		.byte	0x8
+ 898 0245 10       		.uleb128 0x10
+ 899 0246 0F070000 		.4byte	.LASF38
+ 900 024a 06       		.byte	0x6
+ 901 024b 3C       		.byte	0x3c
+ 902 024c 09       		.byte	0x9
+ 903 024d 5D000000 		.4byte	0x5d
+ 904 0251 0C       		.byte	0xc
+ 905 0252 10       		.uleb128 0x10
+ 906 0253 23040000 		.4byte	.LASF39
+ 907 0257 06       		.byte	0x6
+ 908 0258 3D       		.byte	0x3d
+ 909 0259 09       		.byte	0x9
+ 910 025a 5D000000 		.4byte	0x5d
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 25
+
+
+ 911 025e 10       		.byte	0x10
+ 912 025f 10       		.uleb128 0x10
+ 913 0260 E7030000 		.4byte	.LASF40
+ 914 0264 06       		.byte	0x6
+ 915 0265 3E       		.byte	0x3e
+ 916 0266 09       		.byte	0x9
+ 917 0267 5D000000 		.4byte	0x5d
+ 918 026b 14       		.byte	0x14
+ 919 026c 10       		.uleb128 0x10
+ 920 026d 82060000 		.4byte	.LASF41
+ 921 0271 06       		.byte	0x6
+ 922 0272 3F       		.byte	0x3f
+ 923 0273 09       		.byte	0x9
+ 924 0274 5D000000 		.4byte	0x5d
+ 925 0278 18       		.byte	0x18
+ 926 0279 10       		.uleb128 0x10
+ 927 027a D1040000 		.4byte	.LASF42
+ 928 027e 06       		.byte	0x6
+ 929 027f 40       		.byte	0x40
+ 930 0280 09       		.byte	0x9
+ 931 0281 5D000000 		.4byte	0x5d
+ 932 0285 1C       		.byte	0x1c
+ 933 0286 10       		.uleb128 0x10
+ 934 0287 CA060000 		.4byte	.LASF43
+ 935 028b 06       		.byte	0x6
+ 936 028c 41       		.byte	0x41
+ 937 028d 09       		.byte	0x9
+ 938 028e 5D000000 		.4byte	0x5d
+ 939 0292 20       		.byte	0x20
+ 940 0293 00       		.byte	0
+ 941 0294 14       		.uleb128 0x14
+ 942 0295 01010000 		.4byte	.LASF44
+ 943 0299 0801     		.2byte	0x108
+ 944 029b 06       		.byte	0x6
+ 945 029c 4A       		.byte	0x4a
+ 946 029d 08       		.byte	0x8
+ 947 029e D9020000 		.4byte	0x2d9
+ 948 02a2 10       		.uleb128 0x10
+ 949 02a3 19000000 		.4byte	.LASF45
+ 950 02a7 06       		.byte	0x6
+ 951 02a8 4B       		.byte	0x4b
+ 952 02a9 0A       		.byte	0xa
+ 953 02aa D9020000 		.4byte	0x2d9
+ 954 02ae 00       		.byte	0
+ 955 02af 10       		.uleb128 0x10
+ 956 02b0 00000000 		.4byte	.LASF46
+ 957 02b4 06       		.byte	0x6
+ 958 02b5 4C       		.byte	0x4c
+ 959 02b6 09       		.byte	0x9
+ 960 02b7 D9020000 		.4byte	0x2d9
+ 961 02bb 80       		.byte	0x80
+ 962 02bc 15       		.uleb128 0x15
+ 963 02bd 11060000 		.4byte	.LASF47
+ 964 02c1 06       		.byte	0x6
+ 965 02c2 4E       		.byte	0x4e
+ 966 02c3 0A       		.byte	0xa
+ 967 02c4 95010000 		.4byte	0x195
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 26
+
+
+ 968 02c8 0001     		.2byte	0x100
+ 969 02ca 15       		.uleb128 0x15
+ 970 02cb 3F010000 		.4byte	.LASF48
+ 971 02cf 06       		.byte	0x6
+ 972 02d0 51       		.byte	0x51
+ 973 02d1 0A       		.byte	0xa
+ 974 02d2 95010000 		.4byte	0x195
+ 975 02d6 0401     		.2byte	0x104
+ 976 02d8 00       		.byte	0
+ 977 02d9 0D       		.uleb128 0xd
+ 978 02da 8D010000 		.4byte	0x18d
+ 979 02de E9020000 		.4byte	0x2e9
+ 980 02e2 0E       		.uleb128 0xe
+ 981 02e3 64000000 		.4byte	0x64
+ 982 02e7 1F       		.byte	0x1f
+ 983 02e8 00       		.byte	0
+ 984 02e9 14       		.uleb128 0x14
+ 985 02ea 2C040000 		.4byte	.LASF49
+ 986 02ee 9001     		.2byte	0x190
+ 987 02f0 06       		.byte	0x6
+ 988 02f1 5D       		.byte	0x5d
+ 989 02f2 08       		.byte	0x8
+ 990 02f3 2C030000 		.4byte	0x32c
+ 991 02f7 10       		.uleb128 0x10
+ 992 02f8 FE050000 		.4byte	.LASF29
+ 993 02fc 06       		.byte	0x6
+ 994 02fd 5E       		.byte	0x5e
+ 995 02fe 12       		.byte	0x12
+ 996 02ff 2C030000 		.4byte	0x32c
+ 997 0303 00       		.byte	0
+ 998 0304 10       		.uleb128 0x10
+ 999 0305 28050000 		.4byte	.LASF50
+ 1000 0309 06       		.byte	0x6
+ 1001 030a 5F       		.byte	0x5f
+ 1002 030b 06       		.byte	0x6
+ 1003 030c 5D000000 		.4byte	0x5d
+ 1004 0310 04       		.byte	0x4
+ 1005 0311 10       		.uleb128 0x10
+ 1006 0312 1D020000 		.4byte	.LASF51
+ 1007 0316 06       		.byte	0x6
+ 1008 0317 61       		.byte	0x61
+ 1009 0318 09       		.byte	0x9
+ 1010 0319 32030000 		.4byte	0x332
+ 1011 031d 08       		.byte	0x8
+ 1012 031e 10       		.uleb128 0x10
+ 1013 031f 01010000 		.4byte	.LASF44
+ 1014 0323 06       		.byte	0x6
+ 1015 0324 62       		.byte	0x62
+ 1016 0325 1E       		.byte	0x1e
+ 1017 0326 94020000 		.4byte	0x294
+ 1018 032a 88       		.byte	0x88
+ 1019 032b 00       		.byte	0
+ 1020 032c 07       		.uleb128 0x7
+ 1021 032d 04       		.byte	0x4
+ 1022 032e E9020000 		.4byte	0x2e9
+ 1023 0332 0D       		.uleb128 0xd
+ 1024 0333 D5000000 		.4byte	0xd5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 27
+
+
+ 1025 0337 42030000 		.4byte	0x342
+ 1026 033b 0E       		.uleb128 0xe
+ 1027 033c 64000000 		.4byte	0x64
+ 1028 0340 1F       		.byte	0x1f
+ 1029 0341 00       		.byte	0
+ 1030 0342 12       		.uleb128 0x12
+ 1031 0343 DB040000 		.4byte	.LASF52
+ 1032 0347 08       		.byte	0x8
+ 1033 0348 06       		.byte	0x6
+ 1034 0349 75       		.byte	0x75
+ 1035 034a 08       		.byte	0x8
+ 1036 034b 6A030000 		.4byte	0x36a
+ 1037 034f 10       		.uleb128 0x10
+ 1038 0350 EC000000 		.4byte	.LASF53
+ 1039 0354 06       		.byte	0x6
+ 1040 0355 76       		.byte	0x76
+ 1041 0356 11       		.byte	0x11
+ 1042 0357 6A030000 		.4byte	0x36a
+ 1043 035b 00       		.byte	0
+ 1044 035c 10       		.uleb128 0x10
+ 1045 035d 13000000 		.4byte	.LASF54
+ 1046 0361 06       		.byte	0x6
+ 1047 0362 77       		.byte	0x77
+ 1048 0363 06       		.byte	0x6
+ 1049 0364 5D000000 		.4byte	0x5d
+ 1050 0368 04       		.byte	0x4
+ 1051 0369 00       		.byte	0
+ 1052 036a 07       		.uleb128 0x7
+ 1053 036b 04       		.byte	0x4
+ 1054 036c 2C000000 		.4byte	0x2c
+ 1055 0370 12       		.uleb128 0x12
+ 1056 0371 FA040000 		.4byte	.LASF55
+ 1057 0375 68       		.byte	0x68
+ 1058 0376 06       		.byte	0x6
+ 1059 0377 B5       		.byte	0xb5
+ 1060 0378 08       		.byte	0x8
+ 1061 0379 B3040000 		.4byte	0x4b3
+ 1062 037d 13       		.uleb128 0x13
+ 1063 037e 5F7000   		.ascii	"_p\000"
+ 1064 0381 06       		.byte	0x6
+ 1065 0382 B6       		.byte	0xb6
+ 1066 0383 12       		.byte	0x12
+ 1067 0384 6A030000 		.4byte	0x36a
+ 1068 0388 00       		.byte	0
+ 1069 0389 13       		.uleb128 0x13
+ 1070 038a 5F7200   		.ascii	"_r\000"
+ 1071 038d 06       		.byte	0x6
+ 1072 038e B7       		.byte	0xb7
+ 1073 038f 07       		.byte	0x7
+ 1074 0390 5D000000 		.4byte	0x5d
+ 1075 0394 04       		.byte	0x4
+ 1076 0395 13       		.uleb128 0x13
+ 1077 0396 5F7700   		.ascii	"_w\000"
+ 1078 0399 06       		.byte	0x6
+ 1079 039a B8       		.byte	0xb8
+ 1080 039b 07       		.byte	0x7
+ 1081 039c 5D000000 		.4byte	0x5d
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 28
+
+
+ 1082 03a0 08       		.byte	0x8
+ 1083 03a1 10       		.uleb128 0x10
+ 1084 03a2 38010000 		.4byte	.LASF56
+ 1085 03a6 06       		.byte	0x6
+ 1086 03a7 B9       		.byte	0xb9
+ 1087 03a8 09       		.byte	0x9
+ 1088 03a9 33000000 		.4byte	0x33
+ 1089 03ad 0C       		.byte	0xc
+ 1090 03ae 10       		.uleb128 0x10
+ 1091 03af 9B020000 		.4byte	.LASF57
+ 1092 03b3 06       		.byte	0x6
+ 1093 03b4 BA       		.byte	0xba
+ 1094 03b5 09       		.byte	0x9
+ 1095 03b6 33000000 		.4byte	0x33
+ 1096 03ba 0E       		.byte	0xe
+ 1097 03bb 13       		.uleb128 0x13
+ 1098 03bc 5F626600 		.ascii	"_bf\000"
+ 1099 03c0 06       		.byte	0x6
+ 1100 03c1 BB       		.byte	0xbb
+ 1101 03c2 11       		.byte	0x11
+ 1102 03c3 42030000 		.4byte	0x342
+ 1103 03c7 10       		.byte	0x10
+ 1104 03c8 10       		.uleb128 0x10
+ 1105 03c9 8F000000 		.4byte	.LASF58
+ 1106 03cd 06       		.byte	0x6
+ 1107 03ce BC       		.byte	0xbc
+ 1108 03cf 07       		.byte	0x7
+ 1109 03d0 5D000000 		.4byte	0x5d
+ 1110 03d4 18       		.byte	0x18
+ 1111 03d5 10       		.uleb128 0x10
+ 1112 03d6 0F010000 		.4byte	.LASF59
+ 1113 03da 06       		.byte	0x6
+ 1114 03db C3       		.byte	0xc3
+ 1115 03dc 0A       		.byte	0xa
+ 1116 03dd 8D010000 		.4byte	0x18d
+ 1117 03e1 1C       		.byte	0x1c
+ 1118 03e2 10       		.uleb128 0x10
+ 1119 03e3 50020000 		.4byte	.LASF60
+ 1120 03e7 06       		.byte	0x6
+ 1121 03e8 C5       		.byte	0xc5
+ 1122 03e9 1D       		.byte	0x1d
+ 1123 03ea 25060000 		.4byte	0x625
+ 1124 03ee 20       		.byte	0x20
+ 1125 03ef 10       		.uleb128 0x10
+ 1126 03f0 8B040000 		.4byte	.LASF61
+ 1127 03f4 06       		.byte	0x6
+ 1128 03f5 C7       		.byte	0xc7
+ 1129 03f6 1D       		.byte	0x1d
+ 1130 03f7 4F060000 		.4byte	0x64f
+ 1131 03fb 24       		.byte	0x24
+ 1132 03fc 10       		.uleb128 0x10
+ 1133 03fd A1050000 		.4byte	.LASF62
+ 1134 0401 06       		.byte	0x6
+ 1135 0402 CA       		.byte	0xca
+ 1136 0403 0D       		.byte	0xd
+ 1137 0404 73060000 		.4byte	0x673
+ 1138 0408 28       		.byte	0x28
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 29
+
+
+ 1139 0409 10       		.uleb128 0x10
+ 1140 040a E4060000 		.4byte	.LASF63
+ 1141 040e 06       		.byte	0x6
+ 1142 040f CB       		.byte	0xcb
+ 1143 0410 09       		.byte	0x9
+ 1144 0411 8D060000 		.4byte	0x68d
+ 1145 0415 2C       		.byte	0x2c
+ 1146 0416 13       		.uleb128 0x13
+ 1147 0417 5F756200 		.ascii	"_ub\000"
+ 1148 041b 06       		.byte	0x6
+ 1149 041c CE       		.byte	0xce
+ 1150 041d 11       		.byte	0x11
+ 1151 041e 42030000 		.4byte	0x342
+ 1152 0422 30       		.byte	0x30
+ 1153 0423 13       		.uleb128 0x13
+ 1154 0424 5F757000 		.ascii	"_up\000"
+ 1155 0428 06       		.byte	0x6
+ 1156 0429 CF       		.byte	0xcf
+ 1157 042a 12       		.byte	0x12
+ 1158 042b 6A030000 		.4byte	0x36a
+ 1159 042f 38       		.byte	0x38
+ 1160 0430 13       		.uleb128 0x13
+ 1161 0431 5F757200 		.ascii	"_ur\000"
+ 1162 0435 06       		.byte	0x6
+ 1163 0436 D0       		.byte	0xd0
+ 1164 0437 07       		.byte	0x7
+ 1165 0438 5D000000 		.4byte	0x5d
+ 1166 043c 3C       		.byte	0x3c
+ 1167 043d 10       		.uleb128 0x10
+ 1168 043e E6000000 		.4byte	.LASF64
+ 1169 0442 06       		.byte	0x6
+ 1170 0443 D3       		.byte	0xd3
+ 1171 0444 11       		.byte	0x11
+ 1172 0445 93060000 		.4byte	0x693
+ 1173 0449 40       		.byte	0x40
+ 1174 044a 10       		.uleb128 0x10
+ 1175 044b BC060000 		.4byte	.LASF65
+ 1176 044f 06       		.byte	0x6
+ 1177 0450 D4       		.byte	0xd4
+ 1178 0451 11       		.byte	0x11
+ 1179 0452 A3060000 		.4byte	0x6a3
+ 1180 0456 43       		.byte	0x43
+ 1181 0457 13       		.uleb128 0x13
+ 1182 0458 5F6C6200 		.ascii	"_lb\000"
+ 1183 045c 06       		.byte	0x6
+ 1184 045d D7       		.byte	0xd7
+ 1185 045e 11       		.byte	0x11
+ 1186 045f 42030000 		.4byte	0x342
+ 1187 0463 44       		.byte	0x44
+ 1188 0464 10       		.uleb128 0x10
+ 1189 0465 C2010000 		.4byte	.LASF66
+ 1190 0469 06       		.byte	0x6
+ 1191 046a DA       		.byte	0xda
+ 1192 046b 07       		.byte	0x7
+ 1193 046c 5D000000 		.4byte	0x5d
+ 1194 0470 4C       		.byte	0x4c
+ 1195 0471 10       		.uleb128 0x10
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 30
+
+
+ 1196 0472 EF010000 		.4byte	.LASF67
+ 1197 0476 06       		.byte	0x6
+ 1198 0477 DB       		.byte	0xdb
+ 1199 0478 0A       		.byte	0xa
+ 1200 0479 FA000000 		.4byte	0xfa
+ 1201 047d 50       		.byte	0x50
+ 1202 047e 10       		.uleb128 0x10
+ 1203 047f 45000000 		.4byte	.LASF68
+ 1204 0483 06       		.byte	0x6
+ 1205 0484 DE       		.byte	0xde
+ 1206 0485 12       		.byte	0x12
+ 1207 0486 D1040000 		.4byte	0x4d1
+ 1208 048a 54       		.byte	0x54
+ 1209 048b 10       		.uleb128 0x10
+ 1210 048c D3030000 		.4byte	.LASF69
+ 1211 0490 06       		.byte	0x6
+ 1212 0491 E2       		.byte	0xe2
+ 1213 0492 0C       		.byte	0xc
+ 1214 0493 81010000 		.4byte	0x181
+ 1215 0497 58       		.byte	0x58
+ 1216 0498 10       		.uleb128 0x10
+ 1217 0499 02050000 		.4byte	.LASF70
+ 1218 049d 06       		.byte	0x6
+ 1219 049e E4       		.byte	0xe4
+ 1220 049f 0E       		.byte	0xe
+ 1221 04a0 75010000 		.4byte	0x175
+ 1222 04a4 5C       		.byte	0x5c
+ 1223 04a5 10       		.uleb128 0x10
+ 1224 04a6 D9030000 		.4byte	.LASF71
+ 1225 04aa 06       		.byte	0x6
+ 1226 04ab E5       		.byte	0xe5
+ 1227 04ac 09       		.byte	0x9
+ 1228 04ad 5D000000 		.4byte	0x5d
+ 1229 04b1 64       		.byte	0x64
+ 1230 04b2 00       		.byte	0
+ 1231 04b3 16       		.uleb128 0x16
+ 1232 04b4 5D000000 		.4byte	0x5d
+ 1233 04b8 D1040000 		.4byte	0x4d1
+ 1234 04bc 17       		.uleb128 0x17
+ 1235 04bd D1040000 		.4byte	0x4d1
+ 1236 04c1 17       		.uleb128 0x17
+ 1237 04c2 8D010000 		.4byte	0x18d
+ 1238 04c6 17       		.uleb128 0x17
+ 1239 04c7 8F010000 		.4byte	0x18f
+ 1240 04cb 17       		.uleb128 0x17
+ 1241 04cc 5D000000 		.4byte	0x5d
+ 1242 04d0 00       		.byte	0
+ 1243 04d1 07       		.uleb128 0x7
+ 1244 04d2 04       		.byte	0x4
+ 1245 04d3 DC040000 		.4byte	0x4dc
+ 1246 04d7 05       		.uleb128 0x5
+ 1247 04d8 D1040000 		.4byte	0x4d1
+ 1248 04dc 18       		.uleb128 0x18
+ 1249 04dd 7D050000 		.4byte	.LASF72
+ 1250 04e1 2804     		.2byte	0x428
+ 1251 04e3 06       		.byte	0x6
+ 1252 04e4 6002     		.2byte	0x260
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 31
+
+
+ 1253 04e6 08       		.byte	0x8
+ 1254 04e7 25060000 		.4byte	0x625
+ 1255 04eb 19       		.uleb128 0x19
+ 1256 04ec C4050000 		.4byte	.LASF73
+ 1257 04f0 06       		.byte	0x6
+ 1258 04f1 6202     		.2byte	0x262
+ 1259 04f3 07       		.byte	0x7
+ 1260 04f4 5D000000 		.4byte	0x5d
+ 1261 04f8 00       		.byte	0
+ 1262 04f9 19       		.uleb128 0x19
+ 1263 04fa 47010000 		.4byte	.LASF74
+ 1264 04fe 06       		.byte	0x6
+ 1265 04ff 6702     		.2byte	0x267
+ 1266 0501 0B       		.byte	0xb
+ 1267 0502 FF060000 		.4byte	0x6ff
+ 1268 0506 04       		.byte	0x4
+ 1269 0507 19       		.uleb128 0x19
+ 1270 0508 79020000 		.4byte	.LASF75
+ 1271 050c 06       		.byte	0x6
+ 1272 050d 6702     		.2byte	0x267
+ 1273 050f 14       		.byte	0x14
+ 1274 0510 FF060000 		.4byte	0x6ff
+ 1275 0514 08       		.byte	0x8
+ 1276 0515 19       		.uleb128 0x19
+ 1277 0516 31020000 		.4byte	.LASF76
+ 1278 051a 06       		.byte	0x6
+ 1279 051b 6702     		.2byte	0x267
+ 1280 051d 1E       		.byte	0x1e
+ 1281 051e FF060000 		.4byte	0x6ff
+ 1282 0522 0C       		.byte	0xc
+ 1283 0523 19       		.uleb128 0x19
+ 1284 0524 23050000 		.4byte	.LASF77
+ 1285 0528 06       		.byte	0x6
+ 1286 0529 6902     		.2byte	0x269
+ 1287 052b 08       		.byte	0x8
+ 1288 052c 5D000000 		.4byte	0x5d
+ 1289 0530 10       		.byte	0x10
+ 1290 0531 19       		.uleb128 0x19
+ 1291 0532 3A000000 		.4byte	.LASF78
+ 1292 0536 06       		.byte	0x6
+ 1293 0537 6A02     		.2byte	0x26a
+ 1294 0539 08       		.byte	0x8
+ 1295 053a FF080000 		.4byte	0x8ff
+ 1296 053e 14       		.byte	0x14
+ 1297 053f 19       		.uleb128 0x19
+ 1298 0540 46050000 		.4byte	.LASF79
+ 1299 0544 06       		.byte	0x6
+ 1300 0545 6D02     		.2byte	0x26d
+ 1301 0547 07       		.byte	0x7
+ 1302 0548 5D000000 		.4byte	0x5d
+ 1303 054c 30       		.byte	0x30
+ 1304 054d 19       		.uleb128 0x19
+ 1305 054e 34050000 		.4byte	.LASF80
+ 1306 0552 06       		.byte	0x6
+ 1307 0553 6E02     		.2byte	0x26e
+ 1308 0555 16       		.byte	0x16
+ 1309 0556 14090000 		.4byte	0x914
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 32
+
+
+ 1310 055a 34       		.byte	0x34
+ 1311 055b 19       		.uleb128 0x19
+ 1312 055c 34040000 		.4byte	.LASF81
+ 1313 0560 06       		.byte	0x6
+ 1314 0561 7002     		.2byte	0x270
+ 1315 0563 07       		.byte	0x7
+ 1316 0564 5D000000 		.4byte	0x5d
+ 1317 0568 38       		.byte	0x38
+ 1318 0569 19       		.uleb128 0x19
+ 1319 056a 3C050000 		.4byte	.LASF82
+ 1320 056e 06       		.byte	0x6
+ 1321 056f 7202     		.2byte	0x272
+ 1322 0571 0A       		.byte	0xa
+ 1323 0572 25090000 		.4byte	0x925
+ 1324 0576 3C       		.byte	0x3c
+ 1325 0577 19       		.uleb128 0x19
+ 1326 0578 10030000 		.4byte	.LASF83
+ 1327 057c 06       		.byte	0x6
+ 1328 057d 7502     		.2byte	0x275
+ 1329 057f 13       		.byte	0x13
+ 1330 0580 FB010000 		.4byte	0x1fb
+ 1331 0584 40       		.byte	0x40
+ 1332 0585 19       		.uleb128 0x19
+ 1333 0586 56020000 		.4byte	.LASF84
+ 1334 058a 06       		.byte	0x6
+ 1335 058b 7602     		.2byte	0x276
+ 1336 058d 07       		.byte	0x7
+ 1337 058e 5D000000 		.4byte	0x5d
+ 1338 0592 44       		.byte	0x44
+ 1339 0593 19       		.uleb128 0x19
+ 1340 0594 0A070000 		.4byte	.LASF85
+ 1341 0598 06       		.byte	0x6
+ 1342 0599 7702     		.2byte	0x277
+ 1343 059b 13       		.byte	0x13
+ 1344 059c FB010000 		.4byte	0x1fb
+ 1345 05a0 48       		.byte	0x48
+ 1346 05a1 19       		.uleb128 0x19
+ 1347 05a2 73040000 		.4byte	.LASF86
+ 1348 05a6 06       		.byte	0x6
+ 1349 05a7 7802     		.2byte	0x278
+ 1350 05a9 14       		.byte	0x14
+ 1351 05aa 2B090000 		.4byte	0x92b
+ 1352 05ae 4C       		.byte	0x4c
+ 1353 05af 19       		.uleb128 0x19
+ 1354 05b0 81020000 		.4byte	.LASF87
+ 1355 05b4 06       		.byte	0x6
+ 1356 05b5 7B02     		.2byte	0x27b
+ 1357 05b7 07       		.byte	0x7
+ 1358 05b8 5D000000 		.4byte	0x5d
+ 1359 05bc 50       		.byte	0x50
+ 1360 05bd 19       		.uleb128 0x19
+ 1361 05be E7010000 		.4byte	.LASF88
+ 1362 05c2 06       		.byte	0x6
+ 1363 05c3 7C02     		.2byte	0x27c
+ 1364 05c5 09       		.byte	0x9
+ 1365 05c6 8F010000 		.4byte	0x18f
+ 1366 05ca 54       		.byte	0x54
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 33
+
+
+ 1367 05cb 19       		.uleb128 0x19
+ 1368 05cc A0040000 		.4byte	.LASF89
+ 1369 05d0 06       		.byte	0x6
+ 1370 05d1 9F02     		.2byte	0x29f
+ 1371 05d3 07       		.byte	0x7
+ 1372 05d4 DA080000 		.4byte	0x8da
+ 1373 05d8 58       		.byte	0x58
+ 1374 05d9 1A       		.uleb128 0x1a
+ 1375 05da 2C040000 		.4byte	.LASF49
+ 1376 05de 06       		.byte	0x6
+ 1377 05df A302     		.2byte	0x2a3
+ 1378 05e1 13       		.byte	0x13
+ 1379 05e2 2C030000 		.4byte	0x32c
+ 1380 05e6 4801     		.2byte	0x148
+ 1381 05e8 1A       		.uleb128 0x1a
+ 1382 05e9 E1020000 		.4byte	.LASF90
+ 1383 05ed 06       		.byte	0x6
+ 1384 05ee A402     		.2byte	0x2a4
+ 1385 05f0 12       		.byte	0x12
+ 1386 05f1 E9020000 		.4byte	0x2e9
+ 1387 05f5 4C01     		.2byte	0x14c
+ 1388 05f7 1A       		.uleb128 0x1a
+ 1389 05f8 A5060000 		.4byte	.LASF91
+ 1390 05fc 06       		.byte	0x6
+ 1391 05fd A802     		.2byte	0x2a8
+ 1392 05ff 0C       		.byte	0xc
+ 1393 0600 3C090000 		.4byte	0x93c
+ 1394 0604 DC02     		.2byte	0x2dc
+ 1395 0606 1A       		.uleb128 0x1a
+ 1396 0607 17010000 		.4byte	.LASF92
+ 1397 060b 06       		.byte	0x6
+ 1398 060c AD02     		.2byte	0x2ad
+ 1399 060e 10       		.byte	0x10
+ 1400 060f C0060000 		.4byte	0x6c0
+ 1401 0613 E002     		.2byte	0x2e0
+ 1402 0615 1A       		.uleb128 0x1a
+ 1403 0616 FC000000 		.4byte	.LASF93
+ 1404 061a 06       		.byte	0x6
+ 1405 061b AF02     		.2byte	0x2af
+ 1406 061d 0A       		.byte	0xa
+ 1407 061e 48090000 		.4byte	0x948
+ 1408 0622 EC02     		.2byte	0x2ec
+ 1409 0624 00       		.byte	0
+ 1410 0625 07       		.uleb128 0x7
+ 1411 0626 04       		.byte	0x4
+ 1412 0627 B3040000 		.4byte	0x4b3
+ 1413 062b 16       		.uleb128 0x16
+ 1414 062c 5D000000 		.4byte	0x5d
+ 1415 0630 49060000 		.4byte	0x649
+ 1416 0634 17       		.uleb128 0x17
+ 1417 0635 D1040000 		.4byte	0x4d1
+ 1418 0639 17       		.uleb128 0x17
+ 1419 063a 8D010000 		.4byte	0x18d
+ 1420 063e 17       		.uleb128 0x17
+ 1421 063f 49060000 		.4byte	0x649
+ 1422 0643 17       		.uleb128 0x17
+ 1423 0644 5D000000 		.4byte	0x5d
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 34
+
+
+ 1424 0648 00       		.byte	0
+ 1425 0649 07       		.uleb128 0x7
+ 1426 064a 04       		.byte	0x4
+ 1427 064b B6000000 		.4byte	0xb6
+ 1428 064f 07       		.uleb128 0x7
+ 1429 0650 04       		.byte	0x4
+ 1430 0651 2B060000 		.4byte	0x62b
+ 1431 0655 16       		.uleb128 0x16
+ 1432 0656 06010000 		.4byte	0x106
+ 1433 065a 73060000 		.4byte	0x673
+ 1434 065e 17       		.uleb128 0x17
+ 1435 065f D1040000 		.4byte	0x4d1
+ 1436 0663 17       		.uleb128 0x17
+ 1437 0664 8D010000 		.4byte	0x18d
+ 1438 0668 17       		.uleb128 0x17
+ 1439 0669 06010000 		.4byte	0x106
+ 1440 066d 17       		.uleb128 0x17
+ 1441 066e 5D000000 		.4byte	0x5d
+ 1442 0672 00       		.byte	0
+ 1443 0673 07       		.uleb128 0x7
+ 1444 0674 04       		.byte	0x4
+ 1445 0675 55060000 		.4byte	0x655
+ 1446 0679 16       		.uleb128 0x16
+ 1447 067a 5D000000 		.4byte	0x5d
+ 1448 067e 8D060000 		.4byte	0x68d
+ 1449 0682 17       		.uleb128 0x17
+ 1450 0683 D1040000 		.4byte	0x4d1
+ 1451 0687 17       		.uleb128 0x17
+ 1452 0688 8D010000 		.4byte	0x18d
+ 1453 068c 00       		.byte	0
+ 1454 068d 07       		.uleb128 0x7
+ 1455 068e 04       		.byte	0x4
+ 1456 068f 79060000 		.4byte	0x679
+ 1457 0693 0D       		.uleb128 0xd
+ 1458 0694 2C000000 		.4byte	0x2c
+ 1459 0698 A3060000 		.4byte	0x6a3
+ 1460 069c 0E       		.uleb128 0xe
+ 1461 069d 64000000 		.4byte	0x64
+ 1462 06a1 02       		.byte	0x2
+ 1463 06a2 00       		.byte	0
+ 1464 06a3 0D       		.uleb128 0xd
+ 1465 06a4 2C000000 		.4byte	0x2c
+ 1466 06a8 B3060000 		.4byte	0x6b3
+ 1467 06ac 0E       		.uleb128 0xe
+ 1468 06ad 64000000 		.4byte	0x64
+ 1469 06b1 00       		.byte	0
+ 1470 06b2 00       		.byte	0
+ 1471 06b3 04       		.uleb128 0x4
+ 1472 06b4 E8040000 		.4byte	.LASF94
+ 1473 06b8 06       		.byte	0x6
+ 1474 06b9 1F01     		.2byte	0x11f
+ 1475 06bb 1A       		.byte	0x1a
+ 1476 06bc 70030000 		.4byte	0x370
+ 1477 06c0 1B       		.uleb128 0x1b
+ 1478 06c1 8C060000 		.4byte	.LASF95
+ 1479 06c5 0C       		.byte	0xc
+ 1480 06c6 06       		.byte	0x6
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 35
+
+
+ 1481 06c7 2301     		.2byte	0x123
+ 1482 06c9 08       		.byte	0x8
+ 1483 06ca F9060000 		.4byte	0x6f9
+ 1484 06ce 19       		.uleb128 0x19
+ 1485 06cf FE050000 		.4byte	.LASF29
+ 1486 06d3 06       		.byte	0x6
+ 1487 06d4 2501     		.2byte	0x125
+ 1488 06d6 11       		.byte	0x11
+ 1489 06d7 F9060000 		.4byte	0x6f9
+ 1490 06db 00       		.byte	0
+ 1491 06dc 19       		.uleb128 0x19
+ 1492 06dd C7020000 		.4byte	.LASF96
+ 1493 06e1 06       		.byte	0x6
+ 1494 06e2 2601     		.2byte	0x126
+ 1495 06e4 07       		.byte	0x7
+ 1496 06e5 5D000000 		.4byte	0x5d
+ 1497 06e9 04       		.byte	0x4
+ 1498 06ea 19       		.uleb128 0x19
+ 1499 06eb E2040000 		.4byte	.LASF97
+ 1500 06ef 06       		.byte	0x6
+ 1501 06f0 2701     		.2byte	0x127
+ 1502 06f2 0B       		.byte	0xb
+ 1503 06f3 FF060000 		.4byte	0x6ff
+ 1504 06f7 08       		.byte	0x8
+ 1505 06f8 00       		.byte	0
+ 1506 06f9 07       		.uleb128 0x7
+ 1507 06fa 04       		.byte	0x4
+ 1508 06fb C0060000 		.4byte	0x6c0
+ 1509 06ff 07       		.uleb128 0x7
+ 1510 0700 04       		.byte	0x4
+ 1511 0701 B3060000 		.4byte	0x6b3
+ 1512 0705 1B       		.uleb128 0x1b
+ 1513 0706 32000000 		.4byte	.LASF98
+ 1514 070a 0E       		.byte	0xe
+ 1515 070b 06       		.byte	0x6
+ 1516 070c 3F01     		.2byte	0x13f
+ 1517 070e 08       		.byte	0x8
+ 1518 070f 3E070000 		.4byte	0x73e
+ 1519 0713 19       		.uleb128 0x19
+ 1520 0714 84050000 		.4byte	.LASF99
+ 1521 0718 06       		.byte	0x6
+ 1522 0719 4001     		.2byte	0x140
+ 1523 071b 12       		.byte	0x12
+ 1524 071c 3E070000 		.4byte	0x73e
+ 1525 0720 00       		.byte	0
+ 1526 0721 19       		.uleb128 0x19
+ 1527 0722 F8050000 		.4byte	.LASF100
+ 1528 0726 06       		.byte	0x6
+ 1529 0727 4101     		.2byte	0x141
+ 1530 0729 12       		.byte	0x12
+ 1531 072a 3E070000 		.4byte	0x73e
+ 1532 072e 06       		.byte	0x6
+ 1533 072f 19       		.uleb128 0x19
+ 1534 0730 22060000 		.4byte	.LASF101
+ 1535 0734 06       		.byte	0x6
+ 1536 0735 4201     		.2byte	0x142
+ 1537 0737 12       		.byte	0x12
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 36
+
+
+ 1538 0738 3A000000 		.4byte	0x3a
+ 1539 073c 0C       		.byte	0xc
+ 1540 073d 00       		.byte	0
+ 1541 073e 0D       		.uleb128 0xd
+ 1542 073f 3A000000 		.4byte	0x3a
+ 1543 0743 4E070000 		.4byte	0x74e
+ 1544 0747 0E       		.uleb128 0xe
+ 1545 0748 64000000 		.4byte	0x64
+ 1546 074c 02       		.byte	0x2
+ 1547 074d 00       		.byte	0
+ 1548 074e 1C       		.uleb128 0x1c
+ 1549 074f D0       		.byte	0xd0
+ 1550 0750 06       		.byte	0x6
+ 1551 0751 8002     		.2byte	0x280
+ 1552 0753 07       		.byte	0x7
+ 1553 0754 63080000 		.4byte	0x863
+ 1554 0758 19       		.uleb128 0x19
+ 1555 0759 70060000 		.4byte	.LASF102
+ 1556 075d 06       		.byte	0x6
+ 1557 075e 8202     		.2byte	0x282
+ 1558 0760 18       		.byte	0x18
+ 1559 0761 64000000 		.4byte	0x64
+ 1560 0765 00       		.byte	0
+ 1561 0766 19       		.uleb128 0x19
+ 1562 0767 04060000 		.4byte	.LASF103
+ 1563 076b 06       		.byte	0x6
+ 1564 076c 8302     		.2byte	0x283
+ 1565 076e 12       		.byte	0x12
+ 1566 076f 8F010000 		.4byte	0x18f
+ 1567 0773 04       		.byte	0x4
+ 1568 0774 19       		.uleb128 0x19
+ 1569 0775 03030000 		.4byte	.LASF104
+ 1570 0779 06       		.byte	0x6
+ 1571 077a 8402     		.2byte	0x284
+ 1572 077c 10       		.byte	0x10
+ 1573 077d 63080000 		.4byte	0x863
+ 1574 0781 08       		.byte	0x8
+ 1575 0782 19       		.uleb128 0x19
+ 1576 0783 D5060000 		.4byte	.LASF105
+ 1577 0787 06       		.byte	0x6
+ 1578 0788 8502     		.2byte	0x285
+ 1579 078a 17       		.byte	0x17
+ 1580 078b 11020000 		.4byte	0x211
+ 1581 078f 24       		.byte	0x24
+ 1582 0790 19       		.uleb128 0x19
+ 1583 0791 41020000 		.4byte	.LASF106
+ 1584 0795 06       		.byte	0x6
+ 1585 0796 8602     		.2byte	0x286
+ 1586 0798 0F       		.byte	0xf
+ 1587 0799 5D000000 		.4byte	0x5d
+ 1588 079d 48       		.byte	0x48
+ 1589 079e 19       		.uleb128 0x19
+ 1590 079f 0B050000 		.4byte	.LASF107
+ 1591 07a3 06       		.byte	0x6
+ 1592 07a4 8702     		.2byte	0x287
+ 1593 07a6 2C       		.byte	0x2c
+ 1594 07a7 56000000 		.4byte	0x56
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 37
+
+
+ 1595 07ab 50       		.byte	0x50
+ 1596 07ac 19       		.uleb128 0x19
+ 1597 07ad EB060000 		.4byte	.LASF108
+ 1598 07b1 06       		.byte	0x6
+ 1599 07b2 8802     		.2byte	0x288
+ 1600 07b4 1A       		.byte	0x1a
+ 1601 07b5 05070000 		.4byte	0x705
+ 1602 07b9 58       		.byte	0x58
+ 1603 07ba 19       		.uleb128 0x19
+ 1604 07bb 16050000 		.4byte	.LASF109
+ 1605 07bf 06       		.byte	0x6
+ 1606 07c0 8902     		.2byte	0x289
+ 1607 07c2 16       		.byte	0x16
+ 1608 07c3 75010000 		.4byte	0x175
+ 1609 07c7 68       		.byte	0x68
+ 1610 07c8 19       		.uleb128 0x19
+ 1611 07c9 FC060000 		.4byte	.LASF110
+ 1612 07cd 06       		.byte	0x6
+ 1613 07ce 8A02     		.2byte	0x28a
+ 1614 07d0 16       		.byte	0x16
+ 1615 07d1 75010000 		.4byte	0x175
+ 1616 07d5 70       		.byte	0x70
+ 1617 07d6 19       		.uleb128 0x19
+ 1618 07d7 7D040000 		.4byte	.LASF111
+ 1619 07db 06       		.byte	0x6
+ 1620 07dc 8B02     		.2byte	0x28b
+ 1621 07de 16       		.byte	0x16
+ 1622 07df 75010000 		.4byte	0x175
+ 1623 07e3 78       		.byte	0x78
+ 1624 07e4 19       		.uleb128 0x19
+ 1625 07e5 9B060000 		.4byte	.LASF112
+ 1626 07e9 06       		.byte	0x6
+ 1627 07ea 8C02     		.2byte	0x28c
+ 1628 07ec 10       		.byte	0x10
+ 1629 07ed 73080000 		.4byte	0x873
+ 1630 07f1 80       		.byte	0x80
+ 1631 07f2 19       		.uleb128 0x19
+ 1632 07f3 F7020000 		.4byte	.LASF113
+ 1633 07f7 06       		.byte	0x6
+ 1634 07f8 8D02     		.2byte	0x28d
+ 1635 07fa 10       		.byte	0x10
+ 1636 07fb 83080000 		.4byte	0x883
+ 1637 07ff 88       		.byte	0x88
+ 1638 0800 19       		.uleb128 0x19
+ 1639 0801 2F060000 		.4byte	.LASF114
+ 1640 0805 06       		.byte	0x6
+ 1641 0806 8E02     		.2byte	0x28e
+ 1642 0808 0F       		.byte	0xf
+ 1643 0809 5D000000 		.4byte	0x5d
+ 1644 080d A0       		.byte	0xa0
+ 1645 080e 19       		.uleb128 0x19
+ 1646 080f 08020000 		.4byte	.LASF115
+ 1647 0813 06       		.byte	0x6
+ 1648 0814 8F02     		.2byte	0x28f
+ 1649 0816 16       		.byte	0x16
+ 1650 0817 75010000 		.4byte	0x175
+ 1651 081b A4       		.byte	0xa4
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 38
+
+
+ 1652 081c 19       		.uleb128 0x19
+ 1653 081d B4000000 		.4byte	.LASF116
+ 1654 0821 06       		.byte	0x6
+ 1655 0822 9002     		.2byte	0x290
+ 1656 0824 16       		.byte	0x16
+ 1657 0825 75010000 		.4byte	0x175
+ 1658 0829 AC       		.byte	0xac
+ 1659 082a 19       		.uleb128 0x19
+ 1660 082b F7010000 		.4byte	.LASF117
+ 1661 082f 06       		.byte	0x6
+ 1662 0830 9102     		.2byte	0x291
+ 1663 0832 16       		.byte	0x16
+ 1664 0833 75010000 		.4byte	0x175
+ 1665 0837 B4       		.byte	0xb4
+ 1666 0838 19       		.uleb128 0x19
+ 1667 0839 58000000 		.4byte	.LASF118
+ 1668 083d 06       		.byte	0x6
+ 1669 083e 9202     		.2byte	0x292
+ 1670 0840 16       		.byte	0x16
+ 1671 0841 75010000 		.4byte	0x175
+ 1672 0845 BC       		.byte	0xbc
+ 1673 0846 19       		.uleb128 0x19
+ 1674 0847 67000000 		.4byte	.LASF119
+ 1675 084b 06       		.byte	0x6
+ 1676 084c 9302     		.2byte	0x293
+ 1677 084e 16       		.byte	0x16
+ 1678 084f 75010000 		.4byte	0x175
+ 1679 0853 C4       		.byte	0xc4
+ 1680 0854 19       		.uleb128 0x19
+ 1681 0855 BE040000 		.4byte	.LASF120
+ 1682 0859 06       		.byte	0x6
+ 1683 085a 9402     		.2byte	0x294
+ 1684 085c 08       		.byte	0x8
+ 1685 085d 5D000000 		.4byte	0x5d
+ 1686 0861 CC       		.byte	0xcc
+ 1687 0862 00       		.byte	0
+ 1688 0863 0D       		.uleb128 0xd
+ 1689 0864 AF000000 		.4byte	0xaf
+ 1690 0868 73080000 		.4byte	0x873
+ 1691 086c 0E       		.uleb128 0xe
+ 1692 086d 64000000 		.4byte	0x64
+ 1693 0871 19       		.byte	0x19
+ 1694 0872 00       		.byte	0
+ 1695 0873 0D       		.uleb128 0xd
+ 1696 0874 AF000000 		.4byte	0xaf
+ 1697 0878 83080000 		.4byte	0x883
+ 1698 087c 0E       		.uleb128 0xe
+ 1699 087d 64000000 		.4byte	0x64
+ 1700 0881 07       		.byte	0x7
+ 1701 0882 00       		.byte	0
+ 1702 0883 0D       		.uleb128 0xd
+ 1703 0884 AF000000 		.4byte	0xaf
+ 1704 0888 93080000 		.4byte	0x893
+ 1705 088c 0E       		.uleb128 0xe
+ 1706 088d 64000000 		.4byte	0x64
+ 1707 0891 17       		.byte	0x17
+ 1708 0892 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 39
+
+
+ 1709 0893 1C       		.uleb128 0x1c
+ 1710 0894 F0       		.byte	0xf0
+ 1711 0895 06       		.byte	0x6
+ 1712 0896 9902     		.2byte	0x299
+ 1713 0898 07       		.byte	0x7
+ 1714 0899 BA080000 		.4byte	0x8ba
+ 1715 089d 19       		.uleb128 0x19
+ 1716 089e 0B040000 		.4byte	.LASF121
+ 1717 08a2 06       		.byte	0x6
+ 1718 08a3 9C02     		.2byte	0x29c
+ 1719 08a5 1B       		.byte	0x1b
+ 1720 08a6 BA080000 		.4byte	0x8ba
+ 1721 08aa 00       		.byte	0
+ 1722 08ab 19       		.uleb128 0x19
+ 1723 08ac 92060000 		.4byte	.LASF122
+ 1724 08b0 06       		.byte	0x6
+ 1725 08b1 9D02     		.2byte	0x29d
+ 1726 08b3 18       		.byte	0x18
+ 1727 08b4 CA080000 		.4byte	0x8ca
+ 1728 08b8 78       		.byte	0x78
+ 1729 08b9 00       		.byte	0
+ 1730 08ba 0D       		.uleb128 0xd
+ 1731 08bb 6A030000 		.4byte	0x36a
+ 1732 08bf CA080000 		.4byte	0x8ca
+ 1733 08c3 0E       		.uleb128 0xe
+ 1734 08c4 64000000 		.4byte	0x64
+ 1735 08c8 1D       		.byte	0x1d
+ 1736 08c9 00       		.byte	0
+ 1737 08ca 0D       		.uleb128 0xd
+ 1738 08cb 64000000 		.4byte	0x64
+ 1739 08cf DA080000 		.4byte	0x8da
+ 1740 08d3 0E       		.uleb128 0xe
+ 1741 08d4 64000000 		.4byte	0x64
+ 1742 08d8 1D       		.byte	0x1d
+ 1743 08d9 00       		.byte	0
+ 1744 08da 1D       		.uleb128 0x1d
+ 1745 08db F0       		.byte	0xf0
+ 1746 08dc 06       		.byte	0x6
+ 1747 08dd 7E02     		.2byte	0x27e
+ 1748 08df 03       		.byte	0x3
+ 1749 08e0 FF080000 		.4byte	0x8ff
+ 1750 08e4 1E       		.uleb128 0x1e
+ 1751 08e5 7D050000 		.4byte	.LASF72
+ 1752 08e9 06       		.byte	0x6
+ 1753 08ea 9502     		.2byte	0x295
+ 1754 08ec 0B       		.byte	0xb
+ 1755 08ed 4E070000 		.4byte	0x74e
+ 1756 08f1 1E       		.uleb128 0x1e
+ 1757 08f2 C2060000 		.4byte	.LASF123
+ 1758 08f6 06       		.byte	0x6
+ 1759 08f7 9E02     		.2byte	0x29e
+ 1760 08f9 0B       		.byte	0xb
+ 1761 08fa 93080000 		.4byte	0x893
+ 1762 08fe 00       		.byte	0
+ 1763 08ff 0D       		.uleb128 0xd
+ 1764 0900 AF000000 		.4byte	0xaf
+ 1765 0904 0F090000 		.4byte	0x90f
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 40
+
+
+ 1766 0908 0E       		.uleb128 0xe
+ 1767 0909 64000000 		.4byte	0x64
+ 1768 090d 18       		.byte	0x18
+ 1769 090e 00       		.byte	0
+ 1770 090f 0A       		.uleb128 0xa
+ 1771 0910 A9000000 		.4byte	.LASF125
+ 1772 0914 07       		.uleb128 0x7
+ 1773 0915 04       		.byte	0x4
+ 1774 0916 0F090000 		.4byte	0x90f
+ 1775 091a 1F       		.uleb128 0x1f
+ 1776 091b 25090000 		.4byte	0x925
+ 1777 091f 17       		.uleb128 0x17
+ 1778 0920 D1040000 		.4byte	0x4d1
+ 1779 0924 00       		.byte	0
+ 1780 0925 07       		.uleb128 0x7
+ 1781 0926 04       		.byte	0x4
+ 1782 0927 1A090000 		.4byte	0x91a
+ 1783 092b 07       		.uleb128 0x7
+ 1784 092c 04       		.byte	0x4
+ 1785 092d FB010000 		.4byte	0x1fb
+ 1786 0931 1F       		.uleb128 0x1f
+ 1787 0932 3C090000 		.4byte	0x93c
+ 1788 0936 17       		.uleb128 0x17
+ 1789 0937 5D000000 		.4byte	0x5d
+ 1790 093b 00       		.byte	0
+ 1791 093c 07       		.uleb128 0x7
+ 1792 093d 04       		.byte	0x4
+ 1793 093e 42090000 		.4byte	0x942
+ 1794 0942 07       		.uleb128 0x7
+ 1795 0943 04       		.byte	0x4
+ 1796 0944 31090000 		.4byte	0x931
+ 1797 0948 0D       		.uleb128 0xd
+ 1798 0949 B3060000 		.4byte	0x6b3
+ 1799 094d 58090000 		.4byte	0x958
+ 1800 0951 0E       		.uleb128 0xe
+ 1801 0952 64000000 		.4byte	0x64
+ 1802 0956 02       		.byte	0x2
+ 1803 0957 00       		.byte	0
+ 1804 0958 20       		.uleb128 0x20
+ 1805 0959 A7050000 		.4byte	.LASF126
+ 1806 095d 06       		.byte	0x6
+ 1807 095e 2E03     		.2byte	0x32e
+ 1808 0960 17       		.byte	0x17
+ 1809 0961 D1040000 		.4byte	0x4d1
+ 1810 0965 20       		.uleb128 0x20
+ 1811 0966 4E060000 		.4byte	.LASF127
+ 1812 096a 06       		.byte	0x6
+ 1813 096b 2F03     		.2byte	0x32f
+ 1814 096d 1D       		.byte	0x1d
+ 1815 096e D7040000 		.4byte	0x4d7
+ 1816 0972 0D       		.uleb128 0xd
+ 1817 0973 B6000000 		.4byte	0xb6
+ 1818 0977 7D090000 		.4byte	0x97d
+ 1819 097b 21       		.uleb128 0x21
+ 1820 097c 00       		.byte	0
+ 1821 097d 05       		.uleb128 0x5
+ 1822 097e 72090000 		.4byte	0x972
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 41
+
+
+ 1823 0982 22       		.uleb128 0x22
+ 1824 0983 D9050000 		.4byte	.LASF128
+ 1825 0987 07       		.byte	0x7
+ 1826 0988 AE       		.byte	0xae
+ 1827 0989 1C       		.byte	0x1c
+ 1828 098a 7D090000 		.4byte	0x97d
+ 1829 098e 22       		.uleb128 0x22
+ 1830 098f F1030000 		.4byte	.LASF129
+ 1831 0993 08       		.byte	0x8
+ 1832 0994 D4       		.byte	0xd4
+ 1833 0995 0F       		.byte	0xf
+ 1834 0996 8F000000 		.4byte	0x8f
+ 1835 099a 22       		.uleb128 0x22
+ 1836 099b D1010000 		.4byte	.LASF130
+ 1837 099f 08       		.byte	0x8
+ 1838 09a0 D5       		.byte	0xd5
+ 1839 09a1 0F       		.byte	0xf
+ 1840 09a2 8F000000 		.4byte	0x8f
+ 1841 09a6 22       		.uleb128 0x22
+ 1842 09a7 61060000 		.4byte	.LASF131
+ 1843 09ab 08       		.byte	0x8
+ 1844 09ac D6       		.byte	0xd6
+ 1845 09ad 0F       		.byte	0xf
+ 1846 09ae 6B000000 		.4byte	0x6b
+ 1847 09b2 22       		.uleb128 0x22
+ 1848 09b3 4B000000 		.4byte	.LASF132
+ 1849 09b7 08       		.byte	0x8
+ 1850 09b8 D7       		.byte	0xd7
+ 1851 09b9 0F       		.byte	0xf
+ 1852 09ba 8F000000 		.4byte	0x8f
+ 1853 09be 20       		.uleb128 0x20
+ 1854 09bf 98000000 		.4byte	.LASF133
+ 1855 09c3 08       		.byte	0x8
+ 1856 09c4 0A01     		.2byte	0x10a
+ 1857 09c6 0F       		.byte	0xf
+ 1858 09c7 8F000000 		.4byte	0x8f
+ 1859 09cb 0D       		.uleb128 0xd
+ 1860 09cc 78000000 		.4byte	0x78
+ 1861 09d0 DB090000 		.4byte	0x9db
+ 1862 09d4 0E       		.uleb128 0xe
+ 1863 09d5 64000000 		.4byte	0x64
+ 1864 09d9 2D       		.byte	0x2d
+ 1865 09da 00       		.byte	0
+ 1866 09db 05       		.uleb128 0x5
+ 1867 09dc CB090000 		.4byte	0x9cb
+ 1868 09e0 20       		.uleb128 0x20
+ 1869 09e1 12040000 		.4byte	.LASF134
+ 1870 09e5 08       		.byte	0x8
+ 1871 09e6 2402     		.2byte	0x224
+ 1872 09e8 1C       		.byte	0x1c
+ 1873 09e9 DB090000 		.4byte	0x9db
+ 1874 09ed 23       		.uleb128 0x23
+ 1875 09ee 3C060000 		.4byte	.LASF136
+ 1876 09f2 01       		.byte	0x1
+ 1877 09f3 9601     		.2byte	0x196
+ 1878 09f5 0A       		.byte	0xa
+ 1879 09f6 00000000 		.4byte	.LFB7
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 42
+
+
+ 1880 09fa 30000000 		.4byte	.LFE7-.LFB7
+ 1881 09fe 01       		.uleb128 0x1
+ 1882 09ff 9C       		.byte	0x9c
+ 1883 0a00 2C0A0000 		.4byte	0xa2c
+ 1884 0a04 24       		.uleb128 0x24
+ 1885 0a05 A1020000 		.4byte	.LASF135
+ 1886 0a09 01       		.byte	0x1
+ 1887 0a0a 9801     		.2byte	0x198
+ 1888 0a0c 0F       		.byte	0xf
+ 1889 0a0d 6B000000 		.4byte	0x6b
+ 1890 0a11 02000000 		.4byte	.LLST7
+ 1891 0a15 00000000 		.4byte	.LVUS7
+ 1892 0a19 25       		.uleb128 0x25
+ 1893 0a1a 06000000 		.4byte	.LVL22
+ 1894 0a1e FA0B0000 		.4byte	0xbfa
+ 1895 0a22 25       		.uleb128 0x25
+ 1896 0a23 24000000 		.4byte	.LVL23
+ 1897 0a27 060C0000 		.4byte	0xc06
+ 1898 0a2b 00       		.byte	0
+ 1899 0a2c 23       		.uleb128 0x23
+ 1900 0a2d 28010000 		.4byte	.LASF137
+ 1901 0a31 01       		.byte	0x1
+ 1902 0a32 6601     		.2byte	0x166
+ 1903 0a34 0A       		.byte	0xa
+ 1904 0a35 00000000 		.4byte	.LFB6
+ 1905 0a39 38000000 		.4byte	.LFE6-.LFB6
+ 1906 0a3d 01       		.uleb128 0x1
+ 1907 0a3e 9C       		.byte	0x9c
+ 1908 0a3f 6B0A0000 		.4byte	0xa6b
+ 1909 0a43 24       		.uleb128 0x24
+ 1910 0a44 A1020000 		.4byte	.LASF135
+ 1911 0a48 01       		.byte	0x1
+ 1912 0a49 6801     		.2byte	0x168
+ 1913 0a4b 0F       		.byte	0xf
+ 1914 0a4c 6B000000 		.4byte	0x6b
+ 1915 0a50 17000000 		.4byte	.LLST6
+ 1916 0a54 15000000 		.4byte	.LVUS6
+ 1917 0a58 25       		.uleb128 0x25
+ 1918 0a59 06000000 		.4byte	.LVL18
+ 1919 0a5d FA0B0000 		.4byte	0xbfa
+ 1920 0a61 25       		.uleb128 0x25
+ 1921 0a62 28000000 		.4byte	.LVL19
+ 1922 0a66 060C0000 		.4byte	0xc06
+ 1923 0a6a 00       		.byte	0
+ 1924 0a6b 26       		.uleb128 0x26
+ 1925 0a6c 19070000 		.4byte	.LASF150
+ 1926 0a70 01       		.byte	0x1
+ 1927 0a71 3C01     		.2byte	0x13c
+ 1928 0a73 0C       		.byte	0xc
+ 1929 0a74 8F000000 		.4byte	0x8f
+ 1930 0a78 00000000 		.4byte	.LFB5
+ 1931 0a7c 28000000 		.4byte	.LFE5-.LFB5
+ 1932 0a80 01       		.uleb128 0x1
+ 1933 0a81 9C       		.byte	0x9c
+ 1934 0a82 9C0A0000 		.4byte	0xa9c
+ 1935 0a86 24       		.uleb128 0x24
+ 1936 0a87 2D050000 		.4byte	.LASF138
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 43
+
+
+ 1937 0a8b 01       		.byte	0x1
+ 1938 0a8c 3E01     		.2byte	0x13e
+ 1939 0a8e 10       		.byte	0x10
+ 1940 0a8f 8F000000 		.4byte	0x8f
+ 1941 0a93 30000000 		.4byte	.LLST5
+ 1942 0a97 2A000000 		.4byte	.LVUS5
+ 1943 0a9b 00       		.byte	0
+ 1944 0a9c 23       		.uleb128 0x23
+ 1945 0a9d A5040000 		.4byte	.LASF139
+ 1946 0aa1 01       		.byte	0x1
+ 1947 0aa2 2001     		.2byte	0x120
+ 1948 0aa4 0A       		.byte	0xa
+ 1949 0aa5 00000000 		.4byte	.LFB4
+ 1950 0aa9 34000000 		.4byte	.LFE4-.LFB4
+ 1951 0aad 01       		.uleb128 0x1
+ 1952 0aae 9C       		.byte	0x9c
+ 1953 0aaf F00A0000 		.4byte	0xaf0
+ 1954 0ab3 27       		.uleb128 0x27
+ 1955 0ab4 B3050000 		.4byte	.LASF151
+ 1956 0ab8 01       		.byte	0x1
+ 1957 0ab9 2001     		.2byte	0x120
+ 1958 0abb 2A       		.byte	0x2a
+ 1959 0abc 8F000000 		.4byte	0x8f
+ 1960 0ac0 64000000 		.4byte	.LLST3
+ 1961 0ac4 5C000000 		.4byte	.LVUS3
+ 1962 0ac8 24       		.uleb128 0x24
+ 1963 0ac9 A1020000 		.4byte	.LASF135
+ 1964 0acd 01       		.byte	0x1
+ 1965 0ace 2201     		.2byte	0x122
+ 1966 0ad0 0F       		.byte	0xf
+ 1967 0ad1 6B000000 		.4byte	0x6b
+ 1968 0ad5 9F000000 		.4byte	.LLST4
+ 1969 0ad9 9B000000 		.4byte	.LVUS4
+ 1970 0add 25       		.uleb128 0x25
+ 1971 0ade 08000000 		.4byte	.LVL10
+ 1972 0ae2 FA0B0000 		.4byte	0xbfa
+ 1973 0ae6 25       		.uleb128 0x25
+ 1974 0ae7 1E000000 		.4byte	.LVL11
+ 1975 0aeb 060C0000 		.4byte	0xc06
+ 1976 0aef 00       		.byte	0
+ 1977 0af0 28       		.uleb128 0x28
+ 1978 0af1 F0060000 		.4byte	.LASF140
+ 1979 0af5 01       		.byte	0x1
+ 1980 0af6 F3       		.byte	0xf3
+ 1981 0af7 0A       		.byte	0xa
+ 1982 0af8 00000000 		.4byte	.LFB3
+ 1983 0afc 30000000 		.4byte	.LFE3-.LFB3
+ 1984 0b00 01       		.uleb128 0x1
+ 1985 0b01 9C       		.byte	0x9c
+ 1986 0b02 190B0000 		.4byte	0xb19
+ 1987 0b06 25       		.uleb128 0x25
+ 1988 0b07 06000000 		.4byte	.LVL20
+ 1989 0b0b FA0B0000 		.4byte	0xbfa
+ 1990 0b0f 25       		.uleb128 0x25
+ 1991 0b10 1A000000 		.4byte	.LVL21
+ 1992 0b14 2C0A0000 		.4byte	0xa2c
+ 1993 0b18 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 44
+
+
+ 1994 0b19 28       		.uleb128 0x28
+ 1995 0b1a 46040000 		.4byte	.LASF141
+ 1996 0b1e 01       		.byte	0x1
+ 1997 0b1f B8       		.byte	0xb8
+ 1998 0b20 0A       		.byte	0xa
+ 1999 0b21 00000000 		.4byte	.LFB2
+ 2000 0b25 50000000 		.4byte	.LFE2-.LFB2
+ 2001 0b29 01       		.uleb128 0x1
+ 2002 0b2a 9C       		.byte	0x9c
+ 2003 0b2b 560B0000 		.4byte	0xb56
+ 2004 0b2f 29       		.uleb128 0x29
+ 2005 0b30 A1020000 		.4byte	.LASF135
+ 2006 0b34 01       		.byte	0x1
+ 2007 0b35 BA       		.byte	0xba
+ 2008 0b36 0F       		.byte	0xf
+ 2009 0b37 6B000000 		.4byte	0x6b
+ 2010 0b3b BF000000 		.4byte	.LLST2
+ 2011 0b3f BD000000 		.4byte	.LVUS2
+ 2012 0b43 25       		.uleb128 0x25
+ 2013 0b44 06000000 		.4byte	.LVL7
+ 2014 0b48 FA0B0000 		.4byte	0xbfa
+ 2015 0b4c 25       		.uleb128 0x25
+ 2016 0b4d 3A000000 		.4byte	.LVL8
+ 2017 0b51 060C0000 		.4byte	0xc06
+ 2018 0b55 00       		.byte	0
+ 2019 0b56 28       		.uleb128 0x28
+ 2020 0b57 21000000 		.4byte	.LASF142
+ 2021 0b5b 01       		.byte	0x1
+ 2022 0b5c 40       		.byte	0x40
+ 2023 0b5d 06       		.byte	0x6
+ 2024 0b5e 00000000 		.4byte	.LFB1
+ 2025 0b62 6C000000 		.4byte	.LFE1-.LFB1
+ 2026 0b66 01       		.uleb128 0x1
+ 2027 0b67 9C       		.byte	0x9c
+ 2028 0b68 BD0B0000 		.4byte	0xbbd
+ 2029 0b6c 29       		.uleb128 0x29
+ 2030 0b6d A1020000 		.4byte	.LASF135
+ 2031 0b71 01       		.byte	0x1
+ 2032 0b72 42       		.byte	0x42
+ 2033 0b73 0B       		.byte	0xb
+ 2034 0b74 6B000000 		.4byte	0x6b
+ 2035 0b78 D4000000 		.4byte	.LLST1
+ 2036 0b7c D2000000 		.4byte	.LVUS1
+ 2037 0b80 2A       		.uleb128 0x2a
+ 2038 0b81 EA020000 		.4byte	.LASF152
+ 2039 0b85 01       		.byte	0x1
+ 2040 0b86 44       		.byte	0x44
+ 2041 0b87 19       		.byte	0x19
+ 2042 0b88 9C000000 		.4byte	0x9c
+ 2043 0b8c 02       		.uleb128 0x2
+ 2044 0b8d 91       		.byte	0x91
+ 2045 0b8e 64       		.sleb128 -28
+ 2046 0b8f 25       		.uleb128 0x25
+ 2047 0b90 08000000 		.4byte	.LVL2
+ 2048 0b94 FA0B0000 		.4byte	0xbfa
+ 2049 0b98 2B       		.uleb128 0x2b
+ 2050 0b99 40000000 		.4byte	.LVL4
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 45
+
+
+ 2051 0b9d 120C0000 		.4byte	0xc12
+ 2052 0ba1 AC0B0000 		.4byte	0xbac
+ 2053 0ba5 2C       		.uleb128 0x2c
+ 2054 0ba6 01       		.uleb128 0x1
+ 2055 0ba7 50       		.byte	0x50
+ 2056 0ba8 02       		.uleb128 0x2
+ 2057 0ba9 76       		.byte	0x76
+ 2058 0baa 00       		.sleb128 0
+ 2059 0bab 00       		.byte	0
+ 2060 0bac 2D       		.uleb128 0x2d
+ 2061 0bad 52000000 		.4byte	.LVL5
+ 2062 0bb1 060C0000 		.4byte	0xc06
+ 2063 0bb5 2C       		.uleb128 0x2c
+ 2064 0bb6 01       		.uleb128 0x1
+ 2065 0bb7 50       		.byte	0x50
+ 2066 0bb8 02       		.uleb128 0x2
+ 2067 0bb9 74       		.byte	0x74
+ 2068 0bba 00       		.sleb128 0
+ 2069 0bbb 00       		.byte	0
+ 2070 0bbc 00       		.byte	0
+ 2071 0bbd 28       		.uleb128 0x28
+ 2072 0bbe AF060000 		.4byte	.LASF143
+ 2073 0bc2 01       		.byte	0x1
+ 2074 0bc3 21       		.byte	0x21
+ 2075 0bc4 06       		.byte	0x6
+ 2076 0bc5 00000000 		.4byte	.LFB0
+ 2077 0bc9 1C000000 		.4byte	.LFE0-.LFB0
+ 2078 0bcd 01       		.uleb128 0x1
+ 2079 0bce 9C       		.byte	0x9c
+ 2080 0bcf FA0B0000 		.4byte	0xbfa
+ 2081 0bd3 29       		.uleb128 0x29
+ 2082 0bd4 A1020000 		.4byte	.LASF135
+ 2083 0bd8 01       		.byte	0x1
+ 2084 0bd9 23       		.byte	0x23
+ 2085 0bda 0B       		.byte	0xb
+ 2086 0bdb 6B000000 		.4byte	0x6b
+ 2087 0bdf E9000000 		.4byte	.LLST0
+ 2088 0be3 E7000000 		.4byte	.LVUS0
+ 2089 0be7 25       		.uleb128 0x25
+ 2090 0be8 06000000 		.4byte	.LVL0
+ 2091 0bec FA0B0000 		.4byte	0xbfa
+ 2092 0bf0 25       		.uleb128 0x25
+ 2093 0bf1 16000000 		.4byte	.LVL1
+ 2094 0bf5 060C0000 		.4byte	0xc06
+ 2095 0bf9 00       		.byte	0
+ 2096 0bfa 2E       		.uleb128 0x2e
+ 2097 0bfb B0020000 		.4byte	.LASF144
+ 2098 0bff B0020000 		.4byte	.LASF144
+ 2099 0c03 08       		.byte	0x8
+ 2100 0c04 E5       		.byte	0xe5
+ 2101 0c05 07       		.byte	0x7
+ 2102 0c06 2E       		.uleb128 0x2e
+ 2103 0c07 5D040000 		.4byte	.LASF145
+ 2104 0c0b 5D040000 		.4byte	.LASF145
+ 2105 0c0f 08       		.byte	0x8
+ 2106 0c10 E6       		.byte	0xe6
+ 2107 0c11 07       		.byte	0x7
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 46
+
+
+ 2108 0c12 2E       		.uleb128 0x2e
+ 2109 0c13 E1050000 		.4byte	.LASF146
+ 2110 0c17 E1050000 		.4byte	.LASF146
+ 2111 0c1b 08       		.byte	0x8
+ 2112 0c1c 6B       		.byte	0x6b
+ 2113 0c1d 06       		.byte	0x6
+ 2114 0c1e 00       		.byte	0
+ 2115              		.section	.debug_abbrev,"",%progbits
+ 2116              	.Ldebug_abbrev0:
+ 2117 0000 01       		.uleb128 0x1
+ 2118 0001 11       		.uleb128 0x11
+ 2119 0002 01       		.byte	0x1
+ 2120 0003 25       		.uleb128 0x25
+ 2121 0004 0E       		.uleb128 0xe
+ 2122 0005 13       		.uleb128 0x13
+ 2123 0006 0B       		.uleb128 0xb
+ 2124 0007 03       		.uleb128 0x3
+ 2125 0008 0E       		.uleb128 0xe
+ 2126 0009 1B       		.uleb128 0x1b
+ 2127 000a 0E       		.uleb128 0xe
+ 2128 000b 55       		.uleb128 0x55
+ 2129 000c 17       		.uleb128 0x17
+ 2130 000d 11       		.uleb128 0x11
+ 2131 000e 01       		.uleb128 0x1
+ 2132 000f 10       		.uleb128 0x10
+ 2133 0010 17       		.uleb128 0x17
+ 2134 0011 00       		.byte	0
+ 2135 0012 00       		.byte	0
+ 2136 0013 02       		.uleb128 0x2
+ 2137 0014 24       		.uleb128 0x24
+ 2138 0015 00       		.byte	0
+ 2139 0016 0B       		.uleb128 0xb
+ 2140 0017 0B       		.uleb128 0xb
+ 2141 0018 3E       		.uleb128 0x3e
+ 2142 0019 0B       		.uleb128 0xb
+ 2143 001a 03       		.uleb128 0x3
+ 2144 001b 0E       		.uleb128 0xe
+ 2145 001c 00       		.byte	0
+ 2146 001d 00       		.byte	0
+ 2147 001e 03       		.uleb128 0x3
+ 2148 001f 24       		.uleb128 0x24
+ 2149 0020 00       		.byte	0
+ 2150 0021 0B       		.uleb128 0xb
+ 2151 0022 0B       		.uleb128 0xb
+ 2152 0023 3E       		.uleb128 0x3e
+ 2153 0024 0B       		.uleb128 0xb
+ 2154 0025 03       		.uleb128 0x3
+ 2155 0026 08       		.uleb128 0x8
+ 2156 0027 00       		.byte	0
+ 2157 0028 00       		.byte	0
+ 2158 0029 04       		.uleb128 0x4
+ 2159 002a 16       		.uleb128 0x16
+ 2160 002b 00       		.byte	0
+ 2161 002c 03       		.uleb128 0x3
+ 2162 002d 0E       		.uleb128 0xe
+ 2163 002e 3A       		.uleb128 0x3a
+ 2164 002f 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 47
+
+
+ 2165 0030 3B       		.uleb128 0x3b
+ 2166 0031 05       		.uleb128 0x5
+ 2167 0032 39       		.uleb128 0x39
+ 2168 0033 0B       		.uleb128 0xb
+ 2169 0034 49       		.uleb128 0x49
+ 2170 0035 13       		.uleb128 0x13
+ 2171 0036 00       		.byte	0
+ 2172 0037 00       		.byte	0
+ 2173 0038 05       		.uleb128 0x5
+ 2174 0039 26       		.uleb128 0x26
+ 2175 003a 00       		.byte	0
+ 2176 003b 49       		.uleb128 0x49
+ 2177 003c 13       		.uleb128 0x13
+ 2178 003d 00       		.byte	0
+ 2179 003e 00       		.byte	0
+ 2180 003f 06       		.uleb128 0x6
+ 2181 0040 35       		.uleb128 0x35
+ 2182 0041 00       		.byte	0
+ 2183 0042 49       		.uleb128 0x49
+ 2184 0043 13       		.uleb128 0x13
+ 2185 0044 00       		.byte	0
+ 2186 0045 00       		.byte	0
+ 2187 0046 07       		.uleb128 0x7
+ 2188 0047 0F       		.uleb128 0xf
+ 2189 0048 00       		.byte	0
+ 2190 0049 0B       		.uleb128 0xb
+ 2191 004a 0B       		.uleb128 0xb
+ 2192 004b 49       		.uleb128 0x49
+ 2193 004c 13       		.uleb128 0x13
+ 2194 004d 00       		.byte	0
+ 2195 004e 00       		.byte	0
+ 2196 004f 08       		.uleb128 0x8
+ 2197 0050 15       		.uleb128 0x15
+ 2198 0051 00       		.byte	0
+ 2199 0052 27       		.uleb128 0x27
+ 2200 0053 19       		.uleb128 0x19
+ 2201 0054 00       		.byte	0
+ 2202 0055 00       		.byte	0
+ 2203 0056 09       		.uleb128 0x9
+ 2204 0057 16       		.uleb128 0x16
+ 2205 0058 00       		.byte	0
+ 2206 0059 03       		.uleb128 0x3
+ 2207 005a 0E       		.uleb128 0xe
+ 2208 005b 3A       		.uleb128 0x3a
+ 2209 005c 0B       		.uleb128 0xb
+ 2210 005d 3B       		.uleb128 0x3b
+ 2211 005e 0B       		.uleb128 0xb
+ 2212 005f 39       		.uleb128 0x39
+ 2213 0060 0B       		.uleb128 0xb
+ 2214 0061 49       		.uleb128 0x49
+ 2215 0062 13       		.uleb128 0x13
+ 2216 0063 00       		.byte	0
+ 2217 0064 00       		.byte	0
+ 2218 0065 0A       		.uleb128 0xa
+ 2219 0066 13       		.uleb128 0x13
+ 2220 0067 00       		.byte	0
+ 2221 0068 03       		.uleb128 0x3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 48
+
+
+ 2222 0069 0E       		.uleb128 0xe
+ 2223 006a 3C       		.uleb128 0x3c
+ 2224 006b 19       		.uleb128 0x19
+ 2225 006c 00       		.byte	0
+ 2226 006d 00       		.byte	0
+ 2227 006e 0B       		.uleb128 0xb
+ 2228 006f 17       		.uleb128 0x17
+ 2229 0070 01       		.byte	0x1
+ 2230 0071 0B       		.uleb128 0xb
+ 2231 0072 0B       		.uleb128 0xb
+ 2232 0073 3A       		.uleb128 0x3a
+ 2233 0074 0B       		.uleb128 0xb
+ 2234 0075 3B       		.uleb128 0x3b
+ 2235 0076 0B       		.uleb128 0xb
+ 2236 0077 39       		.uleb128 0x39
+ 2237 0078 0B       		.uleb128 0xb
+ 2238 0079 01       		.uleb128 0x1
+ 2239 007a 13       		.uleb128 0x13
+ 2240 007b 00       		.byte	0
+ 2241 007c 00       		.byte	0
+ 2242 007d 0C       		.uleb128 0xc
+ 2243 007e 0D       		.uleb128 0xd
+ 2244 007f 00       		.byte	0
+ 2245 0080 03       		.uleb128 0x3
+ 2246 0081 0E       		.uleb128 0xe
+ 2247 0082 3A       		.uleb128 0x3a
+ 2248 0083 0B       		.uleb128 0xb
+ 2249 0084 3B       		.uleb128 0x3b
+ 2250 0085 0B       		.uleb128 0xb
+ 2251 0086 39       		.uleb128 0x39
+ 2252 0087 0B       		.uleb128 0xb
+ 2253 0088 49       		.uleb128 0x49
+ 2254 0089 13       		.uleb128 0x13
+ 2255 008a 00       		.byte	0
+ 2256 008b 00       		.byte	0
+ 2257 008c 0D       		.uleb128 0xd
+ 2258 008d 01       		.uleb128 0x1
+ 2259 008e 01       		.byte	0x1
+ 2260 008f 49       		.uleb128 0x49
+ 2261 0090 13       		.uleb128 0x13
+ 2262 0091 01       		.uleb128 0x1
+ 2263 0092 13       		.uleb128 0x13
+ 2264 0093 00       		.byte	0
+ 2265 0094 00       		.byte	0
+ 2266 0095 0E       		.uleb128 0xe
+ 2267 0096 21       		.uleb128 0x21
+ 2268 0097 00       		.byte	0
+ 2269 0098 49       		.uleb128 0x49
+ 2270 0099 13       		.uleb128 0x13
+ 2271 009a 2F       		.uleb128 0x2f
+ 2272 009b 0B       		.uleb128 0xb
+ 2273 009c 00       		.byte	0
+ 2274 009d 00       		.byte	0
+ 2275 009e 0F       		.uleb128 0xf
+ 2276 009f 13       		.uleb128 0x13
+ 2277 00a0 01       		.byte	0x1
+ 2278 00a1 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 49
+
+
+ 2279 00a2 0B       		.uleb128 0xb
+ 2280 00a3 3A       		.uleb128 0x3a
+ 2281 00a4 0B       		.uleb128 0xb
+ 2282 00a5 3B       		.uleb128 0x3b
+ 2283 00a6 0B       		.uleb128 0xb
+ 2284 00a7 39       		.uleb128 0x39
+ 2285 00a8 0B       		.uleb128 0xb
+ 2286 00a9 01       		.uleb128 0x1
+ 2287 00aa 13       		.uleb128 0x13
+ 2288 00ab 00       		.byte	0
+ 2289 00ac 00       		.byte	0
+ 2290 00ad 10       		.uleb128 0x10
+ 2291 00ae 0D       		.uleb128 0xd
+ 2292 00af 00       		.byte	0
+ 2293 00b0 03       		.uleb128 0x3
+ 2294 00b1 0E       		.uleb128 0xe
+ 2295 00b2 3A       		.uleb128 0x3a
+ 2296 00b3 0B       		.uleb128 0xb
+ 2297 00b4 3B       		.uleb128 0x3b
+ 2298 00b5 0B       		.uleb128 0xb
+ 2299 00b6 39       		.uleb128 0x39
+ 2300 00b7 0B       		.uleb128 0xb
+ 2301 00b8 49       		.uleb128 0x49
+ 2302 00b9 13       		.uleb128 0x13
+ 2303 00ba 38       		.uleb128 0x38
+ 2304 00bb 0B       		.uleb128 0xb
+ 2305 00bc 00       		.byte	0
+ 2306 00bd 00       		.byte	0
+ 2307 00be 11       		.uleb128 0x11
+ 2308 00bf 0F       		.uleb128 0xf
+ 2309 00c0 00       		.byte	0
+ 2310 00c1 0B       		.uleb128 0xb
+ 2311 00c2 0B       		.uleb128 0xb
+ 2312 00c3 00       		.byte	0
+ 2313 00c4 00       		.byte	0
+ 2314 00c5 12       		.uleb128 0x12
+ 2315 00c6 13       		.uleb128 0x13
+ 2316 00c7 01       		.byte	0x1
+ 2317 00c8 03       		.uleb128 0x3
+ 2318 00c9 0E       		.uleb128 0xe
+ 2319 00ca 0B       		.uleb128 0xb
+ 2320 00cb 0B       		.uleb128 0xb
+ 2321 00cc 3A       		.uleb128 0x3a
+ 2322 00cd 0B       		.uleb128 0xb
+ 2323 00ce 3B       		.uleb128 0x3b
+ 2324 00cf 0B       		.uleb128 0xb
+ 2325 00d0 39       		.uleb128 0x39
+ 2326 00d1 0B       		.uleb128 0xb
+ 2327 00d2 01       		.uleb128 0x1
+ 2328 00d3 13       		.uleb128 0x13
+ 2329 00d4 00       		.byte	0
+ 2330 00d5 00       		.byte	0
+ 2331 00d6 13       		.uleb128 0x13
+ 2332 00d7 0D       		.uleb128 0xd
+ 2333 00d8 00       		.byte	0
+ 2334 00d9 03       		.uleb128 0x3
+ 2335 00da 08       		.uleb128 0x8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 50
+
+
+ 2336 00db 3A       		.uleb128 0x3a
+ 2337 00dc 0B       		.uleb128 0xb
+ 2338 00dd 3B       		.uleb128 0x3b
+ 2339 00de 0B       		.uleb128 0xb
+ 2340 00df 39       		.uleb128 0x39
+ 2341 00e0 0B       		.uleb128 0xb
+ 2342 00e1 49       		.uleb128 0x49
+ 2343 00e2 13       		.uleb128 0x13
+ 2344 00e3 38       		.uleb128 0x38
+ 2345 00e4 0B       		.uleb128 0xb
+ 2346 00e5 00       		.byte	0
+ 2347 00e6 00       		.byte	0
+ 2348 00e7 14       		.uleb128 0x14
+ 2349 00e8 13       		.uleb128 0x13
+ 2350 00e9 01       		.byte	0x1
+ 2351 00ea 03       		.uleb128 0x3
+ 2352 00eb 0E       		.uleb128 0xe
+ 2353 00ec 0B       		.uleb128 0xb
+ 2354 00ed 05       		.uleb128 0x5
+ 2355 00ee 3A       		.uleb128 0x3a
+ 2356 00ef 0B       		.uleb128 0xb
+ 2357 00f0 3B       		.uleb128 0x3b
+ 2358 00f1 0B       		.uleb128 0xb
+ 2359 00f2 39       		.uleb128 0x39
+ 2360 00f3 0B       		.uleb128 0xb
+ 2361 00f4 01       		.uleb128 0x1
+ 2362 00f5 13       		.uleb128 0x13
+ 2363 00f6 00       		.byte	0
+ 2364 00f7 00       		.byte	0
+ 2365 00f8 15       		.uleb128 0x15
+ 2366 00f9 0D       		.uleb128 0xd
+ 2367 00fa 00       		.byte	0
+ 2368 00fb 03       		.uleb128 0x3
+ 2369 00fc 0E       		.uleb128 0xe
+ 2370 00fd 3A       		.uleb128 0x3a
+ 2371 00fe 0B       		.uleb128 0xb
+ 2372 00ff 3B       		.uleb128 0x3b
+ 2373 0100 0B       		.uleb128 0xb
+ 2374 0101 39       		.uleb128 0x39
+ 2375 0102 0B       		.uleb128 0xb
+ 2376 0103 49       		.uleb128 0x49
+ 2377 0104 13       		.uleb128 0x13
+ 2378 0105 38       		.uleb128 0x38
+ 2379 0106 05       		.uleb128 0x5
+ 2380 0107 00       		.byte	0
+ 2381 0108 00       		.byte	0
+ 2382 0109 16       		.uleb128 0x16
+ 2383 010a 15       		.uleb128 0x15
+ 2384 010b 01       		.byte	0x1
+ 2385 010c 27       		.uleb128 0x27
+ 2386 010d 19       		.uleb128 0x19
+ 2387 010e 49       		.uleb128 0x49
+ 2388 010f 13       		.uleb128 0x13
+ 2389 0110 01       		.uleb128 0x1
+ 2390 0111 13       		.uleb128 0x13
+ 2391 0112 00       		.byte	0
+ 2392 0113 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 51
+
+
+ 2393 0114 17       		.uleb128 0x17
+ 2394 0115 05       		.uleb128 0x5
+ 2395 0116 00       		.byte	0
+ 2396 0117 49       		.uleb128 0x49
+ 2397 0118 13       		.uleb128 0x13
+ 2398 0119 00       		.byte	0
+ 2399 011a 00       		.byte	0
+ 2400 011b 18       		.uleb128 0x18
+ 2401 011c 13       		.uleb128 0x13
+ 2402 011d 01       		.byte	0x1
+ 2403 011e 03       		.uleb128 0x3
+ 2404 011f 0E       		.uleb128 0xe
+ 2405 0120 0B       		.uleb128 0xb
+ 2406 0121 05       		.uleb128 0x5
+ 2407 0122 3A       		.uleb128 0x3a
+ 2408 0123 0B       		.uleb128 0xb
+ 2409 0124 3B       		.uleb128 0x3b
+ 2410 0125 05       		.uleb128 0x5
+ 2411 0126 39       		.uleb128 0x39
+ 2412 0127 0B       		.uleb128 0xb
+ 2413 0128 01       		.uleb128 0x1
+ 2414 0129 13       		.uleb128 0x13
+ 2415 012a 00       		.byte	0
+ 2416 012b 00       		.byte	0
+ 2417 012c 19       		.uleb128 0x19
+ 2418 012d 0D       		.uleb128 0xd
+ 2419 012e 00       		.byte	0
+ 2420 012f 03       		.uleb128 0x3
+ 2421 0130 0E       		.uleb128 0xe
+ 2422 0131 3A       		.uleb128 0x3a
+ 2423 0132 0B       		.uleb128 0xb
+ 2424 0133 3B       		.uleb128 0x3b
+ 2425 0134 05       		.uleb128 0x5
+ 2426 0135 39       		.uleb128 0x39
+ 2427 0136 0B       		.uleb128 0xb
+ 2428 0137 49       		.uleb128 0x49
+ 2429 0138 13       		.uleb128 0x13
+ 2430 0139 38       		.uleb128 0x38
+ 2431 013a 0B       		.uleb128 0xb
+ 2432 013b 00       		.byte	0
+ 2433 013c 00       		.byte	0
+ 2434 013d 1A       		.uleb128 0x1a
+ 2435 013e 0D       		.uleb128 0xd
+ 2436 013f 00       		.byte	0
+ 2437 0140 03       		.uleb128 0x3
+ 2438 0141 0E       		.uleb128 0xe
+ 2439 0142 3A       		.uleb128 0x3a
+ 2440 0143 0B       		.uleb128 0xb
+ 2441 0144 3B       		.uleb128 0x3b
+ 2442 0145 05       		.uleb128 0x5
+ 2443 0146 39       		.uleb128 0x39
+ 2444 0147 0B       		.uleb128 0xb
+ 2445 0148 49       		.uleb128 0x49
+ 2446 0149 13       		.uleb128 0x13
+ 2447 014a 38       		.uleb128 0x38
+ 2448 014b 05       		.uleb128 0x5
+ 2449 014c 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 52
+
+
+ 2450 014d 00       		.byte	0
+ 2451 014e 1B       		.uleb128 0x1b
+ 2452 014f 13       		.uleb128 0x13
+ 2453 0150 01       		.byte	0x1
+ 2454 0151 03       		.uleb128 0x3
+ 2455 0152 0E       		.uleb128 0xe
+ 2456 0153 0B       		.uleb128 0xb
+ 2457 0154 0B       		.uleb128 0xb
+ 2458 0155 3A       		.uleb128 0x3a
+ 2459 0156 0B       		.uleb128 0xb
+ 2460 0157 3B       		.uleb128 0x3b
+ 2461 0158 05       		.uleb128 0x5
+ 2462 0159 39       		.uleb128 0x39
+ 2463 015a 0B       		.uleb128 0xb
+ 2464 015b 01       		.uleb128 0x1
+ 2465 015c 13       		.uleb128 0x13
+ 2466 015d 00       		.byte	0
+ 2467 015e 00       		.byte	0
+ 2468 015f 1C       		.uleb128 0x1c
+ 2469 0160 13       		.uleb128 0x13
+ 2470 0161 01       		.byte	0x1
+ 2471 0162 0B       		.uleb128 0xb
+ 2472 0163 0B       		.uleb128 0xb
+ 2473 0164 3A       		.uleb128 0x3a
+ 2474 0165 0B       		.uleb128 0xb
+ 2475 0166 3B       		.uleb128 0x3b
+ 2476 0167 05       		.uleb128 0x5
+ 2477 0168 39       		.uleb128 0x39
+ 2478 0169 0B       		.uleb128 0xb
+ 2479 016a 01       		.uleb128 0x1
+ 2480 016b 13       		.uleb128 0x13
+ 2481 016c 00       		.byte	0
+ 2482 016d 00       		.byte	0
+ 2483 016e 1D       		.uleb128 0x1d
+ 2484 016f 17       		.uleb128 0x17
+ 2485 0170 01       		.byte	0x1
+ 2486 0171 0B       		.uleb128 0xb
+ 2487 0172 0B       		.uleb128 0xb
+ 2488 0173 3A       		.uleb128 0x3a
+ 2489 0174 0B       		.uleb128 0xb
+ 2490 0175 3B       		.uleb128 0x3b
+ 2491 0176 05       		.uleb128 0x5
+ 2492 0177 39       		.uleb128 0x39
+ 2493 0178 0B       		.uleb128 0xb
+ 2494 0179 01       		.uleb128 0x1
+ 2495 017a 13       		.uleb128 0x13
+ 2496 017b 00       		.byte	0
+ 2497 017c 00       		.byte	0
+ 2498 017d 1E       		.uleb128 0x1e
+ 2499 017e 0D       		.uleb128 0xd
+ 2500 017f 00       		.byte	0
+ 2501 0180 03       		.uleb128 0x3
+ 2502 0181 0E       		.uleb128 0xe
+ 2503 0182 3A       		.uleb128 0x3a
+ 2504 0183 0B       		.uleb128 0xb
+ 2505 0184 3B       		.uleb128 0x3b
+ 2506 0185 05       		.uleb128 0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 53
+
+
+ 2507 0186 39       		.uleb128 0x39
+ 2508 0187 0B       		.uleb128 0xb
+ 2509 0188 49       		.uleb128 0x49
+ 2510 0189 13       		.uleb128 0x13
+ 2511 018a 00       		.byte	0
+ 2512 018b 00       		.byte	0
+ 2513 018c 1F       		.uleb128 0x1f
+ 2514 018d 15       		.uleb128 0x15
+ 2515 018e 01       		.byte	0x1
+ 2516 018f 27       		.uleb128 0x27
+ 2517 0190 19       		.uleb128 0x19
+ 2518 0191 01       		.uleb128 0x1
+ 2519 0192 13       		.uleb128 0x13
+ 2520 0193 00       		.byte	0
+ 2521 0194 00       		.byte	0
+ 2522 0195 20       		.uleb128 0x20
+ 2523 0196 34       		.uleb128 0x34
+ 2524 0197 00       		.byte	0
+ 2525 0198 03       		.uleb128 0x3
+ 2526 0199 0E       		.uleb128 0xe
+ 2527 019a 3A       		.uleb128 0x3a
+ 2528 019b 0B       		.uleb128 0xb
+ 2529 019c 3B       		.uleb128 0x3b
+ 2530 019d 05       		.uleb128 0x5
+ 2531 019e 39       		.uleb128 0x39
+ 2532 019f 0B       		.uleb128 0xb
+ 2533 01a0 49       		.uleb128 0x49
+ 2534 01a1 13       		.uleb128 0x13
+ 2535 01a2 3F       		.uleb128 0x3f
+ 2536 01a3 19       		.uleb128 0x19
+ 2537 01a4 3C       		.uleb128 0x3c
+ 2538 01a5 19       		.uleb128 0x19
+ 2539 01a6 00       		.byte	0
+ 2540 01a7 00       		.byte	0
+ 2541 01a8 21       		.uleb128 0x21
+ 2542 01a9 21       		.uleb128 0x21
+ 2543 01aa 00       		.byte	0
+ 2544 01ab 00       		.byte	0
+ 2545 01ac 00       		.byte	0
+ 2546 01ad 22       		.uleb128 0x22
+ 2547 01ae 34       		.uleb128 0x34
+ 2548 01af 00       		.byte	0
+ 2549 01b0 03       		.uleb128 0x3
+ 2550 01b1 0E       		.uleb128 0xe
+ 2551 01b2 3A       		.uleb128 0x3a
+ 2552 01b3 0B       		.uleb128 0xb
+ 2553 01b4 3B       		.uleb128 0x3b
+ 2554 01b5 0B       		.uleb128 0xb
+ 2555 01b6 39       		.uleb128 0x39
+ 2556 01b7 0B       		.uleb128 0xb
+ 2557 01b8 49       		.uleb128 0x49
+ 2558 01b9 13       		.uleb128 0x13
+ 2559 01ba 3F       		.uleb128 0x3f
+ 2560 01bb 19       		.uleb128 0x19
+ 2561 01bc 3C       		.uleb128 0x3c
+ 2562 01bd 19       		.uleb128 0x19
+ 2563 01be 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 54
+
+
+ 2564 01bf 00       		.byte	0
+ 2565 01c0 23       		.uleb128 0x23
+ 2566 01c1 2E       		.uleb128 0x2e
+ 2567 01c2 01       		.byte	0x1
+ 2568 01c3 3F       		.uleb128 0x3f
+ 2569 01c4 19       		.uleb128 0x19
+ 2570 01c5 03       		.uleb128 0x3
+ 2571 01c6 0E       		.uleb128 0xe
+ 2572 01c7 3A       		.uleb128 0x3a
+ 2573 01c8 0B       		.uleb128 0xb
+ 2574 01c9 3B       		.uleb128 0x3b
+ 2575 01ca 05       		.uleb128 0x5
+ 2576 01cb 39       		.uleb128 0x39
+ 2577 01cc 0B       		.uleb128 0xb
+ 2578 01cd 27       		.uleb128 0x27
+ 2579 01ce 19       		.uleb128 0x19
+ 2580 01cf 11       		.uleb128 0x11
+ 2581 01d0 01       		.uleb128 0x1
+ 2582 01d1 12       		.uleb128 0x12
+ 2583 01d2 06       		.uleb128 0x6
+ 2584 01d3 40       		.uleb128 0x40
+ 2585 01d4 18       		.uleb128 0x18
+ 2586 01d5 9742     		.uleb128 0x2117
+ 2587 01d7 19       		.uleb128 0x19
+ 2588 01d8 01       		.uleb128 0x1
+ 2589 01d9 13       		.uleb128 0x13
+ 2590 01da 00       		.byte	0
+ 2591 01db 00       		.byte	0
+ 2592 01dc 24       		.uleb128 0x24
+ 2593 01dd 34       		.uleb128 0x34
+ 2594 01de 00       		.byte	0
+ 2595 01df 03       		.uleb128 0x3
+ 2596 01e0 0E       		.uleb128 0xe
+ 2597 01e1 3A       		.uleb128 0x3a
+ 2598 01e2 0B       		.uleb128 0xb
+ 2599 01e3 3B       		.uleb128 0x3b
+ 2600 01e4 05       		.uleb128 0x5
+ 2601 01e5 39       		.uleb128 0x39
+ 2602 01e6 0B       		.uleb128 0xb
+ 2603 01e7 49       		.uleb128 0x49
+ 2604 01e8 13       		.uleb128 0x13
+ 2605 01e9 02       		.uleb128 0x2
+ 2606 01ea 17       		.uleb128 0x17
+ 2607 01eb B742     		.uleb128 0x2137
+ 2608 01ed 17       		.uleb128 0x17
+ 2609 01ee 00       		.byte	0
+ 2610 01ef 00       		.byte	0
+ 2611 01f0 25       		.uleb128 0x25
+ 2612 01f1 898201   		.uleb128 0x4109
+ 2613 01f4 00       		.byte	0
+ 2614 01f5 11       		.uleb128 0x11
+ 2615 01f6 01       		.uleb128 0x1
+ 2616 01f7 31       		.uleb128 0x31
+ 2617 01f8 13       		.uleb128 0x13
+ 2618 01f9 00       		.byte	0
+ 2619 01fa 00       		.byte	0
+ 2620 01fb 26       		.uleb128 0x26
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 55
+
+
+ 2621 01fc 2E       		.uleb128 0x2e
+ 2622 01fd 01       		.byte	0x1
+ 2623 01fe 3F       		.uleb128 0x3f
+ 2624 01ff 19       		.uleb128 0x19
+ 2625 0200 03       		.uleb128 0x3
+ 2626 0201 0E       		.uleb128 0xe
+ 2627 0202 3A       		.uleb128 0x3a
+ 2628 0203 0B       		.uleb128 0xb
+ 2629 0204 3B       		.uleb128 0x3b
+ 2630 0205 05       		.uleb128 0x5
+ 2631 0206 39       		.uleb128 0x39
+ 2632 0207 0B       		.uleb128 0xb
+ 2633 0208 27       		.uleb128 0x27
+ 2634 0209 19       		.uleb128 0x19
+ 2635 020a 49       		.uleb128 0x49
+ 2636 020b 13       		.uleb128 0x13
+ 2637 020c 11       		.uleb128 0x11
+ 2638 020d 01       		.uleb128 0x1
+ 2639 020e 12       		.uleb128 0x12
+ 2640 020f 06       		.uleb128 0x6
+ 2641 0210 40       		.uleb128 0x40
+ 2642 0211 18       		.uleb128 0x18
+ 2643 0212 9742     		.uleb128 0x2117
+ 2644 0214 19       		.uleb128 0x19
+ 2645 0215 01       		.uleb128 0x1
+ 2646 0216 13       		.uleb128 0x13
+ 2647 0217 00       		.byte	0
+ 2648 0218 00       		.byte	0
+ 2649 0219 27       		.uleb128 0x27
+ 2650 021a 05       		.uleb128 0x5
+ 2651 021b 00       		.byte	0
+ 2652 021c 03       		.uleb128 0x3
+ 2653 021d 0E       		.uleb128 0xe
+ 2654 021e 3A       		.uleb128 0x3a
+ 2655 021f 0B       		.uleb128 0xb
+ 2656 0220 3B       		.uleb128 0x3b
+ 2657 0221 05       		.uleb128 0x5
+ 2658 0222 39       		.uleb128 0x39
+ 2659 0223 0B       		.uleb128 0xb
+ 2660 0224 49       		.uleb128 0x49
+ 2661 0225 13       		.uleb128 0x13
+ 2662 0226 02       		.uleb128 0x2
+ 2663 0227 17       		.uleb128 0x17
+ 2664 0228 B742     		.uleb128 0x2137
+ 2665 022a 17       		.uleb128 0x17
+ 2666 022b 00       		.byte	0
+ 2667 022c 00       		.byte	0
+ 2668 022d 28       		.uleb128 0x28
+ 2669 022e 2E       		.uleb128 0x2e
+ 2670 022f 01       		.byte	0x1
+ 2671 0230 3F       		.uleb128 0x3f
+ 2672 0231 19       		.uleb128 0x19
+ 2673 0232 03       		.uleb128 0x3
+ 2674 0233 0E       		.uleb128 0xe
+ 2675 0234 3A       		.uleb128 0x3a
+ 2676 0235 0B       		.uleb128 0xb
+ 2677 0236 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 56
+
+
+ 2678 0237 0B       		.uleb128 0xb
+ 2679 0238 39       		.uleb128 0x39
+ 2680 0239 0B       		.uleb128 0xb
+ 2681 023a 27       		.uleb128 0x27
+ 2682 023b 19       		.uleb128 0x19
+ 2683 023c 11       		.uleb128 0x11
+ 2684 023d 01       		.uleb128 0x1
+ 2685 023e 12       		.uleb128 0x12
+ 2686 023f 06       		.uleb128 0x6
+ 2687 0240 40       		.uleb128 0x40
+ 2688 0241 18       		.uleb128 0x18
+ 2689 0242 9742     		.uleb128 0x2117
+ 2690 0244 19       		.uleb128 0x19
+ 2691 0245 01       		.uleb128 0x1
+ 2692 0246 13       		.uleb128 0x13
+ 2693 0247 00       		.byte	0
+ 2694 0248 00       		.byte	0
+ 2695 0249 29       		.uleb128 0x29
+ 2696 024a 34       		.uleb128 0x34
+ 2697 024b 00       		.byte	0
+ 2698 024c 03       		.uleb128 0x3
+ 2699 024d 0E       		.uleb128 0xe
+ 2700 024e 3A       		.uleb128 0x3a
+ 2701 024f 0B       		.uleb128 0xb
+ 2702 0250 3B       		.uleb128 0x3b
+ 2703 0251 0B       		.uleb128 0xb
+ 2704 0252 39       		.uleb128 0x39
+ 2705 0253 0B       		.uleb128 0xb
+ 2706 0254 49       		.uleb128 0x49
+ 2707 0255 13       		.uleb128 0x13
+ 2708 0256 02       		.uleb128 0x2
+ 2709 0257 17       		.uleb128 0x17
+ 2710 0258 B742     		.uleb128 0x2137
+ 2711 025a 17       		.uleb128 0x17
+ 2712 025b 00       		.byte	0
+ 2713 025c 00       		.byte	0
+ 2714 025d 2A       		.uleb128 0x2a
+ 2715 025e 34       		.uleb128 0x34
+ 2716 025f 00       		.byte	0
+ 2717 0260 03       		.uleb128 0x3
+ 2718 0261 0E       		.uleb128 0xe
+ 2719 0262 3A       		.uleb128 0x3a
+ 2720 0263 0B       		.uleb128 0xb
+ 2721 0264 3B       		.uleb128 0x3b
+ 2722 0265 0B       		.uleb128 0xb
+ 2723 0266 39       		.uleb128 0x39
+ 2724 0267 0B       		.uleb128 0xb
+ 2725 0268 49       		.uleb128 0x49
+ 2726 0269 13       		.uleb128 0x13
+ 2727 026a 02       		.uleb128 0x2
+ 2728 026b 18       		.uleb128 0x18
+ 2729 026c 00       		.byte	0
+ 2730 026d 00       		.byte	0
+ 2731 026e 2B       		.uleb128 0x2b
+ 2732 026f 898201   		.uleb128 0x4109
+ 2733 0272 01       		.byte	0x1
+ 2734 0273 11       		.uleb128 0x11
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 57
+
+
+ 2735 0274 01       		.uleb128 0x1
+ 2736 0275 31       		.uleb128 0x31
+ 2737 0276 13       		.uleb128 0x13
+ 2738 0277 01       		.uleb128 0x1
+ 2739 0278 13       		.uleb128 0x13
+ 2740 0279 00       		.byte	0
+ 2741 027a 00       		.byte	0
+ 2742 027b 2C       		.uleb128 0x2c
+ 2743 027c 8A8201   		.uleb128 0x410a
+ 2744 027f 00       		.byte	0
+ 2745 0280 02       		.uleb128 0x2
+ 2746 0281 18       		.uleb128 0x18
+ 2747 0282 9142     		.uleb128 0x2111
+ 2748 0284 18       		.uleb128 0x18
+ 2749 0285 00       		.byte	0
+ 2750 0286 00       		.byte	0
+ 2751 0287 2D       		.uleb128 0x2d
+ 2752 0288 898201   		.uleb128 0x4109
+ 2753 028b 01       		.byte	0x1
+ 2754 028c 11       		.uleb128 0x11
+ 2755 028d 01       		.uleb128 0x1
+ 2756 028e 31       		.uleb128 0x31
+ 2757 028f 13       		.uleb128 0x13
+ 2758 0290 00       		.byte	0
+ 2759 0291 00       		.byte	0
+ 2760 0292 2E       		.uleb128 0x2e
+ 2761 0293 2E       		.uleb128 0x2e
+ 2762 0294 00       		.byte	0
+ 2763 0295 3F       		.uleb128 0x3f
+ 2764 0296 19       		.uleb128 0x19
+ 2765 0297 3C       		.uleb128 0x3c
+ 2766 0298 19       		.uleb128 0x19
+ 2767 0299 6E       		.uleb128 0x6e
+ 2768 029a 0E       		.uleb128 0xe
+ 2769 029b 03       		.uleb128 0x3
+ 2770 029c 0E       		.uleb128 0xe
+ 2771 029d 3A       		.uleb128 0x3a
+ 2772 029e 0B       		.uleb128 0xb
+ 2773 029f 3B       		.uleb128 0x3b
+ 2774 02a0 0B       		.uleb128 0xb
+ 2775 02a1 39       		.uleb128 0x39
+ 2776 02a2 0B       		.uleb128 0xb
+ 2777 02a3 00       		.byte	0
+ 2778 02a4 00       		.byte	0
+ 2779 02a5 00       		.byte	0
+ 2780              		.section	.debug_loc,"",%progbits
+ 2781              	.Ldebug_loc0:
+ 2782              	.LVUS7:
+ 2783 0000 00       		.uleb128 .LVU122
+ 2784 0001 00       		.uleb128 .LVU132
+ 2785              	.LLST7:
+ 2786 0002 06000000 		.4byte	.LVL22
+ 2787 0006 23000000 		.4byte	.LVL23-1
+ 2788 000a 0100     		.2byte	0x1
+ 2789 000c 50       		.byte	0x50
+ 2790 000d 00000000 		.4byte	0
+ 2791 0011 00000000 		.4byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 58
+
+
+ 2792              	.LVUS6:
+ 2793 0015 00       		.uleb128 .LVU86
+ 2794 0016 00       		.uleb128 .LVU100
+ 2795              	.LLST6:
+ 2796 0017 06000000 		.4byte	.LVL18
+ 2797 001b 27000000 		.4byte	.LVL19-1
+ 2798 001f 0100     		.2byte	0x1
+ 2799 0021 50       		.byte	0x50
+ 2800 0022 00000000 		.4byte	0
+ 2801 0026 00000000 		.4byte	0
+ 2802              	.LVUS5:
+ 2803 002a 02       		.uleb128 .LVU71
+ 2804 002b 00       		.uleb128 .LVU76
+ 2805 002c 00       		.uleb128 .LVU77
+ 2806 002d 00       		.uleb128 .LVU80
+ 2807 002e 00       		.uleb128 .LVU80
+ 2808 002f 00       		.uleb128 0
+ 2809              	.LLST5:
+ 2810 0030 00000000 		.4byte	.LVL14
+ 2811 0034 16000000 		.4byte	.LVL15
+ 2812 0038 0200     		.2byte	0x2
+ 2813 003a 30       		.byte	0x30
+ 2814 003b 9F       		.byte	0x9f
+ 2815 003c 18000000 		.4byte	.LVL16
+ 2816 0040 22000000 		.4byte	.LVL17
+ 2817 0044 0200     		.2byte	0x2
+ 2818 0046 30       		.byte	0x30
+ 2819 0047 9F       		.byte	0x9f
+ 2820 0048 22000000 		.4byte	.LVL17
+ 2821 004c 28000000 		.4byte	.LFE5
+ 2822 0050 0200     		.2byte	0x2
+ 2823 0052 31       		.byte	0x31
+ 2824 0053 9F       		.byte	0x9f
+ 2825 0054 00000000 		.4byte	0
+ 2826 0058 00000000 		.4byte	0
+ 2827              	.LVUS3:
+ 2828 005c 00       		.uleb128 0
+ 2829 005d 00       		.uleb128 .LVU59
+ 2830 005e 00       		.uleb128 .LVU59
+ 2831 005f 01       		.uleb128 .LVU66
+ 2832 0060 01       		.uleb128 .LVU66
+ 2833 0061 00       		.uleb128 .LVU67
+ 2834 0062 00       		.uleb128 .LVU67
+ 2835 0063 00       		.uleb128 0
+ 2836              	.LLST3:
+ 2837 0064 00000000 		.4byte	.LVL9
+ 2838 0068 07000000 		.4byte	.LVL10-1
+ 2839 006c 0100     		.2byte	0x1
+ 2840 006e 50       		.byte	0x50
+ 2841 006f 07000000 		.4byte	.LVL10-1
+ 2842 0073 1E000000 		.4byte	.LVL12
+ 2843 0077 0100     		.2byte	0x1
+ 2844 0079 54       		.byte	0x54
+ 2845 007a 1E000000 		.4byte	.LVL12
+ 2846 007e 20000000 		.4byte	.LVL13
+ 2847 0082 0400     		.2byte	0x4
+ 2848 0084 F3       		.byte	0xf3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 59
+
+
+ 2849 0085 01       		.uleb128 0x1
+ 2850 0086 50       		.byte	0x50
+ 2851 0087 9F       		.byte	0x9f
+ 2852 0088 20000000 		.4byte	.LVL13
+ 2853 008c 34000000 		.4byte	.LFE4
+ 2854 0090 0100     		.2byte	0x1
+ 2855 0092 54       		.byte	0x54
+ 2856 0093 00000000 		.4byte	0
+ 2857 0097 00000000 		.4byte	0
+ 2858              	.LVUS4:
+ 2859 009b 00       		.uleb128 .LVU59
+ 2860 009c 00       		.uleb128 .LVU65
+ 2861 009d 00       		.uleb128 .LVU67
+ 2862 009e 00       		.uleb128 0
+ 2863              	.LLST4:
+ 2864 009f 08000000 		.4byte	.LVL10
+ 2865 00a3 1D000000 		.4byte	.LVL11-1
+ 2866 00a7 0100     		.2byte	0x1
+ 2867 00a9 50       		.byte	0x50
+ 2868 00aa 20000000 		.4byte	.LVL13
+ 2869 00ae 34000000 		.4byte	.LFE4
+ 2870 00b2 0100     		.2byte	0x1
+ 2871 00b4 50       		.byte	0x50
+ 2872 00b5 00000000 		.4byte	0
+ 2873 00b9 00000000 		.4byte	0
+ 2874              	.LVUS2:
+ 2875 00bd 00       		.uleb128 .LVU39
+ 2876 00be 00       		.uleb128 .LVU53
+ 2877              	.LLST2:
+ 2878 00bf 06000000 		.4byte	.LVL7
+ 2879 00c3 39000000 		.4byte	.LVL8-1
+ 2880 00c7 0100     		.2byte	0x1
+ 2881 00c9 50       		.byte	0x50
+ 2882 00ca 00000000 		.4byte	0
+ 2883 00ce 00000000 		.4byte	0
+ 2884              	.LVUS1:
+ 2885 00d2 00       		.uleb128 .LVU14
+ 2886 00d3 00       		.uleb128 .LVU34
+ 2887              	.LLST1:
+ 2888 00d4 0A000000 		.4byte	.LVL3
+ 2889 00d8 54000000 		.4byte	.LVL6
+ 2890 00dc 0100     		.2byte	0x1
+ 2891 00de 54       		.byte	0x54
+ 2892 00df 00000000 		.4byte	0
+ 2893 00e3 00000000 		.4byte	0
+ 2894              	.LVUS0:
+ 2895 00e7 00       		.uleb128 .LVU4
+ 2896 00e8 00       		.uleb128 .LVU8
+ 2897              	.LLST0:
+ 2898 00e9 06000000 		.4byte	.LVL0
+ 2899 00ed 15000000 		.4byte	.LVL1-1
+ 2900 00f1 0100     		.2byte	0x1
+ 2901 00f3 50       		.byte	0x50
+ 2902 00f4 00000000 		.4byte	0
+ 2903 00f8 00000000 		.4byte	0
+ 2904              		.section	.debug_aranges,"",%progbits
+ 2905 0000 54000000 		.4byte	0x54
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 60
+
+
+ 2906 0004 0200     		.2byte	0x2
+ 2907 0006 00000000 		.4byte	.Ldebug_info0
+ 2908 000a 04       		.byte	0x4
+ 2909 000b 00       		.byte	0
+ 2910 000c 0000     		.2byte	0
+ 2911 000e 0000     		.2byte	0
+ 2912 0010 00000000 		.4byte	.LFB0
+ 2913 0014 1C000000 		.4byte	.LFE0-.LFB0
+ 2914 0018 00000000 		.4byte	.LFB1
+ 2915 001c 6C000000 		.4byte	.LFE1-.LFB1
+ 2916 0020 00000000 		.4byte	.LFB2
+ 2917 0024 50000000 		.4byte	.LFE2-.LFB2
+ 2918 0028 00000000 		.4byte	.LFB4
+ 2919 002c 34000000 		.4byte	.LFE4-.LFB4
+ 2920 0030 00000000 		.4byte	.LFB5
+ 2921 0034 28000000 		.4byte	.LFE5-.LFB5
+ 2922 0038 00000000 		.4byte	.LFB6
+ 2923 003c 38000000 		.4byte	.LFE6-.LFB6
+ 2924 0040 00000000 		.4byte	.LFB3
+ 2925 0044 30000000 		.4byte	.LFE3-.LFB3
+ 2926 0048 00000000 		.4byte	.LFB7
+ 2927 004c 30000000 		.4byte	.LFE7-.LFB7
+ 2928 0050 00000000 		.4byte	0
+ 2929 0054 00000000 		.4byte	0
+ 2930              		.section	.debug_ranges,"",%progbits
+ 2931              	.Ldebug_ranges0:
+ 2932 0000 00000000 		.4byte	.LFB0
+ 2933 0004 1C000000 		.4byte	.LFE0
+ 2934 0008 00000000 		.4byte	.LFB1
+ 2935 000c 6C000000 		.4byte	.LFE1
+ 2936 0010 00000000 		.4byte	.LFB2
+ 2937 0014 50000000 		.4byte	.LFE2
+ 2938 0018 00000000 		.4byte	.LFB4
+ 2939 001c 34000000 		.4byte	.LFE4
+ 2940 0020 00000000 		.4byte	.LFB5
+ 2941 0024 28000000 		.4byte	.LFE5
+ 2942 0028 00000000 		.4byte	.LFB6
+ 2943 002c 38000000 		.4byte	.LFE6
+ 2944 0030 00000000 		.4byte	.LFB3
+ 2945 0034 30000000 		.4byte	.LFE3
+ 2946 0038 00000000 		.4byte	.LFB7
+ 2947 003c 30000000 		.4byte	.LFE7
+ 2948 0040 00000000 		.4byte	0
+ 2949 0044 00000000 		.4byte	0
+ 2950              		.section	.debug_line,"",%progbits
+ 2951              	.Ldebug_line0:
+ 2952 0000 DA030000 		.section	.debug_str,"MS",%progbits,1
+ 2952      03009201 
+ 2952      00000201 
+ 2952      FB0E0D00 
+ 2952      01010101 
+ 2953              	.LASF46:
+ 2954 0000 5F64736F 		.ascii	"_dso_handle\000"
+ 2954      5F68616E 
+ 2954      646C6500 
+ 2955              	.LASF10:
+ 2956 000c 75696E74 		.ascii	"uint16\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 61
+
+
+ 2956      313600
+ 2957              	.LASF54:
+ 2958 0013 5F73697A 		.ascii	"_size\000"
+ 2958      6500
+ 2959              	.LASF45:
+ 2960 0019 5F666E61 		.ascii	"_fnargs\000"
+ 2960      72677300 
+ 2961              	.LASF142:
+ 2962 0021 43795379 		.ascii	"CySysPmDeepSleep\000"
+ 2962      73506D44 
+ 2962      65657053 
+ 2962      6C656570 
+ 2962      00
+ 2963              	.LASF98:
+ 2964 0032 5F72616E 		.ascii	"_rand48\000"
+ 2964      64343800 
+ 2965              	.LASF78:
+ 2966 003a 5F656D65 		.ascii	"_emergency\000"
+ 2966      7267656E 
+ 2966      637900
+ 2967              	.LASF68:
+ 2968 0045 5F646174 		.ascii	"_data\000"
+ 2968      6100
+ 2969              	.LASF132:
+ 2970 004b 63796465 		.ascii	"cydelay32kMs\000"
+ 2970      6C617933 
+ 2970      326B4D73 
+ 2970      00
+ 2971              	.LASF118:
+ 2972 0058 5F776372 		.ascii	"_wcrtomb_state\000"
+ 2972      746F6D62 
+ 2972      5F737461 
+ 2972      746500
+ 2973              	.LASF119:
+ 2974 0067 5F776373 		.ascii	"_wcsrtombs_state\000"
+ 2974      72746F6D 
+ 2974      62735F73 
+ 2974      74617465 
+ 2974      00
+ 2975              	.LASF7:
+ 2976 0078 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2976      206C6F6E 
+ 2976      6720756E 
+ 2976      7369676E 
+ 2976      65642069 
+ 2977              	.LASF58:
+ 2978 008f 5F6C6266 		.ascii	"_lbfsize\000"
+ 2978      73697A65 
+ 2978      00
+ 2979              	.LASF133:
+ 2980 0098 43795379 		.ascii	"CySysTickInitVar\000"
+ 2980      73546963 
+ 2980      6B496E69 
+ 2980      74566172 
+ 2980      00
+ 2981              	.LASF125:
+ 2982 00a9 5F5F6C6F 		.ascii	"__locale_t\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 62
+
+
+ 2982      63616C65 
+ 2982      5F7400
+ 2983              	.LASF116:
+ 2984 00b4 5F6D6272 		.ascii	"_mbrtowc_state\000"
+ 2984      746F7763 
+ 2984      5F737461 
+ 2984      746500
+ 2985              	.LASF35:
+ 2986 00c3 5F5F746D 		.ascii	"__tm_sec\000"
+ 2986      5F736563 
+ 2986      00
+ 2987              	.LASF6:
+ 2988 00cc 6C6F6E67 		.ascii	"long long int\000"
+ 2988      206C6F6E 
+ 2988      6720696E 
+ 2988      7400
+ 2989              	.LASF0:
+ 2990 00da 7369676E 		.ascii	"signed char\000"
+ 2990      65642063 
+ 2990      68617200 
+ 2991              	.LASF64:
+ 2992 00e6 5F756275 		.ascii	"_ubuf\000"
+ 2992      6600
+ 2993              	.LASF53:
+ 2994 00ec 5F626173 		.ascii	"_base\000"
+ 2994      6500
+ 2995              	.LASF37:
+ 2996 00f2 5F5F746D 		.ascii	"__tm_hour\000"
+ 2996      5F686F75 
+ 2996      7200
+ 2997              	.LASF93:
+ 2998 00fc 5F5F7366 		.ascii	"__sf\000"
+ 2998      00
+ 2999              	.LASF44:
+ 3000 0101 5F6F6E5F 		.ascii	"_on_exit_args\000"
+ 3000      65786974 
+ 3000      5F617267 
+ 3000      7300
+ 3001              	.LASF59:
+ 3002 010f 5F636F6F 		.ascii	"_cookie\000"
+ 3002      6B696500 
+ 3003              	.LASF92:
+ 3004 0117 5F5F7367 		.ascii	"__sglue\000"
+ 3004      6C756500 
+ 3005              	.LASF4:
+ 3006 011f 6C6F6E67 		.ascii	"long int\000"
+ 3006      20696E74 
+ 3006      00
+ 3007              	.LASF137:
+ 3008 0128 43795379 		.ascii	"CySysPmFreezeIo\000"
+ 3008      73506D46 
+ 3008      7265657A 
+ 3008      65496F00 
+ 3009              	.LASF56:
+ 3010 0138 5F666C61 		.ascii	"_flags\000"
+ 3010      677300
+ 3011              	.LASF48:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 63
+
+
+ 3012 013f 5F69735F 		.ascii	"_is_cxa\000"
+ 3012      63786100 
+ 3013              	.LASF74:
+ 3014 0147 5F737464 		.ascii	"_stdin\000"
+ 3014      696E00
+ 3015              	.LASF149:
+ 3016 014e 433A5C55 		.ascii	"C:\\Users\\edulu.DESKTOP-961TG4K\\Documents\\PSoC C"
+ 3016      73657273 
+ 3016      5C656475 
+ 3016      6C752E44 
+ 3016      45534B54 
+ 3017 017d 72656174 		.ascii	"reator\\Micrium\\Examples\\Cypress\\CY8CKIT-044\\OS"
+ 3017      6F725C4D 
+ 3017      69637269 
+ 3017      756D5C45 
+ 3017      78616D70 
+ 3018 01ab 335C5053 		.ascii	"3\\PSoC\\OS3.cydsn\000"
+ 3018      6F435C4F 
+ 3018      53332E63 
+ 3018      7964736E 
+ 3018      00
+ 3019              	.LASF15:
+ 3020 01bc 72656731 		.ascii	"reg16\000"
+ 3020      3600
+ 3021              	.LASF66:
+ 3022 01c2 5F626C6B 		.ascii	"_blksize\000"
+ 3022      73697A65 
+ 3022      00
+ 3023              	.LASF9:
+ 3024 01cb 75696E74 		.ascii	"uint8\000"
+ 3024      3800
+ 3025              	.LASF130:
+ 3026 01d1 63796465 		.ascii	"cydelayFreqKhz\000"
+ 3026      6C617946 
+ 3026      7265714B 
+ 3026      687A00
+ 3027              	.LASF13:
+ 3028 01e0 646F7562 		.ascii	"double\000"
+ 3028      6C6500
+ 3029              	.LASF88:
+ 3030 01e7 5F637674 		.ascii	"_cvtbuf\000"
+ 3030      62756600 
+ 3031              	.LASF67:
+ 3032 01ef 5F6F6666 		.ascii	"_offset\000"
+ 3032      73657400 
+ 3033              	.LASF117:
+ 3034 01f7 5F6D6273 		.ascii	"_mbsrtowcs_state\000"
+ 3034      72746F77 
+ 3034      63735F73 
+ 3034      74617465 
+ 3034      00
+ 3035              	.LASF115:
+ 3036 0208 5F6D6272 		.ascii	"_mbrlen_state\000"
+ 3036      6C656E5F 
+ 3036      73746174 
+ 3036      6500
+ 3037              	.LASF11:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 64
+
+
+ 3038 0216 75696E74 		.ascii	"uint32\000"
+ 3038      333200
+ 3039              	.LASF51:
+ 3040 021d 5F666E73 		.ascii	"_fns\000"
+ 3040      00
+ 3041              	.LASF31:
+ 3042 0222 5F736967 		.ascii	"_sign\000"
+ 3042      6E00
+ 3043              	.LASF27:
+ 3044 0228 5F666C6F 		.ascii	"_flock_t\000"
+ 3044      636B5F74 
+ 3044      00
+ 3045              	.LASF76:
+ 3046 0231 5F737464 		.ascii	"_stderr\000"
+ 3046      65727200 
+ 3047              	.LASF33:
+ 3048 0239 5F426967 		.ascii	"_Bigint\000"
+ 3048      696E7400 
+ 3049              	.LASF106:
+ 3050 0241 5F67616D 		.ascii	"_gamma_signgam\000"
+ 3050      6D615F73 
+ 3050      69676E67 
+ 3050      616D00
+ 3051              	.LASF60:
+ 3052 0250 5F726561 		.ascii	"_read\000"
+ 3052      6400
+ 3053              	.LASF84:
+ 3054 0256 5F726573 		.ascii	"_result_k\000"
+ 3054      756C745F 
+ 3054      6B00
+ 3055              	.LASF34:
+ 3056 0260 5F5F746D 		.ascii	"__tm\000"
+ 3056      00
+ 3057              	.LASF8:
+ 3058 0265 756E7369 		.ascii	"unsigned int\000"
+ 3058      676E6564 
+ 3058      20696E74 
+ 3058      00
+ 3059              	.LASF23:
+ 3060 0272 5F5F7763 		.ascii	"__wchb\000"
+ 3060      686200
+ 3061              	.LASF75:
+ 3062 0279 5F737464 		.ascii	"_stdout\000"
+ 3062      6F757400 
+ 3063              	.LASF87:
+ 3064 0281 5F637674 		.ascii	"_cvtlen\000"
+ 3064      6C656E00 
+ 3065              	.LASF5:
+ 3066 0289 6C6F6E67 		.ascii	"long unsigned int\000"
+ 3066      20756E73 
+ 3066      69676E65 
+ 3066      6420696E 
+ 3066      7400
+ 3067              	.LASF57:
+ 3068 029b 5F66696C 		.ascii	"_file\000"
+ 3068      6500
+ 3069              	.LASF135:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 65
+
+
+ 3070 02a1 696E7465 		.ascii	"interruptState\000"
+ 3070      72727570 
+ 3070      74537461 
+ 3070      746500
+ 3071              	.LASF144:
+ 3072 02b0 4379456E 		.ascii	"CyEnterCriticalSection\000"
+ 3072      74657243 
+ 3072      72697469 
+ 3072      63616C53 
+ 3072      65637469 
+ 3073              	.LASF96:
+ 3074 02c7 5F6E696F 		.ascii	"_niobs\000"
+ 3074      627300
+ 3075              	.LASF3:
+ 3076 02ce 73686F72 		.ascii	"short unsigned int\000"
+ 3076      7420756E 
+ 3076      7369676E 
+ 3076      65642069 
+ 3076      6E7400
+ 3077              	.LASF90:
+ 3078 02e1 5F617465 		.ascii	"_atexit0\000"
+ 3078      78697430 
+ 3078      00
+ 3079              	.LASF152:
+ 3080 02ea 636C6B53 		.ascii	"clkSelectReg\000"
+ 3080      656C6563 
+ 3080      74526567 
+ 3080      00
+ 3081              	.LASF113:
+ 3082 02f7 5F736967 		.ascii	"_signal_buf\000"
+ 3082      6E616C5F 
+ 3082      62756600 
+ 3083              	.LASF104:
+ 3084 0303 5F617363 		.ascii	"_asctime_buf\000"
+ 3084      74696D65 
+ 3084      5F627566 
+ 3084      00
+ 3085              	.LASF83:
+ 3086 0310 5F726573 		.ascii	"_result\000"
+ 3086      756C7400 
+ 3087              	.LASF22:
+ 3088 0318 5F5F7763 		.ascii	"__wch\000"
+ 3088      6800
+ 3089              	.LASF18:
+ 3090 031e 5F4C4F43 		.ascii	"_LOCK_T\000"
+ 3090      4B5F5400 
+ 3091              	.LASF21:
+ 3092 0326 77696E74 		.ascii	"wint_t\000"
+ 3092      5F7400
+ 3093              	.LASF147:
+ 3094 032d 474E5520 		.ascii	"GNU C17 8.2.1 20181213 (release) [gcc-8-branch revi"
+ 3094      43313720 
+ 3094      382E322E 
+ 3094      31203230 
+ 3094      31383132 
+ 3095 0360 73696F6E 		.ascii	"sion 267074] -mcpu=cortex-m0 -mthumb -mfloat-abi=so"
+ 3095      20323637 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 66
+
+
+ 3095      3037345D 
+ 3095      202D6D63 
+ 3095      70753D63 
+ 3096 0393 6674202D 		.ascii	"ft -march=armv6s-m -g -Og -ffunction-sections -ffat"
+ 3096      6D617263 
+ 3096      683D6172 
+ 3096      6D763673 
+ 3096      2D6D202D 
+ 3097 03c6 2D6C746F 		.ascii	"-lto-objects\000"
+ 3097      2D6F626A 
+ 3097      65637473 
+ 3097      00
+ 3098              	.LASF69:
+ 3099 03d3 5F6C6F63 		.ascii	"_lock\000"
+ 3099      6B00
+ 3100              	.LASF71:
+ 3101 03d9 5F666C61 		.ascii	"_flags2\000"
+ 3101      67733200 
+ 3102              	.LASF16:
+ 3103 03e1 72656733 		.ascii	"reg32\000"
+ 3103      3200
+ 3104              	.LASF40:
+ 3105 03e7 5F5F746D 		.ascii	"__tm_year\000"
+ 3105      5F796561 
+ 3105      7200
+ 3106              	.LASF129:
+ 3107 03f1 63796465 		.ascii	"cydelayFreqHz\000"
+ 3107      6C617946 
+ 3107      72657148 
+ 3107      7A00
+ 3108              	.LASF17:
+ 3109 03ff 6C6F6E67 		.ascii	"long double\000"
+ 3109      20646F75 
+ 3109      626C6500 
+ 3110              	.LASF121:
+ 3111 040b 5F6E6578 		.ascii	"_nextf\000"
+ 3111      746600
+ 3112              	.LASF134:
+ 3113 0412 6379496D 		.ascii	"cyImoFreqMhz2Reg\000"
+ 3113      6F467265 
+ 3113      714D687A 
+ 3113      32526567 
+ 3113      00
+ 3114              	.LASF39:
+ 3115 0423 5F5F746D 		.ascii	"__tm_mon\000"
+ 3115      5F6D6F6E 
+ 3115      00
+ 3116              	.LASF49:
+ 3117 042c 5F617465 		.ascii	"_atexit\000"
+ 3117      78697400 
+ 3118              	.LASF81:
+ 3119 0434 5F5F7364 		.ascii	"__sdidinit\000"
+ 3119      6964696E 
+ 3119      697400
+ 3120              	.LASF19:
+ 3121 043f 5F6F6666 		.ascii	"_off_t\000"
+ 3121      5F7400
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 67
+
+
+ 3122              	.LASF141:
+ 3123 0446 43795379 		.ascii	"CySysPmHibernate\000"
+ 3123      73506D48 
+ 3123      69626572 
+ 3123      6E617465 
+ 3123      00
+ 3124              	.LASF12:
+ 3125 0457 666C6F61 		.ascii	"float\000"
+ 3125      7400
+ 3126              	.LASF145:
+ 3127 045d 43794578 		.ascii	"CyExitCriticalSection\000"
+ 3127      69744372 
+ 3127      69746963 
+ 3127      616C5365 
+ 3127      6374696F 
+ 3128              	.LASF86:
+ 3129 0473 5F667265 		.ascii	"_freelist\000"
+ 3129      656C6973 
+ 3129      7400
+ 3130              	.LASF111:
+ 3131 047d 5F776374 		.ascii	"_wctomb_state\000"
+ 3131      6F6D625F 
+ 3131      73746174 
+ 3131      6500
+ 3132              	.LASF61:
+ 3133 048b 5F777269 		.ascii	"_write\000"
+ 3133      746500
+ 3134              	.LASF1:
+ 3135 0492 756E7369 		.ascii	"unsigned char\000"
+ 3135      676E6564 
+ 3135      20636861 
+ 3135      7200
+ 3136              	.LASF89:
+ 3137 04a0 5F6E6577 		.ascii	"_new\000"
+ 3137      00
+ 3138              	.LASF139:
+ 3139 04a5 43795379 		.ascii	"CySysPmSetWakeupPolarity\000"
+ 3139      73506D53 
+ 3139      65745761 
+ 3139      6B657570 
+ 3139      506F6C61 
+ 3140              	.LASF120:
+ 3141 04be 5F685F65 		.ascii	"_h_errno\000"
+ 3141      72726E6F 
+ 3141      00
+ 3142              	.LASF2:
+ 3143 04c7 73686F72 		.ascii	"short int\000"
+ 3143      7420696E 
+ 3143      7400
+ 3144              	.LASF42:
+ 3145 04d1 5F5F746D 		.ascii	"__tm_yday\000"
+ 3145      5F796461 
+ 3145      7900
+ 3146              	.LASF52:
+ 3147 04db 5F5F7362 		.ascii	"__sbuf\000"
+ 3147      756600
+ 3148              	.LASF97:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 68
+
+
+ 3149 04e2 5F696F62 		.ascii	"_iobs\000"
+ 3149      7300
+ 3150              	.LASF94:
+ 3151 04e8 5F5F4649 		.ascii	"__FILE\000"
+ 3151      4C4500
+ 3152              	.LASF26:
+ 3153 04ef 5F6D6273 		.ascii	"_mbstate_t\000"
+ 3153      74617465 
+ 3153      5F7400
+ 3154              	.LASF55:
+ 3155 04fa 5F5F7346 		.ascii	"__sFILE\000"
+ 3155      494C4500 
+ 3156              	.LASF70:
+ 3157 0502 5F6D6273 		.ascii	"_mbstate\000"
+ 3157      74617465 
+ 3157      00
+ 3158              	.LASF107:
+ 3159 050b 5F72616E 		.ascii	"_rand_next\000"
+ 3159      645F6E65 
+ 3159      787400
+ 3160              	.LASF109:
+ 3161 0516 5F6D626C 		.ascii	"_mblen_state\000"
+ 3161      656E5F73 
+ 3161      74617465 
+ 3161      00
+ 3162              	.LASF77:
+ 3163 0523 5F696E63 		.ascii	"_inc\000"
+ 3163      00
+ 3164              	.LASF50:
+ 3165 0528 5F696E64 		.ascii	"_ind\000"
+ 3165      00
+ 3166              	.LASF138:
+ 3167 052d 72656173 		.ascii	"reason\000"
+ 3167      6F6E00
+ 3168              	.LASF80:
+ 3169 0534 5F6C6F63 		.ascii	"_locale\000"
+ 3169      616C6500 
+ 3170              	.LASF82:
+ 3171 053c 5F5F636C 		.ascii	"__cleanup\000"
+ 3171      65616E75 
+ 3171      7000
+ 3172              	.LASF79:
+ 3173 0546 5F756E73 		.ascii	"_unspecified_locale_info\000"
+ 3173      70656369 
+ 3173      66696564 
+ 3173      5F6C6F63 
+ 3173      616C655F 
+ 3174              	.LASF148:
+ 3175 055f 47656E65 		.ascii	"Generated_Source\\PSoC4\\cyPm.c\000"
+ 3175      72617465 
+ 3175      645F536F 
+ 3175      75726365 
+ 3175      5C50536F 
+ 3176              	.LASF72:
+ 3177 057d 5F726565 		.ascii	"_reent\000"
+ 3177      6E7400
+ 3178              	.LASF99:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 69
+
+
+ 3179 0584 5F736565 		.ascii	"_seed\000"
+ 3179      6400
+ 3180              	.LASF24:
+ 3181 058a 5F5F636F 		.ascii	"__count\000"
+ 3181      756E7400 
+ 3182              	.LASF124:
+ 3183 0592 5F5F6C6F 		.ascii	"__lock\000"
+ 3183      636B00
+ 3184              	.LASF25:
+ 3185 0599 5F5F7661 		.ascii	"__value\000"
+ 3185      6C756500 
+ 3186              	.LASF62:
+ 3187 05a1 5F736565 		.ascii	"_seek\000"
+ 3187      6B00
+ 3188              	.LASF126:
+ 3189 05a7 5F696D70 		.ascii	"_impure_ptr\000"
+ 3189      7572655F 
+ 3189      70747200 
+ 3190              	.LASF151:
+ 3191 05b3 706F6C61 		.ascii	"polarity\000"
+ 3191      72697479 
+ 3191      00
+ 3192              	.LASF20:
+ 3193 05bc 5F66706F 		.ascii	"_fpos_t\000"
+ 3193      735F7400 
+ 3194              	.LASF73:
+ 3195 05c4 5F657272 		.ascii	"_errno\000"
+ 3195      6E6F00
+ 3196              	.LASF14:
+ 3197 05cb 63686172 		.ascii	"char\000"
+ 3197      00
+ 3198              	.LASF36:
+ 3199 05d0 5F5F746D 		.ascii	"__tm_min\000"
+ 3199      5F6D696E 
+ 3199      00
+ 3200              	.LASF128:
+ 3201 05d9 5F637479 		.ascii	"_ctype_\000"
+ 3201      70655F00 
+ 3202              	.LASF146:
+ 3203 05e1 43795379 		.ascii	"CySysClkWriteSysclkDiv\000"
+ 3203      73436C6B 
+ 3203      57726974 
+ 3203      65537973 
+ 3203      636C6B44 
+ 3204              	.LASF100:
+ 3205 05f8 5F6D756C 		.ascii	"_mult\000"
+ 3205      7400
+ 3206              	.LASF29:
+ 3207 05fe 5F6E6578 		.ascii	"_next\000"
+ 3207      7400
+ 3208              	.LASF103:
+ 3209 0604 5F737472 		.ascii	"_strtok_last\000"
+ 3209      746F6B5F 
+ 3209      6C617374 
+ 3209      00
+ 3210              	.LASF47:
+ 3211 0611 5F666E74 		.ascii	"_fntypes\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 70
+
+
+ 3211      79706573 
+ 3211      00
+ 3212              	.LASF30:
+ 3213 061a 5F6D6178 		.ascii	"_maxwds\000"
+ 3213      77647300 
+ 3214              	.LASF101:
+ 3215 0622 5F616464 		.ascii	"_add\000"
+ 3215      00
+ 3216              	.LASF28:
+ 3217 0627 5F5F554C 		.ascii	"__ULong\000"
+ 3217      6F6E6700 
+ 3218              	.LASF114:
+ 3219 062f 5F676574 		.ascii	"_getdate_err\000"
+ 3219      64617465 
+ 3219      5F657272 
+ 3219      00
+ 3220              	.LASF136:
+ 3221 063c 43795379 		.ascii	"CySysPmUnfreezeIo\000"
+ 3221      73506D55 
+ 3221      6E667265 
+ 3221      657A6549 
+ 3221      6F00
+ 3222              	.LASF127:
+ 3223 064e 5F676C6F 		.ascii	"_global_impure_ptr\000"
+ 3223      62616C5F 
+ 3223      696D7075 
+ 3223      72655F70 
+ 3223      747200
+ 3224              	.LASF131:
+ 3225 0661 63796465 		.ascii	"cydelayFreqMhz\000"
+ 3225      6C617946 
+ 3225      7265714D 
+ 3225      687A00
+ 3226              	.LASF102:
+ 3227 0670 5F756E75 		.ascii	"_unused_rand\000"
+ 3227      7365645F 
+ 3227      72616E64 
+ 3227      00
+ 3228              	.LASF32:
+ 3229 067d 5F776473 		.ascii	"_wds\000"
+ 3229      00
+ 3230              	.LASF41:
+ 3231 0682 5F5F746D 		.ascii	"__tm_wday\000"
+ 3231      5F776461 
+ 3231      7900
+ 3232              	.LASF95:
+ 3233 068c 5F676C75 		.ascii	"_glue\000"
+ 3233      6500
+ 3234              	.LASF122:
+ 3235 0692 5F6E6D61 		.ascii	"_nmalloc\000"
+ 3235      6C6C6F63 
+ 3235      00
+ 3236              	.LASF112:
+ 3237 069b 5F6C3634 		.ascii	"_l64a_buf\000"
+ 3237      615F6275 
+ 3237      6600
+ 3238              	.LASF91:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccgbx9cx.s 			page 71
+
+
+ 3239 06a5 5F736967 		.ascii	"_sig_func\000"
+ 3239      5F66756E 
+ 3239      6300
+ 3240              	.LASF143:
+ 3241 06af 43795379 		.ascii	"CySysPmSleep\000"
+ 3241      73506D53 
+ 3241      6C656570 
+ 3241      00
+ 3242              	.LASF65:
+ 3243 06bc 5F6E6275 		.ascii	"_nbuf\000"
+ 3243      6600
+ 3244              	.LASF123:
+ 3245 06c2 5F756E75 		.ascii	"_unused\000"
+ 3245      73656400 
+ 3246              	.LASF43:
+ 3247 06ca 5F5F746D 		.ascii	"__tm_isdst\000"
+ 3247      5F697364 
+ 3247      737400
+ 3248              	.LASF105:
+ 3249 06d5 5F6C6F63 		.ascii	"_localtime_buf\000"
+ 3249      616C7469 
+ 3249      6D655F62 
+ 3249      756600
+ 3250              	.LASF63:
+ 3251 06e4 5F636C6F 		.ascii	"_close\000"
+ 3251      736500
+ 3252              	.LASF108:
+ 3253 06eb 5F723438 		.ascii	"_r48\000"
+ 3253      00
+ 3254              	.LASF140:
+ 3255 06f0 43795379 		.ascii	"CySysPmStop\000"
+ 3255      73506D53 
+ 3255      746F7000 
+ 3256              	.LASF110:
+ 3257 06fc 5F6D6274 		.ascii	"_mbtowc_state\000"
+ 3257      6F77635F 
+ 3257      73746174 
+ 3257      6500
+ 3258              	.LASF85:
+ 3259 070a 5F703573 		.ascii	"_p5s\000"
+ 3259      00
+ 3260              	.LASF38:
+ 3261 070f 5F5F746D 		.ascii	"__tm_mday\000"
+ 3261      5F6D6461 
+ 3261      7900
+ 3262              	.LASF150:
+ 3263 0719 43795379 		.ascii	"CySysPmGetResetReason\000"
+ 3263      73506D47 
+ 3263      65745265 
+ 3263      73657452 
+ 3263      6561736F 
+ 3264              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2018-q4-major) 8.2.1 20181213 (release) [gcc

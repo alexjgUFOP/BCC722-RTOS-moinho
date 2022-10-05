@@ -1,0 +1,1149 @@
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"os_prio.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.comm	OSPrioTbl,4,4
+  20              		.section	.text.OS_PrioInit,"ax",%progbits
+  21              		.align	2
+  22              		.global	OS_PrioInit
+  23              		.code	16
+  24              		.thumb_func
+  25              		.type	OS_PrioInit, %function
+  26              	OS_PrioInit:
+  27              	.LFB1:
+  28              		.file 1 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source\\os_prio.c"
+   1:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** /*
+   2:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** ***************************************************************************************************
+   3:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *                                                      uC/OS-III
+   4:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *                                                 The Real-Time Kernel
+   5:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+   6:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *                                  (c) Copyright 2009-2012; Micrium, Inc.; Weston, FL
+   7:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *                           All rights reserved.  Protected by international copyright laws.
+   8:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+   9:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *                                                 PRIORITY MANAGEMENT
+  10:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+  11:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * File    : OS_PRIO.C
+  12:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * By      : JJL
+  13:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Version : V3.03.01
+  14:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+  15:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * LICENSING TERMS:
+  16:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * ---------------
+  17:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *           uC/OS-III is provided in source form for FREE short-term evaluation, for educational us
+  18:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *           for peaceful research.  If you plan or intend to use uC/OS-III in a commercial applicat
+  19:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *           product then, you need to contact Micrium to properly license uC/OS-III for its use in 
+  20:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *           application/product.   We provide ALL the source code for your convenience and to help 
+  21:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *           experience uC/OS-III.  The fact that the source is provided does NOT mean that you can 
+  22:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *           it commercially without paying a licensing fee.
+  23:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+  24:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *           Knowledge of the source code may NOT be used to develop a similar product.
+  25:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+  26:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *           Please help us continue to provide the embedded community with the finest software avai
+  27:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *           Your honesty is greatly appreciated.
+  28:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+  29:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *           You can contact us at www.micrium.com, or by phone at +1 (954) 217-2036.
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 2
+
+
+  30:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** ***************************************************************************************************
+  31:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** */
+  32:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+  33:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** #define  MICRIUM_SOURCE
+  34:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** #include <os.h>
+  35:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+  36:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** #ifdef VSC_INCLUDE_SOURCE_FILE_NAMES
+  37:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** const  CPU_CHAR  *os_prio__c = "$Id: $";
+  38:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** #endif
+  39:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+  40:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+  41:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** CPU_DATA   OSPrioTbl[OS_PRIO_TBL_SIZE];                     /* Declare the array local to this file
+  42:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****                                                             /* ... optimization.  In other words, t
+  43:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****                                                             /* ... table to be located in fast memo
+  44:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+  45:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** /*
+  46:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** ***************************************************************************************************
+  47:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *                                               INITIALIZE THE PRIORITY LIST
+  48:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+  49:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Description: This function is called by uC/OS-III to initialize the list of ready priorities.
+  50:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+  51:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Arguments  : none
+  52:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+  53:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Returns    : none
+  54:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+  55:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Note       : This function is INTERNAL to uC/OS-III and your application should not call it.
+  56:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** ***************************************************************************************************
+  57:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** */
+  58:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+  59:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** void  OS_PrioInit (void)
+  60:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** {
+  29              		.loc 1 60 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33 0000 80B5     		push	{r7, lr}
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 7, -8
+  36              		.cfi_offset 14, -4
+  37 0002 82B0     		sub	sp, sp, #8
+  38              		.cfi_def_cfa_offset 16
+  39 0004 00AF     		add	r7, sp, #0
+  40              		.cfi_def_cfa_register 7
+  61:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     CPU_DATA  i;
+  62:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+  63:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+  64:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****                                                             /* Clear the bitmap table ... no task i
+  65:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     for (i = 0u; i < OS_PRIO_TBL_SIZE; i++) {
+  41              		.loc 1 65 0
+  42 0006 0023     		movs	r3, #0
+  43 0008 7B60     		str	r3, [r7, #4]
+  44 000a 07E0     		b	.L2
+  45              	.L3:
+  66:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****          OSPrioTbl[i] = (CPU_DATA)0;
+  46              		.loc 1 66 0 discriminator 3
+  47 000c 074B     		ldr	r3, .L4
+  48 000e 7A68     		ldr	r2, [r7, #4]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 3
+
+
+  49 0010 9200     		lsls	r2, r2, #2
+  50 0012 0021     		movs	r1, #0
+  51 0014 D150     		str	r1, [r2, r3]
+  65:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****          OSPrioTbl[i] = (CPU_DATA)0;
+  52              		.loc 1 65 0 discriminator 3
+  53 0016 7B68     		ldr	r3, [r7, #4]
+  54 0018 0133     		adds	r3, r3, #1
+  55 001a 7B60     		str	r3, [r7, #4]
+  56              	.L2:
+  65:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****          OSPrioTbl[i] = (CPU_DATA)0;
+  57              		.loc 1 65 0 is_stmt 0 discriminator 1
+  58 001c 7B68     		ldr	r3, [r7, #4]
+  59 001e 002B     		cmp	r3, #0
+  60 0020 F4D0     		beq	.L3
+  67:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     }
+  68:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** }
+  61              		.loc 1 68 0 is_stmt 1
+  62 0022 C046     		nop
+  63 0024 BD46     		mov	sp, r7
+  64 0026 02B0     		add	sp, sp, #8
+  65              		@ sp needed
+  66 0028 80BD     		pop	{r7, pc}
+  67              	.L5:
+  68 002a C046     		.align	2
+  69              	.L4:
+  70 002c 00000000 		.word	OSPrioTbl
+  71              		.cfi_endproc
+  72              	.LFE1:
+  73              		.size	OS_PrioInit, .-OS_PrioInit
+  74              		.section	.text.OS_PrioGetHighest,"ax",%progbits
+  75              		.align	2
+  76              		.global	OS_PrioGetHighest
+  77              		.code	16
+  78              		.thumb_func
+  79              		.type	OS_PrioGetHighest, %function
+  80              	OS_PrioGetHighest:
+  81              	.LFB2:
+  69:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+  70:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** /*
+  71:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** ***************************************************************************************************
+  72:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *                                           GET HIGHEST PRIORITY TASK WAITING
+  73:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+  74:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Description: This function is called by other uC/OS-III services to determine the highest priorit
+  75:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *              waiting on the event.
+  76:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+  77:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Arguments  : none
+  78:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+  79:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Returns    : The priority of the Highest Priority Task (HPT) waiting for the event
+  80:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+  81:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+  82:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** ***************************************************************************************************
+  83:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** */
+  84:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+  85:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** OS_PRIO  OS_PrioGetHighest (void)
+  86:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** {
+  82              		.loc 1 86 0
+  83              		.cfi_startproc
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 4
+
+
+  84              		@ args = 0, pretend = 0, frame = 8
+  85              		@ frame_needed = 1, uses_anonymous_args = 0
+  86 0000 80B5     		push	{r7, lr}
+  87              		.cfi_def_cfa_offset 8
+  88              		.cfi_offset 7, -8
+  89              		.cfi_offset 14, -4
+  90 0002 82B0     		sub	sp, sp, #8
+  91              		.cfi_def_cfa_offset 16
+  92 0004 00AF     		add	r7, sp, #0
+  93              		.cfi_def_cfa_register 7
+  87:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     CPU_DATA  *p_tbl;
+  88:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     OS_PRIO    prio;
+  89:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+  90:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+  91:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     prio  = (OS_PRIO)0;
+  94              		.loc 1 91 0
+  95 0006 FB1C     		adds	r3, r7, #3
+  96 0008 0022     		movs	r2, #0
+  97 000a 1A70     		strb	r2, [r3]
+  92:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     p_tbl = &OSPrioTbl[0];
+  98              		.loc 1 92 0
+  99 000c 104B     		ldr	r3, .L10
+ 100 000e 7B60     		str	r3, [r7, #4]
+  93:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     while (*p_tbl == (CPU_DATA)0) {                         /* Search the bitmap table for the high
+ 101              		.loc 1 93 0
+ 102 0010 07E0     		b	.L7
+ 103              	.L8:
+  94:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****         prio += DEF_INT_CPU_NBR_BITS;                       /* Compute the step of each CPU_DATA en
+ 104              		.loc 1 94 0
+ 105 0012 FB1C     		adds	r3, r7, #3
+ 106 0014 FA1C     		adds	r2, r7, #3
+ 107 0016 1278     		ldrb	r2, [r2]
+ 108 0018 2032     		adds	r2, r2, #32
+ 109 001a 1A70     		strb	r2, [r3]
+  95:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****         p_tbl++;
+ 110              		.loc 1 95 0
+ 111 001c 7B68     		ldr	r3, [r7, #4]
+ 112 001e 0433     		adds	r3, r3, #4
+ 113 0020 7B60     		str	r3, [r7, #4]
+ 114              	.L7:
+  93:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     while (*p_tbl == (CPU_DATA)0) {                         /* Search the bitmap table for the high
+ 115              		.loc 1 93 0
+ 116 0022 7B68     		ldr	r3, [r7, #4]
+ 117 0024 1B68     		ldr	r3, [r3]
+ 118 0026 002B     		cmp	r3, #0
+ 119 0028 F3D0     		beq	.L8
+  96:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     }
+  97:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     prio += (OS_PRIO)CPU_CntLeadZeros(*p_tbl);              /* Find the position of the first bit s
+ 120              		.loc 1 97 0
+ 121 002a 7B68     		ldr	r3, [r7, #4]
+ 122 002c 1B68     		ldr	r3, [r3]
+ 123 002e 1800     		movs	r0, r3
+ 124 0030 FFF7FEFF 		bl	CPU_CntLeadZeros
+ 125 0034 0300     		movs	r3, r0
+ 126 0036 D9B2     		uxtb	r1, r3
+ 127 0038 FB1C     		adds	r3, r7, #3
+ 128 003a FA1C     		adds	r2, r7, #3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 5
+
+
+ 129 003c 1278     		ldrb	r2, [r2]
+ 130 003e 8A18     		adds	r2, r1, r2
+ 131 0040 1A70     		strb	r2, [r3]
+  98:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     return (prio);
+ 132              		.loc 1 98 0
+ 133 0042 FB1C     		adds	r3, r7, #3
+ 134 0044 1B78     		ldrb	r3, [r3]
+  99:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** }
+ 135              		.loc 1 99 0
+ 136 0046 1800     		movs	r0, r3
+ 137 0048 BD46     		mov	sp, r7
+ 138 004a 02B0     		add	sp, sp, #8
+ 139              		@ sp needed
+ 140 004c 80BD     		pop	{r7, pc}
+ 141              	.L11:
+ 142 004e C046     		.align	2
+ 143              	.L10:
+ 144 0050 00000000 		.word	OSPrioTbl
+ 145              		.cfi_endproc
+ 146              	.LFE2:
+ 147              		.size	OS_PrioGetHighest, .-OS_PrioGetHighest
+ 148              		.section	.text.OS_PrioInsert,"ax",%progbits
+ 149              		.align	2
+ 150              		.global	OS_PrioInsert
+ 151              		.code	16
+ 152              		.thumb_func
+ 153              		.type	OS_PrioInsert, %function
+ 154              	OS_PrioInsert:
+ 155              	.LFB3:
+ 100:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+ 101:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** /*
+ 102:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** ***************************************************************************************************
+ 103:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *                                                  INSERT PRIORITY
+ 104:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+ 105:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Description: This function is called to insert a priority in the priority table.
+ 106:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+ 107:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Arguments  : prio     is the priority to insert
+ 108:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+ 109:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Returns    : none
+ 110:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+ 111:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+ 112:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** ***************************************************************************************************
+ 113:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** */
+ 114:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+ 115:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** void  OS_PrioInsert (OS_PRIO  prio)
+ 116:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** {
+ 156              		.loc 1 116 0
+ 157              		.cfi_startproc
+ 158              		@ args = 0, pretend = 0, frame = 24
+ 159              		@ frame_needed = 1, uses_anonymous_args = 0
+ 160 0000 80B5     		push	{r7, lr}
+ 161              		.cfi_def_cfa_offset 8
+ 162              		.cfi_offset 7, -8
+ 163              		.cfi_offset 14, -4
+ 164 0002 86B0     		sub	sp, sp, #24
+ 165              		.cfi_def_cfa_offset 32
+ 166 0004 00AF     		add	r7, sp, #0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 6
+
+
+ 167              		.cfi_def_cfa_register 7
+ 168 0006 0200     		movs	r2, r0
+ 169 0008 FB1D     		adds	r3, r7, #7
+ 170 000a 1A70     		strb	r2, [r3]
+ 117:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     CPU_DATA  bit;
+ 118:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     CPU_DATA  bit_nbr;
+ 119:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     OS_PRIO   ix;
+ 120:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+ 121:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+ 122:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     ix             = prio / DEF_INT_CPU_NBR_BITS;
+ 171              		.loc 1 122 0
+ 172 000c 1723     		movs	r3, #23
+ 173 000e FB18     		adds	r3, r7, r3
+ 174 0010 FA1D     		adds	r2, r7, #7
+ 175 0012 1278     		ldrb	r2, [r2]
+ 176 0014 5209     		lsrs	r2, r2, #5
+ 177 0016 1A70     		strb	r2, [r3]
+ 123:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     bit_nbr        = (CPU_DATA)prio & (DEF_INT_CPU_NBR_BITS - 1u);
+ 178              		.loc 1 123 0
+ 179 0018 FB1D     		adds	r3, r7, #7
+ 180 001a 1B78     		ldrb	r3, [r3]
+ 181 001c 1F22     		movs	r2, #31
+ 182 001e 1340     		ands	r3, r2
+ 183 0020 3B61     		str	r3, [r7, #16]
+ 124:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     bit            = 1u;
+ 184              		.loc 1 124 0
+ 185 0022 0123     		movs	r3, #1
+ 186 0024 FB60     		str	r3, [r7, #12]
+ 125:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     bit          <<= (DEF_INT_CPU_NBR_BITS - 1u) - bit_nbr;
+ 187              		.loc 1 125 0
+ 188 0026 3B69     		ldr	r3, [r7, #16]
+ 189 0028 1F22     		movs	r2, #31
+ 190 002a D31A     		subs	r3, r2, r3
+ 191 002c FA68     		ldr	r2, [r7, #12]
+ 192 002e 9A40     		lsls	r2, r2, r3
+ 193 0030 1300     		movs	r3, r2
+ 194 0032 FB60     		str	r3, [r7, #12]
+ 126:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     OSPrioTbl[ix] |= bit;
+ 195              		.loc 1 126 0
+ 196 0034 1723     		movs	r3, #23
+ 197 0036 FB18     		adds	r3, r7, r3
+ 198 0038 1A78     		ldrb	r2, [r3]
+ 199 003a 1723     		movs	r3, #23
+ 200 003c FB18     		adds	r3, r7, r3
+ 201 003e 1978     		ldrb	r1, [r3]
+ 202 0040 054B     		ldr	r3, .L13
+ 203 0042 8900     		lsls	r1, r1, #2
+ 204 0044 C958     		ldr	r1, [r1, r3]
+ 205 0046 FB68     		ldr	r3, [r7, #12]
+ 206 0048 1943     		orrs	r1, r3
+ 207 004a 034B     		ldr	r3, .L13
+ 208 004c 9200     		lsls	r2, r2, #2
+ 209 004e D150     		str	r1, [r2, r3]
+ 127:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** }
+ 210              		.loc 1 127 0
+ 211 0050 C046     		nop
+ 212 0052 BD46     		mov	sp, r7
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 7
+
+
+ 213 0054 06B0     		add	sp, sp, #24
+ 214              		@ sp needed
+ 215 0056 80BD     		pop	{r7, pc}
+ 216              	.L14:
+ 217              		.align	2
+ 218              	.L13:
+ 219 0058 00000000 		.word	OSPrioTbl
+ 220              		.cfi_endproc
+ 221              	.LFE3:
+ 222              		.size	OS_PrioInsert, .-OS_PrioInsert
+ 223              		.section	.text.OS_PrioRemove,"ax",%progbits
+ 224              		.align	2
+ 225              		.global	OS_PrioRemove
+ 226              		.code	16
+ 227              		.thumb_func
+ 228              		.type	OS_PrioRemove, %function
+ 229              	OS_PrioRemove:
+ 230              	.LFB4:
+ 128:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+ 129:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** /*
+ 130:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** ***************************************************************************************************
+ 131:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *                                                   REMOVE PRIORITY
+ 132:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+ 133:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Description: This function is called to remove a priority in the priority table.
+ 134:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+ 135:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Arguments  : prio     is the priority to remove
+ 136:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+ 137:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Returns    : none
+ 138:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** *
+ 139:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+ 140:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** ***************************************************************************************************
+ 141:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** */
+ 142:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+ 143:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** void  OS_PrioRemove (OS_PRIO  prio)
+ 144:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** {
+ 231              		.loc 1 144 0
+ 232              		.cfi_startproc
+ 233              		@ args = 0, pretend = 0, frame = 24
+ 234              		@ frame_needed = 1, uses_anonymous_args = 0
+ 235 0000 80B5     		push	{r7, lr}
+ 236              		.cfi_def_cfa_offset 8
+ 237              		.cfi_offset 7, -8
+ 238              		.cfi_offset 14, -4
+ 239 0002 86B0     		sub	sp, sp, #24
+ 240              		.cfi_def_cfa_offset 32
+ 241 0004 00AF     		add	r7, sp, #0
+ 242              		.cfi_def_cfa_register 7
+ 243 0006 0200     		movs	r2, r0
+ 244 0008 FB1D     		adds	r3, r7, #7
+ 245 000a 1A70     		strb	r2, [r3]
+ 145:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     CPU_DATA  bit;
+ 146:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     CPU_DATA  bit_nbr;
+ 147:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     OS_PRIO   ix;
+ 148:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+ 149:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** 
+ 150:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     ix             = prio / DEF_INT_CPU_NBR_BITS;
+ 246              		.loc 1 150 0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 8
+
+
+ 247 000c 1723     		movs	r3, #23
+ 248 000e FB18     		adds	r3, r7, r3
+ 249 0010 FA1D     		adds	r2, r7, #7
+ 250 0012 1278     		ldrb	r2, [r2]
+ 251 0014 5209     		lsrs	r2, r2, #5
+ 252 0016 1A70     		strb	r2, [r3]
+ 151:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     bit_nbr        = (CPU_DATA)prio & (DEF_INT_CPU_NBR_BITS - 1u);
+ 253              		.loc 1 151 0
+ 254 0018 FB1D     		adds	r3, r7, #7
+ 255 001a 1B78     		ldrb	r3, [r3]
+ 256 001c 1F22     		movs	r2, #31
+ 257 001e 1340     		ands	r3, r2
+ 258 0020 3B61     		str	r3, [r7, #16]
+ 152:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     bit            = 1u;
+ 259              		.loc 1 152 0
+ 260 0022 0123     		movs	r3, #1
+ 261 0024 FB60     		str	r3, [r7, #12]
+ 153:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     bit          <<= (DEF_INT_CPU_NBR_BITS - 1u) - bit_nbr;
+ 262              		.loc 1 153 0
+ 263 0026 3B69     		ldr	r3, [r7, #16]
+ 264 0028 1F22     		movs	r2, #31
+ 265 002a D31A     		subs	r3, r2, r3
+ 266 002c FA68     		ldr	r2, [r7, #12]
+ 267 002e 9A40     		lsls	r2, r2, r3
+ 268 0030 1300     		movs	r3, r2
+ 269 0032 FB60     		str	r3, [r7, #12]
+ 154:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c ****     OSPrioTbl[ix] &= ~bit;
+ 270              		.loc 1 154 0
+ 271 0034 1723     		movs	r3, #23
+ 272 0036 FB18     		adds	r3, r7, r3
+ 273 0038 1A78     		ldrb	r2, [r3]
+ 274 003a 1723     		movs	r3, #23
+ 275 003c FB18     		adds	r3, r7, r3
+ 276 003e 1978     		ldrb	r1, [r3]
+ 277 0040 064B     		ldr	r3, .L16
+ 278 0042 8900     		lsls	r1, r1, #2
+ 279 0044 CB58     		ldr	r3, [r1, r3]
+ 280 0046 F968     		ldr	r1, [r7, #12]
+ 281 0048 C943     		mvns	r1, r1
+ 282 004a 1940     		ands	r1, r3
+ 283 004c 034B     		ldr	r3, .L16
+ 284 004e 9200     		lsls	r2, r2, #2
+ 285 0050 D150     		str	r1, [r2, r3]
+ 155:..\..\..\..\..\..\Software\uCOS-III\Source/os_prio.c **** }
+ 286              		.loc 1 155 0
+ 287 0052 C046     		nop
+ 288 0054 BD46     		mov	sp, r7
+ 289 0056 06B0     		add	sp, sp, #24
+ 290              		@ sp needed
+ 291 0058 80BD     		pop	{r7, pc}
+ 292              	.L17:
+ 293 005a C046     		.align	2
+ 294              	.L16:
+ 295 005c 00000000 		.word	OSPrioTbl
+ 296              		.cfi_endproc
+ 297              	.LFE4:
+ 298              		.size	OS_PrioRemove, .-OS_PrioRemove
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 9
+
+
+ 299              		.text
+ 300              	.Letext0:
+ 301              		.file 2 "..\\..\\..\\..\\..\\..\\Software\\uC-CPU\\ARM-Cortex-M0\\GNU/cpu.h"
+ 302              		.file 3 "..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source/os_type.h"
+ 303              		.section	.debug_info,"",%progbits
+ 304              	.Ldebug_info0:
+ 305 0000 D0010000 		.4byte	0x1d0
+ 306 0004 0400     		.2byte	0x4
+ 307 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 308 000a 04       		.byte	0x4
+ 309 000b 01       		.uleb128 0x1
+ 310 000c 1E010000 		.4byte	.LASF24
+ 311 0010 0C       		.byte	0xc
+ 312 0011 13000000 		.4byte	.LASF25
+ 313 0015 69000000 		.4byte	.LASF26
+ 314 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 315 001d 00000000 		.4byte	0
+ 316 0021 00000000 		.4byte	.Ldebug_line0
+ 317 0025 02       		.uleb128 0x2
+ 318 0026 01       		.byte	0x1
+ 319 0027 08       		.byte	0x8
+ 320 0028 0A020000 		.4byte	.LASF0
+ 321 002c 02       		.uleb128 0x2
+ 322 002d 01       		.byte	0x1
+ 323 002e 08       		.byte	0x8
+ 324 002f F3000000 		.4byte	.LASF1
+ 325 0033 03       		.uleb128 0x3
+ 326 0034 13010000 		.4byte	.LASF5
+ 327 0038 02       		.byte	0x2
+ 328 0039 7E       		.byte	0x7e
+ 329 003a 2C000000 		.4byte	0x2c
+ 330 003e 02       		.uleb128 0x2
+ 331 003f 01       		.byte	0x1
+ 332 0040 06       		.byte	0x6
+ 333 0041 3B020000 		.4byte	.LASF2
+ 334 0045 02       		.uleb128 0x2
+ 335 0046 02       		.byte	0x2
+ 336 0047 07       		.byte	0x7
+ 337 0048 47020000 		.4byte	.LASF3
+ 338 004c 02       		.uleb128 0x2
+ 339 004d 02       		.byte	0x2
+ 340 004e 05       		.byte	0x5
+ 341 004f B3010000 		.4byte	.LASF4
+ 342 0053 03       		.uleb128 0x3
+ 343 0054 5E000000 		.4byte	.LASF6
+ 344 0058 02       		.byte	0x2
+ 345 0059 82       		.byte	0x82
+ 346 005a 5E000000 		.4byte	0x5e
+ 347 005e 02       		.uleb128 0x2
+ 348 005f 04       		.byte	0x4
+ 349 0060 07       		.byte	0x7
+ 350 0061 BD010000 		.4byte	.LASF7
+ 351 0065 04       		.uleb128 0x4
+ 352 0066 04       		.byte	0x4
+ 353 0067 05       		.byte	0x5
+ 354 0068 696E7400 		.ascii	"int\000"
+ 355 006c 02       		.uleb128 0x2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 10
+
+
+ 356 006d 08       		.byte	0x8
+ 357 006e 07       		.byte	0x7
+ 358 006f CA010000 		.4byte	.LASF8
+ 359 0073 02       		.uleb128 0x2
+ 360 0074 08       		.byte	0x8
+ 361 0075 05       		.byte	0x5
+ 362 0076 FC010000 		.4byte	.LASF9
+ 363 007a 02       		.uleb128 0x2
+ 364 007b 04       		.byte	0x4
+ 365 007c 04       		.byte	0x4
+ 366 007d D7000000 		.4byte	.LASF10
+ 367 0081 02       		.uleb128 0x2
+ 368 0082 08       		.byte	0x8
+ 369 0083 04       		.byte	0x4
+ 370 0084 AC010000 		.4byte	.LASF11
+ 371 0088 03       		.uleb128 0x3
+ 372 0089 1D020000 		.4byte	.LASF12
+ 373 008d 02       		.byte	0x2
+ 374 008e C3       		.byte	0xc3
+ 375 008f 53000000 		.4byte	0x53
+ 376 0093 02       		.uleb128 0x2
+ 377 0094 04       		.byte	0x4
+ 378 0095 05       		.byte	0x5
+ 379 0096 26020000 		.4byte	.LASF13
+ 380 009a 02       		.uleb128 0x2
+ 381 009b 04       		.byte	0x4
+ 382 009c 07       		.byte	0x7
+ 383 009d 01010000 		.4byte	.LASF14
+ 384 00a1 02       		.uleb128 0x2
+ 385 00a2 08       		.byte	0x8
+ 386 00a3 04       		.byte	0x4
+ 387 00a4 2F020000 		.4byte	.LASF15
+ 388 00a8 02       		.uleb128 0x2
+ 389 00a9 04       		.byte	0x4
+ 390 00aa 07       		.byte	0x7
+ 391 00ab F3010000 		.4byte	.LASF16
+ 392 00af 03       		.uleb128 0x3
+ 393 00b0 4E000000 		.4byte	.LASF17
+ 394 00b4 03       		.byte	0x3
+ 395 00b5 49       		.byte	0x49
+ 396 00b6 33000000 		.4byte	0x33
+ 397 00ba 05       		.uleb128 0x5
+ 398 00bb DD000000 		.4byte	.LASF20
+ 399 00bf 01       		.byte	0x1
+ 400 00c0 3B       		.byte	0x3b
+ 401 00c1 00000000 		.4byte	.LFB1
+ 402 00c5 30000000 		.4byte	.LFE1-.LFB1
+ 403 00c9 01       		.uleb128 0x1
+ 404 00ca 9C       		.byte	0x9c
+ 405 00cb DC000000 		.4byte	0xdc
+ 406 00cf 06       		.uleb128 0x6
+ 407 00d0 6900     		.ascii	"i\000"
+ 408 00d2 01       		.byte	0x1
+ 409 00d3 3D       		.byte	0x3d
+ 410 00d4 88000000 		.4byte	0x88
+ 411 00d8 02       		.uleb128 0x2
+ 412 00d9 91       		.byte	0x91
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 11
+
+
+ 413 00da 74       		.sleb128 -12
+ 414 00db 00       		.byte	0
+ 415 00dc 07       		.uleb128 0x7
+ 416 00dd E1010000 		.4byte	.LASF27
+ 417 00e1 01       		.byte	0x1
+ 418 00e2 55       		.byte	0x55
+ 419 00e3 AF000000 		.4byte	0xaf
+ 420 00e7 00000000 		.4byte	.LFB2
+ 421 00eb 54000000 		.4byte	.LFE2-.LFB2
+ 422 00ef 01       		.uleb128 0x1
+ 423 00f0 9C       		.byte	0x9c
+ 424 00f1 12010000 		.4byte	0x112
+ 425 00f5 08       		.uleb128 0x8
+ 426 00f6 48000000 		.4byte	.LASF18
+ 427 00fa 01       		.byte	0x1
+ 428 00fb 57       		.byte	0x57
+ 429 00fc 12010000 		.4byte	0x112
+ 430 0100 02       		.uleb128 0x2
+ 431 0101 91       		.byte	0x91
+ 432 0102 74       		.sleb128 -12
+ 433 0103 08       		.uleb128 0x8
+ 434 0104 0E000000 		.4byte	.LASF19
+ 435 0108 01       		.byte	0x1
+ 436 0109 58       		.byte	0x58
+ 437 010a AF000000 		.4byte	0xaf
+ 438 010e 02       		.uleb128 0x2
+ 439 010f 91       		.byte	0x91
+ 440 0110 73       		.sleb128 -13
+ 441 0111 00       		.byte	0
+ 442 0112 09       		.uleb128 0x9
+ 443 0113 04       		.byte	0x4
+ 444 0114 88000000 		.4byte	0x88
+ 445 0118 05       		.uleb128 0x5
+ 446 0119 00000000 		.4byte	.LASF21
+ 447 011d 01       		.byte	0x1
+ 448 011e 73       		.byte	0x73
+ 449 011f 00000000 		.4byte	.LFB3
+ 450 0123 5C000000 		.4byte	.LFE3-.LFB3
+ 451 0127 01       		.uleb128 0x1
+ 452 0128 9C       		.byte	0x9c
+ 453 0129 65010000 		.4byte	0x165
+ 454 012d 0A       		.uleb128 0xa
+ 455 012e 0E000000 		.4byte	.LASF19
+ 456 0132 01       		.byte	0x1
+ 457 0133 73       		.byte	0x73
+ 458 0134 AF000000 		.4byte	0xaf
+ 459 0138 02       		.uleb128 0x2
+ 460 0139 91       		.byte	0x91
+ 461 013a 67       		.sleb128 -25
+ 462 013b 06       		.uleb128 0x6
+ 463 013c 62697400 		.ascii	"bit\000"
+ 464 0140 01       		.byte	0x1
+ 465 0141 75       		.byte	0x75
+ 466 0142 88000000 		.4byte	0x88
+ 467 0146 02       		.uleb128 0x2
+ 468 0147 91       		.byte	0x91
+ 469 0148 6C       		.sleb128 -20
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 12
+
+
+ 470 0149 08       		.uleb128 0x8
+ 471 014a 56000000 		.4byte	.LASF22
+ 472 014e 01       		.byte	0x1
+ 473 014f 76       		.byte	0x76
+ 474 0150 88000000 		.4byte	0x88
+ 475 0154 02       		.uleb128 0x2
+ 476 0155 91       		.byte	0x91
+ 477 0156 70       		.sleb128 -16
+ 478 0157 06       		.uleb128 0x6
+ 479 0158 697800   		.ascii	"ix\000"
+ 480 015b 01       		.byte	0x1
+ 481 015c 77       		.byte	0x77
+ 482 015d AF000000 		.4byte	0xaf
+ 483 0161 02       		.uleb128 0x2
+ 484 0162 91       		.byte	0x91
+ 485 0163 77       		.sleb128 -9
+ 486 0164 00       		.byte	0
+ 487 0165 05       		.uleb128 0x5
+ 488 0166 0F020000 		.4byte	.LASF23
+ 489 016a 01       		.byte	0x1
+ 490 016b 8F       		.byte	0x8f
+ 491 016c 00000000 		.4byte	.LFB4
+ 492 0170 60000000 		.4byte	.LFE4-.LFB4
+ 493 0174 01       		.uleb128 0x1
+ 494 0175 9C       		.byte	0x9c
+ 495 0176 B2010000 		.4byte	0x1b2
+ 496 017a 0A       		.uleb128 0xa
+ 497 017b 0E000000 		.4byte	.LASF19
+ 498 017f 01       		.byte	0x1
+ 499 0180 8F       		.byte	0x8f
+ 500 0181 AF000000 		.4byte	0xaf
+ 501 0185 02       		.uleb128 0x2
+ 502 0186 91       		.byte	0x91
+ 503 0187 67       		.sleb128 -25
+ 504 0188 06       		.uleb128 0x6
+ 505 0189 62697400 		.ascii	"bit\000"
+ 506 018d 01       		.byte	0x1
+ 507 018e 91       		.byte	0x91
+ 508 018f 88000000 		.4byte	0x88
+ 509 0193 02       		.uleb128 0x2
+ 510 0194 91       		.byte	0x91
+ 511 0195 6C       		.sleb128 -20
+ 512 0196 08       		.uleb128 0x8
+ 513 0197 56000000 		.4byte	.LASF22
+ 514 019b 01       		.byte	0x1
+ 515 019c 92       		.byte	0x92
+ 516 019d 88000000 		.4byte	0x88
+ 517 01a1 02       		.uleb128 0x2
+ 518 01a2 91       		.byte	0x91
+ 519 01a3 70       		.sleb128 -16
+ 520 01a4 06       		.uleb128 0x6
+ 521 01a5 697800   		.ascii	"ix\000"
+ 522 01a8 01       		.byte	0x1
+ 523 01a9 93       		.byte	0x93
+ 524 01aa AF000000 		.4byte	0xaf
+ 525 01ae 02       		.uleb128 0x2
+ 526 01af 91       		.byte	0x91
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 13
+
+
+ 527 01b0 77       		.sleb128 -9
+ 528 01b1 00       		.byte	0
+ 529 01b2 0B       		.uleb128 0xb
+ 530 01b3 88000000 		.4byte	0x88
+ 531 01b7 C2010000 		.4byte	0x1c2
+ 532 01bb 0C       		.uleb128 0xc
+ 533 01bc A8000000 		.4byte	0xa8
+ 534 01c0 00       		.byte	0
+ 535 01c1 00       		.byte	0
+ 536 01c2 0D       		.uleb128 0xd
+ 537 01c3 E9000000 		.4byte	.LASF28
+ 538 01c7 01       		.byte	0x1
+ 539 01c8 29       		.byte	0x29
+ 540 01c9 B2010000 		.4byte	0x1b2
+ 541 01cd 05       		.uleb128 0x5
+ 542 01ce 03       		.byte	0x3
+ 543 01cf 00000000 		.4byte	OSPrioTbl
+ 544 01d3 00       		.byte	0
+ 545              		.section	.debug_abbrev,"",%progbits
+ 546              	.Ldebug_abbrev0:
+ 547 0000 01       		.uleb128 0x1
+ 548 0001 11       		.uleb128 0x11
+ 549 0002 01       		.byte	0x1
+ 550 0003 25       		.uleb128 0x25
+ 551 0004 0E       		.uleb128 0xe
+ 552 0005 13       		.uleb128 0x13
+ 553 0006 0B       		.uleb128 0xb
+ 554 0007 03       		.uleb128 0x3
+ 555 0008 0E       		.uleb128 0xe
+ 556 0009 1B       		.uleb128 0x1b
+ 557 000a 0E       		.uleb128 0xe
+ 558 000b 55       		.uleb128 0x55
+ 559 000c 17       		.uleb128 0x17
+ 560 000d 11       		.uleb128 0x11
+ 561 000e 01       		.uleb128 0x1
+ 562 000f 10       		.uleb128 0x10
+ 563 0010 17       		.uleb128 0x17
+ 564 0011 00       		.byte	0
+ 565 0012 00       		.byte	0
+ 566 0013 02       		.uleb128 0x2
+ 567 0014 24       		.uleb128 0x24
+ 568 0015 00       		.byte	0
+ 569 0016 0B       		.uleb128 0xb
+ 570 0017 0B       		.uleb128 0xb
+ 571 0018 3E       		.uleb128 0x3e
+ 572 0019 0B       		.uleb128 0xb
+ 573 001a 03       		.uleb128 0x3
+ 574 001b 0E       		.uleb128 0xe
+ 575 001c 00       		.byte	0
+ 576 001d 00       		.byte	0
+ 577 001e 03       		.uleb128 0x3
+ 578 001f 16       		.uleb128 0x16
+ 579 0020 00       		.byte	0
+ 580 0021 03       		.uleb128 0x3
+ 581 0022 0E       		.uleb128 0xe
+ 582 0023 3A       		.uleb128 0x3a
+ 583 0024 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 14
+
+
+ 584 0025 3B       		.uleb128 0x3b
+ 585 0026 0B       		.uleb128 0xb
+ 586 0027 49       		.uleb128 0x49
+ 587 0028 13       		.uleb128 0x13
+ 588 0029 00       		.byte	0
+ 589 002a 00       		.byte	0
+ 590 002b 04       		.uleb128 0x4
+ 591 002c 24       		.uleb128 0x24
+ 592 002d 00       		.byte	0
+ 593 002e 0B       		.uleb128 0xb
+ 594 002f 0B       		.uleb128 0xb
+ 595 0030 3E       		.uleb128 0x3e
+ 596 0031 0B       		.uleb128 0xb
+ 597 0032 03       		.uleb128 0x3
+ 598 0033 08       		.uleb128 0x8
+ 599 0034 00       		.byte	0
+ 600 0035 00       		.byte	0
+ 601 0036 05       		.uleb128 0x5
+ 602 0037 2E       		.uleb128 0x2e
+ 603 0038 01       		.byte	0x1
+ 604 0039 3F       		.uleb128 0x3f
+ 605 003a 19       		.uleb128 0x19
+ 606 003b 03       		.uleb128 0x3
+ 607 003c 0E       		.uleb128 0xe
+ 608 003d 3A       		.uleb128 0x3a
+ 609 003e 0B       		.uleb128 0xb
+ 610 003f 3B       		.uleb128 0x3b
+ 611 0040 0B       		.uleb128 0xb
+ 612 0041 27       		.uleb128 0x27
+ 613 0042 19       		.uleb128 0x19
+ 614 0043 11       		.uleb128 0x11
+ 615 0044 01       		.uleb128 0x1
+ 616 0045 12       		.uleb128 0x12
+ 617 0046 06       		.uleb128 0x6
+ 618 0047 40       		.uleb128 0x40
+ 619 0048 18       		.uleb128 0x18
+ 620 0049 9742     		.uleb128 0x2117
+ 621 004b 19       		.uleb128 0x19
+ 622 004c 01       		.uleb128 0x1
+ 623 004d 13       		.uleb128 0x13
+ 624 004e 00       		.byte	0
+ 625 004f 00       		.byte	0
+ 626 0050 06       		.uleb128 0x6
+ 627 0051 34       		.uleb128 0x34
+ 628 0052 00       		.byte	0
+ 629 0053 03       		.uleb128 0x3
+ 630 0054 08       		.uleb128 0x8
+ 631 0055 3A       		.uleb128 0x3a
+ 632 0056 0B       		.uleb128 0xb
+ 633 0057 3B       		.uleb128 0x3b
+ 634 0058 0B       		.uleb128 0xb
+ 635 0059 49       		.uleb128 0x49
+ 636 005a 13       		.uleb128 0x13
+ 637 005b 02       		.uleb128 0x2
+ 638 005c 18       		.uleb128 0x18
+ 639 005d 00       		.byte	0
+ 640 005e 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 15
+
+
+ 641 005f 07       		.uleb128 0x7
+ 642 0060 2E       		.uleb128 0x2e
+ 643 0061 01       		.byte	0x1
+ 644 0062 3F       		.uleb128 0x3f
+ 645 0063 19       		.uleb128 0x19
+ 646 0064 03       		.uleb128 0x3
+ 647 0065 0E       		.uleb128 0xe
+ 648 0066 3A       		.uleb128 0x3a
+ 649 0067 0B       		.uleb128 0xb
+ 650 0068 3B       		.uleb128 0x3b
+ 651 0069 0B       		.uleb128 0xb
+ 652 006a 27       		.uleb128 0x27
+ 653 006b 19       		.uleb128 0x19
+ 654 006c 49       		.uleb128 0x49
+ 655 006d 13       		.uleb128 0x13
+ 656 006e 11       		.uleb128 0x11
+ 657 006f 01       		.uleb128 0x1
+ 658 0070 12       		.uleb128 0x12
+ 659 0071 06       		.uleb128 0x6
+ 660 0072 40       		.uleb128 0x40
+ 661 0073 18       		.uleb128 0x18
+ 662 0074 9642     		.uleb128 0x2116
+ 663 0076 19       		.uleb128 0x19
+ 664 0077 01       		.uleb128 0x1
+ 665 0078 13       		.uleb128 0x13
+ 666 0079 00       		.byte	0
+ 667 007a 00       		.byte	0
+ 668 007b 08       		.uleb128 0x8
+ 669 007c 34       		.uleb128 0x34
+ 670 007d 00       		.byte	0
+ 671 007e 03       		.uleb128 0x3
+ 672 007f 0E       		.uleb128 0xe
+ 673 0080 3A       		.uleb128 0x3a
+ 674 0081 0B       		.uleb128 0xb
+ 675 0082 3B       		.uleb128 0x3b
+ 676 0083 0B       		.uleb128 0xb
+ 677 0084 49       		.uleb128 0x49
+ 678 0085 13       		.uleb128 0x13
+ 679 0086 02       		.uleb128 0x2
+ 680 0087 18       		.uleb128 0x18
+ 681 0088 00       		.byte	0
+ 682 0089 00       		.byte	0
+ 683 008a 09       		.uleb128 0x9
+ 684 008b 0F       		.uleb128 0xf
+ 685 008c 00       		.byte	0
+ 686 008d 0B       		.uleb128 0xb
+ 687 008e 0B       		.uleb128 0xb
+ 688 008f 49       		.uleb128 0x49
+ 689 0090 13       		.uleb128 0x13
+ 690 0091 00       		.byte	0
+ 691 0092 00       		.byte	0
+ 692 0093 0A       		.uleb128 0xa
+ 693 0094 05       		.uleb128 0x5
+ 694 0095 00       		.byte	0
+ 695 0096 03       		.uleb128 0x3
+ 696 0097 0E       		.uleb128 0xe
+ 697 0098 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 16
+
+
+ 698 0099 0B       		.uleb128 0xb
+ 699 009a 3B       		.uleb128 0x3b
+ 700 009b 0B       		.uleb128 0xb
+ 701 009c 49       		.uleb128 0x49
+ 702 009d 13       		.uleb128 0x13
+ 703 009e 02       		.uleb128 0x2
+ 704 009f 18       		.uleb128 0x18
+ 705 00a0 00       		.byte	0
+ 706 00a1 00       		.byte	0
+ 707 00a2 0B       		.uleb128 0xb
+ 708 00a3 01       		.uleb128 0x1
+ 709 00a4 01       		.byte	0x1
+ 710 00a5 49       		.uleb128 0x49
+ 711 00a6 13       		.uleb128 0x13
+ 712 00a7 01       		.uleb128 0x1
+ 713 00a8 13       		.uleb128 0x13
+ 714 00a9 00       		.byte	0
+ 715 00aa 00       		.byte	0
+ 716 00ab 0C       		.uleb128 0xc
+ 717 00ac 21       		.uleb128 0x21
+ 718 00ad 00       		.byte	0
+ 719 00ae 49       		.uleb128 0x49
+ 720 00af 13       		.uleb128 0x13
+ 721 00b0 2F       		.uleb128 0x2f
+ 722 00b1 0B       		.uleb128 0xb
+ 723 00b2 00       		.byte	0
+ 724 00b3 00       		.byte	0
+ 725 00b4 0D       		.uleb128 0xd
+ 726 00b5 34       		.uleb128 0x34
+ 727 00b6 00       		.byte	0
+ 728 00b7 03       		.uleb128 0x3
+ 729 00b8 0E       		.uleb128 0xe
+ 730 00b9 3A       		.uleb128 0x3a
+ 731 00ba 0B       		.uleb128 0xb
+ 732 00bb 3B       		.uleb128 0x3b
+ 733 00bc 0B       		.uleb128 0xb
+ 734 00bd 49       		.uleb128 0x49
+ 735 00be 13       		.uleb128 0x13
+ 736 00bf 3F       		.uleb128 0x3f
+ 737 00c0 19       		.uleb128 0x19
+ 738 00c1 02       		.uleb128 0x2
+ 739 00c2 18       		.uleb128 0x18
+ 740 00c3 00       		.byte	0
+ 741 00c4 00       		.byte	0
+ 742 00c5 00       		.byte	0
+ 743              		.section	.debug_aranges,"",%progbits
+ 744 0000 34000000 		.4byte	0x34
+ 745 0004 0200     		.2byte	0x2
+ 746 0006 00000000 		.4byte	.Ldebug_info0
+ 747 000a 04       		.byte	0x4
+ 748 000b 00       		.byte	0
+ 749 000c 0000     		.2byte	0
+ 750 000e 0000     		.2byte	0
+ 751 0010 00000000 		.4byte	.LFB1
+ 752 0014 30000000 		.4byte	.LFE1-.LFB1
+ 753 0018 00000000 		.4byte	.LFB2
+ 754 001c 54000000 		.4byte	.LFE2-.LFB2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 17
+
+
+ 755 0020 00000000 		.4byte	.LFB3
+ 756 0024 5C000000 		.4byte	.LFE3-.LFB3
+ 757 0028 00000000 		.4byte	.LFB4
+ 758 002c 60000000 		.4byte	.LFE4-.LFB4
+ 759 0030 00000000 		.4byte	0
+ 760 0034 00000000 		.4byte	0
+ 761              		.section	.debug_ranges,"",%progbits
+ 762              	.Ldebug_ranges0:
+ 763 0000 00000000 		.4byte	.LFB1
+ 764 0004 30000000 		.4byte	.LFE1
+ 765 0008 00000000 		.4byte	.LFB2
+ 766 000c 54000000 		.4byte	.LFE2
+ 767 0010 00000000 		.4byte	.LFB3
+ 768 0014 5C000000 		.4byte	.LFE3
+ 769 0018 00000000 		.4byte	.LFB4
+ 770 001c 60000000 		.4byte	.LFE4
+ 771 0020 00000000 		.4byte	0
+ 772 0024 00000000 		.4byte	0
+ 773              		.section	.debug_line,"",%progbits
+ 774              	.Ldebug_line0:
+ 775 0000 02010000 		.section	.debug_str,"MS",%progbits,1
+ 775      02009500 
+ 775      00000201 
+ 775      FB0E0D00 
+ 775      01010101 
+ 776              	.LASF21:
+ 777 0000 4F535F50 		.ascii	"OS_PrioInsert\000"
+ 777      72696F49 
+ 777      6E736572 
+ 777      7400
+ 778              	.LASF19:
+ 779 000e 7072696F 		.ascii	"prio\000"
+ 779      00
+ 780              	.LASF25:
+ 781 0013 2E2E5C2E 		.ascii	"..\\..\\..\\..\\..\\..\\Software\\uCOS-III\\Source\\"
+ 781      2E5C2E2E 
+ 781      5C2E2E5C 
+ 781      2E2E5C2E 
+ 781      2E5C536F 
+ 782 003e 6F735F70 		.ascii	"os_prio.c\000"
+ 782      72696F2E 
+ 782      6300
+ 783              	.LASF18:
+ 784 0048 705F7462 		.ascii	"p_tbl\000"
+ 784      6C00
+ 785              	.LASF17:
+ 786 004e 4F535F50 		.ascii	"OS_PRIO\000"
+ 786      52494F00 
+ 787              	.LASF22:
+ 788 0056 6269745F 		.ascii	"bit_nbr\000"
+ 788      6E627200 
+ 789              	.LASF6:
+ 790 005e 4350555F 		.ascii	"CPU_INT32U\000"
+ 790      494E5433 
+ 790      325500
+ 791              	.LASF26:
+ 792 0069 433A5C55 		.ascii	"C:\\Users\\edulu.DESKTOP-961TG4K\\Documents\\PSoC C"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 18
+
+
+ 792      73657273 
+ 792      5C656475 
+ 792      6C752E44 
+ 792      45534B54 
+ 793 0098 72656174 		.ascii	"reator\\Micrium\\Examples\\Cypress\\CY8CKIT-044\\OS"
+ 793      6F725C4D 
+ 793      69637269 
+ 793      756D5C45 
+ 793      78616D70 
+ 794 00c6 335C5053 		.ascii	"3\\PSoC\\OS3.cydsn\000"
+ 794      6F435C4F 
+ 794      53332E63 
+ 794      7964736E 
+ 794      00
+ 795              	.LASF10:
+ 796 00d7 666C6F61 		.ascii	"float\000"
+ 796      7400
+ 797              	.LASF20:
+ 798 00dd 4F535F50 		.ascii	"OS_PrioInit\000"
+ 798      72696F49 
+ 798      6E697400 
+ 799              	.LASF28:
+ 800 00e9 4F535072 		.ascii	"OSPrioTbl\000"
+ 800      696F5462 
+ 800      6C00
+ 801              	.LASF1:
+ 802 00f3 756E7369 		.ascii	"unsigned char\000"
+ 802      676E6564 
+ 802      20636861 
+ 802      7200
+ 803              	.LASF14:
+ 804 0101 6C6F6E67 		.ascii	"long unsigned int\000"
+ 804      20756E73 
+ 804      69676E65 
+ 804      6420696E 
+ 804      7400
+ 805              	.LASF5:
+ 806 0113 4350555F 		.ascii	"CPU_INT08U\000"
+ 806      494E5430 
+ 806      385500
+ 807              	.LASF24:
+ 808 011e 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 808      43313120 
+ 808      352E342E 
+ 808      31203230 
+ 808      31363036 
+ 809 0151 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 809      20726576 
+ 809      6973696F 
+ 809      6E203233 
+ 809      37373135 
+ 810 0184 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 810      66756E63 
+ 810      74696F6E 
+ 810      2D736563 
+ 810      74696F6E 
+ 811              	.LASF11:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 19
+
+
+ 812 01ac 646F7562 		.ascii	"double\000"
+ 812      6C6500
+ 813              	.LASF4:
+ 814 01b3 73686F72 		.ascii	"short int\000"
+ 814      7420696E 
+ 814      7400
+ 815              	.LASF7:
+ 816 01bd 756E7369 		.ascii	"unsigned int\000"
+ 816      676E6564 
+ 816      20696E74 
+ 816      00
+ 817              	.LASF8:
+ 818 01ca 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 818      206C6F6E 
+ 818      6720756E 
+ 818      7369676E 
+ 818      65642069 
+ 819              	.LASF27:
+ 820 01e1 4F535F50 		.ascii	"OS_PrioGetHighest\000"
+ 820      72696F47 
+ 820      65744869 
+ 820      67686573 
+ 820      7400
+ 821              	.LASF16:
+ 822 01f3 73697A65 		.ascii	"sizetype\000"
+ 822      74797065 
+ 822      00
+ 823              	.LASF9:
+ 824 01fc 6C6F6E67 		.ascii	"long long int\000"
+ 824      206C6F6E 
+ 824      6720696E 
+ 824      7400
+ 825              	.LASF0:
+ 826 020a 63686172 		.ascii	"char\000"
+ 826      00
+ 827              	.LASF23:
+ 828 020f 4F535F50 		.ascii	"OS_PrioRemove\000"
+ 828      72696F52 
+ 828      656D6F76 
+ 828      6500
+ 829              	.LASF12:
+ 830 021d 4350555F 		.ascii	"CPU_DATA\000"
+ 830      44415441 
+ 830      00
+ 831              	.LASF13:
+ 832 0226 6C6F6E67 		.ascii	"long int\000"
+ 832      20696E74 
+ 832      00
+ 833              	.LASF15:
+ 834 022f 6C6F6E67 		.ascii	"long double\000"
+ 834      20646F75 
+ 834      626C6500 
+ 835              	.LASF2:
+ 836 023b 7369676E 		.ascii	"signed char\000"
+ 836      65642063 
+ 836      68617200 
+ 837              	.LASF3:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccJfFrhb.s 			page 20
+
+
+ 838 0247 73686F72 		.ascii	"short unsigned int\000"
+ 838      7420756E 
+ 838      7369676E 
+ 838      65642069 
+ 838      6E7400
+ 839              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

@@ -1,0 +1,3057 @@
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"probe_rs232.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 EF010000 		.text
+  20      0200AF00 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.comm	ProbeRS232_RxCtr,4,4
+  24              		.comm	ProbeRS232_TxCtr,4,4
+  25              		.bss
+  26              	ProbeRS232_RxState:
+  27 0000 00       		.space	1
+  28 0001 000000   		.align	2
+  29              	ProbeRS232_RxLenRem:
+  30 0004 00000000 		.space	4
+  31              		.align	2
+  32              	ProbeRS232_RxPktCtr:
+  33 0008 00000000 		.space	4
+  34              		.align	2
+  35              	ProbeRS232_RxLen:
+  36 000c 00000000 		.space	4
+  37              		.align	2
+  38              	ProbeRS232_RxBuf:
+  39 0010 00000000 		.space	512
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  40              		.align	2
+  41              	ProbeRS232_RxBufWrIx:
+  42 0210 00000000 		.space	4
+  43              	ProbeRS232_TxState:
+  44 0214 00       		.space	1
+  45              	ProbeRS232_TxActiveFlag:
+  46 0215 00       		.space	1
+  47 0216 0000     		.align	2
+  48              	ProbeRS232_TxLen:
+  49 0218 00000000 		.space	4
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 2
+
+
+  50              		.align	2
+  51              	ProbeRS232_TxBuf:
+  52 021c 00000000 		.space	512
+  52      00000000 
+  52      00000000 
+  52      00000000 
+  52      00000000 
+  53              	ProbeRS232_TxBufInUse:
+  54 041c 00       		.space	1
+  55 041d 000000   		.align	2
+  56              	ProbeRS232_TxBufRdIx:
+  57 0420 00000000 		.space	4
+  58              		.section	.text.ProbeRS232_Init,"ax",%progbits
+  59              		.align	2
+  60              		.global	ProbeRS232_Init
+  61              		.thumb
+  62              		.thumb_func
+  63              		.type	ProbeRS232_Init, %function
+  64              	ProbeRS232_Init:
+  65              	.LFB0:
+  66              		.file 1 "..\\..\\..\\..\\..\\..\\uC-Probe\\Target\\Communication\\Generic\\RS-232\\Source\\probe_r
+   1:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+   2:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+   3:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       uC/Probe Communication
+   4:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+   5:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                         (c) Copyright 2007-2008; Micrium, Inc.; Weston, FL
+   6:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+   7:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *               All rights reserved.  Protected by international copyright laws.
+   8:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *               Knowledge of the source code may NOT be used to develop a similar product.
+   9:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *               Please help us continue to provide the Embedded community with the finest
+  10:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *               software available.  Your honesty is greatly appreciated.
+  11:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+  12:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+  13:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+  14:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+  15:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+  16:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+  17:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                        COMMUNICATION: RS-232
+  18:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+  19:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Filename      : probe_rs232.c
+  20:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Version       : V2.30
+  21:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Programmer(s) : BAN
+  22:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+  23:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Note(s)       : (1) The abbreviations RX and TX refer to communication from the target's perspect
+  24:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+  25:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                 (2) The abbreviations RD and WR refer to reading data from the target memory and
+  26:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                     writing data to the target memory, respectively.
+  27:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+  28:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+  29:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+  30:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+  31:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+  32:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+  33:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                            INCLUDE FILES
+  34:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+  35:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+  36:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 3
+
+
+  37:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define    PROBE_RS232_MODULE
+  38:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #include  <probe_com.h>
+  39:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #include  <probe_rs232.h>
+  40:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+  41:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+  42:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+  43:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+  44:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                               ENABLE
+  45:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+  46:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Note(s) : (1) See 'probe_rs232.h  ENABLE'.
+  47:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+  48:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+  49:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+  50:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_COM_CFG_RS232_EN == DEF_ENABLED)                     /* See Note #1.                    
+  51:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+  52:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+  53:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+  54:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+  55:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                            LOCAL DEFINES
+  56:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+  57:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+  58:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+  59:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+  60:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+  61:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                        RS-232 PACKET FORMAT
+  62:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+  63:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Note(s):  (1) All packets include the following parts:
+  64:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+  65:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                   (A)  4 1-byte start delimiters, forming the ASCII representation of "uCPr".  Th
+  66:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                        are the constants PROBE_RS232_PROTOCOL_RX_SD0-PROBE_RS232_PROTOCOL_?X_SD4;
+  67:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                   (B)  1 2-byte length, the length of the data segment;
+  68:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                   (C)  1 1-byte packet counter.
+  69:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                   (D)  1 1-byte padding, unused;
+  70:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                   (E)  n   bytes of data; and
+  71:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                   (F)  1 1-byte checksum; and
+  72:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                   (G)  1 1-byte end delimiter, the character '/', which is the constant PROBE_RS2
+  73:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+  74:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       +-------------------+-------------------+
+  75:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       |   'u'   |   'C'   |   'P'   |   'r'   |
+  76:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       +-------------------+-------------------+
+  77:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       |       Length      | PktCtr  | Padding |
+  78:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       +-------------------+-------------------+
+  79:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       |                  Data                 |   The data segmen
+  80:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       |                   .                   |   a four-byte bou
+  81:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       |                   .                   |   from this diagr
+  82:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       |                   .                   |
+  83:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       +-------------------+-------------------+
+  84:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       | Checksum|   '/'   |
+  85:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       +-------------------+
+  86:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+  87:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+  88:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+  89:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                                                                 /* ------------- INBOUND PACKET DEL
+  90:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_PROTOCOL_RX_SD0                    0x75u   /* Start delimiters.               
+  91:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_PROTOCOL_RX_SD1                    0x43u
+  92:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_PROTOCOL_RX_SD2                    0x50u
+  93:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_PROTOCOL_RX_SD3                    0x72u
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 4
+
+
+  94:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_PROTOCOL_RX_ED                     0x2Fu   /* End   delimiter.                
+  95:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+  96:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                                                                 /* ------------ OUTBOUND PACKET DEL
+  97:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_PROTOCOL_TX_SD0                    0x75u   /* Start delimiters.               
+  98:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_PROTOCOL_TX_SD1                    0x43u
+  99:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_PROTOCOL_TX_SD2                    0x50u
+ 100:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_PROTOCOL_TX_SD3                    0x72u
+ 101:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_PROTOCOL_TX_ED                     0x2Fu   /* End   delimiter.                
+ 102:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 103:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                                                                 /* ----------- RECEIVE STATE MACHIN
+ 104:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_RX_STATE_SD0                          0u   /* Waiting for start first  start d
+ 105:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_RX_STATE_SD1                          1u   /* Waiting for start second start d
+ 106:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_RX_STATE_SD2                          2u   /* Waiting for start third  start d
+ 107:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_RX_STATE_SD3                          3u   /* Waiting for start fourth start d
+ 108:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_RX_STATE_LEN1                         4u   /* Waiting for length,  first  byte
+ 109:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_RX_STATE_LEN2                         5u   /* Waiting for length,  second byte
+ 110:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_RX_STATE_CTR                          6u   /* Waiting for packet counter.     
+ 111:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_RX_STATE_PAD                          7u   /* Waiting for padding.            
+ 112:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_RX_STATE_DATA                         8u   /* Waiting for data.               
+ 113:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_RX_STATE_CHKSUM                       9u   /* Waiting for checksum.           
+ 114:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_RX_STATE_ED                          10u   /* Waiting for end delimiter.      
+ 115:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 116:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                                                                 /* ---------- TRANSMIT STATE MACHIN
+ 117:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_TX_STATE_SD0                          0u   /* Waiting to send start first  sta
+ 118:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_TX_STATE_SD1                          1u   /* Waiting to send start second sta
+ 119:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_TX_STATE_SD2                          2u   /* Waiting to send start third  sta
+ 120:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_TX_STATE_SD3                          3u   /* Waiting to send start fourth sta
+ 121:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_TX_STATE_LEN1                         4u   /* Waiting to send length,  first  
+ 122:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_TX_STATE_LEN2                         5u   /* Waiting to send length,  second 
+ 123:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_TX_STATE_CTR                          6u   /* Waiting to send packet counter. 
+ 124:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_TX_STATE_PAD                          7u   /* Waiting to send padding.        
+ 125:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_TX_STATE_DATA                         8u   /* Waiting to send data.           
+ 126:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_TX_STATE_CHKSUM                       9u   /* Waiting to send checksum.       
+ 127:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_TX_STATE_ED                          10u   /* Waiting to send end delimiter.  
+ 128:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 129:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #define  PROBE_RS232_CHKSUM_EN                      DEF_FALSE    /* DO NOT CHANGE                  
+ 130:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 131:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 132:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 133:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 134:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                           LOCAL CONSTANTS
+ 135:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 136:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 137:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 138:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 139:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 140:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 141:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                          LOCAL DATA TYPES
+ 142:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 143:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 144:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 145:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 146:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 147:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 148:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                            LOCAL TABLES
+ 149:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 150:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 5
+
+
+ 151:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 152:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 153:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 154:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 155:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       LOCAL GLOBAL VARIABLES
+ 156:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 157:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 158:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 159:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                                                                 /* ---------------- RX STATE VARIAB
+ 160:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_INT08U   ProbeRS232_RxState;                        /* Current state of rx state machin
+ 161:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_SIZE_T   ProbeRS232_RxLenRem;                       /* Rem bytes of data to rd.        
+ 162:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 163:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_SIZE_T   ProbeRS232_RxPktCtr;                       /* Packet counter of  current pkt. 
+ 164:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_SIZE_T   ProbeRS232_RxLen;                          /* Length  of data in current pkt. 
+ 165:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                                                                 /* Data    of current pkt.         
+ 166:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_INT08U   ProbeRS232_RxBuf[PROBE_RS232_CFG_RX_BUF_SIZE];
+ 167:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CHKSUM_EN == DEF_TRUE)
+ 168:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_INT08U   ProbeRS232_RxChkSum;                       /* Checksum of current pkt.        
+ 169:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 170:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 171:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_SIZE_T   ProbeRS232_RxBufWrIx;                      /* Index of next write; also number
+ 172:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 173:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 174:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                                                                 /* ---------------- TX STATE VARIAB
+ 175:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_INT08U   ProbeRS232_TxState;                        /* Current state of tx state machin
+ 176:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_BOOLEAN  ProbeRS232_TxActiveFlag;                   /* Indicates tx is currently active
+ 177:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 178:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_SIZE_T   ProbeRS232_TxLen;                          /* Length  of data in current pkt. 
+ 179:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                                                                 /* Data    of current pkt.         
+ 180:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_INT08U   ProbeRS232_TxBuf[PROBE_RS232_CFG_TX_BUF_SIZE];
+ 181:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CHKSUM_EN == DEF_TRUE)
+ 182:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_INT08U   ProbeRS232_TxChkSum;                       /* Checksum of current pkt.        
+ 183:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 184:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 185:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_BOOLEAN  ProbeRS232_TxBufInUse;                     /* Indicates tx buf currently holds
+ 186:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_SIZE_T   ProbeRS232_TxBufRdIx;                      /* Index of next read.             
+ 187:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 188:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 189:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 190:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 191:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 192:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                      LOCAL FUNCTION PROTOTYPES
+ 193:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 194:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 195:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 196:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_SIZE_T  ProbeRS232_ParseRxPkt(void);
+ 197:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 198:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  void        ProbeRS232_RxPkt     (void);
+ 199:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 200:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  void        ProbeRS232_RxStoINT8U(CPU_INT08U  rx_data);
+ 201:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 202:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  void        ProbeRS232_RxBufClr  (void);
+ 203:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 204:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  void        ProbeRS232_TxStart   (void);
+ 205:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 206:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 207:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 6
+
+
+ 208:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 209:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                     LOCAL CONFIGURATION ERRORS
+ 210:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 211:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 212:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 213:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 214:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 215:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 216:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                          ProbeRS232_Init()
+ 217:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 218:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Description : Initialize the RS-232 communication module.
+ 219:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 220:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Argument(s) : baud_rate       The RS-232 baud rate which will be passed to the hardware initializ
+ 221:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 222:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Return(s)   : DEF_OK,   if initialization successful.
+ 223:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *               DEF_FAIL, otherwise.
+ 224:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 225:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Caller(s)   : Application.
+ 226:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 227:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Note(s)     : none.
+ 228:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 229:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 230:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 231:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** CPU_BOOLEAN  ProbeRS232_Init (CPU_INT32U baud_rate)
+ 232:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** {
+  67              		.loc 1 232 0
+  68              		.cfi_startproc
+  69              		@ args = 0, pretend = 0, frame = 16
+  70              		@ frame_needed = 1, uses_anonymous_args = 0
+  71 0000 80B5     		push	{r7, lr}
+  72              	.LCFI0:
+  73              		.cfi_def_cfa_offset 8
+  74 0002 84B0     		sub	sp, sp, #16
+  75              	.LCFI1:
+  76              		.cfi_def_cfa_offset 24
+  77 0004 00AF     		add	r7, sp, #0
+  78              		.cfi_offset 14, -4
+  79              		.cfi_offset 7, -8
+  80              	.LCFI2:
+  81              		.cfi_def_cfa_register 7
+  82 0006 7860     		str	r0, [r7, #4]
+ 233:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CFG_PARSE_TASK_EN == DEF_ENABLED)
+ 234:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     CPU_BOOLEAN  ok;
+ 235:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 236:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 237:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 238:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     ProbeRS232_RxState             =  PROBE_RS232_RX_STATE_SD0; /* Setup rx & tx state machines.   
+  83              		.loc 1 238 0
+  84 0008 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+  85 000c C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+  86 0010 4FF00002 		mov	r2, #0
+  87 0014 1A70     		strb	r2, [r3, #0]
+ 239:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     ProbeRS232_TxState             =  PROBE_RS232_TX_STATE_SD0;
+  88              		.loc 1 239 0
+  89 0016 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+  90 001a C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+  91 001e 4FF00002 		mov	r2, #0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 7
+
+
+  92 0022 1A70     		strb	r2, [r3, #0]
+ 240:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 241:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     ProbeRS232_TxLen               =  0u;
+  93              		.loc 1 241 0
+  94 0024 40F20003 		movw	r3, #:lower16:ProbeRS232_TxLen
+  95 0028 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxLen
+  96 002c 4FF00002 		mov	r2, #0
+  97 0030 1A60     		str	r2, [r3, #0]
+ 242:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     ProbeRS232_TxActiveFlag        =  DEF_FALSE;
+  98              		.loc 1 242 0
+  99 0032 40F20003 		movw	r3, #:lower16:ProbeRS232_TxActiveFlag
+ 100 0036 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxActiveFlag
+ 101 003a 4FF00002 		mov	r2, #0
+ 102 003e 1A70     		strb	r2, [r3, #0]
+ 243:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     ProbeRS232_TxBufInUse          =  DEF_FALSE;
+ 103              		.loc 1 243 0
+ 104 0040 40F20003 		movw	r3, #:lower16:ProbeRS232_TxBufInUse
+ 105 0044 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxBufInUse
+ 106 0048 4FF00002 		mov	r2, #0
+ 107 004c 1A70     		strb	r2, [r3, #0]
+ 244:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 245:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_COM_CFG_STAT_EN         == DEF_ENABLED)
+ 246:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     ProbeRS232_RxCtr               =  0u;
+ 108              		.loc 1 246 0
+ 109 004e 40F20003 		movw	r3, #:lower16:ProbeRS232_RxCtr
+ 110 0052 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxCtr
+ 111 0056 4FF00002 		mov	r2, #0
+ 112 005a 1A60     		str	r2, [r3, #0]
+ 247:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     ProbeRS232_TxCtr               =  0u;
+ 113              		.loc 1 247 0
+ 114 005c 40F20003 		movw	r3, #:lower16:ProbeRS232_TxCtr
+ 115 0060 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxCtr
+ 116 0064 4FF00002 		mov	r2, #0
+ 117 0068 1A60     		str	r2, [r3, #0]
+ 248:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 249:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 250:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CFG_PARSE_TASK_EN == DEF_ENABLED)
+ 251:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     ok = ProbeRS232_OS_Init();
+ 118              		.loc 1 251 0
+ 119 006a FFF7FEFF 		bl	ProbeRS232_OS_Init
+ 120 006e 0346     		mov	r3, r0
+ 121 0070 FB73     		strb	r3, [r7, #15]
+ 252:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     if (ok == DEF_FAIL) {
+ 122              		.loc 1 252 0
+ 123 0072 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 124 0074 002B     		cmp	r3, #0
+ 125 0076 02D1     		bne	.L2
+ 253:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         return (DEF_FAIL);
+ 126              		.loc 1 253 0
+ 127 0078 4FF00003 		mov	r3, #0
+ 128 007c 04E0     		b	.L3
+ 129              	.L2:
+ 254:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     }
+ 255:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 256:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 257:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     ProbeRS232_InitTarget(baud_rate);                           /* Init target-specific code.      
+ 130              		.loc 1 257 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 8
+
+
+ 131 007e 7868     		ldr	r0, [r7, #4]
+ 132 0080 FFF7FEFF 		bl	ProbeRS232_InitTarget
+ 258:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 259:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     return (DEF_OK);
+ 133              		.loc 1 259 0
+ 134 0084 4FF00103 		mov	r3, #1
+ 135              	.L3:
+ 260:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** }
+ 136              		.loc 1 260 0
+ 137 0088 1846     		mov	r0, r3
+ 138 008a 07F11007 		add	r7, r7, #16
+ 139 008e BD46     		mov	sp, r7
+ 140 0090 80BD     		pop	{r7, pc}
+ 141              		.cfi_endproc
+ 142              	.LFE0:
+ 143              		.size	ProbeRS232_Init, .-ProbeRS232_Init
+ 144 0092 00BF     		.section	.text.ProbeRS232_Task,"ax",%progbits
+ 145              		.align	2
+ 146              		.global	ProbeRS232_Task
+ 147              		.thumb
+ 148              		.thumb_func
+ 149              		.type	ProbeRS232_Task, %function
+ 150              	ProbeRS232_Task:
+ 151              	.LFB1:
+ 261:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 262:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 263:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 264:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 265:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 266:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                         INTERNAL FUNCTIONS
+ 267:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 268:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 269:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 270:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 271:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 272:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 273:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                          ProbeRS232_Task()
+ 274:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 275:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Description : The task which parses the received packet, forms a response, and begins transmissio
+ 276:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 277:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Argument(s) : none.
+ 278:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 279:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Return(s)   : none.
+ 280:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 281:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Caller(s)   : ProbeRS232_OS_Task().
+ 282:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 283:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Note(s)     : none.
+ 284:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 285:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 286:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 287:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CFG_PARSE_TASK_EN == DEF_ENABLED)
+ 288:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** void  ProbeRS232_Task (void)
+ 289:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** {
+ 152              		.loc 1 289 0
+ 153              		.cfi_startproc
+ 154              		@ args = 0, pretend = 0, frame = 8
+ 155              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 9
+
+
+ 156 0000 80B5     		push	{r7, lr}
+ 157              	.LCFI3:
+ 158              		.cfi_def_cfa_offset 8
+ 159 0002 82B0     		sub	sp, sp, #8
+ 160              	.LCFI4:
+ 161              		.cfi_def_cfa_offset 16
+ 162 0004 00AF     		add	r7, sp, #0
+ 163              		.cfi_offset 14, -4
+ 164              		.cfi_offset 7, -8
+ 165              	.LCFI5:
+ 166              		.cfi_def_cfa_register 7
+ 167 0006 00E0     		b	.L7
+ 168              	.L9:
+ 290:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     CPU_SIZE_T  len;
+ 291:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 292:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 293:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     while (DEF_TRUE) {
+ 294:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         ProbeRS232_OS_Pend();                                   /* Wait for a packet to be received
+ 295:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 296:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         len = ProbeRS232_ParseRxPkt();                          /* Parse packet and formulate a res
+ 297:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 298:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         if (len > 0u) {                                         /* If we have a response.          
+ 299:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****             ProbeRS232_TxLen = len;
+ 300:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****             ProbeRS232_TxStart();
+ 301:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         }
+ 302:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     }
+ 169              		.loc 1 302 0
+ 170 0008 00BF     		nop
+ 171              	.L7:
+ 172              		.loc 1 294 0
+ 173 000a FFF7FEFF 		bl	ProbeRS232_OS_Pend
+ 174              		.loc 1 296 0
+ 175 000e FFF7FEFF 		bl	ProbeRS232_ParseRxPkt
+ 176 0012 0346     		mov	r3, r0
+ 177 0014 7B60     		str	r3, [r7, #4]
+ 178              		.loc 1 298 0
+ 179 0016 7B68     		ldr	r3, [r7, #4]
+ 180 0018 002B     		cmp	r3, #0
+ 181 001a F5D0     		beq	.L9
+ 182              		.loc 1 299 0
+ 183 001c 40F20003 		movw	r3, #:lower16:ProbeRS232_TxLen
+ 184 0020 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxLen
+ 185 0024 7A68     		ldr	r2, [r7, #4]
+ 186 0026 1A60     		str	r2, [r3, #0]
+ 187              		.loc 1 300 0
+ 188 0028 FFF7FEFF 		bl	ProbeRS232_TxStart
+ 189              		.loc 1 302 0
+ 190 002c EDE7     		b	.L7
+ 191              		.cfi_endproc
+ 192              	.LFE1:
+ 193              		.size	ProbeRS232_Task, .-ProbeRS232_Task
+ 194 002e 00BF     		.section	.text.ProbeRS232_RxHandler,"ax",%progbits
+ 195              		.align	2
+ 196              		.global	ProbeRS232_RxHandler
+ 197              		.thumb
+ 198              		.thumb_func
+ 199              		.type	ProbeRS232_RxHandler, %function
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 10
+
+
+ 200              	ProbeRS232_RxHandler:
+ 201              	.LFB2:
+ 303:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** }
+ 304:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 305:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 306:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 307:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 308:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 309:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                        ProbeRS232_RxHandler()
+ 310:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 311:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Description : Handle a received byte.
+ 312:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 313:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Argument(s) : rx_data     Received data byte.
+ 314:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 315:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Return(s)   : none.
+ 316:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 317:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Caller(s)   : Rx ISR.
+ 318:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 319:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Note(s)     : none.
+ 320:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 321:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 322:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 323:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** void  ProbeRS232_RxHandler (CPU_INT08U rx_data)
+ 324:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** {
+ 202              		.loc 1 324 0
+ 203              		.cfi_startproc
+ 204              		@ args = 0, pretend = 0, frame = 8
+ 205              		@ frame_needed = 1, uses_anonymous_args = 0
+ 206 0000 80B5     		push	{r7, lr}
+ 207              	.LCFI6:
+ 208              		.cfi_def_cfa_offset 8
+ 209 0002 82B0     		sub	sp, sp, #8
+ 210              	.LCFI7:
+ 211              		.cfi_def_cfa_offset 16
+ 212 0004 00AF     		add	r7, sp, #0
+ 213              		.cfi_offset 14, -4
+ 214              		.cfi_offset 7, -8
+ 215              	.LCFI8:
+ 216              		.cfi_def_cfa_register 7
+ 217 0006 0346     		mov	r3, r0
+ 218 0008 FB71     		strb	r3, [r7, #7]
+ 325:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_COM_CFG_STAT_EN == DEF_ENABLED)
+ 326:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     ProbeRS232_RxCtr++;
+ 219              		.loc 1 326 0
+ 220 000a 40F20003 		movw	r3, #:lower16:ProbeRS232_RxCtr
+ 221 000e C0F20003 		movt	r3, #:upper16:ProbeRS232_RxCtr
+ 222 0012 1B68     		ldr	r3, [r3, #0]
+ 223 0014 03F10102 		add	r2, r3, #1
+ 224 0018 40F20003 		movw	r3, #:lower16:ProbeRS232_RxCtr
+ 225 001c C0F20003 		movt	r3, #:upper16:ProbeRS232_RxCtr
+ 226 0020 1A60     		str	r2, [r3, #0]
+ 327:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 328:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 329:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     switch (ProbeRS232_RxState) {
+ 227              		.loc 1 329 0
+ 228 0022 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 229 0026 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 11
+
+
+ 230 002a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 231 002c 0A2B     		cmp	r3, #10
+ 232 002e 00F2F280 		bhi	.L11
+ 233 0032 01A2     		adr	r2, .L23
+ 234 0034 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 235              		.align	2
+ 236              	.L23:
+ 237 0038 65000000 		.word	.L12+1
+ 238 003c 81000000 		.word	.L13+1
+ 239 0040 A7000000 		.word	.L14+1
+ 240 0044 CD000000 		.word	.L15+1
+ 241 0048 F3000000 		.word	.L16+1
+ 242 004c 0F010000 		.word	.L17+1
+ 243 0050 83010000 		.word	.L18+1
+ 244 0054 9F010000 		.word	.L19+1
+ 245 0058 AF010000 		.word	.L20+1
+ 246 005c ED010000 		.word	.L21+1
+ 247 0060 FD010000 		.word	.L22+1
+ 248              	.L12:
+ 330:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_RX_STATE_SD0:                          /* Rx'd the start 1st start delimit
+ 331:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              if (rx_data == PROBE_RS232_PROTOCOL_RX_SD0) {
+ 249              		.loc 1 331 0
+ 250 0064 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 251 0066 752B     		cmp	r3, #117
+ 252 0068 40F0DD80 		bne	.L38
+ 332:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD1;
+ 253              		.loc 1 332 0
+ 254 006c 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 255 0070 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 256 0074 4FF00102 		mov	r2, #1
+ 257 0078 1A70     		strb	r2, [r3, #0]
+ 333:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxBufClr();
+ 258              		.loc 1 333 0
+ 259 007a FFF7FEFF 		bl	ProbeRS232_RxBufClr
+ 334:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              }
+ 335:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 260              		.loc 1 335 0
+ 261 007e D5E0     		b	.L37
+ 262              	.L13:
+ 336:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 337:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 338:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_RX_STATE_SD1:                          /* Rx'd the start 2nd start delimit
+ 339:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              if (rx_data == PROBE_RS232_PROTOCOL_RX_SD1) {
+ 263              		.loc 1 339 0
+ 264 0080 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 265 0082 432B     		cmp	r3, #67
+ 266 0084 07D1     		bne	.L26
+ 340:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD2;
+ 267              		.loc 1 340 0
+ 268 0086 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 269 008a C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 270 008e 4FF00202 		mov	r2, #2
+ 271 0092 1A70     		strb	r2, [r3, #0]
+ 341:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              } else {
+ 342:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD0;
+ 343:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              }
+ 344:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 12
+
+
+ 272              		.loc 1 344 0
+ 273 0094 CAE0     		b	.L37
+ 274              	.L26:
+ 275              		.loc 1 342 0
+ 276 0096 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 277 009a C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 278 009e 4FF00002 		mov	r2, #0
+ 279 00a2 1A70     		strb	r2, [r3, #0]
+ 280              		.loc 1 344 0
+ 281 00a4 C2E0     		b	.L37
+ 282              	.L14:
+ 345:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 346:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 347:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_RX_STATE_SD2:                          /* Rx'd the start 3rd start delimit
+ 348:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              if (rx_data == PROBE_RS232_PROTOCOL_RX_SD2) {
+ 283              		.loc 1 348 0
+ 284 00a6 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 285 00a8 502B     		cmp	r3, #80
+ 286 00aa 07D1     		bne	.L28
+ 349:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD3;
+ 287              		.loc 1 349 0
+ 288 00ac 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 289 00b0 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 290 00b4 4FF00302 		mov	r2, #3
+ 291 00b8 1A70     		strb	r2, [r3, #0]
+ 350:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              } else {
+ 351:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD0;
+ 352:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              }
+ 353:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 292              		.loc 1 353 0
+ 293 00ba B7E0     		b	.L37
+ 294              	.L28:
+ 295              		.loc 1 351 0
+ 296 00bc 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 297 00c0 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 298 00c4 4FF00002 		mov	r2, #0
+ 299 00c8 1A70     		strb	r2, [r3, #0]
+ 300              		.loc 1 353 0
+ 301 00ca AFE0     		b	.L37
+ 302              	.L15:
+ 354:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 355:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 356:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_RX_STATE_SD3:                          /* Rx'd the start 4th start delimit
+ 357:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              if (rx_data == PROBE_RS232_PROTOCOL_RX_SD3) {
+ 303              		.loc 1 357 0
+ 304 00cc FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 305 00ce 722B     		cmp	r3, #114
+ 306 00d0 07D1     		bne	.L30
+ 358:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxState = PROBE_RS232_RX_STATE_LEN1;
+ 307              		.loc 1 358 0
+ 308 00d2 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 309 00d6 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 310 00da 4FF00402 		mov	r2, #4
+ 311 00de 1A70     		strb	r2, [r3, #0]
+ 359:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              } else {
+ 360:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD0;
+ 361:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              }
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 13
+
+
+ 362:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 312              		.loc 1 362 0
+ 313 00e0 A4E0     		b	.L37
+ 314              	.L30:
+ 315              		.loc 1 360 0
+ 316 00e2 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 317 00e6 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 318 00ea 4FF00002 		mov	r2, #0
+ 319 00ee 1A70     		strb	r2, [r3, #0]
+ 320              		.loc 1 362 0
+ 321 00f0 9CE0     		b	.L37
+ 322              	.L16:
+ 363:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 364:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 365:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_RX_STATE_LEN1:                         /* Rx'd the 1st len byte.          
+ 366:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CHKSUM_EN == DEF_TRUE)
+ 367:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxChkSum = rx_data;
+ 368:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 369:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxLenRem = rx_data;
+ 323              		.loc 1 369 0
+ 324 00f2 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 325 00f4 40F20003 		movw	r3, #:lower16:ProbeRS232_RxLenRem
+ 326 00f8 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxLenRem
+ 327 00fc 1A60     		str	r2, [r3, #0]
+ 370:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxState  = PROBE_RS232_RX_STATE_LEN2;
+ 328              		.loc 1 370 0
+ 329 00fe 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 330 0102 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 331 0106 4FF00502 		mov	r2, #5
+ 332 010a 1A70     		strb	r2, [r3, #0]
+ 371:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 333              		.loc 1 371 0
+ 334 010c 8EE0     		b	.L37
+ 335              	.L17:
+ 372:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 373:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 374:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_RX_STATE_LEN2:                         /* Rx'd the 2nd len byte.          
+ 375:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CHKSUM_EN == DEF_TRUE)
+ 376:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxChkSum += rx_data;
+ 377:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 378:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxLenRem |= rx_data << 8;
+ 336              		.loc 1 378 0
+ 337 010e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 338 0110 4FEA0323 		lsl	r3, r3, #8
+ 339 0114 1A46     		mov	r2, r3
+ 340 0116 40F20003 		movw	r3, #:lower16:ProbeRS232_RxLenRem
+ 341 011a C0F20003 		movt	r3, #:upper16:ProbeRS232_RxLenRem
+ 342 011e 1B68     		ldr	r3, [r3, #0]
+ 343 0120 42EA0302 		orr	r2, r2, r3
+ 344 0124 40F20003 		movw	r3, #:lower16:ProbeRS232_RxLenRem
+ 345 0128 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxLenRem
+ 346 012c 1A60     		str	r2, [r3, #0]
+ 379:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 380:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                                                                 /* Chk len.                        
+ 381:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              if ((ProbeRS232_RxLenRem == 0u) || (ProbeRS232_RxLenRem > PROBE_RS232_CFG_RX_BUF_SIZE)
+ 347              		.loc 1 381 0
+ 348 012e 40F20003 		movw	r3, #:lower16:ProbeRS232_RxLenRem
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 14
+
+
+ 349 0132 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxLenRem
+ 350 0136 1B68     		ldr	r3, [r3, #0]
+ 351 0138 002B     		cmp	r3, #0
+ 352 013a 07D0     		beq	.L32
+ 353 013c 40F20003 		movw	r3, #:lower16:ProbeRS232_RxLenRem
+ 354 0140 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxLenRem
+ 355 0144 1B68     		ldr	r3, [r3, #0]
+ 356 0146 B3F5007F 		cmp	r3, #512
+ 357 014a 08D9     		bls	.L33
+ 358              	.L32:
+ 382:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD0;
+ 359              		.loc 1 382 0
+ 360 014c 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 361 0150 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 362 0154 4FF00002 		mov	r2, #0
+ 363 0158 1A70     		strb	r2, [r3, #0]
+ 364              		.loc 1 381 0
+ 365 015a 00BF     		nop
+ 383:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              } else {
+ 384:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxLen   = ProbeRS232_RxLenRem;
+ 385:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxState = PROBE_RS232_RX_STATE_CTR;
+ 386:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              }
+ 387:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 366              		.loc 1 387 0
+ 367 015c 66E0     		b	.L37
+ 368              	.L33:
+ 369              		.loc 1 384 0
+ 370 015e 40F20003 		movw	r3, #:lower16:ProbeRS232_RxLenRem
+ 371 0162 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxLenRem
+ 372 0166 1A68     		ldr	r2, [r3, #0]
+ 373 0168 40F20003 		movw	r3, #:lower16:ProbeRS232_RxLen
+ 374 016c C0F20003 		movt	r3, #:upper16:ProbeRS232_RxLen
+ 375 0170 1A60     		str	r2, [r3, #0]
+ 376              		.loc 1 385 0
+ 377 0172 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 378 0176 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 379 017a 4FF00602 		mov	r2, #6
+ 380 017e 1A70     		strb	r2, [r3, #0]
+ 381              		.loc 1 387 0
+ 382 0180 54E0     		b	.L37
+ 383              	.L18:
+ 388:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 389:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 390:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_RX_STATE_CTR:                          /* Rx'd the packet counter.        
+ 391:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxPktCtr = rx_data;
+ 384              		.loc 1 391 0
+ 385 0182 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 386 0184 40F20003 		movw	r3, #:lower16:ProbeRS232_RxPktCtr
+ 387 0188 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxPktCtr
+ 388 018c 1A60     		str	r2, [r3, #0]
+ 392:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxState  = PROBE_RS232_RX_STATE_PAD;
+ 389              		.loc 1 392 0
+ 390 018e 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 391 0192 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 392 0196 4FF00702 		mov	r2, #7
+ 393 019a 1A70     		strb	r2, [r3, #0]
+ 393:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 15
+
+
+ 394              		.loc 1 393 0
+ 395 019c 46E0     		b	.L37
+ 396              	.L19:
+ 394:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 395:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 396:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_RX_STATE_PAD:                          /* Rx'd the padding byte.          
+ 397:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxState = PROBE_RS232_RX_STATE_DATA;
+ 397              		.loc 1 397 0
+ 398 019e 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 399 01a2 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 400 01a6 4FF00802 		mov	r2, #8
+ 401 01aa 1A70     		strb	r2, [r3, #0]
+ 398:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 402              		.loc 1 398 0
+ 403 01ac 3EE0     		b	.L37
+ 404              	.L20:
+ 399:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 400:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 401:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_RX_STATE_DATA:                         /* Rx'd data.                      
+ 402:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxStoINT8U(rx_data);
+ 405              		.loc 1 402 0
+ 406 01ae FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 407 01b0 1846     		mov	r0, r3
+ 408 01b2 FFF7FEFF 		bl	ProbeRS232_RxStoINT8U
+ 403:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CHKSUM_EN == DEF_TRUE)
+ 404:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxChkSum += rx_data;
+ 405:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 406:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxLenRem--;
+ 409              		.loc 1 406 0
+ 410 01b6 40F20003 		movw	r3, #:lower16:ProbeRS232_RxLenRem
+ 411 01ba C0F20003 		movt	r3, #:upper16:ProbeRS232_RxLenRem
+ 412 01be 1B68     		ldr	r3, [r3, #0]
+ 413 01c0 03F1FF32 		add	r2, r3, #-1
+ 414 01c4 40F20003 		movw	r3, #:lower16:ProbeRS232_RxLenRem
+ 415 01c8 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxLenRem
+ 416 01cc 1A60     		str	r2, [r3, #0]
+ 407:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              if (ProbeRS232_RxLenRem == 0) {
+ 417              		.loc 1 407 0
+ 418 01ce 40F20003 		movw	r3, #:lower16:ProbeRS232_RxLenRem
+ 419 01d2 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxLenRem
+ 420 01d6 1B68     		ldr	r3, [r3, #0]
+ 421 01d8 002B     		cmp	r3, #0
+ 422 01da 26D1     		bne	.L39
+ 408:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxState = PROBE_RS232_RX_STATE_CHKSUM;
+ 423              		.loc 1 408 0
+ 424 01dc 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 425 01e0 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 426 01e4 4FF00902 		mov	r2, #9
+ 427 01e8 1A70     		strb	r2, [r3, #0]
+ 409:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              }
+ 410:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 428              		.loc 1 410 0
+ 429 01ea 1FE0     		b	.L37
+ 430              	.L21:
+ 411:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 412:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 413:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_RX_STATE_CHKSUM:                       /* Rx'd the checksum.              
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 16
+
+
+ 414:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CHKSUM_EN == DEF_TRUE)
+ 415:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxChkSum += rx_data;
+ 416:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              if ((ProbeRS232_RxChkSum & 0xFF) == 0x00) {
+ 417:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxState = PROBE_RS232_RX_STATE_ED;
+ 418:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              } else {
+ 419:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD0;
+ 420:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              }
+ 421:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #else
+ 422:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxState = PROBE_RS232_RX_STATE_ED;
+ 431              		.loc 1 422 0
+ 432 01ec 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 433 01f0 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 434 01f4 4FF00A02 		mov	r2, #10
+ 435 01f8 1A70     		strb	r2, [r3, #0]
+ 423:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 424:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 436              		.loc 1 424 0
+ 437 01fa 17E0     		b	.L37
+ 438              	.L22:
+ 425:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 426:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 427:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_RX_STATE_ED:                           /* Rx'd the end delimiter.         
+ 428:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              if (rx_data == PROBE_RS232_PROTOCOL_RX_ED) {
+ 439              		.loc 1 428 0
+ 440 01fc FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 441 01fe 2F2B     		cmp	r3, #47
+ 442 0200 01D1     		bne	.L36
+ 429:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_RxPkt();                            /* Parse rx'd pkt.                 
+ 443              		.loc 1 429 0
+ 444 0202 FFF7FEFF 		bl	ProbeRS232_RxPkt
+ 445              	.L36:
+ 430:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              }
+ 431:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD0;
+ 446              		.loc 1 431 0
+ 447 0206 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 448 020a C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 449 020e 4FF00002 		mov	r2, #0
+ 450 0212 1A70     		strb	r2, [r3, #0]
+ 432:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 451              		.loc 1 432 0
+ 452 0214 0AE0     		b	.L37
+ 453              	.L11:
+ 433:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 434:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 435:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         default:
+ 436:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_RxState = PROBE_RS232_RX_STATE_SD0;
+ 454              		.loc 1 436 0
+ 455 0216 40F20003 		movw	r3, #:lower16:ProbeRS232_RxState
+ 456 021a C0F20003 		movt	r3, #:upper16:ProbeRS232_RxState
+ 457 021e 4FF00002 		mov	r2, #0
+ 458 0222 1A70     		strb	r2, [r3, #0]
+ 459 0224 02E0     		b	.L37
+ 460              	.L38:
+ 461              		.loc 1 335 0
+ 462 0226 00BF     		nop
+ 463 0228 00E0     		b	.L37
+ 464              	.L39:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 17
+
+
+ 465              		.loc 1 410 0
+ 466 022a 00BF     		nop
+ 467              	.L37:
+ 437:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 438:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     }
+ 439:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** }
+ 468              		.loc 1 439 0
+ 469 022c 07F10807 		add	r7, r7, #8
+ 470 0230 BD46     		mov	sp, r7
+ 471 0232 80BD     		pop	{r7, pc}
+ 472              		.cfi_endproc
+ 473              	.LFE2:
+ 474              		.size	ProbeRS232_RxHandler, .-ProbeRS232_RxHandler
+ 475              		.section	.text.ProbeRS232_TxHandler,"ax",%progbits
+ 476              		.align	2
+ 477              		.global	ProbeRS232_TxHandler
+ 478              		.thumb
+ 479              		.thumb_func
+ 480              		.type	ProbeRS232_TxHandler, %function
+ 481              	ProbeRS232_TxHandler:
+ 482              	.LFB3:
+ 440:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 441:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 442:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 443:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 444:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       ProbeRS232_TxHandler()
+ 445:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 446:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Description : Handle a byte transmission.
+ 447:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 448:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Argument(s) : none.
+ 449:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 450:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Return(s)   : none.
+ 451:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 452:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Caller(s)   : Tx ISR.
+ 453:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 454:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Note(s)     : none.
+ 455:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 456:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 457:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 458:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** void  ProbeRS232_TxHandler (void)
+ 459:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** {
+ 483              		.loc 1 459 0
+ 484              		.cfi_startproc
+ 485              		@ args = 0, pretend = 0, frame = 8
+ 486              		@ frame_needed = 1, uses_anonymous_args = 0
+ 487 0000 80B5     		push	{r7, lr}
+ 488              	.LCFI9:
+ 489              		.cfi_def_cfa_offset 8
+ 490 0002 82B0     		sub	sp, sp, #8
+ 491              	.LCFI10:
+ 492              		.cfi_def_cfa_offset 16
+ 493 0004 00AF     		add	r7, sp, #0
+ 494              		.cfi_offset 14, -4
+ 495              		.cfi_offset 7, -8
+ 496              	.LCFI11:
+ 497              		.cfi_def_cfa_register 7
+ 460:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     CPU_INT08U  tx_data;
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 18
+
+
+ 461:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 462:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 463:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_COM_CFG_STAT_EN == DEF_ENABLED)
+ 464:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     if ((ProbeRS232_TxState != PROBE_RS232_TX_STATE_SD0) ||
+ 498              		.loc 1 464 0
+ 499 0006 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ 500 000a C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ 501 000e 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 502 0010 002B     		cmp	r3, #0
+ 503 0012 06D1     		bne	.L41
+ 465:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         (ProbeRS232_TxLen    > 0u                      )) {
+ 504              		.loc 1 465 0
+ 505 0014 40F20003 		movw	r3, #:lower16:ProbeRS232_TxLen
+ 506 0018 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxLen
+ 507 001c 1B68     		ldr	r3, [r3, #0]
+ 508              		.loc 1 464 0
+ 509 001e 002B     		cmp	r3, #0
+ 510 0020 0BD0     		beq	.L42
+ 511              	.L41:
+ 466:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         ProbeRS232_TxCtr++;
+ 512              		.loc 1 466 0
+ 513 0022 40F20003 		movw	r3, #:lower16:ProbeRS232_TxCtr
+ 514 0026 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxCtr
+ 515 002a 1B68     		ldr	r3, [r3, #0]
+ 516 002c 03F10102 		add	r2, r3, #1
+ 517 0030 40F20003 		movw	r3, #:lower16:ProbeRS232_TxCtr
+ 518 0034 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxCtr
+ 519 0038 1A60     		str	r2, [r3, #0]
+ 520              	.L42:
+ 467:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     }
+ 468:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 469:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 470:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     switch (ProbeRS232_TxState) {
+ 521              		.loc 1 470 0
+ 522 003a 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ 523 003e C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ 524 0042 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 525 0044 0A2B     		cmp	r3, #10
+ 526 0046 00F20181 		bhi	.L43
+ 527 004a 01A2     		adr	r2, .L55
+ 528 004c 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 529              		.align	2
+ 530              	.L55:
+ 531 0050 7D000000 		.word	.L44+1
+ 532 0054 D3000000 		.word	.L45+1
+ 533 0058 EB000000 		.word	.L46+1
+ 534 005c 03010000 		.word	.L47+1
+ 535 0060 1B010000 		.word	.L48+1
+ 536 0064 3F010000 		.word	.L49+1
+ 537 0068 67010000 		.word	.L50+1
+ 538 006c 8B010000 		.word	.L51+1
+ 539 0070 A3010000 		.word	.L52+1
+ 540 0074 0F020000 		.word	.L53+1
+ 541 0078 27020000 		.word	.L54+1
+ 542              	.L44:
+ 471:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_TX_STATE_SD0:
+ 472:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              if (ProbeRS232_TxLen > 0u) {                       /* If pkt is waiting to be sent ...
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 19
+
+
+ 543              		.loc 1 472 0
+ 544 007c 40F20003 		movw	r3, #:lower16:ProbeRS232_TxLen
+ 545 0080 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxLen
+ 546 0084 1B68     		ldr	r3, [r3, #0]
+ 547 0086 002B     		cmp	r3, #0
+ 548 0088 19D0     		beq	.L56
+ 473:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_Tx1(PROBE_RS232_PROTOCOL_TX_SD0);   /*  ... tx start 1st start delimite
+ 549              		.loc 1 473 0
+ 550 008a 4FF07500 		mov	r0, #117
+ 551 008e FFF7FEFF 		bl	ProbeRS232_Tx1
+ 474:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_TxActiveFlag = DEF_TRUE;
+ 552              		.loc 1 474 0
+ 553 0092 40F20003 		movw	r3, #:lower16:ProbeRS232_TxActiveFlag
+ 554 0096 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxActiveFlag
+ 555 009a 4FF00102 		mov	r2, #1
+ 556 009e 1A70     		strb	r2, [r3, #0]
+ 475:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_TxState      = PROBE_RS232_TX_STATE_SD1;
+ 557              		.loc 1 475 0
+ 558 00a0 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ 559 00a4 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ 560 00a8 4FF00102 		mov	r2, #1
+ 561 00ac 1A70     		strb	r2, [r3, #0]
+ 476:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_TxBufRdIx    = 0u;
+ 562              		.loc 1 476 0
+ 563 00ae 40F20003 		movw	r3, #:lower16:ProbeRS232_TxBufRdIx
+ 564 00b2 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxBufRdIx
+ 565 00b6 4FF00002 		mov	r2, #0
+ 566 00ba 1A60     		str	r2, [r3, #0]
+ 477:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 478:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              } else {                                           /* If no pkt is waiting to be sent 
+ 479:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_TxActiveFlag = DEF_FALSE;
+ 480:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_TxIntDis();                         /*  ... dis tx int's.              
+ 481:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              }
+ 482:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 567              		.loc 1 482 0
+ 568 00bc D8E0     		b	.L60
+ 569              	.L56:
+ 570              		.loc 1 479 0
+ 571 00be 40F20003 		movw	r3, #:lower16:ProbeRS232_TxActiveFlag
+ 572 00c2 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxActiveFlag
+ 573 00c6 4FF00002 		mov	r2, #0
+ 574 00ca 1A70     		strb	r2, [r3, #0]
+ 575              		.loc 1 480 0
+ 576 00cc FFF7FEFF 		bl	ProbeRS232_TxIntDis
+ 577              		.loc 1 482 0
+ 578 00d0 CEE0     		b	.L60
+ 579              	.L45:
+ 483:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 484:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 485:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_TX_STATE_SD1:                          /* Tx start 2nd start delimiter (SD
+ 486:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_Tx1(PROBE_RS232_PROTOCOL_TX_SD1);
+ 580              		.loc 1 486 0
+ 581 00d2 4FF04300 		mov	r0, #67
+ 582 00d6 FFF7FEFF 		bl	ProbeRS232_Tx1
+ 487:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxState = PROBE_RS232_TX_STATE_SD2;
+ 583              		.loc 1 487 0
+ 584 00da 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 20
+
+
+ 585 00de C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ 586 00e2 4FF00202 		mov	r2, #2
+ 587 00e6 1A70     		strb	r2, [r3, #0]
+ 488:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 588              		.loc 1 488 0
+ 589 00e8 C2E0     		b	.L60
+ 590              	.L46:
+ 489:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 490:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 491:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_TX_STATE_SD2:                          /* Tx start 3rd start delimiter (SD
+ 492:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_Tx1(PROBE_RS232_PROTOCOL_TX_SD2);
+ 591              		.loc 1 492 0
+ 592 00ea 4FF05000 		mov	r0, #80
+ 593 00ee FFF7FEFF 		bl	ProbeRS232_Tx1
+ 493:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxState = PROBE_RS232_TX_STATE_SD3;
+ 594              		.loc 1 493 0
+ 595 00f2 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ 596 00f6 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ 597 00fa 4FF00302 		mov	r2, #3
+ 598 00fe 1A70     		strb	r2, [r3, #0]
+ 494:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 599              		.loc 1 494 0
+ 600 0100 B6E0     		b	.L60
+ 601              	.L47:
+ 495:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 496:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 497:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_TX_STATE_SD3:                          /* Tx start 4th start delimiter (SD
+ 498:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_Tx1(PROBE_RS232_PROTOCOL_TX_SD3);
+ 602              		.loc 1 498 0
+ 603 0102 4FF07200 		mov	r0, #114
+ 604 0106 FFF7FEFF 		bl	ProbeRS232_Tx1
+ 499:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxState = PROBE_RS232_TX_STATE_LEN1;
+ 605              		.loc 1 499 0
+ 606 010a 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ 607 010e C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ 608 0112 4FF00402 		mov	r2, #4
+ 609 0116 1A70     		strb	r2, [r3, #0]
+ 500:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 610              		.loc 1 500 0
+ 611 0118 AAE0     		b	.L60
+ 612              	.L48:
+ 501:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 502:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 503:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_TX_STATE_LEN1:                         /* Tx 1st len byte.                
+ 504:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              tx_data             = ProbeRS232_TxLen & 0xFF;
+ 613              		.loc 1 504 0
+ 614 011a 40F20003 		movw	r3, #:lower16:ProbeRS232_TxLen
+ 615 011e C0F20003 		movt	r3, #:upper16:ProbeRS232_TxLen
+ 616 0122 1B68     		ldr	r3, [r3, #0]
+ 617 0124 FB71     		strb	r3, [r7, #7]
+ 505:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_Tx1(tx_data);
+ 618              		.loc 1 505 0
+ 619 0126 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 620 0128 1846     		mov	r0, r3
+ 621 012a FFF7FEFF 		bl	ProbeRS232_Tx1
+ 506:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxState  = PROBE_RS232_TX_STATE_LEN2;
+ 622              		.loc 1 506 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 21
+
+
+ 623 012e 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ 624 0132 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ 625 0136 4FF00502 		mov	r2, #5
+ 626 013a 1A70     		strb	r2, [r3, #0]
+ 507:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CHKSUM_EN == DEF_TRUE)
+ 508:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxChkSum = tx_data;
+ 509:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 510:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 627              		.loc 1 510 0
+ 628 013c 98E0     		b	.L60
+ 629              	.L49:
+ 511:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 512:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 513:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_TX_STATE_LEN2:                         /* Tx 2nd len byte.                
+ 514:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              tx_data              = ProbeRS232_TxLen >> 8;
+ 630              		.loc 1 514 0
+ 631 013e 40F20003 		movw	r3, #:lower16:ProbeRS232_TxLen
+ 632 0142 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxLen
+ 633 0146 1B68     		ldr	r3, [r3, #0]
+ 634 0148 4FEA1323 		lsr	r3, r3, #8
+ 635 014c FB71     		strb	r3, [r7, #7]
+ 515:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_Tx1(tx_data);
+ 636              		.loc 1 515 0
+ 637 014e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 638 0150 1846     		mov	r0, r3
+ 639 0152 FFF7FEFF 		bl	ProbeRS232_Tx1
+ 516:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxState   = PROBE_RS232_TX_STATE_CTR;
+ 640              		.loc 1 516 0
+ 641 0156 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ 642 015a C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ 643 015e 4FF00602 		mov	r2, #6
+ 644 0162 1A70     		strb	r2, [r3, #0]
+ 517:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CHKSUM_EN == DEF_TRUE)
+ 518:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxChkSum += tx_data;
+ 519:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 520:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 645              		.loc 1 520 0
+ 646 0164 84E0     		b	.L60
+ 647              	.L50:
+ 521:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 522:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 523:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_TX_STATE_CTR:                          /* Tx packet counter.              
+ 524:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              tx_data            = ProbeRS232_RxPktCtr;
+ 648              		.loc 1 524 0
+ 649 0166 40F20003 		movw	r3, #:lower16:ProbeRS232_RxPktCtr
+ 650 016a C0F20003 		movt	r3, #:upper16:ProbeRS232_RxPktCtr
+ 651 016e 1B68     		ldr	r3, [r3, #0]
+ 652 0170 FB71     		strb	r3, [r7, #7]
+ 525:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_Tx1(tx_data);
+ 653              		.loc 1 525 0
+ 654 0172 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 655 0174 1846     		mov	r0, r3
+ 656 0176 FFF7FEFF 		bl	ProbeRS232_Tx1
+ 526:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxState = PROBE_RS232_TX_STATE_PAD;
+ 657              		.loc 1 526 0
+ 658 017a 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ 659 017e C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 22
+
+
+ 660 0182 4FF00702 		mov	r2, #7
+ 661 0186 1A70     		strb	r2, [r3, #0]
+ 527:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 662              		.loc 1 527 0
+ 663 0188 72E0     		b	.L60
+ 664              	.L51:
+ 528:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 529:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 530:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_TX_STATE_PAD:                          /* Tx padding byte.                
+ 531:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_Tx1(0);
+ 665              		.loc 1 531 0
+ 666 018a 4FF00000 		mov	r0, #0
+ 667 018e FFF7FEFF 		bl	ProbeRS232_Tx1
+ 532:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxState = PROBE_RS232_TX_STATE_DATA;
+ 668              		.loc 1 532 0
+ 669 0192 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ 670 0196 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ 671 019a 4FF00802 		mov	r2, #8
+ 672 019e 1A70     		strb	r2, [r3, #0]
+ 533:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 673              		.loc 1 533 0
+ 674 01a0 66E0     		b	.L60
+ 675              	.L52:
+ 534:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 535:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 536:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_TX_STATE_DATA:                         /* Tx data.                        
+ 537:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              tx_data = ProbeRS232_TxBuf[ProbeRS232_TxBufRdIx];
+ 676              		.loc 1 537 0
+ 677 01a2 40F20003 		movw	r3, #:lower16:ProbeRS232_TxBufRdIx
+ 678 01a6 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxBufRdIx
+ 679 01aa 1A68     		ldr	r2, [r3, #0]
+ 680 01ac 40F20003 		movw	r3, #:lower16:ProbeRS232_TxBuf
+ 681 01b0 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxBuf
+ 682 01b4 9B5C     		ldrb	r3, [r3, r2]
+ 683 01b6 FB71     		strb	r3, [r7, #7]
+ 538:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_Tx1(tx_data);
+ 684              		.loc 1 538 0
+ 685 01b8 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 686 01ba 1846     		mov	r0, r3
+ 687 01bc FFF7FEFF 		bl	ProbeRS232_Tx1
+ 539:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CHKSUM_EN == DEF_TRUE)
+ 540:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxChkSum += tx_data;
+ 541:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 542:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxBufRdIx++;
+ 688              		.loc 1 542 0
+ 689 01c0 40F20003 		movw	r3, #:lower16:ProbeRS232_TxBufRdIx
+ 690 01c4 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxBufRdIx
+ 691 01c8 1B68     		ldr	r3, [r3, #0]
+ 692 01ca 03F10102 		add	r2, r3, #1
+ 693 01ce 40F20003 		movw	r3, #:lower16:ProbeRS232_TxBufRdIx
+ 694 01d2 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxBufRdIx
+ 695 01d6 1A60     		str	r2, [r3, #0]
+ 543:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              if (ProbeRS232_TxBufRdIx >= ProbeRS232_TxLen) {
+ 696              		.loc 1 543 0
+ 697 01d8 40F20003 		movw	r3, #:lower16:ProbeRS232_TxBufRdIx
+ 698 01dc C0F20003 		movt	r3, #:upper16:ProbeRS232_TxBufRdIx
+ 699 01e0 1A68     		ldr	r2, [r3, #0]
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 23
+
+
+ 700 01e2 40F20003 		movw	r3, #:lower16:ProbeRS232_TxLen
+ 701 01e6 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxLen
+ 702 01ea 1B68     		ldr	r3, [r3, #0]
+ 703 01ec 9A42     		cmp	r2, r3
+ 704 01ee 3ED3     		bcc	.L61
+ 544:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_TxState = PROBE_RS232_TX_STATE_CHKSUM;
+ 705              		.loc 1 544 0
+ 706 01f0 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ 707 01f4 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ 708 01f8 4FF00902 		mov	r2, #9
+ 709 01fc 1A70     		strb	r2, [r3, #0]
+ 545:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                  ProbeRS232_TxLen   = 0u;
+ 710              		.loc 1 545 0
+ 711 01fe 40F20003 		movw	r3, #:lower16:ProbeRS232_TxLen
+ 712 0202 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxLen
+ 713 0206 4FF00002 		mov	r2, #0
+ 714 020a 1A60     		str	r2, [r3, #0]
+ 546:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              }
+ 547:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 715              		.loc 1 547 0
+ 716 020c 30E0     		b	.L60
+ 717              	.L53:
+ 548:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 549:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 550:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_TX_STATE_CHKSUM:                       /* Tx checksum.                    
+ 551:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CHKSUM_EN == DEF_TRUE)
+ 552:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_Tx1(ProbeRS232_TxChkSum);
+ 553:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #else
+ 554:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_Tx1(0);
+ 718              		.loc 1 554 0
+ 719 020e 4FF00000 		mov	r0, #0
+ 720 0212 FFF7FEFF 		bl	ProbeRS232_Tx1
+ 555:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 556:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxState = PROBE_RS232_TX_STATE_ED;
+ 721              		.loc 1 556 0
+ 722 0216 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ 723 021a C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ 724 021e 4FF00A02 		mov	r2, #10
+ 725 0222 1A70     		strb	r2, [r3, #0]
+ 557:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 726              		.loc 1 557 0
+ 727 0224 24E0     		b	.L60
+ 728              	.L54:
+ 558:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 559:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 560:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         case PROBE_RS232_TX_STATE_ED:                           /* Tx end delimiter.               
+ 561:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_Tx1(PROBE_RS232_PROTOCOL_TX_ED);
+ 729              		.loc 1 561 0
+ 730 0226 4FF02F00 		mov	r0, #47
+ 731 022a FFF7FEFF 		bl	ProbeRS232_Tx1
+ 562:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxState    = PROBE_RS232_TX_STATE_SD0;
+ 732              		.loc 1 562 0
+ 733 022e 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ 734 0232 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ 735 0236 4FF00002 		mov	r2, #0
+ 736 023a 1A70     		strb	r2, [r3, #0]
+ 563:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxBufInUse = DEF_FALSE;
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 24
+
+
+ 737              		.loc 1 563 0
+ 738 023c 40F20003 		movw	r3, #:lower16:ProbeRS232_TxBufInUse
+ 739 0240 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxBufInUse
+ 740 0244 4FF00002 		mov	r2, #0
+ 741 0248 1A70     		strb	r2, [r3, #0]
+ 564:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 742              		.loc 1 564 0
+ 743 024a 11E0     		b	.L60
+ 744              	.L43:
+ 565:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 566:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 567:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         default:
+ 568:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxState      = PROBE_RS232_TX_STATE_SD0;
+ 745              		.loc 1 568 0
+ 746 024c 40F20003 		movw	r3, #:lower16:ProbeRS232_TxState
+ 747 0250 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxState
+ 748 0254 4FF00002 		mov	r2, #0
+ 749 0258 1A70     		strb	r2, [r3, #0]
+ 569:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxActiveFlag = DEF_FALSE;
+ 750              		.loc 1 569 0
+ 751 025a 40F20003 		movw	r3, #:lower16:ProbeRS232_TxActiveFlag
+ 752 025e C0F20003 		movt	r3, #:upper16:ProbeRS232_TxActiveFlag
+ 753 0262 4FF00002 		mov	r2, #0
+ 754 0266 1A70     		strb	r2, [r3, #0]
+ 570:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              ProbeRS232_TxIntDis();                             /* No more data to send, dis tx int
+ 755              		.loc 1 570 0
+ 756 0268 FFF7FEFF 		bl	ProbeRS232_TxIntDis
+ 757 026c 00E0     		b	.L60
+ 758              	.L61:
+ 759              		.loc 1 547 0
+ 760 026e 00BF     		nop
+ 761              	.L60:
+ 571:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****              break;
+ 572:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     }
+ 573:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** }
+ 762              		.loc 1 573 0
+ 763 0270 07F10807 		add	r7, r7, #8
+ 764 0274 BD46     		mov	sp, r7
+ 765 0276 80BD     		pop	{r7, pc}
+ 766              		.cfi_endproc
+ 767              	.LFE3:
+ 768              		.size	ProbeRS232_TxHandler, .-ProbeRS232_TxHandler
+ 769              		.section	.text.ProbeRS232_ParseRxPkt,"ax",%progbits
+ 770              		.align	2
+ 771              		.thumb
+ 772              		.thumb_func
+ 773              		.type	ProbeRS232_ParseRxPkt, %function
+ 774              	ProbeRS232_ParseRxPkt:
+ 775              	.LFB4:
+ 574:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 575:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 576:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 577:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 578:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 579:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                           LOCAL FUNCTIONS
+ 580:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 581:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 25
+
+
+ 582:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 583:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 584:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 585:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 586:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       ProbeRS232_ParseRxPkt()
+ 587:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 588:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Description : Parse a received packet & formulate a response.
+ 589:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 590:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Argument(s) : none.
+ 591:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 592:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Return(s)   : The number of bytes in the data segment of the packet to transmit in response.
+ 593:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 594:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Caller(s)   : ProbeRS232_Task(),
+ 595:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *               ProbeRS232_RxPkt().
+ 596:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 597:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Note(s)     : none.
+ 598:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 599:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 600:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 601:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  CPU_SIZE_T  ProbeRS232_ParseRxPkt (void)
+ 602:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** {
+ 776              		.loc 1 602 0
+ 777              		.cfi_startproc
+ 778              		@ args = 0, pretend = 0, frame = 8
+ 779              		@ frame_needed = 1, uses_anonymous_args = 0
+ 780 0000 80B5     		push	{r7, lr}
+ 781              	.LCFI12:
+ 782              		.cfi_def_cfa_offset 8
+ 783 0002 82B0     		sub	sp, sp, #8
+ 784              	.LCFI13:
+ 785              		.cfi_def_cfa_offset 16
+ 786 0004 00AF     		add	r7, sp, #0
+ 787              		.cfi_offset 14, -4
+ 788              		.cfi_offset 7, -8
+ 789              	.LCFI14:
+ 790              		.cfi_def_cfa_register 7
+ 603:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     CPU_SIZE_T  tx_len;
+ 604:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 605:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 606:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     if (ProbeRS232_TxBufInUse == DEF_TRUE) {                    /* Do cmds only if tx buf is free. 
+ 791              		.loc 1 606 0
+ 792 0006 40F20003 		movw	r3, #:lower16:ProbeRS232_TxBufInUse
+ 793 000a C0F20003 		movt	r3, #:upper16:ProbeRS232_TxBufInUse
+ 794 000e 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 795 0010 012B     		cmp	r3, #1
+ 796 0012 02D1     		bne	.L63
+ 607:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         return ((CPU_SIZE_T)0);
+ 797              		.loc 1 607 0
+ 798 0014 4FF00003 		mov	r3, #0
+ 799 0018 1BE0     		b	.L64
+ 800              	.L63:
+ 608:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     }
+ 609:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 610:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     ProbeRS232_TxBufInUse = DEF_TRUE;
+ 801              		.loc 1 610 0
+ 802 001a 40F20003 		movw	r3, #:lower16:ProbeRS232_TxBufInUse
+ 803 001e C0F20003 		movt	r3, #:upper16:ProbeRS232_TxBufInUse
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 26
+
+
+ 804 0022 4FF00102 		mov	r2, #1
+ 805 0026 1A70     		strb	r2, [r3, #0]
+ 611:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     tx_len                = ProbeCom_ParseRxPkt((void       *)ProbeRS232_RxBuf,
+ 806              		.loc 1 611 0
+ 807 0028 40F20003 		movw	r3, #:lower16:ProbeRS232_RxLen
+ 808 002c C0F20003 		movt	r3, #:upper16:ProbeRS232_RxLen
+ 809 0030 1B68     		ldr	r3, [r3, #0]
+ 810 0032 40F20000 		movw	r0, #:lower16:ProbeRS232_RxBuf
+ 811 0036 C0F20000 		movt	r0, #:upper16:ProbeRS232_RxBuf
+ 812 003a 40F20001 		movw	r1, #:lower16:ProbeRS232_TxBuf
+ 813 003e C0F20001 		movt	r1, #:upper16:ProbeRS232_TxBuf
+ 814 0042 1A46     		mov	r2, r3
+ 815 0044 4FF40073 		mov	r3, #512
+ 816 0048 FFF7FEFF 		bl	ProbeCom_ParseRxPkt
+ 817 004c 0346     		mov	r3, r0
+ 818 004e 7B60     		str	r3, [r7, #4]
+ 612:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                                                 (void       *)ProbeRS232_TxBuf,
+ 613:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                                                 (CPU_SIZE_T  )ProbeRS232_RxLen,
+ 614:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****                                                 (CPU_SIZE_T  )PROBE_RS232_CFG_TX_BUF_SIZE);
+ 615:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 616:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     return (tx_len);
+ 819              		.loc 1 616 0
+ 820 0050 7B68     		ldr	r3, [r7, #4]
+ 821              	.L64:
+ 617:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** }
+ 822              		.loc 1 617 0
+ 823 0052 1846     		mov	r0, r3
+ 824 0054 07F10807 		add	r7, r7, #8
+ 825 0058 BD46     		mov	sp, r7
+ 826 005a 80BD     		pop	{r7, pc}
+ 827              		.cfi_endproc
+ 828              	.LFE4:
+ 829              		.size	ProbeRS232_ParseRxPkt, .-ProbeRS232_ParseRxPkt
+ 830              		.section	.text.ProbeRS232_RxPkt,"ax",%progbits
+ 831              		.align	2
+ 832              		.thumb
+ 833              		.thumb_func
+ 834              		.type	ProbeRS232_RxPkt, %function
+ 835              	ProbeRS232_RxPkt:
+ 836              	.LFB5:
+ 618:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 619:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 620:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 621:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 622:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                         ProbeRS232_RxPkt()
+ 623:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 624:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Description : Handle a received packet.
+ 625:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 626:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Argument(s) : none.
+ 627:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 628:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Return(s)   : none.
+ 629:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 630:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Caller(s)   : ProbeRS232_RxHandler().
+ 631:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 632:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Note(s)     : none.
+ 633:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 634:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 27
+
+
+ 635:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 636:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  void  ProbeRS232_RxPkt (void)
+ 637:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** {
+ 837              		.loc 1 637 0
+ 838              		.cfi_startproc
+ 839              		@ args = 0, pretend = 0, frame = 0
+ 840              		@ frame_needed = 1, uses_anonymous_args = 0
+ 841 0000 80B5     		push	{r7, lr}
+ 842              	.LCFI15:
+ 843              		.cfi_def_cfa_offset 8
+ 844 0002 00AF     		add	r7, sp, #0
+ 845              		.cfi_offset 14, -4
+ 846              		.cfi_offset 7, -8
+ 847              	.LCFI16:
+ 848              		.cfi_def_cfa_register 7
+ 638:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #if (PROBE_RS232_CFG_PARSE_TASK_EN == DEF_ENABLED)
+ 639:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     ProbeRS232_OS_Post();                                       /* We have a whole pkt, signal task
+ 849              		.loc 1 639 0
+ 850 0004 FFF7FEFF 		bl	ProbeRS232_OS_Post
+ 640:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 641:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 642:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 643:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #else
+ 644:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 645:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 646:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 647:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     CPU_SIZE_T  len;
+ 648:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     CPU_SR_ALLOC();
+ 649:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 650:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 651:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     len = ProbeRS232_ParseRxPkt();                              /* We have a whole pkt, parse it.  
+ 652:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     if (len > 0u) {
+ 653:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         CPU_CRITICAL_ENTER();
+ 654:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         ProbeRS232_TxLen = len;
+ 655:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         ProbeRS232_TxStart();
+ 656:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         CPU_CRITICAL_EXIT();
+ 657:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     }
+ 658:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** #endif
+ 659:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** }
+ 851              		.loc 1 659 0
+ 852 0008 80BD     		pop	{r7, pc}
+ 853              		.cfi_endproc
+ 854              	.LFE5:
+ 855              		.size	ProbeRS232_RxPkt, .-ProbeRS232_RxPkt
+ 856 000a 00BF     		.section	.text.ProbeRS232_RxStoINT8U,"ax",%progbits
+ 857              		.align	2
+ 858              		.thumb
+ 859              		.thumb_func
+ 860              		.type	ProbeRS232_RxStoINT8U, %function
+ 861              	ProbeRS232_RxStoINT8U:
+ 862              	.LFB6:
+ 660:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 661:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 662:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 663:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 664:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                       ProbeRS232_RxStoINT8U()
+ 665:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 28
+
+
+ 666:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Description : Store a byte in the receive buffer.
+ 667:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 668:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Argument(s) : rx_data     Byte of data to store in the buffer.
+ 669:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 670:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Return(s)   : none.
+ 671:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 672:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Caller(s)   : ProbeRS232_RxHandler().
+ 673:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 674:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Note(s)     : none.
+ 675:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 676:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 677:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 678:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  void  ProbeRS232_RxStoINT8U (CPU_INT08U rx_data)
+ 679:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** {
+ 863              		.loc 1 679 0
+ 864              		.cfi_startproc
+ 865              		@ args = 0, pretend = 0, frame = 8
+ 866              		@ frame_needed = 1, uses_anonymous_args = 0
+ 867              		@ link register save eliminated.
+ 868 0000 80B4     		push	{r7}
+ 869              	.LCFI17:
+ 870              		.cfi_def_cfa_offset 4
+ 871 0002 83B0     		sub	sp, sp, #12
+ 872              	.LCFI18:
+ 873              		.cfi_def_cfa_offset 16
+ 874 0004 00AF     		add	r7, sp, #0
+ 875              		.cfi_offset 7, -4
+ 876              	.LCFI19:
+ 877              		.cfi_def_cfa_register 7
+ 878 0006 0346     		mov	r3, r0
+ 879 0008 FB71     		strb	r3, [r7, #7]
+ 680:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     if (ProbeRS232_RxBufWrIx < PROBE_RS232_CFG_RX_BUF_SIZE) {
+ 880              		.loc 1 680 0
+ 881 000a 40F20003 		movw	r3, #:lower16:ProbeRS232_RxBufWrIx
+ 882 000e C0F20003 		movt	r3, #:upper16:ProbeRS232_RxBufWrIx
+ 883 0012 1A68     		ldr	r2, [r3, #0]
+ 884 0014 40F2FF13 		movw	r3, #511
+ 885 0018 9A42     		cmp	r2, r3
+ 886 001a 11D8     		bhi	.L70
+ 681:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         ProbeRS232_RxBuf[ProbeRS232_RxBufWrIx++] = rx_data;
+ 887              		.loc 1 681 0
+ 888 001c 40F20003 		movw	r3, #:lower16:ProbeRS232_RxBufWrIx
+ 889 0020 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxBufWrIx
+ 890 0024 1A68     		ldr	r2, [r3, #0]
+ 891 0026 40F20003 		movw	r3, #:lower16:ProbeRS232_RxBuf
+ 892 002a C0F20003 		movt	r3, #:upper16:ProbeRS232_RxBuf
+ 893 002e F979     		ldrb	r1, [r7, #7]
+ 894 0030 9954     		strb	r1, [r3, r2]
+ 895 0032 02F10102 		add	r2, r2, #1
+ 896 0036 40F20003 		movw	r3, #:lower16:ProbeRS232_RxBufWrIx
+ 897 003a C0F20003 		movt	r3, #:upper16:ProbeRS232_RxBufWrIx
+ 898 003e 1A60     		str	r2, [r3, #0]
+ 899              	.L70:
+ 682:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     }
+ 683:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** }
+ 900              		.loc 1 683 0
+ 901 0040 07F10C07 		add	r7, r7, #12
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 29
+
+
+ 902 0044 BD46     		mov	sp, r7
+ 903 0046 80BC     		pop	{r7}
+ 904 0048 7047     		bx	lr
+ 905              		.cfi_endproc
+ 906              	.LFE6:
+ 907              		.size	ProbeRS232_RxStoINT8U, .-ProbeRS232_RxStoINT8U
+ 908 004a 00BF     		.section	.text.ProbeRS232_RxBufClr,"ax",%progbits
+ 909              		.align	2
+ 910              		.thumb
+ 911              		.thumb_func
+ 912              		.type	ProbeRS232_RxBufClr, %function
+ 913              	ProbeRS232_RxBufClr:
+ 914              	.LFB7:
+ 684:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 685:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 686:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 687:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 688:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                        ProbeRS232_RxBufClr()
+ 689:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 690:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Description : Clear the data segment buffer write index.
+ 691:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 692:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Argument(s) : none.
+ 693:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 694:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Return(s)   : none.
+ 695:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 696:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Caller(s)   : ProbeRS232_RxHandler().
+ 697:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 698:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Note(s)     : none.
+ 699:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 700:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 701:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 702:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  void  ProbeRS232_RxBufClr (void)
+ 703:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** {
+ 915              		.loc 1 703 0
+ 916              		.cfi_startproc
+ 917              		@ args = 0, pretend = 0, frame = 0
+ 918              		@ frame_needed = 1, uses_anonymous_args = 0
+ 919              		@ link register save eliminated.
+ 920 0000 80B4     		push	{r7}
+ 921              	.LCFI20:
+ 922              		.cfi_def_cfa_offset 4
+ 923 0002 00AF     		add	r7, sp, #0
+ 924              		.cfi_offset 7, -4
+ 925              	.LCFI21:
+ 926              		.cfi_def_cfa_register 7
+ 704:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     ProbeRS232_RxBufWrIx = 0u;
+ 927              		.loc 1 704 0
+ 928 0004 40F20003 		movw	r3, #:lower16:ProbeRS232_RxBufWrIx
+ 929 0008 C0F20003 		movt	r3, #:upper16:ProbeRS232_RxBufWrIx
+ 930 000c 4FF00002 		mov	r2, #0
+ 931 0010 1A60     		str	r2, [r3, #0]
+ 705:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** }
+ 932              		.loc 1 705 0
+ 933 0012 BD46     		mov	sp, r7
+ 934 0014 80BC     		pop	{r7}
+ 935 0016 7047     		bx	lr
+ 936              		.cfi_endproc
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 30
+
+
+ 937              	.LFE7:
+ 938              		.size	ProbeRS232_RxBufClr, .-ProbeRS232_RxBufClr
+ 939              		.section	.text.ProbeRS232_TxStart,"ax",%progbits
+ 940              		.align	2
+ 941              		.thumb
+ 942              		.thumb_func
+ 943              		.type	ProbeRS232_TxStart, %function
+ 944              	ProbeRS232_TxStart:
+ 945              	.LFB8:
+ 706:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 707:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 708:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** /*
+ 709:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 710:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *                                        ProbeRS232_TxStart()
+ 711:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 712:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Description : Cause transmission to begin.
+ 713:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 714:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Argument(s) : none.
+ 715:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 716:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Return(s)   : none.
+ 717:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 718:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Caller(s)   : ProbeRS232_Task(),
+ 719:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *               ProbeRS232_RxPkt().
+ 720:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** *
+ 721:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** * Note(s)     : none.
+ 722:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** ***************************************************************************************************
+ 723:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** */
+ 724:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** 
+ 725:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** static  void  ProbeRS232_TxStart (void)
+ 726:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** {
+ 946              		.loc 1 726 0
+ 947              		.cfi_startproc
+ 948              		@ args = 0, pretend = 0, frame = 0
+ 949              		@ frame_needed = 1, uses_anonymous_args = 0
+ 950 0000 80B5     		push	{r7, lr}
+ 951              	.LCFI22:
+ 952              		.cfi_def_cfa_offset 8
+ 953 0002 00AF     		add	r7, sp, #0
+ 954              		.cfi_offset 14, -4
+ 955              		.cfi_offset 7, -8
+ 956              	.LCFI23:
+ 957              		.cfi_def_cfa_register 7
+ 727:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     if (ProbeRS232_TxActiveFlag == DEF_FALSE) {                 /* If no other tx is in progress ..
+ 958              		.loc 1 727 0
+ 959 0004 40F20003 		movw	r3, #:lower16:ProbeRS232_TxActiveFlag
+ 960 0008 C0F20003 		movt	r3, #:upper16:ProbeRS232_TxActiveFlag
+ 961 000c 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 962 000e 002B     		cmp	r3, #0
+ 963 0010 03D1     		bne	.L75
+ 728:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         ProbeRS232_TxHandler();                                 /*  ... handle tx                ..
+ 964              		.loc 1 728 0
+ 965 0012 FFF7FEFF 		bl	ProbeRS232_TxHandler
+ 729:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****         ProbeRS232_TxIntEn();                                   /*  ... en     tx ints.            
+ 966              		.loc 1 729 0
+ 967 0016 FFF7FEFF 		bl	ProbeRS232_TxIntEn
+ 968              	.L75:
+ 730:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c ****     }
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 31
+
+
+ 731:..\..\..\..\..\..\uC-Probe\Target\Communication\Generic\RS-232\Source/probe_rs232.c **** }
+ 969              		.loc 1 731 0
+ 970 001a 80BD     		pop	{r7, pc}
+ 971              		.cfi_endproc
+ 972              	.LFE8:
+ 973              		.size	ProbeRS232_TxStart, .-ProbeRS232_TxStart
+ 974              		.text
+ 975              	.Letext0:
+ 976              		.section	.debug_loc,"",%progbits
+ 977              	.Ldebug_loc0:
+ 978              	.LLST0:
+ 979 0000 00000000 		.4byte	.LFB0
+ 980 0004 02000000 		.4byte	.LCFI0
+ 981 0008 0100     		.2byte	0x1
+ 982 000a 5D       		.byte	0x5d
+ 983 000b 02000000 		.4byte	.LCFI0
+ 984 000f 04000000 		.4byte	.LCFI1
+ 985 0013 0200     		.2byte	0x2
+ 986 0015 7D       		.byte	0x7d
+ 987 0016 08       		.sleb128 8
+ 988 0017 04000000 		.4byte	.LCFI1
+ 989 001b 06000000 		.4byte	.LCFI2
+ 990 001f 0200     		.2byte	0x2
+ 991 0021 7D       		.byte	0x7d
+ 992 0022 18       		.sleb128 24
+ 993 0023 06000000 		.4byte	.LCFI2
+ 994 0027 92000000 		.4byte	.LFE0
+ 995 002b 0200     		.2byte	0x2
+ 996 002d 77       		.byte	0x77
+ 997 002e 18       		.sleb128 24
+ 998 002f 00000000 		.4byte	0x0
+ 999 0033 00000000 		.4byte	0x0
+ 1000              	.LLST1:
+ 1001 0037 00000000 		.4byte	.LFB1
+ 1002 003b 02000000 		.4byte	.LCFI3
+ 1003 003f 0100     		.2byte	0x1
+ 1004 0041 5D       		.byte	0x5d
+ 1005 0042 02000000 		.4byte	.LCFI3
+ 1006 0046 04000000 		.4byte	.LCFI4
+ 1007 004a 0200     		.2byte	0x2
+ 1008 004c 7D       		.byte	0x7d
+ 1009 004d 08       		.sleb128 8
+ 1010 004e 04000000 		.4byte	.LCFI4
+ 1011 0052 06000000 		.4byte	.LCFI5
+ 1012 0056 0200     		.2byte	0x2
+ 1013 0058 7D       		.byte	0x7d
+ 1014 0059 10       		.sleb128 16
+ 1015 005a 06000000 		.4byte	.LCFI5
+ 1016 005e 2E000000 		.4byte	.LFE1
+ 1017 0062 0200     		.2byte	0x2
+ 1018 0064 77       		.byte	0x77
+ 1019 0065 10       		.sleb128 16
+ 1020 0066 00000000 		.4byte	0x0
+ 1021 006a 00000000 		.4byte	0x0
+ 1022              	.LLST2:
+ 1023 006e 00000000 		.4byte	.LFB2
+ 1024 0072 02000000 		.4byte	.LCFI6
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 32
+
+
+ 1025 0076 0100     		.2byte	0x1
+ 1026 0078 5D       		.byte	0x5d
+ 1027 0079 02000000 		.4byte	.LCFI6
+ 1028 007d 04000000 		.4byte	.LCFI7
+ 1029 0081 0200     		.2byte	0x2
+ 1030 0083 7D       		.byte	0x7d
+ 1031 0084 08       		.sleb128 8
+ 1032 0085 04000000 		.4byte	.LCFI7
+ 1033 0089 06000000 		.4byte	.LCFI8
+ 1034 008d 0200     		.2byte	0x2
+ 1035 008f 7D       		.byte	0x7d
+ 1036 0090 10       		.sleb128 16
+ 1037 0091 06000000 		.4byte	.LCFI8
+ 1038 0095 34020000 		.4byte	.LFE2
+ 1039 0099 0200     		.2byte	0x2
+ 1040 009b 77       		.byte	0x77
+ 1041 009c 10       		.sleb128 16
+ 1042 009d 00000000 		.4byte	0x0
+ 1043 00a1 00000000 		.4byte	0x0
+ 1044              	.LLST3:
+ 1045 00a5 00000000 		.4byte	.LFB3
+ 1046 00a9 02000000 		.4byte	.LCFI9
+ 1047 00ad 0100     		.2byte	0x1
+ 1048 00af 5D       		.byte	0x5d
+ 1049 00b0 02000000 		.4byte	.LCFI9
+ 1050 00b4 04000000 		.4byte	.LCFI10
+ 1051 00b8 0200     		.2byte	0x2
+ 1052 00ba 7D       		.byte	0x7d
+ 1053 00bb 08       		.sleb128 8
+ 1054 00bc 04000000 		.4byte	.LCFI10
+ 1055 00c0 06000000 		.4byte	.LCFI11
+ 1056 00c4 0200     		.2byte	0x2
+ 1057 00c6 7D       		.byte	0x7d
+ 1058 00c7 10       		.sleb128 16
+ 1059 00c8 06000000 		.4byte	.LCFI11
+ 1060 00cc 78020000 		.4byte	.LFE3
+ 1061 00d0 0200     		.2byte	0x2
+ 1062 00d2 77       		.byte	0x77
+ 1063 00d3 10       		.sleb128 16
+ 1064 00d4 00000000 		.4byte	0x0
+ 1065 00d8 00000000 		.4byte	0x0
+ 1066              	.LLST4:
+ 1067 00dc 00000000 		.4byte	.LFB4
+ 1068 00e0 02000000 		.4byte	.LCFI12
+ 1069 00e4 0100     		.2byte	0x1
+ 1070 00e6 5D       		.byte	0x5d
+ 1071 00e7 02000000 		.4byte	.LCFI12
+ 1072 00eb 04000000 		.4byte	.LCFI13
+ 1073 00ef 0200     		.2byte	0x2
+ 1074 00f1 7D       		.byte	0x7d
+ 1075 00f2 08       		.sleb128 8
+ 1076 00f3 04000000 		.4byte	.LCFI13
+ 1077 00f7 06000000 		.4byte	.LCFI14
+ 1078 00fb 0200     		.2byte	0x2
+ 1079 00fd 7D       		.byte	0x7d
+ 1080 00fe 10       		.sleb128 16
+ 1081 00ff 06000000 		.4byte	.LCFI14
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 33
+
+
+ 1082 0103 5C000000 		.4byte	.LFE4
+ 1083 0107 0200     		.2byte	0x2
+ 1084 0109 77       		.byte	0x77
+ 1085 010a 10       		.sleb128 16
+ 1086 010b 00000000 		.4byte	0x0
+ 1087 010f 00000000 		.4byte	0x0
+ 1088              	.LLST5:
+ 1089 0113 00000000 		.4byte	.LFB5
+ 1090 0117 02000000 		.4byte	.LCFI15
+ 1091 011b 0100     		.2byte	0x1
+ 1092 011d 5D       		.byte	0x5d
+ 1093 011e 02000000 		.4byte	.LCFI15
+ 1094 0122 04000000 		.4byte	.LCFI16
+ 1095 0126 0200     		.2byte	0x2
+ 1096 0128 7D       		.byte	0x7d
+ 1097 0129 08       		.sleb128 8
+ 1098 012a 04000000 		.4byte	.LCFI16
+ 1099 012e 0A000000 		.4byte	.LFE5
+ 1100 0132 0200     		.2byte	0x2
+ 1101 0134 77       		.byte	0x77
+ 1102 0135 08       		.sleb128 8
+ 1103 0136 00000000 		.4byte	0x0
+ 1104 013a 00000000 		.4byte	0x0
+ 1105              	.LLST6:
+ 1106 013e 00000000 		.4byte	.LFB6
+ 1107 0142 02000000 		.4byte	.LCFI17
+ 1108 0146 0100     		.2byte	0x1
+ 1109 0148 5D       		.byte	0x5d
+ 1110 0149 02000000 		.4byte	.LCFI17
+ 1111 014d 04000000 		.4byte	.LCFI18
+ 1112 0151 0200     		.2byte	0x2
+ 1113 0153 7D       		.byte	0x7d
+ 1114 0154 04       		.sleb128 4
+ 1115 0155 04000000 		.4byte	.LCFI18
+ 1116 0159 06000000 		.4byte	.LCFI19
+ 1117 015d 0200     		.2byte	0x2
+ 1118 015f 7D       		.byte	0x7d
+ 1119 0160 10       		.sleb128 16
+ 1120 0161 06000000 		.4byte	.LCFI19
+ 1121 0165 4A000000 		.4byte	.LFE6
+ 1122 0169 0200     		.2byte	0x2
+ 1123 016b 77       		.byte	0x77
+ 1124 016c 10       		.sleb128 16
+ 1125 016d 00000000 		.4byte	0x0
+ 1126 0171 00000000 		.4byte	0x0
+ 1127              	.LLST7:
+ 1128 0175 00000000 		.4byte	.LFB7
+ 1129 0179 02000000 		.4byte	.LCFI20
+ 1130 017d 0100     		.2byte	0x1
+ 1131 017f 5D       		.byte	0x5d
+ 1132 0180 02000000 		.4byte	.LCFI20
+ 1133 0184 04000000 		.4byte	.LCFI21
+ 1134 0188 0200     		.2byte	0x2
+ 1135 018a 7D       		.byte	0x7d
+ 1136 018b 04       		.sleb128 4
+ 1137 018c 04000000 		.4byte	.LCFI21
+ 1138 0190 18000000 		.4byte	.LFE7
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 34
+
+
+ 1139 0194 0200     		.2byte	0x2
+ 1140 0196 77       		.byte	0x77
+ 1141 0197 04       		.sleb128 4
+ 1142 0198 00000000 		.4byte	0x0
+ 1143 019c 00000000 		.4byte	0x0
+ 1144              	.LLST8:
+ 1145 01a0 00000000 		.4byte	.LFB8
+ 1146 01a4 02000000 		.4byte	.LCFI22
+ 1147 01a8 0100     		.2byte	0x1
+ 1148 01aa 5D       		.byte	0x5d
+ 1149 01ab 02000000 		.4byte	.LCFI22
+ 1150 01af 04000000 		.4byte	.LCFI23
+ 1151 01b3 0200     		.2byte	0x2
+ 1152 01b5 7D       		.byte	0x7d
+ 1153 01b6 08       		.sleb128 8
+ 1154 01b7 04000000 		.4byte	.LCFI23
+ 1155 01bb 1C000000 		.4byte	.LFE8
+ 1156 01bf 0200     		.2byte	0x2
+ 1157 01c1 77       		.byte	0x77
+ 1158 01c2 08       		.sleb128 8
+ 1159 01c3 00000000 		.4byte	0x0
+ 1160 01c7 00000000 		.4byte	0x0
+ 1161              		.file 2 "..\\..\\..\\..\\..\\..\\uC-CPU\\ARM-Cortex-M3\\GNU/cpu.h"
+ 1162              		.file 3 "..\\..\\..\\..\\..\\..\\uC-Probe\\Target\\Communication\\Generic\\RS-232\\Source/probe_rs
+ 1163              		.section	.debug_info
+ 1164 0000 FA020000 		.4byte	0x2fa
+ 1165 0004 0200     		.2byte	0x2
+ 1166 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1167 000a 04       		.byte	0x4
+ 1168 000b 01       		.uleb128 0x1
+ 1169 000c 64030000 		.4byte	.LASF39
+ 1170 0010 01       		.byte	0x1
+ 1171 0011 D0020000 		.4byte	.LASF40
+ 1172 0015 E9010000 		.4byte	.LASF41
+ 1173 0019 00000000 		.4byte	0x0
+ 1174 001d 00000000 		.4byte	0x0
+ 1175 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 1176 0025 00000000 		.4byte	.Ldebug_line0
+ 1177 0029 02       		.uleb128 0x2
+ 1178 002a 01       		.byte	0x1
+ 1179 002b 08       		.byte	0x8
+ 1180 002c E4010000 		.4byte	.LASF0
+ 1181 0030 03       		.uleb128 0x3
+ 1182 0031 06010000 		.4byte	.LASF2
+ 1183 0035 02       		.byte	0x2
+ 1184 0036 77       		.byte	0x77
+ 1185 0037 3B000000 		.4byte	0x3b
+ 1186 003b 02       		.uleb128 0x2
+ 1187 003c 01       		.byte	0x1
+ 1188 003d 08       		.byte	0x8
+ 1189 003e 5E010000 		.4byte	.LASF1
+ 1190 0042 03       		.uleb128 0x3
+ 1191 0043 D9010000 		.4byte	.LASF3
+ 1192 0047 02       		.byte	0x2
+ 1193 0048 78       		.byte	0x78
+ 1194 0049 3B000000 		.4byte	0x3b
+ 1195 004d 02       		.uleb128 0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 35
+
+
+ 1196 004e 01       		.byte	0x1
+ 1197 004f 06       		.byte	0x6
+ 1198 0050 81010000 		.4byte	.LASF4
+ 1199 0054 02       		.uleb128 0x2
+ 1200 0055 02       		.byte	0x2
+ 1201 0056 07       		.byte	0x7
+ 1202 0057 C6010000 		.4byte	.LASF5
+ 1203 005b 02       		.uleb128 0x2
+ 1204 005c 02       		.byte	0x2
+ 1205 005d 05       		.byte	0x5
+ 1206 005e 5E000000 		.4byte	.LASF6
+ 1207 0062 03       		.uleb128 0x3
+ 1208 0063 86020000 		.4byte	.LASF7
+ 1209 0067 02       		.byte	0x2
+ 1210 0068 7C       		.byte	0x7c
+ 1211 0069 6D000000 		.4byte	0x6d
+ 1212 006d 02       		.uleb128 0x2
+ 1213 006e 04       		.byte	0x4
+ 1214 006f 07       		.byte	0x7
+ 1215 0070 A4010000 		.4byte	.LASF8
+ 1216 0074 04       		.uleb128 0x4
+ 1217 0075 04       		.byte	0x4
+ 1218 0076 05       		.byte	0x5
+ 1219 0077 696E7400 		.ascii	"int\000"
+ 1220 007b 02       		.uleb128 0x2
+ 1221 007c 08       		.byte	0x8
+ 1222 007d 07       		.byte	0x7
+ 1223 007e 8D010000 		.4byte	.LASF9
+ 1224 0082 02       		.uleb128 0x2
+ 1225 0083 08       		.byte	0x8
+ 1226 0084 05       		.byte	0x5
+ 1227 0085 F8000000 		.4byte	.LASF10
+ 1228 0089 02       		.uleb128 0x2
+ 1229 008a 04       		.byte	0x4
+ 1230 008b 04       		.byte	0x4
+ 1231 008c F2000000 		.4byte	.LASF11
+ 1232 0090 02       		.uleb128 0x2
+ 1233 0091 08       		.byte	0x8
+ 1234 0092 04       		.byte	0x4
+ 1235 0093 35030000 		.4byte	.LASF12
+ 1236 0097 03       		.uleb128 0x3
+ 1237 0098 E9000000 		.4byte	.LASF13
+ 1238 009c 02       		.byte	0x2
+ 1239 009d B5       		.byte	0xb5
+ 1240 009e 62000000 		.4byte	0x62
+ 1241 00a2 03       		.uleb128 0x3
+ 1242 00a3 51030000 		.4byte	.LASF14
+ 1243 00a7 02       		.byte	0x2
+ 1244 00a8 C7       		.byte	0xc7
+ 1245 00a9 97000000 		.4byte	0x97
+ 1246 00ad 05       		.uleb128 0x5
+ 1247 00ae 01       		.byte	0x1
+ 1248 00af B2000000 		.4byte	.LASF42
+ 1249 00b3 01       		.byte	0x1
+ 1250 00b4 E7       		.byte	0xe7
+ 1251 00b5 01       		.byte	0x1
+ 1252 00b6 30000000 		.4byte	0x30
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 36
+
+
+ 1253 00ba 00000000 		.4byte	.LFB0
+ 1254 00be 92000000 		.4byte	.LFE0
+ 1255 00c2 00000000 		.4byte	.LLST0
+ 1256 00c6 E6000000 		.4byte	0xe6
+ 1257 00ca 06       		.uleb128 0x6
+ 1258 00cb D8000000 		.4byte	.LASF17
+ 1259 00cf 01       		.byte	0x1
+ 1260 00d0 E7       		.byte	0xe7
+ 1261 00d1 62000000 		.4byte	0x62
+ 1262 00d5 02       		.byte	0x2
+ 1263 00d6 91       		.byte	0x91
+ 1264 00d7 6C       		.sleb128 -20
+ 1265 00d8 07       		.uleb128 0x7
+ 1266 00d9 6F6B00   		.ascii	"ok\000"
+ 1267 00dc 01       		.byte	0x1
+ 1268 00dd EA       		.byte	0xea
+ 1269 00de 30000000 		.4byte	0x30
+ 1270 00e2 02       		.byte	0x2
+ 1271 00e3 91       		.byte	0x91
+ 1272 00e4 77       		.sleb128 -9
+ 1273 00e5 00       		.byte	0x0
+ 1274 00e6 08       		.uleb128 0x8
+ 1275 00e7 01       		.byte	0x1
+ 1276 00e8 8E000000 		.4byte	.LASF15
+ 1277 00ec 01       		.byte	0x1
+ 1278 00ed 2001     		.2byte	0x120
+ 1279 00ef 01       		.byte	0x1
+ 1280 00f0 00000000 		.4byte	.LFB1
+ 1281 00f4 2E000000 		.4byte	.LFE1
+ 1282 00f8 37000000 		.4byte	.LLST1
+ 1283 00fc 10010000 		.4byte	0x110
+ 1284 0100 09       		.uleb128 0x9
+ 1285 0101 6C656E00 		.ascii	"len\000"
+ 1286 0105 01       		.byte	0x1
+ 1287 0106 2201     		.2byte	0x122
+ 1288 0108 A2000000 		.4byte	0xa2
+ 1289 010c 02       		.byte	0x2
+ 1290 010d 91       		.byte	0x91
+ 1291 010e 74       		.sleb128 -12
+ 1292 010f 00       		.byte	0x0
+ 1293 0110 08       		.uleb128 0x8
+ 1294 0111 01       		.byte	0x1
+ 1295 0112 6C010000 		.4byte	.LASF16
+ 1296 0116 01       		.byte	0x1
+ 1297 0117 4301     		.2byte	0x143
+ 1298 0119 01       		.byte	0x1
+ 1299 011a 00000000 		.4byte	.LFB2
+ 1300 011e 34020000 		.4byte	.LFE2
+ 1301 0122 6E000000 		.4byte	.LLST2
+ 1302 0126 3A010000 		.4byte	0x13a
+ 1303 012a 0A       		.uleb128 0xa
+ 1304 012b 5C030000 		.4byte	.LASF18
+ 1305 012f 01       		.byte	0x1
+ 1306 0130 4301     		.2byte	0x143
+ 1307 0132 42000000 		.4byte	0x42
+ 1308 0136 02       		.byte	0x2
+ 1309 0137 91       		.byte	0x91
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 37
+
+
+ 1310 0138 77       		.sleb128 -9
+ 1311 0139 00       		.byte	0x0
+ 1312 013a 08       		.uleb128 0x8
+ 1313 013b 01       		.byte	0x1
+ 1314 013c B1010000 		.4byte	.LASF19
+ 1315 0140 01       		.byte	0x1
+ 1316 0141 CA01     		.2byte	0x1ca
+ 1317 0143 01       		.byte	0x1
+ 1318 0144 00000000 		.4byte	.LFB3
+ 1319 0148 78020000 		.4byte	.LFE3
+ 1320 014c A5000000 		.4byte	.LLST3
+ 1321 0150 64010000 		.4byte	0x164
+ 1322 0154 0B       		.uleb128 0xb
+ 1323 0155 81030000 		.4byte	.LASF20
+ 1324 0159 01       		.byte	0x1
+ 1325 015a CC01     		.2byte	0x1cc
+ 1326 015c 42000000 		.4byte	0x42
+ 1327 0160 02       		.byte	0x2
+ 1328 0161 91       		.byte	0x91
+ 1329 0162 77       		.sleb128 -9
+ 1330 0163 00       		.byte	0x0
+ 1331 0164 0C       		.uleb128 0xc
+ 1332 0165 00000000 		.4byte	.LASF43
+ 1333 0169 01       		.byte	0x1
+ 1334 016a 5902     		.2byte	0x259
+ 1335 016c 01       		.byte	0x1
+ 1336 016d A2000000 		.4byte	0xa2
+ 1337 0171 00000000 		.4byte	.LFB4
+ 1338 0175 5C000000 		.4byte	.LFE4
+ 1339 0179 DC000000 		.4byte	.LLST4
+ 1340 017d 91010000 		.4byte	0x191
+ 1341 0181 0B       		.uleb128 0xb
+ 1342 0182 E2000000 		.4byte	.LASF21
+ 1343 0186 01       		.byte	0x1
+ 1344 0187 5B02     		.2byte	0x25b
+ 1345 0189 A2000000 		.4byte	0xa2
+ 1346 018d 02       		.byte	0x2
+ 1347 018e 91       		.byte	0x91
+ 1348 018f 74       		.sleb128 -12
+ 1349 0190 00       		.byte	0x0
+ 1350 0191 0D       		.uleb128 0xd
+ 1351 0192 68000000 		.4byte	.LASF22
+ 1352 0196 01       		.byte	0x1
+ 1353 0197 7C02     		.2byte	0x27c
+ 1354 0199 01       		.byte	0x1
+ 1355 019a 00000000 		.4byte	.LFB5
+ 1356 019e 0A000000 		.4byte	.LFE5
+ 1357 01a2 13010000 		.4byte	.LLST5
+ 1358 01a6 0E       		.uleb128 0xe
+ 1359 01a7 BA020000 		.4byte	.LASF44
+ 1360 01ab 01       		.byte	0x1
+ 1361 01ac A602     		.2byte	0x2a6
+ 1362 01ae 01       		.byte	0x1
+ 1363 01af 00000000 		.4byte	.LFB6
+ 1364 01b3 4A000000 		.4byte	.LFE6
+ 1365 01b7 3E010000 		.4byte	.LLST6
+ 1366 01bb CF010000 		.4byte	0x1cf
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 38
+
+
+ 1367 01bf 0A       		.uleb128 0xa
+ 1368 01c0 5C030000 		.4byte	.LASF18
+ 1369 01c4 01       		.byte	0x1
+ 1370 01c5 A602     		.2byte	0x2a6
+ 1371 01c7 42000000 		.4byte	0x42
+ 1372 01cb 02       		.byte	0x2
+ 1373 01cc 91       		.byte	0x91
+ 1374 01cd 77       		.sleb128 -9
+ 1375 01ce 00       		.byte	0x0
+ 1376 01cf 0D       		.uleb128 0xd
+ 1377 01d0 9E000000 		.4byte	.LASF23
+ 1378 01d4 01       		.byte	0x1
+ 1379 01d5 BE02     		.2byte	0x2be
+ 1380 01d7 01       		.byte	0x1
+ 1381 01d8 00000000 		.4byte	.LFB7
+ 1382 01dc 18000000 		.4byte	.LFE7
+ 1383 01e0 75010000 		.4byte	.LLST7
+ 1384 01e4 0D       		.uleb128 0xd
+ 1385 01e5 16000000 		.4byte	.LASF24
+ 1386 01e9 01       		.byte	0x1
+ 1387 01ea D502     		.2byte	0x2d5
+ 1388 01ec 01       		.byte	0x1
+ 1389 01ed 00000000 		.4byte	.LFB8
+ 1390 01f1 1C000000 		.4byte	.LFE8
+ 1391 01f5 A0010000 		.4byte	.LLST8
+ 1392 01f9 0F       		.uleb128 0xf
+ 1393 01fa 37010000 		.4byte	.LASF25
+ 1394 01fe 01       		.byte	0x1
+ 1395 01ff A0       		.byte	0xa0
+ 1396 0200 42000000 		.4byte	0x42
+ 1397 0204 05       		.byte	0x5
+ 1398 0205 03       		.byte	0x3
+ 1399 0206 00000000 		.4byte	ProbeRS232_RxState
+ 1400 020a 0F       		.uleb128 0xf
+ 1401 020b 4A010000 		.4byte	.LASF26
+ 1402 020f 01       		.byte	0x1
+ 1403 0210 A1       		.byte	0xa1
+ 1404 0211 A2000000 		.4byte	0xa2
+ 1405 0215 05       		.byte	0x5
+ 1406 0216 03       		.byte	0x3
+ 1407 0217 04000000 		.4byte	ProbeRS232_RxLenRem
+ 1408 021b 0F       		.uleb128 0xf
+ 1409 021c 12010000 		.4byte	.LASF27
+ 1410 0220 01       		.byte	0x1
+ 1411 0221 A3       		.byte	0xa3
+ 1412 0222 A2000000 		.4byte	0xa2
+ 1413 0226 05       		.byte	0x5
+ 1414 0227 03       		.byte	0x3
+ 1415 0228 08000000 		.4byte	ProbeRS232_RxPktCtr
+ 1416 022c 0F       		.uleb128 0xf
+ 1417 022d 70030000 		.4byte	.LASF28
+ 1418 0231 01       		.byte	0x1
+ 1419 0232 A4       		.byte	0xa4
+ 1420 0233 A2000000 		.4byte	0xa2
+ 1421 0237 05       		.byte	0x5
+ 1422 0238 03       		.byte	0x3
+ 1423 0239 0C000000 		.4byte	ProbeRS232_RxLen
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 39
+
+
+ 1424 023d 10       		.uleb128 0x10
+ 1425 023e 42000000 		.4byte	0x42
+ 1426 0242 4E020000 		.4byte	0x24e
+ 1427 0246 11       		.uleb128 0x11
+ 1428 0247 4E020000 		.4byte	0x24e
+ 1429 024b FF01     		.2byte	0x1ff
+ 1430 024d 00       		.byte	0x0
+ 1431 024e 12       		.uleb128 0x12
+ 1432 024f 04       		.byte	0x4
+ 1433 0250 07       		.byte	0x7
+ 1434 0251 0F       		.uleb128 0xf
+ 1435 0252 26010000 		.4byte	.LASF29
+ 1436 0256 01       		.byte	0x1
+ 1437 0257 A6       		.byte	0xa6
+ 1438 0258 3D020000 		.4byte	0x23d
+ 1439 025c 05       		.byte	0x5
+ 1440 025d 03       		.byte	0x3
+ 1441 025e 10000000 		.4byte	ProbeRS232_RxBuf
+ 1442 0262 0F       		.uleb128 0xf
+ 1443 0263 3C030000 		.4byte	.LASF30
+ 1444 0267 01       		.byte	0x1
+ 1445 0268 AB       		.byte	0xab
+ 1446 0269 A2000000 		.4byte	0xa2
+ 1447 026d 05       		.byte	0x5
+ 1448 026e 03       		.byte	0x3
+ 1449 026f 10020000 		.4byte	ProbeRS232_RxBufWrIx
+ 1450 0273 0F       		.uleb128 0xf
+ 1451 0274 4B000000 		.4byte	.LASF31
+ 1452 0278 01       		.byte	0x1
+ 1453 0279 AF       		.byte	0xaf
+ 1454 027a 42000000 		.4byte	0x42
+ 1455 027e 05       		.byte	0x5
+ 1456 027f 03       		.byte	0x3
+ 1457 0280 14020000 		.4byte	ProbeRS232_TxState
+ 1458 0284 0F       		.uleb128 0xf
+ 1459 0285 A2020000 		.4byte	.LASF32
+ 1460 0289 01       		.byte	0x1
+ 1461 028a B0       		.byte	0xb0
+ 1462 028b 30000000 		.4byte	0x30
+ 1463 028f 05       		.byte	0x5
+ 1464 0290 03       		.byte	0x3
+ 1465 0291 15020000 		.4byte	ProbeRS232_TxActiveFlag
+ 1466 0295 0F       		.uleb128 0xf
+ 1467 0296 91020000 		.4byte	.LASF33
+ 1468 029a 01       		.byte	0x1
+ 1469 029b B2       		.byte	0xb2
+ 1470 029c A2000000 		.4byte	0xa2
+ 1471 02a0 05       		.byte	0x5
+ 1472 02a1 03       		.byte	0x3
+ 1473 02a2 18020000 		.4byte	ProbeRS232_TxLen
+ 1474 02a6 0F       		.uleb128 0xf
+ 1475 02a7 3A000000 		.4byte	.LASF34
+ 1476 02ab 01       		.byte	0x1
+ 1477 02ac B4       		.byte	0xb4
+ 1478 02ad 3D020000 		.4byte	0x23d
+ 1479 02b1 05       		.byte	0x5
+ 1480 02b2 03       		.byte	0x3
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 40
+
+
+ 1481 02b3 1C020000 		.4byte	ProbeRS232_TxBuf
+ 1482 02b7 0F       		.uleb128 0xf
+ 1483 02b8 C2000000 		.4byte	.LASF35
+ 1484 02bc 01       		.byte	0x1
+ 1485 02bd B9       		.byte	0xb9
+ 1486 02be 30000000 		.4byte	0x30
+ 1487 02c2 05       		.byte	0x5
+ 1488 02c3 03       		.byte	0x3
+ 1489 02c4 1C040000 		.4byte	ProbeRS232_TxBufInUse
+ 1490 02c8 0F       		.uleb128 0xf
+ 1491 02c9 79000000 		.4byte	.LASF36
+ 1492 02cd 01       		.byte	0x1
+ 1493 02ce BA       		.byte	0xba
+ 1494 02cf A2000000 		.4byte	0xa2
+ 1495 02d3 05       		.byte	0x5
+ 1496 02d4 03       		.byte	0x3
+ 1497 02d5 20040000 		.4byte	ProbeRS232_TxBufRdIx
+ 1498 02d9 13       		.uleb128 0x13
+ 1499 02da 29000000 		.4byte	.LASF37
+ 1500 02de 03       		.byte	0x3
+ 1501 02df 5E       		.byte	0x5e
+ 1502 02e0 62000000 		.4byte	0x62
+ 1503 02e4 01       		.byte	0x1
+ 1504 02e5 05       		.byte	0x5
+ 1505 02e6 03       		.byte	0x3
+ 1506 02e7 00000000 		.4byte	ProbeRS232_RxCtr
+ 1507 02eb 13       		.uleb128 0x13
+ 1508 02ec 24030000 		.4byte	.LASF38
+ 1509 02f0 03       		.byte	0x3
+ 1510 02f1 5F       		.byte	0x5f
+ 1511 02f2 62000000 		.4byte	0x62
+ 1512 02f6 01       		.byte	0x1
+ 1513 02f7 05       		.byte	0x5
+ 1514 02f8 03       		.byte	0x3
+ 1515 02f9 00000000 		.4byte	ProbeRS232_TxCtr
+ 1516 02fd 00       		.byte	0x0
+ 1517              		.section	.debug_abbrev
+ 1518 0000 01       		.uleb128 0x1
+ 1519 0001 11       		.uleb128 0x11
+ 1520 0002 01       		.byte	0x1
+ 1521 0003 25       		.uleb128 0x25
+ 1522 0004 0E       		.uleb128 0xe
+ 1523 0005 13       		.uleb128 0x13
+ 1524 0006 0B       		.uleb128 0xb
+ 1525 0007 03       		.uleb128 0x3
+ 1526 0008 0E       		.uleb128 0xe
+ 1527 0009 1B       		.uleb128 0x1b
+ 1528 000a 0E       		.uleb128 0xe
+ 1529 000b 11       		.uleb128 0x11
+ 1530 000c 01       		.uleb128 0x1
+ 1531 000d 52       		.uleb128 0x52
+ 1532 000e 01       		.uleb128 0x1
+ 1533 000f 55       		.uleb128 0x55
+ 1534 0010 06       		.uleb128 0x6
+ 1535 0011 10       		.uleb128 0x10
+ 1536 0012 06       		.uleb128 0x6
+ 1537 0013 00       		.byte	0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 41
+
+
+ 1538 0014 00       		.byte	0x0
+ 1539 0015 02       		.uleb128 0x2
+ 1540 0016 24       		.uleb128 0x24
+ 1541 0017 00       		.byte	0x0
+ 1542 0018 0B       		.uleb128 0xb
+ 1543 0019 0B       		.uleb128 0xb
+ 1544 001a 3E       		.uleb128 0x3e
+ 1545 001b 0B       		.uleb128 0xb
+ 1546 001c 03       		.uleb128 0x3
+ 1547 001d 0E       		.uleb128 0xe
+ 1548 001e 00       		.byte	0x0
+ 1549 001f 00       		.byte	0x0
+ 1550 0020 03       		.uleb128 0x3
+ 1551 0021 16       		.uleb128 0x16
+ 1552 0022 00       		.byte	0x0
+ 1553 0023 03       		.uleb128 0x3
+ 1554 0024 0E       		.uleb128 0xe
+ 1555 0025 3A       		.uleb128 0x3a
+ 1556 0026 0B       		.uleb128 0xb
+ 1557 0027 3B       		.uleb128 0x3b
+ 1558 0028 0B       		.uleb128 0xb
+ 1559 0029 49       		.uleb128 0x49
+ 1560 002a 13       		.uleb128 0x13
+ 1561 002b 00       		.byte	0x0
+ 1562 002c 00       		.byte	0x0
+ 1563 002d 04       		.uleb128 0x4
+ 1564 002e 24       		.uleb128 0x24
+ 1565 002f 00       		.byte	0x0
+ 1566 0030 0B       		.uleb128 0xb
+ 1567 0031 0B       		.uleb128 0xb
+ 1568 0032 3E       		.uleb128 0x3e
+ 1569 0033 0B       		.uleb128 0xb
+ 1570 0034 03       		.uleb128 0x3
+ 1571 0035 08       		.uleb128 0x8
+ 1572 0036 00       		.byte	0x0
+ 1573 0037 00       		.byte	0x0
+ 1574 0038 05       		.uleb128 0x5
+ 1575 0039 2E       		.uleb128 0x2e
+ 1576 003a 01       		.byte	0x1
+ 1577 003b 3F       		.uleb128 0x3f
+ 1578 003c 0C       		.uleb128 0xc
+ 1579 003d 03       		.uleb128 0x3
+ 1580 003e 0E       		.uleb128 0xe
+ 1581 003f 3A       		.uleb128 0x3a
+ 1582 0040 0B       		.uleb128 0xb
+ 1583 0041 3B       		.uleb128 0x3b
+ 1584 0042 0B       		.uleb128 0xb
+ 1585 0043 27       		.uleb128 0x27
+ 1586 0044 0C       		.uleb128 0xc
+ 1587 0045 49       		.uleb128 0x49
+ 1588 0046 13       		.uleb128 0x13
+ 1589 0047 11       		.uleb128 0x11
+ 1590 0048 01       		.uleb128 0x1
+ 1591 0049 12       		.uleb128 0x12
+ 1592 004a 01       		.uleb128 0x1
+ 1593 004b 40       		.uleb128 0x40
+ 1594 004c 06       		.uleb128 0x6
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 42
+
+
+ 1595 004d 01       		.uleb128 0x1
+ 1596 004e 13       		.uleb128 0x13
+ 1597 004f 00       		.byte	0x0
+ 1598 0050 00       		.byte	0x0
+ 1599 0051 06       		.uleb128 0x6
+ 1600 0052 05       		.uleb128 0x5
+ 1601 0053 00       		.byte	0x0
+ 1602 0054 03       		.uleb128 0x3
+ 1603 0055 0E       		.uleb128 0xe
+ 1604 0056 3A       		.uleb128 0x3a
+ 1605 0057 0B       		.uleb128 0xb
+ 1606 0058 3B       		.uleb128 0x3b
+ 1607 0059 0B       		.uleb128 0xb
+ 1608 005a 49       		.uleb128 0x49
+ 1609 005b 13       		.uleb128 0x13
+ 1610 005c 02       		.uleb128 0x2
+ 1611 005d 0A       		.uleb128 0xa
+ 1612 005e 00       		.byte	0x0
+ 1613 005f 00       		.byte	0x0
+ 1614 0060 07       		.uleb128 0x7
+ 1615 0061 34       		.uleb128 0x34
+ 1616 0062 00       		.byte	0x0
+ 1617 0063 03       		.uleb128 0x3
+ 1618 0064 08       		.uleb128 0x8
+ 1619 0065 3A       		.uleb128 0x3a
+ 1620 0066 0B       		.uleb128 0xb
+ 1621 0067 3B       		.uleb128 0x3b
+ 1622 0068 0B       		.uleb128 0xb
+ 1623 0069 49       		.uleb128 0x49
+ 1624 006a 13       		.uleb128 0x13
+ 1625 006b 02       		.uleb128 0x2
+ 1626 006c 0A       		.uleb128 0xa
+ 1627 006d 00       		.byte	0x0
+ 1628 006e 00       		.byte	0x0
+ 1629 006f 08       		.uleb128 0x8
+ 1630 0070 2E       		.uleb128 0x2e
+ 1631 0071 01       		.byte	0x1
+ 1632 0072 3F       		.uleb128 0x3f
+ 1633 0073 0C       		.uleb128 0xc
+ 1634 0074 03       		.uleb128 0x3
+ 1635 0075 0E       		.uleb128 0xe
+ 1636 0076 3A       		.uleb128 0x3a
+ 1637 0077 0B       		.uleb128 0xb
+ 1638 0078 3B       		.uleb128 0x3b
+ 1639 0079 05       		.uleb128 0x5
+ 1640 007a 27       		.uleb128 0x27
+ 1641 007b 0C       		.uleb128 0xc
+ 1642 007c 11       		.uleb128 0x11
+ 1643 007d 01       		.uleb128 0x1
+ 1644 007e 12       		.uleb128 0x12
+ 1645 007f 01       		.uleb128 0x1
+ 1646 0080 40       		.uleb128 0x40
+ 1647 0081 06       		.uleb128 0x6
+ 1648 0082 01       		.uleb128 0x1
+ 1649 0083 13       		.uleb128 0x13
+ 1650 0084 00       		.byte	0x0
+ 1651 0085 00       		.byte	0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 43
+
+
+ 1652 0086 09       		.uleb128 0x9
+ 1653 0087 34       		.uleb128 0x34
+ 1654 0088 00       		.byte	0x0
+ 1655 0089 03       		.uleb128 0x3
+ 1656 008a 08       		.uleb128 0x8
+ 1657 008b 3A       		.uleb128 0x3a
+ 1658 008c 0B       		.uleb128 0xb
+ 1659 008d 3B       		.uleb128 0x3b
+ 1660 008e 05       		.uleb128 0x5
+ 1661 008f 49       		.uleb128 0x49
+ 1662 0090 13       		.uleb128 0x13
+ 1663 0091 02       		.uleb128 0x2
+ 1664 0092 0A       		.uleb128 0xa
+ 1665 0093 00       		.byte	0x0
+ 1666 0094 00       		.byte	0x0
+ 1667 0095 0A       		.uleb128 0xa
+ 1668 0096 05       		.uleb128 0x5
+ 1669 0097 00       		.byte	0x0
+ 1670 0098 03       		.uleb128 0x3
+ 1671 0099 0E       		.uleb128 0xe
+ 1672 009a 3A       		.uleb128 0x3a
+ 1673 009b 0B       		.uleb128 0xb
+ 1674 009c 3B       		.uleb128 0x3b
+ 1675 009d 05       		.uleb128 0x5
+ 1676 009e 49       		.uleb128 0x49
+ 1677 009f 13       		.uleb128 0x13
+ 1678 00a0 02       		.uleb128 0x2
+ 1679 00a1 0A       		.uleb128 0xa
+ 1680 00a2 00       		.byte	0x0
+ 1681 00a3 00       		.byte	0x0
+ 1682 00a4 0B       		.uleb128 0xb
+ 1683 00a5 34       		.uleb128 0x34
+ 1684 00a6 00       		.byte	0x0
+ 1685 00a7 03       		.uleb128 0x3
+ 1686 00a8 0E       		.uleb128 0xe
+ 1687 00a9 3A       		.uleb128 0x3a
+ 1688 00aa 0B       		.uleb128 0xb
+ 1689 00ab 3B       		.uleb128 0x3b
+ 1690 00ac 05       		.uleb128 0x5
+ 1691 00ad 49       		.uleb128 0x49
+ 1692 00ae 13       		.uleb128 0x13
+ 1693 00af 02       		.uleb128 0x2
+ 1694 00b0 0A       		.uleb128 0xa
+ 1695 00b1 00       		.byte	0x0
+ 1696 00b2 00       		.byte	0x0
+ 1697 00b3 0C       		.uleb128 0xc
+ 1698 00b4 2E       		.uleb128 0x2e
+ 1699 00b5 01       		.byte	0x1
+ 1700 00b6 03       		.uleb128 0x3
+ 1701 00b7 0E       		.uleb128 0xe
+ 1702 00b8 3A       		.uleb128 0x3a
+ 1703 00b9 0B       		.uleb128 0xb
+ 1704 00ba 3B       		.uleb128 0x3b
+ 1705 00bb 05       		.uleb128 0x5
+ 1706 00bc 27       		.uleb128 0x27
+ 1707 00bd 0C       		.uleb128 0xc
+ 1708 00be 49       		.uleb128 0x49
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 44
+
+
+ 1709 00bf 13       		.uleb128 0x13
+ 1710 00c0 11       		.uleb128 0x11
+ 1711 00c1 01       		.uleb128 0x1
+ 1712 00c2 12       		.uleb128 0x12
+ 1713 00c3 01       		.uleb128 0x1
+ 1714 00c4 40       		.uleb128 0x40
+ 1715 00c5 06       		.uleb128 0x6
+ 1716 00c6 01       		.uleb128 0x1
+ 1717 00c7 13       		.uleb128 0x13
+ 1718 00c8 00       		.byte	0x0
+ 1719 00c9 00       		.byte	0x0
+ 1720 00ca 0D       		.uleb128 0xd
+ 1721 00cb 2E       		.uleb128 0x2e
+ 1722 00cc 00       		.byte	0x0
+ 1723 00cd 03       		.uleb128 0x3
+ 1724 00ce 0E       		.uleb128 0xe
+ 1725 00cf 3A       		.uleb128 0x3a
+ 1726 00d0 0B       		.uleb128 0xb
+ 1727 00d1 3B       		.uleb128 0x3b
+ 1728 00d2 05       		.uleb128 0x5
+ 1729 00d3 27       		.uleb128 0x27
+ 1730 00d4 0C       		.uleb128 0xc
+ 1731 00d5 11       		.uleb128 0x11
+ 1732 00d6 01       		.uleb128 0x1
+ 1733 00d7 12       		.uleb128 0x12
+ 1734 00d8 01       		.uleb128 0x1
+ 1735 00d9 40       		.uleb128 0x40
+ 1736 00da 06       		.uleb128 0x6
+ 1737 00db 00       		.byte	0x0
+ 1738 00dc 00       		.byte	0x0
+ 1739 00dd 0E       		.uleb128 0xe
+ 1740 00de 2E       		.uleb128 0x2e
+ 1741 00df 01       		.byte	0x1
+ 1742 00e0 03       		.uleb128 0x3
+ 1743 00e1 0E       		.uleb128 0xe
+ 1744 00e2 3A       		.uleb128 0x3a
+ 1745 00e3 0B       		.uleb128 0xb
+ 1746 00e4 3B       		.uleb128 0x3b
+ 1747 00e5 05       		.uleb128 0x5
+ 1748 00e6 27       		.uleb128 0x27
+ 1749 00e7 0C       		.uleb128 0xc
+ 1750 00e8 11       		.uleb128 0x11
+ 1751 00e9 01       		.uleb128 0x1
+ 1752 00ea 12       		.uleb128 0x12
+ 1753 00eb 01       		.uleb128 0x1
+ 1754 00ec 40       		.uleb128 0x40
+ 1755 00ed 06       		.uleb128 0x6
+ 1756 00ee 01       		.uleb128 0x1
+ 1757 00ef 13       		.uleb128 0x13
+ 1758 00f0 00       		.byte	0x0
+ 1759 00f1 00       		.byte	0x0
+ 1760 00f2 0F       		.uleb128 0xf
+ 1761 00f3 34       		.uleb128 0x34
+ 1762 00f4 00       		.byte	0x0
+ 1763 00f5 03       		.uleb128 0x3
+ 1764 00f6 0E       		.uleb128 0xe
+ 1765 00f7 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 45
+
+
+ 1766 00f8 0B       		.uleb128 0xb
+ 1767 00f9 3B       		.uleb128 0x3b
+ 1768 00fa 0B       		.uleb128 0xb
+ 1769 00fb 49       		.uleb128 0x49
+ 1770 00fc 13       		.uleb128 0x13
+ 1771 00fd 02       		.uleb128 0x2
+ 1772 00fe 0A       		.uleb128 0xa
+ 1773 00ff 00       		.byte	0x0
+ 1774 0100 00       		.byte	0x0
+ 1775 0101 10       		.uleb128 0x10
+ 1776 0102 01       		.uleb128 0x1
+ 1777 0103 01       		.byte	0x1
+ 1778 0104 49       		.uleb128 0x49
+ 1779 0105 13       		.uleb128 0x13
+ 1780 0106 01       		.uleb128 0x1
+ 1781 0107 13       		.uleb128 0x13
+ 1782 0108 00       		.byte	0x0
+ 1783 0109 00       		.byte	0x0
+ 1784 010a 11       		.uleb128 0x11
+ 1785 010b 21       		.uleb128 0x21
+ 1786 010c 00       		.byte	0x0
+ 1787 010d 49       		.uleb128 0x49
+ 1788 010e 13       		.uleb128 0x13
+ 1789 010f 2F       		.uleb128 0x2f
+ 1790 0110 05       		.uleb128 0x5
+ 1791 0111 00       		.byte	0x0
+ 1792 0112 00       		.byte	0x0
+ 1793 0113 12       		.uleb128 0x12
+ 1794 0114 24       		.uleb128 0x24
+ 1795 0115 00       		.byte	0x0
+ 1796 0116 0B       		.uleb128 0xb
+ 1797 0117 0B       		.uleb128 0xb
+ 1798 0118 3E       		.uleb128 0x3e
+ 1799 0119 0B       		.uleb128 0xb
+ 1800 011a 00       		.byte	0x0
+ 1801 011b 00       		.byte	0x0
+ 1802 011c 13       		.uleb128 0x13
+ 1803 011d 34       		.uleb128 0x34
+ 1804 011e 00       		.byte	0x0
+ 1805 011f 03       		.uleb128 0x3
+ 1806 0120 0E       		.uleb128 0xe
+ 1807 0121 3A       		.uleb128 0x3a
+ 1808 0122 0B       		.uleb128 0xb
+ 1809 0123 3B       		.uleb128 0x3b
+ 1810 0124 0B       		.uleb128 0xb
+ 1811 0125 49       		.uleb128 0x49
+ 1812 0126 13       		.uleb128 0x13
+ 1813 0127 3F       		.uleb128 0x3f
+ 1814 0128 0C       		.uleb128 0xc
+ 1815 0129 02       		.uleb128 0x2
+ 1816 012a 0A       		.uleb128 0xa
+ 1817 012b 00       		.byte	0x0
+ 1818 012c 00       		.byte	0x0
+ 1819 012d 00       		.byte	0x0
+ 1820              		.section	.debug_pubnames,"",%progbits
+ 1821 0000 92000000 		.4byte	0x92
+ 1822 0004 0200     		.2byte	0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 46
+
+
+ 1823 0006 00000000 		.4byte	.Ldebug_info0
+ 1824 000a FE020000 		.4byte	0x2fe
+ 1825 000e AD000000 		.4byte	0xad
+ 1826 0012 50726F62 		.ascii	"ProbeRS232_Init\000"
+ 1826      65525332 
+ 1826      33325F49 
+ 1826      6E697400 
+ 1827 0022 E6000000 		.4byte	0xe6
+ 1828 0026 50726F62 		.ascii	"ProbeRS232_Task\000"
+ 1828      65525332 
+ 1828      33325F54 
+ 1828      61736B00 
+ 1829 0036 10010000 		.4byte	0x110
+ 1830 003a 50726F62 		.ascii	"ProbeRS232_RxHandler\000"
+ 1830      65525332 
+ 1830      33325F52 
+ 1830      7848616E 
+ 1830      646C6572 
+ 1831 004f 3A010000 		.4byte	0x13a
+ 1832 0053 50726F62 		.ascii	"ProbeRS232_TxHandler\000"
+ 1832      65525332 
+ 1832      33325F54 
+ 1832      7848616E 
+ 1832      646C6572 
+ 1833 0068 D9020000 		.4byte	0x2d9
+ 1834 006c 50726F62 		.ascii	"ProbeRS232_RxCtr\000"
+ 1834      65525332 
+ 1834      33325F52 
+ 1834      78437472 
+ 1834      00
+ 1835 007d EB020000 		.4byte	0x2eb
+ 1836 0081 50726F62 		.ascii	"ProbeRS232_TxCtr\000"
+ 1836      65525332 
+ 1836      33325F54 
+ 1836      78437472 
+ 1836      00
+ 1837 0092 00000000 		.4byte	0x0
+ 1838              		.section	.debug_aranges,"",%progbits
+ 1839 0000 5C000000 		.4byte	0x5c
+ 1840 0004 0200     		.2byte	0x2
+ 1841 0006 00000000 		.4byte	.Ldebug_info0
+ 1842 000a 04       		.byte	0x4
+ 1843 000b 00       		.byte	0x0
+ 1844 000c 0000     		.2byte	0x0
+ 1845 000e 0000     		.2byte	0x0
+ 1846 0010 00000000 		.4byte	.LFB0
+ 1847 0014 92000000 		.4byte	.LFE0-.LFB0
+ 1848 0018 00000000 		.4byte	.LFB1
+ 1849 001c 2E000000 		.4byte	.LFE1-.LFB1
+ 1850 0020 00000000 		.4byte	.LFB2
+ 1851 0024 34020000 		.4byte	.LFE2-.LFB2
+ 1852 0028 00000000 		.4byte	.LFB3
+ 1853 002c 78020000 		.4byte	.LFE3-.LFB3
+ 1854 0030 00000000 		.4byte	.LFB4
+ 1855 0034 5C000000 		.4byte	.LFE4-.LFB4
+ 1856 0038 00000000 		.4byte	.LFB5
+ 1857 003c 0A000000 		.4byte	.LFE5-.LFB5
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 47
+
+
+ 1858 0040 00000000 		.4byte	.LFB6
+ 1859 0044 4A000000 		.4byte	.LFE6-.LFB6
+ 1860 0048 00000000 		.4byte	.LFB7
+ 1861 004c 18000000 		.4byte	.LFE7-.LFB7
+ 1862 0050 00000000 		.4byte	.LFB8
+ 1863 0054 1C000000 		.4byte	.LFE8-.LFB8
+ 1864 0058 00000000 		.4byte	0x0
+ 1865 005c 00000000 		.4byte	0x0
+ 1866              		.section	.debug_ranges,"",%progbits
+ 1867              	.Ldebug_ranges0:
+ 1868 0000 00000000 		.4byte	.Ltext0
+ 1869 0004 00000000 		.4byte	.Letext0
+ 1870 0008 00000000 		.4byte	.LFB0
+ 1871 000c 92000000 		.4byte	.LFE0
+ 1872 0010 00000000 		.4byte	.LFB1
+ 1873 0014 2E000000 		.4byte	.LFE1
+ 1874 0018 00000000 		.4byte	.LFB2
+ 1875 001c 34020000 		.4byte	.LFE2
+ 1876 0020 00000000 		.4byte	.LFB3
+ 1877 0024 78020000 		.4byte	.LFE3
+ 1878 0028 00000000 		.4byte	.LFB4
+ 1879 002c 5C000000 		.4byte	.LFE4
+ 1880 0030 00000000 		.4byte	.LFB5
+ 1881 0034 0A000000 		.4byte	.LFE5
+ 1882 0038 00000000 		.4byte	.LFB6
+ 1883 003c 4A000000 		.4byte	.LFE6
+ 1884 0040 00000000 		.4byte	.LFB7
+ 1885 0044 18000000 		.4byte	.LFE7
+ 1886 0048 00000000 		.4byte	.LFB8
+ 1887 004c 1C000000 		.4byte	.LFE8
+ 1888 0050 00000000 		.4byte	0x0
+ 1889 0054 00000000 		.4byte	0x0
+ 1890              		.section	.debug_str,"MS",%progbits,1
+ 1891              	.LASF43:
+ 1892 0000 50726F62 		.ascii	"ProbeRS232_ParseRxPkt\000"
+ 1892      65525332 
+ 1892      33325F50 
+ 1892      61727365 
+ 1892      5278506B 
+ 1893              	.LASF24:
+ 1894 0016 50726F62 		.ascii	"ProbeRS232_TxStart\000"
+ 1894      65525332 
+ 1894      33325F54 
+ 1894      78537461 
+ 1894      727400
+ 1895              	.LASF37:
+ 1896 0029 50726F62 		.ascii	"ProbeRS232_RxCtr\000"
+ 1896      65525332 
+ 1896      33325F52 
+ 1896      78437472 
+ 1896      00
+ 1897              	.LASF34:
+ 1898 003a 50726F62 		.ascii	"ProbeRS232_TxBuf\000"
+ 1898      65525332 
+ 1898      33325F54 
+ 1898      78427566 
+ 1898      00
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 48
+
+
+ 1899              	.LASF31:
+ 1900 004b 50726F62 		.ascii	"ProbeRS232_TxState\000"
+ 1900      65525332 
+ 1900      33325F54 
+ 1900      78537461 
+ 1900      746500
+ 1901              	.LASF6:
+ 1902 005e 73686F72 		.ascii	"short int\000"
+ 1902      7420696E 
+ 1902      7400
+ 1903              	.LASF22:
+ 1904 0068 50726F62 		.ascii	"ProbeRS232_RxPkt\000"
+ 1904      65525332 
+ 1904      33325F52 
+ 1904      78506B74 
+ 1904      00
+ 1905              	.LASF36:
+ 1906 0079 50726F62 		.ascii	"ProbeRS232_TxBufRdIx\000"
+ 1906      65525332 
+ 1906      33325F54 
+ 1906      78427566 
+ 1906      52644978 
+ 1907              	.LASF15:
+ 1908 008e 50726F62 		.ascii	"ProbeRS232_Task\000"
+ 1908      65525332 
+ 1908      33325F54 
+ 1908      61736B00 
+ 1909              	.LASF23:
+ 1910 009e 50726F62 		.ascii	"ProbeRS232_RxBufClr\000"
+ 1910      65525332 
+ 1910      33325F52 
+ 1910      78427566 
+ 1910      436C7200 
+ 1911              	.LASF42:
+ 1912 00b2 50726F62 		.ascii	"ProbeRS232_Init\000"
+ 1912      65525332 
+ 1912      33325F49 
+ 1912      6E697400 
+ 1913              	.LASF35:
+ 1914 00c2 50726F62 		.ascii	"ProbeRS232_TxBufInUse\000"
+ 1914      65525332 
+ 1914      33325F54 
+ 1914      78427566 
+ 1914      496E5573 
+ 1915              	.LASF17:
+ 1916 00d8 62617564 		.ascii	"baud_rate\000"
+ 1916      5F726174 
+ 1916      6500
+ 1917              	.LASF21:
+ 1918 00e2 74785F6C 		.ascii	"tx_len\000"
+ 1918      656E00
+ 1919              	.LASF13:
+ 1920 00e9 4350555F 		.ascii	"CPU_ADDR\000"
+ 1920      41444452 
+ 1920      00
+ 1921              	.LASF11:
+ 1922 00f2 666C6F61 		.ascii	"float\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 49
+
+
+ 1922      7400
+ 1923              	.LASF10:
+ 1924 00f8 6C6F6E67 		.ascii	"long long int\000"
+ 1924      206C6F6E 
+ 1924      6720696E 
+ 1924      7400
+ 1925              	.LASF2:
+ 1926 0106 4350555F 		.ascii	"CPU_BOOLEAN\000"
+ 1926      424F4F4C 
+ 1926      45414E00 
+ 1927              	.LASF27:
+ 1928 0112 50726F62 		.ascii	"ProbeRS232_RxPktCtr\000"
+ 1928      65525332 
+ 1928      33325F52 
+ 1928      78506B74 
+ 1928      43747200 
+ 1929              	.LASF29:
+ 1930 0126 50726F62 		.ascii	"ProbeRS232_RxBuf\000"
+ 1930      65525332 
+ 1930      33325F52 
+ 1930      78427566 
+ 1930      00
+ 1931              	.LASF25:
+ 1932 0137 50726F62 		.ascii	"ProbeRS232_RxState\000"
+ 1932      65525332 
+ 1932      33325F52 
+ 1932      78537461 
+ 1932      746500
+ 1933              	.LASF26:
+ 1934 014a 50726F62 		.ascii	"ProbeRS232_RxLenRem\000"
+ 1934      65525332 
+ 1934      33325F52 
+ 1934      784C656E 
+ 1934      52656D00 
+ 1935              	.LASF1:
+ 1936 015e 756E7369 		.ascii	"unsigned char\000"
+ 1936      676E6564 
+ 1936      20636861 
+ 1936      7200
+ 1937              	.LASF16:
+ 1938 016c 50726F62 		.ascii	"ProbeRS232_RxHandler\000"
+ 1938      65525332 
+ 1938      33325F52 
+ 1938      7848616E 
+ 1938      646C6572 
+ 1939              	.LASF4:
+ 1940 0181 7369676E 		.ascii	"signed char\000"
+ 1940      65642063 
+ 1940      68617200 
+ 1941              	.LASF9:
+ 1942 018d 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1942      206C6F6E 
+ 1942      6720756E 
+ 1942      7369676E 
+ 1942      65642069 
+ 1943              	.LASF8:
+ 1944 01a4 756E7369 		.ascii	"unsigned int\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 50
+
+
+ 1944      676E6564 
+ 1944      20696E74 
+ 1944      00
+ 1945              	.LASF19:
+ 1946 01b1 50726F62 		.ascii	"ProbeRS232_TxHandler\000"
+ 1946      65525332 
+ 1946      33325F54 
+ 1946      7848616E 
+ 1946      646C6572 
+ 1947              	.LASF5:
+ 1948 01c6 73686F72 		.ascii	"short unsigned int\000"
+ 1948      7420756E 
+ 1948      7369676E 
+ 1948      65642069 
+ 1948      6E7400
+ 1949              	.LASF3:
+ 1950 01d9 4350555F 		.ascii	"CPU_INT08U\000"
+ 1950      494E5430 
+ 1950      385500
+ 1951              	.LASF0:
+ 1952 01e4 63686172 		.ascii	"char\000"
+ 1952      00
+ 1953              	.LASF41:
+ 1954 01e9 433A5C55 		.ascii	"C:\\Users\\daniel01\\Desktop\\CY8CKIT-050_uCOS-III\\"
+ 1954      73657273 
+ 1954      5C64616E 
+ 1954      69656C30 
+ 1954      315C4465 
+ 1955 0218 43593843 		.ascii	"CY8CKIT-050_uCOS-III\\Micrium\\Software\\EvalBoards"
+ 1955      4B49542D 
+ 1955      3035305F 
+ 1955      75434F53 
+ 1955      2D494949 
+ 1956 0248 5C437970 		.ascii	"\\Cypress\\CY8CKIT-050\\PSoC\\uCOS-III-Probe\\uCOS-"
+ 1956      72657373 
+ 1956      5C435938 
+ 1956      434B4954 
+ 1956      2D303530 
+ 1957 0276 4949492D 		.ascii	"III-Probe.cydsn\000"
+ 1957      50726F62 
+ 1957      652E6379 
+ 1957      64736E00 
+ 1958              	.LASF7:
+ 1959 0286 4350555F 		.ascii	"CPU_INT32U\000"
+ 1959      494E5433 
+ 1959      325500
+ 1960              	.LASF33:
+ 1961 0291 50726F62 		.ascii	"ProbeRS232_TxLen\000"
+ 1961      65525332 
+ 1961      33325F54 
+ 1961      784C656E 
+ 1961      00
+ 1962              	.LASF32:
+ 1963 02a2 50726F62 		.ascii	"ProbeRS232_TxActiveFlag\000"
+ 1963      65525332 
+ 1963      33325F54 
+ 1963      78416374 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccRUCUlV.s 			page 51
+
+
+ 1963      69766546 
+ 1964              	.LASF44:
+ 1965 02ba 50726F62 		.ascii	"ProbeRS232_RxStoINT8U\000"
+ 1965      65525332 
+ 1965      33325F52 
+ 1965      7853746F 
+ 1965      494E5438 
+ 1966              	.LASF40:
+ 1967 02d0 2E2E5C2E 		.ascii	"..\\..\\..\\..\\..\\..\\uC-Probe\\Target\\Communica"
+ 1967      2E5C2E2E 
+ 1967      5C2E2E5C 
+ 1967      2E2E5C2E 
+ 1967      2E5C7543 
+ 1968 02fb 74696F6E 		.ascii	"tion\\Generic\\RS-232\\Source\\probe_rs232.c\000"
+ 1968      5C47656E 
+ 1968      65726963 
+ 1968      5C52532D 
+ 1968      3233325C 
+ 1969              	.LASF38:
+ 1970 0324 50726F62 		.ascii	"ProbeRS232_TxCtr\000"
+ 1970      65525332 
+ 1970      33325F54 
+ 1970      78437472 
+ 1970      00
+ 1971              	.LASF12:
+ 1972 0335 646F7562 		.ascii	"double\000"
+ 1972      6C6500
+ 1973              	.LASF30:
+ 1974 033c 50726F62 		.ascii	"ProbeRS232_RxBufWrIx\000"
+ 1974      65525332 
+ 1974      33325F52 
+ 1974      78427566 
+ 1974      57724978 
+ 1975              	.LASF14:
+ 1976 0351 4350555F 		.ascii	"CPU_SIZE_T\000"
+ 1976      53495A45 
+ 1976      5F5400
+ 1977              	.LASF18:
+ 1978 035c 72785F64 		.ascii	"rx_data\000"
+ 1978      61746100 
+ 1979              	.LASF39:
+ 1980 0364 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 1980      4320342E 
+ 1980      342E3100 
+ 1981              	.LASF28:
+ 1982 0370 50726F62 		.ascii	"ProbeRS232_RxLen\000"
+ 1982      65525332 
+ 1982      33325F52 
+ 1982      784C656E 
+ 1982      00
+ 1983              	.LASF20:
+ 1984 0381 74785F64 		.ascii	"tx_data\000"
+ 1984      61746100 
+ 1985              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

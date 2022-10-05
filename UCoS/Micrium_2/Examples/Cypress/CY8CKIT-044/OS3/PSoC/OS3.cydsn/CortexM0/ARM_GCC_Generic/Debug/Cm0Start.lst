@@ -1,0 +1,4644 @@
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"Cm0Start.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.IntDefaultHandler,"ax",%progbits
+  16              		.align	1
+  17              		.global	IntDefaultHandler
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  23              		.type	IntDefaultHandler, %function
+  24              	IntDefaultHandler:
+  25              	.LFB0:
+  26              		.file 1 "Generated_Source\\PSoC4\\Cm0Start.c"
+   1:Generated_Source\PSoC4/Cm0Start.c **** /***************************************************************************//**
+   2:Generated_Source\PSoC4/Cm0Start.c **** * \file Cm0Start.c
+   3:Generated_Source\PSoC4/Cm0Start.c **** * \version 5.80
+   4:Generated_Source\PSoC4/Cm0Start.c **** *
+   5:Generated_Source\PSoC4/Cm0Start.c **** * \brief Startup code for the ARM CM0.
+   6:Generated_Source\PSoC4/Cm0Start.c **** *
+   7:Generated_Source\PSoC4/Cm0Start.c **** ********************************************************************************
+   8:Generated_Source\PSoC4/Cm0Start.c **** * \copyright
+   9:Generated_Source\PSoC4/Cm0Start.c **** * Copyright 2010-2018, Cypress Semiconductor Corporation.  All rights reserved.
+  10:Generated_Source\PSoC4/Cm0Start.c **** * You may use this file only in accordance with the license, terms, conditions,
+  11:Generated_Source\PSoC4/Cm0Start.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  12:Generated_Source\PSoC4/Cm0Start.c **** * the software package with which this file was provided.
+  13:Generated_Source\PSoC4/Cm0Start.c **** *******************************************************************************/
+  14:Generated_Source\PSoC4/Cm0Start.c **** 
+  15:Generated_Source\PSoC4/Cm0Start.c **** #include <limits.h>
+  16:Generated_Source\PSoC4/Cm0Start.c **** #include "cydevice_trm.h"
+  17:Generated_Source\PSoC4/Cm0Start.c **** #include "cytypes.h"
+  18:Generated_Source\PSoC4/Cm0Start.c **** #include "cyfitter_cfg.h"
+  19:Generated_Source\PSoC4/Cm0Start.c **** #include "CyLib.h"
+  20:Generated_Source\PSoC4/Cm0Start.c **** #include "cyfitter.h"
+  21:Generated_Source\PSoC4/Cm0Start.c **** 
+  22:Generated_Source\PSoC4/Cm0Start.c **** 
+  23:Generated_Source\PSoC4/Cm0Start.c **** #define CY_NUM_VECTORS              (CY_INT_IRQ_BASE + CY_NUM_INTERRUPTS)
+  24:Generated_Source\PSoC4/Cm0Start.c **** 
+  25:Generated_Source\PSoC4/Cm0Start.c **** #if (CY_IP_CPUSS_CM0)
+  26:Generated_Source\PSoC4/Cm0Start.c ****     #define CY_CPUSS_CONFIG_VECT_IN_RAM (( uint32 ) 0x01)
+  27:Generated_Source\PSoC4/Cm0Start.c **** #endif /* (CY_IP_CPUSS_CM0) */
+  28:Generated_Source\PSoC4/Cm0Start.c **** 
+  29:Generated_Source\PSoC4/Cm0Start.c **** 
+  30:Generated_Source\PSoC4/Cm0Start.c **** #if (CY_IP_CPUSS_CM0)
+  31:Generated_Source\PSoC4/Cm0Start.c ****     /* CPUSS Configuration register */
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 2
+
+
+  32:Generated_Source\PSoC4/Cm0Start.c ****     #define CY_CPUSS_CONFIG_REG         (*(reg32 *) CYREG_CPUSS_CONFIG)
+  33:Generated_Source\PSoC4/Cm0Start.c ****     #define CY_CPUSS_CONFIG_PTR         ( (reg32 *) CYREG_CPUSS_CONFIG)
+  34:Generated_Source\PSoC4/Cm0Start.c **** #endif /* (CY_IP_CPUSS_CM0) */
+  35:Generated_Source\PSoC4/Cm0Start.c **** 
+  36:Generated_Source\PSoC4/Cm0Start.c **** 
+  37:Generated_Source\PSoC4/Cm0Start.c **** #if defined (__ICCARM__)
+  38:Generated_Source\PSoC4/Cm0Start.c ****     #define CY_NUM_ROM_VECTORS      (CY_NUM_VECTORS)
+  39:Generated_Source\PSoC4/Cm0Start.c **** #else
+  40:Generated_Source\PSoC4/Cm0Start.c ****     #define CY_NUM_ROM_VECTORS      (4u)
+  41:Generated_Source\PSoC4/Cm0Start.c **** #endif  /* defined (__ICCARM__) */
+  42:Generated_Source\PSoC4/Cm0Start.c **** 
+  43:Generated_Source\PSoC4/Cm0Start.c **** /* Vector table address in SRAM */
+  44:Generated_Source\PSoC4/Cm0Start.c **** #define CY_CPUSS_CONFIG_VECT_ADDR_IN_RAM    (0x20000000u)
+  45:Generated_Source\PSoC4/Cm0Start.c **** 
+  46:Generated_Source\PSoC4/Cm0Start.c **** #ifndef CY_SYS_INITIAL_STACK_POINTER
+  47:Generated_Source\PSoC4/Cm0Start.c **** 
+  48:Generated_Source\PSoC4/Cm0Start.c ****     #if defined(__ARMCC_VERSION)
+  49:Generated_Source\PSoC4/Cm0Start.c ****         #define CY_SYS_INITIAL_STACK_POINTER ((cyisraddress)(uint32)&Image$$ARM_LIB_STACK$$ZI$$Limi
+  50:Generated_Source\PSoC4/Cm0Start.c ****     #elif defined (__GNUC__)
+  51:Generated_Source\PSoC4/Cm0Start.c ****         #define CY_SYS_INITIAL_STACK_POINTER (&__cy_stack)
+  52:Generated_Source\PSoC4/Cm0Start.c ****     #elif defined (__ICCARM__)
+  53:Generated_Source\PSoC4/Cm0Start.c ****         #pragma language=extended
+  54:Generated_Source\PSoC4/Cm0Start.c ****         #pragma segment="CSTACK"
+  55:Generated_Source\PSoC4/Cm0Start.c ****         #define CY_SYS_INITIAL_STACK_POINTER  { .__ptr = __sfe( "CSTACK" ) }
+  56:Generated_Source\PSoC4/Cm0Start.c **** 
+  57:Generated_Source\PSoC4/Cm0Start.c ****         extern void __iar_program_start( void );
+  58:Generated_Source\PSoC4/Cm0Start.c ****         extern void __iar_data_init3 (void);
+  59:Generated_Source\PSoC4/Cm0Start.c ****     #endif  /* (__ARMCC_VERSION) */
+  60:Generated_Source\PSoC4/Cm0Start.c **** 
+  61:Generated_Source\PSoC4/Cm0Start.c **** #endif /* CY_SYS_INITIAL_STACK_POINTER */
+  62:Generated_Source\PSoC4/Cm0Start.c **** 
+  63:Generated_Source\PSoC4/Cm0Start.c **** 
+  64:Generated_Source\PSoC4/Cm0Start.c **** #if defined(__GNUC__)
+  65:Generated_Source\PSoC4/Cm0Start.c ****     #include <errno.h>
+  66:Generated_Source\PSoC4/Cm0Start.c ****     extern int  end;
+  67:Generated_Source\PSoC4/Cm0Start.c **** #endif  /* defined(__GNUC__) */
+  68:Generated_Source\PSoC4/Cm0Start.c **** 
+  69:Generated_Source\PSoC4/Cm0Start.c **** /* Extern functions */
+  70:Generated_Source\PSoC4/Cm0Start.c **** extern void CyBtldr_CheckLaunch(void);
+  71:Generated_Source\PSoC4/Cm0Start.c **** 
+  72:Generated_Source\PSoC4/Cm0Start.c **** /* Function prototypes */
+  73:Generated_Source\PSoC4/Cm0Start.c **** void initialize_psoc(void);
+  74:Generated_Source\PSoC4/Cm0Start.c **** 
+  75:Generated_Source\PSoC4/Cm0Start.c **** /* Global variables */
+  76:Generated_Source\PSoC4/Cm0Start.c **** #if !defined (__ICCARM__)
+  77:Generated_Source\PSoC4/Cm0Start.c ****     CY_NOINIT static uint32 cySysNoInitDataValid;
+  78:Generated_Source\PSoC4/Cm0Start.c **** #endif  /* !defined (__ICCARM__) */
+  79:Generated_Source\PSoC4/Cm0Start.c **** 
+  80:Generated_Source\PSoC4/Cm0Start.c **** 
+  81:Generated_Source\PSoC4/Cm0Start.c **** #if (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_STANDARD)
+  82:Generated_Source\PSoC4/Cm0Start.c **** 
+  83:Generated_Source\PSoC4/Cm0Start.c ****     /*******************************************************************************
+  84:Generated_Source\PSoC4/Cm0Start.c ****     This variable is used by the Bootloader/Bootloadable components to schedule
+  85:Generated_Source\PSoC4/Cm0Start.c ****     what application will be started after a software reset.
+  86:Generated_Source\PSoC4/Cm0Start.c ****     *******************************************************************************/
+  87:Generated_Source\PSoC4/Cm0Start.c ****     #if (__ARMCC_VERSION)
+  88:Generated_Source\PSoC4/Cm0Start.c ****         __attribute__ ((section(".bootloaderruntype"), zero_init))
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 3
+
+
+  89:Generated_Source\PSoC4/Cm0Start.c ****     #elif defined (__GNUC__)
+  90:Generated_Source\PSoC4/Cm0Start.c ****         __attribute__ ((section(".bootloaderruntype")))
+  91:Generated_Source\PSoC4/Cm0Start.c ****     #elif defined (__ICCARM__)
+  92:Generated_Source\PSoC4/Cm0Start.c ****         #pragma location=".bootloaderruntype"
+  93:Generated_Source\PSoC4/Cm0Start.c ****     #endif /* (__ARMCC_VERSION) */
+  94:Generated_Source\PSoC4/Cm0Start.c ****     volatile uint32 cyBtldrRunType;
+  95:Generated_Source\PSoC4/Cm0Start.c **** 
+  96:Generated_Source\PSoC4/Cm0Start.c **** #endif  /* (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_STANDARD) */
+  97:Generated_Source\PSoC4/Cm0Start.c **** 
+  98:Generated_Source\PSoC4/Cm0Start.c **** 
+  99:Generated_Source\PSoC4/Cm0Start.c **** /*******************************************************************************
+ 100:Generated_Source\PSoC4/Cm0Start.c **** * Function Name: IntDefaultHandler
+ 101:Generated_Source\PSoC4/Cm0Start.c **** ****************************************************************************//**
+ 102:Generated_Source\PSoC4/Cm0Start.c **** *
+ 103:Generated_Source\PSoC4/Cm0Start.c **** *  This function is called for all interrupts, other than a reset that is called
+ 104:Generated_Source\PSoC4/Cm0Start.c **** *  before the system is setup.
+ 105:Generated_Source\PSoC4/Cm0Start.c **** *
+ 106:Generated_Source\PSoC4/Cm0Start.c **** *******************************************************************************/
+ 107:Generated_Source\PSoC4/Cm0Start.c **** CY_NORETURN
+ 108:Generated_Source\PSoC4/Cm0Start.c **** CY_ISR(IntDefaultHandler)
+ 109:Generated_Source\PSoC4/Cm0Start.c **** {
+  27              		.loc 1 109 1 view -0
+  28              		.cfi_startproc
+  29              		@ Volatile: function does not return.
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 10B5     		push	{r4, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+ 110:Generated_Source\PSoC4/Cm0Start.c ****     /***************************************************************************
+ 111:Generated_Source\PSoC4/Cm0Start.c ****     * We must not get here. If we do, a serious problem occurs, so go into
+ 112:Generated_Source\PSoC4/Cm0Start.c ****     * an infinite loop.
+ 113:Generated_Source\PSoC4/Cm0Start.c ****     ***************************************************************************/
+ 114:Generated_Source\PSoC4/Cm0Start.c **** 
+ 115:Generated_Source\PSoC4/Cm0Start.c ****     #if defined(__GNUC__)
+ 116:Generated_Source\PSoC4/Cm0Start.c ****         if (errno == ENOMEM)
+  36              		.loc 1 116 9 view .LVU1
+  37              		.loc 1 116 13 is_stmt 0 view .LVU2
+  38 0002 FFF7FEFF 		bl	__errno
+  39              	.LVL0:
+  40 0006 0368     		ldr	r3, [r0]
+  41              		.loc 1 116 12 view .LVU3
+  42 0008 0C2B     		cmp	r3, #12
+  43 000a 00D0     		beq	.L3
+  44              	.L2:
+ 117:Generated_Source\PSoC4/Cm0Start.c ****         {
+ 118:Generated_Source\PSoC4/Cm0Start.c ****             #ifdef CY_BOOT_INT_DEFAULT_HANDLER_ENOMEM_EXCEPTION_CALLBACK
+ 119:Generated_Source\PSoC4/Cm0Start.c ****                 CyBoot_IntDefaultHandler_Enomem_Exception_Callback();
+ 120:Generated_Source\PSoC4/Cm0Start.c ****             #endif /* CY_BOOT_INT_DEFAULT_HANDLER_ENOMEM_EXCEPTION_CALLBACK */
+ 121:Generated_Source\PSoC4/Cm0Start.c ****             
+ 122:Generated_Source\PSoC4/Cm0Start.c ****             while(1)
+ 123:Generated_Source\PSoC4/Cm0Start.c ****             {
+ 124:Generated_Source\PSoC4/Cm0Start.c ****                 /* Out Of Heap Space
+ 125:Generated_Source\PSoC4/Cm0Start.c ****                  * This can be increased in the System tab of the Design Wide Resources.
+ 126:Generated_Source\PSoC4/Cm0Start.c ****                  */
+ 127:Generated_Source\PSoC4/Cm0Start.c ****             }
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 4
+
+
+ 128:Generated_Source\PSoC4/Cm0Start.c ****         }
+ 129:Generated_Source\PSoC4/Cm0Start.c ****         else
+ 130:Generated_Source\PSoC4/Cm0Start.c ****     #endif
+ 131:Generated_Source\PSoC4/Cm0Start.c ****         {
+ 132:Generated_Source\PSoC4/Cm0Start.c ****             #ifdef CY_BOOT_INT_DEFAULT_HANDLER_EXCEPTION_ENTRY_CALLBACK
+ 133:Generated_Source\PSoC4/Cm0Start.c ****                 CyBoot_IntDefaultHandler_Exception_EntryCallback();
+ 134:Generated_Source\PSoC4/Cm0Start.c ****             #endif /* CY_BOOT_INT_DEFAULT_HANDLER_EXCEPTION_ENTRY_CALLBACK */
+ 135:Generated_Source\PSoC4/Cm0Start.c **** 
+ 136:Generated_Source\PSoC4/Cm0Start.c ****             while(1)
+  45              		.loc 1 136 13 is_stmt 1 discriminator 2 view .LVU4
+ 137:Generated_Source\PSoC4/Cm0Start.c ****             {
+ 138:Generated_Source\PSoC4/Cm0Start.c **** 
+ 139:Generated_Source\PSoC4/Cm0Start.c ****             }
+  46              		.loc 1 139 13 discriminator 2 view .LVU5
+  47 000c FEE7     		b	.L2
+  48              	.L3:
+ 122:Generated_Source\PSoC4/Cm0Start.c ****             {
+  49              		.loc 1 122 13 discriminator 1 view .LVU6
+ 127:Generated_Source\PSoC4/Cm0Start.c ****         }
+  50              		.loc 1 127 13 discriminator 1 view .LVU7
+  51 000e FEE7     		b	.L3
+  52              		.cfi_endproc
+  53              	.LFE0:
+  54              		.size	IntDefaultHandler, .-IntDefaultHandler
+  55              		.section	.text._exit,"ax",%progbits
+  56              		.align	1
+  57              		.weak	_exit
+  58              		.syntax unified
+  59              		.code	16
+  60              		.thumb_func
+  61              		.fpu softvfp
+  62              		.type	_exit, %function
+  63              	_exit:
+  64              	.LVL1:
+  65              	.LFB1:
+ 140:Generated_Source\PSoC4/Cm0Start.c ****         }
+ 141:Generated_Source\PSoC4/Cm0Start.c **** }
+ 142:Generated_Source\PSoC4/Cm0Start.c **** 
+ 143:Generated_Source\PSoC4/Cm0Start.c **** #if defined(__ARMCC_VERSION)
+ 144:Generated_Source\PSoC4/Cm0Start.c **** 
+ 145:Generated_Source\PSoC4/Cm0Start.c **** /* Local function for device reset. */
+ 146:Generated_Source\PSoC4/Cm0Start.c **** extern void Reset(void);
+ 147:Generated_Source\PSoC4/Cm0Start.c **** 
+ 148:Generated_Source\PSoC4/Cm0Start.c **** /* Application entry point. */
+ 149:Generated_Source\PSoC4/Cm0Start.c **** extern void $Super$$main(void);
+ 150:Generated_Source\PSoC4/Cm0Start.c **** 
+ 151:Generated_Source\PSoC4/Cm0Start.c **** /* Linker-generated Stack Base addresses, Two Region and One Region */
+ 152:Generated_Source\PSoC4/Cm0Start.c **** extern unsigned long Image$$ARM_LIB_STACK$$ZI$$Limit;
+ 153:Generated_Source\PSoC4/Cm0Start.c **** 
+ 154:Generated_Source\PSoC4/Cm0Start.c **** /* RealView C Library initialization. */
+ 155:Generated_Source\PSoC4/Cm0Start.c **** extern int __main(void);
+ 156:Generated_Source\PSoC4/Cm0Start.c **** 
+ 157:Generated_Source\PSoC4/Cm0Start.c **** 
+ 158:Generated_Source\PSoC4/Cm0Start.c **** /*******************************************************************************
+ 159:Generated_Source\PSoC4/Cm0Start.c **** * Function Name: Reset
+ 160:Generated_Source\PSoC4/Cm0Start.c **** ****************************************************************************//**
+ 161:Generated_Source\PSoC4/Cm0Start.c **** *
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 5
+
+
+ 162:Generated_Source\PSoC4/Cm0Start.c **** * This function handles the reset interrupt for the MDK toolchains.
+ 163:Generated_Source\PSoC4/Cm0Start.c **** * This is the first bit of code that is executed at startup.
+ 164:Generated_Source\PSoC4/Cm0Start.c **** *
+ 165:Generated_Source\PSoC4/Cm0Start.c **** *******************************************************************************/
+ 166:Generated_Source\PSoC4/Cm0Start.c **** void Reset(void)
+ 167:Generated_Source\PSoC4/Cm0Start.c **** {
+ 168:Generated_Source\PSoC4/Cm0Start.c ****     #if (CYDEV_PROJ_TYPE == CYDEV_PROJ_TYPE_LOADABLE || CYDEV_PROJ_TYPE == CYDEV_PROJ_TYPE_LOADABLE
+ 169:Generated_Source\PSoC4/Cm0Start.c ****         /* The bootloadable application image is started at Reset() handler
+ 170:Generated_Source\PSoC4/Cm0Start.c ****         * as a result of a branch instruction execution from the bootloader.
+ 171:Generated_Source\PSoC4/Cm0Start.c ****         * So, the stack pointer needs to be reset to be sure that
+ 172:Generated_Source\PSoC4/Cm0Start.c ****         * there is no garbage in the stack.
+ 173:Generated_Source\PSoC4/Cm0Start.c ****         */
+ 174:Generated_Source\PSoC4/Cm0Start.c ****         register uint32_t msp __asm("msp");
+ 175:Generated_Source\PSoC4/Cm0Start.c ****         msp = (uint32_t)&Image$$ARM_LIB_STACK$$ZI$$Limit;
+ 176:Generated_Source\PSoC4/Cm0Start.c ****     #endif /*(CYDEV_PROJ_TYPE == CYDEV_PROJ_TYPE_LOADABLE || CYDEV_PROJ_TYPE == CYDEV_PROJ_TYPE_LOA
+ 177:Generated_Source\PSoC4/Cm0Start.c **** 
+ 178:Generated_Source\PSoC4/Cm0Start.c ****     #if(CY_IP_SRSSLT)
+ 179:Generated_Source\PSoC4/Cm0Start.c ****         CySysWdtDisable();
+ 180:Generated_Source\PSoC4/Cm0Start.c ****     #endif  /* (CY_IP_SRSSLT) */
+ 181:Generated_Source\PSoC4/Cm0Start.c **** 
+ 182:Generated_Source\PSoC4/Cm0Start.c ****     #if ((CYDEV_BOOTLOADER_ENABLE) && (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_LOADABLEANDBOOTLOADER))
+ 183:Generated_Source\PSoC4/Cm0Start.c ****         CyBtldr_CheckLaunch();
+ 184:Generated_Source\PSoC4/Cm0Start.c ****     #endif /* ((CYDEV_BOOTLOADER_ENABLE) && (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_LOADABLEANDBOOTLOAD
+ 185:Generated_Source\PSoC4/Cm0Start.c **** 
+ 186:Generated_Source\PSoC4/Cm0Start.c ****     __main();
+ 187:Generated_Source\PSoC4/Cm0Start.c **** }
+ 188:Generated_Source\PSoC4/Cm0Start.c **** 
+ 189:Generated_Source\PSoC4/Cm0Start.c **** /*******************************************************************************
+ 190:Generated_Source\PSoC4/Cm0Start.c **** * Function Name: $Sub$$main
+ 191:Generated_Source\PSoC4/Cm0Start.c **** ****************************************************************************//**
+ 192:Generated_Source\PSoC4/Cm0Start.c **** *
+ 193:Generated_Source\PSoC4/Cm0Start.c **** * This function is called immediately before the users main
+ 194:Generated_Source\PSoC4/Cm0Start.c **** *
+ 195:Generated_Source\PSoC4/Cm0Start.c **** *******************************************************************************/
+ 196:Generated_Source\PSoC4/Cm0Start.c **** __attribute__ ((noreturn, __noinline__))
+ 197:Generated_Source\PSoC4/Cm0Start.c **** void $Sub$$main(void)
+ 198:Generated_Source\PSoC4/Cm0Start.c **** {
+ 199:Generated_Source\PSoC4/Cm0Start.c ****     initialize_psoc();
+ 200:Generated_Source\PSoC4/Cm0Start.c **** 
+ 201:Generated_Source\PSoC4/Cm0Start.c ****     /* Call original main */
+ 202:Generated_Source\PSoC4/Cm0Start.c ****     $Super$$main();
+ 203:Generated_Source\PSoC4/Cm0Start.c **** 
+ 204:Generated_Source\PSoC4/Cm0Start.c ****     while (1)
+ 205:Generated_Source\PSoC4/Cm0Start.c ****     {
+ 206:Generated_Source\PSoC4/Cm0Start.c ****         /* If main returns it is undefined what we should do. */
+ 207:Generated_Source\PSoC4/Cm0Start.c ****     }
+ 208:Generated_Source\PSoC4/Cm0Start.c **** }
+ 209:Generated_Source\PSoC4/Cm0Start.c **** 
+ 210:Generated_Source\PSoC4/Cm0Start.c **** #elif defined(__GNUC__)
+ 211:Generated_Source\PSoC4/Cm0Start.c **** 
+ 212:Generated_Source\PSoC4/Cm0Start.c **** /* Stack Base address */
+ 213:Generated_Source\PSoC4/Cm0Start.c **** extern void __cy_stack(void);
+ 214:Generated_Source\PSoC4/Cm0Start.c **** 
+ 215:Generated_Source\PSoC4/Cm0Start.c **** /* Application entry point. */
+ 216:Generated_Source\PSoC4/Cm0Start.c **** extern int main(void);
+ 217:Generated_Source\PSoC4/Cm0Start.c **** 
+ 218:Generated_Source\PSoC4/Cm0Start.c **** /* The static objects constructors initializer */
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 6
+
+
+ 219:Generated_Source\PSoC4/Cm0Start.c **** extern void __libc_init_array(void);
+ 220:Generated_Source\PSoC4/Cm0Start.c **** 
+ 221:Generated_Source\PSoC4/Cm0Start.c **** typedef unsigned char __cy_byte_align8 __attribute ((aligned (8)));
+ 222:Generated_Source\PSoC4/Cm0Start.c **** 
+ 223:Generated_Source\PSoC4/Cm0Start.c **** struct __cy_region
+ 224:Generated_Source\PSoC4/Cm0Start.c **** {
+ 225:Generated_Source\PSoC4/Cm0Start.c ****     __cy_byte_align8 *init; /* Initial contents of this region.  */
+ 226:Generated_Source\PSoC4/Cm0Start.c ****     __cy_byte_align8 *data; /* Start address of region.  */
+ 227:Generated_Source\PSoC4/Cm0Start.c ****     size_t init_size;       /* Size of initial data.  */
+ 228:Generated_Source\PSoC4/Cm0Start.c ****     size_t zero_size;       /* Additional size to be zeroed.  */
+ 229:Generated_Source\PSoC4/Cm0Start.c **** };
+ 230:Generated_Source\PSoC4/Cm0Start.c **** 
+ 231:Generated_Source\PSoC4/Cm0Start.c **** extern const struct __cy_region __cy_regions[];
+ 232:Generated_Source\PSoC4/Cm0Start.c **** extern const char __cy_region_num __attribute__((weak));
+ 233:Generated_Source\PSoC4/Cm0Start.c **** #define __cy_region_num ((size_t)&__cy_region_num)
+ 234:Generated_Source\PSoC4/Cm0Start.c **** 
+ 235:Generated_Source\PSoC4/Cm0Start.c **** 
+ 236:Generated_Source\PSoC4/Cm0Start.c **** /*******************************************************************************
+ 237:Generated_Source\PSoC4/Cm0Start.c **** * System Calls of the Red Hat newlib C Library
+ 238:Generated_Source\PSoC4/Cm0Start.c **** *******************************************************************************/
+ 239:Generated_Source\PSoC4/Cm0Start.c **** 
+ 240:Generated_Source\PSoC4/Cm0Start.c **** 
+ 241:Generated_Source\PSoC4/Cm0Start.c **** /*******************************************************************************
+ 242:Generated_Source\PSoC4/Cm0Start.c **** * Function Name: _exit
+ 243:Generated_Source\PSoC4/Cm0Start.c **** ****************************************************************************//**
+ 244:Generated_Source\PSoC4/Cm0Start.c **** *
+ 245:Generated_Source\PSoC4/Cm0Start.c **** * Exit a program without cleaning up files. If your system doesn't provide
+ 246:Generated_Source\PSoC4/Cm0Start.c **** * this, it is best to avoid linking with subroutines that require it (exit,
+ 247:Generated_Source\PSoC4/Cm0Start.c **** * system).
+ 248:Generated_Source\PSoC4/Cm0Start.c **** *
+ 249:Generated_Source\PSoC4/Cm0Start.c **** * \param status: Status caused program exit.
+ 250:Generated_Source\PSoC4/Cm0Start.c **** *
+ 251:Generated_Source\PSoC4/Cm0Start.c **** *******************************************************************************/
+ 252:Generated_Source\PSoC4/Cm0Start.c **** __attribute__((weak))
+ 253:Generated_Source\PSoC4/Cm0Start.c **** void _exit(int status)
+ 254:Generated_Source\PSoC4/Cm0Start.c **** {
+  66              		.loc 1 254 1 view -0
+  67              		.cfi_startproc
+  68              		@ Volatile: function does not return.
+  69              		@ args = 0, pretend = 0, frame = 0
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71              		.loc 1 254 1 is_stmt 0 view .LVU9
+  72 0000 10B5     		push	{r4, lr}
+  73              		.cfi_def_cfa_offset 8
+  74              		.cfi_offset 4, -8
+  75              		.cfi_offset 14, -4
+ 255:Generated_Source\PSoC4/Cm0Start.c ****     CyHalt((uint8) status);
+  76              		.loc 1 255 5 is_stmt 1 view .LVU10
+  77 0002 C0B2     		uxtb	r0, r0
+  78              	.LVL2:
+  79              		.loc 1 255 5 is_stmt 0 view .LVU11
+  80 0004 FFF7FEFF 		bl	CyHalt
+  81              	.LVL3:
+  82              	.L5:
+ 256:Generated_Source\PSoC4/Cm0Start.c **** 
+ 257:Generated_Source\PSoC4/Cm0Start.c ****     while(1)
+  83              		.loc 1 257 5 is_stmt 1 discriminator 1 view .LVU12
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 7
+
+
+ 258:Generated_Source\PSoC4/Cm0Start.c ****     {
+ 259:Generated_Source\PSoC4/Cm0Start.c **** 
+ 260:Generated_Source\PSoC4/Cm0Start.c ****     }
+  84              		.loc 1 260 5 discriminator 1 view .LVU13
+  85 0008 FEE7     		b	.L5
+  86              		.cfi_endproc
+  87              	.LFE1:
+  88              		.size	_exit, .-_exit
+  89              		.section	.text._sbrk,"ax",%progbits
+  90              		.align	1
+  91              		.weak	_sbrk
+  92              		.syntax unified
+  93              		.code	16
+  94              		.thumb_func
+  95              		.fpu softvfp
+  96              		.type	_sbrk, %function
+  97              	_sbrk:
+  98              	.LVL4:
+  99              	.LFB2:
+ 261:Generated_Source\PSoC4/Cm0Start.c **** }
+ 262:Generated_Source\PSoC4/Cm0Start.c **** 
+ 263:Generated_Source\PSoC4/Cm0Start.c **** 
+ 264:Generated_Source\PSoC4/Cm0Start.c **** /*******************************************************************************
+ 265:Generated_Source\PSoC4/Cm0Start.c **** * Function Name: _sbrk
+ 266:Generated_Source\PSoC4/Cm0Start.c **** ****************************************************************************//**
+ 267:Generated_Source\PSoC4/Cm0Start.c **** *
+ 268:Generated_Source\PSoC4/Cm0Start.c **** * Increase program data space. As malloc and related functions depend on this,
+ 269:Generated_Source\PSoC4/Cm0Start.c **** * it is useful to have a working implementation. The following suffices for a
+ 270:Generated_Source\PSoC4/Cm0Start.c **** * standalone system; it exploits the symbol end automatically defined by the
+ 271:Generated_Source\PSoC4/Cm0Start.c **** * GNU linker.
+ 272:Generated_Source\PSoC4/Cm0Start.c **** *
+ 273:Generated_Source\PSoC4/Cm0Start.c **** * \param nbytes: The number of bytes requested (if the parameter value is positive)
+ 274:Generated_Source\PSoC4/Cm0Start.c **** * from the heap or returned back to the heap (if the parameter value is
+ 275:Generated_Source\PSoC4/Cm0Start.c **** * negative).
+ 276:Generated_Source\PSoC4/Cm0Start.c **** *
+ 277:Generated_Source\PSoC4/Cm0Start.c **** *******************************************************************************/
+ 278:Generated_Source\PSoC4/Cm0Start.c **** __attribute__((weak))
+ 279:Generated_Source\PSoC4/Cm0Start.c **** void * _sbrk (int nbytes)
+ 280:Generated_Source\PSoC4/Cm0Start.c **** {
+ 100              		.loc 1 280 1 view -0
+ 101              		.cfi_startproc
+ 102              		@ args = 0, pretend = 0, frame = 0
+ 103              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104              		.loc 1 280 1 is_stmt 0 view .LVU15
+ 105 0000 10B5     		push	{r4, lr}
+ 106              		.cfi_def_cfa_offset 8
+ 107              		.cfi_offset 4, -8
+ 108              		.cfi_offset 14, -4
+ 109 0002 0300     		movs	r3, r0
+ 281:Generated_Source\PSoC4/Cm0Start.c ****     extern int  end;            /* Symbol defined by linker map. Start of free memory (as symbol). 
+ 110              		.loc 1 281 5 is_stmt 1 view .LVU16
+ 282:Generated_Source\PSoC4/Cm0Start.c ****     void *      returnValue;
+ 111              		.loc 1 282 5 view .LVU17
+ 283:Generated_Source\PSoC4/Cm0Start.c **** 
+ 284:Generated_Source\PSoC4/Cm0Start.c ****     /* The statically held previous end of the heap, with its initialization. */
+ 285:Generated_Source\PSoC4/Cm0Start.c ****     static uint8 *heapPointer = (uint8 *) &end;                 /* Previous end */
+ 112              		.loc 1 285 5 view .LVU18
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 8
+
+
+ 286:Generated_Source\PSoC4/Cm0Start.c **** 
+ 287:Generated_Source\PSoC4/Cm0Start.c ****     if (((heapPointer + nbytes) - (uint8 *) &end) <= CYDEV_HEAP_SIZE)
+ 113              		.loc 1 287 5 view .LVU19
+ 114              		.loc 1 287 23 is_stmt 0 view .LVU20
+ 115 0004 084A     		ldr	r2, .L9
+ 116 0006 1068     		ldr	r0, [r2]
+ 117              	.LVL5:
+ 118              		.loc 1 287 23 view .LVU21
+ 119 0008 C318     		adds	r3, r0, r3
+ 120              	.LVL6:
+ 121              		.loc 1 287 33 view .LVU22
+ 122 000a 084A     		ldr	r2, .L9+4
+ 123 000c 9A1A     		subs	r2, r3, r2
+ 124              		.loc 1 287 8 view .LVU23
+ 125 000e 802A     		cmp	r2, #128
+ 126 0010 02DC     		bgt	.L7
+ 288:Generated_Source\PSoC4/Cm0Start.c ****     {
+ 289:Generated_Source\PSoC4/Cm0Start.c ****         returnValue  = (void *) heapPointer;
+ 127              		.loc 1 289 9 is_stmt 1 view .LVU24
+ 128              	.LVL7:
+ 290:Generated_Source\PSoC4/Cm0Start.c ****         heapPointer += nbytes;
+ 129              		.loc 1 290 9 view .LVU25
+ 130              		.loc 1 290 21 is_stmt 0 view .LVU26
+ 131 0012 054A     		ldr	r2, .L9
+ 132 0014 1360     		str	r3, [r2]
+ 133              	.LVL8:
+ 134              	.L6:
+ 291:Generated_Source\PSoC4/Cm0Start.c ****     }
+ 292:Generated_Source\PSoC4/Cm0Start.c ****     else
+ 293:Generated_Source\PSoC4/Cm0Start.c ****     {
+ 294:Generated_Source\PSoC4/Cm0Start.c ****         errno = ENOMEM;
+ 295:Generated_Source\PSoC4/Cm0Start.c ****         returnValue = (void *) -1;
+ 296:Generated_Source\PSoC4/Cm0Start.c ****     }
+ 297:Generated_Source\PSoC4/Cm0Start.c **** 
+ 298:Generated_Source\PSoC4/Cm0Start.c ****     return (returnValue);
+ 299:Generated_Source\PSoC4/Cm0Start.c **** }
+ 135              		.loc 1 299 1 view .LVU27
+ 136              		@ sp needed
+ 137 0016 10BD     		pop	{r4, pc}
+ 138              	.L7:
+ 294:Generated_Source\PSoC4/Cm0Start.c ****         returnValue = (void *) -1;
+ 139              		.loc 1 294 9 is_stmt 1 view .LVU28
+ 140 0018 FFF7FEFF 		bl	__errno
+ 141              	.LVL9:
+ 294:Generated_Source\PSoC4/Cm0Start.c ****         returnValue = (void *) -1;
+ 142              		.loc 1 294 15 is_stmt 0 view .LVU29
+ 143 001c 0C23     		movs	r3, #12
+ 144 001e 0360     		str	r3, [r0]
+ 295:Generated_Source\PSoC4/Cm0Start.c ****     }
+ 145              		.loc 1 295 9 is_stmt 1 view .LVU30
+ 146              	.LVL10:
+ 295:Generated_Source\PSoC4/Cm0Start.c ****     }
+ 147              		.loc 1 295 21 is_stmt 0 view .LVU31
+ 148 0020 0120     		movs	r0, #1
+ 149 0022 4042     		rsbs	r0, r0, #0
+ 298:Generated_Source\PSoC4/Cm0Start.c **** }
+ 150              		.loc 1 298 5 is_stmt 1 view .LVU32
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 9
+
+
+ 298:Generated_Source\PSoC4/Cm0Start.c **** }
+ 151              		.loc 1 298 12 is_stmt 0 view .LVU33
+ 152 0024 F7E7     		b	.L6
+ 153              	.L10:
+ 154 0026 C046     		.align	2
+ 155              	.L9:
+ 156 0028 00000000 		.word	.LANCHOR0
+ 157 002c 00000000 		.word	end
+ 158              		.cfi_endproc
+ 159              	.LFE2:
+ 160              		.size	_sbrk, .-_sbrk
+ 161              		.section	.text.Start_c,"ax",%progbits
+ 162              		.align	1
+ 163              		.global	Start_c
+ 164              		.syntax unified
+ 165              		.code	16
+ 166              		.thumb_func
+ 167              		.fpu softvfp
+ 168              		.type	Start_c, %function
+ 169              	Start_c:
+ 170              	.LFB3:
+ 300:Generated_Source\PSoC4/Cm0Start.c **** 
+ 301:Generated_Source\PSoC4/Cm0Start.c **** 
+ 302:Generated_Source\PSoC4/Cm0Start.c **** /*******************************************************************************
+ 303:Generated_Source\PSoC4/Cm0Start.c **** * Function Name: Start_c
+ 304:Generated_Source\PSoC4/Cm0Start.c **** ****************************************************************************//**
+ 305:Generated_Source\PSoC4/Cm0Start.c **** *
+ 306:Generated_Source\PSoC4/Cm0Start.c **** * This function handles initializing the .data and .bss sections in
+ 307:Generated_Source\PSoC4/Cm0Start.c **** * preparation for running the standard c code.  Once initialization is complete
+ 308:Generated_Source\PSoC4/Cm0Start.c **** * it will call main().  This function will never return.
+ 309:Generated_Source\PSoC4/Cm0Start.c **** *
+ 310:Generated_Source\PSoC4/Cm0Start.c **** *******************************************************************************/
+ 311:Generated_Source\PSoC4/Cm0Start.c **** void Start_c(void)  __attribute__ ((noreturn, noinline));
+ 312:Generated_Source\PSoC4/Cm0Start.c **** void Start_c(void)
+ 313:Generated_Source\PSoC4/Cm0Start.c **** {
+ 171              		.loc 1 313 1 is_stmt 1 view -0
+ 172              		.cfi_startproc
+ 173              		@ Volatile: function does not return.
+ 174              		@ args = 0, pretend = 0, frame = 0
+ 175              		@ frame_needed = 0, uses_anonymous_args = 0
+ 176 0000 70B5     		push	{r4, r5, r6, lr}
+ 177              		.cfi_def_cfa_offset 16
+ 178              		.cfi_offset 4, -16
+ 179              		.cfi_offset 5, -12
+ 180              		.cfi_offset 6, -8
+ 181              		.cfi_offset 14, -4
+ 314:Generated_Source\PSoC4/Cm0Start.c ****     #ifdef CY_BOOT_START_C_CALLBACK
+ 315:Generated_Source\PSoC4/Cm0Start.c ****         CyBoot_Start_c_Callback();
+ 316:Generated_Source\PSoC4/Cm0Start.c ****     #else
+ 317:Generated_Source\PSoC4/Cm0Start.c ****         unsigned regions = __cy_region_num;
+ 182              		.loc 1 317 9 view .LVU35
+ 183              		.loc 1 317 18 is_stmt 0 view .LVU36
+ 184 0002 0F4E     		ldr	r6, .L20
+ 185              	.LVL11:
+ 318:Generated_Source\PSoC4/Cm0Start.c ****         const struct __cy_region *rptr = __cy_regions;
+ 186              		.loc 1 318 9 is_stmt 1 view .LVU37
+ 319:Generated_Source\PSoC4/Cm0Start.c **** 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 10
+
+
+ 320:Generated_Source\PSoC4/Cm0Start.c ****         /* Initialize memory */
+ 321:Generated_Source\PSoC4/Cm0Start.c ****         for (regions = __cy_region_num; regions != 0u; regions--)
+ 187              		.loc 1 321 9 view .LVU38
+ 318:Generated_Source\PSoC4/Cm0Start.c ****         const struct __cy_region *rptr = __cy_regions;
+ 188              		.loc 1 318 35 is_stmt 0 view .LVU39
+ 189 0004 0F4D     		ldr	r5, .L20+4
+ 190              		.loc 1 321 9 view .LVU40
+ 191 0006 0EE0     		b	.L12
+ 192              	.LVL12:
+ 193              	.L14:
+ 194              	.LBB2:
+ 322:Generated_Source\PSoC4/Cm0Start.c ****         {
+ 323:Generated_Source\PSoC4/Cm0Start.c ****             uint32 *src = (uint32 *)rptr->init;
+ 324:Generated_Source\PSoC4/Cm0Start.c ****             uint32 *dst = (uint32 *)rptr->data;
+ 325:Generated_Source\PSoC4/Cm0Start.c ****             unsigned limit = rptr->init_size;
+ 326:Generated_Source\PSoC4/Cm0Start.c ****             unsigned count;
+ 327:Generated_Source\PSoC4/Cm0Start.c **** 
+ 328:Generated_Source\PSoC4/Cm0Start.c ****             for (count = 0u; count != limit; count += sizeof (uint32))
+ 329:Generated_Source\PSoC4/Cm0Start.c ****             {
+ 330:Generated_Source\PSoC4/Cm0Start.c ****                 *dst = *src;
+ 195              		.loc 1 330 17 is_stmt 1 discriminator 3 view .LVU41
+ 196              		.loc 1 330 24 is_stmt 0 discriminator 3 view .LVU42
+ 197 0008 01C9     		ldmia	r1!, {r0}
+ 198              	.LVL13:
+ 199              		.loc 1 330 22 discriminator 3 view .LVU43
+ 200 000a 01C3     		stmia	r3!, {r0}
+ 201              	.LVL14:
+ 331:Generated_Source\PSoC4/Cm0Start.c ****                 dst++;
+ 202              		.loc 1 331 17 is_stmt 1 discriminator 3 view .LVU44
+ 332:Generated_Source\PSoC4/Cm0Start.c ****                 src++;
+ 203              		.loc 1 332 17 discriminator 3 view .LVU45
+ 328:Generated_Source\PSoC4/Cm0Start.c ****             {
+ 204              		.loc 1 328 52 is_stmt 0 discriminator 3 view .LVU46
+ 205 000c 0432     		adds	r2, r2, #4
+ 206              	.LVL15:
+ 207              	.L13:
+ 328:Generated_Source\PSoC4/Cm0Start.c ****             {
+ 208              		.loc 1 328 13 discriminator 1 view .LVU47
+ 209 000e A242     		cmp	r2, r4
+ 210 0010 FAD1     		bne	.L14
+ 333:Generated_Source\PSoC4/Cm0Start.c ****             }
+ 334:Generated_Source\PSoC4/Cm0Start.c ****             limit = rptr->zero_size;
+ 211              		.loc 1 334 13 is_stmt 1 view .LVU48
+ 212              		.loc 1 334 19 is_stmt 0 view .LVU49
+ 213 0012 E868     		ldr	r0, [r5, #12]
+ 214              	.LVL16:
+ 335:Generated_Source\PSoC4/Cm0Start.c ****             for (count = 0u; count != limit; count += sizeof (uint32))
+ 215              		.loc 1 335 13 is_stmt 1 view .LVU50
+ 216              		.loc 1 335 24 is_stmt 0 view .LVU51
+ 217 0014 0022     		movs	r2, #0
+ 218              		.loc 1 335 13 view .LVU52
+ 219 0016 02E0     		b	.L15
+ 220              	.LVL17:
+ 221              	.L16:
+ 336:Generated_Source\PSoC4/Cm0Start.c ****             {
+ 337:Generated_Source\PSoC4/Cm0Start.c ****                 *dst = 0u;
+ 222              		.loc 1 337 17 is_stmt 1 discriminator 3 view .LVU53
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 11
+
+
+ 223              		.loc 1 337 22 is_stmt 0 discriminator 3 view .LVU54
+ 224 0018 0021     		movs	r1, #0
+ 225 001a 02C3     		stmia	r3!, {r1}
+ 226              	.LVL18:
+ 338:Generated_Source\PSoC4/Cm0Start.c ****                 dst++;
+ 227              		.loc 1 338 17 is_stmt 1 discriminator 3 view .LVU55
+ 335:Generated_Source\PSoC4/Cm0Start.c ****             for (count = 0u; count != limit; count += sizeof (uint32))
+ 228              		.loc 1 335 52 is_stmt 0 discriminator 3 view .LVU56
+ 229 001c 0432     		adds	r2, r2, #4
+ 230              	.LVL19:
+ 231              	.L15:
+ 335:Generated_Source\PSoC4/Cm0Start.c ****             for (count = 0u; count != limit; count += sizeof (uint32))
+ 232              		.loc 1 335 13 discriminator 1 view .LVU57
+ 233 001e 8242     		cmp	r2, r0
+ 234 0020 FAD1     		bne	.L16
+ 339:Generated_Source\PSoC4/Cm0Start.c ****             }
+ 340:Generated_Source\PSoC4/Cm0Start.c **** 
+ 341:Generated_Source\PSoC4/Cm0Start.c ****             rptr++;
+ 235              		.loc 1 341 13 is_stmt 1 discriminator 2 view .LVU58
+ 236              		.loc 1 341 17 is_stmt 0 discriminator 2 view .LVU59
+ 237 0022 1035     		adds	r5, r5, #16
+ 238              	.LVL20:
+ 239              		.loc 1 341 17 discriminator 2 view .LVU60
+ 240              	.LBE2:
+ 321:Generated_Source\PSoC4/Cm0Start.c ****         {
+ 241              		.loc 1 321 63 discriminator 2 view .LVU61
+ 242 0024 013E     		subs	r6, r6, #1
+ 243              	.LVL21:
+ 244              	.L12:
+ 321:Generated_Source\PSoC4/Cm0Start.c ****         {
+ 245              		.loc 1 321 9 discriminator 1 view .LVU62
+ 246 0026 002E     		cmp	r6, #0
+ 247 0028 04D0     		beq	.L19
+ 248              	.LBB3:
+ 323:Generated_Source\PSoC4/Cm0Start.c ****             uint32 *dst = (uint32 *)rptr->data;
+ 249              		.loc 1 323 13 is_stmt 1 view .LVU63
+ 323:Generated_Source\PSoC4/Cm0Start.c ****             uint32 *dst = (uint32 *)rptr->data;
+ 250              		.loc 1 323 21 is_stmt 0 view .LVU64
+ 251 002a 2968     		ldr	r1, [r5]
+ 252              	.LVL22:
+ 324:Generated_Source\PSoC4/Cm0Start.c ****             unsigned limit = rptr->init_size;
+ 253              		.loc 1 324 13 is_stmt 1 view .LVU65
+ 324:Generated_Source\PSoC4/Cm0Start.c ****             unsigned limit = rptr->init_size;
+ 254              		.loc 1 324 21 is_stmt 0 view .LVU66
+ 255 002c 6B68     		ldr	r3, [r5, #4]
+ 256              	.LVL23:
+ 325:Generated_Source\PSoC4/Cm0Start.c ****             unsigned count;
+ 257              		.loc 1 325 13 is_stmt 1 view .LVU67
+ 325:Generated_Source\PSoC4/Cm0Start.c ****             unsigned count;
+ 258              		.loc 1 325 22 is_stmt 0 view .LVU68
+ 259 002e AC68     		ldr	r4, [r5, #8]
+ 260              	.LVL24:
+ 326:Generated_Source\PSoC4/Cm0Start.c **** 
+ 261              		.loc 1 326 13 is_stmt 1 view .LVU69
+ 328:Generated_Source\PSoC4/Cm0Start.c ****             {
+ 262              		.loc 1 328 13 view .LVU70
+ 328:Generated_Source\PSoC4/Cm0Start.c ****             {
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 12
+
+
+ 263              		.loc 1 328 24 is_stmt 0 view .LVU71
+ 264 0030 0022     		movs	r2, #0
+ 328:Generated_Source\PSoC4/Cm0Start.c ****             {
+ 265              		.loc 1 328 13 view .LVU72
+ 266 0032 ECE7     		b	.L13
+ 267              	.LVL25:
+ 268              	.L19:
+ 328:Generated_Source\PSoC4/Cm0Start.c ****             {
+ 269              		.loc 1 328 13 view .LVU73
+ 270              	.LBE3:
+ 342:Generated_Source\PSoC4/Cm0Start.c ****         }
+ 343:Generated_Source\PSoC4/Cm0Start.c **** 
+ 344:Generated_Source\PSoC4/Cm0Start.c ****         /* Invoke static objects constructors */
+ 345:Generated_Source\PSoC4/Cm0Start.c ****         __libc_init_array();
+ 271              		.loc 1 345 9 is_stmt 1 view .LVU74
+ 272 0034 FFF7FEFF 		bl	__libc_init_array
+ 273              	.LVL26:
+ 346:Generated_Source\PSoC4/Cm0Start.c ****         (void) main();
+ 274              		.loc 1 346 9 view .LVU75
+ 275              		.loc 1 346 16 is_stmt 0 view .LVU76
+ 276 0038 FFF7FEFF 		bl	main
+ 277              	.LVL27:
+ 278              	.L18:
+ 347:Generated_Source\PSoC4/Cm0Start.c **** 
+ 348:Generated_Source\PSoC4/Cm0Start.c ****         while (1)
+ 279              		.loc 1 348 9 is_stmt 1 discriminator 1 view .LVU77
+ 349:Generated_Source\PSoC4/Cm0Start.c ****         {
+ 350:Generated_Source\PSoC4/Cm0Start.c ****             /* If main returns, make sure we don't return. */
+ 351:Generated_Source\PSoC4/Cm0Start.c ****         }
+ 280              		.loc 1 351 9 discriminator 1 view .LVU78
+ 281 003c FEE7     		b	.L18
+ 282              	.L21:
+ 283 003e C046     		.align	2
+ 284              	.L20:
+ 285 0040 00000000 		.word	__cy_region_num
+ 286 0044 00000000 		.word	__cy_regions
+ 287              		.cfi_endproc
+ 288              	.LFE3:
+ 289              		.size	Start_c, .-Start_c
+ 290              		.section	.text.Reset,"ax",%progbits
+ 291              		.align	1
+ 292              		.global	Reset
+ 293              		.syntax unified
+ 294              		.code	16
+ 295              		.thumb_func
+ 296              		.fpu softvfp
+ 297              		.type	Reset, %function
+ 298              	Reset:
+ 299              	.LFB4:
+ 352:Generated_Source\PSoC4/Cm0Start.c **** 
+ 353:Generated_Source\PSoC4/Cm0Start.c ****     #endif /* CY_BOOT_START_C_CALLBACK */
+ 354:Generated_Source\PSoC4/Cm0Start.c **** }
+ 355:Generated_Source\PSoC4/Cm0Start.c **** 
+ 356:Generated_Source\PSoC4/Cm0Start.c **** 
+ 357:Generated_Source\PSoC4/Cm0Start.c **** /*******************************************************************************
+ 358:Generated_Source\PSoC4/Cm0Start.c **** * Function Name: Reset
+ 359:Generated_Source\PSoC4/Cm0Start.c **** ****************************************************************************//**
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 13
+
+
+ 360:Generated_Source\PSoC4/Cm0Start.c **** *
+ 361:Generated_Source\PSoC4/Cm0Start.c **** * This function handles the reset interrupt for the GCC toolchain.  This is
+ 362:Generated_Source\PSoC4/Cm0Start.c **** * the first bit of code that is executed at startup.
+ 363:Generated_Source\PSoC4/Cm0Start.c **** *
+ 364:Generated_Source\PSoC4/Cm0Start.c **** *******************************************************************************/
+ 365:Generated_Source\PSoC4/Cm0Start.c **** void Reset(void)
+ 366:Generated_Source\PSoC4/Cm0Start.c **** {
+ 300              		.loc 1 366 1 view -0
+ 301              		.cfi_startproc
+ 302              		@ Volatile: function does not return.
+ 303              		@ args = 0, pretend = 0, frame = 0
+ 304              		@ frame_needed = 0, uses_anonymous_args = 0
+ 305 0000 10B5     		push	{r4, lr}
+ 306              		.cfi_def_cfa_offset 8
+ 307              		.cfi_offset 4, -8
+ 308              		.cfi_offset 14, -4
+ 367:Generated_Source\PSoC4/Cm0Start.c ****     #if (CYDEV_PROJ_TYPE == CYDEV_PROJ_TYPE_LOADABLE || CYDEV_PROJ_TYPE == CYDEV_PROJ_TYPE_LOADABLE
+ 368:Generated_Source\PSoC4/Cm0Start.c **** 
+ 369:Generated_Source\PSoC4/Cm0Start.c ****         /* The bootloadable application image is started at Reset() handler
+ 370:Generated_Source\PSoC4/Cm0Start.c ****         * as a result of a branch instruction execution from the bootloader.
+ 371:Generated_Source\PSoC4/Cm0Start.c ****         * So, the stack pointer needs to be reset to be sure that
+ 372:Generated_Source\PSoC4/Cm0Start.c ****         * there is no garbage in the stack.
+ 373:Generated_Source\PSoC4/Cm0Start.c ****         */
+ 374:Generated_Source\PSoC4/Cm0Start.c ****         __asm volatile ("MSR msp, %0\n" : : "r" ((uint32)&__cy_stack) : "sp");
+ 375:Generated_Source\PSoC4/Cm0Start.c ****     #endif /* CYDEV_PROJ_TYPE_LOADABLE */
+ 376:Generated_Source\PSoC4/Cm0Start.c **** 
+ 377:Generated_Source\PSoC4/Cm0Start.c ****     #if(CY_IP_SRSSLT)
+ 378:Generated_Source\PSoC4/Cm0Start.c ****         CySysWdtDisable();
+ 379:Generated_Source\PSoC4/Cm0Start.c ****     #endif  /* (CY_IP_SRSSLT) */
+ 380:Generated_Source\PSoC4/Cm0Start.c **** 
+ 381:Generated_Source\PSoC4/Cm0Start.c ****     #if ((CYDEV_BOOTLOADER_ENABLE) && (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_LOADABLEANDBOOTLOADER))
+ 382:Generated_Source\PSoC4/Cm0Start.c ****         CyBtldr_CheckLaunch();
+ 383:Generated_Source\PSoC4/Cm0Start.c ****     #endif /* ((CYDEV_BOOTLOADER_ENABLE) && (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_LOADABLEANDBOOTLOAD
+ 384:Generated_Source\PSoC4/Cm0Start.c ****     Start_c();
+ 309              		.loc 1 384 5 view .LVU80
+ 310 0002 FFF7FEFF 		bl	Start_c
+ 311              	.LVL28:
+ 312              		.cfi_endproc
+ 313              	.LFE4:
+ 314              		.size	Reset, .-Reset
+ 315              		.section	.text.initialize_psoc,"ax",%progbits
+ 316              		.align	1
+ 317              		.global	initialize_psoc
+ 318              		.syntax unified
+ 319              		.code	16
+ 320              		.thumb_func
+ 321              		.fpu softvfp
+ 322              		.type	initialize_psoc, %function
+ 323              	initialize_psoc:
+ 324              	.LFB5:
+ 385:Generated_Source\PSoC4/Cm0Start.c **** }
+ 386:Generated_Source\PSoC4/Cm0Start.c **** 
+ 387:Generated_Source\PSoC4/Cm0Start.c **** #elif defined (__ICCARM__)
+ 388:Generated_Source\PSoC4/Cm0Start.c **** 
+ 389:Generated_Source\PSoC4/Cm0Start.c **** 
+ 390:Generated_Source\PSoC4/Cm0Start.c **** /*******************************************************************************
+ 391:Generated_Source\PSoC4/Cm0Start.c **** * Function Name: __low_level_init
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 14
+
+
+ 392:Generated_Source\PSoC4/Cm0Start.c **** ****************************************************************************//**
+ 393:Generated_Source\PSoC4/Cm0Start.c **** *
+ 394:Generated_Source\PSoC4/Cm0Start.c **** * This function performs early initializations for the IAR Embedded
+ 395:Generated_Source\PSoC4/Cm0Start.c **** * Workbench IDE. It is executed in the context of reset interrupt handler
+ 396:Generated_Source\PSoC4/Cm0Start.c **** * before the data sections are initialized.
+ 397:Generated_Source\PSoC4/Cm0Start.c **** *
+ 398:Generated_Source\PSoC4/Cm0Start.c **** * \return The value that determines whether or not data sections should be
+ 399:Generated_Source\PSoC4/Cm0Start.c **** * initialized by the system startup code:
+ 400:Generated_Source\PSoC4/Cm0Start.c **** *    0 - skip data sections initialization;
+ 401:Generated_Source\PSoC4/Cm0Start.c **** *    1 - initialize data sections;
+ 402:Generated_Source\PSoC4/Cm0Start.c **** *
+ 403:Generated_Source\PSoC4/Cm0Start.c **** *******************************************************************************/
+ 404:Generated_Source\PSoC4/Cm0Start.c **** #pragma inline = never
+ 405:Generated_Source\PSoC4/Cm0Start.c **** int __low_level_init(void)
+ 406:Generated_Source\PSoC4/Cm0Start.c **** {
+ 407:Generated_Source\PSoC4/Cm0Start.c ****     #if(CY_IP_SRSSLT)
+ 408:Generated_Source\PSoC4/Cm0Start.c ****         CySysWdtDisable();
+ 409:Generated_Source\PSoC4/Cm0Start.c ****     #endif  /* (CY_IP_SRSSLT) */
+ 410:Generated_Source\PSoC4/Cm0Start.c **** 
+ 411:Generated_Source\PSoC4/Cm0Start.c **** #if ((CYDEV_BOOTLOADER_ENABLE) && (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_LOADABLEANDBOOTLOADER))
+ 412:Generated_Source\PSoC4/Cm0Start.c ****     CyBtldr_CheckLaunch();
+ 413:Generated_Source\PSoC4/Cm0Start.c **** #endif /* ((CYDEV_BOOTLOADER_ENABLE) && (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_LOADABLEANDBOOTLOADER))
+ 414:Generated_Source\PSoC4/Cm0Start.c **** 
+ 415:Generated_Source\PSoC4/Cm0Start.c ****     /* Initialize data sections */
+ 416:Generated_Source\PSoC4/Cm0Start.c ****     __iar_data_init3();
+ 417:Generated_Source\PSoC4/Cm0Start.c **** 
+ 418:Generated_Source\PSoC4/Cm0Start.c ****     initialize_psoc();
+ 419:Generated_Source\PSoC4/Cm0Start.c **** 
+ 420:Generated_Source\PSoC4/Cm0Start.c ****     return 0;
+ 421:Generated_Source\PSoC4/Cm0Start.c **** }
+ 422:Generated_Source\PSoC4/Cm0Start.c **** 
+ 423:Generated_Source\PSoC4/Cm0Start.c **** #endif /* __GNUC__ */
+ 424:Generated_Source\PSoC4/Cm0Start.c **** 
+ 425:Generated_Source\PSoC4/Cm0Start.c **** 
+ 426:Generated_Source\PSoC4/Cm0Start.c **** /*******************************************************************************
+ 427:Generated_Source\PSoC4/Cm0Start.c **** * Ram Interrupt Vector table storage area. Must be placed at 0x20000000.
+ 428:Generated_Source\PSoC4/Cm0Start.c **** *******************************************************************************/
+ 429:Generated_Source\PSoC4/Cm0Start.c **** 
+ 430:Generated_Source\PSoC4/Cm0Start.c **** #if defined (__ICCARM__)
+ 431:Generated_Source\PSoC4/Cm0Start.c ****     #pragma location=".ramvectors"
+ 432:Generated_Source\PSoC4/Cm0Start.c **** #elif defined (__ARMCC_VERSION)
+ 433:Generated_Source\PSoC4/Cm0Start.c ****     #ifndef CY_SYS_RAM_VECTOR_SECTION
+ 434:Generated_Source\PSoC4/Cm0Start.c ****         #define CY_SYS_RAM_VECTOR_SECTION __attribute__((section(".ramvectors"), zero_init))
+ 435:Generated_Source\PSoC4/Cm0Start.c ****     #endif /* CY_SYS_RAM_VECTOR_SECTION */
+ 436:Generated_Source\PSoC4/Cm0Start.c ****     CY_SYS_RAM_VECTOR_SECTION    
+ 437:Generated_Source\PSoC4/Cm0Start.c **** #else
+ 438:Generated_Source\PSoC4/Cm0Start.c ****     #ifndef CY_SYS_RAM_VECTOR_SECTION
+ 439:Generated_Source\PSoC4/Cm0Start.c ****         #define CY_SYS_RAM_VECTOR_SECTION CY_SECTION(".ramvectors")
+ 440:Generated_Source\PSoC4/Cm0Start.c ****     #endif /* CY_SYS_RAM_VECTOR_SECTION */
+ 441:Generated_Source\PSoC4/Cm0Start.c ****     CY_SYS_RAM_VECTOR_SECTION
+ 442:Generated_Source\PSoC4/Cm0Start.c **** #endif  /* defined (__ICCARM__) */
+ 443:Generated_Source\PSoC4/Cm0Start.c **** cyisraddress CyRamVectors[CY_NUM_VECTORS];
+ 444:Generated_Source\PSoC4/Cm0Start.c **** 
+ 445:Generated_Source\PSoC4/Cm0Start.c **** 
+ 446:Generated_Source\PSoC4/Cm0Start.c **** /*******************************************************************************
+ 447:Generated_Source\PSoC4/Cm0Start.c **** * Rom Interrupt Vector table storage area. Must be 256-byte aligned.
+ 448:Generated_Source\PSoC4/Cm0Start.c **** *******************************************************************************/
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 15
+
+
+ 449:Generated_Source\PSoC4/Cm0Start.c **** 
+ 450:Generated_Source\PSoC4/Cm0Start.c **** #if defined(__ARMCC_VERSION)
+ 451:Generated_Source\PSoC4/Cm0Start.c ****     /* Suppress diagnostic message 1296-D: extended constant initialiser used */
+ 452:Generated_Source\PSoC4/Cm0Start.c ****     #pragma diag_suppress 1296
+ 453:Generated_Source\PSoC4/Cm0Start.c **** #endif  /* defined(__ARMCC_VERSION) */
+ 454:Generated_Source\PSoC4/Cm0Start.c **** 
+ 455:Generated_Source\PSoC4/Cm0Start.c **** #if defined (__ICCARM__)
+ 456:Generated_Source\PSoC4/Cm0Start.c ****     #pragma location=".romvectors"
+ 457:Generated_Source\PSoC4/Cm0Start.c ****     const intvec_elem __vector_table[CY_NUM_ROM_VECTORS] =
+ 458:Generated_Source\PSoC4/Cm0Start.c **** #else
+ 459:Generated_Source\PSoC4/Cm0Start.c ****     #ifndef CY_SYS_ROM_VECTOR_SECTION
+ 460:Generated_Source\PSoC4/Cm0Start.c ****         #define CY_SYS_ROM_VECTOR_SECTION CY_SECTION(".romvectors")
+ 461:Generated_Source\PSoC4/Cm0Start.c ****     #endif /* CY_SYS_ROM_VECTOR_SECTION */
+ 462:Generated_Source\PSoC4/Cm0Start.c ****     CY_SYS_ROM_VECTOR_SECTION
+ 463:Generated_Source\PSoC4/Cm0Start.c ****     const cyisraddress RomVectors[CY_NUM_ROM_VECTORS] =
+ 464:Generated_Source\PSoC4/Cm0Start.c **** #endif  /* defined (__ICCARM__) */
+ 465:Generated_Source\PSoC4/Cm0Start.c **** {
+ 466:Generated_Source\PSoC4/Cm0Start.c ****     CY_SYS_INITIAL_STACK_POINTER,   /* The initial stack pointer  0 */
+ 467:Generated_Source\PSoC4/Cm0Start.c ****     #if defined (__ICCARM__) /* The reset handler          1 */
+ 468:Generated_Source\PSoC4/Cm0Start.c ****         __iar_program_start,
+ 469:Generated_Source\PSoC4/Cm0Start.c ****     #else
+ 470:Generated_Source\PSoC4/Cm0Start.c ****         (cyisraddress)&Reset,
+ 471:Generated_Source\PSoC4/Cm0Start.c ****     #endif  /* defined (__ICCARM__) */
+ 472:Generated_Source\PSoC4/Cm0Start.c ****     &IntDefaultHandler,      /* The NMI handler            2 */
+ 473:Generated_Source\PSoC4/Cm0Start.c ****     &IntDefaultHandler,      /* The hard fault handler     3 */
+ 474:Generated_Source\PSoC4/Cm0Start.c **** };
+ 475:Generated_Source\PSoC4/Cm0Start.c **** 
+ 476:Generated_Source\PSoC4/Cm0Start.c **** #if defined(__ARMCC_VERSION)
+ 477:Generated_Source\PSoC4/Cm0Start.c ****     #pragma diag_default 1296
+ 478:Generated_Source\PSoC4/Cm0Start.c **** #endif  /* defined(__ARMCC_VERSION) */
+ 479:Generated_Source\PSoC4/Cm0Start.c **** 
+ 480:Generated_Source\PSoC4/Cm0Start.c **** 
+ 481:Generated_Source\PSoC4/Cm0Start.c **** /*******************************************************************************
+ 482:Generated_Source\PSoC4/Cm0Start.c **** * Function Name: initialize_psoc
+ 483:Generated_Source\PSoC4/Cm0Start.c **** ****************************************************************************//**
+ 484:Generated_Source\PSoC4/Cm0Start.c **** *
+ 485:Generated_Source\PSoC4/Cm0Start.c **** * This function is used to initialize the PSoC chip before calling main.
+ 486:Generated_Source\PSoC4/Cm0Start.c **** *
+ 487:Generated_Source\PSoC4/Cm0Start.c **** *******************************************************************************/
+ 488:Generated_Source\PSoC4/Cm0Start.c **** #if(defined(__GNUC__) && !defined(__ARMCC_VERSION))
+ 489:Generated_Source\PSoC4/Cm0Start.c **** __attribute__ ((constructor(101)))
+ 490:Generated_Source\PSoC4/Cm0Start.c **** #endif  /* (defined(__GNUC__) && !defined(__ARMCC_VERSION)) */
+ 491:Generated_Source\PSoC4/Cm0Start.c **** void initialize_psoc(void)
+ 492:Generated_Source\PSoC4/Cm0Start.c **** {
+ 325              		.loc 1 492 1 view -0
+ 326              		.cfi_startproc
+ 327              		@ args = 0, pretend = 0, frame = 0
+ 328              		@ frame_needed = 0, uses_anonymous_args = 0
+ 329 0000 10B5     		push	{r4, lr}
+ 330              		.cfi_def_cfa_offset 8
+ 331              		.cfi_offset 4, -8
+ 332              		.cfi_offset 14, -4
+ 493:Generated_Source\PSoC4/Cm0Start.c ****     uint32 indexInit;
+ 333              		.loc 1 493 5 view .LVU82
+ 494:Generated_Source\PSoC4/Cm0Start.c **** 
+ 495:Generated_Source\PSoC4/Cm0Start.c ****     #if(CY_IP_CPUSSV2)
+ 496:Generated_Source\PSoC4/Cm0Start.c ****         #if (CY_IP_CPUSS_CM0)
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 16
+
+
+ 497:Generated_Source\PSoC4/Cm0Start.c ****             /***********************************************************************
+ 498:Generated_Source\PSoC4/Cm0Start.c ****             * Make sure that Vector Table is located at 0000_0000 in Flash, before
+ 499:Generated_Source\PSoC4/Cm0Start.c ****             * accessing RomVectors or calling functions that may be placed in
+ 500:Generated_Source\PSoC4/Cm0Start.c ****             * .psocinit (cyfitter_cfg and ClockSetup). Note The CY_CPUSS_CONFIG_REG
+ 501:Generated_Source\PSoC4/Cm0Start.c ****             * register is retention for the specified device family.
+ 502:Generated_Source\PSoC4/Cm0Start.c ****             ***********************************************************************/
+ 503:Generated_Source\PSoC4/Cm0Start.c ****             CY_CPUSS_CONFIG_REG &= (uint32) ~CY_CPUSS_CONFIG_VECT_IN_RAM;
+ 504:Generated_Source\PSoC4/Cm0Start.c ****         #endif /* (CY_IP_CPUSS_CM0) */
+ 505:Generated_Source\PSoC4/Cm0Start.c ****     #endif  /* (CY_IP_CPUSSV2) */
+ 506:Generated_Source\PSoC4/Cm0Start.c **** 
+ 507:Generated_Source\PSoC4/Cm0Start.c ****     /* Set Ram interrupt vectors to default functions. */
+ 508:Generated_Source\PSoC4/Cm0Start.c ****     for (indexInit = 0u; indexInit < CY_NUM_VECTORS; indexInit++)
+ 334              		.loc 1 508 5 view .LVU83
+ 335              	.LVL29:
+ 336              		.loc 1 508 20 is_stmt 0 view .LVU84
+ 337 0002 0023     		movs	r3, #0
+ 338              		.loc 1 508 5 view .LVU85
+ 339 0004 06E0     		b	.L24
+ 340              	.LVL30:
+ 341              	.L29:
+ 509:Generated_Source\PSoC4/Cm0Start.c ****     {
+ 510:Generated_Source\PSoC4/Cm0Start.c ****         CyRamVectors[indexInit] = (indexInit < CY_NUM_ROM_VECTORS) ?
+ 511:Generated_Source\PSoC4/Cm0Start.c ****             #if defined (__ICCARM__)
+ 512:Generated_Source\PSoC4/Cm0Start.c ****                 __vector_table[indexInit].__fun : &IntDefaultHandler;
+ 513:Generated_Source\PSoC4/Cm0Start.c ****             #else
+ 514:Generated_Source\PSoC4/Cm0Start.c ****                 RomVectors[indexInit] : &IntDefaultHandler;
+ 342              		.loc 1 514 39 discriminator 1 view .LVU86
+ 343 0006 9A00     		lsls	r2, r3, #2
+ 344 0008 0A49     		ldr	r1, .L30
+ 345 000a 5058     		ldr	r0, [r2, r1]
+ 346              	.L25:
+ 510:Generated_Source\PSoC4/Cm0Start.c ****             #if defined (__ICCARM__)
+ 347              		.loc 1 510 33 discriminator 2 view .LVU87
+ 348 000c 9900     		lsls	r1, r3, #2
+ 349 000e 0A4A     		ldr	r2, .L30+4
+ 350 0010 8850     		str	r0, [r1, r2]
+ 508:Generated_Source\PSoC4/Cm0Start.c ****     {
+ 351              		.loc 1 508 63 discriminator 2 view .LVU88
+ 352 0012 0133     		adds	r3, r3, #1
+ 353              	.LVL31:
+ 354              	.L24:
+ 508:Generated_Source\PSoC4/Cm0Start.c ****     {
+ 355              		.loc 1 508 5 discriminator 1 view .LVU89
+ 356 0014 2F2B     		cmp	r3, #47
+ 357 0016 03D8     		bhi	.L28
+ 510:Generated_Source\PSoC4/Cm0Start.c ****             #if defined (__ICCARM__)
+ 358              		.loc 1 510 9 is_stmt 1 view .LVU90
+ 359              		.loc 1 514 39 is_stmt 0 view .LVU91
+ 360 0018 032B     		cmp	r3, #3
+ 361 001a F4D9     		bls	.L29
+ 362 001c 0748     		ldr	r0, .L30+8
+ 363 001e F5E7     		b	.L25
+ 364              	.L28:
+ 515:Generated_Source\PSoC4/Cm0Start.c ****             #endif  /* defined (__ICCARM__) */
+ 516:Generated_Source\PSoC4/Cm0Start.c ****     }
+ 517:Generated_Source\PSoC4/Cm0Start.c **** 
+ 518:Generated_Source\PSoC4/Cm0Start.c ****     /* Initialize configuration registers. */
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 17
+
+
+ 519:Generated_Source\PSoC4/Cm0Start.c ****     cyfitter_cfg();
+ 365              		.loc 1 519 5 is_stmt 1 view .LVU92
+ 366 0020 FFF7FEFF 		bl	cyfitter_cfg
+ 367              	.LVL32:
+ 520:Generated_Source\PSoC4/Cm0Start.c **** 
+ 521:Generated_Source\PSoC4/Cm0Start.c ****     #if !defined (__ICCARM__)
+ 522:Generated_Source\PSoC4/Cm0Start.c ****         /* Actually, no need to clean this variable, just to make compiler happy. */
+ 523:Generated_Source\PSoC4/Cm0Start.c ****         cySysNoInitDataValid = 0u;
+ 368              		.loc 1 523 9 view .LVU93
+ 524:Generated_Source\PSoC4/Cm0Start.c ****     #endif  /* !defined (__ICCARM__) */
+ 525:Generated_Source\PSoC4/Cm0Start.c **** 
+ 526:Generated_Source\PSoC4/Cm0Start.c ****     #if (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_STANDARD)
+ 527:Generated_Source\PSoC4/Cm0Start.c **** 
+ 528:Generated_Source\PSoC4/Cm0Start.c ****         /* Need to make sure that this variable will not be optimized out */
+ 529:Generated_Source\PSoC4/Cm0Start.c ****         if (0u == cyBtldrRunType)
+ 530:Generated_Source\PSoC4/Cm0Start.c ****         {
+ 531:Generated_Source\PSoC4/Cm0Start.c ****             cyBtldrRunType = 0u;
+ 532:Generated_Source\PSoC4/Cm0Start.c ****         }
+ 533:Generated_Source\PSoC4/Cm0Start.c **** 
+ 534:Generated_Source\PSoC4/Cm0Start.c ****     #endif  /* (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_STANDARD) */
+ 535:Generated_Source\PSoC4/Cm0Start.c **** 
+ 536:Generated_Source\PSoC4/Cm0Start.c ****     #if (CY_IP_CPUSS_CM0)
+ 537:Generated_Source\PSoC4/Cm0Start.c ****         /* Vector Table is located at 0x2000:0000 in SRAM */
+ 538:Generated_Source\PSoC4/Cm0Start.c ****         CY_CPUSS_CONFIG_REG |= CY_CPUSS_CONFIG_VECT_IN_RAM;
+ 369              		.loc 1 538 9 view .LVU94
+ 370              		.loc 1 538 29 is_stmt 0 view .LVU95
+ 371 0024 8022     		movs	r2, #128
+ 372 0026 D205     		lsls	r2, r2, #23
+ 373 0028 1368     		ldr	r3, [r2]
+ 374 002a 0121     		movs	r1, #1
+ 375 002c 0B43     		orrs	r3, r1
+ 376 002e 1360     		str	r3, [r2]
+ 539:Generated_Source\PSoC4/Cm0Start.c **** 	#else
+ 540:Generated_Source\PSoC4/Cm0Start.c **** 		(*(uint32 *)CYREG_CM0P_VTOR) = CY_CPUSS_CONFIG_VECT_ADDR_IN_RAM;
+ 541:Generated_Source\PSoC4/Cm0Start.c ****     #endif /* (CY_IP_CPUSS_CM0) */
+ 542:Generated_Source\PSoC4/Cm0Start.c **** }
+ 377              		.loc 1 542 1 view .LVU96
+ 378              		@ sp needed
+ 379 0030 10BD     		pop	{r4, pc}
+ 380              	.L31:
+ 381 0032 C046     		.align	2
+ 382              	.L30:
+ 383 0034 00000000 		.word	.LANCHOR1
+ 384 0038 00000000 		.word	CyRamVectors
+ 385 003c 00000000 		.word	IntDefaultHandler
+ 386              		.cfi_endproc
+ 387              	.LFE5:
+ 388              		.size	initialize_psoc, .-initialize_psoc
+ 389              		.section	.init_array,"aw",%init_array
+ 390              		.align	2
+ 391 0000 00000000 		.word	initialize_psoc(target1)
+ 392              		.global	RomVectors
+ 393              		.global	CyRamVectors
+ 394              		.data
+ 395              		.align	2
+ 396              		.set	.LANCHOR0,. + 0
+ 397              		.type	heapPointer.4980, %object
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 18
+
+
+ 398              		.size	heapPointer.4980, 4
+ 399              	heapPointer.4980:
+ 400 0000 00000000 		.word	end
+ 401              		.section	.ramvectors,"aw"
+ 402              		.align	2
+ 403              		.type	CyRamVectors, %object
+ 404              		.size	CyRamVectors, 192
+ 405              	CyRamVectors:
+ 406 0000 00000000 		.space	192
+ 406      00000000 
+ 406      00000000 
+ 406      00000000 
+ 406      00000000 
+ 407              		.section	.romvectors,"a"
+ 408              		.align	2
+ 409              		.set	.LANCHOR1,. + 0
+ 410              		.type	RomVectors, %object
+ 411              		.size	RomVectors, 16
+ 412              	RomVectors:
+ 413 0000 00000000 		.word	__cy_stack
+ 414 0004 00000000 		.word	Reset
+ 415 0008 00000000 		.word	IntDefaultHandler
+ 416 000c 00000000 		.word	IntDefaultHandler
+ 417              		.weak	__cy_region_num
+ 418              		.text
+ 419              	.Letext0:
+ 420              		.file 2 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\lib\\gcc\\arm-none-eabi
+ 421              		.file 3 "Generated_Source\\PSoC4\\cytypes.h"
+ 422              		.file 4 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\
+ 423              		.file 5 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\
+ 424              		.file 6 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\
+ 425              		.file 7 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\
+ 426              		.file 8 "Generated_Source\\PSoC4\\CyLib.h"
+ 427              		.file 9 "c:\\program files (x86)\\gnu tools arm embedded\\8 2018-q4-major\\arm-none-eabi\\include\
+ 428              		.file 10 "Generated_Source\\PSoC4\\cyfitter_cfg.h"
+ 429              		.section	.debug_info,"",%progbits
+ 430              	.Ldebug_info0:
+ 431 0000 1D0D0000 		.4byte	0xd1d
+ 432 0004 0400     		.2byte	0x4
+ 433 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 434 000a 04       		.byte	0x4
+ 435 000b 01       		.uleb128 0x1
+ 436 000c 5C030000 		.4byte	.LASF165
+ 437 0010 0C       		.byte	0xc
+ 438 0011 3D070000 		.4byte	.LASF166
+ 439 0015 78010000 		.4byte	.LASF167
+ 440 0019 18000000 		.4byte	.Ldebug_ranges0+0x18
+ 441 001d 00000000 		.4byte	0
+ 442 0021 00000000 		.4byte	.Ldebug_line0
+ 443 0025 02       		.uleb128 0x2
+ 444 0026 01       		.byte	0x1
+ 445 0027 06       		.byte	0x6
+ 446 0028 0C010000 		.4byte	.LASF0
+ 447 002c 02       		.uleb128 0x2
+ 448 002d 01       		.byte	0x1
+ 449 002e 08       		.byte	0x8
+ 450 002f E5040000 		.4byte	.LASF1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 19
+
+
+ 451 0033 02       		.uleb128 0x2
+ 452 0034 02       		.byte	0x2
+ 453 0035 05       		.byte	0x5
+ 454 0036 01050000 		.4byte	.LASF2
+ 455 003a 02       		.uleb128 0x2
+ 456 003b 02       		.byte	0x2
+ 457 003c 07       		.byte	0x7
+ 458 003d F8020000 		.4byte	.LASF3
+ 459 0041 02       		.uleb128 0x2
+ 460 0042 04       		.byte	0x4
+ 461 0043 05       		.byte	0x5
+ 462 0044 59010000 		.4byte	.LASF4
+ 463 0048 02       		.uleb128 0x2
+ 464 0049 04       		.byte	0x4
+ 465 004a 07       		.byte	0x7
+ 466 004b D4020000 		.4byte	.LASF5
+ 467 004f 02       		.uleb128 0x2
+ 468 0050 08       		.byte	0x8
+ 469 0051 05       		.byte	0x5
+ 470 0052 FE000000 		.4byte	.LASF6
+ 471 0056 02       		.uleb128 0x2
+ 472 0057 08       		.byte	0x8
+ 473 0058 07       		.byte	0x7
+ 474 0059 89000000 		.4byte	.LASF7
+ 475 005d 03       		.uleb128 0x3
+ 476 005e 04       		.byte	0x4
+ 477 005f 05       		.byte	0x5
+ 478 0060 696E7400 		.ascii	"int\000"
+ 479 0064 02       		.uleb128 0x2
+ 480 0065 04       		.byte	0x4
+ 481 0066 07       		.byte	0x7
+ 482 0067 A6020000 		.4byte	.LASF8
+ 483 006b 04       		.uleb128 0x4
+ 484 006c 2D000000 		.4byte	.LASF10
+ 485 0070 02       		.byte	0x2
+ 486 0071 D8       		.byte	0xd8
+ 487 0072 17       		.byte	0x17
+ 488 0073 64000000 		.4byte	0x64
+ 489 0077 02       		.uleb128 0x2
+ 490 0078 08       		.byte	0x8
+ 491 0079 04       		.byte	0x4
+ 492 007a 50040000 		.4byte	.LASF9
+ 493 007e 05       		.uleb128 0x5
+ 494 007f EF010000 		.4byte	.LASF11
+ 495 0083 03       		.byte	0x3
+ 496 0084 E401     		.2byte	0x1e4
+ 497 0086 19       		.byte	0x19
+ 498 0087 2C000000 		.4byte	0x2c
+ 499 008b 06       		.uleb128 0x6
+ 500 008c 7E000000 		.4byte	0x7e
+ 501 0090 05       		.uleb128 0x5
+ 502 0091 3A020000 		.4byte	.LASF12
+ 503 0095 03       		.byte	0x3
+ 504 0096 E601     		.2byte	0x1e6
+ 505 0098 19       		.byte	0x19
+ 506 0099 48000000 		.4byte	0x48
+ 507 009d 07       		.uleb128 0x7
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 20
+
+
+ 508 009e 90000000 		.4byte	0x90
+ 509 00a2 02       		.uleb128 0x2
+ 510 00a3 04       		.byte	0x4
+ 511 00a4 04       		.byte	0x4
+ 512 00a5 B2040000 		.4byte	.LASF13
+ 513 00a9 02       		.uleb128 0x2
+ 514 00aa 08       		.byte	0x8
+ 515 00ab 04       		.byte	0x4
+ 516 00ac 04020000 		.4byte	.LASF14
+ 517 00b0 02       		.uleb128 0x2
+ 518 00b1 01       		.byte	0x1
+ 519 00b2 08       		.byte	0x8
+ 520 00b3 FC050000 		.4byte	.LASF15
+ 521 00b7 06       		.uleb128 0x6
+ 522 00b8 B0000000 		.4byte	0xb0
+ 523 00bc 05       		.uleb128 0x5
+ 524 00bd 22040000 		.4byte	.LASF16
+ 525 00c1 03       		.byte	0x3
+ 526 00c2 9002     		.2byte	0x290
+ 527 00c4 21       		.byte	0x21
+ 528 00c5 9D000000 		.4byte	0x9d
+ 529 00c9 05       		.uleb128 0x5
+ 530 00ca 0D060000 		.4byte	.LASF17
+ 531 00ce 03       		.byte	0x3
+ 532 00cf A002     		.2byte	0x2a0
+ 533 00d1 15       		.byte	0x15
+ 534 00d2 DB000000 		.4byte	0xdb
+ 535 00d6 06       		.uleb128 0x6
+ 536 00d7 C9000000 		.4byte	0xc9
+ 537 00db 08       		.uleb128 0x8
+ 538 00dc 04       		.byte	0x4
+ 539 00dd E1000000 		.4byte	0xe1
+ 540 00e1 09       		.uleb128 0x9
+ 541 00e2 04       		.uleb128 0x4
+ 542 00e3 4D030000 		.4byte	.LASF18
+ 543 00e7 04       		.byte	0x4
+ 544 00e8 22       		.byte	0x22
+ 545 00e9 19       		.byte	0x19
+ 546 00ea EE000000 		.4byte	0xee
+ 547 00ee 08       		.uleb128 0x8
+ 548 00ef 04       		.byte	0x4
+ 549 00f0 F4000000 		.4byte	0xf4
+ 550 00f4 0A       		.uleb128 0xa
+ 551 00f5 CC050000 		.4byte	.LASF124
+ 552 00f9 04       		.uleb128 0x4
+ 553 00fa 90040000 		.4byte	.LASF19
+ 554 00fe 05       		.byte	0x5
+ 555 00ff 2C       		.byte	0x2c
+ 556 0100 0E       		.byte	0xe
+ 557 0101 41000000 		.4byte	0x41
+ 558 0105 04       		.uleb128 0x4
+ 559 0106 ED050000 		.4byte	.LASF20
+ 560 010a 05       		.byte	0x5
+ 561 010b 72       		.byte	0x72
+ 562 010c 0E       		.byte	0xe
+ 563 010d 41000000 		.4byte	0x41
+ 564 0111 05       		.uleb128 0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 21
+
+
+ 565 0112 55030000 		.4byte	.LASF21
+ 566 0116 02       		.byte	0x2
+ 567 0117 6501     		.2byte	0x165
+ 568 0119 17       		.byte	0x17
+ 569 011a 64000000 		.4byte	0x64
+ 570 011e 0B       		.uleb128 0xb
+ 571 011f 04       		.byte	0x4
+ 572 0120 05       		.byte	0x5
+ 573 0121 A6       		.byte	0xa6
+ 574 0122 03       		.byte	0x3
+ 575 0123 40010000 		.4byte	0x140
+ 576 0127 0C       		.uleb128 0xc
+ 577 0128 47030000 		.4byte	.LASF22
+ 578 012c 05       		.byte	0x5
+ 579 012d A8       		.byte	0xa8
+ 580 012e 0C       		.byte	0xc
+ 581 012f 11010000 		.4byte	0x111
+ 582 0133 0C       		.uleb128 0xc
+ 583 0134 B3020000 		.4byte	.LASF23
+ 584 0138 05       		.byte	0x5
+ 585 0139 A9       		.byte	0xa9
+ 586 013a 13       		.byte	0x13
+ 587 013b 40010000 		.4byte	0x140
+ 588 013f 00       		.byte	0
+ 589 0140 0D       		.uleb128 0xd
+ 590 0141 2C000000 		.4byte	0x2c
+ 591 0145 50010000 		.4byte	0x150
+ 592 0149 0E       		.uleb128 0xe
+ 593 014a 64000000 		.4byte	0x64
+ 594 014e 03       		.byte	0x3
+ 595 014f 00       		.byte	0
+ 596 0150 0F       		.uleb128 0xf
+ 597 0151 08       		.byte	0x8
+ 598 0152 05       		.byte	0x5
+ 599 0153 A3       		.byte	0xa3
+ 600 0154 09       		.byte	0x9
+ 601 0155 74010000 		.4byte	0x174
+ 602 0159 10       		.uleb128 0x10
+ 603 015a C4050000 		.4byte	.LASF24
+ 604 015e 05       		.byte	0x5
+ 605 015f A5       		.byte	0xa5
+ 606 0160 07       		.byte	0x7
+ 607 0161 5D000000 		.4byte	0x5d
+ 608 0165 00       		.byte	0
+ 609 0166 10       		.uleb128 0x10
+ 610 0167 D3050000 		.4byte	.LASF25
+ 611 016b 05       		.byte	0x5
+ 612 016c AA       		.byte	0xaa
+ 613 016d 05       		.byte	0x5
+ 614 016e 1E010000 		.4byte	0x11e
+ 615 0172 04       		.byte	0x4
+ 616 0173 00       		.byte	0
+ 617 0174 04       		.uleb128 0x4
+ 618 0175 2F050000 		.4byte	.LASF26
+ 619 0179 05       		.byte	0x5
+ 620 017a AB       		.byte	0xab
+ 621 017b 03       		.byte	0x3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 22
+
+
+ 622 017c 50010000 		.4byte	0x150
+ 623 0180 04       		.uleb128 0x4
+ 624 0181 69020000 		.4byte	.LASF27
+ 625 0185 05       		.byte	0x5
+ 626 0186 AF       		.byte	0xaf
+ 627 0187 1B       		.byte	0x1b
+ 628 0188 E2000000 		.4byte	0xe2
+ 629 018c 11       		.uleb128 0x11
+ 630 018d 04       		.byte	0x4
+ 631 018e 04       		.uleb128 0x4
+ 632 018f 5A060000 		.4byte	.LASF28
+ 633 0193 06       		.byte	0x6
+ 634 0194 16       		.byte	0x16
+ 635 0195 19       		.byte	0x19
+ 636 0196 48000000 		.4byte	0x48
+ 637 019a 12       		.uleb128 0x12
+ 638 019b 7A020000 		.4byte	.LASF33
+ 639 019f 18       		.byte	0x18
+ 640 01a0 06       		.byte	0x6
+ 641 01a1 2F       		.byte	0x2f
+ 642 01a2 08       		.byte	0x8
+ 643 01a3 F4010000 		.4byte	0x1f4
+ 644 01a7 10       		.uleb128 0x10
+ 645 01a8 31060000 		.4byte	.LASF29
+ 646 01ac 06       		.byte	0x6
+ 647 01ad 31       		.byte	0x31
+ 648 01ae 13       		.byte	0x13
+ 649 01af F4010000 		.4byte	0x1f4
+ 650 01b3 00       		.byte	0
+ 651 01b4 13       		.uleb128 0x13
+ 652 01b5 5F6B00   		.ascii	"_k\000"
+ 653 01b8 06       		.byte	0x6
+ 654 01b9 32       		.byte	0x32
+ 655 01ba 07       		.byte	0x7
+ 656 01bb 5D000000 		.4byte	0x5d
+ 657 01bf 04       		.byte	0x4
+ 658 01c0 10       		.uleb128 0x10
+ 659 01c1 AF050000 		.4byte	.LASF30
+ 660 01c5 06       		.byte	0x6
+ 661 01c6 32       		.byte	0x32
+ 662 01c7 0B       		.byte	0xb
+ 663 01c8 5D000000 		.4byte	0x5d
+ 664 01cc 08       		.byte	0x8
+ 665 01cd 10       		.uleb128 0x10
+ 666 01ce 63020000 		.4byte	.LASF31
+ 667 01d2 06       		.byte	0x6
+ 668 01d3 32       		.byte	0x32
+ 669 01d4 14       		.byte	0x14
+ 670 01d5 5D000000 		.4byte	0x5d
+ 671 01d9 0C       		.byte	0xc
+ 672 01da 10       		.uleb128 0x10
+ 673 01db A5060000 		.4byte	.LASF32
+ 674 01df 06       		.byte	0x6
+ 675 01e0 32       		.byte	0x32
+ 676 01e1 1B       		.byte	0x1b
+ 677 01e2 5D000000 		.4byte	0x5d
+ 678 01e6 10       		.byte	0x10
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 23
+
+
+ 679 01e7 13       		.uleb128 0x13
+ 680 01e8 5F7800   		.ascii	"_x\000"
+ 681 01eb 06       		.byte	0x6
+ 682 01ec 33       		.byte	0x33
+ 683 01ed 0B       		.byte	0xb
+ 684 01ee FA010000 		.4byte	0x1fa
+ 685 01f2 14       		.byte	0x14
+ 686 01f3 00       		.byte	0
+ 687 01f4 08       		.uleb128 0x8
+ 688 01f5 04       		.byte	0x4
+ 689 01f6 9A010000 		.4byte	0x19a
+ 690 01fa 0D       		.uleb128 0xd
+ 691 01fb 8E010000 		.4byte	0x18e
+ 692 01ff 0A020000 		.4byte	0x20a
+ 693 0203 0E       		.uleb128 0xe
+ 694 0204 64000000 		.4byte	0x64
+ 695 0208 00       		.byte	0
+ 696 0209 00       		.byte	0
+ 697 020a 12       		.uleb128 0x12
+ 698 020b A1020000 		.4byte	.LASF34
+ 699 020f 24       		.byte	0x24
+ 700 0210 06       		.byte	0x6
+ 701 0211 37       		.byte	0x37
+ 702 0212 08       		.byte	0x8
+ 703 0213 8D020000 		.4byte	0x28d
+ 704 0217 10       		.uleb128 0x10
+ 705 0218 EF000000 		.4byte	.LASF35
+ 706 021c 06       		.byte	0x6
+ 707 021d 39       		.byte	0x39
+ 708 021e 09       		.byte	0x9
+ 709 021f 5D000000 		.4byte	0x5d
+ 710 0223 00       		.byte	0
+ 711 0224 10       		.uleb128 0x10
+ 712 0225 1A060000 		.4byte	.LASF36
+ 713 0229 06       		.byte	0x6
+ 714 022a 3A       		.byte	0x3a
+ 715 022b 09       		.byte	0x9
+ 716 022c 5D000000 		.4byte	0x5d
+ 717 0230 04       		.byte	0x4
+ 718 0231 10       		.uleb128 0x10
+ 719 0232 24010000 		.4byte	.LASF37
+ 720 0236 06       		.byte	0x6
+ 721 0237 3B       		.byte	0x3b
+ 722 0238 09       		.byte	0x9
+ 723 0239 5D000000 		.4byte	0x5d
+ 724 023d 08       		.byte	0x8
+ 725 023e 10       		.uleb128 0x10
+ 726 023f 82070000 		.4byte	.LASF38
+ 727 0243 06       		.byte	0x6
+ 728 0244 3C       		.byte	0x3c
+ 729 0245 09       		.byte	0x9
+ 730 0246 5D000000 		.4byte	0x5d
+ 731 024a 0C       		.byte	0xc
+ 732 024b 10       		.uleb128 0x10
+ 733 024c 74040000 		.4byte	.LASF39
+ 734 0250 06       		.byte	0x6
+ 735 0251 3D       		.byte	0x3d
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 24
+
+
+ 736 0252 09       		.byte	0x9
+ 737 0253 5D000000 		.4byte	0x5d
+ 738 0257 10       		.byte	0x10
+ 739 0258 10       		.uleb128 0x10
+ 740 0259 28040000 		.4byte	.LASF40
+ 741 025d 06       		.byte	0x6
+ 742 025e 3E       		.byte	0x3e
+ 743 025f 09       		.byte	0x9
+ 744 0260 5D000000 		.4byte	0x5d
+ 745 0264 14       		.byte	0x14
+ 746 0265 10       		.uleb128 0x10
+ 747 0266 AA060000 		.4byte	.LASF41
+ 748 026a 06       		.byte	0x6
+ 749 026b 3F       		.byte	0x3f
+ 750 026c 09       		.byte	0x9
+ 751 026d 5D000000 		.4byte	0x5d
+ 752 0271 18       		.byte	0x18
+ 753 0272 10       		.uleb128 0x10
+ 754 0273 0B050000 		.4byte	.LASF42
+ 755 0277 06       		.byte	0x6
+ 756 0278 40       		.byte	0x40
+ 757 0279 09       		.byte	0x9
+ 758 027a 5D000000 		.4byte	0x5d
+ 759 027e 1C       		.byte	0x1c
+ 760 027f 10       		.uleb128 0x10
+ 761 0280 09070000 		.4byte	.LASF43
+ 762 0284 06       		.byte	0x6
+ 763 0285 41       		.byte	0x41
+ 764 0286 09       		.byte	0x9
+ 765 0287 5D000000 		.4byte	0x5d
+ 766 028b 20       		.byte	0x20
+ 767 028c 00       		.byte	0
+ 768 028d 14       		.uleb128 0x14
+ 769 028e 33010000 		.4byte	.LASF44
+ 770 0292 0801     		.2byte	0x108
+ 771 0294 06       		.byte	0x6
+ 772 0295 4A       		.byte	0x4a
+ 773 0296 08       		.byte	0x8
+ 774 0297 D2020000 		.4byte	0x2d2
+ 775 029b 10       		.uleb128 0x10
+ 776 029c 25000000 		.4byte	.LASF45
+ 777 02a0 06       		.byte	0x6
+ 778 02a1 4B       		.byte	0x4b
+ 779 02a2 0A       		.byte	0xa
+ 780 02a3 D2020000 		.4byte	0x2d2
+ 781 02a7 00       		.byte	0
+ 782 02a8 10       		.uleb128 0x10
+ 783 02a9 00000000 		.4byte	.LASF46
+ 784 02ad 06       		.byte	0x6
+ 785 02ae 4C       		.byte	0x4c
+ 786 02af 09       		.byte	0x9
+ 787 02b0 D2020000 		.4byte	0x2d2
+ 788 02b4 80       		.byte	0x80
+ 789 02b5 15       		.uleb128 0x15
+ 790 02b6 44060000 		.4byte	.LASF47
+ 791 02ba 06       		.byte	0x6
+ 792 02bb 4E       		.byte	0x4e
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 25
+
+
+ 793 02bc 0A       		.byte	0xa
+ 794 02bd 8E010000 		.4byte	0x18e
+ 795 02c1 0001     		.2byte	0x100
+ 796 02c3 15       		.uleb128 0x15
+ 797 02c4 69010000 		.4byte	.LASF48
+ 798 02c8 06       		.byte	0x6
+ 799 02c9 51       		.byte	0x51
+ 800 02ca 0A       		.byte	0xa
+ 801 02cb 8E010000 		.4byte	0x18e
+ 802 02cf 0401     		.2byte	0x104
+ 803 02d1 00       		.byte	0
+ 804 02d2 0D       		.uleb128 0xd
+ 805 02d3 8C010000 		.4byte	0x18c
+ 806 02d7 E2020000 		.4byte	0x2e2
+ 807 02db 0E       		.uleb128 0xe
+ 808 02dc 64000000 		.4byte	0x64
+ 809 02e0 1F       		.byte	0x1f
+ 810 02e1 00       		.byte	0
+ 811 02e2 14       		.uleb128 0x14
+ 812 02e3 7D040000 		.4byte	.LASF49
+ 813 02e7 9001     		.2byte	0x190
+ 814 02e9 06       		.byte	0x6
+ 815 02ea 5D       		.byte	0x5d
+ 816 02eb 08       		.byte	0x8
+ 817 02ec 25030000 		.4byte	0x325
+ 818 02f0 10       		.uleb128 0x10
+ 819 02f1 31060000 		.4byte	.LASF29
+ 820 02f5 06       		.byte	0x6
+ 821 02f6 5E       		.byte	0x5e
+ 822 02f7 12       		.byte	0x12
+ 823 02f8 25030000 		.4byte	0x325
+ 824 02fc 00       		.byte	0
+ 825 02fd 10       		.uleb128 0x10
+ 826 02fe 7F050000 		.4byte	.LASF50
+ 827 0302 06       		.byte	0x6
+ 828 0303 5F       		.byte	0x5f
+ 829 0304 06       		.byte	0x6
+ 830 0305 5D000000 		.4byte	0x5d
+ 831 0309 04       		.byte	0x4
+ 832 030a 10       		.uleb128 0x10
+ 833 030b 4D020000 		.4byte	.LASF51
+ 834 030f 06       		.byte	0x6
+ 835 0310 61       		.byte	0x61
+ 836 0311 09       		.byte	0x9
+ 837 0312 2B030000 		.4byte	0x32b
+ 838 0316 08       		.byte	0x8
+ 839 0317 10       		.uleb128 0x10
+ 840 0318 33010000 		.4byte	.LASF44
+ 841 031c 06       		.byte	0x6
+ 842 031d 62       		.byte	0x62
+ 843 031e 1E       		.byte	0x1e
+ 844 031f 8D020000 		.4byte	0x28d
+ 845 0323 88       		.byte	0x88
+ 846 0324 00       		.byte	0
+ 847 0325 08       		.uleb128 0x8
+ 848 0326 04       		.byte	0x4
+ 849 0327 E2020000 		.4byte	0x2e2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 26
+
+
+ 850 032b 0D       		.uleb128 0xd
+ 851 032c DB000000 		.4byte	0xdb
+ 852 0330 3B030000 		.4byte	0x33b
+ 853 0334 0E       		.uleb128 0xe
+ 854 0335 64000000 		.4byte	0x64
+ 855 0339 1F       		.byte	0x1f
+ 856 033a 00       		.byte	0
+ 857 033b 12       		.uleb128 0x12
+ 858 033c 15050000 		.4byte	.LASF52
+ 859 0340 08       		.byte	0x8
+ 860 0341 06       		.byte	0x6
+ 861 0342 75       		.byte	0x75
+ 862 0343 08       		.byte	0x8
+ 863 0344 63030000 		.4byte	0x363
+ 864 0348 10       		.uleb128 0x10
+ 865 0349 1E010000 		.4byte	.LASF53
+ 866 034d 06       		.byte	0x6
+ 867 034e 76       		.byte	0x76
+ 868 034f 11       		.byte	0x11
+ 869 0350 63030000 		.4byte	0x363
+ 870 0354 00       		.byte	0
+ 871 0355 10       		.uleb128 0x10
+ 872 0356 1F000000 		.4byte	.LASF54
+ 873 035a 06       		.byte	0x6
+ 874 035b 77       		.byte	0x77
+ 875 035c 06       		.byte	0x6
+ 876 035d 5D000000 		.4byte	0x5d
+ 877 0361 04       		.byte	0x4
+ 878 0362 00       		.byte	0
+ 879 0363 08       		.uleb128 0x8
+ 880 0364 04       		.byte	0x4
+ 881 0365 2C000000 		.4byte	0x2c
+ 882 0369 12       		.uleb128 0x12
+ 883 036a 47050000 		.4byte	.LASF55
+ 884 036e 68       		.byte	0x68
+ 885 036f 06       		.byte	0x6
+ 886 0370 B5       		.byte	0xb5
+ 887 0371 08       		.byte	0x8
+ 888 0372 AC040000 		.4byte	0x4ac
+ 889 0376 13       		.uleb128 0x13
+ 890 0377 5F7000   		.ascii	"_p\000"
+ 891 037a 06       		.byte	0x6
+ 892 037b B6       		.byte	0xb6
+ 893 037c 12       		.byte	0x12
+ 894 037d 63030000 		.4byte	0x363
+ 895 0381 00       		.byte	0
+ 896 0382 13       		.uleb128 0x13
+ 897 0383 5F7200   		.ascii	"_r\000"
+ 898 0386 06       		.byte	0x6
+ 899 0387 B7       		.byte	0xb7
+ 900 0388 07       		.byte	0x7
+ 901 0389 5D000000 		.4byte	0x5d
+ 902 038d 04       		.byte	0x4
+ 903 038e 13       		.uleb128 0x13
+ 904 038f 5F7700   		.ascii	"_w\000"
+ 905 0392 06       		.byte	0x6
+ 906 0393 B8       		.byte	0xb8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 27
+
+
+ 907 0394 07       		.byte	0x7
+ 908 0395 5D000000 		.4byte	0x5d
+ 909 0399 08       		.byte	0x8
+ 910 039a 10       		.uleb128 0x10
+ 911 039b 62010000 		.4byte	.LASF56
+ 912 039f 06       		.byte	0x6
+ 913 03a0 B9       		.byte	0xb9
+ 914 03a1 09       		.byte	0x9
+ 915 03a2 33000000 		.4byte	0x33
+ 916 03a6 0C       		.byte	0xc
+ 917 03a7 10       		.uleb128 0x10
+ 918 03a8 E6020000 		.4byte	.LASF57
+ 919 03ac 06       		.byte	0x6
+ 920 03ad BA       		.byte	0xba
+ 921 03ae 09       		.byte	0x9
+ 922 03af 33000000 		.4byte	0x33
+ 923 03b3 0E       		.byte	0xe
+ 924 03b4 13       		.uleb128 0x13
+ 925 03b5 5F626600 		.ascii	"_bf\000"
+ 926 03b9 06       		.byte	0x6
+ 927 03ba BB       		.byte	0xbb
+ 928 03bb 11       		.byte	0x11
+ 929 03bc 3B030000 		.4byte	0x33b
+ 930 03c0 10       		.byte	0x10
+ 931 03c1 10       		.uleb128 0x10
+ 932 03c2 A0000000 		.4byte	.LASF58
+ 933 03c6 06       		.byte	0x6
+ 934 03c7 BC       		.byte	0xbc
+ 935 03c8 07       		.byte	0x7
+ 936 03c9 5D000000 		.4byte	0x5d
+ 937 03cd 18       		.byte	0x18
+ 938 03ce 10       		.uleb128 0x10
+ 939 03cf 41010000 		.4byte	.LASF59
+ 940 03d3 06       		.byte	0x6
+ 941 03d4 C3       		.byte	0xc3
+ 942 03d5 0A       		.byte	0xa
+ 943 03d6 8C010000 		.4byte	0x18c
+ 944 03da 1C       		.byte	0x1c
+ 945 03db 10       		.uleb128 0x10
+ 946 03dc 91020000 		.4byte	.LASF60
+ 947 03e0 06       		.byte	0x6
+ 948 03e1 C5       		.byte	0xc5
+ 949 03e2 1D       		.byte	0x1d
+ 950 03e3 24060000 		.4byte	0x624
+ 951 03e7 20       		.byte	0x20
+ 952 03e8 10       		.uleb128 0x10
+ 953 03e9 D7040000 		.4byte	.LASF61
+ 954 03ed 06       		.byte	0x6
+ 955 03ee C7       		.byte	0xc7
+ 956 03ef 1D       		.byte	0x1d
+ 957 03f0 53060000 		.4byte	0x653
+ 958 03f4 24       		.byte	0x24
+ 959 03f5 10       		.uleb128 0x10
+ 960 03f6 DB050000 		.4byte	.LASF62
+ 961 03fa 06       		.byte	0x6
+ 962 03fb CA       		.byte	0xca
+ 963 03fc 0D       		.byte	0xd
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 28
+
+
+ 964 03fd 77060000 		.4byte	0x677
+ 965 0401 28       		.byte	0x28
+ 966 0402 10       		.uleb128 0x10
+ 967 0403 23070000 		.4byte	.LASF63
+ 968 0407 06       		.byte	0x6
+ 969 0408 CB       		.byte	0xcb
+ 970 0409 09       		.byte	0x9
+ 971 040a 91060000 		.4byte	0x691
+ 972 040e 2C       		.byte	0x2c
+ 973 040f 13       		.uleb128 0x13
+ 974 0410 5F756200 		.ascii	"_ub\000"
+ 975 0414 06       		.byte	0x6
+ 976 0415 CE       		.byte	0xce
+ 977 0416 11       		.byte	0x11
+ 978 0417 3B030000 		.4byte	0x33b
+ 979 041b 30       		.byte	0x30
+ 980 041c 13       		.uleb128 0x13
+ 981 041d 5F757000 		.ascii	"_up\000"
+ 982 0421 06       		.byte	0x6
+ 983 0422 CF       		.byte	0xcf
+ 984 0423 12       		.byte	0x12
+ 985 0424 63030000 		.4byte	0x363
+ 986 0428 38       		.byte	0x38
+ 987 0429 13       		.uleb128 0x13
+ 988 042a 5F757200 		.ascii	"_ur\000"
+ 989 042e 06       		.byte	0x6
+ 990 042f D0       		.byte	0xd0
+ 991 0430 07       		.byte	0x7
+ 992 0431 5D000000 		.4byte	0x5d
+ 993 0435 3C       		.byte	0x3c
+ 994 0436 10       		.uleb128 0x10
+ 995 0437 18010000 		.4byte	.LASF64
+ 996 043b 06       		.byte	0x6
+ 997 043c D3       		.byte	0xd3
+ 998 043d 11       		.byte	0x11
+ 999 043e 97060000 		.4byte	0x697
+ 1000 0442 40       		.byte	0x40
+ 1001 0443 10       		.uleb128 0x10
+ 1002 0444 FB060000 		.4byte	.LASF65
+ 1003 0448 06       		.byte	0x6
+ 1004 0449 D4       		.byte	0xd4
+ 1005 044a 11       		.byte	0x11
+ 1006 044b A7060000 		.4byte	0x6a7
+ 1007 044f 43       		.byte	0x43
+ 1008 0450 13       		.uleb128 0x13
+ 1009 0451 5F6C6200 		.ascii	"_lb\000"
+ 1010 0455 06       		.byte	0x6
+ 1011 0456 D7       		.byte	0xd7
+ 1012 0457 11       		.byte	0x11
+ 1013 0458 3B030000 		.4byte	0x33b
+ 1014 045c 44       		.byte	0x44
+ 1015 045d 10       		.uleb128 0x10
+ 1016 045e E6010000 		.4byte	.LASF66
+ 1017 0462 06       		.byte	0x6
+ 1018 0463 DA       		.byte	0xda
+ 1019 0464 07       		.byte	0x7
+ 1020 0465 5D000000 		.4byte	0x5d
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 29
+
+
+ 1021 0469 4C       		.byte	0x4c
+ 1022 046a 10       		.uleb128 0x10
+ 1023 046b 13020000 		.4byte	.LASF67
+ 1024 046f 06       		.byte	0x6
+ 1025 0470 DB       		.byte	0xdb
+ 1026 0471 0A       		.byte	0xa
+ 1027 0472 F9000000 		.4byte	0xf9
+ 1028 0476 50       		.byte	0x50
+ 1029 0477 10       		.uleb128 0x10
+ 1030 0478 51000000 		.4byte	.LASF68
+ 1031 047c 06       		.byte	0x6
+ 1032 047d DE       		.byte	0xde
+ 1033 047e 12       		.byte	0x12
+ 1034 047f CA040000 		.4byte	0x4ca
+ 1035 0483 54       		.byte	0x54
+ 1036 0484 10       		.uleb128 0x10
+ 1037 0485 02040000 		.4byte	.LASF69
+ 1038 0489 06       		.byte	0x6
+ 1039 048a E2       		.byte	0xe2
+ 1040 048b 0C       		.byte	0xc
+ 1041 048c 80010000 		.4byte	0x180
+ 1042 0490 58       		.byte	0x58
+ 1043 0491 10       		.uleb128 0x10
+ 1044 0492 59050000 		.4byte	.LASF70
+ 1045 0496 06       		.byte	0x6
+ 1046 0497 E4       		.byte	0xe4
+ 1047 0498 0E       		.byte	0xe
+ 1048 0499 74010000 		.4byte	0x174
+ 1049 049d 5C       		.byte	0x5c
+ 1050 049e 10       		.uleb128 0x10
+ 1051 049f 15040000 		.4byte	.LASF71
+ 1052 04a3 06       		.byte	0x6
+ 1053 04a4 E5       		.byte	0xe5
+ 1054 04a5 09       		.byte	0x9
+ 1055 04a6 5D000000 		.4byte	0x5d
+ 1056 04aa 64       		.byte	0x64
+ 1057 04ab 00       		.byte	0
+ 1058 04ac 16       		.uleb128 0x16
+ 1059 04ad 5D000000 		.4byte	0x5d
+ 1060 04b1 CA040000 		.4byte	0x4ca
+ 1061 04b5 17       		.uleb128 0x17
+ 1062 04b6 CA040000 		.4byte	0x4ca
+ 1063 04ba 17       		.uleb128 0x17
+ 1064 04bb 8C010000 		.4byte	0x18c
+ 1065 04bf 17       		.uleb128 0x17
+ 1066 04c0 1E060000 		.4byte	0x61e
+ 1067 04c4 17       		.uleb128 0x17
+ 1068 04c5 5D000000 		.4byte	0x5d
+ 1069 04c9 00       		.byte	0
+ 1070 04ca 08       		.uleb128 0x8
+ 1071 04cb 04       		.byte	0x4
+ 1072 04cc D5040000 		.4byte	0x4d5
+ 1073 04d0 06       		.uleb128 0x6
+ 1074 04d1 CA040000 		.4byte	0x4ca
+ 1075 04d5 18       		.uleb128 0x18
+ 1076 04d6 B7050000 		.4byte	.LASF72
+ 1077 04da 2804     		.2byte	0x428
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 30
+
+
+ 1078 04dc 06       		.byte	0x6
+ 1079 04dd 6002     		.2byte	0x260
+ 1080 04df 08       		.byte	0x8
+ 1081 04e0 1E060000 		.4byte	0x61e
+ 1082 04e4 19       		.uleb128 0x19
+ 1083 04e5 F5050000 		.4byte	.LASF73
+ 1084 04e9 06       		.byte	0x6
+ 1085 04ea 6202     		.2byte	0x262
+ 1086 04ec 07       		.byte	0x7
+ 1087 04ed 5D000000 		.4byte	0x5d
+ 1088 04f1 00       		.byte	0
+ 1089 04f2 19       		.uleb128 0x19
+ 1090 04f3 71010000 		.4byte	.LASF74
+ 1091 04f7 06       		.byte	0x6
+ 1092 04f8 6702     		.2byte	0x267
+ 1093 04fa 0B       		.byte	0xb
+ 1094 04fb 03070000 		.4byte	0x703
+ 1095 04ff 04       		.byte	0x4
+ 1096 0500 19       		.uleb128 0x19
+ 1097 0501 BA020000 		.4byte	.LASF75
+ 1098 0505 06       		.byte	0x6
+ 1099 0506 6702     		.2byte	0x267
+ 1100 0508 14       		.byte	0x14
+ 1101 0509 03070000 		.4byte	0x703
+ 1102 050d 08       		.byte	0x8
+ 1103 050e 19       		.uleb128 0x19
+ 1104 050f 72020000 		.4byte	.LASF76
+ 1105 0513 06       		.byte	0x6
+ 1106 0514 6702     		.2byte	0x267
+ 1107 0516 1E       		.byte	0x1e
+ 1108 0517 03070000 		.4byte	0x703
+ 1109 051b 0C       		.byte	0xc
+ 1110 051c 19       		.uleb128 0x19
+ 1111 051d 7A050000 		.4byte	.LASF77
+ 1112 0521 06       		.byte	0x6
+ 1113 0522 6902     		.2byte	0x269
+ 1114 0524 08       		.byte	0x8
+ 1115 0525 5D000000 		.4byte	0x5d
+ 1116 0529 10       		.byte	0x10
+ 1117 052a 19       		.uleb128 0x19
+ 1118 052b 46000000 		.4byte	.LASF78
+ 1119 052f 06       		.byte	0x6
+ 1120 0530 6A02     		.2byte	0x26a
+ 1121 0532 08       		.byte	0x8
+ 1122 0533 03090000 		.4byte	0x903
+ 1123 0537 14       		.byte	0x14
+ 1124 0538 19       		.uleb128 0x19
+ 1125 0539 96050000 		.4byte	.LASF79
+ 1126 053d 06       		.byte	0x6
+ 1127 053e 6D02     		.2byte	0x26d
+ 1128 0540 07       		.byte	0x7
+ 1129 0541 5D000000 		.4byte	0x5d
+ 1130 0545 30       		.byte	0x30
+ 1131 0546 19       		.uleb128 0x19
+ 1132 0547 84050000 		.4byte	.LASF80
+ 1133 054b 06       		.byte	0x6
+ 1134 054c 6E02     		.2byte	0x26e
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 31
+
+
+ 1135 054e 16       		.byte	0x16
+ 1136 054f 18090000 		.4byte	0x918
+ 1137 0553 34       		.byte	0x34
+ 1138 0554 19       		.uleb128 0x19
+ 1139 0555 85040000 		.4byte	.LASF81
+ 1140 0559 06       		.byte	0x6
+ 1141 055a 7002     		.2byte	0x270
+ 1142 055c 07       		.byte	0x7
+ 1143 055d 5D000000 		.4byte	0x5d
+ 1144 0561 38       		.byte	0x38
+ 1145 0562 19       		.uleb128 0x19
+ 1146 0563 8C050000 		.4byte	.LASF82
+ 1147 0567 06       		.byte	0x6
+ 1148 0568 7202     		.2byte	0x272
+ 1149 056a 0A       		.byte	0xa
+ 1150 056b 29090000 		.4byte	0x929
+ 1151 056f 3C       		.byte	0x3c
+ 1152 0570 19       		.uleb128 0x19
+ 1153 0571 3F030000 		.4byte	.LASF83
+ 1154 0575 06       		.byte	0x6
+ 1155 0576 7502     		.2byte	0x275
+ 1156 0578 13       		.byte	0x13
+ 1157 0579 F4010000 		.4byte	0x1f4
+ 1158 057d 40       		.byte	0x40
+ 1159 057e 19       		.uleb128 0x19
+ 1160 057f 97020000 		.4byte	.LASF84
+ 1161 0583 06       		.byte	0x6
+ 1162 0584 7602     		.2byte	0x276
+ 1163 0586 07       		.byte	0x7
+ 1164 0587 5D000000 		.4byte	0x5d
+ 1165 058b 44       		.byte	0x44
+ 1166 058c 19       		.uleb128 0x19
+ 1167 058d 5F070000 		.4byte	.LASF85
+ 1168 0591 06       		.byte	0x6
+ 1169 0592 7702     		.2byte	0x277
+ 1170 0594 13       		.byte	0x13
+ 1171 0595 F4010000 		.4byte	0x1f4
+ 1172 0599 48       		.byte	0x48
+ 1173 059a 19       		.uleb128 0x19
+ 1174 059b B8040000 		.4byte	.LASF86
+ 1175 059f 06       		.byte	0x6
+ 1176 05a0 7802     		.2byte	0x278
+ 1177 05a2 14       		.byte	0x14
+ 1178 05a3 2F090000 		.4byte	0x92f
+ 1179 05a7 4C       		.byte	0x4c
+ 1180 05a8 19       		.uleb128 0x19
+ 1181 05a9 CC020000 		.4byte	.LASF87
+ 1182 05ad 06       		.byte	0x6
+ 1183 05ae 7B02     		.2byte	0x27b
+ 1184 05b0 07       		.byte	0x7
+ 1185 05b1 5D000000 		.4byte	0x5d
+ 1186 05b5 50       		.byte	0x50
+ 1187 05b6 19       		.uleb128 0x19
+ 1188 05b7 0B020000 		.4byte	.LASF88
+ 1189 05bb 06       		.byte	0x6
+ 1190 05bc 7C02     		.2byte	0x27c
+ 1191 05be 09       		.byte	0x9
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 32
+
+
+ 1192 05bf 1E060000 		.4byte	0x61e
+ 1193 05c3 54       		.byte	0x54
+ 1194 05c4 19       		.uleb128 0x19
+ 1195 05c5 F3040000 		.4byte	.LASF89
+ 1196 05c9 06       		.byte	0x6
+ 1197 05ca 9F02     		.2byte	0x29f
+ 1198 05cc 07       		.byte	0x7
+ 1199 05cd DE080000 		.4byte	0x8de
+ 1200 05d1 58       		.byte	0x58
+ 1201 05d2 1A       		.uleb128 0x1a
+ 1202 05d3 7D040000 		.4byte	.LASF49
+ 1203 05d7 06       		.byte	0x6
+ 1204 05d8 A302     		.2byte	0x2a3
+ 1205 05da 13       		.byte	0x13
+ 1206 05db 25030000 		.4byte	0x325
+ 1207 05df 4801     		.2byte	0x148
+ 1208 05e1 1A       		.uleb128 0x1a
+ 1209 05e2 0B030000 		.4byte	.LASF90
+ 1210 05e6 06       		.byte	0x6
+ 1211 05e7 A402     		.2byte	0x2a4
+ 1212 05e9 12       		.byte	0x12
+ 1213 05ea E2020000 		.4byte	0x2e2
+ 1214 05ee 4C01     		.2byte	0x14c
+ 1215 05f0 1A       		.uleb128 0x1a
+ 1216 05f1 F1060000 		.4byte	.LASF91
+ 1217 05f5 06       		.byte	0x6
+ 1218 05f6 A802     		.2byte	0x2a8
+ 1219 05f8 0C       		.byte	0xc
+ 1220 05f9 40090000 		.4byte	0x940
+ 1221 05fd DC02     		.2byte	0x2dc
+ 1222 05ff 1A       		.uleb128 0x1a
+ 1223 0600 49010000 		.4byte	.LASF92
+ 1224 0604 06       		.byte	0x6
+ 1225 0605 AD02     		.2byte	0x2ad
+ 1226 0607 10       		.byte	0x10
+ 1227 0608 C4060000 		.4byte	0x6c4
+ 1228 060c E002     		.2byte	0x2e0
+ 1229 060e 1A       		.uleb128 0x1a
+ 1230 060f 2E010000 		.4byte	.LASF93
+ 1231 0613 06       		.byte	0x6
+ 1232 0614 AF02     		.2byte	0x2af
+ 1233 0616 0A       		.byte	0xa
+ 1234 0617 4C090000 		.4byte	0x94c
+ 1235 061b EC02     		.2byte	0x2ec
+ 1236 061d 00       		.byte	0
+ 1237 061e 08       		.uleb128 0x8
+ 1238 061f 04       		.byte	0x4
+ 1239 0620 B0000000 		.4byte	0xb0
+ 1240 0624 08       		.uleb128 0x8
+ 1241 0625 04       		.byte	0x4
+ 1242 0626 AC040000 		.4byte	0x4ac
+ 1243 062a 16       		.uleb128 0x16
+ 1244 062b 5D000000 		.4byte	0x5d
+ 1245 062f 48060000 		.4byte	0x648
+ 1246 0633 17       		.uleb128 0x17
+ 1247 0634 CA040000 		.4byte	0x4ca
+ 1248 0638 17       		.uleb128 0x17
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 33
+
+
+ 1249 0639 8C010000 		.4byte	0x18c
+ 1250 063d 17       		.uleb128 0x17
+ 1251 063e 48060000 		.4byte	0x648
+ 1252 0642 17       		.uleb128 0x17
+ 1253 0643 5D000000 		.4byte	0x5d
+ 1254 0647 00       		.byte	0
+ 1255 0648 08       		.uleb128 0x8
+ 1256 0649 04       		.byte	0x4
+ 1257 064a B7000000 		.4byte	0xb7
+ 1258 064e 06       		.uleb128 0x6
+ 1259 064f 48060000 		.4byte	0x648
+ 1260 0653 08       		.uleb128 0x8
+ 1261 0654 04       		.byte	0x4
+ 1262 0655 2A060000 		.4byte	0x62a
+ 1263 0659 16       		.uleb128 0x16
+ 1264 065a 05010000 		.4byte	0x105
+ 1265 065e 77060000 		.4byte	0x677
+ 1266 0662 17       		.uleb128 0x17
+ 1267 0663 CA040000 		.4byte	0x4ca
+ 1268 0667 17       		.uleb128 0x17
+ 1269 0668 8C010000 		.4byte	0x18c
+ 1270 066c 17       		.uleb128 0x17
+ 1271 066d 05010000 		.4byte	0x105
+ 1272 0671 17       		.uleb128 0x17
+ 1273 0672 5D000000 		.4byte	0x5d
+ 1274 0676 00       		.byte	0
+ 1275 0677 08       		.uleb128 0x8
+ 1276 0678 04       		.byte	0x4
+ 1277 0679 59060000 		.4byte	0x659
+ 1278 067d 16       		.uleb128 0x16
+ 1279 067e 5D000000 		.4byte	0x5d
+ 1280 0682 91060000 		.4byte	0x691
+ 1281 0686 17       		.uleb128 0x17
+ 1282 0687 CA040000 		.4byte	0x4ca
+ 1283 068b 17       		.uleb128 0x17
+ 1284 068c 8C010000 		.4byte	0x18c
+ 1285 0690 00       		.byte	0
+ 1286 0691 08       		.uleb128 0x8
+ 1287 0692 04       		.byte	0x4
+ 1288 0693 7D060000 		.4byte	0x67d
+ 1289 0697 0D       		.uleb128 0xd
+ 1290 0698 2C000000 		.4byte	0x2c
+ 1291 069c A7060000 		.4byte	0x6a7
+ 1292 06a0 0E       		.uleb128 0xe
+ 1293 06a1 64000000 		.4byte	0x64
+ 1294 06a5 02       		.byte	0x2
+ 1295 06a6 00       		.byte	0
+ 1296 06a7 0D       		.uleb128 0xd
+ 1297 06a8 2C000000 		.4byte	0x2c
+ 1298 06ac B7060000 		.4byte	0x6b7
+ 1299 06b0 0E       		.uleb128 0xe
+ 1300 06b1 64000000 		.4byte	0x64
+ 1301 06b5 00       		.byte	0
+ 1302 06b6 00       		.byte	0
+ 1303 06b7 05       		.uleb128 0x5
+ 1304 06b8 28050000 		.4byte	.LASF94
+ 1305 06bc 06       		.byte	0x6
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 34
+
+
+ 1306 06bd 1F01     		.2byte	0x11f
+ 1307 06bf 1A       		.byte	0x1a
+ 1308 06c0 69030000 		.4byte	0x369
+ 1309 06c4 1B       		.uleb128 0x1b
+ 1310 06c5 B4060000 		.4byte	.LASF95
+ 1311 06c9 0C       		.byte	0xc
+ 1312 06ca 06       		.byte	0x6
+ 1313 06cb 2301     		.2byte	0x123
+ 1314 06cd 08       		.byte	0x8
+ 1315 06ce FD060000 		.4byte	0x6fd
+ 1316 06d2 19       		.uleb128 0x19
+ 1317 06d3 31060000 		.4byte	.LASF29
+ 1318 06d7 06       		.byte	0x6
+ 1319 06d8 2501     		.2byte	0x125
+ 1320 06da 11       		.byte	0x11
+ 1321 06db FD060000 		.4byte	0x6fd
+ 1322 06df 00       		.byte	0
+ 1323 06e0 19       		.uleb128 0x19
+ 1324 06e1 EC020000 		.4byte	.LASF96
+ 1325 06e5 06       		.byte	0x6
+ 1326 06e6 2601     		.2byte	0x126
+ 1327 06e8 07       		.byte	0x7
+ 1328 06e9 5D000000 		.4byte	0x5d
+ 1329 06ed 04       		.byte	0x4
+ 1330 06ee 19       		.uleb128 0x19
+ 1331 06ef 1C050000 		.4byte	.LASF97
+ 1332 06f3 06       		.byte	0x6
+ 1333 06f4 2701     		.2byte	0x127
+ 1334 06f6 0B       		.byte	0xb
+ 1335 06f7 03070000 		.4byte	0x703
+ 1336 06fb 08       		.byte	0x8
+ 1337 06fc 00       		.byte	0
+ 1338 06fd 08       		.uleb128 0x8
+ 1339 06fe 04       		.byte	0x4
+ 1340 06ff C4060000 		.4byte	0x6c4
+ 1341 0703 08       		.uleb128 0x8
+ 1342 0704 04       		.byte	0x4
+ 1343 0705 B7060000 		.4byte	0x6b7
+ 1344 0709 1B       		.uleb128 0x1b
+ 1345 070a 3E000000 		.4byte	.LASF98
+ 1346 070e 0E       		.byte	0xe
+ 1347 070f 06       		.byte	0x6
+ 1348 0710 3F01     		.2byte	0x13f
+ 1349 0712 08       		.byte	0x8
+ 1350 0713 42070000 		.4byte	0x742
+ 1351 0717 19       		.uleb128 0x19
+ 1352 0718 BE050000 		.4byte	.LASF99
+ 1353 071c 06       		.byte	0x6
+ 1354 071d 4001     		.2byte	0x140
+ 1355 071f 12       		.byte	0x12
+ 1356 0720 42070000 		.4byte	0x742
+ 1357 0724 00       		.byte	0
+ 1358 0725 19       		.uleb128 0x19
+ 1359 0726 2B060000 		.4byte	.LASF100
+ 1360 072a 06       		.byte	0x6
+ 1361 072b 4101     		.2byte	0x141
+ 1362 072d 12       		.byte	0x12
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 35
+
+
+ 1363 072e 42070000 		.4byte	0x742
+ 1364 0732 06       		.byte	0x6
+ 1365 0733 19       		.uleb128 0x19
+ 1366 0734 55060000 		.4byte	.LASF101
+ 1367 0738 06       		.byte	0x6
+ 1368 0739 4201     		.2byte	0x142
+ 1369 073b 12       		.byte	0x12
+ 1370 073c 3A000000 		.4byte	0x3a
+ 1371 0740 0C       		.byte	0xc
+ 1372 0741 00       		.byte	0
+ 1373 0742 0D       		.uleb128 0xd
+ 1374 0743 3A000000 		.4byte	0x3a
+ 1375 0747 52070000 		.4byte	0x752
+ 1376 074b 0E       		.uleb128 0xe
+ 1377 074c 64000000 		.4byte	0x64
+ 1378 0750 02       		.byte	0x2
+ 1379 0751 00       		.byte	0
+ 1380 0752 1C       		.uleb128 0x1c
+ 1381 0753 D0       		.byte	0xd0
+ 1382 0754 06       		.byte	0x6
+ 1383 0755 8002     		.2byte	0x280
+ 1384 0757 07       		.byte	0x7
+ 1385 0758 67080000 		.4byte	0x867
+ 1386 075c 19       		.uleb128 0x19
+ 1387 075d 91060000 		.4byte	.LASF102
+ 1388 0761 06       		.byte	0x6
+ 1389 0762 8202     		.2byte	0x282
+ 1390 0764 18       		.byte	0x18
+ 1391 0765 64000000 		.4byte	0x64
+ 1392 0769 00       		.byte	0
+ 1393 076a 19       		.uleb128 0x19
+ 1394 076b 37060000 		.4byte	.LASF103
+ 1395 076f 06       		.byte	0x6
+ 1396 0770 8302     		.2byte	0x283
+ 1397 0772 12       		.byte	0x12
+ 1398 0773 1E060000 		.4byte	0x61e
+ 1399 0777 04       		.byte	0x4
+ 1400 0778 19       		.uleb128 0x19
+ 1401 0779 20030000 		.4byte	.LASF104
+ 1402 077d 06       		.byte	0x6
+ 1403 077e 8402     		.2byte	0x284
+ 1404 0780 10       		.byte	0x10
+ 1405 0781 67080000 		.4byte	0x867
+ 1406 0785 08       		.byte	0x8
+ 1407 0786 19       		.uleb128 0x19
+ 1408 0787 14070000 		.4byte	.LASF105
+ 1409 078b 06       		.byte	0x6
+ 1410 078c 8502     		.2byte	0x285
+ 1411 078e 17       		.byte	0x17
+ 1412 078f 0A020000 		.4byte	0x20a
+ 1413 0793 24       		.byte	0x24
+ 1414 0794 19       		.uleb128 0x19
+ 1415 0795 82020000 		.4byte	.LASF106
+ 1416 0799 06       		.byte	0x6
+ 1417 079a 8602     		.2byte	0x286
+ 1418 079c 0F       		.byte	0xf
+ 1419 079d 5D000000 		.4byte	0x5d
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 36
+
+
+ 1420 07a1 48       		.byte	0x48
+ 1421 07a2 19       		.uleb128 0x19
+ 1422 07a3 62050000 		.4byte	.LASF107
+ 1423 07a7 06       		.byte	0x6
+ 1424 07a8 8702     		.2byte	0x287
+ 1425 07aa 2C       		.byte	0x2c
+ 1426 07ab 56000000 		.4byte	0x56
+ 1427 07af 50       		.byte	0x50
+ 1428 07b0 19       		.uleb128 0x19
+ 1429 07b1 2A070000 		.4byte	.LASF108
+ 1430 07b5 06       		.byte	0x6
+ 1431 07b6 8802     		.2byte	0x288
+ 1432 07b8 1A       		.byte	0x1a
+ 1433 07b9 09070000 		.4byte	0x709
+ 1434 07bd 58       		.byte	0x58
+ 1435 07be 19       		.uleb128 0x19
+ 1436 07bf 6D050000 		.4byte	.LASF109
+ 1437 07c3 06       		.byte	0x6
+ 1438 07c4 8902     		.2byte	0x289
+ 1439 07c6 16       		.byte	0x16
+ 1440 07c7 74010000 		.4byte	0x174
+ 1441 07cb 68       		.byte	0x68
+ 1442 07cc 19       		.uleb128 0x19
+ 1443 07cd 2F070000 		.4byte	.LASF110
+ 1444 07d1 06       		.byte	0x6
+ 1445 07d2 8A02     		.2byte	0x28a
+ 1446 07d4 16       		.byte	0x16
+ 1447 07d5 74010000 		.4byte	0x174
+ 1448 07d9 70       		.byte	0x70
+ 1449 07da 19       		.uleb128 0x19
+ 1450 07db C9040000 		.4byte	.LASF111
+ 1451 07df 06       		.byte	0x6
+ 1452 07e0 8B02     		.2byte	0x28b
+ 1453 07e2 16       		.byte	0x16
+ 1454 07e3 74010000 		.4byte	0x174
+ 1455 07e7 78       		.byte	0x78
+ 1456 07e8 19       		.uleb128 0x19
+ 1457 07e9 D5060000 		.4byte	.LASF112
+ 1458 07ed 06       		.byte	0x6
+ 1459 07ee 8C02     		.2byte	0x28c
+ 1460 07f0 10       		.byte	0x10
+ 1461 07f1 77080000 		.4byte	0x877
+ 1462 07f5 80       		.byte	0x80
+ 1463 07f6 19       		.uleb128 0x19
+ 1464 07f7 14030000 		.4byte	.LASF113
+ 1465 07fb 06       		.byte	0x6
+ 1466 07fc 8D02     		.2byte	0x28d
+ 1467 07fe 10       		.byte	0x10
+ 1468 07ff 87080000 		.4byte	0x887
+ 1469 0803 88       		.byte	0x88
+ 1470 0804 19       		.uleb128 0x19
+ 1471 0805 62060000 		.4byte	.LASF114
+ 1472 0809 06       		.byte	0x6
+ 1473 080a 8E02     		.2byte	0x28e
+ 1474 080c 0F       		.byte	0xf
+ 1475 080d 5D000000 		.4byte	0x5d
+ 1476 0811 A0       		.byte	0xa0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 37
+
+
+ 1477 0812 19       		.uleb128 0x19
+ 1478 0813 2C020000 		.4byte	.LASF115
+ 1479 0817 06       		.byte	0x6
+ 1480 0818 8F02     		.2byte	0x28f
+ 1481 081a 16       		.byte	0x16
+ 1482 081b 74010000 		.4byte	0x174
+ 1483 081f A4       		.byte	0xa4
+ 1484 0820 19       		.uleb128 0x19
+ 1485 0821 E0000000 		.4byte	.LASF116
+ 1486 0825 06       		.byte	0x6
+ 1487 0826 9002     		.2byte	0x290
+ 1488 0828 16       		.byte	0x16
+ 1489 0829 74010000 		.4byte	0x174
+ 1490 082d AC       		.byte	0xac
+ 1491 082e 19       		.uleb128 0x19
+ 1492 082f 1B020000 		.4byte	.LASF117
+ 1493 0833 06       		.byte	0x6
+ 1494 0834 9102     		.2byte	0x291
+ 1495 0836 16       		.byte	0x16
+ 1496 0837 74010000 		.4byte	0x174
+ 1497 083b B4       		.byte	0xb4
+ 1498 083c 19       		.uleb128 0x19
+ 1499 083d 69000000 		.4byte	.LASF118
+ 1500 0841 06       		.byte	0x6
+ 1501 0842 9202     		.2byte	0x292
+ 1502 0844 16       		.byte	0x16
+ 1503 0845 74010000 		.4byte	0x174
+ 1504 0849 BC       		.byte	0xbc
+ 1505 084a 19       		.uleb128 0x19
+ 1506 084b 78000000 		.4byte	.LASF119
+ 1507 084f 06       		.byte	0x6
+ 1508 0850 9302     		.2byte	0x293
+ 1509 0852 16       		.byte	0x16
+ 1510 0853 74010000 		.4byte	0x174
+ 1511 0857 C4       		.byte	0xc4
+ 1512 0858 19       		.uleb128 0x19
+ 1513 0859 F8040000 		.4byte	.LASF120
+ 1514 085d 06       		.byte	0x6
+ 1515 085e 9402     		.2byte	0x294
+ 1516 0860 08       		.byte	0x8
+ 1517 0861 5D000000 		.4byte	0x5d
+ 1518 0865 CC       		.byte	0xcc
+ 1519 0866 00       		.byte	0
+ 1520 0867 0D       		.uleb128 0xd
+ 1521 0868 B0000000 		.4byte	0xb0
+ 1522 086c 77080000 		.4byte	0x877
+ 1523 0870 0E       		.uleb128 0xe
+ 1524 0871 64000000 		.4byte	0x64
+ 1525 0875 19       		.byte	0x19
+ 1526 0876 00       		.byte	0
+ 1527 0877 0D       		.uleb128 0xd
+ 1528 0878 B0000000 		.4byte	0xb0
+ 1529 087c 87080000 		.4byte	0x887
+ 1530 0880 0E       		.uleb128 0xe
+ 1531 0881 64000000 		.4byte	0x64
+ 1532 0885 07       		.byte	0x7
+ 1533 0886 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 38
+
+
+ 1534 0887 0D       		.uleb128 0xd
+ 1535 0888 B0000000 		.4byte	0xb0
+ 1536 088c 97080000 		.4byte	0x897
+ 1537 0890 0E       		.uleb128 0xe
+ 1538 0891 64000000 		.4byte	0x64
+ 1539 0895 17       		.byte	0x17
+ 1540 0896 00       		.byte	0
+ 1541 0897 1C       		.uleb128 0x1c
+ 1542 0898 F0       		.byte	0xf0
+ 1543 0899 06       		.byte	0x6
+ 1544 089a 9902     		.2byte	0x299
+ 1545 089c 07       		.byte	0x7
+ 1546 089d BE080000 		.4byte	0x8be
+ 1547 08a1 19       		.uleb128 0x19
+ 1548 08a2 5C040000 		.4byte	.LASF121
+ 1549 08a6 06       		.byte	0x6
+ 1550 08a7 9C02     		.2byte	0x29c
+ 1551 08a9 1B       		.byte	0x1b
+ 1552 08aa BE080000 		.4byte	0x8be
+ 1553 08ae 00       		.byte	0
+ 1554 08af 19       		.uleb128 0x19
+ 1555 08b0 CC060000 		.4byte	.LASF122
+ 1556 08b4 06       		.byte	0x6
+ 1557 08b5 9D02     		.2byte	0x29d
+ 1558 08b7 18       		.byte	0x18
+ 1559 08b8 CE080000 		.4byte	0x8ce
+ 1560 08bc 78       		.byte	0x78
+ 1561 08bd 00       		.byte	0
+ 1562 08be 0D       		.uleb128 0xd
+ 1563 08bf 63030000 		.4byte	0x363
+ 1564 08c3 CE080000 		.4byte	0x8ce
+ 1565 08c7 0E       		.uleb128 0xe
+ 1566 08c8 64000000 		.4byte	0x64
+ 1567 08cc 1D       		.byte	0x1d
+ 1568 08cd 00       		.byte	0
+ 1569 08ce 0D       		.uleb128 0xd
+ 1570 08cf 64000000 		.4byte	0x64
+ 1571 08d3 DE080000 		.4byte	0x8de
+ 1572 08d7 0E       		.uleb128 0xe
+ 1573 08d8 64000000 		.4byte	0x64
+ 1574 08dc 1D       		.byte	0x1d
+ 1575 08dd 00       		.byte	0
+ 1576 08de 1D       		.uleb128 0x1d
+ 1577 08df F0       		.byte	0xf0
+ 1578 08e0 06       		.byte	0x6
+ 1579 08e1 7E02     		.2byte	0x27e
+ 1580 08e3 03       		.byte	0x3
+ 1581 08e4 03090000 		.4byte	0x903
+ 1582 08e8 1E       		.uleb128 0x1e
+ 1583 08e9 B7050000 		.4byte	.LASF72
+ 1584 08ed 06       		.byte	0x6
+ 1585 08ee 9502     		.2byte	0x295
+ 1586 08f0 0B       		.byte	0xb
+ 1587 08f1 52070000 		.4byte	0x752
+ 1588 08f5 1E       		.uleb128 0x1e
+ 1589 08f6 01070000 		.4byte	.LASF123
+ 1590 08fa 06       		.byte	0x6
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 39
+
+
+ 1591 08fb 9E02     		.2byte	0x29e
+ 1592 08fd 0B       		.byte	0xb
+ 1593 08fe 97080000 		.4byte	0x897
+ 1594 0902 00       		.byte	0
+ 1595 0903 0D       		.uleb128 0xd
+ 1596 0904 B0000000 		.4byte	0xb0
+ 1597 0908 13090000 		.4byte	0x913
+ 1598 090c 0E       		.uleb128 0xe
+ 1599 090d 64000000 		.4byte	0x64
+ 1600 0911 18       		.byte	0x18
+ 1601 0912 00       		.byte	0
+ 1602 0913 0A       		.uleb128 0xa
+ 1603 0914 BA000000 		.4byte	.LASF125
+ 1604 0918 08       		.uleb128 0x8
+ 1605 0919 04       		.byte	0x4
+ 1606 091a 13090000 		.4byte	0x913
+ 1607 091e 1F       		.uleb128 0x1f
+ 1608 091f 29090000 		.4byte	0x929
+ 1609 0923 17       		.uleb128 0x17
+ 1610 0924 CA040000 		.4byte	0x4ca
+ 1611 0928 00       		.byte	0
+ 1612 0929 08       		.uleb128 0x8
+ 1613 092a 04       		.byte	0x4
+ 1614 092b 1E090000 		.4byte	0x91e
+ 1615 092f 08       		.uleb128 0x8
+ 1616 0930 04       		.byte	0x4
+ 1617 0931 F4010000 		.4byte	0x1f4
+ 1618 0935 1F       		.uleb128 0x1f
+ 1619 0936 40090000 		.4byte	0x940
+ 1620 093a 17       		.uleb128 0x17
+ 1621 093b 5D000000 		.4byte	0x5d
+ 1622 093f 00       		.byte	0
+ 1623 0940 08       		.uleb128 0x8
+ 1624 0941 04       		.byte	0x4
+ 1625 0942 46090000 		.4byte	0x946
+ 1626 0946 08       		.uleb128 0x8
+ 1627 0947 04       		.byte	0x4
+ 1628 0948 35090000 		.4byte	0x935
+ 1629 094c 0D       		.uleb128 0xd
+ 1630 094d B7060000 		.4byte	0x6b7
+ 1631 0951 5C090000 		.4byte	0x95c
+ 1632 0955 0E       		.uleb128 0xe
+ 1633 0956 64000000 		.4byte	0x64
+ 1634 095a 02       		.byte	0x2
+ 1635 095b 00       		.byte	0
+ 1636 095c 20       		.uleb128 0x20
+ 1637 095d E1050000 		.4byte	.LASF126
+ 1638 0961 06       		.byte	0x6
+ 1639 0962 2E03     		.2byte	0x32e
+ 1640 0964 17       		.byte	0x17
+ 1641 0965 CA040000 		.4byte	0x4ca
+ 1642 0969 20       		.uleb128 0x20
+ 1643 096a 6F060000 		.4byte	.LASF127
+ 1644 096e 06       		.byte	0x6
+ 1645 096f 2F03     		.2byte	0x32f
+ 1646 0971 1D       		.byte	0x1d
+ 1647 0972 D0040000 		.4byte	0x4d0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 40
+
+
+ 1648 0976 0D       		.uleb128 0xd
+ 1649 0977 B7000000 		.4byte	0xb7
+ 1650 097b 81090000 		.4byte	0x981
+ 1651 097f 21       		.uleb128 0x21
+ 1652 0980 00       		.byte	0
+ 1653 0981 06       		.uleb128 0x6
+ 1654 0982 76090000 		.4byte	0x976
+ 1655 0986 22       		.uleb128 0x22
+ 1656 0987 23060000 		.4byte	.LASF128
+ 1657 098b 07       		.byte	0x7
+ 1658 098c AE       		.byte	0xae
+ 1659 098d 1C       		.byte	0x1c
+ 1660 098e 81090000 		.4byte	0x981
+ 1661 0992 22       		.uleb128 0x22
+ 1662 0993 42040000 		.4byte	.LASF129
+ 1663 0997 08       		.byte	0x8
+ 1664 0998 D4       		.byte	0xd4
+ 1665 0999 0F       		.byte	0xf
+ 1666 099a 90000000 		.4byte	0x90
+ 1667 099e 22       		.uleb128 0x22
+ 1668 099f F5010000 		.4byte	.LASF130
+ 1669 09a3 08       		.byte	0x8
+ 1670 09a4 D5       		.byte	0xd5
+ 1671 09a5 0F       		.byte	0xf
+ 1672 09a6 90000000 		.4byte	0x90
+ 1673 09aa 22       		.uleb128 0x22
+ 1674 09ab 82060000 		.4byte	.LASF131
+ 1675 09af 08       		.byte	0x8
+ 1676 09b0 D6       		.byte	0xd6
+ 1677 09b1 0F       		.byte	0xf
+ 1678 09b2 7E000000 		.4byte	0x7e
+ 1679 09b6 22       		.uleb128 0x22
+ 1680 09b7 5C000000 		.4byte	.LASF132
+ 1681 09bb 08       		.byte	0x8
+ 1682 09bc D7       		.byte	0xd7
+ 1683 09bd 0F       		.byte	0xf
+ 1684 09be 90000000 		.4byte	0x90
+ 1685 09c2 20       		.uleb128 0x20
+ 1686 09c3 A9000000 		.4byte	.LASF133
+ 1687 09c7 08       		.byte	0x8
+ 1688 09c8 0A01     		.2byte	0x10a
+ 1689 09ca 0F       		.byte	0xf
+ 1690 09cb 90000000 		.4byte	0x90
+ 1691 09cf 0D       		.uleb128 0xd
+ 1692 09d0 8B000000 		.4byte	0x8b
+ 1693 09d4 DF090000 		.4byte	0x9df
+ 1694 09d8 0E       		.uleb128 0xe
+ 1695 09d9 64000000 		.4byte	0x64
+ 1696 09dd 2D       		.byte	0x2d
+ 1697 09de 00       		.byte	0
+ 1698 09df 06       		.uleb128 0x6
+ 1699 09e0 CF090000 		.4byte	0x9cf
+ 1700 09e4 20       		.uleb128 0x20
+ 1701 09e5 63040000 		.4byte	.LASF134
+ 1702 09e9 08       		.byte	0x8
+ 1703 09ea 2402     		.2byte	0x224
+ 1704 09ec 1C       		.byte	0x1c
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 41
+
+
+ 1705 09ed DF090000 		.4byte	0x9df
+ 1706 09f1 0D       		.uleb128 0xd
+ 1707 09f2 4E060000 		.4byte	0x64e
+ 1708 09f6 FC090000 		.4byte	0x9fc
+ 1709 09fa 21       		.uleb128 0x21
+ 1710 09fb 00       		.byte	0
+ 1711 09fc 06       		.uleb128 0x6
+ 1712 09fd F1090000 		.4byte	0x9f1
+ 1713 0a01 22       		.uleb128 0x22
+ 1714 0a02 12000000 		.4byte	.LASF135
+ 1715 0a06 09       		.byte	0x9
+ 1716 0a07 14       		.byte	0x14
+ 1717 0a08 24       		.byte	0x24
+ 1718 0a09 FC090000 		.4byte	0x9fc
+ 1719 0a0d 22       		.uleb128 0x22
+ 1720 0a0e 4F050000 		.4byte	.LASF136
+ 1721 0a12 09       		.byte	0x9
+ 1722 0a13 15       		.byte	0x15
+ 1723 0a14 15       		.byte	0x15
+ 1724 0a15 5D000000 		.4byte	0x5d
+ 1725 0a19 23       		.uleb128 0x23
+ 1726 0a1a 656E6400 		.ascii	"end\000"
+ 1727 0a1e 01       		.byte	0x1
+ 1728 0a1f 42       		.byte	0x42
+ 1729 0a20 11       		.byte	0x11
+ 1730 0a21 5D000000 		.4byte	0x5d
+ 1731 0a25 24       		.uleb128 0x24
+ 1732 0a26 CB000000 		.4byte	.LASF168
+ 1733 0a2a 01       		.byte	0x1
+ 1734 0a2b 4D       		.byte	0x4d
+ 1735 0a2c 1D       		.byte	0x1d
+ 1736 0a2d 90000000 		.4byte	0x90
+ 1737 0a31 25       		.uleb128 0x25
+ 1738 0a32 52020000 		.4byte	.LASF169
+ 1739 0a36 01       		.byte	0x1
+ 1740 0a37 DD       		.byte	0xdd
+ 1741 0a38 17       		.byte	0x17
+ 1742 0a39 2C000000 		.4byte	0x2c
+ 1743 0a3d 08       		.byte	0x8
+ 1744 0a3e 12       		.uleb128 0x12
+ 1745 0a3f 01060000 		.4byte	.LASF137
+ 1746 0a43 10       		.byte	0x10
+ 1747 0a44 01       		.byte	0x1
+ 1748 0a45 DF       		.byte	0xdf
+ 1749 0a46 08       		.byte	0x8
+ 1750 0a47 800A0000 		.4byte	0xa80
+ 1751 0a4b 10       		.uleb128 0x10
+ 1752 0a4c 57000000 		.4byte	.LASF138
+ 1753 0a50 01       		.byte	0x1
+ 1754 0a51 E1       		.byte	0xe1
+ 1755 0a52 17       		.byte	0x17
+ 1756 0a53 850A0000 		.4byte	0xa85
+ 1757 0a57 00       		.byte	0
+ 1758 0a58 10       		.uleb128 0x10
+ 1759 0a59 F3020000 		.4byte	.LASF139
+ 1760 0a5d 01       		.byte	0x1
+ 1761 0a5e E2       		.byte	0xe2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 42
+
+
+ 1762 0a5f 17       		.byte	0x17
+ 1763 0a60 850A0000 		.4byte	0xa85
+ 1764 0a64 04       		.byte	0x4
+ 1765 0a65 10       		.uleb128 0x10
+ 1766 0a66 34000000 		.4byte	.LASF140
+ 1767 0a6a 01       		.byte	0x1
+ 1768 0a6b E3       		.byte	0xe3
+ 1769 0a6c 0C       		.byte	0xc
+ 1770 0a6d 6B000000 		.4byte	0x6b
+ 1771 0a71 08       		.byte	0x8
+ 1772 0a72 10       		.uleb128 0x10
+ 1773 0a73 35030000 		.4byte	.LASF141
+ 1774 0a77 01       		.byte	0x1
+ 1775 0a78 E4       		.byte	0xe4
+ 1776 0a79 0C       		.byte	0xc
+ 1777 0a7a 6B000000 		.4byte	0x6b
+ 1778 0a7e 0C       		.byte	0xc
+ 1779 0a7f 00       		.byte	0
+ 1780 0a80 06       		.uleb128 0x6
+ 1781 0a81 3E0A0000 		.4byte	0xa3e
+ 1782 0a85 08       		.uleb128 0x8
+ 1783 0a86 04       		.byte	0x4
+ 1784 0a87 310A0000 		.4byte	0xa31
+ 1785 0a8b 0D       		.uleb128 0xd
+ 1786 0a8c 800A0000 		.4byte	0xa80
+ 1787 0a90 960A0000 		.4byte	0xa96
+ 1788 0a94 21       		.uleb128 0x21
+ 1789 0a95 00       		.byte	0
+ 1790 0a96 06       		.uleb128 0x6
+ 1791 0a97 8B0A0000 		.4byte	0xa8b
+ 1792 0a9b 22       		.uleb128 0x22
+ 1793 0a9c 08040000 		.4byte	.LASF142
+ 1794 0aa0 01       		.byte	0x1
+ 1795 0aa1 E7       		.byte	0xe7
+ 1796 0aa2 21       		.byte	0x21
+ 1797 0aa3 960A0000 		.4byte	0xa96
+ 1798 0aa7 22       		.uleb128 0x22
+ 1799 0aa8 32040000 		.4byte	.LASF143
+ 1800 0aac 01       		.byte	0x1
+ 1801 0aad E8       		.byte	0xe8
+ 1802 0aae 13       		.byte	0x13
+ 1803 0aaf B7000000 		.4byte	0xb7
+ 1804 0ab3 0D       		.uleb128 0xd
+ 1805 0ab4 C9000000 		.4byte	0xc9
+ 1806 0ab8 C30A0000 		.4byte	0xac3
+ 1807 0abc 0E       		.uleb128 0xe
+ 1808 0abd 64000000 		.4byte	0x64
+ 1809 0ac1 2F       		.byte	0x2f
+ 1810 0ac2 00       		.byte	0
+ 1811 0ac3 26       		.uleb128 0x26
+ 1812 0ac4 3A050000 		.4byte	.LASF144
+ 1813 0ac8 01       		.byte	0x1
+ 1814 0ac9 BB01     		.2byte	0x1bb
+ 1815 0acb 0E       		.byte	0xe
+ 1816 0acc B30A0000 		.4byte	0xab3
+ 1817 0ad0 05       		.uleb128 0x5
+ 1818 0ad1 03       		.byte	0x3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 43
+
+
+ 1819 0ad2 00000000 		.4byte	CyRamVectors
+ 1820 0ad6 0D       		.uleb128 0xd
+ 1821 0ad7 D6000000 		.4byte	0xd6
+ 1822 0adb E60A0000 		.4byte	0xae6
+ 1823 0adf 0E       		.uleb128 0xe
+ 1824 0ae0 64000000 		.4byte	0x64
+ 1825 0ae4 03       		.byte	0x3
+ 1826 0ae5 00       		.byte	0
+ 1827 0ae6 06       		.uleb128 0x6
+ 1828 0ae7 D60A0000 		.4byte	0xad6
+ 1829 0aeb 26       		.uleb128 0x26
+ 1830 0aec 97040000 		.4byte	.LASF145
+ 1831 0af0 01       		.byte	0x1
+ 1832 0af1 CF01     		.2byte	0x1cf
+ 1833 0af3 18       		.byte	0x18
+ 1834 0af4 E60A0000 		.4byte	0xae6
+ 1835 0af8 05       		.uleb128 0x5
+ 1836 0af9 03       		.byte	0x3
+ 1837 0afa 00000000 		.4byte	RomVectors
+ 1838 0afe 27       		.uleb128 0x27
+ 1839 0aff A2040000 		.4byte	.LASF147
+ 1840 0b03 01       		.byte	0x1
+ 1841 0b04 EB01     		.2byte	0x1eb
+ 1842 0b06 06       		.byte	0x6
+ 1843 0b07 00000000 		.4byte	.LFB5
+ 1844 0b0b 40000000 		.4byte	.LFE5-.LFB5
+ 1845 0b0f 01       		.uleb128 0x1
+ 1846 0b10 9C       		.byte	0x9c
+ 1847 0b11 340B0000 		.4byte	0xb34
+ 1848 0b15 28       		.uleb128 0x28
+ 1849 0b16 C2020000 		.4byte	.LASF146
+ 1850 0b1a 01       		.byte	0x1
+ 1851 0b1b ED01     		.2byte	0x1ed
+ 1852 0b1d 0C       		.byte	0xc
+ 1853 0b1e 90000000 		.4byte	0x90
+ 1854 0b22 04000000 		.4byte	.LLST9
+ 1855 0b26 00000000 		.4byte	.LVUS9
+ 1856 0b2a 29       		.uleb128 0x29
+ 1857 0b2b 24000000 		.4byte	.LVL32
+ 1858 0b2f E40C0000 		.4byte	0xce4
+ 1859 0b33 00       		.byte	0
+ 1860 0b34 27       		.uleb128 0x27
+ 1861 0b35 22050000 		.4byte	.LASF148
+ 1862 0b39 01       		.byte	0x1
+ 1863 0b3a 6D01     		.2byte	0x16d
+ 1864 0b3c 06       		.byte	0x6
+ 1865 0b3d 00000000 		.4byte	.LFB4
+ 1866 0b41 06000000 		.4byte	.LFE4-.LFB4
+ 1867 0b45 01       		.uleb128 0x1
+ 1868 0b46 9C       		.byte	0x9c
+ 1869 0b47 550B0000 		.4byte	0xb55
+ 1870 0b4b 29       		.uleb128 0x29
+ 1871 0b4c 06000000 		.4byte	.LVL28
+ 1872 0b50 550B0000 		.4byte	0xb55
+ 1873 0b54 00       		.byte	0
+ 1874 0b55 2A       		.uleb128 0x2a
+ 1875 0b56 4D060000 		.4byte	.LASF153
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 44
+
+
+ 1876 0b5a 01       		.byte	0x1
+ 1877 0b5b 3801     		.2byte	0x138
+ 1878 0b5d 06       		.byte	0x6
+ 1879 0b5e 00000000 		.4byte	.LFB3
+ 1880 0b62 48000000 		.4byte	.LFE3-.LFB3
+ 1881 0b66 01       		.uleb128 0x1
+ 1882 0b67 9C       		.byte	0x9c
+ 1883 0b68 070C0000 		.4byte	0xc07
+ 1884 0b6c 28       		.uleb128 0x28
+ 1885 0b6d 2D030000 		.4byte	.LASF149
+ 1886 0b71 01       		.byte	0x1
+ 1887 0b72 3D01     		.2byte	0x13d
+ 1888 0b74 12       		.byte	0x12
+ 1889 0b75 64000000 		.4byte	0x64
+ 1890 0b79 25000000 		.4byte	.LLST3
+ 1891 0b7d 23000000 		.4byte	.LVUS3
+ 1892 0b81 28       		.uleb128 0x28
+ 1893 0b82 1D040000 		.4byte	.LASF150
+ 1894 0b86 01       		.byte	0x1
+ 1895 0b87 3E01     		.2byte	0x13e
+ 1896 0b89 23       		.byte	0x23
+ 1897 0b8a 070C0000 		.4byte	0xc07
+ 1898 0b8e 3A000000 		.4byte	.LLST4
+ 1899 0b92 38000000 		.4byte	.LVUS4
+ 1900 0b96 2B       		.uleb128 0x2b
+ 1901 0b97 00000000 		.4byte	.Ldebug_ranges0+0
+ 1902 0b9b F40B0000 		.4byte	0xbf4
+ 1903 0b9f 2C       		.uleb128 0x2c
+ 1904 0ba0 73726300 		.ascii	"src\000"
+ 1905 0ba4 01       		.byte	0x1
+ 1906 0ba5 4301     		.2byte	0x143
+ 1907 0ba7 15       		.byte	0x15
+ 1908 0ba8 0D0C0000 		.4byte	0xc0d
+ 1909 0bac 55000000 		.4byte	.LLST5
+ 1910 0bb0 4D000000 		.4byte	.LVUS5
+ 1911 0bb4 2C       		.uleb128 0x2c
+ 1912 0bb5 64737400 		.ascii	"dst\000"
+ 1913 0bb9 01       		.byte	0x1
+ 1914 0bba 4401     		.2byte	0x144
+ 1915 0bbc 15       		.byte	0x15
+ 1916 0bbd 0D0C0000 		.4byte	0xc0d
+ 1917 0bc1 97000000 		.4byte	.LLST6
+ 1918 0bc5 8B000000 		.4byte	.LVUS6
+ 1919 0bc9 28       		.uleb128 0x28
+ 1920 0bca C5000000 		.4byte	.LASF151
+ 1921 0bce 01       		.byte	0x1
+ 1922 0bcf 4501     		.2byte	0x145
+ 1923 0bd1 16       		.byte	0x16
+ 1924 0bd2 64000000 		.4byte	0x64
+ 1925 0bd6 EB000000 		.4byte	.LLST7
+ 1926 0bda E5000000 		.4byte	.LVUS7
+ 1927 0bde 28       		.uleb128 0x28
+ 1928 0bdf 0C000000 		.4byte	.LASF152
+ 1929 0be3 01       		.byte	0x1
+ 1930 0be4 4601     		.2byte	0x146
+ 1931 0be6 16       		.byte	0x16
+ 1932 0be7 64000000 		.4byte	0x64
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 45
+
+
+ 1933 0beb 1C010000 		.4byte	.LLST8
+ 1934 0bef 14010000 		.4byte	.LVUS8
+ 1935 0bf3 00       		.byte	0
+ 1936 0bf4 29       		.uleb128 0x29
+ 1937 0bf5 38000000 		.4byte	.LVL26
+ 1938 0bf9 F00C0000 		.4byte	0xcf0
+ 1939 0bfd 29       		.uleb128 0x29
+ 1940 0bfe 3C000000 		.4byte	.LVL27
+ 1941 0c02 FC0C0000 		.4byte	0xcfc
+ 1942 0c06 00       		.byte	0
+ 1943 0c07 08       		.uleb128 0x8
+ 1944 0c08 04       		.byte	0x4
+ 1945 0c09 800A0000 		.4byte	0xa80
+ 1946 0c0d 08       		.uleb128 0x8
+ 1947 0c0e 04       		.byte	0x4
+ 1948 0c0f 90000000 		.4byte	0x90
+ 1949 0c13 2D       		.uleb128 0x2d
+ 1950 0c14 8C070000 		.4byte	.LASF154
+ 1951 0c18 01       		.byte	0x1
+ 1952 0c19 1701     		.2byte	0x117
+ 1953 0c1b 08       		.byte	0x8
+ 1954 0c1c 8C010000 		.4byte	0x18c
+ 1955 0c20 00000000 		.4byte	.LFB2
+ 1956 0c24 30000000 		.4byte	.LFE2-.LFB2
+ 1957 0c28 01       		.uleb128 0x1
+ 1958 0c29 9C       		.byte	0x9c
+ 1959 0c2a 820C0000 		.4byte	0xc82
+ 1960 0c2e 2E       		.uleb128 0x2e
+ 1961 0c2f C2040000 		.4byte	.LASF157
+ 1962 0c33 01       		.byte	0x1
+ 1963 0c34 1701     		.2byte	0x117
+ 1964 0c36 13       		.byte	0x13
+ 1965 0c37 5D000000 		.4byte	0x5d
+ 1966 0c3b 58010000 		.4byte	.LLST1
+ 1967 0c3f 52010000 		.4byte	.LVUS1
+ 1968 0c43 2F       		.uleb128 0x2f
+ 1969 0c44 656E6400 		.ascii	"end\000"
+ 1970 0c48 01       		.byte	0x1
+ 1971 0c49 1901     		.2byte	0x119
+ 1972 0c4b 11       		.byte	0x11
+ 1973 0c4c 5D000000 		.4byte	0x5d
+ 1974 0c50 28       		.uleb128 0x28
+ 1975 0c51 69070000 		.4byte	.LASF155
+ 1976 0c55 01       		.byte	0x1
+ 1977 0c56 1A01     		.2byte	0x11a
+ 1978 0c58 11       		.byte	0x11
+ 1979 0c59 8C010000 		.4byte	0x18c
+ 1980 0c5d 88010000 		.4byte	.LLST2
+ 1981 0c61 84010000 		.4byte	.LVUS2
+ 1982 0c65 30       		.uleb128 0x30
+ 1983 0c66 41020000 		.4byte	.LASF170
+ 1984 0c6a 01       		.byte	0x1
+ 1985 0c6b 1D01     		.2byte	0x11d
+ 1986 0c6d 13       		.byte	0x13
+ 1987 0c6e 820C0000 		.4byte	0xc82
+ 1988 0c72 05       		.uleb128 0x5
+ 1989 0c73 03       		.byte	0x3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 46
+
+
+ 1990 0c74 00000000 		.4byte	heapPointer.4980
+ 1991 0c78 29       		.uleb128 0x29
+ 1992 0c79 1C000000 		.4byte	.LVL9
+ 1993 0c7d 080D0000 		.4byte	0xd08
+ 1994 0c81 00       		.byte	0
+ 1995 0c82 08       		.uleb128 0x8
+ 1996 0c83 04       		.byte	0x4
+ 1997 0c84 7E000000 		.4byte	0x7e
+ 1998 0c88 31       		.uleb128 0x31
+ 1999 0c89 F8000000 		.4byte	.LASF156
+ 2000 0c8d 01       		.byte	0x1
+ 2001 0c8e FD       		.byte	0xfd
+ 2002 0c8f 06       		.byte	0x6
+ 2003 0c90 00000000 		.4byte	.LFB1
+ 2004 0c94 0A000000 		.4byte	.LFE1-.LFB1
+ 2005 0c98 01       		.uleb128 0x1
+ 2006 0c99 9C       		.byte	0x9c
+ 2007 0c9a C40C0000 		.4byte	0xcc4
+ 2008 0c9e 32       		.uleb128 0x32
+ 2009 0c9f 9E060000 		.4byte	.LASF158
+ 2010 0ca3 01       		.byte	0x1
+ 2011 0ca4 FD       		.byte	0xfd
+ 2012 0ca5 10       		.byte	0x10
+ 2013 0ca6 5D000000 		.4byte	0x5d
+ 2014 0caa AC010000 		.4byte	.LLST0
+ 2015 0cae A8010000 		.4byte	.LVUS0
+ 2016 0cb2 33       		.uleb128 0x33
+ 2017 0cb3 08000000 		.4byte	.LVL3
+ 2018 0cb7 140D0000 		.4byte	0xd14
+ 2019 0cbb 34       		.uleb128 0x34
+ 2020 0cbc 01       		.uleb128 0x1
+ 2021 0cbd 50       		.byte	0x50
+ 2022 0cbe 03       		.uleb128 0x3
+ 2023 0cbf F3       		.byte	0xf3
+ 2024 0cc0 01       		.uleb128 0x1
+ 2025 0cc1 50       		.byte	0x50
+ 2026 0cc2 00       		.byte	0
+ 2027 0cc3 00       		.byte	0
+ 2028 0cc4 31       		.uleb128 0x31
+ 2029 0cc5 BA060000 		.4byte	.LASF159
+ 2030 0cc9 01       		.byte	0x1
+ 2031 0cca 6C       		.byte	0x6c
+ 2032 0ccb 01       		.byte	0x1
+ 2033 0ccc 00000000 		.4byte	.LFB0
+ 2034 0cd0 10000000 		.4byte	.LFE0-.LFB0
+ 2035 0cd4 01       		.uleb128 0x1
+ 2036 0cd5 9C       		.byte	0x9c
+ 2037 0cd6 E40C0000 		.4byte	0xce4
+ 2038 0cda 29       		.uleb128 0x29
+ 2039 0cdb 06000000 		.4byte	.LVL0
+ 2040 0cdf 080D0000 		.4byte	0xd08
+ 2041 0ce3 00       		.byte	0
+ 2042 0ce4 35       		.uleb128 0x35
+ 2043 0ce5 75070000 		.4byte	.LASF160
+ 2044 0ce9 75070000 		.4byte	.LASF160
+ 2045 0ced 0A       		.byte	0xa
+ 2046 0cee 16       		.byte	0x16
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 47
+
+
+ 2047 0cef 0D       		.byte	0xd
+ 2048 0cf0 35       		.uleb128 0x35
+ 2049 0cf1 DF060000 		.4byte	.LASF161
+ 2050 0cf5 DF060000 		.4byte	.LASF161
+ 2051 0cf9 01       		.byte	0x1
+ 2052 0cfa DB       		.byte	0xdb
+ 2053 0cfb 0D       		.byte	0xd
+ 2054 0cfc 35       		.uleb128 0x35
+ 2055 0cfd 64070000 		.4byte	.LASF162
+ 2056 0d01 64070000 		.4byte	.LASF162
+ 2057 0d05 01       		.byte	0x1
+ 2058 0d06 D8       		.byte	0xd8
+ 2059 0d07 0C       		.byte	0xc
+ 2060 0d08 35       		.uleb128 0x35
+ 2061 0d09 51010000 		.4byte	.LASF163
+ 2062 0d0d 51010000 		.4byte	.LASF163
+ 2063 0d11 09       		.byte	0x9
+ 2064 0d12 0F       		.byte	0xf
+ 2065 0d13 0D       		.byte	0xd
+ 2066 0d14 35       		.uleb128 0x35
+ 2067 0d15 DE040000 		.4byte	.LASF164
+ 2068 0d19 DE040000 		.4byte	.LASF164
+ 2069 0d1d 08       		.byte	0x8
+ 2070 0d1e E7       		.byte	0xe7
+ 2071 0d1f 07       		.byte	0x7
+ 2072 0d20 00       		.byte	0
+ 2073              		.section	.debug_abbrev,"",%progbits
+ 2074              	.Ldebug_abbrev0:
+ 2075 0000 01       		.uleb128 0x1
+ 2076 0001 11       		.uleb128 0x11
+ 2077 0002 01       		.byte	0x1
+ 2078 0003 25       		.uleb128 0x25
+ 2079 0004 0E       		.uleb128 0xe
+ 2080 0005 13       		.uleb128 0x13
+ 2081 0006 0B       		.uleb128 0xb
+ 2082 0007 03       		.uleb128 0x3
+ 2083 0008 0E       		.uleb128 0xe
+ 2084 0009 1B       		.uleb128 0x1b
+ 2085 000a 0E       		.uleb128 0xe
+ 2086 000b 55       		.uleb128 0x55
+ 2087 000c 17       		.uleb128 0x17
+ 2088 000d 11       		.uleb128 0x11
+ 2089 000e 01       		.uleb128 0x1
+ 2090 000f 10       		.uleb128 0x10
+ 2091 0010 17       		.uleb128 0x17
+ 2092 0011 00       		.byte	0
+ 2093 0012 00       		.byte	0
+ 2094 0013 02       		.uleb128 0x2
+ 2095 0014 24       		.uleb128 0x24
+ 2096 0015 00       		.byte	0
+ 2097 0016 0B       		.uleb128 0xb
+ 2098 0017 0B       		.uleb128 0xb
+ 2099 0018 3E       		.uleb128 0x3e
+ 2100 0019 0B       		.uleb128 0xb
+ 2101 001a 03       		.uleb128 0x3
+ 2102 001b 0E       		.uleb128 0xe
+ 2103 001c 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 48
+
+
+ 2104 001d 00       		.byte	0
+ 2105 001e 03       		.uleb128 0x3
+ 2106 001f 24       		.uleb128 0x24
+ 2107 0020 00       		.byte	0
+ 2108 0021 0B       		.uleb128 0xb
+ 2109 0022 0B       		.uleb128 0xb
+ 2110 0023 3E       		.uleb128 0x3e
+ 2111 0024 0B       		.uleb128 0xb
+ 2112 0025 03       		.uleb128 0x3
+ 2113 0026 08       		.uleb128 0x8
+ 2114 0027 00       		.byte	0
+ 2115 0028 00       		.byte	0
+ 2116 0029 04       		.uleb128 0x4
+ 2117 002a 16       		.uleb128 0x16
+ 2118 002b 00       		.byte	0
+ 2119 002c 03       		.uleb128 0x3
+ 2120 002d 0E       		.uleb128 0xe
+ 2121 002e 3A       		.uleb128 0x3a
+ 2122 002f 0B       		.uleb128 0xb
+ 2123 0030 3B       		.uleb128 0x3b
+ 2124 0031 0B       		.uleb128 0xb
+ 2125 0032 39       		.uleb128 0x39
+ 2126 0033 0B       		.uleb128 0xb
+ 2127 0034 49       		.uleb128 0x49
+ 2128 0035 13       		.uleb128 0x13
+ 2129 0036 00       		.byte	0
+ 2130 0037 00       		.byte	0
+ 2131 0038 05       		.uleb128 0x5
+ 2132 0039 16       		.uleb128 0x16
+ 2133 003a 00       		.byte	0
+ 2134 003b 03       		.uleb128 0x3
+ 2135 003c 0E       		.uleb128 0xe
+ 2136 003d 3A       		.uleb128 0x3a
+ 2137 003e 0B       		.uleb128 0xb
+ 2138 003f 3B       		.uleb128 0x3b
+ 2139 0040 05       		.uleb128 0x5
+ 2140 0041 39       		.uleb128 0x39
+ 2141 0042 0B       		.uleb128 0xb
+ 2142 0043 49       		.uleb128 0x49
+ 2143 0044 13       		.uleb128 0x13
+ 2144 0045 00       		.byte	0
+ 2145 0046 00       		.byte	0
+ 2146 0047 06       		.uleb128 0x6
+ 2147 0048 26       		.uleb128 0x26
+ 2148 0049 00       		.byte	0
+ 2149 004a 49       		.uleb128 0x49
+ 2150 004b 13       		.uleb128 0x13
+ 2151 004c 00       		.byte	0
+ 2152 004d 00       		.byte	0
+ 2153 004e 07       		.uleb128 0x7
+ 2154 004f 35       		.uleb128 0x35
+ 2155 0050 00       		.byte	0
+ 2156 0051 49       		.uleb128 0x49
+ 2157 0052 13       		.uleb128 0x13
+ 2158 0053 00       		.byte	0
+ 2159 0054 00       		.byte	0
+ 2160 0055 08       		.uleb128 0x8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 49
+
+
+ 2161 0056 0F       		.uleb128 0xf
+ 2162 0057 00       		.byte	0
+ 2163 0058 0B       		.uleb128 0xb
+ 2164 0059 0B       		.uleb128 0xb
+ 2165 005a 49       		.uleb128 0x49
+ 2166 005b 13       		.uleb128 0x13
+ 2167 005c 00       		.byte	0
+ 2168 005d 00       		.byte	0
+ 2169 005e 09       		.uleb128 0x9
+ 2170 005f 15       		.uleb128 0x15
+ 2171 0060 00       		.byte	0
+ 2172 0061 27       		.uleb128 0x27
+ 2173 0062 19       		.uleb128 0x19
+ 2174 0063 00       		.byte	0
+ 2175 0064 00       		.byte	0
+ 2176 0065 0A       		.uleb128 0xa
+ 2177 0066 13       		.uleb128 0x13
+ 2178 0067 00       		.byte	0
+ 2179 0068 03       		.uleb128 0x3
+ 2180 0069 0E       		.uleb128 0xe
+ 2181 006a 3C       		.uleb128 0x3c
+ 2182 006b 19       		.uleb128 0x19
+ 2183 006c 00       		.byte	0
+ 2184 006d 00       		.byte	0
+ 2185 006e 0B       		.uleb128 0xb
+ 2186 006f 17       		.uleb128 0x17
+ 2187 0070 01       		.byte	0x1
+ 2188 0071 0B       		.uleb128 0xb
+ 2189 0072 0B       		.uleb128 0xb
+ 2190 0073 3A       		.uleb128 0x3a
+ 2191 0074 0B       		.uleb128 0xb
+ 2192 0075 3B       		.uleb128 0x3b
+ 2193 0076 0B       		.uleb128 0xb
+ 2194 0077 39       		.uleb128 0x39
+ 2195 0078 0B       		.uleb128 0xb
+ 2196 0079 01       		.uleb128 0x1
+ 2197 007a 13       		.uleb128 0x13
+ 2198 007b 00       		.byte	0
+ 2199 007c 00       		.byte	0
+ 2200 007d 0C       		.uleb128 0xc
+ 2201 007e 0D       		.uleb128 0xd
+ 2202 007f 00       		.byte	0
+ 2203 0080 03       		.uleb128 0x3
+ 2204 0081 0E       		.uleb128 0xe
+ 2205 0082 3A       		.uleb128 0x3a
+ 2206 0083 0B       		.uleb128 0xb
+ 2207 0084 3B       		.uleb128 0x3b
+ 2208 0085 0B       		.uleb128 0xb
+ 2209 0086 39       		.uleb128 0x39
+ 2210 0087 0B       		.uleb128 0xb
+ 2211 0088 49       		.uleb128 0x49
+ 2212 0089 13       		.uleb128 0x13
+ 2213 008a 00       		.byte	0
+ 2214 008b 00       		.byte	0
+ 2215 008c 0D       		.uleb128 0xd
+ 2216 008d 01       		.uleb128 0x1
+ 2217 008e 01       		.byte	0x1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 50
+
+
+ 2218 008f 49       		.uleb128 0x49
+ 2219 0090 13       		.uleb128 0x13
+ 2220 0091 01       		.uleb128 0x1
+ 2221 0092 13       		.uleb128 0x13
+ 2222 0093 00       		.byte	0
+ 2223 0094 00       		.byte	0
+ 2224 0095 0E       		.uleb128 0xe
+ 2225 0096 21       		.uleb128 0x21
+ 2226 0097 00       		.byte	0
+ 2227 0098 49       		.uleb128 0x49
+ 2228 0099 13       		.uleb128 0x13
+ 2229 009a 2F       		.uleb128 0x2f
+ 2230 009b 0B       		.uleb128 0xb
+ 2231 009c 00       		.byte	0
+ 2232 009d 00       		.byte	0
+ 2233 009e 0F       		.uleb128 0xf
+ 2234 009f 13       		.uleb128 0x13
+ 2235 00a0 01       		.byte	0x1
+ 2236 00a1 0B       		.uleb128 0xb
+ 2237 00a2 0B       		.uleb128 0xb
+ 2238 00a3 3A       		.uleb128 0x3a
+ 2239 00a4 0B       		.uleb128 0xb
+ 2240 00a5 3B       		.uleb128 0x3b
+ 2241 00a6 0B       		.uleb128 0xb
+ 2242 00a7 39       		.uleb128 0x39
+ 2243 00a8 0B       		.uleb128 0xb
+ 2244 00a9 01       		.uleb128 0x1
+ 2245 00aa 13       		.uleb128 0x13
+ 2246 00ab 00       		.byte	0
+ 2247 00ac 00       		.byte	0
+ 2248 00ad 10       		.uleb128 0x10
+ 2249 00ae 0D       		.uleb128 0xd
+ 2250 00af 00       		.byte	0
+ 2251 00b0 03       		.uleb128 0x3
+ 2252 00b1 0E       		.uleb128 0xe
+ 2253 00b2 3A       		.uleb128 0x3a
+ 2254 00b3 0B       		.uleb128 0xb
+ 2255 00b4 3B       		.uleb128 0x3b
+ 2256 00b5 0B       		.uleb128 0xb
+ 2257 00b6 39       		.uleb128 0x39
+ 2258 00b7 0B       		.uleb128 0xb
+ 2259 00b8 49       		.uleb128 0x49
+ 2260 00b9 13       		.uleb128 0x13
+ 2261 00ba 38       		.uleb128 0x38
+ 2262 00bb 0B       		.uleb128 0xb
+ 2263 00bc 00       		.byte	0
+ 2264 00bd 00       		.byte	0
+ 2265 00be 11       		.uleb128 0x11
+ 2266 00bf 0F       		.uleb128 0xf
+ 2267 00c0 00       		.byte	0
+ 2268 00c1 0B       		.uleb128 0xb
+ 2269 00c2 0B       		.uleb128 0xb
+ 2270 00c3 00       		.byte	0
+ 2271 00c4 00       		.byte	0
+ 2272 00c5 12       		.uleb128 0x12
+ 2273 00c6 13       		.uleb128 0x13
+ 2274 00c7 01       		.byte	0x1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 51
+
+
+ 2275 00c8 03       		.uleb128 0x3
+ 2276 00c9 0E       		.uleb128 0xe
+ 2277 00ca 0B       		.uleb128 0xb
+ 2278 00cb 0B       		.uleb128 0xb
+ 2279 00cc 3A       		.uleb128 0x3a
+ 2280 00cd 0B       		.uleb128 0xb
+ 2281 00ce 3B       		.uleb128 0x3b
+ 2282 00cf 0B       		.uleb128 0xb
+ 2283 00d0 39       		.uleb128 0x39
+ 2284 00d1 0B       		.uleb128 0xb
+ 2285 00d2 01       		.uleb128 0x1
+ 2286 00d3 13       		.uleb128 0x13
+ 2287 00d4 00       		.byte	0
+ 2288 00d5 00       		.byte	0
+ 2289 00d6 13       		.uleb128 0x13
+ 2290 00d7 0D       		.uleb128 0xd
+ 2291 00d8 00       		.byte	0
+ 2292 00d9 03       		.uleb128 0x3
+ 2293 00da 08       		.uleb128 0x8
+ 2294 00db 3A       		.uleb128 0x3a
+ 2295 00dc 0B       		.uleb128 0xb
+ 2296 00dd 3B       		.uleb128 0x3b
+ 2297 00de 0B       		.uleb128 0xb
+ 2298 00df 39       		.uleb128 0x39
+ 2299 00e0 0B       		.uleb128 0xb
+ 2300 00e1 49       		.uleb128 0x49
+ 2301 00e2 13       		.uleb128 0x13
+ 2302 00e3 38       		.uleb128 0x38
+ 2303 00e4 0B       		.uleb128 0xb
+ 2304 00e5 00       		.byte	0
+ 2305 00e6 00       		.byte	0
+ 2306 00e7 14       		.uleb128 0x14
+ 2307 00e8 13       		.uleb128 0x13
+ 2308 00e9 01       		.byte	0x1
+ 2309 00ea 03       		.uleb128 0x3
+ 2310 00eb 0E       		.uleb128 0xe
+ 2311 00ec 0B       		.uleb128 0xb
+ 2312 00ed 05       		.uleb128 0x5
+ 2313 00ee 3A       		.uleb128 0x3a
+ 2314 00ef 0B       		.uleb128 0xb
+ 2315 00f0 3B       		.uleb128 0x3b
+ 2316 00f1 0B       		.uleb128 0xb
+ 2317 00f2 39       		.uleb128 0x39
+ 2318 00f3 0B       		.uleb128 0xb
+ 2319 00f4 01       		.uleb128 0x1
+ 2320 00f5 13       		.uleb128 0x13
+ 2321 00f6 00       		.byte	0
+ 2322 00f7 00       		.byte	0
+ 2323 00f8 15       		.uleb128 0x15
+ 2324 00f9 0D       		.uleb128 0xd
+ 2325 00fa 00       		.byte	0
+ 2326 00fb 03       		.uleb128 0x3
+ 2327 00fc 0E       		.uleb128 0xe
+ 2328 00fd 3A       		.uleb128 0x3a
+ 2329 00fe 0B       		.uleb128 0xb
+ 2330 00ff 3B       		.uleb128 0x3b
+ 2331 0100 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 52
+
+
+ 2332 0101 39       		.uleb128 0x39
+ 2333 0102 0B       		.uleb128 0xb
+ 2334 0103 49       		.uleb128 0x49
+ 2335 0104 13       		.uleb128 0x13
+ 2336 0105 38       		.uleb128 0x38
+ 2337 0106 05       		.uleb128 0x5
+ 2338 0107 00       		.byte	0
+ 2339 0108 00       		.byte	0
+ 2340 0109 16       		.uleb128 0x16
+ 2341 010a 15       		.uleb128 0x15
+ 2342 010b 01       		.byte	0x1
+ 2343 010c 27       		.uleb128 0x27
+ 2344 010d 19       		.uleb128 0x19
+ 2345 010e 49       		.uleb128 0x49
+ 2346 010f 13       		.uleb128 0x13
+ 2347 0110 01       		.uleb128 0x1
+ 2348 0111 13       		.uleb128 0x13
+ 2349 0112 00       		.byte	0
+ 2350 0113 00       		.byte	0
+ 2351 0114 17       		.uleb128 0x17
+ 2352 0115 05       		.uleb128 0x5
+ 2353 0116 00       		.byte	0
+ 2354 0117 49       		.uleb128 0x49
+ 2355 0118 13       		.uleb128 0x13
+ 2356 0119 00       		.byte	0
+ 2357 011a 00       		.byte	0
+ 2358 011b 18       		.uleb128 0x18
+ 2359 011c 13       		.uleb128 0x13
+ 2360 011d 01       		.byte	0x1
+ 2361 011e 03       		.uleb128 0x3
+ 2362 011f 0E       		.uleb128 0xe
+ 2363 0120 0B       		.uleb128 0xb
+ 2364 0121 05       		.uleb128 0x5
+ 2365 0122 3A       		.uleb128 0x3a
+ 2366 0123 0B       		.uleb128 0xb
+ 2367 0124 3B       		.uleb128 0x3b
+ 2368 0125 05       		.uleb128 0x5
+ 2369 0126 39       		.uleb128 0x39
+ 2370 0127 0B       		.uleb128 0xb
+ 2371 0128 01       		.uleb128 0x1
+ 2372 0129 13       		.uleb128 0x13
+ 2373 012a 00       		.byte	0
+ 2374 012b 00       		.byte	0
+ 2375 012c 19       		.uleb128 0x19
+ 2376 012d 0D       		.uleb128 0xd
+ 2377 012e 00       		.byte	0
+ 2378 012f 03       		.uleb128 0x3
+ 2379 0130 0E       		.uleb128 0xe
+ 2380 0131 3A       		.uleb128 0x3a
+ 2381 0132 0B       		.uleb128 0xb
+ 2382 0133 3B       		.uleb128 0x3b
+ 2383 0134 05       		.uleb128 0x5
+ 2384 0135 39       		.uleb128 0x39
+ 2385 0136 0B       		.uleb128 0xb
+ 2386 0137 49       		.uleb128 0x49
+ 2387 0138 13       		.uleb128 0x13
+ 2388 0139 38       		.uleb128 0x38
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 53
+
+
+ 2389 013a 0B       		.uleb128 0xb
+ 2390 013b 00       		.byte	0
+ 2391 013c 00       		.byte	0
+ 2392 013d 1A       		.uleb128 0x1a
+ 2393 013e 0D       		.uleb128 0xd
+ 2394 013f 00       		.byte	0
+ 2395 0140 03       		.uleb128 0x3
+ 2396 0141 0E       		.uleb128 0xe
+ 2397 0142 3A       		.uleb128 0x3a
+ 2398 0143 0B       		.uleb128 0xb
+ 2399 0144 3B       		.uleb128 0x3b
+ 2400 0145 05       		.uleb128 0x5
+ 2401 0146 39       		.uleb128 0x39
+ 2402 0147 0B       		.uleb128 0xb
+ 2403 0148 49       		.uleb128 0x49
+ 2404 0149 13       		.uleb128 0x13
+ 2405 014a 38       		.uleb128 0x38
+ 2406 014b 05       		.uleb128 0x5
+ 2407 014c 00       		.byte	0
+ 2408 014d 00       		.byte	0
+ 2409 014e 1B       		.uleb128 0x1b
+ 2410 014f 13       		.uleb128 0x13
+ 2411 0150 01       		.byte	0x1
+ 2412 0151 03       		.uleb128 0x3
+ 2413 0152 0E       		.uleb128 0xe
+ 2414 0153 0B       		.uleb128 0xb
+ 2415 0154 0B       		.uleb128 0xb
+ 2416 0155 3A       		.uleb128 0x3a
+ 2417 0156 0B       		.uleb128 0xb
+ 2418 0157 3B       		.uleb128 0x3b
+ 2419 0158 05       		.uleb128 0x5
+ 2420 0159 39       		.uleb128 0x39
+ 2421 015a 0B       		.uleb128 0xb
+ 2422 015b 01       		.uleb128 0x1
+ 2423 015c 13       		.uleb128 0x13
+ 2424 015d 00       		.byte	0
+ 2425 015e 00       		.byte	0
+ 2426 015f 1C       		.uleb128 0x1c
+ 2427 0160 13       		.uleb128 0x13
+ 2428 0161 01       		.byte	0x1
+ 2429 0162 0B       		.uleb128 0xb
+ 2430 0163 0B       		.uleb128 0xb
+ 2431 0164 3A       		.uleb128 0x3a
+ 2432 0165 0B       		.uleb128 0xb
+ 2433 0166 3B       		.uleb128 0x3b
+ 2434 0167 05       		.uleb128 0x5
+ 2435 0168 39       		.uleb128 0x39
+ 2436 0169 0B       		.uleb128 0xb
+ 2437 016a 01       		.uleb128 0x1
+ 2438 016b 13       		.uleb128 0x13
+ 2439 016c 00       		.byte	0
+ 2440 016d 00       		.byte	0
+ 2441 016e 1D       		.uleb128 0x1d
+ 2442 016f 17       		.uleb128 0x17
+ 2443 0170 01       		.byte	0x1
+ 2444 0171 0B       		.uleb128 0xb
+ 2445 0172 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 54
+
+
+ 2446 0173 3A       		.uleb128 0x3a
+ 2447 0174 0B       		.uleb128 0xb
+ 2448 0175 3B       		.uleb128 0x3b
+ 2449 0176 05       		.uleb128 0x5
+ 2450 0177 39       		.uleb128 0x39
+ 2451 0178 0B       		.uleb128 0xb
+ 2452 0179 01       		.uleb128 0x1
+ 2453 017a 13       		.uleb128 0x13
+ 2454 017b 00       		.byte	0
+ 2455 017c 00       		.byte	0
+ 2456 017d 1E       		.uleb128 0x1e
+ 2457 017e 0D       		.uleb128 0xd
+ 2458 017f 00       		.byte	0
+ 2459 0180 03       		.uleb128 0x3
+ 2460 0181 0E       		.uleb128 0xe
+ 2461 0182 3A       		.uleb128 0x3a
+ 2462 0183 0B       		.uleb128 0xb
+ 2463 0184 3B       		.uleb128 0x3b
+ 2464 0185 05       		.uleb128 0x5
+ 2465 0186 39       		.uleb128 0x39
+ 2466 0187 0B       		.uleb128 0xb
+ 2467 0188 49       		.uleb128 0x49
+ 2468 0189 13       		.uleb128 0x13
+ 2469 018a 00       		.byte	0
+ 2470 018b 00       		.byte	0
+ 2471 018c 1F       		.uleb128 0x1f
+ 2472 018d 15       		.uleb128 0x15
+ 2473 018e 01       		.byte	0x1
+ 2474 018f 27       		.uleb128 0x27
+ 2475 0190 19       		.uleb128 0x19
+ 2476 0191 01       		.uleb128 0x1
+ 2477 0192 13       		.uleb128 0x13
+ 2478 0193 00       		.byte	0
+ 2479 0194 00       		.byte	0
+ 2480 0195 20       		.uleb128 0x20
+ 2481 0196 34       		.uleb128 0x34
+ 2482 0197 00       		.byte	0
+ 2483 0198 03       		.uleb128 0x3
+ 2484 0199 0E       		.uleb128 0xe
+ 2485 019a 3A       		.uleb128 0x3a
+ 2486 019b 0B       		.uleb128 0xb
+ 2487 019c 3B       		.uleb128 0x3b
+ 2488 019d 05       		.uleb128 0x5
+ 2489 019e 39       		.uleb128 0x39
+ 2490 019f 0B       		.uleb128 0xb
+ 2491 01a0 49       		.uleb128 0x49
+ 2492 01a1 13       		.uleb128 0x13
+ 2493 01a2 3F       		.uleb128 0x3f
+ 2494 01a3 19       		.uleb128 0x19
+ 2495 01a4 3C       		.uleb128 0x3c
+ 2496 01a5 19       		.uleb128 0x19
+ 2497 01a6 00       		.byte	0
+ 2498 01a7 00       		.byte	0
+ 2499 01a8 21       		.uleb128 0x21
+ 2500 01a9 21       		.uleb128 0x21
+ 2501 01aa 00       		.byte	0
+ 2502 01ab 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 55
+
+
+ 2503 01ac 00       		.byte	0
+ 2504 01ad 22       		.uleb128 0x22
+ 2505 01ae 34       		.uleb128 0x34
+ 2506 01af 00       		.byte	0
+ 2507 01b0 03       		.uleb128 0x3
+ 2508 01b1 0E       		.uleb128 0xe
+ 2509 01b2 3A       		.uleb128 0x3a
+ 2510 01b3 0B       		.uleb128 0xb
+ 2511 01b4 3B       		.uleb128 0x3b
+ 2512 01b5 0B       		.uleb128 0xb
+ 2513 01b6 39       		.uleb128 0x39
+ 2514 01b7 0B       		.uleb128 0xb
+ 2515 01b8 49       		.uleb128 0x49
+ 2516 01b9 13       		.uleb128 0x13
+ 2517 01ba 3F       		.uleb128 0x3f
+ 2518 01bb 19       		.uleb128 0x19
+ 2519 01bc 3C       		.uleb128 0x3c
+ 2520 01bd 19       		.uleb128 0x19
+ 2521 01be 00       		.byte	0
+ 2522 01bf 00       		.byte	0
+ 2523 01c0 23       		.uleb128 0x23
+ 2524 01c1 34       		.uleb128 0x34
+ 2525 01c2 00       		.byte	0
+ 2526 01c3 03       		.uleb128 0x3
+ 2527 01c4 08       		.uleb128 0x8
+ 2528 01c5 3A       		.uleb128 0x3a
+ 2529 01c6 0B       		.uleb128 0xb
+ 2530 01c7 3B       		.uleb128 0x3b
+ 2531 01c8 0B       		.uleb128 0xb
+ 2532 01c9 39       		.uleb128 0x39
+ 2533 01ca 0B       		.uleb128 0xb
+ 2534 01cb 49       		.uleb128 0x49
+ 2535 01cc 13       		.uleb128 0x13
+ 2536 01cd 3F       		.uleb128 0x3f
+ 2537 01ce 19       		.uleb128 0x19
+ 2538 01cf 3C       		.uleb128 0x3c
+ 2539 01d0 19       		.uleb128 0x19
+ 2540 01d1 00       		.byte	0
+ 2541 01d2 00       		.byte	0
+ 2542 01d3 24       		.uleb128 0x24
+ 2543 01d4 34       		.uleb128 0x34
+ 2544 01d5 00       		.byte	0
+ 2545 01d6 03       		.uleb128 0x3
+ 2546 01d7 0E       		.uleb128 0xe
+ 2547 01d8 3A       		.uleb128 0x3a
+ 2548 01d9 0B       		.uleb128 0xb
+ 2549 01da 3B       		.uleb128 0x3b
+ 2550 01db 0B       		.uleb128 0xb
+ 2551 01dc 39       		.uleb128 0x39
+ 2552 01dd 0B       		.uleb128 0xb
+ 2553 01de 49       		.uleb128 0x49
+ 2554 01df 13       		.uleb128 0x13
+ 2555 01e0 00       		.byte	0
+ 2556 01e1 00       		.byte	0
+ 2557 01e2 25       		.uleb128 0x25
+ 2558 01e3 16       		.uleb128 0x16
+ 2559 01e4 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 56
+
+
+ 2560 01e5 03       		.uleb128 0x3
+ 2561 01e6 0E       		.uleb128 0xe
+ 2562 01e7 3A       		.uleb128 0x3a
+ 2563 01e8 0B       		.uleb128 0xb
+ 2564 01e9 3B       		.uleb128 0x3b
+ 2565 01ea 0B       		.uleb128 0xb
+ 2566 01eb 39       		.uleb128 0x39
+ 2567 01ec 0B       		.uleb128 0xb
+ 2568 01ed 49       		.uleb128 0x49
+ 2569 01ee 13       		.uleb128 0x13
+ 2570 01ef 8801     		.uleb128 0x88
+ 2571 01f1 0B       		.uleb128 0xb
+ 2572 01f2 00       		.byte	0
+ 2573 01f3 00       		.byte	0
+ 2574 01f4 26       		.uleb128 0x26
+ 2575 01f5 34       		.uleb128 0x34
+ 2576 01f6 00       		.byte	0
+ 2577 01f7 03       		.uleb128 0x3
+ 2578 01f8 0E       		.uleb128 0xe
+ 2579 01f9 3A       		.uleb128 0x3a
+ 2580 01fa 0B       		.uleb128 0xb
+ 2581 01fb 3B       		.uleb128 0x3b
+ 2582 01fc 05       		.uleb128 0x5
+ 2583 01fd 39       		.uleb128 0x39
+ 2584 01fe 0B       		.uleb128 0xb
+ 2585 01ff 49       		.uleb128 0x49
+ 2586 0200 13       		.uleb128 0x13
+ 2587 0201 3F       		.uleb128 0x3f
+ 2588 0202 19       		.uleb128 0x19
+ 2589 0203 02       		.uleb128 0x2
+ 2590 0204 18       		.uleb128 0x18
+ 2591 0205 00       		.byte	0
+ 2592 0206 00       		.byte	0
+ 2593 0207 27       		.uleb128 0x27
+ 2594 0208 2E       		.uleb128 0x2e
+ 2595 0209 01       		.byte	0x1
+ 2596 020a 3F       		.uleb128 0x3f
+ 2597 020b 19       		.uleb128 0x19
+ 2598 020c 03       		.uleb128 0x3
+ 2599 020d 0E       		.uleb128 0xe
+ 2600 020e 3A       		.uleb128 0x3a
+ 2601 020f 0B       		.uleb128 0xb
+ 2602 0210 3B       		.uleb128 0x3b
+ 2603 0211 05       		.uleb128 0x5
+ 2604 0212 39       		.uleb128 0x39
+ 2605 0213 0B       		.uleb128 0xb
+ 2606 0214 27       		.uleb128 0x27
+ 2607 0215 19       		.uleb128 0x19
+ 2608 0216 11       		.uleb128 0x11
+ 2609 0217 01       		.uleb128 0x1
+ 2610 0218 12       		.uleb128 0x12
+ 2611 0219 06       		.uleb128 0x6
+ 2612 021a 40       		.uleb128 0x40
+ 2613 021b 18       		.uleb128 0x18
+ 2614 021c 9742     		.uleb128 0x2117
+ 2615 021e 19       		.uleb128 0x19
+ 2616 021f 01       		.uleb128 0x1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 57
+
+
+ 2617 0220 13       		.uleb128 0x13
+ 2618 0221 00       		.byte	0
+ 2619 0222 00       		.byte	0
+ 2620 0223 28       		.uleb128 0x28
+ 2621 0224 34       		.uleb128 0x34
+ 2622 0225 00       		.byte	0
+ 2623 0226 03       		.uleb128 0x3
+ 2624 0227 0E       		.uleb128 0xe
+ 2625 0228 3A       		.uleb128 0x3a
+ 2626 0229 0B       		.uleb128 0xb
+ 2627 022a 3B       		.uleb128 0x3b
+ 2628 022b 05       		.uleb128 0x5
+ 2629 022c 39       		.uleb128 0x39
+ 2630 022d 0B       		.uleb128 0xb
+ 2631 022e 49       		.uleb128 0x49
+ 2632 022f 13       		.uleb128 0x13
+ 2633 0230 02       		.uleb128 0x2
+ 2634 0231 17       		.uleb128 0x17
+ 2635 0232 B742     		.uleb128 0x2137
+ 2636 0234 17       		.uleb128 0x17
+ 2637 0235 00       		.byte	0
+ 2638 0236 00       		.byte	0
+ 2639 0237 29       		.uleb128 0x29
+ 2640 0238 898201   		.uleb128 0x4109
+ 2641 023b 00       		.byte	0
+ 2642 023c 11       		.uleb128 0x11
+ 2643 023d 01       		.uleb128 0x1
+ 2644 023e 31       		.uleb128 0x31
+ 2645 023f 13       		.uleb128 0x13
+ 2646 0240 00       		.byte	0
+ 2647 0241 00       		.byte	0
+ 2648 0242 2A       		.uleb128 0x2a
+ 2649 0243 2E       		.uleb128 0x2e
+ 2650 0244 01       		.byte	0x1
+ 2651 0245 3F       		.uleb128 0x3f
+ 2652 0246 19       		.uleb128 0x19
+ 2653 0247 03       		.uleb128 0x3
+ 2654 0248 0E       		.uleb128 0xe
+ 2655 0249 3A       		.uleb128 0x3a
+ 2656 024a 0B       		.uleb128 0xb
+ 2657 024b 3B       		.uleb128 0x3b
+ 2658 024c 05       		.uleb128 0x5
+ 2659 024d 39       		.uleb128 0x39
+ 2660 024e 0B       		.uleb128 0xb
+ 2661 024f 27       		.uleb128 0x27
+ 2662 0250 19       		.uleb128 0x19
+ 2663 0251 8701     		.uleb128 0x87
+ 2664 0253 19       		.uleb128 0x19
+ 2665 0254 11       		.uleb128 0x11
+ 2666 0255 01       		.uleb128 0x1
+ 2667 0256 12       		.uleb128 0x12
+ 2668 0257 06       		.uleb128 0x6
+ 2669 0258 40       		.uleb128 0x40
+ 2670 0259 18       		.uleb128 0x18
+ 2671 025a 9742     		.uleb128 0x2117
+ 2672 025c 19       		.uleb128 0x19
+ 2673 025d 01       		.uleb128 0x1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 58
+
+
+ 2674 025e 13       		.uleb128 0x13
+ 2675 025f 00       		.byte	0
+ 2676 0260 00       		.byte	0
+ 2677 0261 2B       		.uleb128 0x2b
+ 2678 0262 0B       		.uleb128 0xb
+ 2679 0263 01       		.byte	0x1
+ 2680 0264 55       		.uleb128 0x55
+ 2681 0265 17       		.uleb128 0x17
+ 2682 0266 01       		.uleb128 0x1
+ 2683 0267 13       		.uleb128 0x13
+ 2684 0268 00       		.byte	0
+ 2685 0269 00       		.byte	0
+ 2686 026a 2C       		.uleb128 0x2c
+ 2687 026b 34       		.uleb128 0x34
+ 2688 026c 00       		.byte	0
+ 2689 026d 03       		.uleb128 0x3
+ 2690 026e 08       		.uleb128 0x8
+ 2691 026f 3A       		.uleb128 0x3a
+ 2692 0270 0B       		.uleb128 0xb
+ 2693 0271 3B       		.uleb128 0x3b
+ 2694 0272 05       		.uleb128 0x5
+ 2695 0273 39       		.uleb128 0x39
+ 2696 0274 0B       		.uleb128 0xb
+ 2697 0275 49       		.uleb128 0x49
+ 2698 0276 13       		.uleb128 0x13
+ 2699 0277 02       		.uleb128 0x2
+ 2700 0278 17       		.uleb128 0x17
+ 2701 0279 B742     		.uleb128 0x2137
+ 2702 027b 17       		.uleb128 0x17
+ 2703 027c 00       		.byte	0
+ 2704 027d 00       		.byte	0
+ 2705 027e 2D       		.uleb128 0x2d
+ 2706 027f 2E       		.uleb128 0x2e
+ 2707 0280 01       		.byte	0x1
+ 2708 0281 3F       		.uleb128 0x3f
+ 2709 0282 19       		.uleb128 0x19
+ 2710 0283 03       		.uleb128 0x3
+ 2711 0284 0E       		.uleb128 0xe
+ 2712 0285 3A       		.uleb128 0x3a
+ 2713 0286 0B       		.uleb128 0xb
+ 2714 0287 3B       		.uleb128 0x3b
+ 2715 0288 05       		.uleb128 0x5
+ 2716 0289 39       		.uleb128 0x39
+ 2717 028a 0B       		.uleb128 0xb
+ 2718 028b 27       		.uleb128 0x27
+ 2719 028c 19       		.uleb128 0x19
+ 2720 028d 49       		.uleb128 0x49
+ 2721 028e 13       		.uleb128 0x13
+ 2722 028f 11       		.uleb128 0x11
+ 2723 0290 01       		.uleb128 0x1
+ 2724 0291 12       		.uleb128 0x12
+ 2725 0292 06       		.uleb128 0x6
+ 2726 0293 40       		.uleb128 0x40
+ 2727 0294 18       		.uleb128 0x18
+ 2728 0295 9742     		.uleb128 0x2117
+ 2729 0297 19       		.uleb128 0x19
+ 2730 0298 01       		.uleb128 0x1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 59
+
+
+ 2731 0299 13       		.uleb128 0x13
+ 2732 029a 00       		.byte	0
+ 2733 029b 00       		.byte	0
+ 2734 029c 2E       		.uleb128 0x2e
+ 2735 029d 05       		.uleb128 0x5
+ 2736 029e 00       		.byte	0
+ 2737 029f 03       		.uleb128 0x3
+ 2738 02a0 0E       		.uleb128 0xe
+ 2739 02a1 3A       		.uleb128 0x3a
+ 2740 02a2 0B       		.uleb128 0xb
+ 2741 02a3 3B       		.uleb128 0x3b
+ 2742 02a4 05       		.uleb128 0x5
+ 2743 02a5 39       		.uleb128 0x39
+ 2744 02a6 0B       		.uleb128 0xb
+ 2745 02a7 49       		.uleb128 0x49
+ 2746 02a8 13       		.uleb128 0x13
+ 2747 02a9 02       		.uleb128 0x2
+ 2748 02aa 17       		.uleb128 0x17
+ 2749 02ab B742     		.uleb128 0x2137
+ 2750 02ad 17       		.uleb128 0x17
+ 2751 02ae 00       		.byte	0
+ 2752 02af 00       		.byte	0
+ 2753 02b0 2F       		.uleb128 0x2f
+ 2754 02b1 34       		.uleb128 0x34
+ 2755 02b2 00       		.byte	0
+ 2756 02b3 03       		.uleb128 0x3
+ 2757 02b4 08       		.uleb128 0x8
+ 2758 02b5 3A       		.uleb128 0x3a
+ 2759 02b6 0B       		.uleb128 0xb
+ 2760 02b7 3B       		.uleb128 0x3b
+ 2761 02b8 05       		.uleb128 0x5
+ 2762 02b9 39       		.uleb128 0x39
+ 2763 02ba 0B       		.uleb128 0xb
+ 2764 02bb 49       		.uleb128 0x49
+ 2765 02bc 13       		.uleb128 0x13
+ 2766 02bd 3F       		.uleb128 0x3f
+ 2767 02be 19       		.uleb128 0x19
+ 2768 02bf 3C       		.uleb128 0x3c
+ 2769 02c0 19       		.uleb128 0x19
+ 2770 02c1 00       		.byte	0
+ 2771 02c2 00       		.byte	0
+ 2772 02c3 30       		.uleb128 0x30
+ 2773 02c4 34       		.uleb128 0x34
+ 2774 02c5 00       		.byte	0
+ 2775 02c6 03       		.uleb128 0x3
+ 2776 02c7 0E       		.uleb128 0xe
+ 2777 02c8 3A       		.uleb128 0x3a
+ 2778 02c9 0B       		.uleb128 0xb
+ 2779 02ca 3B       		.uleb128 0x3b
+ 2780 02cb 05       		.uleb128 0x5
+ 2781 02cc 39       		.uleb128 0x39
+ 2782 02cd 0B       		.uleb128 0xb
+ 2783 02ce 49       		.uleb128 0x49
+ 2784 02cf 13       		.uleb128 0x13
+ 2785 02d0 02       		.uleb128 0x2
+ 2786 02d1 18       		.uleb128 0x18
+ 2787 02d2 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 60
+
+
+ 2788 02d3 00       		.byte	0
+ 2789 02d4 31       		.uleb128 0x31
+ 2790 02d5 2E       		.uleb128 0x2e
+ 2791 02d6 01       		.byte	0x1
+ 2792 02d7 3F       		.uleb128 0x3f
+ 2793 02d8 19       		.uleb128 0x19
+ 2794 02d9 03       		.uleb128 0x3
+ 2795 02da 0E       		.uleb128 0xe
+ 2796 02db 3A       		.uleb128 0x3a
+ 2797 02dc 0B       		.uleb128 0xb
+ 2798 02dd 3B       		.uleb128 0x3b
+ 2799 02de 0B       		.uleb128 0xb
+ 2800 02df 39       		.uleb128 0x39
+ 2801 02e0 0B       		.uleb128 0xb
+ 2802 02e1 27       		.uleb128 0x27
+ 2803 02e2 19       		.uleb128 0x19
+ 2804 02e3 8701     		.uleb128 0x87
+ 2805 02e5 19       		.uleb128 0x19
+ 2806 02e6 11       		.uleb128 0x11
+ 2807 02e7 01       		.uleb128 0x1
+ 2808 02e8 12       		.uleb128 0x12
+ 2809 02e9 06       		.uleb128 0x6
+ 2810 02ea 40       		.uleb128 0x40
+ 2811 02eb 18       		.uleb128 0x18
+ 2812 02ec 9742     		.uleb128 0x2117
+ 2813 02ee 19       		.uleb128 0x19
+ 2814 02ef 01       		.uleb128 0x1
+ 2815 02f0 13       		.uleb128 0x13
+ 2816 02f1 00       		.byte	0
+ 2817 02f2 00       		.byte	0
+ 2818 02f3 32       		.uleb128 0x32
+ 2819 02f4 05       		.uleb128 0x5
+ 2820 02f5 00       		.byte	0
+ 2821 02f6 03       		.uleb128 0x3
+ 2822 02f7 0E       		.uleb128 0xe
+ 2823 02f8 3A       		.uleb128 0x3a
+ 2824 02f9 0B       		.uleb128 0xb
+ 2825 02fa 3B       		.uleb128 0x3b
+ 2826 02fb 0B       		.uleb128 0xb
+ 2827 02fc 39       		.uleb128 0x39
+ 2828 02fd 0B       		.uleb128 0xb
+ 2829 02fe 49       		.uleb128 0x49
+ 2830 02ff 13       		.uleb128 0x13
+ 2831 0300 02       		.uleb128 0x2
+ 2832 0301 17       		.uleb128 0x17
+ 2833 0302 B742     		.uleb128 0x2137
+ 2834 0304 17       		.uleb128 0x17
+ 2835 0305 00       		.byte	0
+ 2836 0306 00       		.byte	0
+ 2837 0307 33       		.uleb128 0x33
+ 2838 0308 898201   		.uleb128 0x4109
+ 2839 030b 01       		.byte	0x1
+ 2840 030c 11       		.uleb128 0x11
+ 2841 030d 01       		.uleb128 0x1
+ 2842 030e 31       		.uleb128 0x31
+ 2843 030f 13       		.uleb128 0x13
+ 2844 0310 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 61
+
+
+ 2845 0311 00       		.byte	0
+ 2846 0312 34       		.uleb128 0x34
+ 2847 0313 8A8201   		.uleb128 0x410a
+ 2848 0316 00       		.byte	0
+ 2849 0317 02       		.uleb128 0x2
+ 2850 0318 18       		.uleb128 0x18
+ 2851 0319 9142     		.uleb128 0x2111
+ 2852 031b 18       		.uleb128 0x18
+ 2853 031c 00       		.byte	0
+ 2854 031d 00       		.byte	0
+ 2855 031e 35       		.uleb128 0x35
+ 2856 031f 2E       		.uleb128 0x2e
+ 2857 0320 00       		.byte	0
+ 2858 0321 3F       		.uleb128 0x3f
+ 2859 0322 19       		.uleb128 0x19
+ 2860 0323 3C       		.uleb128 0x3c
+ 2861 0324 19       		.uleb128 0x19
+ 2862 0325 6E       		.uleb128 0x6e
+ 2863 0326 0E       		.uleb128 0xe
+ 2864 0327 03       		.uleb128 0x3
+ 2865 0328 0E       		.uleb128 0xe
+ 2866 0329 3A       		.uleb128 0x3a
+ 2867 032a 0B       		.uleb128 0xb
+ 2868 032b 3B       		.uleb128 0x3b
+ 2869 032c 0B       		.uleb128 0xb
+ 2870 032d 39       		.uleb128 0x39
+ 2871 032e 0B       		.uleb128 0xb
+ 2872 032f 00       		.byte	0
+ 2873 0330 00       		.byte	0
+ 2874 0331 00       		.byte	0
+ 2875              		.section	.debug_loc,"",%progbits
+ 2876              	.Ldebug_loc0:
+ 2877              	.LVUS9:
+ 2878 0000 02       		.uleb128 .LVU84
+ 2879 0001 00       		.uleb128 .LVU86
+ 2880 0002 00       		.uleb128 .LVU86
+ 2881 0003 00       		.uleb128 .LVU93
+ 2882              	.LLST9:
+ 2883 0004 02000000 		.4byte	.LVL29
+ 2884 0008 06000000 		.4byte	.LVL30
+ 2885 000c 0200     		.2byte	0x2
+ 2886 000e 30       		.byte	0x30
+ 2887 000f 9F       		.byte	0x9f
+ 2888 0010 06000000 		.4byte	.LVL30
+ 2889 0014 23000000 		.4byte	.LVL32-1
+ 2890 0018 0100     		.2byte	0x1
+ 2891 001a 53       		.byte	0x53
+ 2892 001b 00000000 		.4byte	0
+ 2893 001f 00000000 		.4byte	0
+ 2894              	.LVUS3:
+ 2895 0023 00       		.uleb128 .LVU37
+ 2896 0024 00       		.uleb128 0
+ 2897              	.LLST3:
+ 2898 0025 04000000 		.4byte	.LVL11
+ 2899 0029 48000000 		.4byte	.LFE3
+ 2900 002d 0100     		.2byte	0x1
+ 2901 002f 56       		.byte	0x56
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 62
+
+
+ 2902 0030 00000000 		.4byte	0
+ 2903 0034 00000000 		.4byte	0
+ 2904              	.LVUS4:
+ 2905 0038 00       		.uleb128 .LVU41
+ 2906 0039 00       		.uleb128 0
+ 2907              	.LLST4:
+ 2908 003a 08000000 		.4byte	.LVL12
+ 2909 003e 48000000 		.4byte	.LFE3
+ 2910 0042 0100     		.2byte	0x1
+ 2911 0044 55       		.byte	0x55
+ 2912 0045 00000000 		.4byte	0
+ 2913 0049 00000000 		.4byte	0
+ 2914              	.LVUS5:
+ 2915 004d 00       		.uleb128 .LVU41
+ 2916 004e 00       		.uleb128 .LVU43
+ 2917 004f 00       		.uleb128 .LVU43
+ 2918 0050 02       		.uleb128 .LVU46
+ 2919 0051 02       		.uleb128 .LVU46
+ 2920 0052 00       		.uleb128 .LVU53
+ 2921 0053 00       		.uleb128 .LVU65
+ 2922 0054 00       		.uleb128 .LVU73
+ 2923              	.LLST5:
+ 2924 0055 08000000 		.4byte	.LVL12
+ 2925 0059 0A000000 		.4byte	.LVL13
+ 2926 005d 0100     		.2byte	0x1
+ 2927 005f 51       		.byte	0x51
+ 2928 0060 0A000000 		.4byte	.LVL13
+ 2929 0064 0C000000 		.4byte	.LVL14
+ 2930 0068 0300     		.2byte	0x3
+ 2931 006a 71       		.byte	0x71
+ 2932 006b 7C       		.sleb128 -4
+ 2933 006c 9F       		.byte	0x9f
+ 2934 006d 0C000000 		.4byte	.LVL14
+ 2935 0071 18000000 		.4byte	.LVL17
+ 2936 0075 0100     		.2byte	0x1
+ 2937 0077 51       		.byte	0x51
+ 2938 0078 2C000000 		.4byte	.LVL22
+ 2939 007c 34000000 		.4byte	.LVL25
+ 2940 0080 0100     		.2byte	0x1
+ 2941 0082 51       		.byte	0x51
+ 2942 0083 00000000 		.4byte	0
+ 2943 0087 00000000 		.4byte	0
+ 2944              	.LVUS6:
+ 2945 008b 00       		.uleb128 .LVU41
+ 2946 008c 00       		.uleb128 .LVU44
+ 2947 008d 00       		.uleb128 .LVU44
+ 2948 008e 01       		.uleb128 .LVU45
+ 2949 008f 01       		.uleb128 .LVU45
+ 2950 0090 00       		.uleb128 .LVU55
+ 2951 0091 00       		.uleb128 .LVU55
+ 2952 0092 01       		.uleb128 .LVU56
+ 2953 0093 01       		.uleb128 .LVU56
+ 2954 0094 00       		.uleb128 .LVU62
+ 2955 0095 00       		.uleb128 .LVU67
+ 2956 0096 00       		.uleb128 .LVU73
+ 2957              	.LLST6:
+ 2958 0097 08000000 		.4byte	.LVL12
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 63
+
+
+ 2959 009b 0C000000 		.4byte	.LVL14
+ 2960 009f 0100     		.2byte	0x1
+ 2961 00a1 53       		.byte	0x53
+ 2962 00a2 0C000000 		.4byte	.LVL14
+ 2963 00a6 0C000000 		.4byte	.LVL14
+ 2964 00aa 0300     		.2byte	0x3
+ 2965 00ac 73       		.byte	0x73
+ 2966 00ad 7C       		.sleb128 -4
+ 2967 00ae 9F       		.byte	0x9f
+ 2968 00af 0C000000 		.4byte	.LVL14
+ 2969 00b3 1C000000 		.4byte	.LVL18
+ 2970 00b7 0100     		.2byte	0x1
+ 2971 00b9 53       		.byte	0x53
+ 2972 00ba 1C000000 		.4byte	.LVL18
+ 2973 00be 1C000000 		.4byte	.LVL18
+ 2974 00c2 0300     		.2byte	0x3
+ 2975 00c4 73       		.byte	0x73
+ 2976 00c5 7C       		.sleb128 -4
+ 2977 00c6 9F       		.byte	0x9f
+ 2978 00c7 1C000000 		.4byte	.LVL18
+ 2979 00cb 26000000 		.4byte	.LVL21
+ 2980 00cf 0100     		.2byte	0x1
+ 2981 00d1 53       		.byte	0x53
+ 2982 00d2 2E000000 		.4byte	.LVL23
+ 2983 00d6 34000000 		.4byte	.LVL25
+ 2984 00da 0100     		.2byte	0x1
+ 2985 00dc 53       		.byte	0x53
+ 2986 00dd 00000000 		.4byte	0
+ 2987 00e1 00000000 		.4byte	0
+ 2988              	.LVUS7:
+ 2989 00e5 00       		.uleb128 .LVU41
+ 2990 00e6 00       		.uleb128 .LVU50
+ 2991 00e7 00       		.uleb128 .LVU50
+ 2992 00e8 00       		.uleb128 .LVU62
+ 2993 00e9 00       		.uleb128 .LVU69
+ 2994 00ea 00       		.uleb128 .LVU73
+ 2995              	.LLST7:
+ 2996 00eb 08000000 		.4byte	.LVL12
+ 2997 00ef 14000000 		.4byte	.LVL16
+ 2998 00f3 0100     		.2byte	0x1
+ 2999 00f5 54       		.byte	0x54
+ 3000 00f6 14000000 		.4byte	.LVL16
+ 3001 00fa 26000000 		.4byte	.LVL21
+ 3002 00fe 0100     		.2byte	0x1
+ 3003 0100 50       		.byte	0x50
+ 3004 0101 30000000 		.4byte	.LVL24
+ 3005 0105 34000000 		.4byte	.LVL25
+ 3006 0109 0100     		.2byte	0x1
+ 3007 010b 54       		.byte	0x54
+ 3008 010c 00000000 		.4byte	0
+ 3009 0110 00000000 		.4byte	0
+ 3010              	.LVUS8:
+ 3011 0114 00       		.uleb128 .LVU41
+ 3012 0115 01       		.uleb128 .LVU51
+ 3013 0116 01       		.uleb128 .LVU51
+ 3014 0117 00       		.uleb128 .LVU53
+ 3015 0118 00       		.uleb128 .LVU53
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 64
+
+
+ 3016 0119 00       		.uleb128 .LVU62
+ 3017 011a 02       		.uleb128 .LVU71
+ 3018 011b 00       		.uleb128 .LVU73
+ 3019              	.LLST8:
+ 3020 011c 08000000 		.4byte	.LVL12
+ 3021 0120 14000000 		.4byte	.LVL16
+ 3022 0124 0100     		.2byte	0x1
+ 3023 0126 52       		.byte	0x52
+ 3024 0127 14000000 		.4byte	.LVL16
+ 3025 012b 18000000 		.4byte	.LVL17
+ 3026 012f 0200     		.2byte	0x2
+ 3027 0131 30       		.byte	0x30
+ 3028 0132 9F       		.byte	0x9f
+ 3029 0133 18000000 		.4byte	.LVL17
+ 3030 0137 26000000 		.4byte	.LVL21
+ 3031 013b 0100     		.2byte	0x1
+ 3032 013d 52       		.byte	0x52
+ 3033 013e 30000000 		.4byte	.LVL24
+ 3034 0142 34000000 		.4byte	.LVL25
+ 3035 0146 0200     		.2byte	0x2
+ 3036 0148 30       		.byte	0x30
+ 3037 0149 9F       		.byte	0x9f
+ 3038 014a 00000000 		.4byte	0
+ 3039 014e 00000000 		.4byte	0
+ 3040              	.LVUS1:
+ 3041 0152 00       		.uleb128 0
+ 3042 0153 00       		.uleb128 .LVU21
+ 3043 0154 00       		.uleb128 .LVU21
+ 3044 0155 00       		.uleb128 .LVU22
+ 3045 0156 00       		.uleb128 .LVU22
+ 3046 0157 00       		.uleb128 0
+ 3047              	.LLST1:
+ 3048 0158 00000000 		.4byte	.LVL4
+ 3049 015c 08000000 		.4byte	.LVL5
+ 3050 0160 0100     		.2byte	0x1
+ 3051 0162 50       		.byte	0x50
+ 3052 0163 08000000 		.4byte	.LVL5
+ 3053 0167 0A000000 		.4byte	.LVL6
+ 3054 016b 0100     		.2byte	0x1
+ 3055 016d 53       		.byte	0x53
+ 3056 016e 0A000000 		.4byte	.LVL6
+ 3057 0172 30000000 		.4byte	.LFE2
+ 3058 0176 0400     		.2byte	0x4
+ 3059 0178 F3       		.byte	0xf3
+ 3060 0179 01       		.uleb128 0x1
+ 3061 017a 50       		.byte	0x50
+ 3062 017b 9F       		.byte	0x9f
+ 3063 017c 00000000 		.4byte	0
+ 3064 0180 00000000 		.4byte	0
+ 3065              	.LVUS2:
+ 3066 0184 01       		.uleb128 .LVU25
+ 3067 0185 00       		.uleb128 .LVU27
+ 3068 0186 01       		.uleb128 .LVU31
+ 3069 0187 00       		.uleb128 0
+ 3070              	.LLST2:
+ 3071 0188 12000000 		.4byte	.LVL7
+ 3072 018c 16000000 		.4byte	.LVL8
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 65
+
+
+ 3073 0190 0100     		.2byte	0x1
+ 3074 0192 50       		.byte	0x50
+ 3075 0193 20000000 		.4byte	.LVL10
+ 3076 0197 30000000 		.4byte	.LFE2
+ 3077 019b 0300     		.2byte	0x3
+ 3078 019d 09       		.byte	0x9
+ 3079 019e FF       		.byte	0xff
+ 3080 019f 9F       		.byte	0x9f
+ 3081 01a0 00000000 		.4byte	0
+ 3082 01a4 00000000 		.4byte	0
+ 3083              	.LVUS0:
+ 3084 01a8 00       		.uleb128 0
+ 3085 01a9 00       		.uleb128 .LVU11
+ 3086 01aa 00       		.uleb128 .LVU11
+ 3087 01ab 00       		.uleb128 0
+ 3088              	.LLST0:
+ 3089 01ac 00000000 		.4byte	.LVL1
+ 3090 01b0 04000000 		.4byte	.LVL2
+ 3091 01b4 0100     		.2byte	0x1
+ 3092 01b6 50       		.byte	0x50
+ 3093 01b7 04000000 		.4byte	.LVL2
+ 3094 01bb 0A000000 		.4byte	.LFE1
+ 3095 01bf 0400     		.2byte	0x4
+ 3096 01c1 F3       		.byte	0xf3
+ 3097 01c2 01       		.uleb128 0x1
+ 3098 01c3 50       		.byte	0x50
+ 3099 01c4 9F       		.byte	0x9f
+ 3100 01c5 00000000 		.4byte	0
+ 3101 01c9 00000000 		.4byte	0
+ 3102              		.section	.debug_aranges,"",%progbits
+ 3103 0000 44000000 		.4byte	0x44
+ 3104 0004 0200     		.2byte	0x2
+ 3105 0006 00000000 		.4byte	.Ldebug_info0
+ 3106 000a 04       		.byte	0x4
+ 3107 000b 00       		.byte	0
+ 3108 000c 0000     		.2byte	0
+ 3109 000e 0000     		.2byte	0
+ 3110 0010 00000000 		.4byte	.LFB0
+ 3111 0014 10000000 		.4byte	.LFE0-.LFB0
+ 3112 0018 00000000 		.4byte	.LFB1
+ 3113 001c 0A000000 		.4byte	.LFE1-.LFB1
+ 3114 0020 00000000 		.4byte	.LFB2
+ 3115 0024 30000000 		.4byte	.LFE2-.LFB2
+ 3116 0028 00000000 		.4byte	.LFB3
+ 3117 002c 48000000 		.4byte	.LFE3-.LFB3
+ 3118 0030 00000000 		.4byte	.LFB4
+ 3119 0034 06000000 		.4byte	.LFE4-.LFB4
+ 3120 0038 00000000 		.4byte	.LFB5
+ 3121 003c 40000000 		.4byte	.LFE5-.LFB5
+ 3122 0040 00000000 		.4byte	0
+ 3123 0044 00000000 		.4byte	0
+ 3124              		.section	.debug_ranges,"",%progbits
+ 3125              	.Ldebug_ranges0:
+ 3126 0000 08000000 		.4byte	.LBB2
+ 3127 0004 24000000 		.4byte	.LBE2
+ 3128 0008 2A000000 		.4byte	.LBB3
+ 3129 000c 34000000 		.4byte	.LBE3
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 66
+
+
+ 3130 0010 00000000 		.4byte	0
+ 3131 0014 00000000 		.4byte	0
+ 3132 0018 00000000 		.4byte	.LFB0
+ 3133 001c 10000000 		.4byte	.LFE0
+ 3134 0020 00000000 		.4byte	.LFB1
+ 3135 0024 0A000000 		.4byte	.LFE1
+ 3136 0028 00000000 		.4byte	.LFB2
+ 3137 002c 30000000 		.4byte	.LFE2
+ 3138 0030 00000000 		.4byte	.LFB3
+ 3139 0034 48000000 		.4byte	.LFE3
+ 3140 0038 00000000 		.4byte	.LFB4
+ 3141 003c 06000000 		.4byte	.LFE4
+ 3142 0040 00000000 		.4byte	.LFB5
+ 3143 0044 40000000 		.4byte	.LFE5
+ 3144 0048 00000000 		.4byte	0
+ 3145 004c 00000000 		.4byte	0
+ 3146              		.section	.debug_line,"",%progbits
+ 3147              	.Ldebug_line0:
+ 3148 0000 BE030000 		.section	.debug_str,"MS",%progbits,1
+ 3148      0300B301 
+ 3148      00000201 
+ 3148      FB0E0D00 
+ 3148      01010101 
+ 3149              	.LASF46:
+ 3150 0000 5F64736F 		.ascii	"_dso_handle\000"
+ 3150      5F68616E 
+ 3150      646C6500 
+ 3151              	.LASF152:
+ 3152 000c 636F756E 		.ascii	"count\000"
+ 3152      7400
+ 3153              	.LASF135:
+ 3154 0012 5F737973 		.ascii	"_sys_errlist\000"
+ 3154      5F657272 
+ 3154      6C697374 
+ 3154      00
+ 3155              	.LASF54:
+ 3156 001f 5F73697A 		.ascii	"_size\000"
+ 3156      6500
+ 3157              	.LASF45:
+ 3158 0025 5F666E61 		.ascii	"_fnargs\000"
+ 3158      72677300 
+ 3159              	.LASF10:
+ 3160 002d 73697A65 		.ascii	"size_t\000"
+ 3160      5F7400
+ 3161              	.LASF140:
+ 3162 0034 696E6974 		.ascii	"init_size\000"
+ 3162      5F73697A 
+ 3162      6500
+ 3163              	.LASF98:
+ 3164 003e 5F72616E 		.ascii	"_rand48\000"
+ 3164      64343800 
+ 3165              	.LASF78:
+ 3166 0046 5F656D65 		.ascii	"_emergency\000"
+ 3166      7267656E 
+ 3166      637900
+ 3167              	.LASF68:
+ 3168 0051 5F646174 		.ascii	"_data\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 67
+
+
+ 3168      6100
+ 3169              	.LASF138:
+ 3170 0057 696E6974 		.ascii	"init\000"
+ 3170      00
+ 3171              	.LASF132:
+ 3172 005c 63796465 		.ascii	"cydelay32kMs\000"
+ 3172      6C617933 
+ 3172      326B4D73 
+ 3172      00
+ 3173              	.LASF118:
+ 3174 0069 5F776372 		.ascii	"_wcrtomb_state\000"
+ 3174      746F6D62 
+ 3174      5F737461 
+ 3174      746500
+ 3175              	.LASF119:
+ 3176 0078 5F776373 		.ascii	"_wcsrtombs_state\000"
+ 3176      72746F6D 
+ 3176      62735F73 
+ 3176      74617465 
+ 3176      00
+ 3177              	.LASF7:
+ 3178 0089 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 3178      206C6F6E 
+ 3178      6720756E 
+ 3178      7369676E 
+ 3178      65642069 
+ 3179              	.LASF58:
+ 3180 00a0 5F6C6266 		.ascii	"_lbfsize\000"
+ 3180      73697A65 
+ 3180      00
+ 3181              	.LASF133:
+ 3182 00a9 43795379 		.ascii	"CySysTickInitVar\000"
+ 3182      73546963 
+ 3182      6B496E69 
+ 3182      74566172 
+ 3182      00
+ 3183              	.LASF125:
+ 3184 00ba 5F5F6C6F 		.ascii	"__locale_t\000"
+ 3184      63616C65 
+ 3184      5F7400
+ 3185              	.LASF151:
+ 3186 00c5 6C696D69 		.ascii	"limit\000"
+ 3186      7400
+ 3187              	.LASF168:
+ 3188 00cb 63795379 		.ascii	"cySysNoInitDataValid\000"
+ 3188      734E6F49 
+ 3188      6E697444 
+ 3188      61746156 
+ 3188      616C6964 
+ 3189              	.LASF116:
+ 3190 00e0 5F6D6272 		.ascii	"_mbrtowc_state\000"
+ 3190      746F7763 
+ 3190      5F737461 
+ 3190      746500
+ 3191              	.LASF35:
+ 3192 00ef 5F5F746D 		.ascii	"__tm_sec\000"
+ 3192      5F736563 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 68
+
+
+ 3192      00
+ 3193              	.LASF156:
+ 3194 00f8 5F657869 		.ascii	"_exit\000"
+ 3194      7400
+ 3195              	.LASF6:
+ 3196 00fe 6C6F6E67 		.ascii	"long long int\000"
+ 3196      206C6F6E 
+ 3196      6720696E 
+ 3196      7400
+ 3197              	.LASF0:
+ 3198 010c 7369676E 		.ascii	"signed char\000"
+ 3198      65642063 
+ 3198      68617200 
+ 3199              	.LASF64:
+ 3200 0118 5F756275 		.ascii	"_ubuf\000"
+ 3200      6600
+ 3201              	.LASF53:
+ 3202 011e 5F626173 		.ascii	"_base\000"
+ 3202      6500
+ 3203              	.LASF37:
+ 3204 0124 5F5F746D 		.ascii	"__tm_hour\000"
+ 3204      5F686F75 
+ 3204      7200
+ 3205              	.LASF93:
+ 3206 012e 5F5F7366 		.ascii	"__sf\000"
+ 3206      00
+ 3207              	.LASF44:
+ 3208 0133 5F6F6E5F 		.ascii	"_on_exit_args\000"
+ 3208      65786974 
+ 3208      5F617267 
+ 3208      7300
+ 3209              	.LASF59:
+ 3210 0141 5F636F6F 		.ascii	"_cookie\000"
+ 3210      6B696500 
+ 3211              	.LASF92:
+ 3212 0149 5F5F7367 		.ascii	"__sglue\000"
+ 3212      6C756500 
+ 3213              	.LASF163:
+ 3214 0151 5F5F6572 		.ascii	"__errno\000"
+ 3214      726E6F00 
+ 3215              	.LASF4:
+ 3216 0159 6C6F6E67 		.ascii	"long int\000"
+ 3216      20696E74 
+ 3216      00
+ 3217              	.LASF56:
+ 3218 0162 5F666C61 		.ascii	"_flags\000"
+ 3218      677300
+ 3219              	.LASF48:
+ 3220 0169 5F69735F 		.ascii	"_is_cxa\000"
+ 3220      63786100 
+ 3221              	.LASF74:
+ 3222 0171 5F737464 		.ascii	"_stdin\000"
+ 3222      696E00
+ 3223              	.LASF167:
+ 3224 0178 433A5C55 		.ascii	"C:\\Users\\edulu.DESKTOP-961TG4K\\Documents\\PSoC C"
+ 3224      73657273 
+ 3224      5C656475 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 69
+
+
+ 3224      6C752E44 
+ 3224      45534B54 
+ 3225 01a7 72656174 		.ascii	"reator\\Micrium\\Examples\\Cypress\\CY8CKIT-044\\OS"
+ 3225      6F725C4D 
+ 3225      69637269 
+ 3225      756D5C45 
+ 3225      78616D70 
+ 3226 01d5 335C5053 		.ascii	"3\\PSoC\\OS3.cydsn\000"
+ 3226      6F435C4F 
+ 3226      53332E63 
+ 3226      7964736E 
+ 3226      00
+ 3227              	.LASF66:
+ 3228 01e6 5F626C6B 		.ascii	"_blksize\000"
+ 3228      73697A65 
+ 3228      00
+ 3229              	.LASF11:
+ 3230 01ef 75696E74 		.ascii	"uint8\000"
+ 3230      3800
+ 3231              	.LASF130:
+ 3232 01f5 63796465 		.ascii	"cydelayFreqKhz\000"
+ 3232      6C617946 
+ 3232      7265714B 
+ 3232      687A00
+ 3233              	.LASF14:
+ 3234 0204 646F7562 		.ascii	"double\000"
+ 3234      6C6500
+ 3235              	.LASF88:
+ 3236 020b 5F637674 		.ascii	"_cvtbuf\000"
+ 3236      62756600 
+ 3237              	.LASF67:
+ 3238 0213 5F6F6666 		.ascii	"_offset\000"
+ 3238      73657400 
+ 3239              	.LASF117:
+ 3240 021b 5F6D6273 		.ascii	"_mbsrtowcs_state\000"
+ 3240      72746F77 
+ 3240      63735F73 
+ 3240      74617465 
+ 3240      00
+ 3241              	.LASF115:
+ 3242 022c 5F6D6272 		.ascii	"_mbrlen_state\000"
+ 3242      6C656E5F 
+ 3242      73746174 
+ 3242      6500
+ 3243              	.LASF12:
+ 3244 023a 75696E74 		.ascii	"uint32\000"
+ 3244      333200
+ 3245              	.LASF170:
+ 3246 0241 68656170 		.ascii	"heapPointer\000"
+ 3246      506F696E 
+ 3246      74657200 
+ 3247              	.LASF51:
+ 3248 024d 5F666E73 		.ascii	"_fns\000"
+ 3248      00
+ 3249              	.LASF169:
+ 3250 0252 5F5F6379 		.ascii	"__cy_byte_align8\000"
+ 3250      5F627974 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 70
+
+
+ 3250      655F616C 
+ 3250      69676E38 
+ 3250      00
+ 3251              	.LASF31:
+ 3252 0263 5F736967 		.ascii	"_sign\000"
+ 3252      6E00
+ 3253              	.LASF27:
+ 3254 0269 5F666C6F 		.ascii	"_flock_t\000"
+ 3254      636B5F74 
+ 3254      00
+ 3255              	.LASF76:
+ 3256 0272 5F737464 		.ascii	"_stderr\000"
+ 3256      65727200 
+ 3257              	.LASF33:
+ 3258 027a 5F426967 		.ascii	"_Bigint\000"
+ 3258      696E7400 
+ 3259              	.LASF106:
+ 3260 0282 5F67616D 		.ascii	"_gamma_signgam\000"
+ 3260      6D615F73 
+ 3260      69676E67 
+ 3260      616D00
+ 3261              	.LASF60:
+ 3262 0291 5F726561 		.ascii	"_read\000"
+ 3262      6400
+ 3263              	.LASF84:
+ 3264 0297 5F726573 		.ascii	"_result_k\000"
+ 3264      756C745F 
+ 3264      6B00
+ 3265              	.LASF34:
+ 3266 02a1 5F5F746D 		.ascii	"__tm\000"
+ 3266      00
+ 3267              	.LASF8:
+ 3268 02a6 756E7369 		.ascii	"unsigned int\000"
+ 3268      676E6564 
+ 3268      20696E74 
+ 3268      00
+ 3269              	.LASF23:
+ 3270 02b3 5F5F7763 		.ascii	"__wchb\000"
+ 3270      686200
+ 3271              	.LASF75:
+ 3272 02ba 5F737464 		.ascii	"_stdout\000"
+ 3272      6F757400 
+ 3273              	.LASF146:
+ 3274 02c2 696E6465 		.ascii	"indexInit\000"
+ 3274      78496E69 
+ 3274      7400
+ 3275              	.LASF87:
+ 3276 02cc 5F637674 		.ascii	"_cvtlen\000"
+ 3276      6C656E00 
+ 3277              	.LASF5:
+ 3278 02d4 6C6F6E67 		.ascii	"long unsigned int\000"
+ 3278      20756E73 
+ 3278      69676E65 
+ 3278      6420696E 
+ 3278      7400
+ 3279              	.LASF57:
+ 3280 02e6 5F66696C 		.ascii	"_file\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 71
+
+
+ 3280      6500
+ 3281              	.LASF96:
+ 3282 02ec 5F6E696F 		.ascii	"_niobs\000"
+ 3282      627300
+ 3283              	.LASF139:
+ 3284 02f3 64617461 		.ascii	"data\000"
+ 3284      00
+ 3285              	.LASF3:
+ 3286 02f8 73686F72 		.ascii	"short unsigned int\000"
+ 3286      7420756E 
+ 3286      7369676E 
+ 3286      65642069 
+ 3286      6E7400
+ 3287              	.LASF90:
+ 3288 030b 5F617465 		.ascii	"_atexit0\000"
+ 3288      78697430 
+ 3288      00
+ 3289              	.LASF113:
+ 3290 0314 5F736967 		.ascii	"_signal_buf\000"
+ 3290      6E616C5F 
+ 3290      62756600 
+ 3291              	.LASF104:
+ 3292 0320 5F617363 		.ascii	"_asctime_buf\000"
+ 3292      74696D65 
+ 3292      5F627566 
+ 3292      00
+ 3293              	.LASF149:
+ 3294 032d 72656769 		.ascii	"regions\000"
+ 3294      6F6E7300 
+ 3295              	.LASF141:
+ 3296 0335 7A65726F 		.ascii	"zero_size\000"
+ 3296      5F73697A 
+ 3296      6500
+ 3297              	.LASF83:
+ 3298 033f 5F726573 		.ascii	"_result\000"
+ 3298      756C7400 
+ 3299              	.LASF22:
+ 3300 0347 5F5F7763 		.ascii	"__wch\000"
+ 3300      6800
+ 3301              	.LASF18:
+ 3302 034d 5F4C4F43 		.ascii	"_LOCK_T\000"
+ 3302      4B5F5400 
+ 3303              	.LASF21:
+ 3304 0355 77696E74 		.ascii	"wint_t\000"
+ 3304      5F7400
+ 3305              	.LASF165:
+ 3306 035c 474E5520 		.ascii	"GNU C17 8.2.1 20181213 (release) [gcc-8-branch revi"
+ 3306      43313720 
+ 3306      382E322E 
+ 3306      31203230 
+ 3306      31383132 
+ 3307 038f 73696F6E 		.ascii	"sion 267074] -mcpu=cortex-m0 -mthumb -mfloat-abi=so"
+ 3307      20323637 
+ 3307      3037345D 
+ 3307      202D6D63 
+ 3307      70753D63 
+ 3308 03c2 6674202D 		.ascii	"ft -march=armv6s-m -g -Og -ffunction-sections -ffat"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 72
+
+
+ 3308      6D617263 
+ 3308      683D6172 
+ 3308      6D763673 
+ 3308      2D6D202D 
+ 3309 03f5 2D6C746F 		.ascii	"-lto-objects\000"
+ 3309      2D6F626A 
+ 3309      65637473 
+ 3309      00
+ 3310              	.LASF69:
+ 3311 0402 5F6C6F63 		.ascii	"_lock\000"
+ 3311      6B00
+ 3312              	.LASF142:
+ 3313 0408 5F5F6379 		.ascii	"__cy_regions\000"
+ 3313      5F726567 
+ 3313      696F6E73 
+ 3313      00
+ 3314              	.LASF71:
+ 3315 0415 5F666C61 		.ascii	"_flags2\000"
+ 3315      67733200 
+ 3316              	.LASF150:
+ 3317 041d 72707472 		.ascii	"rptr\000"
+ 3317      00
+ 3318              	.LASF16:
+ 3319 0422 72656733 		.ascii	"reg32\000"
+ 3319      3200
+ 3320              	.LASF40:
+ 3321 0428 5F5F746D 		.ascii	"__tm_year\000"
+ 3321      5F796561 
+ 3321      7200
+ 3322              	.LASF143:
+ 3323 0432 5F5F6379 		.ascii	"__cy_region_num\000"
+ 3323      5F726567 
+ 3323      696F6E5F 
+ 3323      6E756D00 
+ 3324              	.LASF129:
+ 3325 0442 63796465 		.ascii	"cydelayFreqHz\000"
+ 3325      6C617946 
+ 3325      72657148 
+ 3325      7A00
+ 3326              	.LASF9:
+ 3327 0450 6C6F6E67 		.ascii	"long double\000"
+ 3327      20646F75 
+ 3327      626C6500 
+ 3328              	.LASF121:
+ 3329 045c 5F6E6578 		.ascii	"_nextf\000"
+ 3329      746600
+ 3330              	.LASF134:
+ 3331 0463 6379496D 		.ascii	"cyImoFreqMhz2Reg\000"
+ 3331      6F467265 
+ 3331      714D687A 
+ 3331      32526567 
+ 3331      00
+ 3332              	.LASF39:
+ 3333 0474 5F5F746D 		.ascii	"__tm_mon\000"
+ 3333      5F6D6F6E 
+ 3333      00
+ 3334              	.LASF49:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 73
+
+
+ 3335 047d 5F617465 		.ascii	"_atexit\000"
+ 3335      78697400 
+ 3336              	.LASF81:
+ 3337 0485 5F5F7364 		.ascii	"__sdidinit\000"
+ 3337      6964696E 
+ 3337      697400
+ 3338              	.LASF19:
+ 3339 0490 5F6F6666 		.ascii	"_off_t\000"
+ 3339      5F7400
+ 3340              	.LASF145:
+ 3341 0497 526F6D56 		.ascii	"RomVectors\000"
+ 3341      6563746F 
+ 3341      727300
+ 3342              	.LASF147:
+ 3343 04a2 696E6974 		.ascii	"initialize_psoc\000"
+ 3343      69616C69 
+ 3343      7A655F70 
+ 3343      736F6300 
+ 3344              	.LASF13:
+ 3345 04b2 666C6F61 		.ascii	"float\000"
+ 3345      7400
+ 3346              	.LASF86:
+ 3347 04b8 5F667265 		.ascii	"_freelist\000"
+ 3347      656C6973 
+ 3347      7400
+ 3348              	.LASF157:
+ 3349 04c2 6E627974 		.ascii	"nbytes\000"
+ 3349      657300
+ 3350              	.LASF111:
+ 3351 04c9 5F776374 		.ascii	"_wctomb_state\000"
+ 3351      6F6D625F 
+ 3351      73746174 
+ 3351      6500
+ 3352              	.LASF61:
+ 3353 04d7 5F777269 		.ascii	"_write\000"
+ 3353      746500
+ 3354              	.LASF164:
+ 3355 04de 43794861 		.ascii	"CyHalt\000"
+ 3355      6C7400
+ 3356              	.LASF1:
+ 3357 04e5 756E7369 		.ascii	"unsigned char\000"
+ 3357      676E6564 
+ 3357      20636861 
+ 3357      7200
+ 3358              	.LASF89:
+ 3359 04f3 5F6E6577 		.ascii	"_new\000"
+ 3359      00
+ 3360              	.LASF120:
+ 3361 04f8 5F685F65 		.ascii	"_h_errno\000"
+ 3361      72726E6F 
+ 3361      00
+ 3362              	.LASF2:
+ 3363 0501 73686F72 		.ascii	"short int\000"
+ 3363      7420696E 
+ 3363      7400
+ 3364              	.LASF42:
+ 3365 050b 5F5F746D 		.ascii	"__tm_yday\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 74
+
+
+ 3365      5F796461 
+ 3365      7900
+ 3366              	.LASF52:
+ 3367 0515 5F5F7362 		.ascii	"__sbuf\000"
+ 3367      756600
+ 3368              	.LASF97:
+ 3369 051c 5F696F62 		.ascii	"_iobs\000"
+ 3369      7300
+ 3370              	.LASF148:
+ 3371 0522 52657365 		.ascii	"Reset\000"
+ 3371      7400
+ 3372              	.LASF94:
+ 3373 0528 5F5F4649 		.ascii	"__FILE\000"
+ 3373      4C4500
+ 3374              	.LASF26:
+ 3375 052f 5F6D6273 		.ascii	"_mbstate_t\000"
+ 3375      74617465 
+ 3375      5F7400
+ 3376              	.LASF144:
+ 3377 053a 43795261 		.ascii	"CyRamVectors\000"
+ 3377      6D566563 
+ 3377      746F7273 
+ 3377      00
+ 3378              	.LASF55:
+ 3379 0547 5F5F7346 		.ascii	"__sFILE\000"
+ 3379      494C4500 
+ 3380              	.LASF136:
+ 3381 054f 5F737973 		.ascii	"_sys_nerr\000"
+ 3381      5F6E6572 
+ 3381      7200
+ 3382              	.LASF70:
+ 3383 0559 5F6D6273 		.ascii	"_mbstate\000"
+ 3383      74617465 
+ 3383      00
+ 3384              	.LASF107:
+ 3385 0562 5F72616E 		.ascii	"_rand_next\000"
+ 3385      645F6E65 
+ 3385      787400
+ 3386              	.LASF109:
+ 3387 056d 5F6D626C 		.ascii	"_mblen_state\000"
+ 3387      656E5F73 
+ 3387      74617465 
+ 3387      00
+ 3388              	.LASF77:
+ 3389 057a 5F696E63 		.ascii	"_inc\000"
+ 3389      00
+ 3390              	.LASF50:
+ 3391 057f 5F696E64 		.ascii	"_ind\000"
+ 3391      00
+ 3392              	.LASF80:
+ 3393 0584 5F6C6F63 		.ascii	"_locale\000"
+ 3393      616C6500 
+ 3394              	.LASF82:
+ 3395 058c 5F5F636C 		.ascii	"__cleanup\000"
+ 3395      65616E75 
+ 3395      7000
+ 3396              	.LASF79:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 75
+
+
+ 3397 0596 5F756E73 		.ascii	"_unspecified_locale_info\000"
+ 3397      70656369 
+ 3397      66696564 
+ 3397      5F6C6F63 
+ 3397      616C655F 
+ 3398              	.LASF30:
+ 3399 05af 5F6D6178 		.ascii	"_maxwds\000"
+ 3399      77647300 
+ 3400              	.LASF72:
+ 3401 05b7 5F726565 		.ascii	"_reent\000"
+ 3401      6E7400
+ 3402              	.LASF99:
+ 3403 05be 5F736565 		.ascii	"_seed\000"
+ 3403      6400
+ 3404              	.LASF24:
+ 3405 05c4 5F5F636F 		.ascii	"__count\000"
+ 3405      756E7400 
+ 3406              	.LASF124:
+ 3407 05cc 5F5F6C6F 		.ascii	"__lock\000"
+ 3407      636B00
+ 3408              	.LASF25:
+ 3409 05d3 5F5F7661 		.ascii	"__value\000"
+ 3409      6C756500 
+ 3410              	.LASF62:
+ 3411 05db 5F736565 		.ascii	"_seek\000"
+ 3411      6B00
+ 3412              	.LASF126:
+ 3413 05e1 5F696D70 		.ascii	"_impure_ptr\000"
+ 3413      7572655F 
+ 3413      70747200 
+ 3414              	.LASF20:
+ 3415 05ed 5F66706F 		.ascii	"_fpos_t\000"
+ 3415      735F7400 
+ 3416              	.LASF73:
+ 3417 05f5 5F657272 		.ascii	"_errno\000"
+ 3417      6E6F00
+ 3418              	.LASF15:
+ 3419 05fc 63686172 		.ascii	"char\000"
+ 3419      00
+ 3420              	.LASF137:
+ 3421 0601 5F5F6379 		.ascii	"__cy_region\000"
+ 3421      5F726567 
+ 3421      696F6E00 
+ 3422              	.LASF17:
+ 3423 060d 63796973 		.ascii	"cyisraddress\000"
+ 3423      72616464 
+ 3423      72657373 
+ 3423      00
+ 3424              	.LASF36:
+ 3425 061a 5F5F746D 		.ascii	"__tm_min\000"
+ 3425      5F6D696E 
+ 3425      00
+ 3426              	.LASF128:
+ 3427 0623 5F637479 		.ascii	"_ctype_\000"
+ 3427      70655F00 
+ 3428              	.LASF100:
+ 3429 062b 5F6D756C 		.ascii	"_mult\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 76
+
+
+ 3429      7400
+ 3430              	.LASF29:
+ 3431 0631 5F6E6578 		.ascii	"_next\000"
+ 3431      7400
+ 3432              	.LASF103:
+ 3433 0637 5F737472 		.ascii	"_strtok_last\000"
+ 3433      746F6B5F 
+ 3433      6C617374 
+ 3433      00
+ 3434              	.LASF47:
+ 3435 0644 5F666E74 		.ascii	"_fntypes\000"
+ 3435      79706573 
+ 3435      00
+ 3436              	.LASF153:
+ 3437 064d 53746172 		.ascii	"Start_c\000"
+ 3437      745F6300 
+ 3438              	.LASF101:
+ 3439 0655 5F616464 		.ascii	"_add\000"
+ 3439      00
+ 3440              	.LASF28:
+ 3441 065a 5F5F554C 		.ascii	"__ULong\000"
+ 3441      6F6E6700 
+ 3442              	.LASF114:
+ 3443 0662 5F676574 		.ascii	"_getdate_err\000"
+ 3443      64617465 
+ 3443      5F657272 
+ 3443      00
+ 3444              	.LASF127:
+ 3445 066f 5F676C6F 		.ascii	"_global_impure_ptr\000"
+ 3445      62616C5F 
+ 3445      696D7075 
+ 3445      72655F70 
+ 3445      747200
+ 3446              	.LASF131:
+ 3447 0682 63796465 		.ascii	"cydelayFreqMhz\000"
+ 3447      6C617946 
+ 3447      7265714D 
+ 3447      687A00
+ 3448              	.LASF102:
+ 3449 0691 5F756E75 		.ascii	"_unused_rand\000"
+ 3449      7365645F 
+ 3449      72616E64 
+ 3449      00
+ 3450              	.LASF158:
+ 3451 069e 73746174 		.ascii	"status\000"
+ 3451      757300
+ 3452              	.LASF32:
+ 3453 06a5 5F776473 		.ascii	"_wds\000"
+ 3453      00
+ 3454              	.LASF41:
+ 3455 06aa 5F5F746D 		.ascii	"__tm_wday\000"
+ 3455      5F776461 
+ 3455      7900
+ 3456              	.LASF95:
+ 3457 06b4 5F676C75 		.ascii	"_glue\000"
+ 3457      6500
+ 3458              	.LASF159:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 77
+
+
+ 3459 06ba 496E7444 		.ascii	"IntDefaultHandler\000"
+ 3459      65666175 
+ 3459      6C744861 
+ 3459      6E646C65 
+ 3459      7200
+ 3460              	.LASF122:
+ 3461 06cc 5F6E6D61 		.ascii	"_nmalloc\000"
+ 3461      6C6C6F63 
+ 3461      00
+ 3462              	.LASF112:
+ 3463 06d5 5F6C3634 		.ascii	"_l64a_buf\000"
+ 3463      615F6275 
+ 3463      6600
+ 3464              	.LASF161:
+ 3465 06df 5F5F6C69 		.ascii	"__libc_init_array\000"
+ 3465      62635F69 
+ 3465      6E69745F 
+ 3465      61727261 
+ 3465      7900
+ 3466              	.LASF91:
+ 3467 06f1 5F736967 		.ascii	"_sig_func\000"
+ 3467      5F66756E 
+ 3467      6300
+ 3468              	.LASF65:
+ 3469 06fb 5F6E6275 		.ascii	"_nbuf\000"
+ 3469      6600
+ 3470              	.LASF123:
+ 3471 0701 5F756E75 		.ascii	"_unused\000"
+ 3471      73656400 
+ 3472              	.LASF43:
+ 3473 0709 5F5F746D 		.ascii	"__tm_isdst\000"
+ 3473      5F697364 
+ 3473      737400
+ 3474              	.LASF105:
+ 3475 0714 5F6C6F63 		.ascii	"_localtime_buf\000"
+ 3475      616C7469 
+ 3475      6D655F62 
+ 3475      756600
+ 3476              	.LASF63:
+ 3477 0723 5F636C6F 		.ascii	"_close\000"
+ 3477      736500
+ 3478              	.LASF108:
+ 3479 072a 5F723438 		.ascii	"_r48\000"
+ 3479      00
+ 3480              	.LASF110:
+ 3481 072f 5F6D6274 		.ascii	"_mbtowc_state\000"
+ 3481      6F77635F 
+ 3481      73746174 
+ 3481      6500
+ 3482              	.LASF166:
+ 3483 073d 47656E65 		.ascii	"Generated_Source\\PSoC4\\Cm0Start.c\000"
+ 3483      72617465 
+ 3483      645F536F 
+ 3483      75726365 
+ 3483      5C50536F 
+ 3484              	.LASF85:
+ 3485 075f 5F703573 		.ascii	"_p5s\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\ccrtrLNO.s 			page 78
+
+
+ 3485      00
+ 3486              	.LASF162:
+ 3487 0764 6D61696E 		.ascii	"main\000"
+ 3487      00
+ 3488              	.LASF155:
+ 3489 0769 72657475 		.ascii	"returnValue\000"
+ 3489      726E5661 
+ 3489      6C756500 
+ 3490              	.LASF160:
+ 3491 0775 63796669 		.ascii	"cyfitter_cfg\000"
+ 3491      74746572 
+ 3491      5F636667 
+ 3491      00
+ 3492              	.LASF38:
+ 3493 0782 5F5F746D 		.ascii	"__tm_mday\000"
+ 3493      5F6D6461 
+ 3493      7900
+ 3494              	.LASF154:
+ 3495 078c 5F736272 		.ascii	"_sbrk\000"
+ 3495      6B00
+ 3496              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2018-q4-major) 8.2.1 20181213 (release) [gcc

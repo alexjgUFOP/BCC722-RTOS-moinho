@@ -1,0 +1,4433 @@
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"bsp_os.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 33010000 		.text
+  20      0200D300 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.section	.text.BSP_OS_SemCreate,"ax",%progbits
+  24              		.align	2
+  25              		.global	BSP_OS_SemCreate
+  26              		.thumb
+  27              		.thumb_func
+  28              		.type	BSP_OS_SemCreate, %function
+  29              	BSP_OS_SemCreate:
+  30              	.LFB0:
+  31              		.file 1 "..\\..\\BSP\\OS\\uCOS-III\\bsp_os.c"
+   1:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+   2:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+   3:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                     MICRIUM BOARD SUPPORT SUPPORT
+   4:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+   5:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                          (c) Copyright 2003-2012; Micrium, Inc.; Weston, FL
+   6:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+   7:..\..\BSP\OS\uCOS-III/bsp_os.c **** *               All rights reserved.  Protected by international copyright laws.
+   8:..\..\BSP\OS\uCOS-III/bsp_os.c **** *               Knowledge of the source code may NOT be used to develop a similar product.
+   9:..\..\BSP\OS\uCOS-III/bsp_os.c **** *               Please help us continue to provide the Embedded community with the finest
+  10:..\..\BSP\OS\uCOS-III/bsp_os.c **** *               software available.  Your honesty is greatly appreciated.
+  11:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  12:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+  13:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  14:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+  15:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  16:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+  17:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                       BOARD SUPPORT PACKAGE
+  18:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                          uCOS-III LAYER
+  19:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+  20:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Filename      : bsp_os.c
+  21:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Version       : V1.00
+  22:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Programmer(s) : DC
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 2
+
+
+  23:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+  24:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  25:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+  26:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  27:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  28:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+  29:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  30:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                             INCLUDE FILES
+  31:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  32:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+  33:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  34:..\..\BSP\OS\uCOS-III/bsp_os.c **** #define  BSP_OS_MODULE
+  35:..\..\BSP\OS\uCOS-III/bsp_os.c **** #include <bsp.h>
+  36:..\..\BSP\OS\uCOS-III/bsp_os.c **** #include <bsp_os.h>
+  37:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  38:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  39:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+  40:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  41:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                            LOCAL DEFINES
+  42:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  43:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+  44:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  45:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  46:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+  47:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  48:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                           LOCAL CONSTANTS
+  49:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  50:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+  51:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  52:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  53:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+  54:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  55:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                          LOCAL DATA TYPES
+  56:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  57:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+  58:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  59:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  60:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+  61:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  62:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                            LOCAL TABLES
+  63:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  64:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+  65:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  66:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  67:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+  68:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  69:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                       LOCAL GLOBAL VARIABLES
+  70:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  71:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+  72:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  73:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  74:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+  75:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  76:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                      LOCAL FUNCTION PROTOTYPES
+  77:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  78:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+  79:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 3
+
+
+  80:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  81:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+  82:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  83:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                     LOCAL CONFIGURATION ERRORS
+  84:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  85:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+  86:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  87:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+  88:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  89:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  90:..\..\BSP\OS\uCOS-III/bsp_os.c **** **                                         GLOBAL FUNCTIONS
+  91:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  92:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  93:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+  94:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  95:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+  96:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+  97:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  98:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+  99:..\..\BSP\OS\uCOS-III/bsp_os.c **** **                                     BSP OS LOCKS FUNCTIONS
+ 100:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 101:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 102:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+ 103:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 104:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+ 105:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 106:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 107:..\..\BSP\OS\uCOS-III/bsp_os.c **** **                                     BSP OS LOCKS FUNCTIONS
+ 108:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 109:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 110:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+ 111:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 112:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+ 113:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 114:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                      BSP_OS_SemCreate()
+ 115:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 116:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Description : Creates a sempahore to lock/unlock
+ 117:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 118:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Argument(s) : p_sem        Pointer to a BSP_OS_SEM structure
+ 119:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 120:..\..\BSP\OS\uCOS-III/bsp_os.c **** *               sem_val      Initial value of the semaphore.
+ 121:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 122:..\..\BSP\OS\uCOS-III/bsp_os.c **** *               p_sem_name   Pointer to the semaphore name.
+ 123:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 124:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Return(s)   : DEF_OK       if the semaphore was created.
+ 125:..\..\BSP\OS\uCOS-III/bsp_os.c **** *               DEF_FAIL     if the sempahore could not be created.
+ 126:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 127:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Caller(s)   : Application.
+ 128:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 129:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Note(s)     : none.
+ 130:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 131:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 132:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+ 133:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 134:..\..\BSP\OS\uCOS-III/bsp_os.c **** CPU_BOOLEAN  BSP_OS_SemCreate (BSP_OS_SEM       *p_sem,
+ 135:..\..\BSP\OS\uCOS-III/bsp_os.c ****                                BSP_OS_SEM_VAL    sem_val,
+ 136:..\..\BSP\OS\uCOS-III/bsp_os.c ****                                CPU_CHAR         *p_sem_name)
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 4
+
+
+ 137:..\..\BSP\OS\uCOS-III/bsp_os.c **** {
+  32              		.loc 1 137 0
+  33              		.cfi_startproc
+  34              		@ args = 0, pretend = 0, frame = 24
+  35              		@ frame_needed = 1, uses_anonymous_args = 0
+  36 0000 80B5     		push	{r7, lr}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 8
+  39 0002 86B0     		sub	sp, sp, #24
+  40              	.LCFI1:
+  41              		.cfi_def_cfa_offset 32
+  42 0004 00AF     		add	r7, sp, #0
+  43              		.cfi_offset 14, -4
+  44              		.cfi_offset 7, -8
+  45              	.LCFI2:
+  46              		.cfi_def_cfa_register 7
+  47 0006 F860     		str	r0, [r7, #12]
+  48 0008 B960     		str	r1, [r7, #8]
+  49 000a 7A60     		str	r2, [r7, #4]
+ 138:..\..\BSP\OS\uCOS-III/bsp_os.c ****     OS_ERR     err;
+ 139:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 140:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 141:..\..\BSP\OS\uCOS-III/bsp_os.c ****     OSSemCreate((OS_SEM    *)p_sem,
+  50              		.loc 1 141 0
+  51 000c 07F11603 		add	r3, r7, #22
+  52 0010 F868     		ldr	r0, [r7, #12]
+  53 0012 7968     		ldr	r1, [r7, #4]
+  54 0014 BA68     		ldr	r2, [r7, #8]
+  55 0016 FFF7FEFF 		bl	OSSemCreate
+ 142:..\..\BSP\OS\uCOS-III/bsp_os.c ****                 (CPU_CHAR  *)p_sem_name,
+ 143:..\..\BSP\OS\uCOS-III/bsp_os.c ****                 (OS_SEM_CTR )sem_val,
+ 144:..\..\BSP\OS\uCOS-III/bsp_os.c ****                 (OS_ERR    *)&err);
+ 145:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 146:..\..\BSP\OS\uCOS-III/bsp_os.c ****     if (err != OS_ERR_NONE) {
+  56              		.loc 1 146 0
+  57 001a FB8A     		ldrh	r3, [r7, #22]
+  58 001c 002B     		cmp	r3, #0
+  59 001e 02D0     		beq	.L2
+ 147:..\..\BSP\OS\uCOS-III/bsp_os.c ****         return (DEF_FAIL);
+  60              		.loc 1 147 0
+  61 0020 4FF00003 		mov	r3, #0
+  62 0024 01E0     		b	.L3
+  63              	.L2:
+ 148:..\..\BSP\OS\uCOS-III/bsp_os.c ****     }
+ 149:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 150:..\..\BSP\OS\uCOS-III/bsp_os.c ****     return (DEF_OK);
+  64              		.loc 1 150 0
+  65 0026 4FF00103 		mov	r3, #1
+  66              	.L3:
+ 151:..\..\BSP\OS\uCOS-III/bsp_os.c **** }
+  67              		.loc 1 151 0
+  68 002a 1846     		mov	r0, r3
+  69 002c 07F11807 		add	r7, r7, #24
+  70 0030 BD46     		mov	sp, r7
+  71 0032 80BD     		pop	{r7, pc}
+  72              		.cfi_endproc
+  73              	.LFE0:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 5
+
+
+  74              		.size	BSP_OS_SemCreate, .-BSP_OS_SemCreate
+  75              		.section	.text.BSP_OS_SemWait,"ax",%progbits
+  76              		.align	2
+  77              		.global	BSP_OS_SemWait
+  78              		.thumb
+  79              		.thumb_func
+  80              		.type	BSP_OS_SemWait, %function
+  81              	BSP_OS_SemWait:
+  82              	.LFB1:
+ 152:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 153:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 154:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+ 155:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 156:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                     BSP_OS_SemWait()
+ 157:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 158:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Description : Wait on a semaphore to become available
+ 159:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 160:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Argument(s) : sem          sempahore handler
+ 161:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 162:..\..\BSP\OS\uCOS-III/bsp_os.c **** *               dly_ms       delay in miliseconds to wait on the semaphore
+ 163:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 164:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Return(s)   : DEF_OK       if the semaphore was acquire
+ 165:..\..\BSP\OS\uCOS-III/bsp_os.c **** *               DEF_FAIL     if the sempahore could not be acquire
+ 166:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 167:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Caller(s)   : Application.
+ 168:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 169:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Note(s)     : none.
+ 170:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 171:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+ 172:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 173:..\..\BSP\OS\uCOS-III/bsp_os.c **** CPU_BOOLEAN  BSP_OS_SemWait (BSP_OS_SEM  *p_sem,
+ 174:..\..\BSP\OS\uCOS-III/bsp_os.c ****                              CPU_INT32U   dly_ms)
+ 175:..\..\BSP\OS\uCOS-III/bsp_os.c **** {
+  83              		.loc 1 175 0
+  84              		.cfi_startproc
+  85              		@ args = 0, pretend = 0, frame = 16
+  86              		@ frame_needed = 1, uses_anonymous_args = 0
+  87 0000 80B5     		push	{r7, lr}
+  88              	.LCFI3:
+  89              		.cfi_def_cfa_offset 8
+  90 0002 86B0     		sub	sp, sp, #24
+  91              	.LCFI4:
+  92              		.cfi_def_cfa_offset 32
+  93 0004 02AF     		add	r7, sp, #8
+  94              		.cfi_offset 14, -4
+  95              		.cfi_offset 7, -8
+  96              	.LCFI5:
+  97              		.cfi_def_cfa 7, 24
+  98 0006 7860     		str	r0, [r7, #4]
+  99 0008 3960     		str	r1, [r7, #0]
+ 176:..\..\BSP\OS\uCOS-III/bsp_os.c ****     OS_ERR      err;
+ 177:..\..\BSP\OS\uCOS-III/bsp_os.c ****     CPU_INT32U  dly_ticks;
+ 178:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 179:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 180:..\..\BSP\OS\uCOS-III/bsp_os.c ****     dly_ticks  = ((dly_ms * DEF_TIME_NBR_mS_PER_SEC) / OSCfg_TickRate_Hz);
+ 100              		.loc 1 180 0
+ 101 000a 3B68     		ldr	r3, [r7, #0]
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 6
+
+
+ 102 000c 4FF47A72 		mov	r2, #1000
+ 103 0010 02FB03F2 		mul	r2, r2, r3
+ 104 0014 40F20003 		movw	r3, #:lower16:OSCfg_TickRate_Hz
+ 105 0018 C0F20003 		movt	r3, #:upper16:OSCfg_TickRate_Hz
+ 106 001c 1B68     		ldr	r3, [r3, #0]
+ 107 001e B2FBF3F3 		udiv	r3, r2, r3
+ 108 0022 FB60     		str	r3, [r7, #12]
+ 181:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 182:..\..\BSP\OS\uCOS-III/bsp_os.c ****     OSSemPend((OS_SEM *)p_sem,
+ 109              		.loc 1 182 0
+ 110 0024 07F10A03 		add	r3, r7, #10
+ 111 0028 0093     		str	r3, [sp, #0]
+ 112 002a 7868     		ldr	r0, [r7, #4]
+ 113 002c F968     		ldr	r1, [r7, #12]
+ 114 002e 4FF00002 		mov	r2, #0
+ 115 0032 4FF00003 		mov	r3, #0
+ 116 0036 FFF7FEFF 		bl	OSSemPend
+ 183:..\..\BSP\OS\uCOS-III/bsp_os.c ****               (OS_TICK )dly_ticks,
+ 184:..\..\BSP\OS\uCOS-III/bsp_os.c ****               (OS_OPT  )OS_OPT_PEND_BLOCKING,
+ 185:..\..\BSP\OS\uCOS-III/bsp_os.c ****               (CPU_TS  )0,
+ 186:..\..\BSP\OS\uCOS-III/bsp_os.c ****               (OS_ERR *)&err);
+ 187:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 188:..\..\BSP\OS\uCOS-III/bsp_os.c ****     if (err != OS_ERR_NONE) {
+ 117              		.loc 1 188 0
+ 118 003a 7B89     		ldrh	r3, [r7, #10]
+ 119 003c 002B     		cmp	r3, #0
+ 120 003e 02D0     		beq	.L6
+ 189:..\..\BSP\OS\uCOS-III/bsp_os.c ****        return (DEF_FAIL);
+ 121              		.loc 1 189 0
+ 122 0040 4FF00003 		mov	r3, #0
+ 123 0044 01E0     		b	.L7
+ 124              	.L6:
+ 190:..\..\BSP\OS\uCOS-III/bsp_os.c ****     }
+ 191:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 192:..\..\BSP\OS\uCOS-III/bsp_os.c ****     return (DEF_OK);
+ 125              		.loc 1 192 0
+ 126 0046 4FF00103 		mov	r3, #1
+ 127              	.L7:
+ 193:..\..\BSP\OS\uCOS-III/bsp_os.c **** }
+ 128              		.loc 1 193 0
+ 129 004a 1846     		mov	r0, r3
+ 130 004c 07F11007 		add	r7, r7, #16
+ 131 0050 BD46     		mov	sp, r7
+ 132 0052 80BD     		pop	{r7, pc}
+ 133              		.cfi_endproc
+ 134              	.LFE1:
+ 135              		.size	BSP_OS_SemWait, .-BSP_OS_SemWait
+ 136              		.section	.text.BSP_OS_SemPost,"ax",%progbits
+ 137              		.align	2
+ 138              		.global	BSP_OS_SemPost
+ 139              		.thumb
+ 140              		.thumb_func
+ 141              		.type	BSP_OS_SemPost, %function
+ 142              	BSP_OS_SemPost:
+ 143              	.LFB2:
+ 194:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 195:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 7
+
+
+ 196:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 197:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                      BSP_OS_SemPost()
+ 198:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 199:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Description : Post a semaphore
+ 200:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 201:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Argument(s) : sem          Semaphore handler
+ 202:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 203:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Return(s)   : DEF_OK     if the semaphore was posted.
+ 204:..\..\BSP\OS\uCOS-III/bsp_os.c **** *               DEF_FAIL      if the sempahore could not be posted.
+ 205:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 206:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Caller(s)   : Application.
+ 207:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 208:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Note(s)     : none.
+ 209:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 210:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+ 211:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 212:..\..\BSP\OS\uCOS-III/bsp_os.c **** CPU_BOOLEAN  BSP_OS_SemPost (BSP_OS_SEM *p_sem)
+ 213:..\..\BSP\OS\uCOS-III/bsp_os.c **** {
+ 144              		.loc 1 213 0
+ 145              		.cfi_startproc
+ 146              		@ args = 0, pretend = 0, frame = 16
+ 147              		@ frame_needed = 1, uses_anonymous_args = 0
+ 148 0000 80B5     		push	{r7, lr}
+ 149              	.LCFI6:
+ 150              		.cfi_def_cfa_offset 8
+ 151 0002 84B0     		sub	sp, sp, #16
+ 152              	.LCFI7:
+ 153              		.cfi_def_cfa_offset 24
+ 154 0004 00AF     		add	r7, sp, #0
+ 155              		.cfi_offset 14, -4
+ 156              		.cfi_offset 7, -8
+ 157              	.LCFI8:
+ 158              		.cfi_def_cfa_register 7
+ 159 0006 7860     		str	r0, [r7, #4]
+ 214:..\..\BSP\OS\uCOS-III/bsp_os.c ****     OS_ERR  err;
+ 215:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 216:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 217:..\..\BSP\OS\uCOS-III/bsp_os.c ****     OSSemPost((OS_SEM *)p_sem,
+ 160              		.loc 1 217 0
+ 161 0008 07F10E03 		add	r3, r7, #14
+ 162 000c 7868     		ldr	r0, [r7, #4]
+ 163 000e 4FF00001 		mov	r1, #0
+ 164 0012 1A46     		mov	r2, r3
+ 165 0014 FFF7FEFF 		bl	OSSemPost
+ 218:..\..\BSP\OS\uCOS-III/bsp_os.c ****               (OS_OPT  )OS_OPT_POST_1,
+ 219:..\..\BSP\OS\uCOS-III/bsp_os.c ****               (OS_ERR *)&err);
+ 220:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 221:..\..\BSP\OS\uCOS-III/bsp_os.c ****     if (err != OS_ERR_NONE) {
+ 166              		.loc 1 221 0
+ 167 0018 FB89     		ldrh	r3, [r7, #14]
+ 168 001a 002B     		cmp	r3, #0
+ 169 001c 02D0     		beq	.L10
+ 222:..\..\BSP\OS\uCOS-III/bsp_os.c ****         return (DEF_FAIL);
+ 170              		.loc 1 222 0
+ 171 001e 4FF00003 		mov	r3, #0
+ 172 0022 01E0     		b	.L11
+ 173              	.L10:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 8
+
+
+ 223:..\..\BSP\OS\uCOS-III/bsp_os.c ****     }
+ 224:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 225:..\..\BSP\OS\uCOS-III/bsp_os.c ****     return (DEF_OK);
+ 174              		.loc 1 225 0
+ 175 0024 4FF00103 		mov	r3, #1
+ 176              	.L11:
+ 226:..\..\BSP\OS\uCOS-III/bsp_os.c **** }
+ 177              		.loc 1 226 0
+ 178 0028 1846     		mov	r0, r3
+ 179 002a 07F11007 		add	r7, r7, #16
+ 180 002e BD46     		mov	sp, r7
+ 181 0030 80BD     		pop	{r7, pc}
+ 182              		.cfi_endproc
+ 183              	.LFE2:
+ 184              		.size	BSP_OS_SemPost, .-BSP_OS_SemPost
+ 185 0032 00BF     		.section	.text.BSP_OS_TimeDlyMs,"ax",%progbits
+ 186              		.align	2
+ 187              		.global	BSP_OS_TimeDlyMs
+ 188              		.thumb
+ 189              		.thumb_func
+ 190              		.type	BSP_OS_TimeDlyMs, %function
+ 191              	BSP_OS_TimeDlyMs:
+ 192              	.LFB3:
+ 227:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 228:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 229:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+ 230:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 231:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 232:..\..\BSP\OS\uCOS-III/bsp_os.c **** **                                     uC/OS-III TIMER FUNCTIONS
+ 233:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 234:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 235:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+ 236:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 237:..\..\BSP\OS\uCOS-III/bsp_os.c **** /*
+ 238:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 239:..\..\BSP\OS\uCOS-III/bsp_os.c **** *                                    BSP_TimeDlyMs()
+ 240:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 241:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Description : This function delay the exceution for specifi amount of miliseconds
+ 242:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 243:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Argument(s) : dly_ms       Delay in miliseconds
+ 244:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 245:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Return(s)   : none.
+ 246:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 247:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Caller(s)   : Application
+ 248:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 249:..\..\BSP\OS\uCOS-III/bsp_os.c **** * Note(s)     : none.
+ 250:..\..\BSP\OS\uCOS-III/bsp_os.c **** *
+ 251:..\..\BSP\OS\uCOS-III/bsp_os.c **** ***************************************************************************************************
+ 252:..\..\BSP\OS\uCOS-III/bsp_os.c **** */
+ 253:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 254:..\..\BSP\OS\uCOS-III/bsp_os.c **** void   BSP_OS_TimeDlyMs (CPU_INT32U  dly_ms)
+ 255:..\..\BSP\OS\uCOS-III/bsp_os.c **** {
+ 193              		.loc 1 255 0
+ 194              		.cfi_startproc
+ 195              		@ args = 0, pretend = 0, frame = 16
+ 196              		@ frame_needed = 1, uses_anonymous_args = 0
+ 197 0000 80B5     		push	{r7, lr}
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 9
+
+
+ 198              	.LCFI9:
+ 199              		.cfi_def_cfa_offset 8
+ 200 0002 86B0     		sub	sp, sp, #24
+ 201              	.LCFI10:
+ 202              		.cfi_def_cfa_offset 32
+ 203 0004 02AF     		add	r7, sp, #8
+ 204              		.cfi_offset 14, -4
+ 205              		.cfi_offset 7, -8
+ 206              	.LCFI11:
+ 207              		.cfi_def_cfa 7, 24
+ 208 0006 7860     		str	r0, [r7, #4]
+ 256:..\..\BSP\OS\uCOS-III/bsp_os.c ****     CPU_INT16U  ms;
+ 257:..\..\BSP\OS\uCOS-III/bsp_os.c ****     CPU_INT16U  sec;
+ 258:..\..\BSP\OS\uCOS-III/bsp_os.c ****     OS_ERR      err;
+ 259:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 260:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 261:..\..\BSP\OS\uCOS-III/bsp_os.c ****     if (dly_ms > 10000u) {                                       /* Limit delays to 10 seconds.    
+ 209              		.loc 1 261 0
+ 210 0008 7A68     		ldr	r2, [r7, #4]
+ 211 000a 42F21073 		movw	r3, #10000
+ 212 000e 9A42     		cmp	r2, r3
+ 213 0010 02D9     		bls	.L14
+ 262:..\..\BSP\OS\uCOS-III/bsp_os.c ****         dly_ms = 10000u;
+ 214              		.loc 1 262 0
+ 215 0012 42F21073 		movw	r3, #10000
+ 216 0016 7B60     		str	r3, [r7, #4]
+ 217              	.L14:
+ 263:..\..\BSP\OS\uCOS-III/bsp_os.c ****     }
+ 264:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 265:..\..\BSP\OS\uCOS-III/bsp_os.c ****     if (dly_ms >= 1000u) {
+ 218              		.loc 1 265 0
+ 219 0018 7A68     		ldr	r2, [r7, #4]
+ 220 001a 40F2E733 		movw	r3, #999
+ 221 001e 9A42     		cmp	r2, r3
+ 222 0020 1AD9     		bls	.L15
+ 266:..\..\BSP\OS\uCOS-III/bsp_os.c ****         ms  = dly_ms / 1000u;
+ 223              		.loc 1 266 0
+ 224 0022 7A68     		ldr	r2, [r7, #4]
+ 225 0024 44F6D353 		movw	r3, #:lower16:274877907
+ 226 0028 C1F26203 		movt	r3, #:upper16:274877907
+ 227 002c A3FB0213 		umull	r1, r3, r3, r2
+ 228 0030 4FEA9313 		lsr	r3, r3, #6
+ 229 0034 BB81     		strh	r3, [r7, #12]	@ movhi
+ 267:..\..\BSP\OS\uCOS-III/bsp_os.c ****         sec = dly_ms % 1000u;
+ 230              		.loc 1 267 0
+ 231 0036 7A68     		ldr	r2, [r7, #4]
+ 232 0038 44F6D353 		movw	r3, #:lower16:274877907
+ 233 003c C1F26203 		movt	r3, #:upper16:274877907
+ 234 0040 A3FB0213 		umull	r1, r3, r3, r2
+ 235 0044 4FEA9313 		lsr	r3, r3, #6
+ 236 0048 4FF47A71 		mov	r1, #1000
+ 237 004c 01FB03F3 		mul	r3, r1, r3
+ 238 0050 C3EB0203 		rsb	r3, r3, r2
+ 239 0054 FB81     		strh	r3, [r7, #14]	@ movhi
+ 240 0056 04E0     		b	.L16
+ 241              	.L15:
+ 268:..\..\BSP\OS\uCOS-III/bsp_os.c ****     } else {
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 10
+
+
+ 269:..\..\BSP\OS\uCOS-III/bsp_os.c ****         ms  = dly_ms;
+ 242              		.loc 1 269 0
+ 243 0058 7B68     		ldr	r3, [r7, #4]
+ 244 005a BB81     		strh	r3, [r7, #12]	@ movhi
+ 270:..\..\BSP\OS\uCOS-III/bsp_os.c ****         sec = 0u;
+ 245              		.loc 1 270 0
+ 246 005c 4FF00003 		mov	r3, #0
+ 247 0060 FB81     		strh	r3, [r7, #14]	@ movhi
+ 248              	.L16:
+ 271:..\..\BSP\OS\uCOS-III/bsp_os.c ****     }
+ 272:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 273:..\..\BSP\OS\uCOS-III/bsp_os.c **** 
+ 274:..\..\BSP\OS\uCOS-III/bsp_os.c ****     OSTimeDlyHMSM((CPU_INT16U) 0u,
+ 249              		.loc 1 274 0
+ 250 0062 BB89     		ldrh	r3, [r7, #12]
+ 251 0064 FA89     		ldrh	r2, [r7, #14]
+ 252 0066 4FF00001 		mov	r1, #0
+ 253 006a 0091     		str	r1, [sp, #0]
+ 254 006c 07F10A01 		add	r1, r7, #10
+ 255 0070 0191     		str	r1, [sp, #4]
+ 256 0072 4FF00000 		mov	r0, #0
+ 257 0076 4FF00001 		mov	r1, #0
+ 258 007a FFF7FEFF 		bl	OSTimeDlyHMSM
+ 275:..\..\BSP\OS\uCOS-III/bsp_os.c ****                   (CPU_INT16U) 0u,
+ 276:..\..\BSP\OS\uCOS-III/bsp_os.c ****                   (CPU_INT16U) sec,
+ 277:..\..\BSP\OS\uCOS-III/bsp_os.c ****                   (CPU_INT32U) ms,
+ 278:..\..\BSP\OS\uCOS-III/bsp_os.c ****                   (OS_OPT    ) OS_OPT_TIME_HMSM_STRICT,
+ 279:..\..\BSP\OS\uCOS-III/bsp_os.c ****                   (OS_ERR   *)&err);
+ 280:..\..\BSP\OS\uCOS-III/bsp_os.c **** }
+ 259              		.loc 1 280 0
+ 260 007e 07F11007 		add	r7, r7, #16
+ 261 0082 BD46     		mov	sp, r7
+ 262 0084 80BD     		pop	{r7, pc}
+ 263              		.cfi_endproc
+ 264              	.LFE3:
+ 265              		.size	BSP_OS_TimeDlyMs, .-BSP_OS_TimeDlyMs
+ 266 0086 00BF     		.text
+ 267              	.Letext0:
+ 268              		.section	.debug_loc,"",%progbits
+ 269              	.Ldebug_loc0:
+ 270              	.LLST0:
+ 271 0000 00000000 		.4byte	.LFB0
+ 272 0004 02000000 		.4byte	.LCFI0
+ 273 0008 0100     		.2byte	0x1
+ 274 000a 5D       		.byte	0x5d
+ 275 000b 02000000 		.4byte	.LCFI0
+ 276 000f 04000000 		.4byte	.LCFI1
+ 277 0013 0200     		.2byte	0x2
+ 278 0015 7D       		.byte	0x7d
+ 279 0016 08       		.sleb128 8
+ 280 0017 04000000 		.4byte	.LCFI1
+ 281 001b 06000000 		.4byte	.LCFI2
+ 282 001f 0200     		.2byte	0x2
+ 283 0021 7D       		.byte	0x7d
+ 284 0022 20       		.sleb128 32
+ 285 0023 06000000 		.4byte	.LCFI2
+ 286 0027 34000000 		.4byte	.LFE0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 11
+
+
+ 287 002b 0200     		.2byte	0x2
+ 288 002d 77       		.byte	0x77
+ 289 002e 20       		.sleb128 32
+ 290 002f 00000000 		.4byte	0x0
+ 291 0033 00000000 		.4byte	0x0
+ 292              	.LLST1:
+ 293 0037 00000000 		.4byte	.LFB1
+ 294 003b 02000000 		.4byte	.LCFI3
+ 295 003f 0100     		.2byte	0x1
+ 296 0041 5D       		.byte	0x5d
+ 297 0042 02000000 		.4byte	.LCFI3
+ 298 0046 04000000 		.4byte	.LCFI4
+ 299 004a 0200     		.2byte	0x2
+ 300 004c 7D       		.byte	0x7d
+ 301 004d 08       		.sleb128 8
+ 302 004e 04000000 		.4byte	.LCFI4
+ 303 0052 06000000 		.4byte	.LCFI5
+ 304 0056 0200     		.2byte	0x2
+ 305 0058 7D       		.byte	0x7d
+ 306 0059 20       		.sleb128 32
+ 307 005a 06000000 		.4byte	.LCFI5
+ 308 005e 54000000 		.4byte	.LFE1
+ 309 0062 0200     		.2byte	0x2
+ 310 0064 77       		.byte	0x77
+ 311 0065 18       		.sleb128 24
+ 312 0066 00000000 		.4byte	0x0
+ 313 006a 00000000 		.4byte	0x0
+ 314              	.LLST2:
+ 315 006e 00000000 		.4byte	.LFB2
+ 316 0072 02000000 		.4byte	.LCFI6
+ 317 0076 0100     		.2byte	0x1
+ 318 0078 5D       		.byte	0x5d
+ 319 0079 02000000 		.4byte	.LCFI6
+ 320 007d 04000000 		.4byte	.LCFI7
+ 321 0081 0200     		.2byte	0x2
+ 322 0083 7D       		.byte	0x7d
+ 323 0084 08       		.sleb128 8
+ 324 0085 04000000 		.4byte	.LCFI7
+ 325 0089 06000000 		.4byte	.LCFI8
+ 326 008d 0200     		.2byte	0x2
+ 327 008f 7D       		.byte	0x7d
+ 328 0090 18       		.sleb128 24
+ 329 0091 06000000 		.4byte	.LCFI8
+ 330 0095 32000000 		.4byte	.LFE2
+ 331 0099 0200     		.2byte	0x2
+ 332 009b 77       		.byte	0x77
+ 333 009c 18       		.sleb128 24
+ 334 009d 00000000 		.4byte	0x0
+ 335 00a1 00000000 		.4byte	0x0
+ 336              	.LLST3:
+ 337 00a5 00000000 		.4byte	.LFB3
+ 338 00a9 02000000 		.4byte	.LCFI9
+ 339 00ad 0100     		.2byte	0x1
+ 340 00af 5D       		.byte	0x5d
+ 341 00b0 02000000 		.4byte	.LCFI9
+ 342 00b4 04000000 		.4byte	.LCFI10
+ 343 00b8 0200     		.2byte	0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 12
+
+
+ 344 00ba 7D       		.byte	0x7d
+ 345 00bb 08       		.sleb128 8
+ 346 00bc 04000000 		.4byte	.LCFI10
+ 347 00c0 06000000 		.4byte	.LCFI11
+ 348 00c4 0200     		.2byte	0x2
+ 349 00c6 7D       		.byte	0x7d
+ 350 00c7 20       		.sleb128 32
+ 351 00c8 06000000 		.4byte	.LCFI11
+ 352 00cc 86000000 		.4byte	.LFE3
+ 353 00d0 0200     		.2byte	0x2
+ 354 00d2 77       		.byte	0x77
+ 355 00d3 18       		.sleb128 24
+ 356 00d4 00000000 		.4byte	0x0
+ 357 00d8 00000000 		.4byte	0x0
+ 358              		.file 2 "..\\..\\..\\..\\..\\..\\uC-CPU\\ARM-Cortex-M3\\GNU/cpu.h"
+ 359              		.file 3 "..\\..\\..\\..\\..\\..\\uC-CPU/cpu_core.h"
+ 360              		.file 4 "..\\..\\..\\..\\..\\..\\uCOS-III\\Source/os_type.h"
+ 361              		.file 5 "..\\..\\..\\..\\..\\..\\uCOS-III\\Source/os.h"
+ 362              		.file 6 "..\\..\\BSP\\OS\\uCOS-III/bsp_os.h"
+ 363              		.section	.debug_info
+ 364 0000 900E0000 		.4byte	0xe90
+ 365 0004 0200     		.2byte	0x2
+ 366 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 367 000a 04       		.byte	0x4
+ 368 000b 01       		.uleb128 0x1
+ 369 000c 30000000 		.4byte	.LASF292
+ 370 0010 01       		.byte	0x1
+ 371 0011 7D010000 		.4byte	.LASF293
+ 372 0015 CB100000 		.4byte	.LASF294
+ 373 0019 00000000 		.4byte	0x0
+ 374 001d 00000000 		.4byte	0x0
+ 375 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 376 0025 00000000 		.4byte	.Ldebug_line0
+ 377 0029 02       		.uleb128 0x2
+ 378 002a 91060000 		.4byte	.LASF0
+ 379 002e 02       		.byte	0x2
+ 380 002f 76       		.byte	0x76
+ 381 0030 34000000 		.4byte	0x34
+ 382 0034 03       		.uleb128 0x3
+ 383 0035 01       		.byte	0x1
+ 384 0036 08       		.byte	0x8
+ 385 0037 01080000 		.4byte	.LASF2
+ 386 003b 02       		.uleb128 0x2
+ 387 003c 4B0E0000 		.4byte	.LASF1
+ 388 0040 02       		.byte	0x2
+ 389 0041 77       		.byte	0x77
+ 390 0042 46000000 		.4byte	0x46
+ 391 0046 03       		.uleb128 0x3
+ 392 0047 01       		.byte	0x1
+ 393 0048 08       		.byte	0x8
+ 394 0049 9B0E0000 		.4byte	.LASF3
+ 395 004d 02       		.uleb128 0x2
+ 396 004e 85050000 		.4byte	.LASF4
+ 397 0052 02       		.byte	0x2
+ 398 0053 78       		.byte	0x78
+ 399 0054 46000000 		.4byte	0x46
+ 400 0058 03       		.uleb128 0x3
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 13
+
+
+ 401 0059 01       		.byte	0x1
+ 402 005a 06       		.byte	0x6
+ 403 005b C50F0000 		.4byte	.LASF5
+ 404 005f 02       		.uleb128 0x2
+ 405 0060 84090000 		.4byte	.LASF6
+ 406 0064 02       		.byte	0x2
+ 407 0065 7A       		.byte	0x7a
+ 408 0066 6A000000 		.4byte	0x6a
+ 409 006a 03       		.uleb128 0x3
+ 410 006b 02       		.byte	0x2
+ 411 006c 07       		.byte	0x7
+ 412 006d EB0F0000 		.4byte	.LASF7
+ 413 0071 03       		.uleb128 0x3
+ 414 0072 02       		.byte	0x2
+ 415 0073 05       		.byte	0x5
+ 416 0074 360C0000 		.4byte	.LASF8
+ 417 0078 02       		.uleb128 0x2
+ 418 0079 DE010000 		.4byte	.LASF9
+ 419 007d 02       		.byte	0x2
+ 420 007e 7C       		.byte	0x7c
+ 421 007f 83000000 		.4byte	0x83
+ 422 0083 03       		.uleb128 0x3
+ 423 0084 04       		.byte	0x4
+ 424 0085 07       		.byte	0x7
+ 425 0086 860D0000 		.4byte	.LASF10
+ 426 008a 04       		.uleb128 0x4
+ 427 008b 04       		.byte	0x4
+ 428 008c 05       		.byte	0x5
+ 429 008d 696E7400 		.ascii	"int\000"
+ 430 0091 03       		.uleb128 0x3
+ 431 0092 08       		.byte	0x8
+ 432 0093 07       		.byte	0x7
+ 433 0094 E3040000 		.4byte	.LASF11
+ 434 0098 03       		.uleb128 0x3
+ 435 0099 08       		.byte	0x8
+ 436 009a 05       		.byte	0x5
+ 437 009b 14090000 		.4byte	.LASF12
+ 438 009f 03       		.uleb128 0x3
+ 439 00a0 04       		.byte	0x4
+ 440 00a1 04       		.byte	0x4
+ 441 00a2 47040000 		.4byte	.LASF13
+ 442 00a6 03       		.uleb128 0x3
+ 443 00a7 08       		.byte	0x8
+ 444 00a8 04       		.byte	0x4
+ 445 00a9 6A100000 		.4byte	.LASF14
+ 446 00ad 05       		.uleb128 0x5
+ 447 00ae 04       		.byte	0x4
+ 448 00af B3000000 		.4byte	0xb3
+ 449 00b3 06       		.uleb128 0x6
+ 450 00b4 01       		.byte	0x1
+ 451 00b5 BF000000 		.4byte	0xbf
+ 452 00b9 07       		.uleb128 0x7
+ 453 00ba BF000000 		.4byte	0xbf
+ 454 00be 00       		.byte	0x0
+ 455 00bf 08       		.uleb128 0x8
+ 456 00c0 04       		.byte	0x4
+ 457 00c1 02       		.uleb128 0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 14
+
+
+ 458 00c2 050E0000 		.4byte	.LASF15
+ 459 00c6 02       		.byte	0x2
+ 460 00c7 B5       		.byte	0xb5
+ 461 00c8 78000000 		.4byte	0x78
+ 462 00cc 02       		.uleb128 0x2
+ 463 00cd 8F120000 		.4byte	.LASF16
+ 464 00d1 02       		.byte	0x2
+ 465 00d2 D9       		.byte	0xd9
+ 466 00d3 78000000 		.4byte	0x78
+ 467 00d7 02       		.uleb128 0x2
+ 468 00d8 B1060000 		.4byte	.LASF17
+ 469 00dc 02       		.byte	0x2
+ 470 00dd DA       		.byte	0xda
+ 471 00de C1000000 		.4byte	0xc1
+ 472 00e2 02       		.uleb128 0x2
+ 473 00e3 360A0000 		.4byte	.LASF18
+ 474 00e7 03       		.byte	0x3
+ 475 00e8 C4       		.byte	0xc4
+ 476 00e9 78000000 		.4byte	0x78
+ 477 00ed 02       		.uleb128 0x2
+ 478 00ee 0D090000 		.4byte	.LASF19
+ 479 00f2 03       		.byte	0x3
+ 480 00f3 C7       		.byte	0xc7
+ 481 00f4 E2000000 		.4byte	0xe2
+ 482 00f8 02       		.uleb128 0x2
+ 483 00f9 B4010000 		.4byte	.LASF20
+ 484 00fd 04       		.byte	0x4
+ 485 00fe 30       		.byte	0x30
+ 486 00ff 5F000000 		.4byte	0x5f
+ 487 0103 02       		.uleb128 0x2
+ 488 0104 22000000 		.4byte	.LASF21
+ 489 0108 04       		.byte	0x4
+ 490 0109 34       		.byte	0x34
+ 491 010a 78000000 		.4byte	0x78
+ 492 010e 02       		.uleb128 0x2
+ 493 010f 570E0000 		.4byte	.LASF22
+ 494 0113 04       		.byte	0x4
+ 495 0114 36       		.byte	0x36
+ 496 0115 78000000 		.4byte	0x78
+ 497 0119 02       		.uleb128 0x2
+ 498 011a FE0F0000 		.4byte	.LASF23
+ 499 011e 04       		.byte	0x4
+ 500 011f 38       		.byte	0x38
+ 501 0120 78000000 		.4byte	0x78
+ 502 0124 02       		.uleb128 0x2
+ 503 0125 BE060000 		.4byte	.LASF24
+ 504 0129 04       		.byte	0x4
+ 505 012a 3F       		.byte	0x3f
+ 506 012b 5F000000 		.4byte	0x5f
+ 507 012f 02       		.uleb128 0x2
+ 508 0130 56060000 		.4byte	.LASF25
+ 509 0134 04       		.byte	0x4
+ 510 0135 40       		.byte	0x40
+ 511 0136 5F000000 		.4byte	0x5f
+ 512 013a 02       		.uleb128 0x2
+ 513 013b C90C0000 		.4byte	.LASF26
+ 514 013f 04       		.byte	0x4
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 15
+
+
+ 515 0140 42       		.byte	0x42
+ 516 0141 4D000000 		.4byte	0x4d
+ 517 0145 02       		.uleb128 0x2
+ 518 0146 88020000 		.4byte	.LASF27
+ 519 014a 04       		.byte	0x4
+ 520 014b 44       		.byte	0x44
+ 521 014c 5F000000 		.4byte	0x5f
+ 522 0150 02       		.uleb128 0x2
+ 523 0151 06080000 		.4byte	.LASF28
+ 524 0155 04       		.byte	0x4
+ 525 0156 45       		.byte	0x45
+ 526 0157 78000000 		.4byte	0x78
+ 527 015b 02       		.uleb128 0x2
+ 528 015c D10E0000 		.4byte	.LASF29
+ 529 0160 04       		.byte	0x4
+ 530 0161 47       		.byte	0x47
+ 531 0162 5F000000 		.4byte	0x5f
+ 532 0166 02       		.uleb128 0x2
+ 533 0167 3F040000 		.4byte	.LASF30
+ 534 016b 04       		.byte	0x4
+ 535 016c 49       		.byte	0x49
+ 536 016d 4D000000 		.4byte	0x4d
+ 537 0171 02       		.uleb128 0x2
+ 538 0172 86080000 		.4byte	.LASF31
+ 539 0176 04       		.byte	0x4
+ 540 0177 4D       		.byte	0x4d
+ 541 0178 78000000 		.4byte	0x78
+ 542 017c 02       		.uleb128 0x2
+ 543 017d ED050000 		.4byte	.LASF32
+ 544 0181 04       		.byte	0x4
+ 545 0182 4F       		.byte	0x4f
+ 546 0183 78000000 		.4byte	0x78
+ 547 0187 02       		.uleb128 0x2
+ 548 0188 620A0000 		.4byte	.LASF33
+ 549 018c 04       		.byte	0x4
+ 550 018d 52       		.byte	0x52
+ 551 018e 78000000 		.4byte	0x78
+ 552 0192 02       		.uleb128 0x2
+ 553 0193 C80E0000 		.4byte	.LASF34
+ 554 0197 04       		.byte	0x4
+ 555 0198 54       		.byte	0x54
+ 556 0199 4D000000 		.4byte	0x4d
+ 557 019d 02       		.uleb128 0x2
+ 558 019e 0E060000 		.4byte	.LASF35
+ 559 01a2 04       		.byte	0x4
+ 560 01a3 56       		.byte	0x56
+ 561 01a4 4D000000 		.4byte	0x4d
+ 562 01a8 02       		.uleb128 0x2
+ 563 01a9 ED090000 		.4byte	.LASF36
+ 564 01ad 04       		.byte	0x4
+ 565 01ae 58       		.byte	0x58
+ 566 01af 78000000 		.4byte	0x78
+ 567 01b3 09       		.uleb128 0x9
+ 568 01b4 59010000 		.4byte	.LASF295
+ 569 01b8 02       		.byte	0x2
+ 570 01b9 05       		.byte	0x5
+ 571 01ba A501     		.2byte	0x1a5
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 16
+
+
+ 572 01bc C7060000 		.4byte	0x6c7
+ 573 01c0 0A       		.uleb128 0xa
+ 574 01c1 27100000 		.4byte	.LASF37
+ 575 01c5 00       		.sleb128 0
+ 576 01c6 0A       		.uleb128 0xa
+ 577 01c7 67000000 		.4byte	.LASF38
+ 578 01cb 90CE00   		.sleb128 10000
+ 579 01ce 0A       		.uleb128 0xa
+ 580 01cf F8020000 		.4byte	.LASF39
+ 581 01d3 91CE00   		.sleb128 10001
+ 582 01d6 0A       		.uleb128 0xa
+ 583 01d7 70000000 		.4byte	.LASF40
+ 584 01db F8D500   		.sleb128 11000
+ 585 01de 0A       		.uleb128 0xa
+ 586 01df 79000000 		.4byte	.LASF41
+ 587 01e3 E0DD00   		.sleb128 12000
+ 588 01e6 0A       		.uleb128 0xa
+ 589 01e7 9C010000 		.4byte	.LASF42
+ 590 01eb E1DD00   		.sleb128 12001
+ 591 01ee 0A       		.uleb128 0xa
+ 592 01ef 82000000 		.4byte	.LASF43
+ 593 01f3 C8E500   		.sleb128 13000
+ 594 01f6 0A       		.uleb128 0xa
+ 595 01f7 DD070000 		.4byte	.LASF44
+ 596 01fb C9E500   		.sleb128 13001
+ 597 01fe 0A       		.uleb128 0xa
+ 598 01ff 8B000000 		.4byte	.LASF45
+ 599 0203 B0ED00   		.sleb128 14000
+ 600 0206 0A       		.uleb128 0xa
+ 601 0207 94000000 		.4byte	.LASF46
+ 602 020b 98F500   		.sleb128 15000
+ 603 020e 0A       		.uleb128 0xa
+ 604 020f D70F0000 		.4byte	.LASF47
+ 605 0213 99F500   		.sleb128 15001
+ 606 0216 0A       		.uleb128 0xa
+ 607 0217 40070000 		.4byte	.LASF48
+ 608 021b FDF500   		.sleb128 15101
+ 609 021e 0A       		.uleb128 0xa
+ 610 021f D40D0000 		.4byte	.LASF49
+ 611 0223 FEF500   		.sleb128 15102
+ 612 0226 0A       		.uleb128 0xa
+ 613 0227 22090000 		.4byte	.LASF50
+ 614 022b FFF500   		.sleb128 15103
+ 615 022e 0A       		.uleb128 0xa
+ 616 022f 54100000 		.4byte	.LASF51
+ 617 0233 80F600   		.sleb128 15104
+ 618 0236 0A       		.uleb128 0xa
+ 619 0237 9D000000 		.4byte	.LASF52
+ 620 023b 80FD00   		.sleb128 16000
+ 621 023e 0A       		.uleb128 0xa
+ 622 023f A6000000 		.4byte	.LASF53
+ 623 0243 E88401   		.sleb128 17000
+ 624 0246 0A       		.uleb128 0xa
+ 625 0247 AF000000 		.4byte	.LASF54
+ 626 024b D08C01   		.sleb128 18000
+ 627 024e 0A       		.uleb128 0xa
+ 628 024f DE030000 		.4byte	.LASF55
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 17
+
+
+ 629 0253 D18C01   		.sleb128 18001
+ 630 0256 0A       		.uleb128 0xa
+ 631 0257 CC020000 		.4byte	.LASF56
+ 632 025b D28C01   		.sleb128 18002
+ 633 025e 0A       		.uleb128 0xa
+ 634 025f A9030000 		.4byte	.LASF57
+ 635 0263 D38C01   		.sleb128 18003
+ 636 0266 0A       		.uleb128 0xa
+ 637 0267 6B010000 		.4byte	.LASF58
+ 638 026b D48C01   		.sleb128 18004
+ 639 026e 0A       		.uleb128 0xa
+ 640 026f 6C0F0000 		.4byte	.LASF59
+ 641 0273 D58C01   		.sleb128 18005
+ 642 0276 0A       		.uleb128 0xa
+ 643 0277 110B0000 		.4byte	.LASF60
+ 644 027b D68C01   		.sleb128 18006
+ 645 027e 0A       		.uleb128 0xa
+ 646 027f B8000000 		.4byte	.LASF61
+ 647 0283 B89401   		.sleb128 19000
+ 648 0286 0A       		.uleb128 0xa
+ 649 0287 C1000000 		.4byte	.LASF62
+ 650 028b A09C01   		.sleb128 20000
+ 651 028e 0A       		.uleb128 0xa
+ 652 028f CA000000 		.4byte	.LASF63
+ 653 0293 88A401   		.sleb128 21000
+ 654 0296 0A       		.uleb128 0xa
+ 655 0297 060C0000 		.4byte	.LASF64
+ 656 029b 89A401   		.sleb128 21001
+ 657 029e 0A       		.uleb128 0xa
+ 658 029f D3000000 		.4byte	.LASF65
+ 659 02a3 F0AB01   		.sleb128 22000
+ 660 02a6 0A       		.uleb128 0xa
+ 661 02a7 E40E0000 		.4byte	.LASF66
+ 662 02ab B9AD01   		.sleb128 22201
+ 663 02ae 0A       		.uleb128 0xa
+ 664 02af F5090000 		.4byte	.LASF67
+ 665 02b3 BAAD01   		.sleb128 22202
+ 666 02b6 0A       		.uleb128 0xa
+ 667 02b7 E60B0000 		.4byte	.LASF68
+ 668 02bb BBAD01   		.sleb128 22203
+ 669 02be 0A       		.uleb128 0xa
+ 670 02bf 59070000 		.4byte	.LASF69
+ 671 02c3 BCAD01   		.sleb128 22204
+ 672 02c6 0A       		.uleb128 0xa
+ 673 02c7 AB090000 		.4byte	.LASF70
+ 674 02cb BDAD01   		.sleb128 22205
+ 675 02ce 0A       		.uleb128 0xa
+ 676 02cf CD0B0000 		.4byte	.LASF71
+ 677 02d3 BEAD01   		.sleb128 22206
+ 678 02d6 0A       		.uleb128 0xa
+ 679 02d7 1D0A0000 		.4byte	.LASF72
+ 680 02db BFAD01   		.sleb128 22207
+ 681 02de 0A       		.uleb128 0xa
+ 682 02df 88040000 		.4byte	.LASF73
+ 683 02e3 C0AD01   		.sleb128 22208
+ 684 02e6 0A       		.uleb128 0xa
+ 685 02e7 83110000 		.4byte	.LASF74
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 18
+
+
+ 686 02eb C1AD01   		.sleb128 22209
+ 687 02ee 0A       		.uleb128 0xa
+ 688 02ef 77120000 		.4byte	.LASF75
+ 689 02f3 C2AD01   		.sleb128 22210
+ 690 02f6 0A       		.uleb128 0xa
+ 691 02f7 4B0C0000 		.4byte	.LASF76
+ 692 02fb 9DAE01   		.sleb128 22301
+ 693 02fe 0A       		.uleb128 0xa
+ 694 02ff B00C0000 		.4byte	.LASF77
+ 695 0303 9EAE01   		.sleb128 22302
+ 696 0306 0A       		.uleb128 0xa
+ 697 0307 3F060000 		.4byte	.LASF78
+ 698 030b 81AF01   		.sleb128 22401
+ 699 030e 0A       		.uleb128 0xa
+ 700 030f 9B0D0000 		.4byte	.LASF79
+ 701 0313 82AF01   		.sleb128 22402
+ 702 0316 0A       		.uleb128 0xa
+ 703 0317 22030000 		.4byte	.LASF80
+ 704 031b 83AF01   		.sleb128 22403
+ 705 031e 0A       		.uleb128 0xa
+ 706 031f DC000000 		.4byte	.LASF81
+ 707 0323 D8B301   		.sleb128 23000
+ 708 0326 0A       		.uleb128 0xa
+ 709 0327 F4050000 		.4byte	.LASF82
+ 710 032b D9B301   		.sleb128 23001
+ 711 032e 0A       		.uleb128 0xa
+ 712 032f 62040000 		.4byte	.LASF83
+ 713 0333 DAB301   		.sleb128 23002
+ 714 0336 0A       		.uleb128 0xa
+ 715 0337 E5000000 		.4byte	.LASF84
+ 716 033b C0BB01   		.sleb128 24000
+ 717 033e 0A       		.uleb128 0xa
+ 718 033f 75030000 		.4byte	.LASF85
+ 719 0343 C1BB01   		.sleb128 24001
+ 720 0346 0A       		.uleb128 0xa
+ 721 0347 FE080000 		.4byte	.LASF86
+ 722 034b C2BB01   		.sleb128 24002
+ 723 034e 0A       		.uleb128 0xa
+ 724 034f C3090000 		.4byte	.LASF87
+ 725 0353 C3BB01   		.sleb128 24003
+ 726 0356 0A       		.uleb128 0xa
+ 727 0357 180D0000 		.4byte	.LASF88
+ 728 035b C4BB01   		.sleb128 24004
+ 729 035e 0A       		.uleb128 0xa
+ 730 035f 33080000 		.4byte	.LASF89
+ 731 0363 A5BC01   		.sleb128 24101
+ 732 0366 0A       		.uleb128 0xa
+ 733 0367 8E0B0000 		.4byte	.LASF90
+ 734 036b 89BD01   		.sleb128 24201
+ 735 036e 0A       		.uleb128 0xa
+ 736 036f C9060000 		.4byte	.LASF91
+ 737 0373 8ABD01   		.sleb128 24202
+ 738 0376 0A       		.uleb128 0xa
+ 739 0377 EE000000 		.4byte	.LASF92
+ 740 037b A8C301   		.sleb128 25000
+ 741 037e 0A       		.uleb128 0xa
+ 742 037f 71100000 		.4byte	.LASF93
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 19
+
+
+ 743 0383 A9C301   		.sleb128 25001
+ 744 0386 0A       		.uleb128 0xa
+ 745 0387 EF0D0000 		.4byte	.LASF94
+ 746 038b AAC301   		.sleb128 25002
+ 747 038e 0A       		.uleb128 0xa
+ 748 038f 6F0D0000 		.4byte	.LASF95
+ 749 0393 ABC301   		.sleb128 25003
+ 750 0396 0A       		.uleb128 0xa
+ 751 0397 6D090000 		.4byte	.LASF96
+ 752 039b ACC301   		.sleb128 25004
+ 753 039e 0A       		.uleb128 0xa
+ 754 039f B0100000 		.4byte	.LASF97
+ 755 03a3 ADC301   		.sleb128 25005
+ 756 03a6 0A       		.uleb128 0xa
+ 757 03a7 190F0000 		.4byte	.LASF98
+ 758 03ab AEC301   		.sleb128 25006
+ 759 03ae 0A       		.uleb128 0xa
+ 760 03af 75020000 		.4byte	.LASF99
+ 761 03b3 AFC301   		.sleb128 25007
+ 762 03b6 0A       		.uleb128 0xa
+ 763 03b7 2B020000 		.4byte	.LASF100
+ 764 03bb B0C301   		.sleb128 25008
+ 765 03be 0A       		.uleb128 0xa
+ 766 03bf 4D040000 		.4byte	.LASF101
+ 767 03c3 8DC401   		.sleb128 25101
+ 768 03c6 0A       		.uleb128 0xa
+ 769 03c7 0E0E0000 		.4byte	.LASF102
+ 770 03cb 8EC401   		.sleb128 25102
+ 771 03ce 0A       		.uleb128 0xa
+ 772 03cf 4A120000 		.4byte	.LASF103
+ 773 03d3 F1C401   		.sleb128 25201
+ 774 03d6 0A       		.uleb128 0xa
+ 775 03d7 A4100000 		.4byte	.LASF104
+ 776 03db F2C401   		.sleb128 25202
+ 777 03de 0A       		.uleb128 0xa
+ 778 03df 07000000 		.4byte	.LASF105
+ 779 03e3 F3C401   		.sleb128 25203
+ 780 03e6 0A       		.uleb128 0xa
+ 781 03e7 5E0B0000 		.4byte	.LASF106
+ 782 03eb D5C501   		.sleb128 25301
+ 783 03ee 0A       		.uleb128 0xa
+ 784 03ef F7000000 		.4byte	.LASF107
+ 785 03f3 90CB01   		.sleb128 26000
+ 786 03f6 0A       		.uleb128 0xa
+ 787 03f7 5E0F0000 		.4byte	.LASF108
+ 788 03fb 91CB01   		.sleb128 26001
+ 789 03fe 0A       		.uleb128 0xa
+ 790 03ff BD050000 		.4byte	.LASF109
+ 791 0403 92CB01   		.sleb128 26002
+ 792 0406 0A       		.uleb128 0xa
+ 793 0407 EC070000 		.4byte	.LASF110
+ 794 040b 93CB01   		.sleb128 26003
+ 795 040e 0A       		.uleb128 0xa
+ 796 040f 4C090000 		.4byte	.LASF111
+ 797 0413 94CB01   		.sleb128 26004
+ 798 0416 0A       		.uleb128 0xa
+ 799 0417 00010000 		.4byte	.LASF112
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 20
+
+
+ 800 041b F8D201   		.sleb128 27000
+ 801 041e 0A       		.uleb128 0xa
+ 802 041f D7090000 		.4byte	.LASF113
+ 803 0423 F9D201   		.sleb128 27001
+ 804 0426 0A       		.uleb128 0xa
+ 805 0427 B80B0000 		.4byte	.LASF114
+ 806 042b FAD201   		.sleb128 27002
+ 807 042e 0A       		.uleb128 0xa
+ 808 042f 8F090000 		.4byte	.LASF115
+ 809 0433 FBD201   		.sleb128 27003
+ 810 0436 0A       		.uleb128 0xa
+ 811 0437 09010000 		.4byte	.LASF116
+ 812 043b E0DA01   		.sleb128 28000
+ 813 043e 0A       		.uleb128 0xa
+ 814 043f 46080000 		.4byte	.LASF117
+ 815 0443 E1DA01   		.sleb128 28001
+ 816 0446 0A       		.uleb128 0xa
+ 817 0447 C7070000 		.4byte	.LASF118
+ 818 044b E2DA01   		.sleb128 28002
+ 819 044e 0A       		.uleb128 0xa
+ 820 044f 40100000 		.4byte	.LASF119
+ 821 0453 E3DA01   		.sleb128 28003
+ 822 0456 0A       		.uleb128 0xa
+ 823 0457 8C100000 		.4byte	.LASF120
+ 824 045b E4DA01   		.sleb128 28004
+ 825 045e 0A       		.uleb128 0xa
+ 826 045f 610C0000 		.4byte	.LASF121
+ 827 0463 E5DA01   		.sleb128 28005
+ 828 0466 0A       		.uleb128 0xa
+ 829 0467 D3110000 		.4byte	.LASF122
+ 830 046b C5DB01   		.sleb128 28101
+ 831 046e 0A       		.uleb128 0xa
+ 832 046f B1110000 		.4byte	.LASF123
+ 833 0473 C6DB01   		.sleb128 28102
+ 834 0476 0A       		.uleb128 0xa
+ 835 0477 5F020000 		.4byte	.LASF124
+ 836 047b A9DC01   		.sleb128 28201
+ 837 047e 0A       		.uleb128 0xa
+ 838 047f 9F080000 		.4byte	.LASF125
+ 839 0483 AADC01   		.sleb128 28202
+ 840 0486 0A       		.uleb128 0xa
+ 841 0487 28070000 		.4byte	.LASF126
+ 842 048b ABDC01   		.sleb128 28203
+ 843 048e 0A       		.uleb128 0xa
+ 844 048f B70D0000 		.4byte	.LASF127
+ 845 0493 ACDC01   		.sleb128 28204
+ 846 0496 0A       		.uleb128 0xa
+ 847 0497 710B0000 		.4byte	.LASF128
+ 848 049b ADDC01   		.sleb128 28205
+ 849 049e 0A       		.uleb128 0xa
+ 850 049f FA0E0000 		.4byte	.LASF129
+ 851 04a3 AEDC01   		.sleb128 28206
+ 852 04a6 0A       		.uleb128 0xa
+ 853 04a7 E9010000 		.4byte	.LASF130
+ 854 04ab AFDC01   		.sleb128 28207
+ 855 04ae 0A       		.uleb128 0xa
+ 856 04af 680E0000 		.4byte	.LASF131
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 21
+
+
+ 857 04b3 B0DC01   		.sleb128 28208
+ 858 04b6 0A       		.uleb128 0xa
+ 859 04b7 320E0000 		.4byte	.LASF132
+ 860 04bb B1DC01   		.sleb128 28209
+ 861 04be 0A       		.uleb128 0xa
+ 862 04bf 12010000 		.4byte	.LASF133
+ 863 04c3 C8E201   		.sleb128 29000
+ 864 04c6 0A       		.uleb128 0xa
+ 865 04c7 43020000 		.4byte	.LASF134
+ 866 04cb C9E201   		.sleb128 29001
+ 867 04ce 0A       		.uleb128 0xa
+ 868 04cf 9A060000 		.4byte	.LASF135
+ 869 04d3 CAE201   		.sleb128 29002
+ 870 04d6 0A       		.uleb128 0xa
+ 871 04d7 A80F0000 		.4byte	.LASF136
+ 872 04db CBE201   		.sleb128 29003
+ 873 04de 0A       		.uleb128 0xa
+ 874 04df E2110000 		.4byte	.LASF137
+ 875 04e3 CCE201   		.sleb128 29004
+ 876 04e6 0A       		.uleb128 0xa
+ 877 04e7 56050000 		.4byte	.LASF138
+ 878 04eb CDE201   		.sleb128 29005
+ 879 04ee 0A       		.uleb128 0xa
+ 880 04ef 3E0B0000 		.4byte	.LASF139
+ 881 04f3 CEE201   		.sleb128 29006
+ 882 04f6 0A       		.uleb128 0xa
+ 883 04f7 C20A0000 		.4byte	.LASF140
+ 884 04fb CFE201   		.sleb128 29007
+ 885 04fe 0A       		.uleb128 0xa
+ 886 04ff 050A0000 		.4byte	.LASF141
+ 887 0503 D0E201   		.sleb128 29008
+ 888 0506 0A       		.uleb128 0xa
+ 889 0507 AD020000 		.4byte	.LASF142
+ 890 050b D1E201   		.sleb128 29009
+ 891 050e 0A       		.uleb128 0xa
+ 892 050f AC0A0000 		.4byte	.LASF143
+ 893 0513 D2E201   		.sleb128 29010
+ 894 0516 0A       		.uleb128 0xa
+ 895 0517 93020000 		.4byte	.LASF144
+ 896 051b D3E201   		.sleb128 29011
+ 897 051e 0A       		.uleb128 0xa
+ 898 051f A90E0000 		.4byte	.LASF145
+ 899 0523 D4E201   		.sleb128 29012
+ 900 0526 0A       		.uleb128 0xa
+ 901 0527 14020000 		.4byte	.LASF146
+ 902 052b D5E201   		.sleb128 29013
+ 903 052e 0A       		.uleb128 0xa
+ 904 052f 27040000 		.4byte	.LASF147
+ 905 0533 D6E201   		.sleb128 29014
+ 906 0536 0A       		.uleb128 0xa
+ 907 0537 EB0C0000 		.4byte	.LASF148
+ 908 053b D7E201   		.sleb128 29015
+ 909 053e 0A       		.uleb128 0xa
+ 910 053f FA040000 		.4byte	.LASF149
+ 911 0543 D8E201   		.sleb128 29016
+ 912 0546 0A       		.uleb128 0xa
+ 913 0547 1E0C0000 		.4byte	.LASF150
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 22
+
+
+ 914 054b D9E201   		.sleb128 29017
+ 915 054e 0A       		.uleb128 0xa
+ 916 054f 9B110000 		.4byte	.LASF151
+ 917 0553 DAE201   		.sleb128 29018
+ 918 0556 0A       		.uleb128 0xa
+ 919 0557 90030000 		.4byte	.LASF152
+ 920 055b DBE201   		.sleb128 29019
+ 921 055e 0A       		.uleb128 0xa
+ 922 055f 36050000 		.4byte	.LASF153
+ 923 0563 DCE201   		.sleb128 29020
+ 924 0566 0A       		.uleb128 0xa
+ 925 0567 0A030000 		.4byte	.LASF154
+ 926 056b DDE201   		.sleb128 29021
+ 927 056e 0A       		.uleb128 0xa
+ 928 056f EE0A0000 		.4byte	.LASF155
+ 929 0573 DEE201   		.sleb128 29022
+ 930 0576 0A       		.uleb128 0xa
+ 931 0577 E4020000 		.4byte	.LASF156
+ 932 057b DFE201   		.sleb128 29023
+ 933 057e 0A       		.uleb128 0xa
+ 934 057f 97050000 		.4byte	.LASF157
+ 935 0583 ADE301   		.sleb128 29101
+ 936 0586 0A       		.uleb128 0xa
+ 937 0587 CD040000 		.4byte	.LASF158
+ 938 058b C0E301   		.sleb128 29120
+ 939 058e 0A       		.uleb128 0xa
+ 940 058f 2F0B0000 		.4byte	.LASF159
+ 941 0593 C1E301   		.sleb128 29121
+ 942 0596 0A       		.uleb128 0xa
+ 943 0597 0E100000 		.4byte	.LASF160
+ 944 059b C2E301   		.sleb128 29122
+ 945 059e 0A       		.uleb128 0xa
+ 946 059f 12080000 		.4byte	.LASF161
+ 947 05a3 C3E301   		.sleb128 29123
+ 948 05a6 0A       		.uleb128 0xa
+ 949 05a7 22060000 		.4byte	.LASF162
+ 950 05ab C4E301   		.sleb128 29124
+ 951 05ae 0A       		.uleb128 0xa
+ 952 05af 31120000 		.4byte	.LASF163
+ 953 05b3 91E401   		.sleb128 29201
+ 954 05b6 0A       		.uleb128 0xa
+ 955 05b7 980C0000 		.4byte	.LASF164
+ 956 05bb 92E401   		.sleb128 29202
+ 957 05be 0A       		.uleb128 0xa
+ 958 05bf C1010000 		.4byte	.LASF165
+ 959 05c3 93E401   		.sleb128 29203
+ 960 05c6 0A       		.uleb128 0xa
+ 961 05c7 890A0000 		.4byte	.LASF166
+ 962 05cb 94E401   		.sleb128 29204
+ 963 05ce 0A       		.uleb128 0xa
+ 964 05cf 1E0E0000 		.4byte	.LASF167
+ 965 05d3 F5E401   		.sleb128 29301
+ 966 05d6 0A       		.uleb128 0xa
+ 967 05d7 16120000 		.4byte	.LASF168
+ 968 05db F6E401   		.sleb128 29302
+ 969 05de 0A       		.uleb128 0xa
+ 970 05df F7110000 		.4byte	.LASF169
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 23
+
+
+ 971 05e3 F7E401   		.sleb128 29303
+ 972 05e6 0A       		.uleb128 0xa
+ 973 05e7 62060000 		.4byte	.LASF170
+ 974 05eb F8E401   		.sleb128 29304
+ 975 05ee 0A       		.uleb128 0xa
+ 976 05ef 4B000000 		.4byte	.LASF171
+ 977 05f3 F9E401   		.sleb128 29305
+ 978 05f6 0A       		.uleb128 0xa
+ 979 05f7 850F0000 		.4byte	.LASF172
+ 980 05fb FAE401   		.sleb128 29306
+ 981 05fe 0A       		.uleb128 0xa
+ 982 05ff CC050000 		.4byte	.LASF173
+ 983 0603 FBE401   		.sleb128 29307
+ 984 0606 0A       		.uleb128 0xa
+ 985 0607 B8080000 		.4byte	.LASF174
+ 986 060b FCE401   		.sleb128 29308
+ 987 060e 0A       		.uleb128 0xa
+ 988 060f A40B0000 		.4byte	.LASF175
+ 989 0613 FDE401   		.sleb128 29309
+ 990 0616 0A       		.uleb128 0xa
+ 991 0617 FE060000 		.4byte	.LASF176
+ 992 061b FEE401   		.sleb128 29310
+ 993 061e 0A       		.uleb128 0xa
+ 994 061f B90E0000 		.4byte	.LASF177
+ 995 0623 D9E501   		.sleb128 29401
+ 996 0626 0A       		.uleb128 0xa
+ 997 0627 B9040000 		.4byte	.LASF178
+ 998 062b BDE601   		.sleb128 29501
+ 999 062e 0A       		.uleb128 0xa
+ 1000 062f A4070000 		.4byte	.LASF179
+ 1001 0633 BEE601   		.sleb128 29502
+ 1002 0636 0A       		.uleb128 0xa
+ 1003 0637 07040000 		.4byte	.LASF180
+ 1004 063b BFE601   		.sleb128 29503
+ 1005 063e 0A       		.uleb128 0xa
+ 1006 063f 3F010000 		.4byte	.LASF181
+ 1007 0643 C0E601   		.sleb128 29504
+ 1008 0646 0A       		.uleb128 0xa
+ 1009 0647 37030000 		.4byte	.LASF182
+ 1010 064b C1E601   		.sleb128 29505
+ 1011 064e 0A       		.uleb128 0xa
+ 1012 064f 16050000 		.4byte	.LASF183
+ 1013 0653 C2E601   		.sleb128 29506
+ 1014 0656 0A       		.uleb128 0xa
+ 1015 0657 3C000000 		.4byte	.LASF184
+ 1016 065b C3E601   		.sleb128 29507
+ 1017 065e 0A       		.uleb128 0xa
+ 1018 065f A2040000 		.4byte	.LASF185
+ 1019 0663 C4E601   		.sleb128 29508
+ 1020 0666 0A       		.uleb128 0xa
+ 1021 0667 7C060000 		.4byte	.LASF186
+ 1022 066b C5E601   		.sleb128 29509
+ 1023 066e 0A       		.uleb128 0xa
+ 1024 066f D60A0000 		.4byte	.LASF187
+ 1025 0673 C6E601   		.sleb128 29510
+ 1026 0676 0A       		.uleb128 0xa
+ 1027 0677 6E050000 		.4byte	.LASF188
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 24
+
+
+ 1028 067b C7E601   		.sleb128 29511
+ 1029 067e 0A       		.uleb128 0xa
+ 1030 067f 6D0A0000 		.4byte	.LASF189
+ 1031 0683 C8E601   		.sleb128 29512
+ 1032 0686 0A       		.uleb128 0xa
+ 1033 0687 800E0000 		.4byte	.LASF190
+ 1034 068b C9E601   		.sleb128 29513
+ 1035 068e 0A       		.uleb128 0xa
+ 1036 068f 1B010000 		.4byte	.LASF191
+ 1037 0693 B0EA01   		.sleb128 30000
+ 1038 0696 0A       		.uleb128 0xa
+ 1039 0697 24010000 		.4byte	.LASF192
+ 1040 069b 98F201   		.sleb128 31000
+ 1041 069e 0A       		.uleb128 0xa
+ 1042 069f 2D010000 		.4byte	.LASF193
+ 1043 06a3 80FA01   		.sleb128 32000
+ 1044 06a6 0A       		.uleb128 0xa
+ 1045 06a7 36010000 		.4byte	.LASF194
+ 1046 06ab E88102   		.sleb128 33000
+ 1047 06ae 0A       		.uleb128 0xa
+ 1048 06af 100F0000 		.4byte	.LASF195
+ 1049 06b3 D08902   		.sleb128 34000
+ 1050 06b6 0A       		.uleb128 0xa
+ 1051 06b7 ED080000 		.4byte	.LASF196
+ 1052 06bb D18902   		.sleb128 34001
+ 1053 06be 0A       		.uleb128 0xa
+ 1054 06bf 290F0000 		.4byte	.LASF197
+ 1055 06c3 B89102   		.sleb128 35000
+ 1056 06c6 00       		.byte	0x0
+ 1057 06c7 0B       		.uleb128 0xb
+ 1058 06c8 1B000000 		.4byte	.LASF198
+ 1059 06cc 05       		.byte	0x5
+ 1060 06cd 7202     		.2byte	0x272
+ 1061 06cf B3010000 		.4byte	0x1b3
+ 1062 06d3 0B       		.uleb128 0xb
+ 1063 06d4 9D070000 		.4byte	.LASF199
+ 1064 06d8 05       		.byte	0x5
+ 1065 06d9 8202     		.2byte	0x282
+ 1066 06db DF060000 		.4byte	0x6df
+ 1067 06df 0C       		.uleb128 0xc
+ 1068 06e0 90050000 		.4byte	.LASF205
+ 1069 06e4 10       		.byte	0x10
+ 1070 06e5 05       		.byte	0x5
+ 1071 06e6 8202     		.2byte	0x282
+ 1072 06e8 29070000 		.4byte	0x729
+ 1073 06ec 0D       		.uleb128 0xd
+ 1074 06ed 860B0000 		.4byte	.LASF200
+ 1075 06f1 05       		.byte	0x5
+ 1076 06f2 4103     		.2byte	0x341
+ 1077 06f4 FF0C0000 		.4byte	0xcff
+ 1078 06f8 02       		.byte	0x2
+ 1079 06f9 23       		.byte	0x23
+ 1080 06fa 00       		.uleb128 0x0
+ 1081 06fb 0D       		.uleb128 0xd
+ 1082 06fc 07100000 		.4byte	.LASF201
+ 1083 0700 05       		.byte	0x5
+ 1084 0701 4203     		.2byte	0x342
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 25
+
+
+ 1085 0703 BF000000 		.4byte	0xbf
+ 1086 0707 02       		.byte	0x2
+ 1087 0708 23       		.byte	0x23
+ 1088 0709 04       		.uleb128 0x4
+ 1089 070a 0D       		.uleb128 0xd
+ 1090 070b 930D0000 		.4byte	.LASF202
+ 1091 070f 05       		.byte	0x5
+ 1092 0710 4303     		.2byte	0x343
+ 1093 0712 2F010000 		.4byte	0x12f
+ 1094 0716 02       		.byte	0x2
+ 1095 0717 23       		.byte	0x23
+ 1096 0718 08       		.uleb128 0x8
+ 1097 0719 0D       		.uleb128 0xd
+ 1098 071a D10F0000 		.4byte	.LASF203
+ 1099 071e 05       		.byte	0x5
+ 1100 071f 4403     		.2byte	0x344
+ 1101 0721 ED000000 		.4byte	0xed
+ 1102 0725 02       		.byte	0x2
+ 1103 0726 23       		.byte	0x23
+ 1104 0727 0C       		.uleb128 0xc
+ 1105 0728 00       		.byte	0x0
+ 1106 0729 0B       		.uleb128 0xb
+ 1107 072a DF080000 		.4byte	.LASF204
+ 1108 072e 05       		.byte	0x5
+ 1109 072f 8402     		.2byte	0x284
+ 1110 0731 35070000 		.4byte	0x735
+ 1111 0735 0C       		.uleb128 0xc
+ 1112 0736 5C120000 		.4byte	.LASF206
+ 1113 073a 10       		.byte	0x10
+ 1114 073b 05       		.byte	0x5
+ 1115 073c 8402     		.2byte	0x284
+ 1116 073e 8E070000 		.4byte	0x78e
+ 1117 0742 0D       		.uleb128 0xd
+ 1118 0743 3E0D0000 		.4byte	.LASF207
+ 1119 0747 05       		.byte	0x5
+ 1120 0748 5403     		.2byte	0x354
+ 1121 074a FF0C0000 		.4byte	0xcff
+ 1122 074e 02       		.byte	0x2
+ 1123 074f 23       		.byte	0x23
+ 1124 0750 00       		.uleb128 0x0
+ 1125 0751 0D       		.uleb128 0xd
+ 1126 0752 4A0F0000 		.4byte	.LASF208
+ 1127 0756 05       		.byte	0x5
+ 1128 0757 5503     		.2byte	0x355
+ 1129 0759 FF0C0000 		.4byte	0xcff
+ 1130 075d 02       		.byte	0x2
+ 1131 075e 23       		.byte	0x23
+ 1132 075f 04       		.uleb128 0x4
+ 1133 0760 0D       		.uleb128 0xd
+ 1134 0761 EF060000 		.4byte	.LASF209
+ 1135 0765 05       		.byte	0x5
+ 1136 0766 5603     		.2byte	0x356
+ 1137 0768 24010000 		.4byte	0x124
+ 1138 076c 02       		.byte	0x2
+ 1139 076d 23       		.byte	0x23
+ 1140 076e 08       		.uleb128 0x8
+ 1141 076f 0D       		.uleb128 0xd
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 26
+
+
+ 1142 0770 60010000 		.4byte	.LASF210
+ 1143 0774 05       		.byte	0x5
+ 1144 0775 5703     		.2byte	0x357
+ 1145 0777 24010000 		.4byte	0x124
+ 1146 077b 02       		.byte	0x2
+ 1147 077c 23       		.byte	0x23
+ 1148 077d 0A       		.uleb128 0xa
+ 1149 077e 0D       		.uleb128 0xd
+ 1150 077f 68110000 		.4byte	.LASF211
+ 1151 0783 05       		.byte	0x5
+ 1152 0784 5803     		.2byte	0x358
+ 1153 0786 24010000 		.4byte	0x124
+ 1154 078a 02       		.byte	0x2
+ 1155 078b 23       		.byte	0x23
+ 1156 078c 0C       		.uleb128 0xc
+ 1157 078d 00       		.byte	0x0
+ 1158 078e 0B       		.uleb128 0xb
+ 1159 078f D80C0000 		.4byte	.LASF212
+ 1160 0793 05       		.byte	0x5
+ 1161 0794 8C02     		.2byte	0x28c
+ 1162 0796 9A070000 		.4byte	0x79a
+ 1163 079a 0C       		.uleb128 0xc
+ 1164 079b 570D0000 		.4byte	.LASF213
+ 1165 079f 28       		.byte	0x28
+ 1166 07a0 05       		.byte	0x5
+ 1167 07a1 8C02     		.2byte	0x28c
+ 1168 07a3 1F080000 		.4byte	0x81f
+ 1169 07a7 0D       		.uleb128 0xd
+ 1170 07a8 E8080000 		.4byte	.LASF214
+ 1171 07ac 05       		.byte	0x5
+ 1172 07ad 9703     		.2byte	0x397
+ 1173 07af 50010000 		.4byte	0x150
+ 1174 07b3 02       		.byte	0x2
+ 1175 07b4 23       		.byte	0x23
+ 1176 07b5 00       		.uleb128 0x0
+ 1177 07b6 0D       		.uleb128 0xd
+ 1178 07b7 CC080000 		.4byte	.LASF215
+ 1179 07bb 05       		.byte	0x5
+ 1180 07bc 9803     		.2byte	0x398
+ 1181 07be F90C0000 		.4byte	0xcf9
+ 1182 07c2 02       		.byte	0x2
+ 1183 07c3 23       		.byte	0x23
+ 1184 07c4 04       		.uleb128 0x4
+ 1185 07c5 0D       		.uleb128 0xd
+ 1186 07c6 0F0D0000 		.4byte	.LASF216
+ 1187 07ca 05       		.byte	0x5
+ 1188 07cb 9903     		.2byte	0x399
+ 1189 07cd 2C0C0000 		.4byte	0xc2c
+ 1190 07d1 02       		.byte	0x2
+ 1191 07d2 23       		.byte	0x23
+ 1192 07d3 08       		.uleb128 0x8
+ 1193 07d4 0D       		.uleb128 0xd
+ 1194 07d5 C1020000 		.4byte	.LASF217
+ 1195 07d9 05       		.byte	0x5
+ 1196 07da 9B03     		.2byte	0x39b
+ 1197 07dc 050D0000 		.4byte	0xd05
+ 1198 07e0 02       		.byte	0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 27
+
+
+ 1199 07e1 23       		.byte	0x23
+ 1200 07e2 14       		.uleb128 0x14
+ 1201 07e3 0D       		.uleb128 0xd
+ 1202 07e4 D9020000 		.4byte	.LASF218
+ 1203 07e8 05       		.byte	0x5
+ 1204 07e9 9C03     		.2byte	0x39c
+ 1205 07eb 050D0000 		.4byte	0xd05
+ 1206 07ef 02       		.byte	0x2
+ 1207 07f0 23       		.byte	0x23
+ 1208 07f1 18       		.uleb128 0x18
+ 1209 07f2 0D       		.uleb128 0xd
+ 1210 07f3 3F0F0000 		.4byte	.LASF219
+ 1211 07f7 05       		.byte	0x5
+ 1212 07f8 9D03     		.2byte	0x39d
+ 1213 07fa F90C0000 		.4byte	0xcf9
+ 1214 07fe 02       		.byte	0x2
+ 1215 07ff 23       		.byte	0x23
+ 1216 0800 1C       		.uleb128 0x1c
+ 1217 0801 0E       		.uleb128 0xe
+ 1218 0802 43747200 		.ascii	"Ctr\000"
+ 1219 0806 05       		.byte	0x5
+ 1220 0807 A003     		.2byte	0x3a0
+ 1221 0809 87010000 		.4byte	0x187
+ 1222 080d 02       		.byte	0x2
+ 1223 080e 23       		.byte	0x23
+ 1224 080f 20       		.uleb128 0x20
+ 1225 0810 0E       		.uleb128 0xe
+ 1226 0811 545300   		.ascii	"TS\000"
+ 1227 0814 05       		.byte	0x5
+ 1228 0815 A103     		.2byte	0x3a1
+ 1229 0817 ED000000 		.4byte	0xed
+ 1230 081b 02       		.byte	0x2
+ 1231 081c 23       		.byte	0x23
+ 1232 081d 24       		.uleb128 0x24
+ 1233 081e 00       		.byte	0x0
+ 1234 081f 0B       		.uleb128 0xb
+ 1235 0820 D80E0000 		.4byte	.LASF220
+ 1236 0824 05       		.byte	0x5
+ 1237 0825 8E02     		.2byte	0x28e
+ 1238 0827 AD000000 		.4byte	0xad
+ 1239 082b 0B       		.uleb128 0xb
+ 1240 082c 610E0000 		.4byte	.LASF221
+ 1241 0830 05       		.byte	0x5
+ 1242 0831 9002     		.2byte	0x290
+ 1243 0833 37080000 		.4byte	0x837
+ 1244 0837 0C       		.uleb128 0xc
+ 1245 0838 00000000 		.4byte	.LASF222
+ 1246 083c C0       		.byte	0xc0
+ 1247 083d 05       		.byte	0x5
+ 1248 083e 9002     		.2byte	0x290
+ 1249 0840 530B0000 		.4byte	0xb53
+ 1250 0844 0D       		.uleb128 0xd
+ 1251 0845 37090000 		.4byte	.LASF223
+ 1252 0849 05       		.byte	0x5
+ 1253 084a AC03     		.2byte	0x3ac
+ 1254 084c 0B0D0000 		.4byte	0xd0b
+ 1255 0850 02       		.byte	0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 28
+
+
+ 1256 0851 23       		.byte	0x23
+ 1257 0852 00       		.uleb128 0x0
+ 1258 0853 0D       		.uleb128 0xd
+ 1259 0854 E80D0000 		.4byte	.LASF224
+ 1260 0858 05       		.byte	0x5
+ 1261 0859 AE03     		.2byte	0x3ae
+ 1262 085b BF000000 		.4byte	0xbf
+ 1263 085f 02       		.byte	0x2
+ 1264 0860 23       		.byte	0x23
+ 1265 0861 04       		.uleb128 0x4
+ 1266 0862 0D       		.uleb128 0xd
+ 1267 0863 4A0A0000 		.4byte	.LASF225
+ 1268 0867 05       		.byte	0x5
+ 1269 0868 B003     		.2byte	0x3b0
+ 1270 086a 0B0D0000 		.4byte	0xd0b
+ 1271 086e 02       		.byte	0x2
+ 1272 086f 23       		.byte	0x23
+ 1273 0870 08       		.uleb128 0x8
+ 1274 0871 0D       		.uleb128 0xd
+ 1275 0872 860B0000 		.4byte	.LASF200
+ 1276 0876 05       		.byte	0x5
+ 1277 0877 B203     		.2byte	0x3b2
+ 1278 0879 E70C0000 		.4byte	0xce7
+ 1279 087d 02       		.byte	0x2
+ 1280 087e 23       		.byte	0x23
+ 1281 087f 0C       		.uleb128 0xc
+ 1282 0880 0D       		.uleb128 0xd
+ 1283 0881 F9070000 		.4byte	.LASF226
+ 1284 0885 05       		.byte	0x5
+ 1285 0886 B303     		.2byte	0x3b3
+ 1286 0888 E70C0000 		.4byte	0xce7
+ 1287 088c 02       		.byte	0x2
+ 1288 088d 23       		.byte	0x23
+ 1289 088e 10       		.uleb128 0x10
+ 1290 088f 0D       		.uleb128 0xd
+ 1291 0890 A00A0000 		.4byte	.LASF227
+ 1292 0894 05       		.byte	0x5
+ 1293 0895 B503     		.2byte	0x3b5
+ 1294 0897 E70C0000 		.4byte	0xce7
+ 1295 089b 02       		.byte	0x2
+ 1296 089c 23       		.byte	0x23
+ 1297 089d 14       		.uleb128 0x14
+ 1298 089e 0D       		.uleb128 0xd
+ 1299 089f 13070000 		.4byte	.LASF228
+ 1300 08a3 05       		.byte	0x5
+ 1301 08a4 B603     		.2byte	0x3b6
+ 1302 08a6 E70C0000 		.4byte	0xce7
+ 1303 08aa 02       		.byte	0x2
+ 1304 08ab 23       		.byte	0x23
+ 1305 08ac 18       		.uleb128 0x18
+ 1306 08ad 0D       		.uleb128 0xd
+ 1307 08ae 320F0000 		.4byte	.LASF229
+ 1308 08b2 05       		.byte	0x5
+ 1309 08b3 B803     		.2byte	0x3b8
+ 1310 08b5 110D0000 		.4byte	0xd11
+ 1311 08b9 02       		.byte	0x2
+ 1312 08ba 23       		.byte	0x23
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 29
+
+
+ 1313 08bb 1C       		.uleb128 0x1c
+ 1314 08bc 0D       		.uleb128 0xd
+ 1315 08bd CC080000 		.4byte	.LASF215
+ 1316 08c1 05       		.byte	0x5
+ 1317 08c2 BA03     		.2byte	0x3ba
+ 1318 08c4 F90C0000 		.4byte	0xcf9
+ 1319 08c8 02       		.byte	0x2
+ 1320 08c9 23       		.byte	0x23
+ 1321 08ca 20       		.uleb128 0x20
+ 1322 08cb 0D       		.uleb128 0xd
+ 1323 08cc B2050000 		.4byte	.LASF230
+ 1324 08d0 05       		.byte	0x5
+ 1325 08d1 BC03     		.2byte	0x3bc
+ 1326 08d3 0B0D0000 		.4byte	0xd0b
+ 1327 08d7 02       		.byte	0x2
+ 1328 08d8 23       		.byte	0x23
+ 1329 08d9 24       		.uleb128 0x24
+ 1330 08da 0D       		.uleb128 0xd
+ 1331 08db 91080000 		.4byte	.LASF231
+ 1332 08df 05       		.byte	0x5
+ 1333 08e0 C203     		.2byte	0x3c2
+ 1334 08e2 1F080000 		.4byte	0x81f
+ 1335 08e6 02       		.byte	0x2
+ 1336 08e7 23       		.byte	0x23
+ 1337 08e8 28       		.uleb128 0x28
+ 1338 08e9 0D       		.uleb128 0xd
+ 1339 08ea 510F0000 		.4byte	.LASF232
+ 1340 08ee 05       		.byte	0x5
+ 1341 08ef C303     		.2byte	0x3c3
+ 1342 08f1 BF000000 		.4byte	0xbf
+ 1343 08f5 02       		.byte	0x2
+ 1344 08f6 23       		.byte	0x23
+ 1345 08f7 2C       		.uleb128 0x2c
+ 1346 08f8 0D       		.uleb128 0xd
+ 1347 08f9 280D0000 		.4byte	.LASF233
+ 1348 08fd 05       		.byte	0x5
+ 1349 08fe C503     		.2byte	0x3c5
+ 1350 0900 ED0C0000 		.4byte	0xced
+ 1351 0904 02       		.byte	0x2
+ 1352 0905 23       		.byte	0x23
+ 1353 0906 30       		.uleb128 0x30
+ 1354 0907 0D       		.uleb128 0xd
+ 1355 0908 50030000 		.4byte	.LASF234
+ 1356 090c 05       		.byte	0x5
+ 1357 090d C603     		.2byte	0x3c6
+ 1358 090f 92010000 		.4byte	0x192
+ 1359 0913 02       		.byte	0x2
+ 1360 0914 23       		.byte	0x23
+ 1361 0915 34       		.uleb128 0x34
+ 1362 0916 0D       		.uleb128 0xd
+ 1363 0917 D4080000 		.4byte	.LASF235
+ 1364 091b 05       		.byte	0x5
+ 1365 091c C703     		.2byte	0x3c7
+ 1366 091e 9D010000 		.4byte	0x19d
+ 1367 0922 02       		.byte	0x2
+ 1368 0923 23       		.byte	0x23
+ 1369 0924 35       		.uleb128 0x35
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 30
+
+
+ 1370 0925 0D       		.uleb128 0xd
+ 1371 0926 18060000 		.4byte	.LASF236
+ 1372 092a 05       		.byte	0x5
+ 1373 092b C903     		.2byte	0x3c9
+ 1374 092d 92010000 		.4byte	0x192
+ 1375 0931 02       		.byte	0x2
+ 1376 0932 23       		.byte	0x23
+ 1377 0933 36       		.uleb128 0x36
+ 1378 0934 0D       		.uleb128 0xd
+ 1379 0935 65100000 		.4byte	.LASF237
+ 1380 0939 05       		.byte	0x5
+ 1381 093a CA03     		.2byte	0x3ca
+ 1382 093c 66010000 		.4byte	0x166
+ 1383 0940 02       		.byte	0x2
+ 1384 0941 23       		.byte	0x23
+ 1385 0942 37       		.uleb128 0x37
+ 1386 0943 0D       		.uleb128 0xd
+ 1387 0944 AA050000 		.4byte	.LASF238
+ 1388 0948 05       		.byte	0x5
+ 1389 0949 CB03     		.2byte	0x3cb
+ 1390 094b D7000000 		.4byte	0xd7
+ 1391 094f 02       		.byte	0x2
+ 1392 0950 23       		.byte	0x23
+ 1393 0951 38       		.uleb128 0x38
+ 1394 0952 0E       		.uleb128 0xe
+ 1395 0953 4F707400 		.ascii	"Opt\000"
+ 1396 0957 05       		.byte	0x5
+ 1397 0958 CC03     		.2byte	0x3cc
+ 1398 095a 5B010000 		.4byte	0x15b
+ 1399 095e 02       		.byte	0x2
+ 1400 095f 23       		.byte	0x23
+ 1401 0960 3C       		.uleb128 0x3c
+ 1402 0961 0D       		.uleb128 0xd
+ 1403 0962 57030000 		.4byte	.LASF239
+ 1404 0966 05       		.byte	0x5
+ 1405 0967 CE03     		.2byte	0x3ce
+ 1406 0969 45010000 		.4byte	0x145
+ 1407 096d 02       		.byte	0x2
+ 1408 096e 23       		.byte	0x23
+ 1409 096f 3E       		.uleb128 0x3e
+ 1410 0970 0E       		.uleb128 0xe
+ 1411 0971 545300   		.ascii	"TS\000"
+ 1412 0974 05       		.byte	0x5
+ 1413 0975 D003     		.2byte	0x3d0
+ 1414 0977 ED000000 		.4byte	0xed
+ 1415 097b 02       		.byte	0x2
+ 1416 097c 23       		.byte	0x23
+ 1417 097d 40       		.uleb128 0x40
+ 1418 097e 0D       		.uleb128 0xd
+ 1419 097f 370D0000 		.4byte	.LASF240
+ 1420 0983 05       		.byte	0x5
+ 1421 0984 D203     		.2byte	0x3d2
+ 1422 0986 87010000 		.4byte	0x187
+ 1423 098a 02       		.byte	0x2
+ 1424 098b 23       		.byte	0x23
+ 1425 098c 44       		.uleb128 0x44
+ 1426 098d 0D       		.uleb128 0xd
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 31
+
+
+ 1427 098e E3060000 		.4byte	.LASF241
+ 1428 0992 05       		.byte	0x5
+ 1429 0993 D503     		.2byte	0x3d5
+ 1430 0995 A8010000 		.4byte	0x1a8
+ 1431 0999 02       		.byte	0x2
+ 1432 099a 23       		.byte	0x23
+ 1433 099b 48       		.uleb128 0x48
+ 1434 099c 0D       		.uleb128 0xd
+ 1435 099d BB030000 		.4byte	.LASF242
+ 1436 09a1 05       		.byte	0x5
+ 1437 09a2 D603     		.2byte	0x3d6
+ 1438 09a4 A8010000 		.4byte	0x1a8
+ 1439 09a8 02       		.byte	0x2
+ 1440 09a9 23       		.byte	0x23
+ 1441 09aa 4C       		.uleb128 0x4c
+ 1442 09ab 0D       		.uleb128 0xd
+ 1443 09ac 440D0000 		.4byte	.LASF243
+ 1444 09b0 05       		.byte	0x5
+ 1445 09b1 D703     		.2byte	0x3d7
+ 1446 09b3 A8010000 		.4byte	0x1a8
+ 1447 09b7 02       		.byte	0x2
+ 1448 09b8 23       		.byte	0x23
+ 1449 09b9 50       		.uleb128 0x50
+ 1450 09ba 0D       		.uleb128 0xd
+ 1451 09bb 0B120000 		.4byte	.LASF244
+ 1452 09bf 05       		.byte	0x5
+ 1453 09c0 D903     		.2byte	0x3d9
+ 1454 09c2 A8010000 		.4byte	0x1a8
+ 1455 09c6 02       		.byte	0x2
+ 1456 09c7 23       		.byte	0x23
+ 1457 09c8 54       		.uleb128 0x54
+ 1458 09c9 0D       		.uleb128 0xd
+ 1459 09ca 00060000 		.4byte	.LASF245
+ 1460 09ce 05       		.byte	0x5
+ 1461 09cf DA03     		.2byte	0x3da
+ 1462 09d1 A8010000 		.4byte	0x1a8
+ 1463 09d5 02       		.byte	0x2
+ 1464 09d6 23       		.byte	0x23
+ 1465 09d7 58       		.uleb128 0x58
+ 1466 09d8 0D       		.uleb128 0xd
+ 1467 09d9 07100000 		.4byte	.LASF201
+ 1468 09dd 05       		.byte	0x5
+ 1469 09de DD03     		.2byte	0x3dd
+ 1470 09e0 BF000000 		.4byte	0xbf
+ 1471 09e4 02       		.byte	0x2
+ 1472 09e5 23       		.byte	0x23
+ 1473 09e6 5C       		.uleb128 0x5c
+ 1474 09e7 0D       		.uleb128 0xd
+ 1475 09e8 930D0000 		.4byte	.LASF202
+ 1476 09ec 05       		.byte	0x5
+ 1477 09ed DE03     		.2byte	0x3de
+ 1478 09ef 2F010000 		.4byte	0x12f
+ 1479 09f3 02       		.byte	0x2
+ 1480 09f4 23       		.byte	0x23
+ 1481 09f5 60       		.uleb128 0x60
+ 1482 09f6 0D       		.uleb128 0xd
+ 1483 09f7 70080000 		.4byte	.LASF246
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 32
+
+
+ 1484 09fb 05       		.byte	0x5
+ 1485 09fc E203     		.2byte	0x3e2
+ 1486 09fe 29070000 		.4byte	0x729
+ 1487 0a02 02       		.byte	0x2
+ 1488 0a03 23       		.byte	0x23
+ 1489 0a04 64       		.uleb128 0x64
+ 1490 0a05 0D       		.uleb128 0xd
+ 1491 0a06 90070000 		.4byte	.LASF247
+ 1492 0a0a 05       		.byte	0x5
+ 1493 0a0b E403     		.2byte	0x3e4
+ 1494 0a0d ED000000 		.4byte	0xed
+ 1495 0a11 02       		.byte	0x2
+ 1496 0a12 23       		.byte	0x23
+ 1497 0a13 74       		.uleb128 0x74
+ 1498 0a14 0D       		.uleb128 0xd
+ 1499 0a15 71070000 		.4byte	.LASF248
+ 1500 0a19 05       		.byte	0x5
+ 1501 0a1a E503     		.2byte	0x3e5
+ 1502 0a1c ED000000 		.4byte	0xed
+ 1503 0a20 02       		.byte	0x2
+ 1504 0a21 23       		.byte	0x23
+ 1505 0a22 78       		.uleb128 0x78
+ 1506 0a23 0D       		.uleb128 0xd
+ 1507 0a24 CC110000 		.4byte	.LASF249
+ 1508 0a28 05       		.byte	0x5
+ 1509 0a29 EA03     		.2byte	0x3ea
+ 1510 0a2b 170D0000 		.4byte	0xd17
+ 1511 0a2f 02       		.byte	0x2
+ 1512 0a30 23       		.byte	0x23
+ 1513 0a31 7C       		.uleb128 0x7c
+ 1514 0a32 0D       		.uleb128 0xd
+ 1515 0a33 FD030000 		.4byte	.LASF250
+ 1516 0a37 05       		.byte	0x5
+ 1517 0a38 EE03     		.2byte	0x3ee
+ 1518 0a3a 19010000 		.4byte	0x119
+ 1519 0a3e 03       		.byte	0x3
+ 1520 0a3f 23       		.byte	0x23
+ 1521 0a40 8001     		.uleb128 0x80
+ 1522 0a42 0D       		.uleb128 0xd
+ 1523 0a43 1F070000 		.4byte	.LASF251
+ 1524 0a47 05       		.byte	0x5
+ 1525 0a48 EF03     		.2byte	0x3ef
+ 1526 0a4a 19010000 		.4byte	0x119
+ 1527 0a4e 03       		.byte	0x3
+ 1528 0a4f 23       		.byte	0x23
+ 1529 0a50 8401     		.uleb128 0x84
+ 1530 0a52 0D       		.uleb128 0xd
+ 1531 0a53 0B020000 		.4byte	.LASF252
+ 1532 0a57 05       		.byte	0x5
+ 1533 0a58 F003     		.2byte	0x3f0
+ 1534 0a5a 5B010000 		.4byte	0x15b
+ 1535 0a5e 03       		.byte	0x3
+ 1536 0a5f 23       		.byte	0x23
+ 1537 0a60 8801     		.uleb128 0x88
+ 1538 0a62 0D       		.uleb128 0xd
+ 1539 0a63 3F0A0000 		.4byte	.LASF253
+ 1540 0a67 05       		.byte	0x5
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 33
+
+
+ 1541 0a68 F403     		.2byte	0x3f4
+ 1542 0a6a 3A010000 		.4byte	0x13a
+ 1543 0a6e 03       		.byte	0x3
+ 1544 0a6f 23       		.byte	0x23
+ 1545 0a70 8A01     		.uleb128 0x8a
+ 1546 0a72 0D       		.uleb128 0xd
+ 1547 0a73 83100000 		.4byte	.LASF254
+ 1548 0a77 05       		.byte	0x5
+ 1549 0a78 F803     		.2byte	0x3f8
+ 1550 0a7a F8000000 		.4byte	0xf8
+ 1551 0a7e 03       		.byte	0x3
+ 1552 0a7f 23       		.byte	0x23
+ 1553 0a80 8C01     		.uleb128 0x8c
+ 1554 0a82 0D       		.uleb128 0xd
+ 1555 0a83 030D0000 		.4byte	.LASF255
+ 1556 0a87 05       		.byte	0x5
+ 1557 0a88 F903     		.2byte	0x3f9
+ 1558 0a8a F8000000 		.4byte	0xf8
+ 1559 0a8e 03       		.byte	0x3
+ 1560 0a8f 23       		.byte	0x23
+ 1561 0a90 8E01     		.uleb128 0x8e
+ 1562 0a92 0D       		.uleb128 0xd
+ 1563 0a93 1E040000 		.4byte	.LASF256
+ 1564 0a97 05       		.byte	0x5
+ 1565 0a98 FA03     		.2byte	0x3fa
+ 1566 0a9a 03010000 		.4byte	0x103
+ 1567 0a9e 03       		.byte	0x3
+ 1568 0a9f 23       		.byte	0x23
+ 1569 0aa0 9001     		.uleb128 0x90
+ 1570 0aa2 0D       		.uleb128 0xd
+ 1571 0aa3 560A0000 		.4byte	.LASF257
+ 1572 0aa7 05       		.byte	0x5
+ 1573 0aa8 FB03     		.2byte	0x3fb
+ 1574 0aaa ED000000 		.4byte	0xed
+ 1575 0aae 03       		.byte	0x3
+ 1576 0aaf 23       		.byte	0x23
+ 1577 0ab0 9401     		.uleb128 0x94
+ 1578 0ab2 0D       		.uleb128 0xd
+ 1579 0ab3 5A090000 		.4byte	.LASF258
+ 1580 0ab7 05       		.byte	0x5
+ 1581 0ab8 FC03     		.2byte	0x3fc
+ 1582 0aba ED000000 		.4byte	0xed
+ 1583 0abe 03       		.byte	0x3
+ 1584 0abf 23       		.byte	0x23
+ 1585 0ac0 9801     		.uleb128 0x98
+ 1586 0ac2 0D       		.uleb128 0xd
+ 1587 0ac3 C0110000 		.4byte	.LASF259
+ 1588 0ac7 05       		.byte	0x5
+ 1589 0ac8 FD03     		.2byte	0x3fd
+ 1590 0aca 0E010000 		.4byte	0x10e
+ 1591 0ace 03       		.byte	0x3
+ 1592 0acf 23       		.byte	0x23
+ 1593 0ad0 9C01     		.uleb128 0x9c
+ 1594 0ad2 0D       		.uleb128 0xd
+ 1595 0ad3 880C0000 		.4byte	.LASF260
+ 1596 0ad7 05       		.byte	0x5
+ 1597 0ad8 FE03     		.2byte	0x3fe
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 34
+
+
+ 1598 0ada 0E010000 		.4byte	0x10e
+ 1599 0ade 03       		.byte	0x3
+ 1600 0adf 23       		.byte	0x23
+ 1601 0ae0 A001     		.uleb128 0xa0
+ 1602 0ae2 0D       		.uleb128 0xd
+ 1603 0ae3 520B0000 		.4byte	.LASF261
+ 1604 0ae7 05       		.byte	0x5
+ 1605 0ae8 0004     		.2byte	0x400
+ 1606 0aea ED000000 		.4byte	0xed
+ 1607 0aee 03       		.byte	0x3
+ 1608 0aef 23       		.byte	0x23
+ 1609 0af0 A401     		.uleb128 0xa4
+ 1610 0af2 0D       		.uleb128 0xd
+ 1611 0af3 790C0000 		.4byte	.LASF262
+ 1612 0af7 05       		.byte	0x5
+ 1613 0af8 0104     		.2byte	0x401
+ 1614 0afa ED000000 		.4byte	0xed
+ 1615 0afe 03       		.byte	0x3
+ 1616 0aff 23       		.byte	0x23
+ 1617 0b00 A801     		.uleb128 0xa8
+ 1618 0b02 0D       		.uleb128 0xd
+ 1619 0b03 0E050000 		.4byte	.LASF263
+ 1620 0b07 05       		.byte	0x5
+ 1621 0b08 0504     		.2byte	0x405
+ 1622 0b0a D7000000 		.4byte	0xd7
+ 1623 0b0e 03       		.byte	0x3
+ 1624 0b0f 23       		.byte	0x23
+ 1625 0b10 AC01     		.uleb128 0xac
+ 1626 0b12 0D       		.uleb128 0xd
+ 1627 0b13 DB060000 		.4byte	.LASF264
+ 1628 0b17 05       		.byte	0x5
+ 1629 0b18 0604     		.2byte	0x406
+ 1630 0b1a D7000000 		.4byte	0xd7
+ 1631 0b1e 03       		.byte	0x3
+ 1632 0b1f 23       		.byte	0x23
+ 1633 0b20 B001     		.uleb128 0xb0
+ 1634 0b22 0D       		.uleb128 0xd
+ 1635 0b23 C1020000 		.4byte	.LASF217
+ 1636 0b27 05       		.byte	0x5
+ 1637 0b28 1104     		.2byte	0x411
+ 1638 0b2a E70C0000 		.4byte	0xce7
+ 1639 0b2e 03       		.byte	0x3
+ 1640 0b2f 23       		.byte	0x23
+ 1641 0b30 B401     		.uleb128 0xb4
+ 1642 0b32 0D       		.uleb128 0xd
+ 1643 0b33 D9020000 		.4byte	.LASF218
+ 1644 0b37 05       		.byte	0x5
+ 1645 0b38 1204     		.2byte	0x412
+ 1646 0b3a E70C0000 		.4byte	0xce7
+ 1647 0b3e 03       		.byte	0x3
+ 1648 0b3f 23       		.byte	0x23
+ 1649 0b40 B801     		.uleb128 0xb8
+ 1650 0b42 0D       		.uleb128 0xd
+ 1651 0b43 3F0F0000 		.4byte	.LASF219
+ 1652 0b47 05       		.byte	0x5
+ 1653 0b48 1304     		.2byte	0x413
+ 1654 0b4a F90C0000 		.4byte	0xcf9
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 35
+
+
+ 1655 0b4e 03       		.byte	0x3
+ 1656 0b4f 23       		.byte	0x23
+ 1657 0b50 BC01     		.uleb128 0xbc
+ 1658 0b52 00       		.byte	0x0
+ 1659 0b53 0B       		.uleb128 0xb
+ 1660 0b54 7A040000 		.4byte	.LASF265
+ 1661 0b58 05       		.byte	0x5
+ 1662 0b59 9E02     		.2byte	0x29e
+ 1663 0b5b 5F0B0000 		.4byte	0xb5f
+ 1664 0b5f 0C       		.uleb128 0xc
+ 1665 0b60 3E090000 		.4byte	.LASF266
+ 1666 0b64 08       		.byte	0x8
+ 1667 0b65 05       		.byte	0x5
+ 1668 0b66 9E02     		.2byte	0x29e
+ 1669 0b68 9A0B0000 		.4byte	0xb9a
+ 1670 0b6c 0D       		.uleb128 0xd
+ 1671 0b6d AE0D0000 		.4byte	.LASF267
+ 1672 0b71 05       		.byte	0x5
+ 1673 0b72 1F04     		.2byte	0x41f
+ 1674 0b74 E70C0000 		.4byte	0xce7
+ 1675 0b78 02       		.byte	0x2
+ 1676 0b79 23       		.byte	0x23
+ 1677 0b7a 00       		.uleb128 0x0
+ 1678 0b7b 0D       		.uleb128 0xd
+ 1679 0b7c 60010000 		.4byte	.LASF210
+ 1680 0b80 05       		.byte	0x5
+ 1681 0b81 2004     		.2byte	0x420
+ 1682 0b83 45010000 		.4byte	0x145
+ 1683 0b87 02       		.byte	0x2
+ 1684 0b88 23       		.byte	0x23
+ 1685 0b89 04       		.uleb128 0x4
+ 1686 0b8a 0D       		.uleb128 0xd
+ 1687 0b8b 68110000 		.4byte	.LASF211
+ 1688 0b8f 05       		.byte	0x5
+ 1689 0b90 2104     		.2byte	0x421
+ 1690 0b92 45010000 		.4byte	0x145
+ 1691 0b96 02       		.byte	0x2
+ 1692 0b97 23       		.byte	0x23
+ 1693 0b98 06       		.uleb128 0x6
+ 1694 0b99 00       		.byte	0x0
+ 1695 0b9a 0B       		.uleb128 0xb
+ 1696 0b9b 29050000 		.4byte	.LASF268
+ 1697 0b9f 05       		.byte	0x5
+ 1698 0ba0 A502     		.2byte	0x2a5
+ 1699 0ba2 A60B0000 		.4byte	0xba6
+ 1700 0ba6 0C       		.uleb128 0xc
+ 1701 0ba7 33100000 		.4byte	.LASF269
+ 1702 0bab 20       		.byte	0x20
+ 1703 0bac 05       		.byte	0x5
+ 1704 0bad A502     		.2byte	0x2a5
+ 1705 0baf 2C0C0000 		.4byte	0xc2c
+ 1706 0bb3 0D       		.uleb128 0xd
+ 1707 0bb4 F9070000 		.4byte	.LASF226
+ 1708 0bb8 05       		.byte	0x5
+ 1709 0bb9 DE02     		.2byte	0x2de
+ 1710 0bbb ED0C0000 		.4byte	0xced
+ 1711 0bbf 02       		.byte	0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 36
+
+
+ 1712 0bc0 23       		.byte	0x23
+ 1713 0bc1 00       		.uleb128 0x0
+ 1714 0bc2 0D       		.uleb128 0xd
+ 1715 0bc3 860B0000 		.4byte	.LASF200
+ 1716 0bc7 05       		.byte	0x5
+ 1717 0bc8 DF02     		.2byte	0x2df
+ 1718 0bca ED0C0000 		.4byte	0xced
+ 1719 0bce 02       		.byte	0x2
+ 1720 0bcf 23       		.byte	0x23
+ 1721 0bd0 04       		.uleb128 0x4
+ 1722 0bd1 0D       		.uleb128 0xd
+ 1723 0bd2 66090000 		.4byte	.LASF270
+ 1724 0bd6 05       		.byte	0x5
+ 1725 0bd7 E002     		.2byte	0x2e0
+ 1726 0bd9 E70C0000 		.4byte	0xce7
+ 1727 0bdd 02       		.byte	0x2
+ 1728 0bde 23       		.byte	0x23
+ 1729 0bdf 08       		.uleb128 0x8
+ 1730 0be0 0D       		.uleb128 0xd
+ 1731 0be1 C0100000 		.4byte	.LASF271
+ 1732 0be5 05       		.byte	0x5
+ 1733 0be6 E102     		.2byte	0x2e1
+ 1734 0be8 F30C0000 		.4byte	0xcf3
+ 1735 0bec 02       		.byte	0x2
+ 1736 0bed 23       		.byte	0x23
+ 1737 0bee 0C       		.uleb128 0xc
+ 1738 0bef 0D       		.uleb128 0xd
+ 1739 0bf0 070B0000 		.4byte	.LASF272
+ 1740 0bf4 05       		.byte	0x5
+ 1741 0bf5 E202     		.2byte	0x2e2
+ 1742 0bf7 F30C0000 		.4byte	0xcf3
+ 1743 0bfb 02       		.byte	0x2
+ 1744 0bfc 23       		.byte	0x23
+ 1745 0bfd 10       		.uleb128 0x10
+ 1746 0bfe 0D       		.uleb128 0xd
+ 1747 0bff C8030000 		.4byte	.LASF273
+ 1748 0c03 05       		.byte	0x5
+ 1749 0c04 E302     		.2byte	0x2e3
+ 1750 0c06 BF000000 		.4byte	0xbf
+ 1751 0c0a 02       		.byte	0x2
+ 1752 0c0b 23       		.byte	0x23
+ 1753 0c0c 14       		.uleb128 0x14
+ 1754 0c0d 0D       		.uleb128 0xd
+ 1755 0c0e 400C0000 		.4byte	.LASF274
+ 1756 0c12 05       		.byte	0x5
+ 1757 0c13 E402     		.2byte	0x2e4
+ 1758 0c15 2F010000 		.4byte	0x12f
+ 1759 0c19 02       		.byte	0x2
+ 1760 0c1a 23       		.byte	0x23
+ 1761 0c1b 18       		.uleb128 0x18
+ 1762 0c1c 0D       		.uleb128 0xd
+ 1763 0c1d 000C0000 		.4byte	.LASF275
+ 1764 0c21 05       		.byte	0x5
+ 1765 0c22 E502     		.2byte	0x2e5
+ 1766 0c24 ED000000 		.4byte	0xed
+ 1767 0c28 02       		.byte	0x2
+ 1768 0c29 23       		.byte	0x23
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 37
+
+
+ 1769 0c2a 1C       		.uleb128 0x1c
+ 1770 0c2b 00       		.byte	0x0
+ 1771 0c2c 0B       		.uleb128 0xb
+ 1772 0c2d B80F0000 		.4byte	.LASF276
+ 1773 0c31 05       		.byte	0x5
+ 1774 0c32 A602     		.2byte	0x2a6
+ 1775 0c34 380C0000 		.4byte	0xc38
+ 1776 0c38 0C       		.uleb128 0xc
+ 1777 0c39 76110000 		.4byte	.LASF277
+ 1778 0c3d 0C       		.byte	0xc
+ 1779 0c3e 05       		.byte	0x5
+ 1780 0c3f A602     		.2byte	0x2a6
+ 1781 0c41 730C0000 		.4byte	0xc73
+ 1782 0c45 0D       		.uleb128 0xd
+ 1783 0c46 4F0D0000 		.4byte	.LASF278
+ 1784 0c4a 05       		.byte	0x5
+ 1785 0c4b EA02     		.2byte	0x2ea
+ 1786 0c4d ED0C0000 		.4byte	0xced
+ 1787 0c51 02       		.byte	0x2
+ 1788 0c52 23       		.byte	0x23
+ 1789 0c53 00       		.uleb128 0x0
+ 1790 0c54 0D       		.uleb128 0xd
+ 1791 0c55 88030000 		.4byte	.LASF279
+ 1792 0c59 05       		.byte	0x5
+ 1793 0c5a EB02     		.2byte	0x2eb
+ 1794 0c5c ED0C0000 		.4byte	0xced
+ 1795 0c60 02       		.byte	0x2
+ 1796 0c61 23       		.byte	0x23
+ 1797 0c62 04       		.uleb128 0x4
+ 1798 0c63 0D       		.uleb128 0xd
+ 1799 0c64 60010000 		.4byte	.LASF210
+ 1800 0c68 05       		.byte	0x5
+ 1801 0c69 EC02     		.2byte	0x2ec
+ 1802 0c6b 45010000 		.4byte	0x145
+ 1803 0c6f 02       		.byte	0x2
+ 1804 0c70 23       		.byte	0x23
+ 1805 0c71 08       		.uleb128 0x8
+ 1806 0c72 00       		.byte	0x0
+ 1807 0c73 0B       		.uleb128 0xb
+ 1808 0c74 DF0C0000 		.4byte	.LASF280
+ 1809 0c78 05       		.byte	0x5
+ 1810 0c79 A702     		.2byte	0x2a7
+ 1811 0c7b 7F0C0000 		.4byte	0xc7f
+ 1812 0c7f 0C       		.uleb128 0xc
+ 1813 0c80 D2030000 		.4byte	.LASF281
+ 1814 0c84 20       		.byte	0x20
+ 1815 0c85 05       		.byte	0x5
+ 1816 0c86 A702     		.2byte	0x2a7
+ 1817 0c88 E70C0000 		.4byte	0xce7
+ 1818 0c8c 0D       		.uleb128 0xd
+ 1819 0c8d E8080000 		.4byte	.LASF214
+ 1820 0c91 05       		.byte	0x5
+ 1821 0c92 0003     		.2byte	0x300
+ 1822 0c94 50010000 		.4byte	0x150
+ 1823 0c98 02       		.byte	0x2
+ 1824 0c99 23       		.byte	0x23
+ 1825 0c9a 00       		.uleb128 0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 38
+
+
+ 1826 0c9b 0D       		.uleb128 0xd
+ 1827 0c9c CC080000 		.4byte	.LASF215
+ 1828 0ca0 05       		.byte	0x5
+ 1829 0ca1 0103     		.2byte	0x301
+ 1830 0ca3 F90C0000 		.4byte	0xcf9
+ 1831 0ca7 02       		.byte	0x2
+ 1832 0ca8 23       		.byte	0x23
+ 1833 0ca9 04       		.uleb128 0x4
+ 1834 0caa 0D       		.uleb128 0xd
+ 1835 0cab 0F0D0000 		.4byte	.LASF216
+ 1836 0caf 05       		.byte	0x5
+ 1837 0cb0 0203     		.2byte	0x302
+ 1838 0cb2 2C0C0000 		.4byte	0xc2c
+ 1839 0cb6 02       		.byte	0x2
+ 1840 0cb7 23       		.byte	0x23
+ 1841 0cb8 08       		.uleb128 0x8
+ 1842 0cb9 0D       		.uleb128 0xd
+ 1843 0cba C1020000 		.4byte	.LASF217
+ 1844 0cbe 05       		.byte	0x5
+ 1845 0cbf 0403     		.2byte	0x304
+ 1846 0cc1 BF000000 		.4byte	0xbf
+ 1847 0cc5 02       		.byte	0x2
+ 1848 0cc6 23       		.byte	0x23
+ 1849 0cc7 14       		.uleb128 0x14
+ 1850 0cc8 0D       		.uleb128 0xd
+ 1851 0cc9 D9020000 		.4byte	.LASF218
+ 1852 0ccd 05       		.byte	0x5
+ 1853 0cce 0503     		.2byte	0x305
+ 1854 0cd0 BF000000 		.4byte	0xbf
+ 1855 0cd4 02       		.byte	0x2
+ 1856 0cd5 23       		.byte	0x23
+ 1857 0cd6 18       		.uleb128 0x18
+ 1858 0cd7 0D       		.uleb128 0xd
+ 1859 0cd8 3F0F0000 		.4byte	.LASF219
+ 1860 0cdc 05       		.byte	0x5
+ 1861 0cdd 0603     		.2byte	0x306
+ 1862 0cdf F90C0000 		.4byte	0xcf9
+ 1863 0ce3 02       		.byte	0x2
+ 1864 0ce4 23       		.byte	0x23
+ 1865 0ce5 1C       		.uleb128 0x1c
+ 1866 0ce6 00       		.byte	0x0
+ 1867 0ce7 05       		.uleb128 0x5
+ 1868 0ce8 04       		.byte	0x4
+ 1869 0ce9 2B080000 		.4byte	0x82b
+ 1870 0ced 05       		.uleb128 0x5
+ 1871 0cee 04       		.byte	0x4
+ 1872 0cef 9A0B0000 		.4byte	0xb9a
+ 1873 0cf3 05       		.uleb128 0x5
+ 1874 0cf4 04       		.byte	0x4
+ 1875 0cf5 730C0000 		.4byte	0xc73
+ 1876 0cf9 05       		.uleb128 0x5
+ 1877 0cfa 04       		.byte	0x4
+ 1878 0cfb 29000000 		.4byte	0x29
+ 1879 0cff 05       		.uleb128 0x5
+ 1880 0d00 04       		.byte	0x4
+ 1881 0d01 D3060000 		.4byte	0x6d3
+ 1882 0d05 05       		.uleb128 0x5
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 39
+
+
+ 1883 0d06 04       		.byte	0x4
+ 1884 0d07 8E070000 		.4byte	0x78e
+ 1885 0d0b 05       		.uleb128 0x5
+ 1886 0d0c 04       		.byte	0x4
+ 1887 0d0d CC000000 		.4byte	0xcc
+ 1888 0d11 05       		.uleb128 0x5
+ 1889 0d12 04       		.byte	0x4
+ 1890 0d13 530B0000 		.4byte	0xb53
+ 1891 0d17 0F       		.uleb128 0xf
+ 1892 0d18 7C010000 		.4byte	0x17c
+ 1893 0d1c 270D0000 		.4byte	0xd27
+ 1894 0d20 10       		.uleb128 0x10
+ 1895 0d21 270D0000 		.4byte	0xd27
+ 1896 0d25 00       		.byte	0x0
+ 1897 0d26 00       		.byte	0x0
+ 1898 0d27 11       		.uleb128 0x11
+ 1899 0d28 04       		.byte	0x4
+ 1900 0d29 07       		.byte	0x7
+ 1901 0d2a 02       		.uleb128 0x2
+ 1902 0d2b BC070000 		.4byte	.LASF282
+ 1903 0d2f 06       		.byte	0x6
+ 1904 0d30 4B       		.byte	0x4b
+ 1905 0d31 8E070000 		.4byte	0x78e
+ 1906 0d35 02       		.uleb128 0x2
+ 1907 0d36 81070000 		.4byte	.LASF283
+ 1908 0d3a 06       		.byte	0x6
+ 1909 0d3b 4C       		.byte	0x4c
+ 1910 0d3c 87010000 		.4byte	0x187
+ 1911 0d40 12       		.uleb128 0x12
+ 1912 0d41 01       		.byte	0x1
+ 1913 0d42 5E0D0000 		.4byte	.LASF287
+ 1914 0d46 01       		.byte	0x1
+ 1915 0d47 86       		.byte	0x86
+ 1916 0d48 01       		.byte	0x1
+ 1917 0d49 3B000000 		.4byte	0x3b
+ 1918 0d4d 00000000 		.4byte	.LFB0
+ 1919 0d51 34000000 		.4byte	.LFE0
+ 1920 0d55 00000000 		.4byte	.LLST0
+ 1921 0d59 960D0000 		.4byte	0xd96
+ 1922 0d5d 13       		.uleb128 0x13
+ 1923 0d5e AE010000 		.4byte	.LASF284
+ 1924 0d62 01       		.byte	0x1
+ 1925 0d63 86       		.byte	0x86
+ 1926 0d64 960D0000 		.4byte	0xd96
+ 1927 0d68 02       		.byte	0x2
+ 1928 0d69 91       		.byte	0x91
+ 1929 0d6a 6C       		.sleb128 -20
+ 1930 0d6b 13       		.uleb128 0x13
+ 1931 0d6c 930E0000 		.4byte	.LASF285
+ 1932 0d70 01       		.byte	0x1
+ 1933 0d71 87       		.byte	0x87
+ 1934 0d72 350D0000 		.4byte	0xd35
+ 1935 0d76 02       		.byte	0x2
+ 1936 0d77 91       		.byte	0x91
+ 1937 0d78 68       		.sleb128 -24
+ 1938 0d79 13       		.uleb128 0x13
+ 1939 0d7a 6A030000 		.4byte	.LASF286
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 40
+
+
+ 1940 0d7e 01       		.byte	0x1
+ 1941 0d7f 88       		.byte	0x88
+ 1942 0d80 F90C0000 		.4byte	0xcf9
+ 1943 0d84 02       		.byte	0x2
+ 1944 0d85 91       		.byte	0x91
+ 1945 0d86 64       		.sleb128 -28
+ 1946 0d87 14       		.uleb128 0x14
+ 1947 0d88 65727200 		.ascii	"err\000"
+ 1948 0d8c 01       		.byte	0x1
+ 1949 0d8d 8A       		.byte	0x8a
+ 1950 0d8e C7060000 		.4byte	0x6c7
+ 1951 0d92 02       		.byte	0x2
+ 1952 0d93 91       		.byte	0x91
+ 1953 0d94 76       		.sleb128 -10
+ 1954 0d95 00       		.byte	0x0
+ 1955 0d96 05       		.uleb128 0x5
+ 1956 0d97 04       		.byte	0x4
+ 1957 0d98 2A0D0000 		.4byte	0xd2a
+ 1958 0d9c 12       		.uleb128 0x12
+ 1959 0d9d 01       		.byte	0x1
+ 1960 0d9e 24080000 		.4byte	.LASF288
+ 1961 0da2 01       		.byte	0x1
+ 1962 0da3 AD       		.byte	0xad
+ 1963 0da4 01       		.byte	0x1
+ 1964 0da5 3B000000 		.4byte	0x3b
+ 1965 0da9 00000000 		.4byte	.LFB1
+ 1966 0dad 54000000 		.4byte	.LFE1
+ 1967 0db1 37000000 		.4byte	.LLST1
+ 1968 0db5 F20D0000 		.4byte	0xdf2
+ 1969 0db9 13       		.uleb128 0x13
+ 1970 0dba AE010000 		.4byte	.LASF284
+ 1971 0dbe 01       		.byte	0x1
+ 1972 0dbf AD       		.byte	0xad
+ 1973 0dc0 960D0000 		.4byte	0xd96
+ 1974 0dc4 02       		.byte	0x2
+ 1975 0dc5 91       		.byte	0x91
+ 1976 0dc6 6C       		.sleb128 -20
+ 1977 0dc7 13       		.uleb128 0x13
+ 1978 0dc8 A10F0000 		.4byte	.LASF289
+ 1979 0dcc 01       		.byte	0x1
+ 1980 0dcd AE       		.byte	0xae
+ 1981 0dce 78000000 		.4byte	0x78
+ 1982 0dd2 02       		.byte	0x2
+ 1983 0dd3 91       		.byte	0x91
+ 1984 0dd4 68       		.sleb128 -24
+ 1985 0dd5 14       		.uleb128 0x14
+ 1986 0dd6 65727200 		.ascii	"err\000"
+ 1987 0dda 01       		.byte	0x1
+ 1988 0ddb B0       		.byte	0xb0
+ 1989 0ddc C7060000 		.4byte	0x6c7
+ 1990 0de0 02       		.byte	0x2
+ 1991 0de1 91       		.byte	0x91
+ 1992 0de2 72       		.sleb128 -14
+ 1993 0de3 15       		.uleb128 0x15
+ 1994 0de4 66080000 		.4byte	.LASF290
+ 1995 0de8 01       		.byte	0x1
+ 1996 0de9 B1       		.byte	0xb1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 41
+
+
+ 1997 0dea 78000000 		.4byte	0x78
+ 1998 0dee 02       		.byte	0x2
+ 1999 0def 91       		.byte	0x91
+ 2000 0df0 74       		.sleb128 -12
+ 2001 0df1 00       		.byte	0x0
+ 2002 0df2 12       		.uleb128 0x12
+ 2003 0df3 01       		.byte	0x1
+ 2004 0df4 FC010000 		.4byte	.LASF291
+ 2005 0df8 01       		.byte	0x1
+ 2006 0df9 D4       		.byte	0xd4
+ 2007 0dfa 01       		.byte	0x1
+ 2008 0dfb 3B000000 		.4byte	0x3b
+ 2009 0dff 00000000 		.4byte	.LFB2
+ 2010 0e03 32000000 		.4byte	.LFE2
+ 2011 0e07 6E000000 		.4byte	.LLST2
+ 2012 0e0b 2C0E0000 		.4byte	0xe2c
+ 2013 0e0f 13       		.uleb128 0x13
+ 2014 0e10 AE010000 		.4byte	.LASF284
+ 2015 0e14 01       		.byte	0x1
+ 2016 0e15 D4       		.byte	0xd4
+ 2017 0e16 960D0000 		.4byte	0xd96
+ 2018 0e1a 02       		.byte	0x2
+ 2019 0e1b 91       		.byte	0x91
+ 2020 0e1c 6C       		.sleb128 -20
+ 2021 0e1d 14       		.uleb128 0x14
+ 2022 0e1e 65727200 		.ascii	"err\000"
+ 2023 0e22 01       		.byte	0x1
+ 2024 0e23 D6       		.byte	0xd6
+ 2025 0e24 C7060000 		.4byte	0x6c7
+ 2026 0e28 02       		.byte	0x2
+ 2027 0e29 91       		.byte	0x91
+ 2028 0e2a 76       		.sleb128 -10
+ 2029 0e2b 00       		.byte	0x0
+ 2030 0e2c 16       		.uleb128 0x16
+ 2031 0e2d 01       		.byte	0x1
+ 2032 0e2e 75080000 		.4byte	.LASF296
+ 2033 0e32 01       		.byte	0x1
+ 2034 0e33 FE       		.byte	0xfe
+ 2035 0e34 01       		.byte	0x1
+ 2036 0e35 00000000 		.4byte	.LFB3
+ 2037 0e39 86000000 		.4byte	.LFE3
+ 2038 0e3d A5000000 		.4byte	.LLST3
+ 2039 0e41 800E0000 		.4byte	0xe80
+ 2040 0e45 13       		.uleb128 0x13
+ 2041 0e46 A10F0000 		.4byte	.LASF289
+ 2042 0e4a 01       		.byte	0x1
+ 2043 0e4b FE       		.byte	0xfe
+ 2044 0e4c 78000000 		.4byte	0x78
+ 2045 0e50 02       		.byte	0x2
+ 2046 0e51 91       		.byte	0x91
+ 2047 0e52 6C       		.sleb128 -20
+ 2048 0e53 17       		.uleb128 0x17
+ 2049 0e54 6D7300   		.ascii	"ms\000"
+ 2050 0e57 01       		.byte	0x1
+ 2051 0e58 0001     		.2byte	0x100
+ 2052 0e5a 5F000000 		.4byte	0x5f
+ 2053 0e5e 02       		.byte	0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 42
+
+
+ 2054 0e5f 91       		.byte	0x91
+ 2055 0e60 74       		.sleb128 -12
+ 2056 0e61 17       		.uleb128 0x17
+ 2057 0e62 73656300 		.ascii	"sec\000"
+ 2058 0e66 01       		.byte	0x1
+ 2059 0e67 0101     		.2byte	0x101
+ 2060 0e69 5F000000 		.4byte	0x5f
+ 2061 0e6d 02       		.byte	0x2
+ 2062 0e6e 91       		.byte	0x91
+ 2063 0e6f 76       		.sleb128 -10
+ 2064 0e70 17       		.uleb128 0x17
+ 2065 0e71 65727200 		.ascii	"err\000"
+ 2066 0e75 01       		.byte	0x1
+ 2067 0e76 0201     		.2byte	0x102
+ 2068 0e78 C7060000 		.4byte	0x6c7
+ 2069 0e7c 02       		.byte	0x2
+ 2070 0e7d 91       		.byte	0x91
+ 2071 0e7e 72       		.sleb128 -14
+ 2072 0e7f 00       		.byte	0x0
+ 2073 0e80 18       		.uleb128 0x18
+ 2074 0e81 65120000 		.4byte	.LASF297
+ 2075 0e85 05       		.byte	0x5
+ 2076 0e86 0F05     		.2byte	0x50f
+ 2077 0e88 8E0E0000 		.4byte	0xe8e
+ 2078 0e8c 01       		.byte	0x1
+ 2079 0e8d 01       		.byte	0x1
+ 2080 0e8e 19       		.uleb128 0x19
+ 2081 0e8f 71010000 		.4byte	0x171
+ 2082 0e93 00       		.byte	0x0
+ 2083              		.section	.debug_abbrev
+ 2084 0000 01       		.uleb128 0x1
+ 2085 0001 11       		.uleb128 0x11
+ 2086 0002 01       		.byte	0x1
+ 2087 0003 25       		.uleb128 0x25
+ 2088 0004 0E       		.uleb128 0xe
+ 2089 0005 13       		.uleb128 0x13
+ 2090 0006 0B       		.uleb128 0xb
+ 2091 0007 03       		.uleb128 0x3
+ 2092 0008 0E       		.uleb128 0xe
+ 2093 0009 1B       		.uleb128 0x1b
+ 2094 000a 0E       		.uleb128 0xe
+ 2095 000b 11       		.uleb128 0x11
+ 2096 000c 01       		.uleb128 0x1
+ 2097 000d 52       		.uleb128 0x52
+ 2098 000e 01       		.uleb128 0x1
+ 2099 000f 55       		.uleb128 0x55
+ 2100 0010 06       		.uleb128 0x6
+ 2101 0011 10       		.uleb128 0x10
+ 2102 0012 06       		.uleb128 0x6
+ 2103 0013 00       		.byte	0x0
+ 2104 0014 00       		.byte	0x0
+ 2105 0015 02       		.uleb128 0x2
+ 2106 0016 16       		.uleb128 0x16
+ 2107 0017 00       		.byte	0x0
+ 2108 0018 03       		.uleb128 0x3
+ 2109 0019 0E       		.uleb128 0xe
+ 2110 001a 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 43
+
+
+ 2111 001b 0B       		.uleb128 0xb
+ 2112 001c 3B       		.uleb128 0x3b
+ 2113 001d 0B       		.uleb128 0xb
+ 2114 001e 49       		.uleb128 0x49
+ 2115 001f 13       		.uleb128 0x13
+ 2116 0020 00       		.byte	0x0
+ 2117 0021 00       		.byte	0x0
+ 2118 0022 03       		.uleb128 0x3
+ 2119 0023 24       		.uleb128 0x24
+ 2120 0024 00       		.byte	0x0
+ 2121 0025 0B       		.uleb128 0xb
+ 2122 0026 0B       		.uleb128 0xb
+ 2123 0027 3E       		.uleb128 0x3e
+ 2124 0028 0B       		.uleb128 0xb
+ 2125 0029 03       		.uleb128 0x3
+ 2126 002a 0E       		.uleb128 0xe
+ 2127 002b 00       		.byte	0x0
+ 2128 002c 00       		.byte	0x0
+ 2129 002d 04       		.uleb128 0x4
+ 2130 002e 24       		.uleb128 0x24
+ 2131 002f 00       		.byte	0x0
+ 2132 0030 0B       		.uleb128 0xb
+ 2133 0031 0B       		.uleb128 0xb
+ 2134 0032 3E       		.uleb128 0x3e
+ 2135 0033 0B       		.uleb128 0xb
+ 2136 0034 03       		.uleb128 0x3
+ 2137 0035 08       		.uleb128 0x8
+ 2138 0036 00       		.byte	0x0
+ 2139 0037 00       		.byte	0x0
+ 2140 0038 05       		.uleb128 0x5
+ 2141 0039 0F       		.uleb128 0xf
+ 2142 003a 00       		.byte	0x0
+ 2143 003b 0B       		.uleb128 0xb
+ 2144 003c 0B       		.uleb128 0xb
+ 2145 003d 49       		.uleb128 0x49
+ 2146 003e 13       		.uleb128 0x13
+ 2147 003f 00       		.byte	0x0
+ 2148 0040 00       		.byte	0x0
+ 2149 0041 06       		.uleb128 0x6
+ 2150 0042 15       		.uleb128 0x15
+ 2151 0043 01       		.byte	0x1
+ 2152 0044 27       		.uleb128 0x27
+ 2153 0045 0C       		.uleb128 0xc
+ 2154 0046 01       		.uleb128 0x1
+ 2155 0047 13       		.uleb128 0x13
+ 2156 0048 00       		.byte	0x0
+ 2157 0049 00       		.byte	0x0
+ 2158 004a 07       		.uleb128 0x7
+ 2159 004b 05       		.uleb128 0x5
+ 2160 004c 00       		.byte	0x0
+ 2161 004d 49       		.uleb128 0x49
+ 2162 004e 13       		.uleb128 0x13
+ 2163 004f 00       		.byte	0x0
+ 2164 0050 00       		.byte	0x0
+ 2165 0051 08       		.uleb128 0x8
+ 2166 0052 0F       		.uleb128 0xf
+ 2167 0053 00       		.byte	0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 44
+
+
+ 2168 0054 0B       		.uleb128 0xb
+ 2169 0055 0B       		.uleb128 0xb
+ 2170 0056 00       		.byte	0x0
+ 2171 0057 00       		.byte	0x0
+ 2172 0058 09       		.uleb128 0x9
+ 2173 0059 04       		.uleb128 0x4
+ 2174 005a 01       		.byte	0x1
+ 2175 005b 03       		.uleb128 0x3
+ 2176 005c 0E       		.uleb128 0xe
+ 2177 005d 0B       		.uleb128 0xb
+ 2178 005e 0B       		.uleb128 0xb
+ 2179 005f 3A       		.uleb128 0x3a
+ 2180 0060 0B       		.uleb128 0xb
+ 2181 0061 3B       		.uleb128 0x3b
+ 2182 0062 05       		.uleb128 0x5
+ 2183 0063 01       		.uleb128 0x1
+ 2184 0064 13       		.uleb128 0x13
+ 2185 0065 00       		.byte	0x0
+ 2186 0066 00       		.byte	0x0
+ 2187 0067 0A       		.uleb128 0xa
+ 2188 0068 28       		.uleb128 0x28
+ 2189 0069 00       		.byte	0x0
+ 2190 006a 03       		.uleb128 0x3
+ 2191 006b 0E       		.uleb128 0xe
+ 2192 006c 1C       		.uleb128 0x1c
+ 2193 006d 0D       		.uleb128 0xd
+ 2194 006e 00       		.byte	0x0
+ 2195 006f 00       		.byte	0x0
+ 2196 0070 0B       		.uleb128 0xb
+ 2197 0071 16       		.uleb128 0x16
+ 2198 0072 00       		.byte	0x0
+ 2199 0073 03       		.uleb128 0x3
+ 2200 0074 0E       		.uleb128 0xe
+ 2201 0075 3A       		.uleb128 0x3a
+ 2202 0076 0B       		.uleb128 0xb
+ 2203 0077 3B       		.uleb128 0x3b
+ 2204 0078 05       		.uleb128 0x5
+ 2205 0079 49       		.uleb128 0x49
+ 2206 007a 13       		.uleb128 0x13
+ 2207 007b 00       		.byte	0x0
+ 2208 007c 00       		.byte	0x0
+ 2209 007d 0C       		.uleb128 0xc
+ 2210 007e 13       		.uleb128 0x13
+ 2211 007f 01       		.byte	0x1
+ 2212 0080 03       		.uleb128 0x3
+ 2213 0081 0E       		.uleb128 0xe
+ 2214 0082 0B       		.uleb128 0xb
+ 2215 0083 0B       		.uleb128 0xb
+ 2216 0084 3A       		.uleb128 0x3a
+ 2217 0085 0B       		.uleb128 0xb
+ 2218 0086 3B       		.uleb128 0x3b
+ 2219 0087 05       		.uleb128 0x5
+ 2220 0088 01       		.uleb128 0x1
+ 2221 0089 13       		.uleb128 0x13
+ 2222 008a 00       		.byte	0x0
+ 2223 008b 00       		.byte	0x0
+ 2224 008c 0D       		.uleb128 0xd
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 45
+
+
+ 2225 008d 0D       		.uleb128 0xd
+ 2226 008e 00       		.byte	0x0
+ 2227 008f 03       		.uleb128 0x3
+ 2228 0090 0E       		.uleb128 0xe
+ 2229 0091 3A       		.uleb128 0x3a
+ 2230 0092 0B       		.uleb128 0xb
+ 2231 0093 3B       		.uleb128 0x3b
+ 2232 0094 05       		.uleb128 0x5
+ 2233 0095 49       		.uleb128 0x49
+ 2234 0096 13       		.uleb128 0x13
+ 2235 0097 38       		.uleb128 0x38
+ 2236 0098 0A       		.uleb128 0xa
+ 2237 0099 00       		.byte	0x0
+ 2238 009a 00       		.byte	0x0
+ 2239 009b 0E       		.uleb128 0xe
+ 2240 009c 0D       		.uleb128 0xd
+ 2241 009d 00       		.byte	0x0
+ 2242 009e 03       		.uleb128 0x3
+ 2243 009f 08       		.uleb128 0x8
+ 2244 00a0 3A       		.uleb128 0x3a
+ 2245 00a1 0B       		.uleb128 0xb
+ 2246 00a2 3B       		.uleb128 0x3b
+ 2247 00a3 05       		.uleb128 0x5
+ 2248 00a4 49       		.uleb128 0x49
+ 2249 00a5 13       		.uleb128 0x13
+ 2250 00a6 38       		.uleb128 0x38
+ 2251 00a7 0A       		.uleb128 0xa
+ 2252 00a8 00       		.byte	0x0
+ 2253 00a9 00       		.byte	0x0
+ 2254 00aa 0F       		.uleb128 0xf
+ 2255 00ab 01       		.uleb128 0x1
+ 2256 00ac 01       		.byte	0x1
+ 2257 00ad 49       		.uleb128 0x49
+ 2258 00ae 13       		.uleb128 0x13
+ 2259 00af 01       		.uleb128 0x1
+ 2260 00b0 13       		.uleb128 0x13
+ 2261 00b1 00       		.byte	0x0
+ 2262 00b2 00       		.byte	0x0
+ 2263 00b3 10       		.uleb128 0x10
+ 2264 00b4 21       		.uleb128 0x21
+ 2265 00b5 00       		.byte	0x0
+ 2266 00b6 49       		.uleb128 0x49
+ 2267 00b7 13       		.uleb128 0x13
+ 2268 00b8 2F       		.uleb128 0x2f
+ 2269 00b9 0B       		.uleb128 0xb
+ 2270 00ba 00       		.byte	0x0
+ 2271 00bb 00       		.byte	0x0
+ 2272 00bc 11       		.uleb128 0x11
+ 2273 00bd 24       		.uleb128 0x24
+ 2274 00be 00       		.byte	0x0
+ 2275 00bf 0B       		.uleb128 0xb
+ 2276 00c0 0B       		.uleb128 0xb
+ 2277 00c1 3E       		.uleb128 0x3e
+ 2278 00c2 0B       		.uleb128 0xb
+ 2279 00c3 00       		.byte	0x0
+ 2280 00c4 00       		.byte	0x0
+ 2281 00c5 12       		.uleb128 0x12
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 46
+
+
+ 2282 00c6 2E       		.uleb128 0x2e
+ 2283 00c7 01       		.byte	0x1
+ 2284 00c8 3F       		.uleb128 0x3f
+ 2285 00c9 0C       		.uleb128 0xc
+ 2286 00ca 03       		.uleb128 0x3
+ 2287 00cb 0E       		.uleb128 0xe
+ 2288 00cc 3A       		.uleb128 0x3a
+ 2289 00cd 0B       		.uleb128 0xb
+ 2290 00ce 3B       		.uleb128 0x3b
+ 2291 00cf 0B       		.uleb128 0xb
+ 2292 00d0 27       		.uleb128 0x27
+ 2293 00d1 0C       		.uleb128 0xc
+ 2294 00d2 49       		.uleb128 0x49
+ 2295 00d3 13       		.uleb128 0x13
+ 2296 00d4 11       		.uleb128 0x11
+ 2297 00d5 01       		.uleb128 0x1
+ 2298 00d6 12       		.uleb128 0x12
+ 2299 00d7 01       		.uleb128 0x1
+ 2300 00d8 40       		.uleb128 0x40
+ 2301 00d9 06       		.uleb128 0x6
+ 2302 00da 01       		.uleb128 0x1
+ 2303 00db 13       		.uleb128 0x13
+ 2304 00dc 00       		.byte	0x0
+ 2305 00dd 00       		.byte	0x0
+ 2306 00de 13       		.uleb128 0x13
+ 2307 00df 05       		.uleb128 0x5
+ 2308 00e0 00       		.byte	0x0
+ 2309 00e1 03       		.uleb128 0x3
+ 2310 00e2 0E       		.uleb128 0xe
+ 2311 00e3 3A       		.uleb128 0x3a
+ 2312 00e4 0B       		.uleb128 0xb
+ 2313 00e5 3B       		.uleb128 0x3b
+ 2314 00e6 0B       		.uleb128 0xb
+ 2315 00e7 49       		.uleb128 0x49
+ 2316 00e8 13       		.uleb128 0x13
+ 2317 00e9 02       		.uleb128 0x2
+ 2318 00ea 0A       		.uleb128 0xa
+ 2319 00eb 00       		.byte	0x0
+ 2320 00ec 00       		.byte	0x0
+ 2321 00ed 14       		.uleb128 0x14
+ 2322 00ee 34       		.uleb128 0x34
+ 2323 00ef 00       		.byte	0x0
+ 2324 00f0 03       		.uleb128 0x3
+ 2325 00f1 08       		.uleb128 0x8
+ 2326 00f2 3A       		.uleb128 0x3a
+ 2327 00f3 0B       		.uleb128 0xb
+ 2328 00f4 3B       		.uleb128 0x3b
+ 2329 00f5 0B       		.uleb128 0xb
+ 2330 00f6 49       		.uleb128 0x49
+ 2331 00f7 13       		.uleb128 0x13
+ 2332 00f8 02       		.uleb128 0x2
+ 2333 00f9 0A       		.uleb128 0xa
+ 2334 00fa 00       		.byte	0x0
+ 2335 00fb 00       		.byte	0x0
+ 2336 00fc 15       		.uleb128 0x15
+ 2337 00fd 34       		.uleb128 0x34
+ 2338 00fe 00       		.byte	0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 47
+
+
+ 2339 00ff 03       		.uleb128 0x3
+ 2340 0100 0E       		.uleb128 0xe
+ 2341 0101 3A       		.uleb128 0x3a
+ 2342 0102 0B       		.uleb128 0xb
+ 2343 0103 3B       		.uleb128 0x3b
+ 2344 0104 0B       		.uleb128 0xb
+ 2345 0105 49       		.uleb128 0x49
+ 2346 0106 13       		.uleb128 0x13
+ 2347 0107 02       		.uleb128 0x2
+ 2348 0108 0A       		.uleb128 0xa
+ 2349 0109 00       		.byte	0x0
+ 2350 010a 00       		.byte	0x0
+ 2351 010b 16       		.uleb128 0x16
+ 2352 010c 2E       		.uleb128 0x2e
+ 2353 010d 01       		.byte	0x1
+ 2354 010e 3F       		.uleb128 0x3f
+ 2355 010f 0C       		.uleb128 0xc
+ 2356 0110 03       		.uleb128 0x3
+ 2357 0111 0E       		.uleb128 0xe
+ 2358 0112 3A       		.uleb128 0x3a
+ 2359 0113 0B       		.uleb128 0xb
+ 2360 0114 3B       		.uleb128 0x3b
+ 2361 0115 0B       		.uleb128 0xb
+ 2362 0116 27       		.uleb128 0x27
+ 2363 0117 0C       		.uleb128 0xc
+ 2364 0118 11       		.uleb128 0x11
+ 2365 0119 01       		.uleb128 0x1
+ 2366 011a 12       		.uleb128 0x12
+ 2367 011b 01       		.uleb128 0x1
+ 2368 011c 40       		.uleb128 0x40
+ 2369 011d 06       		.uleb128 0x6
+ 2370 011e 01       		.uleb128 0x1
+ 2371 011f 13       		.uleb128 0x13
+ 2372 0120 00       		.byte	0x0
+ 2373 0121 00       		.byte	0x0
+ 2374 0122 17       		.uleb128 0x17
+ 2375 0123 34       		.uleb128 0x34
+ 2376 0124 00       		.byte	0x0
+ 2377 0125 03       		.uleb128 0x3
+ 2378 0126 08       		.uleb128 0x8
+ 2379 0127 3A       		.uleb128 0x3a
+ 2380 0128 0B       		.uleb128 0xb
+ 2381 0129 3B       		.uleb128 0x3b
+ 2382 012a 05       		.uleb128 0x5
+ 2383 012b 49       		.uleb128 0x49
+ 2384 012c 13       		.uleb128 0x13
+ 2385 012d 02       		.uleb128 0x2
+ 2386 012e 0A       		.uleb128 0xa
+ 2387 012f 00       		.byte	0x0
+ 2388 0130 00       		.byte	0x0
+ 2389 0131 18       		.uleb128 0x18
+ 2390 0132 34       		.uleb128 0x34
+ 2391 0133 00       		.byte	0x0
+ 2392 0134 03       		.uleb128 0x3
+ 2393 0135 0E       		.uleb128 0xe
+ 2394 0136 3A       		.uleb128 0x3a
+ 2395 0137 0B       		.uleb128 0xb
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 48
+
+
+ 2396 0138 3B       		.uleb128 0x3b
+ 2397 0139 05       		.uleb128 0x5
+ 2398 013a 49       		.uleb128 0x49
+ 2399 013b 13       		.uleb128 0x13
+ 2400 013c 3F       		.uleb128 0x3f
+ 2401 013d 0C       		.uleb128 0xc
+ 2402 013e 3C       		.uleb128 0x3c
+ 2403 013f 0C       		.uleb128 0xc
+ 2404 0140 00       		.byte	0x0
+ 2405 0141 00       		.byte	0x0
+ 2406 0142 19       		.uleb128 0x19
+ 2407 0143 26       		.uleb128 0x26
+ 2408 0144 00       		.byte	0x0
+ 2409 0145 49       		.uleb128 0x49
+ 2410 0146 13       		.uleb128 0x13
+ 2411 0147 00       		.byte	0x0
+ 2412 0148 00       		.byte	0x0
+ 2413 0149 00       		.byte	0x0
+ 2414              		.section	.debug_pubnames,"",%progbits
+ 2415 0000 5E000000 		.4byte	0x5e
+ 2416 0004 0200     		.2byte	0x2
+ 2417 0006 00000000 		.4byte	.Ldebug_info0
+ 2418 000a 940E0000 		.4byte	0xe94
+ 2419 000e 400D0000 		.4byte	0xd40
+ 2420 0012 4253505F 		.ascii	"BSP_OS_SemCreate\000"
+ 2420      4F535F53 
+ 2420      656D4372 
+ 2420      65617465 
+ 2420      00
+ 2421 0023 9C0D0000 		.4byte	0xd9c
+ 2422 0027 4253505F 		.ascii	"BSP_OS_SemWait\000"
+ 2422      4F535F53 
+ 2422      656D5761 
+ 2422      697400
+ 2423 0036 F20D0000 		.4byte	0xdf2
+ 2424 003a 4253505F 		.ascii	"BSP_OS_SemPost\000"
+ 2424      4F535F53 
+ 2424      656D506F 
+ 2424      737400
+ 2425 0049 2C0E0000 		.4byte	0xe2c
+ 2426 004d 4253505F 		.ascii	"BSP_OS_TimeDlyMs\000"
+ 2426      4F535F54 
+ 2426      696D6544 
+ 2426      6C794D73 
+ 2426      00
+ 2427 005e 00000000 		.4byte	0x0
+ 2428              		.section	.debug_aranges,"",%progbits
+ 2429 0000 34000000 		.4byte	0x34
+ 2430 0004 0200     		.2byte	0x2
+ 2431 0006 00000000 		.4byte	.Ldebug_info0
+ 2432 000a 04       		.byte	0x4
+ 2433 000b 00       		.byte	0x0
+ 2434 000c 0000     		.2byte	0x0
+ 2435 000e 0000     		.2byte	0x0
+ 2436 0010 00000000 		.4byte	.LFB0
+ 2437 0014 34000000 		.4byte	.LFE0-.LFB0
+ 2438 0018 00000000 		.4byte	.LFB1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 49
+
+
+ 2439 001c 54000000 		.4byte	.LFE1-.LFB1
+ 2440 0020 00000000 		.4byte	.LFB2
+ 2441 0024 32000000 		.4byte	.LFE2-.LFB2
+ 2442 0028 00000000 		.4byte	.LFB3
+ 2443 002c 86000000 		.4byte	.LFE3-.LFB3
+ 2444 0030 00000000 		.4byte	0x0
+ 2445 0034 00000000 		.4byte	0x0
+ 2446              		.section	.debug_ranges,"",%progbits
+ 2447              	.Ldebug_ranges0:
+ 2448 0000 00000000 		.4byte	.Ltext0
+ 2449 0004 00000000 		.4byte	.Letext0
+ 2450 0008 00000000 		.4byte	.LFB0
+ 2451 000c 34000000 		.4byte	.LFE0
+ 2452 0010 00000000 		.4byte	.LFB1
+ 2453 0014 54000000 		.4byte	.LFE1
+ 2454 0018 00000000 		.4byte	.LFB2
+ 2455 001c 32000000 		.4byte	.LFE2
+ 2456 0020 00000000 		.4byte	.LFB3
+ 2457 0024 86000000 		.4byte	.LFE3
+ 2458 0028 00000000 		.4byte	0x0
+ 2459 002c 00000000 		.4byte	0x0
+ 2460              		.section	.debug_str,"MS",%progbits,1
+ 2461              	.LASF222:
+ 2462 0000 6F735F74 		.ascii	"os_tcb\000"
+ 2462      636200
+ 2463              	.LASF105:
+ 2464 0007 4F535F45 		.ascii	"OS_ERR_PRIO_INVALID\000"
+ 2464      52525F50 
+ 2464      52494F5F 
+ 2464      494E5641 
+ 2464      4C494400 
+ 2465              	.LASF198:
+ 2466 001b 4F535F45 		.ascii	"OS_ERR\000"
+ 2466      525200
+ 2467              	.LASF21:
+ 2468 0022 4F535F43 		.ascii	"OS_CTX_SW_CTR\000"
+ 2468      54585F53 
+ 2468      575F4354 
+ 2468      5200
+ 2469              	.LASF292:
+ 2470 0030 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 2470      4320342E 
+ 2470      342E3100 
+ 2471              	.LASF184:
+ 2472 003c 4F535F45 		.ascii	"OS_ERR_TMR_ISR\000"
+ 2472      52525F54 
+ 2472      4D525F49 
+ 2472      535200
+ 2473              	.LASF171:
+ 2474 004b 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_MINUTES\000"
+ 2474      52525F54 
+ 2474      494D455F 
+ 2474      494E5641 
+ 2474      4C49445F 
+ 2475              	.LASF38:
+ 2476 0067 4F535F45 		.ascii	"OS_ERR_A\000"
+ 2476      52525F41 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 50
+
+
+ 2476      00
+ 2477              	.LASF40:
+ 2478 0070 4F535F45 		.ascii	"OS_ERR_B\000"
+ 2478      52525F42 
+ 2478      00
+ 2479              	.LASF41:
+ 2480 0079 4F535F45 		.ascii	"OS_ERR_C\000"
+ 2480      52525F43 
+ 2480      00
+ 2481              	.LASF43:
+ 2482 0082 4F535F45 		.ascii	"OS_ERR_D\000"
+ 2482      52525F44 
+ 2482      00
+ 2483              	.LASF45:
+ 2484 008b 4F535F45 		.ascii	"OS_ERR_E\000"
+ 2484      52525F45 
+ 2484      00
+ 2485              	.LASF46:
+ 2486 0094 4F535F45 		.ascii	"OS_ERR_F\000"
+ 2486      52525F46 
+ 2486      00
+ 2487              	.LASF52:
+ 2488 009d 4F535F45 		.ascii	"OS_ERR_G\000"
+ 2488      52525F47 
+ 2488      00
+ 2489              	.LASF53:
+ 2490 00a6 4F535F45 		.ascii	"OS_ERR_H\000"
+ 2490      52525F48 
+ 2490      00
+ 2491              	.LASF54:
+ 2492 00af 4F535F45 		.ascii	"OS_ERR_I\000"
+ 2492      52525F49 
+ 2492      00
+ 2493              	.LASF61:
+ 2494 00b8 4F535F45 		.ascii	"OS_ERR_J\000"
+ 2494      52525F4A 
+ 2494      00
+ 2495              	.LASF62:
+ 2496 00c1 4F535F45 		.ascii	"OS_ERR_K\000"
+ 2496      52525F4B 
+ 2496      00
+ 2497              	.LASF63:
+ 2498 00ca 4F535F45 		.ascii	"OS_ERR_L\000"
+ 2498      52525F4C 
+ 2498      00
+ 2499              	.LASF65:
+ 2500 00d3 4F535F45 		.ascii	"OS_ERR_M\000"
+ 2500      52525F4D 
+ 2500      00
+ 2501              	.LASF81:
+ 2502 00dc 4F535F45 		.ascii	"OS_ERR_N\000"
+ 2502      52525F4E 
+ 2502      00
+ 2503              	.LASF84:
+ 2504 00e5 4F535F45 		.ascii	"OS_ERR_O\000"
+ 2504      52525F4F 
+ 2504      00
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 51
+
+
+ 2505              	.LASF92:
+ 2506 00ee 4F535F45 		.ascii	"OS_ERR_P\000"
+ 2506      52525F50 
+ 2506      00
+ 2507              	.LASF107:
+ 2508 00f7 4F535F45 		.ascii	"OS_ERR_Q\000"
+ 2508      52525F51 
+ 2508      00
+ 2509              	.LASF112:
+ 2510 0100 4F535F45 		.ascii	"OS_ERR_R\000"
+ 2510      52525F52 
+ 2510      00
+ 2511              	.LASF116:
+ 2512 0109 4F535F45 		.ascii	"OS_ERR_S\000"
+ 2512      52525F53 
+ 2512      00
+ 2513              	.LASF133:
+ 2514 0112 4F535F45 		.ascii	"OS_ERR_T\000"
+ 2514      52525F54 
+ 2514      00
+ 2515              	.LASF191:
+ 2516 011b 4F535F45 		.ascii	"OS_ERR_U\000"
+ 2516      52525F55 
+ 2516      00
+ 2517              	.LASF192:
+ 2518 0124 4F535F45 		.ascii	"OS_ERR_V\000"
+ 2518      52525F56 
+ 2518      00
+ 2519              	.LASF193:
+ 2520 012d 4F535F45 		.ascii	"OS_ERR_W\000"
+ 2520      52525F57 
+ 2520      00
+ 2521              	.LASF194:
+ 2522 0136 4F535F45 		.ascii	"OS_ERR_X\000"
+ 2522      52525F58 
+ 2522      00
+ 2523              	.LASF181:
+ 2524 013f 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_PERIOD\000"
+ 2524      52525F54 
+ 2524      4D525F49 
+ 2524      4E56414C 
+ 2524      49445F50 
+ 2525              	.LASF295:
+ 2526 0159 6F735F65 		.ascii	"os_err\000"
+ 2526      727200
+ 2527              	.LASF210:
+ 2528 0160 4E627245 		.ascii	"NbrEntries\000"
+ 2528      6E747269 
+ 2528      657300
+ 2529              	.LASF58:
+ 2530 016b 4F535F45 		.ascii	"OS_ERR_INT_Q_SIZE\000"
+ 2530      52525F49 
+ 2530      4E545F51 
+ 2530      5F53495A 
+ 2530      4500
+ 2531              	.LASF293:
+ 2532 017d 2E2E5C2E 		.ascii	"..\\..\\BSP\\OS\\uCOS-III\\bsp_os.c\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 52
+
+
+ 2532      2E5C4253 
+ 2532      505C4F53 
+ 2532      5C75434F 
+ 2532      532D4949 
+ 2533              	.LASF42:
+ 2534 019c 4F535F45 		.ascii	"OS_ERR_CREATE_ISR\000"
+ 2534      52525F43 
+ 2534      52454154 
+ 2534      455F4953 
+ 2534      5200
+ 2535              	.LASF284:
+ 2536 01ae 705F7365 		.ascii	"p_sem\000"
+ 2536      6D00
+ 2537              	.LASF20:
+ 2538 01b4 4F535F43 		.ascii	"OS_CPU_USAGE\000"
+ 2538      50555F55 
+ 2538      53414745 
+ 2538      00
+ 2539              	.LASF165:
+ 2540 01c1 4F535F45 		.ascii	"OS_ERR_TICK_STK_SIZE_INVALID\000"
+ 2540      52525F54 
+ 2540      49434B5F 
+ 2540      53544B5F 
+ 2540      53495A45 
+ 2541              	.LASF9:
+ 2542 01de 4350555F 		.ascii	"CPU_INT32U\000"
+ 2542      494E5433 
+ 2542      325500
+ 2543              	.LASF130:
+ 2544 01e9 4F535F45 		.ascii	"OS_ERR_STK_INVALID\000"
+ 2544      52525F53 
+ 2544      544B5F49 
+ 2544      4E56414C 
+ 2544      494400
+ 2545              	.LASF291:
+ 2546 01fc 4253505F 		.ascii	"BSP_OS_SemPost\000"
+ 2546      4F535F53 
+ 2546      656D506F 
+ 2546      737400
+ 2547              	.LASF252:
+ 2548 020b 466C6167 		.ascii	"FlagsOpt\000"
+ 2548      734F7074 
+ 2548      00
+ 2549              	.LASF146:
+ 2550 0214 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_ISR\000"
+ 2550      52525F54 
+ 2550      41534B5F 
+ 2550      52455355 
+ 2550      4D455F49 
+ 2551              	.LASF100:
+ 2552 022b 4F535F45 		.ascii	"OS_ERR_PEND_WOULD_BLOCK\000"
+ 2552      52525F50 
+ 2552      454E445F 
+ 2552      574F554C 
+ 2552      445F424C 
+ 2553              	.LASF134:
+ 2554 0243 4F535F45 		.ascii	"OS_ERR_TASK_CHANGE_PRIO_ISR\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 53
+
+
+ 2554      52525F54 
+ 2554      41534B5F 
+ 2554      4348414E 
+ 2554      47455F50 
+ 2555              	.LASF124:
+ 2556 025f 4F535F45 		.ascii	"OS_ERR_STAT_RESET_ISR\000"
+ 2556      52525F53 
+ 2556      5441545F 
+ 2556      52455345 
+ 2556      545F4953 
+ 2557              	.LASF99:
+ 2558 0275 4F535F45 		.ascii	"OS_ERR_PEND_LOCKED\000"
+ 2558      52525F50 
+ 2558      454E445F 
+ 2558      4C4F434B 
+ 2558      454400
+ 2559              	.LASF27:
+ 2560 0288 4F535F4F 		.ascii	"OS_OBJ_QTY\000"
+ 2560      424A5F51 
+ 2560      545900
+ 2561              	.LASF144:
+ 2562 0293 4F535F45 		.ascii	"OS_ERR_TASK_NOT_SUSPENDED\000"
+ 2562      52525F54 
+ 2562      41534B5F 
+ 2562      4E4F545F 
+ 2562      53555350 
+ 2563              	.LASF142:
+ 2564 02ad 4F535F45 		.ascii	"OS_ERR_TASK_NOT_DLY\000"
+ 2564      52525F54 
+ 2564      41534B5F 
+ 2564      4E4F545F 
+ 2564      444C5900 
+ 2565              	.LASF217:
+ 2566 02c1 44626750 		.ascii	"DbgPrevPtr\000"
+ 2566      72657650 
+ 2566      747200
+ 2567              	.LASF56:
+ 2568 02cc 4F535F45 		.ascii	"OS_ERR_INT_Q\000"
+ 2568      52525F49 
+ 2568      4E545F51 
+ 2568      00
+ 2569              	.LASF218:
+ 2570 02d9 4462674E 		.ascii	"DbgNextPtr\000"
+ 2570      65787450 
+ 2570      747200
+ 2571              	.LASF156:
+ 2572 02e4 4F535F45 		.ascii	"OS_ERR_TASK_WAITING\000"
+ 2572      52525F54 
+ 2572      41534B5F 
+ 2572      57414954 
+ 2572      494E4700 
+ 2573              	.LASF39:
+ 2574 02f8 4F535F45 		.ascii	"OS_ERR_ACCEPT_ISR\000"
+ 2574      52525F41 
+ 2574      43434550 
+ 2574      545F4953 
+ 2574      5200
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 54
+
+
+ 2575              	.LASF154:
+ 2576 030a 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_ISR\000"
+ 2576      52525F54 
+ 2576      41534B5F 
+ 2576      53555350 
+ 2576      454E445F 
+ 2577              	.LASF80:
+ 2578 0322 4F535F45 		.ascii	"OS_ERR_MUTEX_NESTING\000"
+ 2578      52525F4D 
+ 2578      55544558 
+ 2578      5F4E4553 
+ 2578      54494E47 
+ 2579              	.LASF182:
+ 2580 0337 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_STATE\000"
+ 2580      52525F54 
+ 2580      4D525F49 
+ 2580      4E56414C 
+ 2580      49445F53 
+ 2581              	.LASF234:
+ 2582 0350 50656E64 		.ascii	"PendOn\000"
+ 2582      4F6E00
+ 2583              	.LASF239:
+ 2584 0357 50656E64 		.ascii	"PendDataTblEntries\000"
+ 2584      44617461 
+ 2584      54626C45 
+ 2584      6E747269 
+ 2584      657300
+ 2585              	.LASF286:
+ 2586 036a 705F7365 		.ascii	"p_sem_name\000"
+ 2586      6D5F6E61 
+ 2586      6D6500
+ 2587              	.LASF85:
+ 2588 0375 4F535F45 		.ascii	"OS_ERR_OBJ_CREATED\000"
+ 2588      52525F4F 
+ 2588      424A5F43 
+ 2588      52454154 
+ 2588      454400
+ 2589              	.LASF279:
+ 2590 0388 5461696C 		.ascii	"TailPtr\000"
+ 2590      50747200 
+ 2591              	.LASF152:
+ 2592 0390 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_IDLE\000"
+ 2592      52525F54 
+ 2592      41534B5F 
+ 2592      53555350 
+ 2592      454E445F 
+ 2593              	.LASF57:
+ 2594 03a9 4F535F45 		.ascii	"OS_ERR_INT_Q_FULL\000"
+ 2594      52525F49 
+ 2594      4E545F51 
+ 2594      5F46554C 
+ 2594      4C00
+ 2595              	.LASF242:
+ 2596 03bb 5469636B 		.ascii	"TickCtrMatch\000"
+ 2596      4374724D 
+ 2596      61746368 
+ 2596      00
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 55
+
+
+ 2597              	.LASF273:
+ 2598 03c8 5264794D 		.ascii	"RdyMsgPtr\000"
+ 2598      73675074 
+ 2598      7200
+ 2599              	.LASF281:
+ 2600 03d2 6F735F70 		.ascii	"os_pend_obj\000"
+ 2600      656E645F 
+ 2600      6F626A00 
+ 2601              	.LASF55:
+ 2602 03de 4F535F45 		.ascii	"OS_ERR_ILLEGAL_CREATE_RUN_TIME\000"
+ 2602      52525F49 
+ 2602      4C4C4547 
+ 2602      414C5F43 
+ 2602      52454154 
+ 2603              	.LASF250:
+ 2604 03fd 466C6167 		.ascii	"FlagsPend\000"
+ 2604      7350656E 
+ 2604      6400
+ 2605              	.LASF180:
+ 2606 0407 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_DLY\000"
+ 2606      52525F54 
+ 2606      4D525F49 
+ 2606      4E56414C 
+ 2606      49445F44 
+ 2607              	.LASF256:
+ 2608 041e 43747853 		.ascii	"CtxSwCtr\000"
+ 2608      77437472 
+ 2608      00
+ 2609              	.LASF147:
+ 2610 0427 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_PRIO\000"
+ 2610      52525F54 
+ 2610      41534B5F 
+ 2610      52455355 
+ 2610      4D455F50 
+ 2611              	.LASF30:
+ 2612 043f 4F535F50 		.ascii	"OS_PRIO\000"
+ 2612      52494F00 
+ 2613              	.LASF13:
+ 2614 0447 666C6F61 		.ascii	"float\000"
+ 2614      7400
+ 2615              	.LASF101:
+ 2616 044d 4F535F45 		.ascii	"OS_ERR_POST_NULL_PTR\000"
+ 2616      52525F50 
+ 2616      4F53545F 
+ 2616      4E554C4C 
+ 2616      5F505452 
+ 2617              	.LASF83:
+ 2618 0462 4F535F45 		.ascii	"OS_ERR_NO_MORE_ID_AVAIL\000"
+ 2618      52525F4E 
+ 2618      4F5F4D4F 
+ 2618      52455F49 
+ 2618      445F4156 
+ 2619              	.LASF265:
+ 2620 047a 4F535F54 		.ascii	"OS_TICK_SPOKE\000"
+ 2620      49434B5F 
+ 2620      53504F4B 
+ 2620      4500
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 56
+
+
+ 2621              	.LASF73:
+ 2622 0488 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_DATA\000"
+ 2622      52525F4D 
+ 2622      454D5F49 
+ 2622      4E56414C 
+ 2622      49445F50 
+ 2623              	.LASF185:
+ 2624 04a2 4F535F45 		.ascii	"OS_ERR_TMR_NO_CALLBACK\000"
+ 2624      52525F54 
+ 2624      4D525F4E 
+ 2624      4F5F4341 
+ 2624      4C4C4241 
+ 2625              	.LASF178:
+ 2626 04b9 4F535F45 		.ascii	"OS_ERR_TMR_INACTIVE\000"
+ 2626      52525F54 
+ 2626      4D525F49 
+ 2626      4E414354 
+ 2626      49564500 
+ 2627              	.LASF158:
+ 2628 04cd 4F535F45 		.ascii	"OS_ERR_TLS_ID_INVALID\000"
+ 2628      52525F54 
+ 2628      4C535F49 
+ 2628      445F494E 
+ 2628      56414C49 
+ 2629              	.LASF11:
+ 2630 04e3 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2630      206C6F6E 
+ 2630      6720756E 
+ 2630      7369676E 
+ 2630      65642069 
+ 2631              	.LASF149:
+ 2632 04fa 4F535F45 		.ascii	"OS_ERR_TASK_RUNNING\000"
+ 2632      52525F54 
+ 2632      41534B5F 
+ 2632      52554E4E 
+ 2632      494E4700 
+ 2633              	.LASF263:
+ 2634 050e 53746B55 		.ascii	"StkUsed\000"
+ 2634      73656400 
+ 2635              	.LASF183:
+ 2636 0516 4F535F45 		.ascii	"OS_ERR_TMR_INVALID\000"
+ 2636      52525F54 
+ 2636      4D525F49 
+ 2636      4E56414C 
+ 2636      494400
+ 2637              	.LASF268:
+ 2638 0529 4F535F50 		.ascii	"OS_PEND_DATA\000"
+ 2638      454E445F 
+ 2638      44415441 
+ 2638      00
+ 2639              	.LASF153:
+ 2640 0536 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_INT_HANDLER\000"
+ 2640      52525F54 
+ 2640      41534B5F 
+ 2640      53555350 
+ 2640      454E445F 
+ 2641              	.LASF138:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 57
+
+
+ 2642 0556 4F535F45 		.ascii	"OS_ERR_TASK_DEL_INVALID\000"
+ 2642      52525F54 
+ 2642      41534B5F 
+ 2642      44454C5F 
+ 2642      494E5641 
+ 2643              	.LASF188:
+ 2644 056e 4F535F45 		.ascii	"OS_ERR_TMR_STK_INVALID\000"
+ 2644      52525F54 
+ 2644      4D525F53 
+ 2644      544B5F49 
+ 2644      4E56414C 
+ 2645              	.LASF4:
+ 2646 0585 4350555F 		.ascii	"CPU_INT08U\000"
+ 2646      494E5430 
+ 2646      385500
+ 2647              	.LASF205:
+ 2648 0590 6F735F6D 		.ascii	"os_msg\000"
+ 2648      736700
+ 2649              	.LASF157:
+ 2650 0597 4F535F45 		.ascii	"OS_ERR_TCB_INVALID\000"
+ 2650      52525F54 
+ 2650      43425F49 
+ 2650      4E56414C 
+ 2650      494400
+ 2651              	.LASF238:
+ 2652 05aa 53746B53 		.ascii	"StkSize\000"
+ 2652      697A6500 
+ 2653              	.LASF230:
+ 2654 05b2 53746B42 		.ascii	"StkBasePtr\000"
+ 2654      61736550 
+ 2654      747200
+ 2655              	.LASF109:
+ 2656 05bd 4F535F45 		.ascii	"OS_ERR_Q_EMPTY\000"
+ 2656      52525F51 
+ 2656      5F454D50 
+ 2656      545900
+ 2657              	.LASF173:
+ 2658 05cc 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_MILLISECONDS\000"
+ 2658      52525F54 
+ 2658      494D455F 
+ 2658      494E5641 
+ 2658      4C49445F 
+ 2659              	.LASF32:
+ 2660 05ed 4F535F52 		.ascii	"OS_REG\000"
+ 2660      454700
+ 2661              	.LASF82:
+ 2662 05f4 4F535F45 		.ascii	"OS_ERR_NAME\000"
+ 2662      52525F4E 
+ 2662      414D4500 
+ 2663              	.LASF245:
+ 2664 0600 54696D65 		.ascii	"TimeQuantaCtr\000"
+ 2664      5175616E 
+ 2664      74614374 
+ 2664      7200
+ 2665              	.LASF35:
+ 2666 060e 4F535F53 		.ascii	"OS_STATUS\000"
+ 2666      54415455 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 58
+
+
+ 2666      5300
+ 2667              	.LASF236:
+ 2668 0618 5461736B 		.ascii	"TaskState\000"
+ 2668      53746174 
+ 2668      6500
+ 2669              	.LASF162:
+ 2670 0622 4F535F45 		.ascii	"OS_ERR_TLS_DESTRUCT_ASSIGNED\000"
+ 2670      52525F54 
+ 2670      4C535F44 
+ 2670      45535452 
+ 2670      5543545F 
+ 2671              	.LASF78:
+ 2672 063f 4F535F45 		.ascii	"OS_ERR_MUTEX_NOT_OWNER\000"
+ 2672      52525F4D 
+ 2672      55544558 
+ 2672      5F4E4F54 
+ 2672      5F4F574E 
+ 2673              	.LASF25:
+ 2674 0656 4F535F4D 		.ascii	"OS_MSG_SIZE\000"
+ 2674      53475F53 
+ 2674      495A4500 
+ 2675              	.LASF170:
+ 2676 0662 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_HOURS\000"
+ 2676      52525F54 
+ 2676      494D455F 
+ 2676      494E5641 
+ 2676      4C49445F 
+ 2677              	.LASF186:
+ 2678 067c 4F535F45 		.ascii	"OS_ERR_TMR_NON_AVAIL\000"
+ 2678      52525F54 
+ 2678      4D525F4E 
+ 2678      4F4E5F41 
+ 2678      5641494C 
+ 2679              	.LASF0:
+ 2680 0691 4350555F 		.ascii	"CPU_CHAR\000"
+ 2680      43484152 
+ 2680      00
+ 2681              	.LASF135:
+ 2682 069a 4F535F45 		.ascii	"OS_ERR_TASK_CREATE_ISR\000"
+ 2682      52525F54 
+ 2682      41534B5F 
+ 2682      43524541 
+ 2682      54455F49 
+ 2683              	.LASF17:
+ 2684 06b1 4350555F 		.ascii	"CPU_STK_SIZE\000"
+ 2684      53544B5F 
+ 2684      53495A45 
+ 2684      00
+ 2685              	.LASF24:
+ 2686 06be 4F535F4D 		.ascii	"OS_MSG_QTY\000"
+ 2686      53475F51 
+ 2686      545900
+ 2687              	.LASF91:
+ 2688 06c9 4F535F45 		.ascii	"OS_ERR_OS_RUNNING\000"
+ 2688      52525F4F 
+ 2688      535F5255 
+ 2688      4E4E494E 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 59
+
+
+ 2688      4700
+ 2689              	.LASF264:
+ 2690 06db 53746B46 		.ascii	"StkFree\000"
+ 2690      72656500 
+ 2691              	.LASF241:
+ 2692 06e3 5469636B 		.ascii	"TickCtrPrev\000"
+ 2692      43747250 
+ 2692      72657600 
+ 2693              	.LASF209:
+ 2694 06ef 4E627245 		.ascii	"NbrEntriesSize\000"
+ 2694      6E747269 
+ 2694      65735369 
+ 2694      7A6500
+ 2695              	.LASF176:
+ 2696 06fe 4F535F45 		.ascii	"OS_ERR_TIME_ZERO_DLY\000"
+ 2696      52525F54 
+ 2696      494D455F 
+ 2696      5A45524F 
+ 2696      5F444C59 
+ 2697              	.LASF228:
+ 2698 0713 5469636B 		.ascii	"TickPrevPtr\000"
+ 2698      50726576 
+ 2698      50747200 
+ 2699              	.LASF251:
+ 2700 071f 466C6167 		.ascii	"FlagsRdy\000"
+ 2700      73526479 
+ 2700      00
+ 2701              	.LASF126:
+ 2702 0728 4F535F45 		.ascii	"OS_ERR_STAT_STK_INVALID\000"
+ 2702      52525F53 
+ 2702      5441545F 
+ 2702      53544B5F 
+ 2702      494E5641 
+ 2703              	.LASF48:
+ 2704 0740 4F535F45 		.ascii	"OS_ERR_FLAG_GRP_DEPLETED\000"
+ 2704      52525F46 
+ 2704      4C41475F 
+ 2704      4752505F 
+ 2704      4445504C 
+ 2705              	.LASF69:
+ 2706 0759 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_BLKS\000"
+ 2706      52525F4D 
+ 2706      454D5F49 
+ 2706      4E56414C 
+ 2706      49445F42 
+ 2707              	.LASF248:
+ 2708 0771 4D736751 		.ascii	"MsgQPendTimeMax\000"
+ 2708      50656E64 
+ 2708      54696D65 
+ 2708      4D617800 
+ 2709              	.LASF283:
+ 2710 0781 4253505F 		.ascii	"BSP_OS_SEM_VAL\000"
+ 2710      4F535F53 
+ 2710      454D5F56 
+ 2710      414C00
+ 2711              	.LASF247:
+ 2712 0790 4D736751 		.ascii	"MsgQPendTime\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 60
+
+
+ 2712      50656E64 
+ 2712      54696D65 
+ 2712      00
+ 2713              	.LASF199:
+ 2714 079d 4F535F4D 		.ascii	"OS_MSG\000"
+ 2714      534700
+ 2715              	.LASF179:
+ 2716 07a4 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_DEST\000"
+ 2716      52525F54 
+ 2716      4D525F49 
+ 2716      4E56414C 
+ 2716      49445F44 
+ 2717              	.LASF282:
+ 2718 07bc 4253505F 		.ascii	"BSP_OS_SEM\000"
+ 2718      4F535F53 
+ 2718      454D00
+ 2719              	.LASF118:
+ 2720 07c7 4F535F45 		.ascii	"OS_ERR_SCHED_LOCK_ISR\000"
+ 2720      52525F53 
+ 2720      43484544 
+ 2720      5F4C4F43 
+ 2720      4B5F4953 
+ 2721              	.LASF44:
+ 2722 07dd 4F535F45 		.ascii	"OS_ERR_DEL_ISR\000"
+ 2722      52525F44 
+ 2722      454C5F49 
+ 2722      535200
+ 2723              	.LASF110:
+ 2724 07ec 4F535F45 		.ascii	"OS_ERR_Q_MAX\000"
+ 2724      52525F51 
+ 2724      5F4D4158 
+ 2724      00
+ 2725              	.LASF226:
+ 2726 07f9 50726576 		.ascii	"PrevPtr\000"
+ 2726      50747200 
+ 2727              	.LASF2:
+ 2728 0801 63686172 		.ascii	"char\000"
+ 2728      00
+ 2729              	.LASF28:
+ 2730 0806 4F535F4F 		.ascii	"OS_OBJ_TYPE\000"
+ 2730      424A5F54 
+ 2730      59504500 
+ 2731              	.LASF161:
+ 2732 0812 4F535F45 		.ascii	"OS_ERR_TLS_NOT_EN\000"
+ 2732      52525F54 
+ 2732      4C535F4E 
+ 2732      4F545F45 
+ 2732      4E00
+ 2733              	.LASF288:
+ 2734 0824 4253505F 		.ascii	"BSP_OS_SemWait\000"
+ 2734      4F535F53 
+ 2734      656D5761 
+ 2734      697400
+ 2735              	.LASF89:
+ 2736 0833 4F535F45 		.ascii	"OS_ERR_OPT_INVALID\000"
+ 2736      52525F4F 
+ 2736      50545F49 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 61
+
+
+ 2736      4E56414C 
+ 2736      494400
+ 2737              	.LASF117:
+ 2738 0846 4F535F45 		.ascii	"OS_ERR_SCHED_INVALID_TIME_SLICE\000"
+ 2738      52525F53 
+ 2738      43484544 
+ 2738      5F494E56 
+ 2738      414C4944 
+ 2739              	.LASF290:
+ 2740 0866 646C795F 		.ascii	"dly_ticks\000"
+ 2740      7469636B 
+ 2740      7300
+ 2741              	.LASF246:
+ 2742 0870 4D736751 		.ascii	"MsgQ\000"
+ 2742      00
+ 2743              	.LASF296:
+ 2744 0875 4253505F 		.ascii	"BSP_OS_TimeDlyMs\000"
+ 2744      4F535F54 
+ 2744      696D6544 
+ 2744      6C794D73 
+ 2744      00
+ 2745              	.LASF31:
+ 2746 0886 4F535F52 		.ascii	"OS_RATE_HZ\000"
+ 2746      4154455F 
+ 2746      485A00
+ 2747              	.LASF231:
+ 2748 0891 5461736B 		.ascii	"TaskEntryAddr\000"
+ 2748      456E7472 
+ 2748      79416464 
+ 2748      7200
+ 2749              	.LASF125:
+ 2750 089f 4F535F45 		.ascii	"OS_ERR_STAT_PRIO_INVALID\000"
+ 2750      52525F53 
+ 2750      5441545F 
+ 2750      5052494F 
+ 2750      5F494E56 
+ 2751              	.LASF174:
+ 2752 08b8 4F535F45 		.ascii	"OS_ERR_TIME_NOT_DLY\000"
+ 2752      52525F54 
+ 2752      494D455F 
+ 2752      4E4F545F 
+ 2752      444C5900 
+ 2753              	.LASF215:
+ 2754 08cc 4E616D65 		.ascii	"NamePtr\000"
+ 2754      50747200 
+ 2755              	.LASF235:
+ 2756 08d4 50656E64 		.ascii	"PendStatus\000"
+ 2756      53746174 
+ 2756      757300
+ 2757              	.LASF204:
+ 2758 08df 4F535F4D 		.ascii	"OS_MSG_Q\000"
+ 2758      53475F51 
+ 2758      00
+ 2759              	.LASF214:
+ 2760 08e8 54797065 		.ascii	"Type\000"
+ 2760      00
+ 2761              	.LASF196:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 62
+
+
+ 2762 08ed 4F535F45 		.ascii	"OS_ERR_YIELD_ISR\000"
+ 2762      52525F59 
+ 2762      49454C44 
+ 2762      5F495352 
+ 2762      00
+ 2763              	.LASF86:
+ 2764 08fe 4F535F45 		.ascii	"OS_ERR_OBJ_DEL\000"
+ 2764      52525F4F 
+ 2764      424A5F44 
+ 2764      454C00
+ 2765              	.LASF19:
+ 2766 090d 4350555F 		.ascii	"CPU_TS\000"
+ 2766      545300
+ 2767              	.LASF12:
+ 2768 0914 6C6F6E67 		.ascii	"long long int\000"
+ 2768      206C6F6E 
+ 2768      6720696E 
+ 2768      7400
+ 2769              	.LASF50:
+ 2770 0922 4F535F45 		.ascii	"OS_ERR_FLAG_PEND_OPT\000"
+ 2770      52525F46 
+ 2770      4C41475F 
+ 2770      50454E44 
+ 2770      5F4F5054 
+ 2771              	.LASF223:
+ 2772 0937 53746B50 		.ascii	"StkPtr\000"
+ 2772      747200
+ 2773              	.LASF266:
+ 2774 093e 6F735F74 		.ascii	"os_tick_spoke\000"
+ 2774      69636B5F 
+ 2774      73706F6B 
+ 2774      6500
+ 2775              	.LASF111:
+ 2776 094c 4F535F45 		.ascii	"OS_ERR_Q_SIZE\000"
+ 2776      52525F51 
+ 2776      5F53495A 
+ 2776      4500
+ 2777              	.LASF258:
+ 2778 095a 4379636C 		.ascii	"CyclesStart\000"
+ 2778      65735374 
+ 2778      61727400 
+ 2779              	.LASF270:
+ 2780 0966 54434250 		.ascii	"TCBPtr\000"
+ 2780      747200
+ 2781              	.LASF96:
+ 2782 096d 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_SELF\000"
+ 2782      52525F50 
+ 2782      454E445F 
+ 2782      41424F52 
+ 2782      545F5345 
+ 2783              	.LASF6:
+ 2784 0984 4350555F 		.ascii	"CPU_INT16U\000"
+ 2784      494E5431 
+ 2784      365500
+ 2785              	.LASF115:
+ 2786 098f 4F535F45 		.ascii	"OS_ERR_ROUND_ROBIN_DISABLED\000"
+ 2786      52525F52 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 63
+
+
+ 2786      4F554E44 
+ 2786      5F524F42 
+ 2786      494E5F44 
+ 2787              	.LASF70:
+ 2788 09ab 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_PART\000"
+ 2788      52525F4D 
+ 2788      454D5F49 
+ 2788      4E56414C 
+ 2788      49445F50 
+ 2789              	.LASF87:
+ 2790 09c3 4F535F45 		.ascii	"OS_ERR_OBJ_PTR_NULL\000"
+ 2790      52525F4F 
+ 2790      424A5F50 
+ 2790      54525F4E 
+ 2790      554C4C00 
+ 2791              	.LASF113:
+ 2792 09d7 4F535F45 		.ascii	"OS_ERR_REG_ID_INVALID\000"
+ 2792      52525F52 
+ 2792      45475F49 
+ 2792      445F494E 
+ 2792      56414C49 
+ 2793              	.LASF36:
+ 2794 09ed 4F535F54 		.ascii	"OS_TICK\000"
+ 2794      49434B00 
+ 2795              	.LASF67:
+ 2796 09f5 4F535F45 		.ascii	"OS_ERR_MEM_FULL\000"
+ 2796      52525F4D 
+ 2796      454D5F46 
+ 2796      554C4C00 
+ 2797              	.LASF141:
+ 2798 0a05 4F535F45 		.ascii	"OS_ERR_TASK_NO_MORE_TCB\000"
+ 2798      52525F54 
+ 2798      41534B5F 
+ 2798      4E4F5F4D 
+ 2798      4F52455F 
+ 2799              	.LASF72:
+ 2800 0a1d 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_MEM\000"
+ 2800      52525F4D 
+ 2800      454D5F49 
+ 2800      4E56414C 
+ 2800      49445F50 
+ 2801              	.LASF18:
+ 2802 0a36 4350555F 		.ascii	"CPU_TS32\000"
+ 2802      54533332 
+ 2802      00
+ 2803              	.LASF253:
+ 2804 0a3f 53757370 		.ascii	"SuspendCtr\000"
+ 2804      656E6443 
+ 2804      747200
+ 2805              	.LASF225:
+ 2806 0a4a 53746B4C 		.ascii	"StkLimitPtr\000"
+ 2806      696D6974 
+ 2806      50747200 
+ 2807              	.LASF257:
+ 2808 0a56 4379636C 		.ascii	"CyclesDelta\000"
+ 2808      65734465 
+ 2808      6C746100 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 64
+
+
+ 2809              	.LASF33:
+ 2810 0a62 4F535F53 		.ascii	"OS_SEM_CTR\000"
+ 2810      454D5F43 
+ 2810      545200
+ 2811              	.LASF189:
+ 2812 0a6d 4F535F45 		.ascii	"OS_ERR_TMR_STK_SIZE_INVALID\000"
+ 2812      52525F54 
+ 2812      4D525F53 
+ 2812      544B5F53 
+ 2812      495A455F 
+ 2813              	.LASF166:
+ 2814 0a89 4F535F45 		.ascii	"OS_ERR_TICK_WHEEL_SIZE\000"
+ 2814      52525F54 
+ 2814      49434B5F 
+ 2814      57484545 
+ 2814      4C5F5349 
+ 2815              	.LASF227:
+ 2816 0aa0 5469636B 		.ascii	"TickNextPtr\000"
+ 2816      4E657874 
+ 2816      50747200 
+ 2817              	.LASF143:
+ 2818 0aac 4F535F45 		.ascii	"OS_ERR_TASK_NOT_EXIST\000"
+ 2818      52525F54 
+ 2818      41534B5F 
+ 2818      4E4F545F 
+ 2818      45584953 
+ 2819              	.LASF140:
+ 2820 0ac2 4F535F45 		.ascii	"OS_ERR_TASK_INVALID\000"
+ 2820      52525F54 
+ 2820      41534B5F 
+ 2820      494E5641 
+ 2820      4C494400 
+ 2821              	.LASF187:
+ 2822 0ad6 4F535F45 		.ascii	"OS_ERR_TMR_PRIO_INVALID\000"
+ 2822      52525F54 
+ 2822      4D525F50 
+ 2822      52494F5F 
+ 2822      494E5641 
+ 2823              	.LASF155:
+ 2824 0aee 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_PRIO\000"
+ 2824      52525F54 
+ 2824      41534B5F 
+ 2824      53555350 
+ 2824      454E445F 
+ 2825              	.LASF272:
+ 2826 0b07 5264794F 		.ascii	"RdyObjPtr\000"
+ 2826      626A5074 
+ 2826      7200
+ 2827              	.LASF60:
+ 2828 0b11 4F535F45 		.ascii	"OS_ERR_INT_Q_STK_SIZE_INVALID\000"
+ 2828      52525F49 
+ 2828      4E545F51 
+ 2828      5F53544B 
+ 2828      5F53495A 
+ 2829              	.LASF159:
+ 2830 0b2f 4F535F45 		.ascii	"OS_ERR_TLS_ISR\000"
+ 2830      52525F54 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 65
+
+
+ 2830      4C535F49 
+ 2830      535200
+ 2831              	.LASF139:
+ 2832 0b3e 4F535F45 		.ascii	"OS_ERR_TASK_DEL_ISR\000"
+ 2832      52525F54 
+ 2832      41534B5F 
+ 2832      44454C5F 
+ 2832      49535200 
+ 2833              	.LASF261:
+ 2834 0b52 53656D50 		.ascii	"SemPendTime\000"
+ 2834      656E6454 
+ 2834      696D6500 
+ 2835              	.LASF106:
+ 2836 0b5e 4F535F45 		.ascii	"OS_ERR_PTR_INVALID\000"
+ 2836      52525F50 
+ 2836      54525F49 
+ 2836      4E56414C 
+ 2836      494400
+ 2837              	.LASF128:
+ 2838 0b71 4F535F45 		.ascii	"OS_ERR_STATE_INVALID\000"
+ 2838      52525F53 
+ 2838      54415445 
+ 2838      5F494E56 
+ 2838      414C4944 
+ 2839              	.LASF200:
+ 2840 0b86 4E657874 		.ascii	"NextPtr\000"
+ 2840      50747200 
+ 2841              	.LASF90:
+ 2842 0b8e 4F535F45 		.ascii	"OS_ERR_OS_NOT_RUNNING\000"
+ 2842      52525F4F 
+ 2842      535F4E4F 
+ 2842      545F5255 
+ 2842      4E4E494E 
+ 2843              	.LASF175:
+ 2844 0ba4 4F535F45 		.ascii	"OS_ERR_TIME_SET_ISR\000"
+ 2844      52525F54 
+ 2844      494D455F 
+ 2844      5345545F 
+ 2844      49535200 
+ 2845              	.LASF114:
+ 2846 0bb8 4F535F45 		.ascii	"OS_ERR_ROUND_ROBIN_1\000"
+ 2846      52525F52 
+ 2846      4F554E44 
+ 2846      5F524F42 
+ 2846      494E5F31 
+ 2847              	.LASF71:
+ 2848 0bcd 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_BLK\000"
+ 2848      52525F4D 
+ 2848      454D5F49 
+ 2848      4E56414C 
+ 2848      49445F50 
+ 2849              	.LASF68:
+ 2850 0be6 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_ADDR\000"
+ 2850      52525F4D 
+ 2850      454D5F49 
+ 2850      4E56414C 
+ 2850      49445F50 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 66
+
+
+ 2851              	.LASF275:
+ 2852 0c00 52647954 		.ascii	"RdyTS\000"
+ 2852      5300
+ 2853              	.LASF64:
+ 2854 0c06 4F535F45 		.ascii	"OS_ERR_LOCK_NESTING_OVF\000"
+ 2854      52525F4C 
+ 2854      4F434B5F 
+ 2854      4E455354 
+ 2854      494E475F 
+ 2855              	.LASF150:
+ 2856 0c1e 4F535F45 		.ascii	"OS_ERR_TASK_STK_CHK_ISR\000"
+ 2856      52525F54 
+ 2856      41534B5F 
+ 2856      53544B5F 
+ 2856      43484B5F 
+ 2857              	.LASF8:
+ 2858 0c36 73686F72 		.ascii	"short int\000"
+ 2858      7420696E 
+ 2858      7400
+ 2859              	.LASF274:
+ 2860 0c40 5264794D 		.ascii	"RdyMsgSize\000"
+ 2860      73675369 
+ 2860      7A6500
+ 2861              	.LASF76:
+ 2862 0c4b 4F535F45 		.ascii	"OS_ERR_MSG_POOL_EMPTY\000"
+ 2862      52525F4D 
+ 2862      53475F50 
+ 2862      4F4F4C5F 
+ 2862      454D5054 
+ 2863              	.LASF121:
+ 2864 0c61 4F535F45 		.ascii	"OS_ERR_SCHED_UNLOCK_ISR\000"
+ 2864      52525F53 
+ 2864      43484544 
+ 2864      5F554E4C 
+ 2864      4F434B5F 
+ 2865              	.LASF262:
+ 2866 0c79 53656D50 		.ascii	"SemPendTimeMax\000"
+ 2866      656E6454 
+ 2866      696D654D 
+ 2866      617800
+ 2867              	.LASF260:
+ 2868 0c88 4379636C 		.ascii	"CyclesTotalPrev\000"
+ 2868      6573546F 
+ 2868      74616C50 
+ 2868      72657600 
+ 2869              	.LASF164:
+ 2870 0c98 4F535F45 		.ascii	"OS_ERR_TICK_STK_INVALID\000"
+ 2870      52525F54 
+ 2870      49434B5F 
+ 2870      53544B5F 
+ 2870      494E5641 
+ 2871              	.LASF77:
+ 2872 0cb0 4F535F45 		.ascii	"OS_ERR_MSG_POOL_NULL_PTR\000"
+ 2872      52525F4D 
+ 2872      53475F50 
+ 2872      4F4F4C5F 
+ 2872      4E554C4C 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 67
+
+
+ 2873              	.LASF26:
+ 2874 0cc9 4F535F4E 		.ascii	"OS_NESTING_CTR\000"
+ 2874      45535449 
+ 2874      4E475F43 
+ 2874      545200
+ 2875              	.LASF212:
+ 2876 0cd8 4F535F53 		.ascii	"OS_SEM\000"
+ 2876      454D00
+ 2877              	.LASF280:
+ 2878 0cdf 4F535F50 		.ascii	"OS_PEND_OBJ\000"
+ 2878      454E445F 
+ 2878      4F424A00 
+ 2879              	.LASF148:
+ 2880 0ceb 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_SELF\000"
+ 2880      52525F54 
+ 2880      41534B5F 
+ 2880      52455355 
+ 2880      4D455F53 
+ 2881              	.LASF255:
+ 2882 0d03 43505555 		.ascii	"CPUUsageMax\000"
+ 2882      73616765 
+ 2882      4D617800 
+ 2883              	.LASF216:
+ 2884 0d0f 50656E64 		.ascii	"PendList\000"
+ 2884      4C697374 
+ 2884      00
+ 2885              	.LASF88:
+ 2886 0d18 4F535F45 		.ascii	"OS_ERR_OBJ_TYPE\000"
+ 2886      52525F4F 
+ 2886      424A5F54 
+ 2886      59504500 
+ 2887              	.LASF233:
+ 2888 0d28 50656E64 		.ascii	"PendDataTblPtr\000"
+ 2888      44617461 
+ 2888      54626C50 
+ 2888      747200
+ 2889              	.LASF240:
+ 2890 0d37 53656D43 		.ascii	"SemCtr\000"
+ 2890      747200
+ 2891              	.LASF207:
+ 2892 0d3e 496E5074 		.ascii	"InPtr\000"
+ 2892      7200
+ 2893              	.LASF243:
+ 2894 0d44 5469636B 		.ascii	"TickRemain\000"
+ 2894      52656D61 
+ 2894      696E00
+ 2895              	.LASF278:
+ 2896 0d4f 48656164 		.ascii	"HeadPtr\000"
+ 2896      50747200 
+ 2897              	.LASF213:
+ 2898 0d57 6F735F73 		.ascii	"os_sem\000"
+ 2898      656D00
+ 2899              	.LASF287:
+ 2900 0d5e 4253505F 		.ascii	"BSP_OS_SemCreate\000"
+ 2900      4F535F53 
+ 2900      656D4372 
+ 2900      65617465 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 68
+
+
+ 2900      00
+ 2901              	.LASF95:
+ 2902 0d6f 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_NONE\000"
+ 2902      52525F50 
+ 2902      454E445F 
+ 2902      41424F52 
+ 2902      545F4E4F 
+ 2903              	.LASF10:
+ 2904 0d86 756E7369 		.ascii	"unsigned int\000"
+ 2904      676E6564 
+ 2904      20696E74 
+ 2904      00
+ 2905              	.LASF202:
+ 2906 0d93 4D736753 		.ascii	"MsgSize\000"
+ 2906      697A6500 
+ 2907              	.LASF79:
+ 2908 0d9b 4F535F45 		.ascii	"OS_ERR_MUTEX_OWNER\000"
+ 2908      52525F4D 
+ 2908      55544558 
+ 2908      5F4F574E 
+ 2908      455200
+ 2909              	.LASF267:
+ 2910 0dae 46697273 		.ascii	"FirstPtr\000"
+ 2910      74507472 
+ 2910      00
+ 2911              	.LASF127:
+ 2912 0db7 4F535F45 		.ascii	"OS_ERR_STAT_STK_SIZE_INVALID\000"
+ 2912      52525F53 
+ 2912      5441545F 
+ 2912      53544B5F 
+ 2912      53495A45 
+ 2913              	.LASF49:
+ 2914 0dd4 4F535F45 		.ascii	"OS_ERR_FLAG_NOT_RDY\000"
+ 2914      52525F46 
+ 2914      4C41475F 
+ 2914      4E4F545F 
+ 2914      52445900 
+ 2915              	.LASF224:
+ 2916 0de8 45787450 		.ascii	"ExtPtr\000"
+ 2916      747200
+ 2917              	.LASF94:
+ 2918 0def 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_ISR\000"
+ 2918      52525F50 
+ 2918      454E445F 
+ 2918      41424F52 
+ 2918      545F4953 
+ 2919              	.LASF15:
+ 2920 0e05 4350555F 		.ascii	"CPU_ADDR\000"
+ 2920      41444452 
+ 2920      00
+ 2921              	.LASF102:
+ 2922 0e0e 4F535F45 		.ascii	"OS_ERR_POST_ISR\000"
+ 2922      52525F50 
+ 2922      4F53545F 
+ 2922      49535200 
+ 2923              	.LASF167:
+ 2924 0e1e 4F535F45 		.ascii	"OS_ERR_TIME_DLY_ISR\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 69
+
+
+ 2924      52525F54 
+ 2924      494D455F 
+ 2924      444C595F 
+ 2924      49535200 
+ 2925              	.LASF132:
+ 2926 0e32 4F535F45 		.ascii	"OS_ERR_STK_LIMIT_INVALID\000"
+ 2926      52525F53 
+ 2926      544B5F4C 
+ 2926      494D4954 
+ 2926      5F494E56 
+ 2927              	.LASF1:
+ 2928 0e4b 4350555F 		.ascii	"CPU_BOOLEAN\000"
+ 2928      424F4F4C 
+ 2928      45414E00 
+ 2929              	.LASF22:
+ 2930 0e57 4F535F43 		.ascii	"OS_CYCLES\000"
+ 2930      59434C45 
+ 2930      5300
+ 2931              	.LASF221:
+ 2932 0e61 4F535F54 		.ascii	"OS_TCB\000"
+ 2932      434200
+ 2933              	.LASF131:
+ 2934 0e68 4F535F45 		.ascii	"OS_ERR_STK_SIZE_INVALID\000"
+ 2934      52525F53 
+ 2934      544B5F53 
+ 2934      495A455F 
+ 2934      494E5641 
+ 2935              	.LASF190:
+ 2936 0e80 4F535F45 		.ascii	"OS_ERR_TMR_STOPPED\000"
+ 2936      52525F54 
+ 2936      4D525F53 
+ 2936      544F5050 
+ 2936      454400
+ 2937              	.LASF285:
+ 2938 0e93 73656D5F 		.ascii	"sem_val\000"
+ 2938      76616C00 
+ 2939              	.LASF3:
+ 2940 0e9b 756E7369 		.ascii	"unsigned char\000"
+ 2940      676E6564 
+ 2940      20636861 
+ 2940      7200
+ 2941              	.LASF145:
+ 2942 0ea9 4F535F45 		.ascii	"OS_ERR_TASK_OPT\000"
+ 2942      52525F54 
+ 2942      41534B5F 
+ 2942      4F505400 
+ 2943              	.LASF177:
+ 2944 0eb9 4F535F45 		.ascii	"OS_ERR_TIMEOUT\000"
+ 2944      52525F54 
+ 2944      494D454F 
+ 2944      555400
+ 2945              	.LASF34:
+ 2946 0ec8 4F535F53 		.ascii	"OS_STATE\000"
+ 2946      54415445 
+ 2946      00
+ 2947              	.LASF29:
+ 2948 0ed1 4F535F4F 		.ascii	"OS_OPT\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 70
+
+
+ 2948      505400
+ 2949              	.LASF220:
+ 2950 0ed8 4F535F54 		.ascii	"OS_TASK_PTR\000"
+ 2950      41534B5F 
+ 2950      50545200 
+ 2951              	.LASF66:
+ 2952 0ee4 4F535F45 		.ascii	"OS_ERR_MEM_CREATE_ISR\000"
+ 2952      52525F4D 
+ 2952      454D5F43 
+ 2952      52454154 
+ 2952      455F4953 
+ 2953              	.LASF129:
+ 2954 0efa 4F535F45 		.ascii	"OS_ERR_STATUS_INVALID\000"
+ 2954      52525F53 
+ 2954      54415455 
+ 2954      535F494E 
+ 2954      56414C49 
+ 2955              	.LASF195:
+ 2956 0f10 4F535F45 		.ascii	"OS_ERR_Y\000"
+ 2956      52525F59 
+ 2956      00
+ 2957              	.LASF98:
+ 2958 0f19 4F535F45 		.ascii	"OS_ERR_PEND_ISR\000"
+ 2958      52525F50 
+ 2958      454E445F 
+ 2958      49535200 
+ 2959              	.LASF197:
+ 2960 0f29 4F535F45 		.ascii	"OS_ERR_Z\000"
+ 2960      52525F5A 
+ 2960      00
+ 2961              	.LASF229:
+ 2962 0f32 5469636B 		.ascii	"TickSpokePtr\000"
+ 2962      53706F6B 
+ 2962      65507472 
+ 2962      00
+ 2963              	.LASF219:
+ 2964 0f3f 4462674E 		.ascii	"DbgNamePtr\000"
+ 2964      616D6550 
+ 2964      747200
+ 2965              	.LASF208:
+ 2966 0f4a 4F757450 		.ascii	"OutPtr\000"
+ 2966      747200
+ 2967              	.LASF232:
+ 2968 0f51 5461736B 		.ascii	"TaskEntryArg\000"
+ 2968      456E7472 
+ 2968      79417267 
+ 2968      00
+ 2969              	.LASF108:
+ 2970 0f5e 4F535F45 		.ascii	"OS_ERR_Q_FULL\000"
+ 2970      52525F51 
+ 2970      5F46554C 
+ 2970      4C00
+ 2971              	.LASF59:
+ 2972 0f6c 4F535F45 		.ascii	"OS_ERR_INT_Q_STK_INVALID\000"
+ 2972      52525F49 
+ 2972      4E545F51 
+ 2972      5F53544B 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 71
+
+
+ 2972      5F494E56 
+ 2973              	.LASF172:
+ 2974 0f85 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_SECONDS\000"
+ 2974      52525F54 
+ 2974      494D455F 
+ 2974      494E5641 
+ 2974      4C49445F 
+ 2975              	.LASF289:
+ 2976 0fa1 646C795F 		.ascii	"dly_ms\000"
+ 2976      6D7300
+ 2977              	.LASF136:
+ 2978 0fa8 4F535F45 		.ascii	"OS_ERR_TASK_DEL\000"
+ 2978      52525F54 
+ 2978      41534B5F 
+ 2978      44454C00 
+ 2979              	.LASF276:
+ 2980 0fb8 4F535F50 		.ascii	"OS_PEND_LIST\000"
+ 2980      454E445F 
+ 2980      4C495354 
+ 2980      00
+ 2981              	.LASF5:
+ 2982 0fc5 7369676E 		.ascii	"signed char\000"
+ 2982      65642063 
+ 2982      68617200 
+ 2983              	.LASF203:
+ 2984 0fd1 4D736754 		.ascii	"MsgTS\000"
+ 2984      5300
+ 2985              	.LASF47:
+ 2986 0fd7 4F535F45 		.ascii	"OS_ERR_FATAL_RETURN\000"
+ 2986      52525F46 
+ 2986      4154414C 
+ 2986      5F524554 
+ 2986      55524E00 
+ 2987              	.LASF7:
+ 2988 0feb 73686F72 		.ascii	"short unsigned int\000"
+ 2988      7420756E 
+ 2988      7369676E 
+ 2988      65642069 
+ 2988      6E7400
+ 2989              	.LASF23:
+ 2990 0ffe 4F535F46 		.ascii	"OS_FLAGS\000"
+ 2990      4C414753 
+ 2990      00
+ 2991              	.LASF201:
+ 2992 1007 4D736750 		.ascii	"MsgPtr\000"
+ 2992      747200
+ 2993              	.LASF160:
+ 2994 100e 4F535F45 		.ascii	"OS_ERR_TLS_NO_MORE_AVAIL\000"
+ 2994      52525F54 
+ 2994      4C535F4E 
+ 2994      4F5F4D4F 
+ 2994      52455F41 
+ 2995              	.LASF37:
+ 2996 1027 4F535F45 		.ascii	"OS_ERR_NONE\000"
+ 2996      52525F4E 
+ 2996      4F4E4500 
+ 2997              	.LASF269:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 72
+
+
+ 2998 1033 6F735F70 		.ascii	"os_pend_data\000"
+ 2998      656E645F 
+ 2998      64617461 
+ 2998      00
+ 2999              	.LASF119:
+ 3000 1040 4F535F45 		.ascii	"OS_ERR_SCHED_LOCKED\000"
+ 3000      52525F53 
+ 3000      43484544 
+ 3000      5F4C4F43 
+ 3000      4B454400 
+ 3001              	.LASF51:
+ 3002 1054 4F535F45 		.ascii	"OS_ERR_FLUSH_ISR\000"
+ 3002      52525F46 
+ 3002      4C555348 
+ 3002      5F495352 
+ 3002      00
+ 3003              	.LASF237:
+ 3004 1065 5072696F 		.ascii	"Prio\000"
+ 3004      00
+ 3005              	.LASF14:
+ 3006 106a 646F7562 		.ascii	"double\000"
+ 3006      6C6500
+ 3007              	.LASF93:
+ 3008 1071 4F535F45 		.ascii	"OS_ERR_PEND_ABORT\000"
+ 3008      52525F50 
+ 3008      454E445F 
+ 3008      41424F52 
+ 3008      5400
+ 3009              	.LASF254:
+ 3010 1083 43505555 		.ascii	"CPUUsage\000"
+ 3010      73616765 
+ 3010      00
+ 3011              	.LASF120:
+ 3012 108c 4F535F45 		.ascii	"OS_ERR_SCHED_NOT_LOCKED\000"
+ 3012      52525F53 
+ 3012      43484544 
+ 3012      5F4E4F54 
+ 3012      5F4C4F43 
+ 3013              	.LASF104:
+ 3014 10a4 4F535F45 		.ascii	"OS_ERR_PRIO\000"
+ 3014      52525F50 
+ 3014      52494F00 
+ 3015              	.LASF97:
+ 3016 10b0 4F535F45 		.ascii	"OS_ERR_PEND_DEL\000"
+ 3016      52525F50 
+ 3016      454E445F 
+ 3016      44454C00 
+ 3017              	.LASF271:
+ 3018 10c0 50656E64 		.ascii	"PendObjPtr\000"
+ 3018      4F626A50 
+ 3018      747200
+ 3019              	.LASF294:
+ 3020 10cb 433A5C55 		.ascii	"C:\\Users\\daniel01\\Desktop\\CY8CKIT-050_uCOS-III\\"
+ 3020      73657273 
+ 3020      5C64616E 
+ 3020      69656C30 
+ 3020      315C4465 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 73
+
+
+ 3021 10fa 43593843 		.ascii	"CY8CKIT-050_uCOS-III\\Micrium\\Software\\EvalBoards"
+ 3021      4B49542D 
+ 3021      3035305F 
+ 3021      75434F53 
+ 3021      2D494949 
+ 3022 112a 5C437970 		.ascii	"\\Cypress\\CY8CKIT-050\\PSoC\\uCOS-III-Probe\\uCOS-"
+ 3022      72657373 
+ 3022      5C435938 
+ 3022      434B4954 
+ 3022      2D303530 
+ 3023 1158 4949492D 		.ascii	"III-Probe.cydsn\000"
+ 3023      50726F62 
+ 3023      652E6379 
+ 3023      64736E00 
+ 3024              	.LASF211:
+ 3025 1168 4E627245 		.ascii	"NbrEntriesMax\000"
+ 3025      6E747269 
+ 3025      65734D61 
+ 3025      7800
+ 3026              	.LASF277:
+ 3027 1176 6F735F70 		.ascii	"os_pend_list\000"
+ 3027      656E645F 
+ 3027      6C697374 
+ 3027      00
+ 3028              	.LASF74:
+ 3029 1183 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_SIZE\000"
+ 3029      52525F4D 
+ 3029      454D5F49 
+ 3029      4E56414C 
+ 3029      49445F53 
+ 3030              	.LASF151:
+ 3031 119b 4F535F45 		.ascii	"OS_ERR_TASK_SUSPENDED\000"
+ 3031      52525F54 
+ 3031      41534B5F 
+ 3031      53555350 
+ 3031      454E4445 
+ 3032              	.LASF123:
+ 3033 11b1 4F535F45 		.ascii	"OS_ERR_SET_ISR\000"
+ 3033      52525F53 
+ 3033      45545F49 
+ 3033      535200
+ 3034              	.LASF259:
+ 3035 11c0 4379636C 		.ascii	"CyclesTotal\000"
+ 3035      6573546F 
+ 3035      74616C00 
+ 3036              	.LASF249:
+ 3037 11cc 52656754 		.ascii	"RegTbl\000"
+ 3037      626C00
+ 3038              	.LASF122:
+ 3039 11d3 4F535F45 		.ascii	"OS_ERR_SEM_OVF\000"
+ 3039      52525F53 
+ 3039      454D5F4F 
+ 3039      564600
+ 3040              	.LASF137:
+ 3041 11e2 4F535F45 		.ascii	"OS_ERR_TASK_DEL_IDLE\000"
+ 3041      52525F54 
+ 3041      41534B5F 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\cc4MEU6w.s 			page 74
+
+
+ 3041      44454C5F 
+ 3041      49444C45 
+ 3042              	.LASF169:
+ 3043 11f7 4F535F45 		.ascii	"OS_ERR_TIME_GET_ISR\000"
+ 3043      52525F54 
+ 3043      494D455F 
+ 3043      4745545F 
+ 3043      49535200 
+ 3044              	.LASF244:
+ 3045 120b 54696D65 		.ascii	"TimeQuanta\000"
+ 3045      5175616E 
+ 3045      746100
+ 3046              	.LASF168:
+ 3047 1216 4F535F45 		.ascii	"OS_ERR_TIME_DLY_RESUME_ISR\000"
+ 3047      52525F54 
+ 3047      494D455F 
+ 3047      444C595F 
+ 3047      52455355 
+ 3048              	.LASF163:
+ 3049 1231 4F535F45 		.ascii	"OS_ERR_TICK_PRIO_INVALID\000"
+ 3049      52525F54 
+ 3049      49434B5F 
+ 3049      5052494F 
+ 3049      5F494E56 
+ 3050              	.LASF103:
+ 3051 124a 4F535F45 		.ascii	"OS_ERR_PRIO_EXIST\000"
+ 3051      52525F50 
+ 3051      52494F5F 
+ 3051      45584953 
+ 3051      5400
+ 3052              	.LASF206:
+ 3053 125c 6F735F6D 		.ascii	"os_msg_q\000"
+ 3053      73675F71 
+ 3053      00
+ 3054              	.LASF297:
+ 3055 1265 4F534366 		.ascii	"OSCfg_TickRate_Hz\000"
+ 3055      675F5469 
+ 3055      636B5261 
+ 3055      74655F48 
+ 3055      7A00
+ 3056              	.LASF75:
+ 3057 1277 4F535F45 		.ascii	"OS_ERR_MEM_NO_FREE_BLKS\000"
+ 3057      52525F4D 
+ 3057      454D5F4E 
+ 3057      4F5F4652 
+ 3057      45455F42 
+ 3058              	.LASF16:
+ 3059 128f 4350555F 		.ascii	"CPU_STK\000"
+ 3059      53544B00 
+ 3060              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

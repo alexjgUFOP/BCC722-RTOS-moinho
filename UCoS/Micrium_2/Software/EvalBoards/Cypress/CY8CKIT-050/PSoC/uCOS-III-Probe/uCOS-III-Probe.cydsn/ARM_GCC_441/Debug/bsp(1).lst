@@ -1,0 +1,2091 @@
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"bsp.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 4E010000 		.text
+  20      02009100 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.comm	LED_REG_VAL,1,1
+  24              		.section	.text.BSP_PreInit,"ax",%progbits
+  25              		.align	2
+  26              		.global	BSP_PreInit
+  27              		.thumb
+  28              		.thumb_func
+  29              		.type	BSP_PreInit, %function
+  30              	BSP_PreInit:
+  31              	.LFB0:
+  32              		.file 1 "..\\..\\BSP\\bsp.c"
+   1:..\..\BSP/bsp.c **** /*
+   2:..\..\BSP/bsp.c **** ***************************************************************************************************
+   3:..\..\BSP/bsp.c **** *                                     MICIRUM BOARD SUPPORT PACKAGE
+   4:..\..\BSP/bsp.c **** *
+   5:..\..\BSP/bsp.c **** *                             (c) Copyright 2012; Micrium, Inc.; Weston, FL
+   6:..\..\BSP/bsp.c **** *
+   7:..\..\BSP/bsp.c **** *               All rights reserved.  Protected by international copyright laws.
+   8:..\..\BSP/bsp.c **** *               Knowledge of the source code may NOT be used to develop a similar product.
+   9:..\..\BSP/bsp.c **** *               Please help us continue to provide the Embedded community with the finest
+  10:..\..\BSP/bsp.c **** *               software available.  Your honesty is greatly appreciated.
+  11:..\..\BSP/bsp.c **** ***************************************************************************************************
+  12:..\..\BSP/bsp.c **** */
+  13:..\..\BSP/bsp.c **** 
+  14:..\..\BSP/bsp.c **** /*
+  15:..\..\BSP/bsp.c **** ***************************************************************************************************
+  16:..\..\BSP/bsp.c **** *
+  17:..\..\BSP/bsp.c **** *                                        BOARD SUPPORT PACKAGE
+  18:..\..\BSP/bsp.c **** *
+  19:..\..\BSP/bsp.c **** *                                           CYPRESS PSoC5
+  20:..\..\BSP/bsp.c **** *                                              with the
+  21:..\..\BSP/bsp.c **** *                                     CY8CKIT-050 Development Kit
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 2
+
+
+  22:..\..\BSP/bsp.c **** *
+  23:..\..\BSP/bsp.c **** * Filename      : bsp.c
+  24:..\..\BSP/bsp.c **** * Version       : V1.00
+  25:..\..\BSP/bsp.c **** * Programmer(s) : DC
+  26:..\..\BSP/bsp.c **** ***************************************************************************************************
+  27:..\..\BSP/bsp.c **** */
+  28:..\..\BSP/bsp.c **** 
+  29:..\..\BSP/bsp.c **** /*
+  30:..\..\BSP/bsp.c **** ***************************************************************************************************
+  31:..\..\BSP/bsp.c **** *                                             INCLUDE FILES
+  32:..\..\BSP/bsp.c **** ***************************************************************************************************
+  33:..\..\BSP/bsp.c **** */
+  34:..\..\BSP/bsp.c **** 
+  35:..\..\BSP/bsp.c **** #define  BSP_MODULE
+  36:..\..\BSP/bsp.c **** #include <bsp.h>
+  37:..\..\BSP/bsp.c **** #include <bsp_psoc.h>
+  38:..\..\BSP/bsp.c **** 
+  39:..\..\BSP/bsp.c **** 
+  40:..\..\BSP/bsp.c **** /*
+  41:..\..\BSP/bsp.c **** ***************************************************************************************************
+  42:..\..\BSP/bsp.c **** *                                            LOCAL DEFINES
+  43:..\..\BSP/bsp.c **** ***************************************************************************************************
+  44:..\..\BSP/bsp.c **** */
+  45:..\..\BSP/bsp.c ****                                                     /* ------------------- LED DEFINITONS ---------
+  46:..\..\BSP/bsp.c **** #define  LED_3                  1                   /* Represents 0x01, Control_0 Bit in Control Re
+  47:..\..\BSP/bsp.c **** #define  LED_4                  2                   /* Represents 0x10, Control_1 Bit in Control Re
+  48:..\..\BSP/bsp.c **** #define  ALL_LED                3                   /* Represents 0x11, Control_0 & 1 Bit in Contro
+  49:..\..\BSP/bsp.c **** 
+  50:..\..\BSP/bsp.c **** 
+  51:..\..\BSP/bsp.c **** /*
+  52:..\..\BSP/bsp.c **** ***************************************************************************************************
+  53:..\..\BSP/bsp.c **** *                                           LOCAL CONSTANTS
+  54:..\..\BSP/bsp.c **** ***************************************************************************************************
+  55:..\..\BSP/bsp.c **** */
+  56:..\..\BSP/bsp.c ****                                                                    
+  57:..\..\BSP/bsp.c **** CPU_INT08U                      LED_REG_VAL;        /*
+  58:..\..\BSP/bsp.c ****                                                     ***********************************************
+  59:..\..\BSP/bsp.c ****                                                     * LED_REG_VAL is used to read the current value
+  60:..\..\BSP/bsp.c ****                                                     * LED_Status Control Register using LED_Status_
+  61:..\..\BSP/bsp.c ****                                                     * function and provides this information to the
+  62:..\..\BSP/bsp.c ****                                                     * LED_Status_Write() function so it won't overw
+  63:..\..\BSP/bsp.c ****                                                     * values from other LEDs. LED_Status_Write() th
+  64:..\..\BSP/bsp.c ****                                                     * writes a single bit in the necessary control 
+  65:..\..\BSP/bsp.c ****                                                     * register pin for the neceessary LED.
+  66:..\..\BSP/bsp.c ****                                                     ***********************************************
+  67:..\..\BSP/bsp.c ****                                                     */
+  68:..\..\BSP/bsp.c **** 
+  69:..\..\BSP/bsp.c **** /*
+  70:..\..\BSP/bsp.c **** ***************************************************************************************************
+  71:..\..\BSP/bsp.c **** *                                          LOCAL DATA TYPES
+  72:..\..\BSP/bsp.c **** ***************************************************************************************************
+  73:..\..\BSP/bsp.c **** */
+  74:..\..\BSP/bsp.c **** 
+  75:..\..\BSP/bsp.c **** 
+  76:..\..\BSP/bsp.c **** /*
+  77:..\..\BSP/bsp.c **** ***************************************************************************************************
+  78:..\..\BSP/bsp.c **** *                                            LOCAL TABLES
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 3
+
+
+  79:..\..\BSP/bsp.c **** ***************************************************************************************************
+  80:..\..\BSP/bsp.c **** */
+  81:..\..\BSP/bsp.c **** 
+  82:..\..\BSP/bsp.c **** 
+  83:..\..\BSP/bsp.c **** /*
+  84:..\..\BSP/bsp.c **** ***************************************************************************************************
+  85:..\..\BSP/bsp.c **** *                                       LOCAL GLOBAL VARIABLES
+  86:..\..\BSP/bsp.c **** ***************************************************************************************************
+  87:..\..\BSP/bsp.c **** */
+  88:..\..\BSP/bsp.c **** 
+  89:..\..\BSP/bsp.c **** 
+  90:..\..\BSP/bsp.c **** 
+  91:..\..\BSP/bsp.c **** /*
+  92:..\..\BSP/bsp.c **** ***************************************************************************************************
+  93:..\..\BSP/bsp.c **** *                                      LOCAL FUNCTION PROTOTYPES
+  94:..\..\BSP/bsp.c **** ***************************************************************************************************
+  95:..\..\BSP/bsp.c **** */
+  96:..\..\BSP/bsp.c **** 
+  97:..\..\BSP/bsp.c **** 
+  98:..\..\BSP/bsp.c **** /*
+  99:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 100:..\..\BSP/bsp.c **** *                                            REGISTER BITS
+ 101:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 102:..\..\BSP/bsp.c **** */
+ 103:..\..\BSP/bsp.c **** 
+ 104:..\..\BSP/bsp.c **** 
+ 105:..\..\BSP/bsp.c **** /*
+ 106:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 107:..\..\BSP/bsp.c **** *                                     LOCAL CONFIGURATION ERRORS
+ 108:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 109:..\..\BSP/bsp.c **** */
+ 110:..\..\BSP/bsp.c **** 
+ 111:..\..\BSP/bsp.c **** 
+ 112:..\..\BSP/bsp.c **** /*
+ 113:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 114:..\..\BSP/bsp.c **** *                                             BSP_PreInit()
+ 115:..\..\BSP/bsp.c **** *
+ 116:..\..\BSP/bsp.c **** * Description : Board support package pre-initialization funtion.
+ 117:..\..\BSP/bsp.c **** *
+ 118:..\..\BSP/bsp.c **** * Argument(s) : none.
+ 119:..\..\BSP/bsp.c **** *
+ 120:..\..\BSP/bsp.c **** * Return(s)   : none.
+ 121:..\..\BSP/bsp.c **** *
+ 122:..\..\BSP/bsp.c **** * Caller(s)   : Application.
+ 123:..\..\BSP/bsp.c **** *
+ 124:..\..\BSP/bsp.c **** * Note(s)     : (1) This funtion initializes peripherals required before the OS is initialized (e.g
+ 125:..\..\BSP/bsp.c **** *                   external memory.
+ 126:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 127:..\..\BSP/bsp.c **** */
+ 128:..\..\BSP/bsp.c **** 
+ 129:..\..\BSP/bsp.c **** 
+ 130:..\..\BSP/bsp.c **** void BSP_PreInit (void)
+ 131:..\..\BSP/bsp.c **** {
+  33              		.loc 1 131 0
+  34              		.cfi_startproc
+  35              		@ args = 0, pretend = 0, frame = 8
+  36              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 4
+
+
+  37              		@ link register save eliminated.
+  38 0000 80B4     		push	{r7}
+  39              	.LCFI0:
+  40              		.cfi_def_cfa_offset 4
+  41 0002 83B0     		sub	sp, sp, #12
+  42              	.LCFI1:
+  43              		.cfi_def_cfa_offset 16
+  44 0004 00AF     		add	r7, sp, #0
+  45              		.cfi_offset 7, -4
+  46              	.LCFI2:
+  47              		.cfi_def_cfa_register 7
+ 132:..\..\BSP/bsp.c ****     CPU_INT32U  reg_val;
+ 133:..\..\BSP/bsp.c ****     CPU_INT32U *p_vect_tbl;
+ 134:..\..\BSP/bsp.c ****     
+ 135:..\..\BSP/bsp.c ****     
+ 136:..\..\BSP/bsp.c ****     reg_val = CPU_REG_NVIC_VTOR;                                   /* Get the NVIC offset table    
+  48              		.loc 1 136 0
+  49 0006 4EF60853 		movw	r3, #:lower16:-536810232
+  50 000a CEF20003 		movt	r3, #:upper16:-536810232
+  51 000e 1B68     		ldr	r3, [r3, #0]
+  52 0010 3B60     		str	r3, [r7, #0]
+ 137:..\..\BSP/bsp.c ****     DEF_BIT_CLR(reg_val, DEF_BIT_29);                              /* Clear the TBLBASE bit        
+  53              		.loc 1 137 0
+  54 0012 3B68     		ldr	r3, [r7, #0]
+  55 0014 23F00053 		bic	r3, r3, #536870912
+  56 0018 3B60     		str	r3, [r7, #0]
+ 138:..\..\BSP/bsp.c ****     
+ 139:..\..\BSP/bsp.c ****      
+ 140:..\..\BSP/bsp.c ****     p_vect_tbl                  = (CPU_INT32U *)reg_val;           
+  57              		.loc 1 140 0
+  58 001a 3B68     		ldr	r3, [r7, #0]
+  59 001c 7B60     		str	r3, [r7, #4]
+ 141:..\..\BSP/bsp.c ****                                                                    /* Install the PendSV & Systick 
+ 142:..\..\BSP/bsp.c ****     p_vect_tbl[CPU_INT_PENDSV]  = (CPU_INT32U  )OS_CPU_PendSVHandler;
+  60              		.loc 1 142 0
+  61 001e 7B68     		ldr	r3, [r7, #4]
+  62 0020 03F13802 		add	r2, r3, #56
+  63 0024 40F20003 		movw	r3, #:lower16:OS_CPU_PendSVHandler
+  64 0028 C0F20003 		movt	r3, #:upper16:OS_CPU_PendSVHandler
+  65 002c 1360     		str	r3, [r2, #0]
+ 143:..\..\BSP/bsp.c ****     p_vect_tbl[CPU_INT_SYSTICK] = (CPU_INT32U  )OS_CPU_SysTickHandler;
+  66              		.loc 1 143 0
+  67 002e 7B68     		ldr	r3, [r7, #4]
+  68 0030 03F13C02 		add	r2, r3, #60
+  69 0034 40F20003 		movw	r3, #:lower16:OS_CPU_SysTickHandler
+  70 0038 C0F20003 		movt	r3, #:upper16:OS_CPU_SysTickHandler
+  71 003c 1360     		str	r3, [r2, #0]
+ 144:..\..\BSP/bsp.c **** }
+  72              		.loc 1 144 0
+  73 003e 07F10C07 		add	r7, r7, #12
+  74 0042 BD46     		mov	sp, r7
+  75 0044 80BC     		pop	{r7}
+  76 0046 7047     		bx	lr
+  77              		.cfi_endproc
+  78              	.LFE0:
+  79              		.size	BSP_PreInit, .-BSP_PreInit
+  80              		.section	.text.BSP_PostInit,"ax",%progbits
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 5
+
+
+  81              		.align	2
+  82              		.global	BSP_PostInit
+  83              		.thumb
+  84              		.thumb_func
+  85              		.type	BSP_PostInit, %function
+  86              	BSP_PostInit:
+  87              	.LFB1:
+ 145:..\..\BSP/bsp.c **** 
+ 146:..\..\BSP/bsp.c **** 
+ 147:..\..\BSP/bsp.c **** /*
+ 148:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 149:..\..\BSP/bsp.c **** *                                               BSP_PostInit()
+ 150:..\..\BSP/bsp.c **** *
+ 151:..\..\BSP/bsp.c **** * Description : Board Support Package Post initialization.
+ 152:..\..\BSP/bsp.c **** *
+ 153:..\..\BSP/bsp.c **** * Argument(s) : none.
+ 154:..\..\BSP/bsp.c **** *
+ 155:..\..\BSP/bsp.c **** * Return(s)   : none.
+ 156:..\..\BSP/bsp.c **** *
+ 157:..\..\BSP/bsp.c **** * Caller(s)   : Application.
+ 158:..\..\BSP/bsp.c **** *
+ 159:..\..\BSP/bsp.c **** * Note(s)     : (1) This funtion initilize peripherlas that requires the OS to be initialized.
+ 160:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 161:..\..\BSP/bsp.c **** */
+ 162:..\..\BSP/bsp.c **** 
+ 163:..\..\BSP/bsp.c **** void  BSP_PostInit (void)
+ 164:..\..\BSP/bsp.c **** {
+  88              		.loc 1 164 0
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 0
+  91              		@ frame_needed = 1, uses_anonymous_args = 0
+  92              		@ link register save eliminated.
+  93 0000 80B4     		push	{r7}
+  94              	.LCFI3:
+  95              		.cfi_def_cfa_offset 4
+  96 0002 00AF     		add	r7, sp, #0
+  97              		.cfi_offset 7, -4
+  98              	.LCFI4:
+  99              		.cfi_def_cfa_register 7
+ 165:..\..\BSP/bsp.c **** 
+ 166:..\..\BSP/bsp.c **** }
+ 100              		.loc 1 166 0
+ 101 0004 BD46     		mov	sp, r7
+ 102 0006 80BC     		pop	{r7}
+ 103 0008 7047     		bx	lr
+ 104              		.cfi_endproc
+ 105              	.LFE1:
+ 106              		.size	BSP_PostInit, .-BSP_PostInit
+ 107 000a 00BF     		.section	.text.BSP_CPU_TickInit,"ax",%progbits
+ 108              		.align	2
+ 109              		.global	BSP_CPU_TickInit
+ 110              		.thumb
+ 111              		.thumb_func
+ 112              		.type	BSP_CPU_TickInit, %function
+ 113              	BSP_CPU_TickInit:
+ 114              	.LFB2:
+ 167:..\..\BSP/bsp.c **** 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 6
+
+
+ 168:..\..\BSP/bsp.c **** 
+ 169:..\..\BSP/bsp.c **** /*
+ 170:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 171:..\..\BSP/bsp.c **** *                                       BSP_CPU_TickInit()
+ 172:..\..\BSP/bsp.c **** *
+ 173:..\..\BSP/bsp.c **** * Description : This function reads CPU registers to determine the CPU clock frequency of the chip 
+ 174:..\..\BSP/bsp.c **** *
+ 175:..\..\BSP/bsp.c **** * Argument(s) : none.
+ 176:..\..\BSP/bsp.c **** *
+ 177:..\..\BSP/bsp.c **** * Return(s)   : none.
+ 178:..\..\BSP/bsp.c **** *
+ 179:..\..\BSP/bsp.c **** * Caller(s)   : Application.
+ 180:..\..\BSP/bsp.c **** *
+ 181:..\..\BSP/bsp.c **** * Note(s)     : none.
+ 182:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 183:..\..\BSP/bsp.c **** */
+ 184:..\..\BSP/bsp.c **** void  BSP_CPU_TickInit  (void)
+ 185:..\..\BSP/bsp.c **** {
+ 115              		.loc 1 185 0
+ 116              		.cfi_startproc
+ 117              		@ args = 0, pretend = 0, frame = 8
+ 118              		@ frame_needed = 1, uses_anonymous_args = 0
+ 119 0000 80B5     		push	{r7, lr}
+ 120              	.LCFI5:
+ 121              		.cfi_def_cfa_offset 8
+ 122 0002 82B0     		sub	sp, sp, #8
+ 123              	.LCFI6:
+ 124              		.cfi_def_cfa_offset 16
+ 125 0004 00AF     		add	r7, sp, #0
+ 126              		.cfi_offset 14, -4
+ 127              		.cfi_offset 7, -8
+ 128              	.LCFI7:
+ 129              		.cfi_def_cfa_register 7
+ 186:..\..\BSP/bsp.c ****     CPU_INT32U   cpu_clk_freq;
+ 187:..\..\BSP/bsp.c ****     CPU_INT32U   cnts;
+ 188:..\..\BSP/bsp.c ****     
+ 189:..\..\BSP/bsp.c ****     cpu_clk_freq = BSP_CPU_ClkFreq();                             /* Determine SysTick reference fr
+ 130              		.loc 1 189 0
+ 131 0006 FFF7FEFF 		bl	BSP_CPU_ClkFreq
+ 132 000a 0346     		mov	r3, r0
+ 133 000c 3B60     		str	r3, [r7, #0]
+ 190:..\..\BSP/bsp.c **** #if (OS_VERSION > 30000u)                                         /* Determine nbr SysTick incremen
+ 191:..\..\BSP/bsp.c ****     cnts         = (cpu_clk_freq / OSCfg_TickRate_Hz);
+ 134              		.loc 1 191 0
+ 135 000e 40F20003 		movw	r3, #:lower16:OSCfg_TickRate_Hz
+ 136 0012 C0F20003 		movt	r3, #:upper16:OSCfg_TickRate_Hz
+ 137 0016 1B68     		ldr	r3, [r3, #0]
+ 138 0018 3A68     		ldr	r2, [r7, #0]
+ 139 001a B2FBF3F3 		udiv	r3, r2, r3
+ 140 001e 7B60     		str	r3, [r7, #4]
+ 192:..\..\BSP/bsp.c **** #else
+ 193:..\..\BSP/bsp.c ****     cnts         = (cpu_clk_freq / OS_TICKS_PER_SEC);
+ 194:..\..\BSP/bsp.c **** #endif
+ 195:..\..\BSP/bsp.c ****     OS_CPU_SysTickInit(cnts);                                     /* Init uC/OS periodic time src (
+ 141              		.loc 1 195 0
+ 142 0020 7868     		ldr	r0, [r7, #4]
+ 143 0022 FFF7FEFF 		bl	OS_CPU_SysTickInit
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 7
+
+
+ 196:..\..\BSP/bsp.c ****     
+ 197:..\..\BSP/bsp.c **** }
+ 144              		.loc 1 197 0
+ 145 0026 07F10807 		add	r7, r7, #8
+ 146 002a BD46     		mov	sp, r7
+ 147 002c 80BD     		pop	{r7, pc}
+ 148              		.cfi_endproc
+ 149              	.LFE2:
+ 150              		.size	BSP_CPU_TickInit, .-BSP_CPU_TickInit
+ 151 002e 00BF     		.section	.text.BSP_CPU_ClkFreq,"ax",%progbits
+ 152              		.align	2
+ 153              		.global	BSP_CPU_ClkFreq
+ 154              		.thumb
+ 155              		.thumb_func
+ 156              		.type	BSP_CPU_ClkFreq, %function
+ 157              	BSP_CPU_ClkFreq:
+ 158              	.LFB3:
+ 198:..\..\BSP/bsp.c **** 
+ 199:..\..\BSP/bsp.c **** /*
+ 200:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 201:..\..\BSP/bsp.c **** *                                            BSP_CPU_ClkFreq()
+ 202:..\..\BSP/bsp.c **** *
+ 203:..\..\BSP/bsp.c **** * Description : Read CPU registers to determine the CPU clock frequency of the chip.
+ 204:..\..\BSP/bsp.c **** *
+ 205:..\..\BSP/bsp.c **** * Argument(s) : none.
+ 206:..\..\BSP/bsp.c **** *
+ 207:..\..\BSP/bsp.c **** * Return(s)   : The CPU clock frequency, in Hz.
+ 208:..\..\BSP/bsp.c **** *
+ 209:..\..\BSP/bsp.c **** * Caller(s)   : Application.
+ 210:..\..\BSP/bsp.c **** *
+ 211:..\..\BSP/bsp.c **** * Note(s)     : none.
+ 212:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 213:..\..\BSP/bsp.c **** */
+ 214:..\..\BSP/bsp.c **** 
+ 215:..\..\BSP/bsp.c **** CPU_INT32U  BSP_CPU_ClkFreq (void)
+ 216:..\..\BSP/bsp.c **** {
+ 159              		.loc 1 216 0
+ 160              		.cfi_startproc
+ 161              		@ args = 0, pretend = 0, frame = 0
+ 162              		@ frame_needed = 1, uses_anonymous_args = 0
+ 163              		@ link register save eliminated.
+ 164 0000 80B4     		push	{r7}
+ 165              	.LCFI8:
+ 166              		.cfi_def_cfa_offset 4
+ 167 0002 00AF     		add	r7, sp, #0
+ 168              		.cfi_offset 7, -4
+ 169              	.LCFI9:
+ 170              		.cfi_def_cfa_register 7
+ 217:..\..\BSP/bsp.c ****     return ((CPU_INT32U)BSP_PSOC_CPU_FREQ);
+ 171              		.loc 1 217 0
+ 172 0004 48F20073 		movw	r3, #:lower16:60000000
+ 173 0008 C0F29333 		movt	r3, #:upper16:60000000
+ 218:..\..\BSP/bsp.c **** }
+ 174              		.loc 1 218 0
+ 175 000c 1846     		mov	r0, r3
+ 176 000e BD46     		mov	sp, r7
+ 177 0010 80BC     		pop	{r7}
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 8
+
+
+ 178 0012 7047     		bx	lr
+ 179              		.cfi_endproc
+ 180              	.LFE3:
+ 181              		.size	BSP_CPU_ClkFreq, .-BSP_CPU_ClkFreq
+ 182              		.section	.text.BSP_LED_On,"ax",%progbits
+ 183              		.align	2
+ 184              		.global	BSP_LED_On
+ 185              		.thumb
+ 186              		.thumb_func
+ 187              		.type	BSP_LED_On, %function
+ 188              	BSP_LED_On:
+ 189              	.LFB4:
+ 219:..\..\BSP/bsp.c **** 
+ 220:..\..\BSP/bsp.c **** 
+ 221:..\..\BSP/bsp.c **** /*
+ 222:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 223:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 224:..\..\BSP/bsp.c **** *                                              LED FUNCTIONS
+ 225:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 226:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 227:..\..\BSP/bsp.c **** */
+ 228:..\..\BSP/bsp.c **** 
+ 229:..\..\BSP/bsp.c **** 
+ 230:..\..\BSP/bsp.c **** /*
+ 231:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 232:..\..\BSP/bsp.c **** *                                             BSP_LED_On()
+ 233:..\..\BSP/bsp.c **** *
+ 234:..\..\BSP/bsp.c **** * Description : Turn ON any or all the LEDs on the board.
+ 235:..\..\BSP/bsp.c **** *
+ 236:..\..\BSP/bsp.c **** * Argument(s) : led     The ID of the LED to control:
+ 237:..\..\BSP/bsp.c **** *
+ 238:..\..\BSP/bsp.c **** *                       0    turns ON ALL the LEDs
+ 239:..\..\BSP/bsp.c **** *                       1    turns ON user LED1  on the board
+ 240:..\..\BSP/bsp.c **** *                       2    turns ON user LED2  on the board
+ 241:..\..\BSP/bsp.c **** *                       3    turns ON user LED3  on the board
+ 242:..\..\BSP/bsp.c **** *
+ 243:..\..\BSP/bsp.c **** * Return(s)   : none.
+ 244:..\..\BSP/bsp.c **** *
+ 245:..\..\BSP/bsp.c **** * Caller(s)   : Application.
+ 246:..\..\BSP/bsp.c **** *
+ 247:..\..\BSP/bsp.c **** * Note(s)     : none.
+ 248:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 249:..\..\BSP/bsp.c **** */
+ 250:..\..\BSP/bsp.c **** 
+ 251:..\..\BSP/bsp.c **** void  BSP_LED_On (CPU_INT08U led)
+ 252:..\..\BSP/bsp.c **** {
+ 190              		.loc 1 252 0
+ 191              		.cfi_startproc
+ 192              		@ args = 0, pretend = 0, frame = 8
+ 193              		@ frame_needed = 1, uses_anonymous_args = 0
+ 194 0000 80B5     		push	{r7, lr}
+ 195              	.LCFI10:
+ 196              		.cfi_def_cfa_offset 8
+ 197 0002 82B0     		sub	sp, sp, #8
+ 198              	.LCFI11:
+ 199              		.cfi_def_cfa_offset 16
+ 200 0004 00AF     		add	r7, sp, #0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 9
+
+
+ 201              		.cfi_offset 14, -4
+ 202              		.cfi_offset 7, -8
+ 203              	.LCFI12:
+ 204              		.cfi_def_cfa_register 7
+ 205 0006 0346     		mov	r3, r0
+ 206 0008 FB71     		strb	r3, [r7, #7]
+ 253:..\..\BSP/bsp.c ****     switch (led) {
+ 207              		.loc 1 253 0
+ 208 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 209 000c 042B     		cmp	r3, #4
+ 210 000e 4BD8     		bhi	.L15
+ 211 0010 01A2     		adr	r2, .L14
+ 212 0012 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 213 0016 00BF     		.align	2
+ 214              	.L14:
+ 215 0018 2D000000 		.word	.L11+1
+ 216 001c 57000000 		.word	.L12+1
+ 217 0020 57000000 		.word	.L12+1
+ 218 0024 57000000 		.word	.L12+1
+ 219 0028 81000000 		.word	.L13+1
+ 220              	.L11:
+ 254:..\..\BSP/bsp.c ****         case 0:
+ 255:..\..\BSP/bsp.c ****              LED_REG_VAL = LED_Status_Read();                   /* LED_Status Signifies the given n
+ 221              		.loc 1 255 0
+ 222 002c FFF7FEFF 		bl	LED_Status_Read
+ 223 0030 0346     		mov	r3, r0
+ 224 0032 DAB2     		uxtb	r2, r3
+ 225 0034 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 226 0038 C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 227 003c 1A70     		strb	r2, [r3, #0]
+ 256:..\..\BSP/bsp.c ****              LED_Status_Write(LED_REG_VAL | ALL_LED);           /* the Control Register controlling
+ 228              		.loc 1 256 0
+ 229 003e 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 230 0042 C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 231 0046 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 232 0048 43F00303 		orr	r3, r3, #3
+ 233 004c DBB2     		uxtb	r3, r3
+ 234 004e 1846     		mov	r0, r3
+ 235 0050 FFF7FEFF 		bl	LED_Status_Write
+ 257:..\..\BSP/bsp.c ****              break;
+ 236              		.loc 1 257 0
+ 237 0054 28E0     		b	.L15
+ 238              	.L12:
+ 258:..\..\BSP/bsp.c ****             
+ 259:..\..\BSP/bsp.c ****         case 1:
+ 260:..\..\BSP/bsp.c ****         case 2:
+ 261:..\..\BSP/bsp.c ****         case 3:
+ 262:..\..\BSP/bsp.c ****              LED_REG_VAL = LED_Status_Read();
+ 239              		.loc 1 262 0
+ 240 0056 FFF7FEFF 		bl	LED_Status_Read
+ 241 005a 0346     		mov	r3, r0
+ 242 005c DAB2     		uxtb	r2, r3
+ 243 005e 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 244 0062 C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 245 0066 1A70     		strb	r2, [r3, #0]
+ 263:..\..\BSP/bsp.c ****              LED_Status_Write(LED_REG_VAL | LED_3);
+ 246              		.loc 1 263 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 10
+
+
+ 247 0068 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 248 006c C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 249 0070 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 250 0072 43F00103 		orr	r3, r3, #1
+ 251 0076 DBB2     		uxtb	r3, r3
+ 252 0078 1846     		mov	r0, r3
+ 253 007a FFF7FEFF 		bl	LED_Status_Write
+ 264:..\..\BSP/bsp.c ****              break;
+ 254              		.loc 1 264 0
+ 255 007e 13E0     		b	.L15
+ 256              	.L13:
+ 265:..\..\BSP/bsp.c ****              
+ 266:..\..\BSP/bsp.c ****              
+ 267:..\..\BSP/bsp.c ****         case 4:
+ 268:..\..\BSP/bsp.c ****              LED_REG_VAL = LED_Status_Read();
+ 257              		.loc 1 268 0
+ 258 0080 FFF7FEFF 		bl	LED_Status_Read
+ 259 0084 0346     		mov	r3, r0
+ 260 0086 DAB2     		uxtb	r2, r3
+ 261 0088 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 262 008c C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 263 0090 1A70     		strb	r2, [r3, #0]
+ 269:..\..\BSP/bsp.c ****              LED_Status_Write(LED_REG_VAL | LED_4);
+ 264              		.loc 1 269 0
+ 265 0092 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 266 0096 C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 267 009a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 268 009c 43F00203 		orr	r3, r3, #2
+ 269 00a0 DBB2     		uxtb	r3, r3
+ 270 00a2 1846     		mov	r0, r3
+ 271 00a4 FFF7FEFF 		bl	LED_Status_Write
+ 272              	.L15:
+ 270:..\..\BSP/bsp.c ****              break;
+ 271:..\..\BSP/bsp.c **** 
+ 272:..\..\BSP/bsp.c **** 
+ 273:..\..\BSP/bsp.c ****         default:
+ 274:..\..\BSP/bsp.c ****              break;
+ 275:..\..\BSP/bsp.c ****     }
+ 276:..\..\BSP/bsp.c **** }
+ 273              		.loc 1 276 0
+ 274 00a8 07F10807 		add	r7, r7, #8
+ 275 00ac BD46     		mov	sp, r7
+ 276 00ae 80BD     		pop	{r7, pc}
+ 277              		.cfi_endproc
+ 278              	.LFE4:
+ 279              		.size	BSP_LED_On, .-BSP_LED_On
+ 280              		.section	.text.BSP_LED_Off,"ax",%progbits
+ 281              		.align	2
+ 282              		.global	BSP_LED_Off
+ 283              		.thumb
+ 284              		.thumb_func
+ 285              		.type	BSP_LED_Off, %function
+ 286              	BSP_LED_Off:
+ 287              	.LFB5:
+ 277:..\..\BSP/bsp.c **** 
+ 278:..\..\BSP/bsp.c **** 
+ 279:..\..\BSP/bsp.c **** /*
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 11
+
+
+ 280:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 281:..\..\BSP/bsp.c **** *                                              BSP_LED_Off()
+ 282:..\..\BSP/bsp.c **** *
+ 283:..\..\BSP/bsp.c **** * Description : Turn OFF any or all the LEDs on the board.
+ 284:..\..\BSP/bsp.c **** *
+ 285:..\..\BSP/bsp.c **** * Argument(s) : led     The ID of the LED to control:
+ 286:..\..\BSP/bsp.c **** *
+ 287:..\..\BSP/bsp.c **** *                       0    turns OFF ALL the LEDs
+ 288:..\..\BSP/bsp.c **** *                       1    turns OFF user LED1  on the board
+ 289:..\..\BSP/bsp.c **** *                       2    turns OFF user LED2  on the board
+ 290:..\..\BSP/bsp.c **** *                       3    turns OFF user LED3  on the board
+ 291:..\..\BSP/bsp.c **** *
+ 292:..\..\BSP/bsp.c **** * Return(s)   : none.
+ 293:..\..\BSP/bsp.c **** *
+ 294:..\..\BSP/bsp.c **** * Caller(s)   : Application.
+ 295:..\..\BSP/bsp.c **** *
+ 296:..\..\BSP/bsp.c **** * Note(s)     : none.
+ 297:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 298:..\..\BSP/bsp.c **** */
+ 299:..\..\BSP/bsp.c **** 
+ 300:..\..\BSP/bsp.c **** void  BSP_LED_Off (CPU_INT08U led)
+ 301:..\..\BSP/bsp.c **** {
+ 288              		.loc 1 301 0
+ 289              		.cfi_startproc
+ 290              		@ args = 0, pretend = 0, frame = 8
+ 291              		@ frame_needed = 1, uses_anonymous_args = 0
+ 292 0000 80B5     		push	{r7, lr}
+ 293              	.LCFI13:
+ 294              		.cfi_def_cfa_offset 8
+ 295 0002 82B0     		sub	sp, sp, #8
+ 296              	.LCFI14:
+ 297              		.cfi_def_cfa_offset 16
+ 298 0004 00AF     		add	r7, sp, #0
+ 299              		.cfi_offset 14, -4
+ 300              		.cfi_offset 7, -8
+ 301              	.LCFI15:
+ 302              		.cfi_def_cfa_register 7
+ 303 0006 0346     		mov	r3, r0
+ 304 0008 FB71     		strb	r3, [r7, #7]
+ 302:..\..\BSP/bsp.c ****         switch (led) {
+ 305              		.loc 1 302 0
+ 306 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 307 000c 042B     		cmp	r3, #4
+ 308 000e 48D8     		bhi	.L22
+ 309 0010 01A2     		adr	r2, .L21
+ 310 0012 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 311 0016 00BF     		.align	2
+ 312              	.L21:
+ 313 0018 2D000000 		.word	.L18+1
+ 314 001c 55000000 		.word	.L19+1
+ 315 0020 55000000 		.word	.L19+1
+ 316 0024 55000000 		.word	.L19+1
+ 317 0028 7D000000 		.word	.L20+1
+ 318              	.L18:
+ 303:..\..\BSP/bsp.c ****         case 0:
+ 304:..\..\BSP/bsp.c ****              LED_REG_VAL = LED_Status_Read();                   /* LED_Status Signifies the given n
+ 319              		.loc 1 304 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 12
+
+
+ 320 002c FFF7FEFF 		bl	LED_Status_Read
+ 321 0030 0346     		mov	r3, r0
+ 322 0032 DAB2     		uxtb	r2, r3
+ 323 0034 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 324 0038 C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 325 003c 1A70     		strb	r2, [r3, #0]
+ 305:..\..\BSP/bsp.c ****              LED_Status_Write(LED_REG_VAL & ~ALL_LED);          /* the Control Register controlling
+ 326              		.loc 1 305 0
+ 327 003e 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 328 0042 C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 329 0046 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 330 0048 23F00303 		bic	r3, r3, #3
+ 331 004c 1846     		mov	r0, r3
+ 332 004e FFF7FEFF 		bl	LED_Status_Write
+ 306:..\..\BSP/bsp.c ****              break;
+ 333              		.loc 1 306 0
+ 334 0052 26E0     		b	.L22
+ 335              	.L19:
+ 307:..\..\BSP/bsp.c ****             
+ 308:..\..\BSP/bsp.c ****         case 1:
+ 309:..\..\BSP/bsp.c ****         case 2:
+ 310:..\..\BSP/bsp.c ****         case 3:
+ 311:..\..\BSP/bsp.c ****              LED_REG_VAL = LED_Status_Read();
+ 336              		.loc 1 311 0
+ 337 0054 FFF7FEFF 		bl	LED_Status_Read
+ 338 0058 0346     		mov	r3, r0
+ 339 005a DAB2     		uxtb	r2, r3
+ 340 005c 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 341 0060 C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 342 0064 1A70     		strb	r2, [r3, #0]
+ 312:..\..\BSP/bsp.c ****              LED_Status_Write(LED_REG_VAL & ~LED_3);
+ 343              		.loc 1 312 0
+ 344 0066 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 345 006a C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 346 006e 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 347 0070 23F00103 		bic	r3, r3, #1
+ 348 0074 1846     		mov	r0, r3
+ 349 0076 FFF7FEFF 		bl	LED_Status_Write
+ 313:..\..\BSP/bsp.c ****              break;
+ 350              		.loc 1 313 0
+ 351 007a 12E0     		b	.L22
+ 352              	.L20:
+ 314:..\..\BSP/bsp.c ****              
+ 315:..\..\BSP/bsp.c ****              
+ 316:..\..\BSP/bsp.c ****         case 4:
+ 317:..\..\BSP/bsp.c ****              LED_REG_VAL = LED_Status_Read();
+ 353              		.loc 1 317 0
+ 354 007c FFF7FEFF 		bl	LED_Status_Read
+ 355 0080 0346     		mov	r3, r0
+ 356 0082 DAB2     		uxtb	r2, r3
+ 357 0084 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 358 0088 C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 359 008c 1A70     		strb	r2, [r3, #0]
+ 318:..\..\BSP/bsp.c ****              LED_Status_Write(LED_REG_VAL & ~LED_4);
+ 360              		.loc 1 318 0
+ 361 008e 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 362 0092 C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 13
+
+
+ 363 0096 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 364 0098 23F00203 		bic	r3, r3, #2
+ 365 009c 1846     		mov	r0, r3
+ 366 009e FFF7FEFF 		bl	LED_Status_Write
+ 367              	.L22:
+ 319:..\..\BSP/bsp.c ****              break;
+ 320:..\..\BSP/bsp.c **** 
+ 321:..\..\BSP/bsp.c **** 
+ 322:..\..\BSP/bsp.c ****         default:
+ 323:..\..\BSP/bsp.c ****              break;
+ 324:..\..\BSP/bsp.c ****     }
+ 325:..\..\BSP/bsp.c **** }
+ 368              		.loc 1 325 0
+ 369 00a2 07F10807 		add	r7, r7, #8
+ 370 00a6 BD46     		mov	sp, r7
+ 371 00a8 80BD     		pop	{r7, pc}
+ 372              		.cfi_endproc
+ 373              	.LFE5:
+ 374              		.size	BSP_LED_Off, .-BSP_LED_Off
+ 375 00aa 00BF     		.section	.text.BSP_LED_Toggle,"ax",%progbits
+ 376              		.align	2
+ 377              		.global	BSP_LED_Toggle
+ 378              		.thumb
+ 379              		.thumb_func
+ 380              		.type	BSP_LED_Toggle, %function
+ 381              	BSP_LED_Toggle:
+ 382              	.LFB6:
+ 326:..\..\BSP/bsp.c **** 
+ 327:..\..\BSP/bsp.c **** 
+ 328:..\..\BSP/bsp.c **** /*
+ 329:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 330:..\..\BSP/bsp.c **** *                                            BSP_LED_Toggle()
+ 331:..\..\BSP/bsp.c **** *
+ 332:..\..\BSP/bsp.c **** * Description : TOGGLE any or all the LEDs on the board.
+ 333:..\..\BSP/bsp.c **** *
+ 334:..\..\BSP/bsp.c **** * Argument(s) : led     The ID of the LED to control:
+ 335:..\..\BSP/bsp.c **** *
+ 336:..\..\BSP/bsp.c **** *                       0    TOGGLE ALL the LEDs
+ 337:..\..\BSP/bsp.c **** *                       1    TOGGLE user LED1  on the board
+ 338:..\..\BSP/bsp.c **** *                       2    TOGGLE user LED2  on the board
+ 339:..\..\BSP/bsp.c **** *                       3    TOGGLE user LED3  on the board
+ 340:..\..\BSP/bsp.c **** *
+ 341:..\..\BSP/bsp.c **** * Return(s)   : none.
+ 342:..\..\BSP/bsp.c **** *
+ 343:..\..\BSP/bsp.c **** * Caller(s)   : Application.
+ 344:..\..\BSP/bsp.c **** *
+ 345:..\..\BSP/bsp.c **** * Note(s)     : none.
+ 346:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 347:..\..\BSP/bsp.c **** */
+ 348:..\..\BSP/bsp.c **** 
+ 349:..\..\BSP/bsp.c **** void  BSP_LED_Toggle (CPU_INT08U led)
+ 350:..\..\BSP/bsp.c **** {
+ 383              		.loc 1 350 0
+ 384              		.cfi_startproc
+ 385              		@ args = 0, pretend = 0, frame = 8
+ 386              		@ frame_needed = 1, uses_anonymous_args = 0
+ 387 0000 80B5     		push	{r7, lr}
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 14
+
+
+ 388              	.LCFI16:
+ 389              		.cfi_def_cfa_offset 8
+ 390 0002 82B0     		sub	sp, sp, #8
+ 391              	.LCFI17:
+ 392              		.cfi_def_cfa_offset 16
+ 393 0004 00AF     		add	r7, sp, #0
+ 394              		.cfi_offset 14, -4
+ 395              		.cfi_offset 7, -8
+ 396              	.LCFI18:
+ 397              		.cfi_def_cfa_register 7
+ 398 0006 0346     		mov	r3, r0
+ 399 0008 FB71     		strb	r3, [r7, #7]
+ 351:..\..\BSP/bsp.c ****         switch (led) {
+ 400              		.loc 1 351 0
+ 401 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 402 000c 042B     		cmp	r3, #4
+ 403 000e 4BD8     		bhi	.L29
+ 404 0010 01A2     		adr	r2, .L28
+ 405 0012 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 406 0016 00BF     		.align	2
+ 407              	.L28:
+ 408 0018 2D000000 		.word	.L25+1
+ 409 001c 57000000 		.word	.L26+1
+ 410 0020 57000000 		.word	.L26+1
+ 411 0024 57000000 		.word	.L26+1
+ 412 0028 81000000 		.word	.L27+1
+ 413              	.L25:
+ 352:..\..\BSP/bsp.c ****         case 0:
+ 353:..\..\BSP/bsp.c ****              LED_REG_VAL = LED_Status_Read();                   /* LED_Status Signifies the given n
+ 414              		.loc 1 353 0
+ 415 002c FFF7FEFF 		bl	LED_Status_Read
+ 416 0030 0346     		mov	r3, r0
+ 417 0032 DAB2     		uxtb	r2, r3
+ 418 0034 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 419 0038 C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 420 003c 1A70     		strb	r2, [r3, #0]
+ 354:..\..\BSP/bsp.c ****              LED_Status_Write(LED_REG_VAL ^ ALL_LED);           /* the Control Register controlling
+ 421              		.loc 1 354 0
+ 422 003e 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 423 0042 C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 424 0046 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 425 0048 83F00303 		eor	r3, r3, #3
+ 426 004c DBB2     		uxtb	r3, r3
+ 427 004e 1846     		mov	r0, r3
+ 428 0050 FFF7FEFF 		bl	LED_Status_Write
+ 355:..\..\BSP/bsp.c ****              break;                                             
+ 429              		.loc 1 355 0
+ 430 0054 28E0     		b	.L29
+ 431              	.L26:
+ 356:..\..\BSP/bsp.c ****             
+ 357:..\..\BSP/bsp.c ****         case 1:
+ 358:..\..\BSP/bsp.c ****         case 2:
+ 359:..\..\BSP/bsp.c ****         case 3:
+ 360:..\..\BSP/bsp.c ****              LED_REG_VAL = LED_Status_Read();
+ 432              		.loc 1 360 0
+ 433 0056 FFF7FEFF 		bl	LED_Status_Read
+ 434 005a 0346     		mov	r3, r0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 15
+
+
+ 435 005c DAB2     		uxtb	r2, r3
+ 436 005e 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 437 0062 C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 438 0066 1A70     		strb	r2, [r3, #0]
+ 361:..\..\BSP/bsp.c ****              LED_Status_Write(LED_REG_VAL ^ LED_3);
+ 439              		.loc 1 361 0
+ 440 0068 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 441 006c C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 442 0070 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 443 0072 83F00103 		eor	r3, r3, #1
+ 444 0076 DBB2     		uxtb	r3, r3
+ 445 0078 1846     		mov	r0, r3
+ 446 007a FFF7FEFF 		bl	LED_Status_Write
+ 362:..\..\BSP/bsp.c ****              break;
+ 447              		.loc 1 362 0
+ 448 007e 13E0     		b	.L29
+ 449              	.L27:
+ 363:..\..\BSP/bsp.c ****              
+ 364:..\..\BSP/bsp.c ****              
+ 365:..\..\BSP/bsp.c ****         case 4:
+ 366:..\..\BSP/bsp.c ****              LED_REG_VAL = LED_Status_Read();
+ 450              		.loc 1 366 0
+ 451 0080 FFF7FEFF 		bl	LED_Status_Read
+ 452 0084 0346     		mov	r3, r0
+ 453 0086 DAB2     		uxtb	r2, r3
+ 454 0088 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 455 008c C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 456 0090 1A70     		strb	r2, [r3, #0]
+ 367:..\..\BSP/bsp.c ****              LED_Status_Write(LED_REG_VAL ^ LED_4);
+ 457              		.loc 1 367 0
+ 458 0092 40F20003 		movw	r3, #:lower16:LED_REG_VAL
+ 459 0096 C0F20003 		movt	r3, #:upper16:LED_REG_VAL
+ 460 009a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 461 009c 83F00203 		eor	r3, r3, #2
+ 462 00a0 DBB2     		uxtb	r3, r3
+ 463 00a2 1846     		mov	r0, r3
+ 464 00a4 FFF7FEFF 		bl	LED_Status_Write
+ 465              	.L29:
+ 368:..\..\BSP/bsp.c ****              break;
+ 369:..\..\BSP/bsp.c **** 
+ 370:..\..\BSP/bsp.c **** 
+ 371:..\..\BSP/bsp.c ****         default:
+ 372:..\..\BSP/bsp.c ****              break;
+ 373:..\..\BSP/bsp.c ****     }
+ 374:..\..\BSP/bsp.c **** }
+ 466              		.loc 1 374 0
+ 467 00a8 07F10807 		add	r7, r7, #8
+ 468 00ac BD46     		mov	sp, r7
+ 469 00ae 80BD     		pop	{r7, pc}
+ 470              		.cfi_endproc
+ 471              	.LFE6:
+ 472              		.size	BSP_LED_Toggle, .-BSP_LED_Toggle
+ 473              		.section	.text.BSP_PB_StatusGet,"ax",%progbits
+ 474              		.align	2
+ 475              		.global	BSP_PB_StatusGet
+ 476              		.thumb
+ 477              		.thumb_func
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 16
+
+
+ 478              		.type	BSP_PB_StatusGet, %function
+ 479              	BSP_PB_StatusGet:
+ 480              	.LFB7:
+ 375:..\..\BSP/bsp.c **** 
+ 376:..\..\BSP/bsp.c **** 
+ 377:..\..\BSP/bsp.c **** /*
+ 378:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 379:..\..\BSP/bsp.c **** *                                            BSP_PB_StatusGet()
+ 380:..\..\BSP/bsp.c **** *
+ 381:..\..\BSP/bsp.c **** * Description : Get the current status of the push buttons.
+ 382:..\..\BSP/bsp.c **** *
+ 383:..\..\BSP/bsp.c **** * Argument(s) : pb    Push button identifier.
+ 384:..\..\BSP/bsp.c **** *
+ 385:..\..\BSP/bsp.c **** *                           1 Board SW1
+ 386:..\..\BSP/bsp.c **** *                           2 Board SW2
+ 387:..\..\BSP/bsp.c **** *
+ 388:..\..\BSP/bsp.c **** * Return(s)   : DEF_ON    If the push button is pressed.
+ 389:..\..\BSP/bsp.c **** *               DEF_OFF,  otherwise
+ 390:..\..\BSP/bsp.c **** *
+ 391:..\..\BSP/bsp.c **** * Caller(s)   : application
+ 392:..\..\BSP/bsp.c **** *
+ 393:..\..\BSP/bsp.c **** * Note(s)     : none.
+ 394:..\..\BSP/bsp.c **** ***************************************************************************************************
+ 395:..\..\BSP/bsp.c **** */
+ 396:..\..\BSP/bsp.c **** 
+ 397:..\..\BSP/bsp.c **** CPU_BOOLEAN  BSP_PB_StatusGet (CPU_INT08U  pb)
+ 398:..\..\BSP/bsp.c **** {
+ 481              		.loc 1 398 0
+ 482              		.cfi_startproc
+ 483              		@ args = 0, pretend = 0, frame = 16
+ 484              		@ frame_needed = 1, uses_anonymous_args = 0
+ 485 0000 80B5     		push	{r7, lr}
+ 486              	.LCFI19:
+ 487              		.cfi_def_cfa_offset 8
+ 488 0002 84B0     		sub	sp, sp, #16
+ 489              	.LCFI20:
+ 490              		.cfi_def_cfa_offset 24
+ 491 0004 00AF     		add	r7, sp, #0
+ 492              		.cfi_offset 14, -4
+ 493              		.cfi_offset 7, -8
+ 494              	.LCFI21:
+ 495              		.cfi_def_cfa_register 7
+ 496 0006 0346     		mov	r3, r0
+ 497 0008 FB71     		strb	r3, [r7, #7]
+ 399:..\..\BSP/bsp.c ****     CPU_INT08U    reg_val;
+ 400:..\..\BSP/bsp.c ****     CPU_BOOLEAN   pb_status;
+ 401:..\..\BSP/bsp.c **** 
+ 402:..\..\BSP/bsp.c **** 
+ 403:..\..\BSP/bsp.c ****     //reg_val   = BSP_PSOC_PB_RD();
+ 404:..\..\BSP/bsp.c ****     pb_status = DEF_OFF;
+ 498              		.loc 1 404 0
+ 499 000a 4FF00003 		mov	r3, #0
+ 500 000e FB73     		strb	r3, [r7, #15]
+ 405:..\..\BSP/bsp.c **** 
+ 406:..\..\BSP/bsp.c ****     switch (pb) {
+ 501              		.loc 1 406 0
+ 502 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 17
+
+
+ 503 0012 022B     		cmp	r3, #2
+ 504 0014 02D0     		beq	.L32
+ 505 0016 032B     		cmp	r3, #3
+ 506 0018 10D0     		beq	.L33
+ 507 001a 1EE0     		b	.L31
+ 508              	.L32:
+ 407:..\..\BSP/bsp.c ****         case 2u:
+ 408:..\..\BSP/bsp.c ****              reg_val   = BSP_PSOC_PB_2_RD();
+ 509              		.loc 1 408 0
+ 510 001c FFF7FEFF 		bl	PB_2_Read
+ 511 0020 0346     		mov	r3, r0
+ 512 0022 BB73     		strb	r3, [r7, #14]
+ 409:..\..\BSP/bsp.c ****              pb_status = DEF_BIT_IS_CLR(reg_val, DEF_BIT_00);
+ 513              		.loc 1 409 0
+ 514 0024 BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 515 0026 03F00103 		and	r3, r3, #1
+ 516 002a 002B     		cmp	r3, #0
+ 517 002c 02D1     		bne	.L34
+ 518 002e 4FF00103 		mov	r3, #1
+ 519 0032 01E0     		b	.L35
+ 520              	.L34:
+ 521 0034 4FF00003 		mov	r3, #0
+ 522              	.L35:
+ 523 0038 FB73     		strb	r3, [r7, #15]
+ 410:..\..\BSP/bsp.c ****              break;
+ 524              		.loc 1 410 0
+ 525 003a 0EE0     		b	.L31
+ 526              	.L33:
+ 411:..\..\BSP/bsp.c ****              
+ 412:..\..\BSP/bsp.c ****         case 3u:
+ 413:..\..\BSP/bsp.c ****              reg_val   = BSP_PSOC_PB_3_RD();
+ 527              		.loc 1 413 0
+ 528 003c FFF7FEFF 		bl	PB_3_Read
+ 529 0040 0346     		mov	r3, r0
+ 530 0042 BB73     		strb	r3, [r7, #14]
+ 414:..\..\BSP/bsp.c ****              pb_status = DEF_BIT_IS_CLR(reg_val, DEF_BIT_00);
+ 531              		.loc 1 414 0
+ 532 0044 BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 533 0046 03F00103 		and	r3, r3, #1
+ 534 004a 002B     		cmp	r3, #0
+ 535 004c 02D1     		bne	.L36
+ 536 004e 4FF00103 		mov	r3, #1
+ 537 0052 01E0     		b	.L37
+ 538              	.L36:
+ 539 0054 4FF00003 		mov	r3, #0
+ 540              	.L37:
+ 541 0058 FB73     		strb	r3, [r7, #15]
+ 542              	.L31:
+ 415:..\..\BSP/bsp.c ****              break;
+ 416:..\..\BSP/bsp.c **** 
+ 417:..\..\BSP/bsp.c ****         default:
+ 418:..\..\BSP/bsp.c ****              break;
+ 419:..\..\BSP/bsp.c ****     }
+ 420:..\..\BSP/bsp.c **** 
+ 421:..\..\BSP/bsp.c ****     return (pb_status);
+ 543              		.loc 1 421 0
+ 544 005a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 18
+
+
+ 422:..\..\BSP/bsp.c **** }
+ 545              		.loc 1 422 0
+ 546 005c 1846     		mov	r0, r3
+ 547 005e 07F11007 		add	r7, r7, #16
+ 548 0062 BD46     		mov	sp, r7
+ 549 0064 80BD     		pop	{r7, pc}
+ 550              		.cfi_endproc
+ 551              	.LFE7:
+ 552              		.size	BSP_PB_StatusGet, .-BSP_PB_StatusGet
+ 553 0066 00BF     		.text
+ 554              	.Letext0:
+ 555              		.section	.debug_loc,"",%progbits
+ 556              	.Ldebug_loc0:
+ 557              	.LLST0:
+ 558 0000 00000000 		.4byte	.LFB0
+ 559 0004 02000000 		.4byte	.LCFI0
+ 560 0008 0100     		.2byte	0x1
+ 561 000a 5D       		.byte	0x5d
+ 562 000b 02000000 		.4byte	.LCFI0
+ 563 000f 04000000 		.4byte	.LCFI1
+ 564 0013 0200     		.2byte	0x2
+ 565 0015 7D       		.byte	0x7d
+ 566 0016 04       		.sleb128 4
+ 567 0017 04000000 		.4byte	.LCFI1
+ 568 001b 06000000 		.4byte	.LCFI2
+ 569 001f 0200     		.2byte	0x2
+ 570 0021 7D       		.byte	0x7d
+ 571 0022 10       		.sleb128 16
+ 572 0023 06000000 		.4byte	.LCFI2
+ 573 0027 48000000 		.4byte	.LFE0
+ 574 002b 0200     		.2byte	0x2
+ 575 002d 77       		.byte	0x77
+ 576 002e 10       		.sleb128 16
+ 577 002f 00000000 		.4byte	0x0
+ 578 0033 00000000 		.4byte	0x0
+ 579              	.LLST1:
+ 580 0037 00000000 		.4byte	.LFB1
+ 581 003b 02000000 		.4byte	.LCFI3
+ 582 003f 0100     		.2byte	0x1
+ 583 0041 5D       		.byte	0x5d
+ 584 0042 02000000 		.4byte	.LCFI3
+ 585 0046 04000000 		.4byte	.LCFI4
+ 586 004a 0200     		.2byte	0x2
+ 587 004c 7D       		.byte	0x7d
+ 588 004d 04       		.sleb128 4
+ 589 004e 04000000 		.4byte	.LCFI4
+ 590 0052 0A000000 		.4byte	.LFE1
+ 591 0056 0200     		.2byte	0x2
+ 592 0058 77       		.byte	0x77
+ 593 0059 04       		.sleb128 4
+ 594 005a 00000000 		.4byte	0x0
+ 595 005e 00000000 		.4byte	0x0
+ 596              	.LLST2:
+ 597 0062 00000000 		.4byte	.LFB2
+ 598 0066 02000000 		.4byte	.LCFI5
+ 599 006a 0100     		.2byte	0x1
+ 600 006c 5D       		.byte	0x5d
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 19
+
+
+ 601 006d 02000000 		.4byte	.LCFI5
+ 602 0071 04000000 		.4byte	.LCFI6
+ 603 0075 0200     		.2byte	0x2
+ 604 0077 7D       		.byte	0x7d
+ 605 0078 08       		.sleb128 8
+ 606 0079 04000000 		.4byte	.LCFI6
+ 607 007d 06000000 		.4byte	.LCFI7
+ 608 0081 0200     		.2byte	0x2
+ 609 0083 7D       		.byte	0x7d
+ 610 0084 10       		.sleb128 16
+ 611 0085 06000000 		.4byte	.LCFI7
+ 612 0089 2E000000 		.4byte	.LFE2
+ 613 008d 0200     		.2byte	0x2
+ 614 008f 77       		.byte	0x77
+ 615 0090 10       		.sleb128 16
+ 616 0091 00000000 		.4byte	0x0
+ 617 0095 00000000 		.4byte	0x0
+ 618              	.LLST3:
+ 619 0099 00000000 		.4byte	.LFB3
+ 620 009d 02000000 		.4byte	.LCFI8
+ 621 00a1 0100     		.2byte	0x1
+ 622 00a3 5D       		.byte	0x5d
+ 623 00a4 02000000 		.4byte	.LCFI8
+ 624 00a8 04000000 		.4byte	.LCFI9
+ 625 00ac 0200     		.2byte	0x2
+ 626 00ae 7D       		.byte	0x7d
+ 627 00af 04       		.sleb128 4
+ 628 00b0 04000000 		.4byte	.LCFI9
+ 629 00b4 14000000 		.4byte	.LFE3
+ 630 00b8 0200     		.2byte	0x2
+ 631 00ba 77       		.byte	0x77
+ 632 00bb 04       		.sleb128 4
+ 633 00bc 00000000 		.4byte	0x0
+ 634 00c0 00000000 		.4byte	0x0
+ 635              	.LLST4:
+ 636 00c4 00000000 		.4byte	.LFB4
+ 637 00c8 02000000 		.4byte	.LCFI10
+ 638 00cc 0100     		.2byte	0x1
+ 639 00ce 5D       		.byte	0x5d
+ 640 00cf 02000000 		.4byte	.LCFI10
+ 641 00d3 04000000 		.4byte	.LCFI11
+ 642 00d7 0200     		.2byte	0x2
+ 643 00d9 7D       		.byte	0x7d
+ 644 00da 08       		.sleb128 8
+ 645 00db 04000000 		.4byte	.LCFI11
+ 646 00df 06000000 		.4byte	.LCFI12
+ 647 00e3 0200     		.2byte	0x2
+ 648 00e5 7D       		.byte	0x7d
+ 649 00e6 10       		.sleb128 16
+ 650 00e7 06000000 		.4byte	.LCFI12
+ 651 00eb B0000000 		.4byte	.LFE4
+ 652 00ef 0200     		.2byte	0x2
+ 653 00f1 77       		.byte	0x77
+ 654 00f2 10       		.sleb128 16
+ 655 00f3 00000000 		.4byte	0x0
+ 656 00f7 00000000 		.4byte	0x0
+ 657              	.LLST5:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 20
+
+
+ 658 00fb 00000000 		.4byte	.LFB5
+ 659 00ff 02000000 		.4byte	.LCFI13
+ 660 0103 0100     		.2byte	0x1
+ 661 0105 5D       		.byte	0x5d
+ 662 0106 02000000 		.4byte	.LCFI13
+ 663 010a 04000000 		.4byte	.LCFI14
+ 664 010e 0200     		.2byte	0x2
+ 665 0110 7D       		.byte	0x7d
+ 666 0111 08       		.sleb128 8
+ 667 0112 04000000 		.4byte	.LCFI14
+ 668 0116 06000000 		.4byte	.LCFI15
+ 669 011a 0200     		.2byte	0x2
+ 670 011c 7D       		.byte	0x7d
+ 671 011d 10       		.sleb128 16
+ 672 011e 06000000 		.4byte	.LCFI15
+ 673 0122 AA000000 		.4byte	.LFE5
+ 674 0126 0200     		.2byte	0x2
+ 675 0128 77       		.byte	0x77
+ 676 0129 10       		.sleb128 16
+ 677 012a 00000000 		.4byte	0x0
+ 678 012e 00000000 		.4byte	0x0
+ 679              	.LLST6:
+ 680 0132 00000000 		.4byte	.LFB6
+ 681 0136 02000000 		.4byte	.LCFI16
+ 682 013a 0100     		.2byte	0x1
+ 683 013c 5D       		.byte	0x5d
+ 684 013d 02000000 		.4byte	.LCFI16
+ 685 0141 04000000 		.4byte	.LCFI17
+ 686 0145 0200     		.2byte	0x2
+ 687 0147 7D       		.byte	0x7d
+ 688 0148 08       		.sleb128 8
+ 689 0149 04000000 		.4byte	.LCFI17
+ 690 014d 06000000 		.4byte	.LCFI18
+ 691 0151 0200     		.2byte	0x2
+ 692 0153 7D       		.byte	0x7d
+ 693 0154 10       		.sleb128 16
+ 694 0155 06000000 		.4byte	.LCFI18
+ 695 0159 B0000000 		.4byte	.LFE6
+ 696 015d 0200     		.2byte	0x2
+ 697 015f 77       		.byte	0x77
+ 698 0160 10       		.sleb128 16
+ 699 0161 00000000 		.4byte	0x0
+ 700 0165 00000000 		.4byte	0x0
+ 701              	.LLST7:
+ 702 0169 00000000 		.4byte	.LFB7
+ 703 016d 02000000 		.4byte	.LCFI19
+ 704 0171 0100     		.2byte	0x1
+ 705 0173 5D       		.byte	0x5d
+ 706 0174 02000000 		.4byte	.LCFI19
+ 707 0178 04000000 		.4byte	.LCFI20
+ 708 017c 0200     		.2byte	0x2
+ 709 017e 7D       		.byte	0x7d
+ 710 017f 08       		.sleb128 8
+ 711 0180 04000000 		.4byte	.LCFI20
+ 712 0184 06000000 		.4byte	.LCFI21
+ 713 0188 0200     		.2byte	0x2
+ 714 018a 7D       		.byte	0x7d
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 21
+
+
+ 715 018b 18       		.sleb128 24
+ 716 018c 06000000 		.4byte	.LCFI21
+ 717 0190 66000000 		.4byte	.LFE7
+ 718 0194 0200     		.2byte	0x2
+ 719 0196 77       		.byte	0x77
+ 720 0197 18       		.sleb128 24
+ 721 0198 00000000 		.4byte	0x0
+ 722 019c 00000000 		.4byte	0x0
+ 723              		.file 2 "..\\..\\..\\..\\..\\..\\uC-CPU\\ARM-Cortex-M3\\GNU/cpu.h"
+ 724              		.file 3 "..\\..\\..\\..\\..\\..\\uCOS-III\\Source/os_type.h"
+ 725              		.file 4 "..\\..\\..\\..\\..\\..\\uCOS-III\\Source/os.h"
+ 726              		.section	.debug_info
+ 727 0000 3C020000 		.4byte	0x23c
+ 728 0004 0200     		.2byte	0x2
+ 729 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 730 000a 04       		.byte	0x4
+ 731 000b 01       		.uleb128 0x1
+ 732 000c D5010000 		.4byte	.LASF28
+ 733 0010 01       		.byte	0x1
+ 734 0011 72000000 		.4byte	.LASF29
+ 735 0015 AE000000 		.4byte	.LASF30
+ 736 0019 00000000 		.4byte	0x0
+ 737 001d 00000000 		.4byte	0x0
+ 738 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 739 0025 00000000 		.4byte	.Ldebug_line0
+ 740 0029 02       		.uleb128 0x2
+ 741 002a 01       		.byte	0x1
+ 742 002b 08       		.byte	0x8
+ 743 002c E1010000 		.4byte	.LASF0
+ 744 0030 03       		.uleb128 0x3
+ 745 0031 B7010000 		.4byte	.LASF2
+ 746 0035 02       		.byte	0x2
+ 747 0036 77       		.byte	0x77
+ 748 0037 3B000000 		.4byte	0x3b
+ 749 003b 02       		.uleb128 0x2
+ 750 003c 01       		.byte	0x1
+ 751 003d 08       		.byte	0x8
+ 752 003e 82000000 		.4byte	.LASF1
+ 753 0042 03       		.uleb128 0x3
+ 754 0043 A3000000 		.4byte	.LASF3
+ 755 0047 02       		.byte	0x2
+ 756 0048 78       		.byte	0x78
+ 757 0049 3B000000 		.4byte	0x3b
+ 758 004d 02       		.uleb128 0x2
+ 759 004e 01       		.byte	0x1
+ 760 004f 06       		.byte	0x6
+ 761 0050 22020000 		.4byte	.LASF4
+ 762 0054 02       		.uleb128 0x2
+ 763 0055 02       		.byte	0x2
+ 764 0056 07       		.byte	0x7
+ 765 0057 3C000000 		.4byte	.LASF5
+ 766 005b 02       		.uleb128 0x2
+ 767 005c 02       		.byte	0x2
+ 768 005d 05       		.byte	0x5
+ 769 005e F3010000 		.4byte	.LASF6
+ 770 0062 03       		.uleb128 0x3
+ 771 0063 56000000 		.4byte	.LASF7
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 22
+
+
+ 772 0067 02       		.byte	0x2
+ 773 0068 7C       		.byte	0x7c
+ 774 0069 6D000000 		.4byte	0x6d
+ 775 006d 02       		.uleb128 0x2
+ 776 006e 04       		.byte	0x4
+ 777 006f 07       		.byte	0x7
+ 778 0070 93010000 		.4byte	.LASF8
+ 779 0074 04       		.uleb128 0x4
+ 780 0075 04       		.byte	0x4
+ 781 0076 05       		.byte	0x5
+ 782 0077 696E7400 		.ascii	"int\000"
+ 783 007b 02       		.uleb128 0x2
+ 784 007c 08       		.byte	0x8
+ 785 007d 07       		.byte	0x7
+ 786 007e A0010000 		.4byte	.LASF9
+ 787 0082 02       		.uleb128 0x2
+ 788 0083 08       		.byte	0x8
+ 789 0084 05       		.byte	0x5
+ 790 0085 00000000 		.4byte	.LASF10
+ 791 0089 02       		.uleb128 0x2
+ 792 008a 04       		.byte	0x4
+ 793 008b 04       		.byte	0x4
+ 794 008c 1A000000 		.4byte	.LASF11
+ 795 0090 02       		.uleb128 0x2
+ 796 0091 08       		.byte	0x8
+ 797 0092 04       		.byte	0x4
+ 798 0093 4F000000 		.4byte	.LASF12
+ 799 0097 03       		.uleb128 0x3
+ 800 0098 98000000 		.4byte	.LASF13
+ 801 009c 03       		.byte	0x3
+ 802 009d 4D       		.byte	0x4d
+ 803 009e 62000000 		.4byte	0x62
+ 804 00a2 05       		.uleb128 0x5
+ 805 00a3 04       		.byte	0x4
+ 806 00a4 07       		.byte	0x7
+ 807 00a5 02       		.uleb128 0x2
+ 808 00a6 04       		.byte	0x4
+ 809 00a7 05       		.byte	0x5
+ 810 00a8 19020000 		.4byte	.LASF14
+ 811 00ac 02       		.uleb128 0x2
+ 812 00ad 04       		.byte	0x4
+ 813 00ae 07       		.byte	0x7
+ 814 00af 57010000 		.4byte	.LASF15
+ 815 00b3 06       		.uleb128 0x6
+ 816 00b4 01       		.byte	0x1
+ 817 00b5 0E000000 		.4byte	.LASF18
+ 818 00b9 01       		.byte	0x1
+ 819 00ba 82       		.byte	0x82
+ 820 00bb 01       		.byte	0x1
+ 821 00bc 00000000 		.4byte	.LFB0
+ 822 00c0 48000000 		.4byte	.LFE0
+ 823 00c4 00000000 		.4byte	.LLST0
+ 824 00c8 E9000000 		.4byte	0xe9
+ 825 00cc 07       		.uleb128 0x7
+ 826 00cd 90000000 		.4byte	.LASF16
+ 827 00d1 01       		.byte	0x1
+ 828 00d2 84       		.byte	0x84
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 23
+
+
+ 829 00d3 62000000 		.4byte	0x62
+ 830 00d7 02       		.byte	0x2
+ 831 00d8 91       		.byte	0x91
+ 832 00d9 70       		.sleb128 -16
+ 833 00da 07       		.uleb128 0x7
+ 834 00db 0E020000 		.4byte	.LASF17
+ 835 00df 01       		.byte	0x1
+ 836 00e0 85       		.byte	0x85
+ 837 00e1 E9000000 		.4byte	0xe9
+ 838 00e5 02       		.byte	0x2
+ 839 00e6 91       		.byte	0x91
+ 840 00e7 74       		.sleb128 -12
+ 841 00e8 00       		.byte	0x0
+ 842 00e9 08       		.uleb128 0x8
+ 843 00ea 04       		.byte	0x4
+ 844 00eb 62000000 		.4byte	0x62
+ 845 00ef 09       		.uleb128 0x9
+ 846 00f0 01       		.byte	0x1
+ 847 00f1 E6010000 		.4byte	.LASF31
+ 848 00f5 01       		.byte	0x1
+ 849 00f6 A3       		.byte	0xa3
+ 850 00f7 01       		.byte	0x1
+ 851 00f8 00000000 		.4byte	.LFB1
+ 852 00fc 0A000000 		.4byte	.LFE1
+ 853 0100 37000000 		.4byte	.LLST1
+ 854 0104 06       		.uleb128 0x6
+ 855 0105 01       		.byte	0x1
+ 856 0106 FD010000 		.4byte	.LASF19
+ 857 010a 01       		.byte	0x1
+ 858 010b B8       		.byte	0xb8
+ 859 010c 01       		.byte	0x1
+ 860 010d 00000000 		.4byte	.LFB2
+ 861 0111 2E000000 		.4byte	.LFE2
+ 862 0115 62000000 		.4byte	.LLST2
+ 863 0119 3A010000 		.4byte	0x13a
+ 864 011d 07       		.uleb128 0x7
+ 865 011e C3010000 		.4byte	.LASF20
+ 866 0122 01       		.byte	0x1
+ 867 0123 BA       		.byte	0xba
+ 868 0124 62000000 		.4byte	0x62
+ 869 0128 02       		.byte	0x2
+ 870 0129 91       		.byte	0x91
+ 871 012a 70       		.sleb128 -16
+ 872 012b 07       		.uleb128 0x7
+ 873 012c D0010000 		.4byte	.LASF21
+ 874 0130 01       		.byte	0x1
+ 875 0131 BB       		.byte	0xbb
+ 876 0132 62000000 		.4byte	0x62
+ 877 0136 02       		.byte	0x2
+ 878 0137 91       		.byte	0x91
+ 879 0138 74       		.sleb128 -12
+ 880 0139 00       		.byte	0x0
+ 881 013a 0A       		.uleb128 0xa
+ 882 013b 01       		.byte	0x1
+ 883 013c 83010000 		.4byte	.LASF32
+ 884 0140 01       		.byte	0x1
+ 885 0141 D7       		.byte	0xd7
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 24
+
+
+ 886 0142 01       		.byte	0x1
+ 887 0143 62000000 		.4byte	0x62
+ 888 0147 00000000 		.4byte	.LFB3
+ 889 014b 14000000 		.4byte	.LFE3
+ 890 014f 99000000 		.4byte	.LLST3
+ 891 0153 06       		.uleb128 0x6
+ 892 0154 01       		.byte	0x1
+ 893 0155 78010000 		.4byte	.LASF22
+ 894 0159 01       		.byte	0x1
+ 895 015a FB       		.byte	0xfb
+ 896 015b 01       		.byte	0x1
+ 897 015c 00000000 		.4byte	.LFB4
+ 898 0160 B0000000 		.4byte	.LFE4
+ 899 0164 C4000000 		.4byte	.LLST4
+ 900 0168 7B010000 		.4byte	0x17b
+ 901 016c 0B       		.uleb128 0xb
+ 902 016d 6C656400 		.ascii	"led\000"
+ 903 0171 01       		.byte	0x1
+ 904 0172 FB       		.byte	0xfb
+ 905 0173 42000000 		.4byte	0x42
+ 906 0177 02       		.byte	0x2
+ 907 0178 91       		.byte	0x91
+ 908 0179 77       		.sleb128 -9
+ 909 017a 00       		.byte	0x0
+ 910 017b 0C       		.uleb128 0xc
+ 911 017c 01       		.byte	0x1
+ 912 017d 4B010000 		.4byte	.LASF23
+ 913 0181 01       		.byte	0x1
+ 914 0182 2C01     		.2byte	0x12c
+ 915 0184 01       		.byte	0x1
+ 916 0185 00000000 		.4byte	.LFB5
+ 917 0189 AA000000 		.4byte	.LFE5
+ 918 018d FB000000 		.4byte	.LLST5
+ 919 0191 A5010000 		.4byte	0x1a5
+ 920 0195 0D       		.uleb128 0xd
+ 921 0196 6C656400 		.ascii	"led\000"
+ 922 019a 01       		.byte	0x1
+ 923 019b 2C01     		.2byte	0x12c
+ 924 019d 42000000 		.4byte	0x42
+ 925 01a1 02       		.byte	0x2
+ 926 01a2 91       		.byte	0x91
+ 927 01a3 77       		.sleb128 -9
+ 928 01a4 00       		.byte	0x0
+ 929 01a5 0C       		.uleb128 0xc
+ 930 01a6 01       		.byte	0x1
+ 931 01a7 69010000 		.4byte	.LASF24
+ 932 01ab 01       		.byte	0x1
+ 933 01ac 5D01     		.2byte	0x15d
+ 934 01ae 01       		.byte	0x1
+ 935 01af 00000000 		.4byte	.LFB6
+ 936 01b3 B0000000 		.4byte	.LFE6
+ 937 01b7 32010000 		.4byte	.LLST6
+ 938 01bb CF010000 		.4byte	0x1cf
+ 939 01bf 0D       		.uleb128 0xd
+ 940 01c0 6C656400 		.ascii	"led\000"
+ 941 01c4 01       		.byte	0x1
+ 942 01c5 5D01     		.2byte	0x15d
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 25
+
+
+ 943 01c7 42000000 		.4byte	0x42
+ 944 01cb 02       		.byte	0x2
+ 945 01cc 91       		.byte	0x91
+ 946 01cd 77       		.sleb128 -9
+ 947 01ce 00       		.byte	0x0
+ 948 01cf 0E       		.uleb128 0xe
+ 949 01d0 01       		.byte	0x1
+ 950 01d1 61000000 		.4byte	.LASF33
+ 951 01d5 01       		.byte	0x1
+ 952 01d6 8D01     		.2byte	0x18d
+ 953 01d8 01       		.byte	0x1
+ 954 01d9 30000000 		.4byte	0x30
+ 955 01dd 00000000 		.4byte	.LFB7
+ 956 01e1 66000000 		.4byte	.LFE7
+ 957 01e5 69010000 		.4byte	.LLST7
+ 958 01e9 1A020000 		.4byte	0x21a
+ 959 01ed 0D       		.uleb128 0xd
+ 960 01ee 706200   		.ascii	"pb\000"
+ 961 01f1 01       		.byte	0x1
+ 962 01f2 8D01     		.2byte	0x18d
+ 963 01f4 42000000 		.4byte	0x42
+ 964 01f8 02       		.byte	0x2
+ 965 01f9 91       		.byte	0x91
+ 966 01fa 6F       		.sleb128 -17
+ 967 01fb 0F       		.uleb128 0xf
+ 968 01fc 90000000 		.4byte	.LASF16
+ 969 0200 01       		.byte	0x1
+ 970 0201 8F01     		.2byte	0x18f
+ 971 0203 42000000 		.4byte	0x42
+ 972 0207 02       		.byte	0x2
+ 973 0208 91       		.byte	0x91
+ 974 0209 76       		.sleb128 -10
+ 975 020a 0F       		.uleb128 0xf
+ 976 020b 20000000 		.4byte	.LASF25
+ 977 020f 01       		.byte	0x1
+ 978 0210 9001     		.2byte	0x190
+ 979 0212 30000000 		.4byte	0x30
+ 980 0216 02       		.byte	0x2
+ 981 0217 91       		.byte	0x91
+ 982 0218 77       		.sleb128 -9
+ 983 0219 00       		.byte	0x0
+ 984 021a 10       		.uleb128 0x10
+ 985 021b 2A000000 		.4byte	.LASF26
+ 986 021f 04       		.byte	0x4
+ 987 0220 0F05     		.2byte	0x50f
+ 988 0222 28020000 		.4byte	0x228
+ 989 0226 01       		.byte	0x1
+ 990 0227 01       		.byte	0x1
+ 991 0228 11       		.uleb128 0x11
+ 992 0229 97000000 		.4byte	0x97
+ 993 022d 12       		.uleb128 0x12
+ 994 022e 2E020000 		.4byte	.LASF27
+ 995 0232 01       		.byte	0x1
+ 996 0233 39       		.byte	0x39
+ 997 0234 42000000 		.4byte	0x42
+ 998 0238 01       		.byte	0x1
+ 999 0239 05       		.byte	0x5
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 26
+
+
+ 1000 023a 03       		.byte	0x3
+ 1001 023b 00000000 		.4byte	LED_REG_VAL
+ 1002 023f 00       		.byte	0x0
+ 1003              		.section	.debug_abbrev
+ 1004 0000 01       		.uleb128 0x1
+ 1005 0001 11       		.uleb128 0x11
+ 1006 0002 01       		.byte	0x1
+ 1007 0003 25       		.uleb128 0x25
+ 1008 0004 0E       		.uleb128 0xe
+ 1009 0005 13       		.uleb128 0x13
+ 1010 0006 0B       		.uleb128 0xb
+ 1011 0007 03       		.uleb128 0x3
+ 1012 0008 0E       		.uleb128 0xe
+ 1013 0009 1B       		.uleb128 0x1b
+ 1014 000a 0E       		.uleb128 0xe
+ 1015 000b 11       		.uleb128 0x11
+ 1016 000c 01       		.uleb128 0x1
+ 1017 000d 52       		.uleb128 0x52
+ 1018 000e 01       		.uleb128 0x1
+ 1019 000f 55       		.uleb128 0x55
+ 1020 0010 06       		.uleb128 0x6
+ 1021 0011 10       		.uleb128 0x10
+ 1022 0012 06       		.uleb128 0x6
+ 1023 0013 00       		.byte	0x0
+ 1024 0014 00       		.byte	0x0
+ 1025 0015 02       		.uleb128 0x2
+ 1026 0016 24       		.uleb128 0x24
+ 1027 0017 00       		.byte	0x0
+ 1028 0018 0B       		.uleb128 0xb
+ 1029 0019 0B       		.uleb128 0xb
+ 1030 001a 3E       		.uleb128 0x3e
+ 1031 001b 0B       		.uleb128 0xb
+ 1032 001c 03       		.uleb128 0x3
+ 1033 001d 0E       		.uleb128 0xe
+ 1034 001e 00       		.byte	0x0
+ 1035 001f 00       		.byte	0x0
+ 1036 0020 03       		.uleb128 0x3
+ 1037 0021 16       		.uleb128 0x16
+ 1038 0022 00       		.byte	0x0
+ 1039 0023 03       		.uleb128 0x3
+ 1040 0024 0E       		.uleb128 0xe
+ 1041 0025 3A       		.uleb128 0x3a
+ 1042 0026 0B       		.uleb128 0xb
+ 1043 0027 3B       		.uleb128 0x3b
+ 1044 0028 0B       		.uleb128 0xb
+ 1045 0029 49       		.uleb128 0x49
+ 1046 002a 13       		.uleb128 0x13
+ 1047 002b 00       		.byte	0x0
+ 1048 002c 00       		.byte	0x0
+ 1049 002d 04       		.uleb128 0x4
+ 1050 002e 24       		.uleb128 0x24
+ 1051 002f 00       		.byte	0x0
+ 1052 0030 0B       		.uleb128 0xb
+ 1053 0031 0B       		.uleb128 0xb
+ 1054 0032 3E       		.uleb128 0x3e
+ 1055 0033 0B       		.uleb128 0xb
+ 1056 0034 03       		.uleb128 0x3
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 27
+
+
+ 1057 0035 08       		.uleb128 0x8
+ 1058 0036 00       		.byte	0x0
+ 1059 0037 00       		.byte	0x0
+ 1060 0038 05       		.uleb128 0x5
+ 1061 0039 24       		.uleb128 0x24
+ 1062 003a 00       		.byte	0x0
+ 1063 003b 0B       		.uleb128 0xb
+ 1064 003c 0B       		.uleb128 0xb
+ 1065 003d 3E       		.uleb128 0x3e
+ 1066 003e 0B       		.uleb128 0xb
+ 1067 003f 00       		.byte	0x0
+ 1068 0040 00       		.byte	0x0
+ 1069 0041 06       		.uleb128 0x6
+ 1070 0042 2E       		.uleb128 0x2e
+ 1071 0043 01       		.byte	0x1
+ 1072 0044 3F       		.uleb128 0x3f
+ 1073 0045 0C       		.uleb128 0xc
+ 1074 0046 03       		.uleb128 0x3
+ 1075 0047 0E       		.uleb128 0xe
+ 1076 0048 3A       		.uleb128 0x3a
+ 1077 0049 0B       		.uleb128 0xb
+ 1078 004a 3B       		.uleb128 0x3b
+ 1079 004b 0B       		.uleb128 0xb
+ 1080 004c 27       		.uleb128 0x27
+ 1081 004d 0C       		.uleb128 0xc
+ 1082 004e 11       		.uleb128 0x11
+ 1083 004f 01       		.uleb128 0x1
+ 1084 0050 12       		.uleb128 0x12
+ 1085 0051 01       		.uleb128 0x1
+ 1086 0052 40       		.uleb128 0x40
+ 1087 0053 06       		.uleb128 0x6
+ 1088 0054 01       		.uleb128 0x1
+ 1089 0055 13       		.uleb128 0x13
+ 1090 0056 00       		.byte	0x0
+ 1091 0057 00       		.byte	0x0
+ 1092 0058 07       		.uleb128 0x7
+ 1093 0059 34       		.uleb128 0x34
+ 1094 005a 00       		.byte	0x0
+ 1095 005b 03       		.uleb128 0x3
+ 1096 005c 0E       		.uleb128 0xe
+ 1097 005d 3A       		.uleb128 0x3a
+ 1098 005e 0B       		.uleb128 0xb
+ 1099 005f 3B       		.uleb128 0x3b
+ 1100 0060 0B       		.uleb128 0xb
+ 1101 0061 49       		.uleb128 0x49
+ 1102 0062 13       		.uleb128 0x13
+ 1103 0063 02       		.uleb128 0x2
+ 1104 0064 0A       		.uleb128 0xa
+ 1105 0065 00       		.byte	0x0
+ 1106 0066 00       		.byte	0x0
+ 1107 0067 08       		.uleb128 0x8
+ 1108 0068 0F       		.uleb128 0xf
+ 1109 0069 00       		.byte	0x0
+ 1110 006a 0B       		.uleb128 0xb
+ 1111 006b 0B       		.uleb128 0xb
+ 1112 006c 49       		.uleb128 0x49
+ 1113 006d 13       		.uleb128 0x13
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 28
+
+
+ 1114 006e 00       		.byte	0x0
+ 1115 006f 00       		.byte	0x0
+ 1116 0070 09       		.uleb128 0x9
+ 1117 0071 2E       		.uleb128 0x2e
+ 1118 0072 00       		.byte	0x0
+ 1119 0073 3F       		.uleb128 0x3f
+ 1120 0074 0C       		.uleb128 0xc
+ 1121 0075 03       		.uleb128 0x3
+ 1122 0076 0E       		.uleb128 0xe
+ 1123 0077 3A       		.uleb128 0x3a
+ 1124 0078 0B       		.uleb128 0xb
+ 1125 0079 3B       		.uleb128 0x3b
+ 1126 007a 0B       		.uleb128 0xb
+ 1127 007b 27       		.uleb128 0x27
+ 1128 007c 0C       		.uleb128 0xc
+ 1129 007d 11       		.uleb128 0x11
+ 1130 007e 01       		.uleb128 0x1
+ 1131 007f 12       		.uleb128 0x12
+ 1132 0080 01       		.uleb128 0x1
+ 1133 0081 40       		.uleb128 0x40
+ 1134 0082 06       		.uleb128 0x6
+ 1135 0083 00       		.byte	0x0
+ 1136 0084 00       		.byte	0x0
+ 1137 0085 0A       		.uleb128 0xa
+ 1138 0086 2E       		.uleb128 0x2e
+ 1139 0087 00       		.byte	0x0
+ 1140 0088 3F       		.uleb128 0x3f
+ 1141 0089 0C       		.uleb128 0xc
+ 1142 008a 03       		.uleb128 0x3
+ 1143 008b 0E       		.uleb128 0xe
+ 1144 008c 3A       		.uleb128 0x3a
+ 1145 008d 0B       		.uleb128 0xb
+ 1146 008e 3B       		.uleb128 0x3b
+ 1147 008f 0B       		.uleb128 0xb
+ 1148 0090 27       		.uleb128 0x27
+ 1149 0091 0C       		.uleb128 0xc
+ 1150 0092 49       		.uleb128 0x49
+ 1151 0093 13       		.uleb128 0x13
+ 1152 0094 11       		.uleb128 0x11
+ 1153 0095 01       		.uleb128 0x1
+ 1154 0096 12       		.uleb128 0x12
+ 1155 0097 01       		.uleb128 0x1
+ 1156 0098 40       		.uleb128 0x40
+ 1157 0099 06       		.uleb128 0x6
+ 1158 009a 00       		.byte	0x0
+ 1159 009b 00       		.byte	0x0
+ 1160 009c 0B       		.uleb128 0xb
+ 1161 009d 05       		.uleb128 0x5
+ 1162 009e 00       		.byte	0x0
+ 1163 009f 03       		.uleb128 0x3
+ 1164 00a0 08       		.uleb128 0x8
+ 1165 00a1 3A       		.uleb128 0x3a
+ 1166 00a2 0B       		.uleb128 0xb
+ 1167 00a3 3B       		.uleb128 0x3b
+ 1168 00a4 0B       		.uleb128 0xb
+ 1169 00a5 49       		.uleb128 0x49
+ 1170 00a6 13       		.uleb128 0x13
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 29
+
+
+ 1171 00a7 02       		.uleb128 0x2
+ 1172 00a8 0A       		.uleb128 0xa
+ 1173 00a9 00       		.byte	0x0
+ 1174 00aa 00       		.byte	0x0
+ 1175 00ab 0C       		.uleb128 0xc
+ 1176 00ac 2E       		.uleb128 0x2e
+ 1177 00ad 01       		.byte	0x1
+ 1178 00ae 3F       		.uleb128 0x3f
+ 1179 00af 0C       		.uleb128 0xc
+ 1180 00b0 03       		.uleb128 0x3
+ 1181 00b1 0E       		.uleb128 0xe
+ 1182 00b2 3A       		.uleb128 0x3a
+ 1183 00b3 0B       		.uleb128 0xb
+ 1184 00b4 3B       		.uleb128 0x3b
+ 1185 00b5 05       		.uleb128 0x5
+ 1186 00b6 27       		.uleb128 0x27
+ 1187 00b7 0C       		.uleb128 0xc
+ 1188 00b8 11       		.uleb128 0x11
+ 1189 00b9 01       		.uleb128 0x1
+ 1190 00ba 12       		.uleb128 0x12
+ 1191 00bb 01       		.uleb128 0x1
+ 1192 00bc 40       		.uleb128 0x40
+ 1193 00bd 06       		.uleb128 0x6
+ 1194 00be 01       		.uleb128 0x1
+ 1195 00bf 13       		.uleb128 0x13
+ 1196 00c0 00       		.byte	0x0
+ 1197 00c1 00       		.byte	0x0
+ 1198 00c2 0D       		.uleb128 0xd
+ 1199 00c3 05       		.uleb128 0x5
+ 1200 00c4 00       		.byte	0x0
+ 1201 00c5 03       		.uleb128 0x3
+ 1202 00c6 08       		.uleb128 0x8
+ 1203 00c7 3A       		.uleb128 0x3a
+ 1204 00c8 0B       		.uleb128 0xb
+ 1205 00c9 3B       		.uleb128 0x3b
+ 1206 00ca 05       		.uleb128 0x5
+ 1207 00cb 49       		.uleb128 0x49
+ 1208 00cc 13       		.uleb128 0x13
+ 1209 00cd 02       		.uleb128 0x2
+ 1210 00ce 0A       		.uleb128 0xa
+ 1211 00cf 00       		.byte	0x0
+ 1212 00d0 00       		.byte	0x0
+ 1213 00d1 0E       		.uleb128 0xe
+ 1214 00d2 2E       		.uleb128 0x2e
+ 1215 00d3 01       		.byte	0x1
+ 1216 00d4 3F       		.uleb128 0x3f
+ 1217 00d5 0C       		.uleb128 0xc
+ 1218 00d6 03       		.uleb128 0x3
+ 1219 00d7 0E       		.uleb128 0xe
+ 1220 00d8 3A       		.uleb128 0x3a
+ 1221 00d9 0B       		.uleb128 0xb
+ 1222 00da 3B       		.uleb128 0x3b
+ 1223 00db 05       		.uleb128 0x5
+ 1224 00dc 27       		.uleb128 0x27
+ 1225 00dd 0C       		.uleb128 0xc
+ 1226 00de 49       		.uleb128 0x49
+ 1227 00df 13       		.uleb128 0x13
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 30
+
+
+ 1228 00e0 11       		.uleb128 0x11
+ 1229 00e1 01       		.uleb128 0x1
+ 1230 00e2 12       		.uleb128 0x12
+ 1231 00e3 01       		.uleb128 0x1
+ 1232 00e4 40       		.uleb128 0x40
+ 1233 00e5 06       		.uleb128 0x6
+ 1234 00e6 01       		.uleb128 0x1
+ 1235 00e7 13       		.uleb128 0x13
+ 1236 00e8 00       		.byte	0x0
+ 1237 00e9 00       		.byte	0x0
+ 1238 00ea 0F       		.uleb128 0xf
+ 1239 00eb 34       		.uleb128 0x34
+ 1240 00ec 00       		.byte	0x0
+ 1241 00ed 03       		.uleb128 0x3
+ 1242 00ee 0E       		.uleb128 0xe
+ 1243 00ef 3A       		.uleb128 0x3a
+ 1244 00f0 0B       		.uleb128 0xb
+ 1245 00f1 3B       		.uleb128 0x3b
+ 1246 00f2 05       		.uleb128 0x5
+ 1247 00f3 49       		.uleb128 0x49
+ 1248 00f4 13       		.uleb128 0x13
+ 1249 00f5 02       		.uleb128 0x2
+ 1250 00f6 0A       		.uleb128 0xa
+ 1251 00f7 00       		.byte	0x0
+ 1252 00f8 00       		.byte	0x0
+ 1253 00f9 10       		.uleb128 0x10
+ 1254 00fa 34       		.uleb128 0x34
+ 1255 00fb 00       		.byte	0x0
+ 1256 00fc 03       		.uleb128 0x3
+ 1257 00fd 0E       		.uleb128 0xe
+ 1258 00fe 3A       		.uleb128 0x3a
+ 1259 00ff 0B       		.uleb128 0xb
+ 1260 0100 3B       		.uleb128 0x3b
+ 1261 0101 05       		.uleb128 0x5
+ 1262 0102 49       		.uleb128 0x49
+ 1263 0103 13       		.uleb128 0x13
+ 1264 0104 3F       		.uleb128 0x3f
+ 1265 0105 0C       		.uleb128 0xc
+ 1266 0106 3C       		.uleb128 0x3c
+ 1267 0107 0C       		.uleb128 0xc
+ 1268 0108 00       		.byte	0x0
+ 1269 0109 00       		.byte	0x0
+ 1270 010a 11       		.uleb128 0x11
+ 1271 010b 26       		.uleb128 0x26
+ 1272 010c 00       		.byte	0x0
+ 1273 010d 49       		.uleb128 0x49
+ 1274 010e 13       		.uleb128 0x13
+ 1275 010f 00       		.byte	0x0
+ 1276 0110 00       		.byte	0x0
+ 1277 0111 12       		.uleb128 0x12
+ 1278 0112 34       		.uleb128 0x34
+ 1279 0113 00       		.byte	0x0
+ 1280 0114 03       		.uleb128 0x3
+ 1281 0115 0E       		.uleb128 0xe
+ 1282 0116 3A       		.uleb128 0x3a
+ 1283 0117 0B       		.uleb128 0xb
+ 1284 0118 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 31
+
+
+ 1285 0119 0B       		.uleb128 0xb
+ 1286 011a 49       		.uleb128 0x49
+ 1287 011b 13       		.uleb128 0x13
+ 1288 011c 3F       		.uleb128 0x3f
+ 1289 011d 0C       		.uleb128 0xc
+ 1290 011e 02       		.uleb128 0x2
+ 1291 011f 0A       		.uleb128 0xa
+ 1292 0120 00       		.byte	0x0
+ 1293 0121 00       		.byte	0x0
+ 1294 0122 00       		.byte	0x0
+ 1295              		.section	.debug_pubnames,"",%progbits
+ 1296 0000 AF000000 		.4byte	0xaf
+ 1297 0004 0200     		.2byte	0x2
+ 1298 0006 00000000 		.4byte	.Ldebug_info0
+ 1299 000a 40020000 		.4byte	0x240
+ 1300 000e B3000000 		.4byte	0xb3
+ 1301 0012 4253505F 		.ascii	"BSP_PreInit\000"
+ 1301      50726549 
+ 1301      6E697400 
+ 1302 001e EF000000 		.4byte	0xef
+ 1303 0022 4253505F 		.ascii	"BSP_PostInit\000"
+ 1303      506F7374 
+ 1303      496E6974 
+ 1303      00
+ 1304 002f 04010000 		.4byte	0x104
+ 1305 0033 4253505F 		.ascii	"BSP_CPU_TickInit\000"
+ 1305      4350555F 
+ 1305      5469636B 
+ 1305      496E6974 
+ 1305      00
+ 1306 0044 3A010000 		.4byte	0x13a
+ 1307 0048 4253505F 		.ascii	"BSP_CPU_ClkFreq\000"
+ 1307      4350555F 
+ 1307      436C6B46 
+ 1307      72657100 
+ 1308 0058 53010000 		.4byte	0x153
+ 1309 005c 4253505F 		.ascii	"BSP_LED_On\000"
+ 1309      4C45445F 
+ 1309      4F6E00
+ 1310 0067 7B010000 		.4byte	0x17b
+ 1311 006b 4253505F 		.ascii	"BSP_LED_Off\000"
+ 1311      4C45445F 
+ 1311      4F666600 
+ 1312 0077 A5010000 		.4byte	0x1a5
+ 1313 007b 4253505F 		.ascii	"BSP_LED_Toggle\000"
+ 1313      4C45445F 
+ 1313      546F6767 
+ 1313      6C6500
+ 1314 008a CF010000 		.4byte	0x1cf
+ 1315 008e 4253505F 		.ascii	"BSP_PB_StatusGet\000"
+ 1315      50425F53 
+ 1315      74617475 
+ 1315      73476574 
+ 1315      00
+ 1316 009f 2D020000 		.4byte	0x22d
+ 1317 00a3 4C45445F 		.ascii	"LED_REG_VAL\000"
+ 1317      5245475F 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 32
+
+
+ 1317      56414C00 
+ 1318 00af 00000000 		.4byte	0x0
+ 1319              		.section	.debug_aranges,"",%progbits
+ 1320 0000 54000000 		.4byte	0x54
+ 1321 0004 0200     		.2byte	0x2
+ 1322 0006 00000000 		.4byte	.Ldebug_info0
+ 1323 000a 04       		.byte	0x4
+ 1324 000b 00       		.byte	0x0
+ 1325 000c 0000     		.2byte	0x0
+ 1326 000e 0000     		.2byte	0x0
+ 1327 0010 00000000 		.4byte	.LFB0
+ 1328 0014 48000000 		.4byte	.LFE0-.LFB0
+ 1329 0018 00000000 		.4byte	.LFB1
+ 1330 001c 0A000000 		.4byte	.LFE1-.LFB1
+ 1331 0020 00000000 		.4byte	.LFB2
+ 1332 0024 2E000000 		.4byte	.LFE2-.LFB2
+ 1333 0028 00000000 		.4byte	.LFB3
+ 1334 002c 14000000 		.4byte	.LFE3-.LFB3
+ 1335 0030 00000000 		.4byte	.LFB4
+ 1336 0034 B0000000 		.4byte	.LFE4-.LFB4
+ 1337 0038 00000000 		.4byte	.LFB5
+ 1338 003c AA000000 		.4byte	.LFE5-.LFB5
+ 1339 0040 00000000 		.4byte	.LFB6
+ 1340 0044 B0000000 		.4byte	.LFE6-.LFB6
+ 1341 0048 00000000 		.4byte	.LFB7
+ 1342 004c 66000000 		.4byte	.LFE7-.LFB7
+ 1343 0050 00000000 		.4byte	0x0
+ 1344 0054 00000000 		.4byte	0x0
+ 1345              		.section	.debug_ranges,"",%progbits
+ 1346              	.Ldebug_ranges0:
+ 1347 0000 00000000 		.4byte	.Ltext0
+ 1348 0004 00000000 		.4byte	.Letext0
+ 1349 0008 00000000 		.4byte	.LFB0
+ 1350 000c 48000000 		.4byte	.LFE0
+ 1351 0010 00000000 		.4byte	.LFB1
+ 1352 0014 0A000000 		.4byte	.LFE1
+ 1353 0018 00000000 		.4byte	.LFB2
+ 1354 001c 2E000000 		.4byte	.LFE2
+ 1355 0020 00000000 		.4byte	.LFB3
+ 1356 0024 14000000 		.4byte	.LFE3
+ 1357 0028 00000000 		.4byte	.LFB4
+ 1358 002c B0000000 		.4byte	.LFE4
+ 1359 0030 00000000 		.4byte	.LFB5
+ 1360 0034 AA000000 		.4byte	.LFE5
+ 1361 0038 00000000 		.4byte	.LFB6
+ 1362 003c B0000000 		.4byte	.LFE6
+ 1363 0040 00000000 		.4byte	.LFB7
+ 1364 0044 66000000 		.4byte	.LFE7
+ 1365 0048 00000000 		.4byte	0x0
+ 1366 004c 00000000 		.4byte	0x0
+ 1367              		.section	.debug_str,"MS",%progbits,1
+ 1368              	.LASF10:
+ 1369 0000 6C6F6E67 		.ascii	"long long int\000"
+ 1369      206C6F6E 
+ 1369      6720696E 
+ 1369      7400
+ 1370              	.LASF18:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 33
+
+
+ 1371 000e 4253505F 		.ascii	"BSP_PreInit\000"
+ 1371      50726549 
+ 1371      6E697400 
+ 1372              	.LASF11:
+ 1373 001a 666C6F61 		.ascii	"float\000"
+ 1373      7400
+ 1374              	.LASF25:
+ 1375 0020 70625F73 		.ascii	"pb_status\000"
+ 1375      74617475 
+ 1375      7300
+ 1376              	.LASF26:
+ 1377 002a 4F534366 		.ascii	"OSCfg_TickRate_Hz\000"
+ 1377      675F5469 
+ 1377      636B5261 
+ 1377      74655F48 
+ 1377      7A00
+ 1378              	.LASF5:
+ 1379 003c 73686F72 		.ascii	"short unsigned int\000"
+ 1379      7420756E 
+ 1379      7369676E 
+ 1379      65642069 
+ 1379      6E7400
+ 1380              	.LASF12:
+ 1381 004f 646F7562 		.ascii	"double\000"
+ 1381      6C6500
+ 1382              	.LASF7:
+ 1383 0056 4350555F 		.ascii	"CPU_INT32U\000"
+ 1383      494E5433 
+ 1383      325500
+ 1384              	.LASF33:
+ 1385 0061 4253505F 		.ascii	"BSP_PB_StatusGet\000"
+ 1385      50425F53 
+ 1385      74617475 
+ 1385      73476574 
+ 1385      00
+ 1386              	.LASF29:
+ 1387 0072 2E2E5C2E 		.ascii	"..\\..\\BSP\\bsp.c\000"
+ 1387      2E5C4253 
+ 1387      505C6273 
+ 1387      702E6300 
+ 1388              	.LASF1:
+ 1389 0082 756E7369 		.ascii	"unsigned char\000"
+ 1389      676E6564 
+ 1389      20636861 
+ 1389      7200
+ 1390              	.LASF16:
+ 1391 0090 7265675F 		.ascii	"reg_val\000"
+ 1391      76616C00 
+ 1392              	.LASF13:
+ 1393 0098 4F535F52 		.ascii	"OS_RATE_HZ\000"
+ 1393      4154455F 
+ 1393      485A00
+ 1394              	.LASF3:
+ 1395 00a3 4350555F 		.ascii	"CPU_INT08U\000"
+ 1395      494E5430 
+ 1395      385500
+ 1396              	.LASF30:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 34
+
+
+ 1397 00ae 433A5C55 		.ascii	"C:\\Users\\daniel01\\Desktop\\CY8CKIT-050_uCOS-III\\"
+ 1397      73657273 
+ 1397      5C64616E 
+ 1397      69656C30 
+ 1397      315C4465 
+ 1398 00dd 43593843 		.ascii	"CY8CKIT-050_uCOS-III\\Micrium\\Software\\EvalBoards"
+ 1398      4B49542D 
+ 1398      3035305F 
+ 1398      75434F53 
+ 1398      2D494949 
+ 1399 010d 5C437970 		.ascii	"\\Cypress\\CY8CKIT-050\\PSoC\\uCOS-III-Probe\\uCOS-"
+ 1399      72657373 
+ 1399      5C435938 
+ 1399      434B4954 
+ 1399      2D303530 
+ 1400 013b 4949492D 		.ascii	"III-Probe.cydsn\000"
+ 1400      50726F62 
+ 1400      652E6379 
+ 1400      64736E00 
+ 1401              	.LASF23:
+ 1402 014b 4253505F 		.ascii	"BSP_LED_Off\000"
+ 1402      4C45445F 
+ 1402      4F666600 
+ 1403              	.LASF15:
+ 1404 0157 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1404      20756E73 
+ 1404      69676E65 
+ 1404      6420696E 
+ 1404      7400
+ 1405              	.LASF24:
+ 1406 0169 4253505F 		.ascii	"BSP_LED_Toggle\000"
+ 1406      4C45445F 
+ 1406      546F6767 
+ 1406      6C6500
+ 1407              	.LASF22:
+ 1408 0178 4253505F 		.ascii	"BSP_LED_On\000"
+ 1408      4C45445F 
+ 1408      4F6E00
+ 1409              	.LASF32:
+ 1410 0183 4253505F 		.ascii	"BSP_CPU_ClkFreq\000"
+ 1410      4350555F 
+ 1410      436C6B46 
+ 1410      72657100 
+ 1411              	.LASF8:
+ 1412 0193 756E7369 		.ascii	"unsigned int\000"
+ 1412      676E6564 
+ 1412      20696E74 
+ 1412      00
+ 1413              	.LASF9:
+ 1414 01a0 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1414      206C6F6E 
+ 1414      6720756E 
+ 1414      7369676E 
+ 1414      65642069 
+ 1415              	.LASF2:
+ 1416 01b7 4350555F 		.ascii	"CPU_BOOLEAN\000"
+ 1416      424F4F4C 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccCYjebD.s 			page 35
+
+
+ 1416      45414E00 
+ 1417              	.LASF20:
+ 1418 01c3 6370755F 		.ascii	"cpu_clk_freq\000"
+ 1418      636C6B5F 
+ 1418      66726571 
+ 1418      00
+ 1419              	.LASF21:
+ 1420 01d0 636E7473 		.ascii	"cnts\000"
+ 1420      00
+ 1421              	.LASF28:
+ 1422 01d5 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 1422      4320342E 
+ 1422      342E3100 
+ 1423              	.LASF0:
+ 1424 01e1 63686172 		.ascii	"char\000"
+ 1424      00
+ 1425              	.LASF31:
+ 1426 01e6 4253505F 		.ascii	"BSP_PostInit\000"
+ 1426      506F7374 
+ 1426      496E6974 
+ 1426      00
+ 1427              	.LASF6:
+ 1428 01f3 73686F72 		.ascii	"short int\000"
+ 1428      7420696E 
+ 1428      7400
+ 1429              	.LASF19:
+ 1430 01fd 4253505F 		.ascii	"BSP_CPU_TickInit\000"
+ 1430      4350555F 
+ 1430      5469636B 
+ 1430      496E6974 
+ 1430      00
+ 1431              	.LASF17:
+ 1432 020e 705F7665 		.ascii	"p_vect_tbl\000"
+ 1432      63745F74 
+ 1432      626C00
+ 1433              	.LASF14:
+ 1434 0219 6C6F6E67 		.ascii	"long int\000"
+ 1434      20696E74 
+ 1434      00
+ 1435              	.LASF4:
+ 1436 0222 7369676E 		.ascii	"signed char\000"
+ 1436      65642063 
+ 1436      68617200 
+ 1437              	.LASF27:
+ 1438 022e 4C45445F 		.ascii	"LED_REG_VAL\000"
+ 1438      5245475F 
+ 1438      56414C00 
+ 1439              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

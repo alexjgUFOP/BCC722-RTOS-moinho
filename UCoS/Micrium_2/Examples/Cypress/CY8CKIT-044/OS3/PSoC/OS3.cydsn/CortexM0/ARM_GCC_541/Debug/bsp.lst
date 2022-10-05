@@ -1,0 +1,3581 @@
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"bsp.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	RGB_PrevVal
+  20              		.data
+  21              		.align	2
+  22              		.type	RGB_PrevVal, %object
+  23              		.size	RGB_PrevVal, 4
+  24              	RGB_PrevVal:
+  25 0000 000000FF 		.word	-16777216
+  26              		.section	.text.BSP_Init,"ax",%progbits
+  27              		.align	2
+  28              		.global	BSP_Init
+  29              		.code	16
+  30              		.thumb_func
+  31              		.type	BSP_Init, %function
+  32              	BSP_Init:
+  33              	.LFB33:
+  34              		.file 1 "..\\..\\..\\BSP\\bsp.c"
+   1:..\..\..\BSP/bsp.c **** /*
+   2:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+   3:..\..\..\BSP/bsp.c **** *                                     MICIRUM BOARD SUPPORT PACKAGE
+   4:..\..\..\BSP/bsp.c **** *
+   5:..\..\..\BSP/bsp.c **** *                             (c) Copyright 2015; Micrium, Inc.; Weston, FL
+   6:..\..\..\BSP/bsp.c **** *
+   7:..\..\..\BSP/bsp.c **** *               All rights reserved.  Protected by international copyright laws.
+   8:..\..\..\BSP/bsp.c **** *               Knowledge of the source code may NOT be used to develop a similar product.
+   9:..\..\..\BSP/bsp.c **** *               Please help us continue to provide the Embedded community with the finest
+  10:..\..\..\BSP/bsp.c **** *               software available.  Your honesty is greatly appreciated.
+  11:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  12:..\..\..\BSP/bsp.c **** */
+  13:..\..\..\BSP/bsp.c **** 
+  14:..\..\..\BSP/bsp.c **** /*
+  15:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  16:..\..\..\BSP/bsp.c **** *                                        BOARD SUPPORT PACKAGE
+  17:..\..\..\BSP/bsp.c **** *
+  18:..\..\..\BSP/bsp.c **** *                                           CYPRESS PSoC5
+  19:..\..\..\BSP/bsp.c **** *                                              with the
+  20:..\..\..\BSP/bsp.c **** *                                     CY8CKIT-050 Development Kit
+  21:..\..\..\BSP/bsp.c **** *
+  22:..\..\..\BSP/bsp.c **** * Filename      : bsp.c
+  23:..\..\..\BSP/bsp.c **** * Version       : V1.00
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 2
+
+
+  24:..\..\..\BSP/bsp.c **** * Programmer(s) : DC
+  25:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  26:..\..\..\BSP/bsp.c **** */
+  27:..\..\..\BSP/bsp.c **** 
+  28:..\..\..\BSP/bsp.c **** /*
+  29:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  30:..\..\..\BSP/bsp.c **** *                                             INCLUDE FILES
+  31:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  32:..\..\..\BSP/bsp.c **** */
+  33:..\..\..\BSP/bsp.c **** 
+  34:..\..\..\BSP/bsp.c **** #define   BSP_MODULE
+  35:..\..\..\BSP/bsp.c **** #include  "bsp.h"
+  36:..\..\..\BSP/bsp.c **** 
+  37:..\..\..\BSP/bsp.c **** #include  <Accel_ISR.h>
+  38:..\..\..\BSP/bsp.c **** #include  <Accel_Pin.h>
+  39:..\..\..\BSP/bsp.c **** 
+  40:..\..\..\BSP/bsp.c **** 
+  41:..\..\..\BSP/bsp.c **** /*
+  42:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  43:..\..\..\BSP/bsp.c **** *                                            LOCAL DEFINES
+  44:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  45:..\..\..\BSP/bsp.c **** */
+  46:..\..\..\BSP/bsp.c ****                                                                 /* ------------------- COLOR DEFINE
+  47:..\..\..\BSP/bsp.c **** #define  BSP_RGB_BRIGHT_SAT_SHIFT               0x01u
+  48:..\..\..\BSP/bsp.c **** #define  BSP_RGB_MAX_ALPHA_VAL                  0xFFu
+  49:..\..\..\BSP/bsp.c **** 
+  50:..\..\..\BSP/bsp.c ****                                                                 /* -------------- COLOR POSITION DE
+  51:..\..\..\BSP/bsp.c **** #define  BSP_RGB_ALPHA_POS_SHIFT                24u             /* Shift to set the Alpha Value to 
+  52:..\..\..\BSP/bsp.c **** #define  BSP_RGB_RED_POS_SHIFT                  16u             /* Shift to set the RED   Value to 
+  53:..\..\..\BSP/bsp.c **** #define  BSP_RGB_GREEN_POS_SHIFT                 8u             /* Shift to set the Green Value to 
+  54:..\..\..\BSP/bsp.c **** #define  BSP_RGB_BLUE_POS_SHIFT                  0u             /* Shift to set the Blue  Value to 
+  55:..\..\..\BSP/bsp.c **** 
+  56:..\..\..\BSP/bsp.c ****                                                                 /* ------------------ ACCEL: DEFINE
+  57:..\..\..\BSP/bsp.c **** #define  BSP_ACCEL_INVALID_MSK                  0xF000u         /* Mask Accelerometer Value if Over
+  58:..\..\..\BSP/bsp.c **** 
+  59:..\..\..\BSP/bsp.c ****                                                                 /* --------------- ACCEL: WAKEUP VA
+  60:..\..\..\BSP/bsp.c **** #define  BSP_ACCEL_WAKEUP_CNTS                  50u             /* Desired Delay : 1 sec; Cnts:   1
+  61:..\..\..\BSP/bsp.c **** #define  BSP_ACCEL_WAKEUP_THRESH_CNTS            8u             /* Desired Thresh: 0.5g ; Cnts: 0.5
+  62:..\..\..\BSP/bsp.c **** 
+  63:..\..\..\BSP/bsp.c **** 
+  64:..\..\..\BSP/bsp.c **** /*
+  65:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  66:..\..\..\BSP/bsp.c **** *                                           LOCAL CONSTANTS
+  67:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  68:..\..\..\BSP/bsp.c **** */
+  69:..\..\..\BSP/bsp.c **** 
+  70:..\..\..\BSP/bsp.c **** 
+  71:..\..\..\BSP/bsp.c **** /*
+  72:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  73:..\..\..\BSP/bsp.c **** *                                             LOCAL MACROs
+  74:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  75:..\..\..\BSP/bsp.c **** */
+  76:..\..\..\BSP/bsp.c **** 
+  77:..\..\..\BSP/bsp.c **** 
+  78:..\..\..\BSP/bsp.c **** /*
+  79:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  80:..\..\..\BSP/bsp.c **** *                                       LOCAL GLOBAL VARIABLES
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 3
+
+
+  81:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  82:..\..\..\BSP/bsp.c **** */
+  83:..\..\..\BSP/bsp.c ****                                                                 /* ------------------- RGB LED VARs
+  84:..\..\..\BSP/bsp.c **** CPU_INT32U  RGB_PrevVal = BSP_RGB_COLOR_OFF;
+  85:..\..\..\BSP/bsp.c **** 
+  86:..\..\..\BSP/bsp.c **** 
+  87:..\..\..\BSP/bsp.c **** /*
+  88:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  89:..\..\..\BSP/bsp.c **** *                                      LOCAL FUNCTION PROTOTYPES
+  90:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+  91:..\..\..\BSP/bsp.c **** */
+  92:..\..\..\BSP/bsp.c ****                                                                 /* --------------- ACCEL LOCAL FUNC
+  93:..\..\..\BSP/bsp.c **** static  CPU_BOOLEAN  BSP_Accel_InitSelfTst (void);
+  94:..\..\..\BSP/bsp.c **** 
+  95:..\..\..\BSP/bsp.c **** static  CPU_BOOLEAN  BSP_Accel_RegRdWr     (BSP_KXTJ2_DATA_DIR   rd_wr,
+  96:..\..\..\BSP/bsp.c ****                                             CPU_INT08U           reg,
+  97:..\..\..\BSP/bsp.c ****                                             CPU_INT08U          *value);
+  98:..\..\..\BSP/bsp.c ****                                                                 
+  99:..\..\..\BSP/bsp.c **** /*
+ 100:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 101:..\..\..\BSP/bsp.c **** *                                         LOCAL ISR PROTOTYPES
+ 102:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 103:..\..\..\BSP/bsp.c **** */
+ 104:..\..\..\BSP/bsp.c ****                                                                 /* -------------- BSP ACCELEROMETER
+ 105:..\..\..\BSP/bsp.c **** CY_ISR_PROTO(BSP_Accel_ISR_Handler);                            /* See BSP_Init Note (2B) For more 
+ 106:..\..\..\BSP/bsp.c **** 
+ 107:..\..\..\BSP/bsp.c **** 
+ 108:..\..\..\BSP/bsp.c **** /*
+ 109:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 110:..\..\..\BSP/bsp.c **** *                                              BSP_Init()
+ 111:..\..\..\BSP/bsp.c **** *
+ 112:..\..\..\BSP/bsp.c **** * Description : Initialize Board Support Package.
+ 113:..\..\..\BSP/bsp.c **** *
+ 114:..\..\..\BSP/bsp.c **** * Argument(s) : none.
+ 115:..\..\..\BSP/bsp.c **** *
+ 116:..\..\..\BSP/bsp.c **** * Return(s)   : none.
+ 117:..\..\..\BSP/bsp.c **** *
+ 118:..\..\..\BSP/bsp.c **** * Caller(s)   : main().
+ 119:..\..\..\BSP/bsp.c **** *
+ 120:..\..\..\BSP/bsp.c **** * Note(s)     : (1) This funtion initializes Peripherals required. For this BSP, the BSP_Init() mus
+ 121:..\..\..\BSP/bsp.c **** *                   called before the OS Initializes due to the Configuration of the OS Interrupt a
+ 122:..\..\..\BSP/bsp.c **** *                   PendSV Handlers being done here. Since these are Interrupts are based on the CP
+ 123:..\..\..\BSP/bsp.c **** *                   NVIC Interrupt Sources, they are handled differently than Peripheral Interrupts
+ 124:..\..\..\BSP/bsp.c **** *
+ 125:..\..\..\BSP/bsp.c **** *               (2) For Peripheral Interrupts, each Interrupt 'name' (set in the 'TopDesign.cysch' 
+ 126:..\..\..\BSP/bsp.c **** *                   will generate source code files with that specific name. under the Interrupt's
+ 127:..\..\..\BSP/bsp.c **** *                   <name.c> file, there the <name's> default ISR handler will be generated and you
+ 128:..\..\..\BSP/bsp.c **** *                   code's ISR Handler should be added there within the comments to not be removed 
+ 129:..\..\..\BSP/bsp.c **** *                   the next necessary compile of the 'Generated Sources'.
+ 130:..\..\..\BSP/bsp.c **** *                   (A) Another option would be to call the <name's>_StartEx(ISR Handler) call wher
+ 131:..\..\..\BSP/bsp.c **** *                       argument passed is the address of the ISR to set in the IVT.
+ 132:..\..\..\BSP/bsp.c **** *
+ 133:..\..\..\BSP/bsp.c **** *                   (B) Each ISR Function should use the CY_ISR and CY_ISR_PROTO macros to provide
+ 134:..\..\..\BSP/bsp.c **** *                       consistency definition across compilers using the following examples:
+ 135:..\..\..\BSP/bsp.c **** *                           - Function Definition Example:
+ 136:..\..\..\BSP/bsp.c **** *                               CY_ISR(MyISR) {...}
+ 137:..\..\..\BSP/bsp.c **** *                           - Function Prototype  Example:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 4
+
+
+ 138:..\..\..\BSP/bsp.c **** *                               CY_ISR_PROTO(MyISR);
+ 139:..\..\..\BSP/bsp.c **** *
+ 140:..\..\..\BSP/bsp.c **** *               (3) Every OS-Aware ISR should follow the following example setup:
+ 141:..\..\..\BSP/bsp.c **** *                       CY_ISR(MyISR)
+ 142:..\..\..\BSP/bsp.c **** *                       {
+ 143:..\..\..\BSP/bsp.c **** *                           CPU_SR_ALLOC();
+ 144:..\..\..\BSP/bsp.c **** *
+ 145:..\..\..\BSP/bsp.c **** *
+ 146:..\..\..\BSP/bsp.c **** *                           CPU_CRITICAL_ENTER();
+ 147:..\..\..\BSP/bsp.c **** *                           OSIntEnter();
+ 148:..\..\..\BSP/bsp.c **** *                           CPU_CRITICAL_EXIT();
+ 149:..\..\..\BSP/bsp.c **** *
+ 150:..\..\..\BSP/bsp.c **** *                           <Handle ISR Here>
+ 151:..\..\..\BSP/bsp.c **** *
+ 152:..\..\..\BSP/bsp.c **** *                           OSIntExit();
+ 153:..\..\..\BSP/bsp.c **** *                       }
+ 154:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 155:..\..\..\BSP/bsp.c **** */
+ 156:..\..\..\BSP/bsp.c **** 
+ 157:..\..\..\BSP/bsp.c **** 
+ 158:..\..\..\BSP/bsp.c **** void BSP_Init (void)
+ 159:..\..\..\BSP/bsp.c **** {
+  35              		.loc 1 159 0
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 8
+  38              		@ frame_needed = 1, uses_anonymous_args = 0
+  39 0000 80B5     		push	{r7, lr}
+  40              		.cfi_def_cfa_offset 8
+  41              		.cfi_offset 7, -8
+  42              		.cfi_offset 14, -4
+  43 0002 82B0     		sub	sp, sp, #8
+  44              		.cfi_def_cfa_offset 16
+  45 0004 00AF     		add	r7, sp, #0
+  46              		.cfi_def_cfa_register 7
+ 160:..\..\..\BSP/bsp.c ****     CPU_INT32U   reg_val;
+ 161:..\..\..\BSP/bsp.c ****     CPU_INT32U  *p_vect_tbl;
+ 162:..\..\..\BSP/bsp.c ****     
+ 163:..\..\..\BSP/bsp.c ****                                                                 /* -------------- SET PENDSV & TICK
+ 164:..\..\..\BSP/bsp.c ****     reg_val = CPU_REG_NVIC_VTOR;                                /* Get the NVIC Offset Table       
+  47              		.loc 1 164 0
+  48 0006 114B     		ldr	r3, .L2
+  49 0008 1B68     		ldr	r3, [r3]
+  50 000a 7B60     		str	r3, [r7, #4]
+ 165:..\..\..\BSP/bsp.c ****     DEF_BIT_CLR(reg_val, DEF_BIT_29);                           /* Clear the TBLBASE Bit           
+  51              		.loc 1 165 0
+  52 000c 7B68     		ldr	r3, [r7, #4]
+  53 000e 104A     		ldr	r2, .L2+4
+  54 0010 1340     		ands	r3, r2
+  55 0012 7B60     		str	r3, [r7, #4]
+ 166:..\..\..\BSP/bsp.c ****     
+ 167:..\..\..\BSP/bsp.c ****     p_vect_tbl                  = (CPU_INT32U *)reg_val;           
+  56              		.loc 1 167 0
+  57 0014 7B68     		ldr	r3, [r7, #4]
+  58 0016 3B60     		str	r3, [r7]
+ 168:..\..\..\BSP/bsp.c ****                                                                 /* Install the PendSV & Systick Int
+ 169:..\..\..\BSP/bsp.c ****     p_vect_tbl[CPU_INT_PENDSV]  = (CPU_INT32U  )PendSV_Handler;
+  59              		.loc 1 169 0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 5
+
+
+  60 0018 3B68     		ldr	r3, [r7]
+  61 001a 3833     		adds	r3, r3, #56
+  62 001c 0D4A     		ldr	r2, .L2+8
+  63 001e 1A60     		str	r2, [r3]
+ 170:..\..\..\BSP/bsp.c ****     p_vect_tbl[CPU_INT_SYSTICK] = (CPU_INT32U  )SysTick_Handler;
+  64              		.loc 1 170 0
+  65 0020 3B68     		ldr	r3, [r7]
+  66 0022 3C33     		adds	r3, r3, #60
+  67 0024 0C4A     		ldr	r2, .L2+12
+  68 0026 1A60     		str	r2, [r3]
+ 171:..\..\..\BSP/bsp.c ****     
+ 172:..\..\..\BSP/bsp.c ****                                                                 /* ----------------- INIT RGB LED P
+ 173:..\..\..\BSP/bsp.c ****     PWM_Red_Start();                                            /* Enable and Start the PWM Block f
+  69              		.loc 1 173 0
+  70 0028 FFF7FEFF 		bl	PWM_Red_Start
+ 174:..\..\..\BSP/bsp.c **** 	PWM_Green_Start();
+  71              		.loc 1 174 0
+  72 002c FFF7FEFF 		bl	PWM_Green_Start
+ 175:..\..\..\BSP/bsp.c **** 	PWM_Blue_Start();
+  73              		.loc 1 175 0
+  74 0030 FFF7FEFF 		bl	PWM_Blue_Start
+ 176:..\..\..\BSP/bsp.c ****     
+ 177:..\..\..\BSP/bsp.c ****                                                                 /* ----------------- INIT TEMP SENS
+ 178:..\..\..\BSP/bsp.c ****     Temp_Sensor_Start();                                        /* Initialize and Start the TMP05 T
+  75              		.loc 1 178 0
+  76 0034 FFF7FEFF 		bl	Temp_Sensor_Start
+ 179:..\..\..\BSP/bsp.c ****     Temp_Sensor_Trigger();                                      /* Trigger the Temp Sensor Componen
+  77              		.loc 1 179 0
+  78 0038 FFF7FEFF 		bl	Temp_Sensor_Trigger
+ 180:..\..\..\BSP/bsp.c ****     
+ 181:..\..\..\BSP/bsp.c ****                                                                 /* --------------- AMBIENT LIGHT SE
+ 182:..\..\..\BSP/bsp.c ****     Opamp_Start();                                              /* Start the OpAmp Hardware require
+  79              		.loc 1 182 0
+  80 003c FFF7FEFF 		bl	Opamp_Start
+ 183:..\..\..\BSP/bsp.c ****     ADC_Start();                                                /* Enable and Start the ADC Block. 
+  81              		.loc 1 183 0
+  82 0040 FFF7FEFF 		bl	ADC_Start
+ 184:..\..\..\BSP/bsp.c **** }
+  83              		.loc 1 184 0
+  84 0044 C046     		nop
+  85 0046 BD46     		mov	sp, r7
+  86 0048 02B0     		add	sp, sp, #8
+  87              		@ sp needed
+  88 004a 80BD     		pop	{r7, pc}
+  89              	.L3:
+  90              		.align	2
+  91              	.L2:
+  92 004c 08ED00E0 		.word	-536810232
+  93 0050 FFFFFFDF 		.word	-536870913
+  94 0054 00000000 		.word	PendSV_Handler
+  95 0058 00000000 		.word	SysTick_Handler
+  96              		.cfi_endproc
+  97              	.LFE33:
+  98              		.size	BSP_Init, .-BSP_Init
+  99              		.section	.text.BSP_CPU_TickInit,"ax",%progbits
+ 100              		.align	2
+ 101              		.global	BSP_CPU_TickInit
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 6
+
+
+ 102              		.code	16
+ 103              		.thumb_func
+ 104              		.type	BSP_CPU_TickInit, %function
+ 105              	BSP_CPU_TickInit:
+ 106              	.LFB34:
+ 185:..\..\..\BSP/bsp.c **** 
+ 186:..\..\..\BSP/bsp.c **** 
+ 187:..\..\..\BSP/bsp.c **** /*
+ 188:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 189:..\..\..\BSP/bsp.c **** *                                          BSP_CPU_TickInit()
+ 190:..\..\..\BSP/bsp.c **** *
+ 191:..\..\..\BSP/bsp.c **** * Description : Configure and Initialize the Tick Interrupt.
+ 192:..\..\..\BSP/bsp.c **** *
+ 193:..\..\..\BSP/bsp.c **** * Argument(s) : none.
+ 194:..\..\..\BSP/bsp.c **** *
+ 195:..\..\..\BSP/bsp.c **** * Return(s)   : none.
+ 196:..\..\..\BSP/bsp.c **** *
+ 197:..\..\..\BSP/bsp.c **** * Caller(s)   : App_TaskStart().
+ 198:..\..\..\BSP/bsp.c **** *
+ 199:..\..\..\BSP/bsp.c **** * Note(s)     : (1) The ARM-Cortex-M0 Port figures out the necessary qty of Ticks required for the
+ 200:..\..\..\BSP/bsp.c **** *                   Periodic Time Source (SysTick) by just passing the CPU Clock Frequency to the
+ 201:..\..\..\BSP/bsp.c **** *                   OS_CPU_SysTickInit function.
+ 202:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 203:..\..\..\BSP/bsp.c **** */
+ 204:..\..\..\BSP/bsp.c **** 
+ 205:..\..\..\BSP/bsp.c **** void  BSP_CPU_TickInit (void)
+ 206:..\..\..\BSP/bsp.c **** {
+ 107              		.loc 1 206 0
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 8
+ 110              		@ frame_needed = 1, uses_anonymous_args = 0
+ 111 0000 80B5     		push	{r7, lr}
+ 112              		.cfi_def_cfa_offset 8
+ 113              		.cfi_offset 7, -8
+ 114              		.cfi_offset 14, -4
+ 115 0002 82B0     		sub	sp, sp, #8
+ 116              		.cfi_def_cfa_offset 16
+ 117 0004 00AF     		add	r7, sp, #0
+ 118              		.cfi_def_cfa_register 7
+ 207:..\..\..\BSP/bsp.c ****     CPU_INT32U  cpu_clk_freq;
+ 208:..\..\..\BSP/bsp.c ****     
+ 209:..\..\..\BSP/bsp.c ****     
+ 210:..\..\..\BSP/bsp.c ****     cpu_clk_freq = BSP_CPU_ClkFreq();                           /* Determine CPU Clock Frequency fo
+ 119              		.loc 1 210 0
+ 120 0006 FFF7FEFF 		bl	BSP_CPU_ClkFreq
+ 121 000a 0300     		movs	r3, r0
+ 122 000c 7B60     		str	r3, [r7, #4]
+ 211:..\..\..\BSP/bsp.c **** 
+ 212:..\..\..\BSP/bsp.c ****     OS_CPU_SysTickInit(cpu_clk_freq);                           /* Init uC/OS Periodic Time Source 
+ 123              		.loc 1 212 0
+ 124 000e 7B68     		ldr	r3, [r7, #4]
+ 125 0010 1800     		movs	r0, r3
+ 126 0012 FFF7FEFF 		bl	OS_CPU_SysTickInit
+ 213:..\..\..\BSP/bsp.c **** }
+ 127              		.loc 1 213 0
+ 128 0016 C046     		nop
+ 129 0018 BD46     		mov	sp, r7
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 7
+
+
+ 130 001a 02B0     		add	sp, sp, #8
+ 131              		@ sp needed
+ 132 001c 80BD     		pop	{r7, pc}
+ 133              		.cfi_endproc
+ 134              	.LFE34:
+ 135              		.size	BSP_CPU_TickInit, .-BSP_CPU_TickInit
+ 136 001e C046     		.section	.text.BSP_CPU_ClkFreq,"ax",%progbits
+ 137              		.align	2
+ 138              		.global	BSP_CPU_ClkFreq
+ 139              		.code	16
+ 140              		.thumb_func
+ 141              		.type	BSP_CPU_ClkFreq, %function
+ 142              	BSP_CPU_ClkFreq:
+ 143              	.LFB35:
+ 214:..\..\..\BSP/bsp.c **** 
+ 215:..\..\..\BSP/bsp.c **** 
+ 216:..\..\..\BSP/bsp.c **** /*
+ 217:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 218:..\..\..\BSP/bsp.c **** *                                          BSP_CPU_ClkFreq()
+ 219:..\..\..\BSP/bsp.c **** *
+ 220:..\..\..\BSP/bsp.c **** * Description : Returns the CPU's Clock Frequency Configured.
+ 221:..\..\..\BSP/bsp.c **** *
+ 222:..\..\..\BSP/bsp.c **** * Argument(s) : none.
+ 223:..\..\..\BSP/bsp.c **** *
+ 224:..\..\..\BSP/bsp.c **** * Return(s)   : The CPU clock frequency, in Hz.
+ 225:..\..\..\BSP/bsp.c **** *
+ 226:..\..\..\BSP/bsp.c **** * Caller(s)   : BSP_CPU_TickInit().
+ 227:..\..\..\BSP/bsp.c **** *
+ 228:..\..\..\BSP/bsp.c **** * Note(s)     : none.
+ 229:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 230:..\..\..\BSP/bsp.c **** */
+ 231:..\..\..\BSP/bsp.c **** 
+ 232:..\..\..\BSP/bsp.c **** CPU_INT32U  BSP_CPU_ClkFreq (void)
+ 233:..\..\..\BSP/bsp.c **** {
+ 144              		.loc 1 233 0
+ 145              		.cfi_startproc
+ 146              		@ args = 0, pretend = 0, frame = 0
+ 147              		@ frame_needed = 1, uses_anonymous_args = 0
+ 148 0000 80B5     		push	{r7, lr}
+ 149              		.cfi_def_cfa_offset 8
+ 150              		.cfi_offset 7, -8
+ 151              		.cfi_offset 14, -4
+ 152 0002 00AF     		add	r7, sp, #0
+ 153              		.cfi_def_cfa_register 7
+ 234:..\..\..\BSP/bsp.c ****     return (BSP_PSOC_CPU_FREQ);
+ 154              		.loc 1 234 0
+ 155 0004 014B     		ldr	r3, .L7
+ 235:..\..\..\BSP/bsp.c **** }
+ 156              		.loc 1 235 0
+ 157 0006 1800     		movs	r0, r3
+ 158 0008 BD46     		mov	sp, r7
+ 159              		@ sp needed
+ 160 000a 80BD     		pop	{r7, pc}
+ 161              	.L8:
+ 162              		.align	2
+ 163              	.L7:
+ 164 000c 006CDC02 		.word	48000000
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 8
+
+
+ 165              		.cfi_endproc
+ 166              	.LFE35:
+ 167              		.size	BSP_CPU_ClkFreq, .-BSP_CPU_ClkFreq
+ 168              		.section	.text.BSP_RGB_On,"ax",%progbits
+ 169              		.align	2
+ 170              		.global	BSP_RGB_On
+ 171              		.code	16
+ 172              		.thumb_func
+ 173              		.type	BSP_RGB_On, %function
+ 174              	BSP_RGB_On:
+ 175              	.LFB36:
+ 236:..\..\..\BSP/bsp.c **** 
+ 237:..\..\..\BSP/bsp.c **** 
+ 238:..\..\..\BSP/bsp.c **** /*
+ 239:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 240:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 241:..\..\..\BSP/bsp.c **** *                                            LED FUNCTIONS
+ 242:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 243:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 244:..\..\..\BSP/bsp.c **** */
+ 245:..\..\..\BSP/bsp.c **** 
+ 246:..\..\..\BSP/bsp.c **** 
+ 247:..\..\..\BSP/bsp.c **** /*
+ 248:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 249:..\..\..\BSP/bsp.c **** *                                             BSP_RGB_On()
+ 250:..\..\..\BSP/bsp.c **** *
+ 251:..\..\..\BSP/bsp.c **** * Description : Turn ON the RBG LED on the Board with the Last Value saved before an BSP_RGB_Off() 
+ 252:..\..\..\BSP/bsp.c **** *
+ 253:..\..\..\BSP/bsp.c **** * Argument(s) : none.
+ 254:..\..\..\BSP/bsp.c **** *
+ 255:..\..\..\BSP/bsp.c **** * Return(s)   : none.
+ 256:..\..\..\BSP/bsp.c **** *
+ 257:..\..\..\BSP/bsp.c **** * Caller(s)   : Application.
+ 258:..\..\..\BSP/bsp.c **** *
+ 259:..\..\..\BSP/bsp.c **** * Note(s)     : (1) The RGB_PrevVal holds the Hex (0x) value previously saved when the RGB LED was 
+ 260:..\..\..\BSP/bsp.c **** *                   turned off.
+ 261:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 262:..\..\..\BSP/bsp.c **** */
+ 263:..\..\..\BSP/bsp.c **** 
+ 264:..\..\..\BSP/bsp.c **** void  BSP_RGB_On (void)
+ 265:..\..\..\BSP/bsp.c **** {
+ 176              		.loc 1 265 0
+ 177              		.cfi_startproc
+ 178              		@ args = 0, pretend = 0, frame = 0
+ 179              		@ frame_needed = 1, uses_anonymous_args = 0
+ 180 0000 80B5     		push	{r7, lr}
+ 181              		.cfi_def_cfa_offset 8
+ 182              		.cfi_offset 7, -8
+ 183              		.cfi_offset 14, -4
+ 184 0002 00AF     		add	r7, sp, #0
+ 185              		.cfi_def_cfa_register 7
+ 266:..\..\..\BSP/bsp.c ****     BSP_RGB_ColorSet(RGB_PrevVal);                              /* Restore the RGB Color of the Pre
+ 186              		.loc 1 266 0
+ 187 0004 034B     		ldr	r3, .L10
+ 188 0006 1B68     		ldr	r3, [r3]
+ 189 0008 1800     		movs	r0, r3
+ 190 000a FFF7FEFF 		bl	BSP_RGB_ColorSet
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 9
+
+
+ 267:..\..\..\BSP/bsp.c **** }
+ 191              		.loc 1 267 0
+ 192 000e C046     		nop
+ 193 0010 BD46     		mov	sp, r7
+ 194              		@ sp needed
+ 195 0012 80BD     		pop	{r7, pc}
+ 196              	.L11:
+ 197              		.align	2
+ 198              	.L10:
+ 199 0014 00000000 		.word	RGB_PrevVal
+ 200              		.cfi_endproc
+ 201              	.LFE36:
+ 202              		.size	BSP_RGB_On, .-BSP_RGB_On
+ 203              		.section	.text.BSP_RGB_Off,"ax",%progbits
+ 204              		.align	2
+ 205              		.global	BSP_RGB_Off
+ 206              		.code	16
+ 207              		.thumb_func
+ 208              		.type	BSP_RGB_Off, %function
+ 209              	BSP_RGB_Off:
+ 210              	.LFB37:
+ 268:..\..\..\BSP/bsp.c **** 
+ 269:..\..\..\BSP/bsp.c **** 
+ 270:..\..\..\BSP/bsp.c **** /*
+ 271:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 272:..\..\..\BSP/bsp.c **** *                                            BSP_RGB_Off()
+ 273:..\..\..\BSP/bsp.c **** *
+ 274:..\..\..\BSP/bsp.c **** * Description : Turn OFF the RBG LED on the Board and save the Current Color Value.
+ 275:..\..\..\BSP/bsp.c **** *
+ 276:..\..\..\BSP/bsp.c **** * Argument(s) : none.
+ 277:..\..\..\BSP/bsp.c **** *
+ 278:..\..\..\BSP/bsp.c **** * Return(s)   : none.
+ 279:..\..\..\BSP/bsp.c **** *
+ 280:..\..\..\BSP/bsp.c **** * Caller(s)   : Application.
+ 281:..\..\..\BSP/bsp.c **** *
+ 282:..\..\..\BSP/bsp.c **** * Note(s)     : (1) The RGB_PrevVal will save the current value of the RBG LED, in Hex (0x), to res
+ 283:..\..\..\BSP/bsp.c **** *                   the same color next time the RGB LED is turned on.
+ 284:..\..\..\BSP/bsp.c **** *
+ 285:..\..\..\BSP/bsp.c **** *               (2) RGB Black Value = 0xFF000000u, which signifies LED is OFF.
+ 286:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 287:..\..\..\BSP/bsp.c **** */
+ 288:..\..\..\BSP/bsp.c **** 
+ 289:..\..\..\BSP/bsp.c **** void  BSP_RGB_Off (void)
+ 290:..\..\..\BSP/bsp.c **** {
+ 211              		.loc 1 290 0
+ 212              		.cfi_startproc
+ 213              		@ args = 0, pretend = 0, frame = 0
+ 214              		@ frame_needed = 1, uses_anonymous_args = 0
+ 215 0000 80B5     		push	{r7, lr}
+ 216              		.cfi_def_cfa_offset 8
+ 217              		.cfi_offset 7, -8
+ 218              		.cfi_offset 14, -4
+ 219 0002 00AF     		add	r7, sp, #0
+ 220              		.cfi_def_cfa_register 7
+ 291:..\..\..\BSP/bsp.c ****     RGB_PrevVal = BSP_RGB_ColorRead();                          /* Save the Current RBG Color Value
+ 221              		.loc 1 291 0
+ 222 0004 FFF7FEFF 		bl	BSP_RGB_ColorRead
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 10
+
+
+ 223 0008 0200     		movs	r2, r0
+ 224 000a 054B     		ldr	r3, .L13
+ 225 000c 1A60     		str	r2, [r3]
+ 292:..\..\..\BSP/bsp.c ****     BSP_RGB_ColorSet(BSP_RGB_COLOR_OFF);                        /* Turn the RGB Color LED OFF.     
+ 226              		.loc 1 292 0
+ 227 000e FF23     		movs	r3, #255
+ 228 0010 1B06     		lsls	r3, r3, #24
+ 229 0012 1800     		movs	r0, r3
+ 230 0014 FFF7FEFF 		bl	BSP_RGB_ColorSet
+ 293:..\..\..\BSP/bsp.c **** }
+ 231              		.loc 1 293 0
+ 232 0018 C046     		nop
+ 233 001a BD46     		mov	sp, r7
+ 234              		@ sp needed
+ 235 001c 80BD     		pop	{r7, pc}
+ 236              	.L14:
+ 237 001e C046     		.align	2
+ 238              	.L13:
+ 239 0020 00000000 		.word	RGB_PrevVal
+ 240              		.cfi_endproc
+ 241              	.LFE37:
+ 242              		.size	BSP_RGB_Off, .-BSP_RGB_Off
+ 243              		.section	.text.BSP_RGB_ColorSet,"ax",%progbits
+ 244              		.align	2
+ 245              		.global	BSP_RGB_ColorSet
+ 246              		.code	16
+ 247              		.thumb_func
+ 248              		.type	BSP_RGB_ColorSet, %function
+ 249              	BSP_RGB_ColorSet:
+ 250              	.LFB38:
+ 294:..\..\..\BSP/bsp.c **** 
+ 295:..\..\..\BSP/bsp.c **** 
+ 296:..\..\..\BSP/bsp.c **** /*
+ 297:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 298:..\..\..\BSP/bsp.c **** *                                          BSP_RGB_ColorSet()
+ 299:..\..\..\BSP/bsp.c **** *
+ 300:..\..\..\BSP/bsp.c **** * Description : TOGGLE any or all the LEDs on the board.
+ 301:..\..\..\BSP/bsp.c **** *
+ 302:..\..\..\BSP/bsp.c **** * Argument(s) : color   The Color Value (in Hex) desired to Set.
+ 303:..\..\..\BSP/bsp.c **** *
+ 304:..\..\..\BSP/bsp.c **** * Return(s)   : none.
+ 305:..\..\..\BSP/bsp.c **** *
+ 306:..\..\..\BSP/bsp.c **** * Caller(s)   : Application.
+ 307:..\..\..\BSP/bsp.c **** *
+ 308:..\..\..\BSP/bsp.c **** * Note(s)     : (1) The RGBA Color Value (in Hex) is represented in the following way:
+ 309:..\..\..\BSP/bsp.c **** *                       Color = 0x FF 12 34 56
+ 310:..\..\..\BSP/bsp.c **** *                                   \  \  \  \
+ 311:..\..\..\BSP/bsp.c **** *                                    \  \  \  - Blue  LED Color.
+ 312:..\..\..\BSP/bsp.c **** *                                     \  \  - - Green LED Color.
+ 313:..\..\..\BSP/bsp.c **** *                                      \  - - - Red   LED Color.
+ 314:..\..\..\BSP/bsp.c **** *                                       - - - - Alpha Index Value.
+ 315:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 316:..\..\..\BSP/bsp.c **** */
+ 317:..\..\..\BSP/bsp.c **** 
+ 318:..\..\..\BSP/bsp.c **** void  BSP_RGB_ColorSet (CPU_INT32U  color)
+ 319:..\..\..\BSP/bsp.c **** {
+ 251              		.loc 1 319 0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 11
+
+
+ 252              		.cfi_startproc
+ 253              		@ args = 0, pretend = 0, frame = 16
+ 254              		@ frame_needed = 1, uses_anonymous_args = 0
+ 255 0000 80B5     		push	{r7, lr}
+ 256              		.cfi_def_cfa_offset 8
+ 257              		.cfi_offset 7, -8
+ 258              		.cfi_offset 14, -4
+ 259 0002 84B0     		sub	sp, sp, #16
+ 260              		.cfi_def_cfa_offset 24
+ 261 0004 00AF     		add	r7, sp, #0
+ 262              		.cfi_def_cfa_register 7
+ 263 0006 7860     		str	r0, [r7, #4]
+ 320:..\..\..\BSP/bsp.c ****     CPU_INT08U  alpha;
+ 321:..\..\..\BSP/bsp.c ****     CPU_INT08U  color_val;
+ 322:..\..\..\BSP/bsp.c ****     CPU_INT16U  pwm_color;
+ 323:..\..\..\BSP/bsp.c ****     
+ 324:..\..\..\BSP/bsp.c **** 
+ 325:..\..\..\BSP/bsp.c ****     alpha     = HI8(HI16(color));                               /* Get Alpha Index from Hex Color V
+ 264              		.loc 1 325 0
+ 265 0008 7B68     		ldr	r3, [r7, #4]
+ 266 000a 1B0C     		lsrs	r3, r3, #16
+ 267 000c 1A12     		asrs	r2, r3, #8
+ 268 000e 0F23     		movs	r3, #15
+ 269 0010 FB18     		adds	r3, r7, r3
+ 270 0012 1A70     		strb	r2, [r3]
+ 326:..\..\..\BSP/bsp.c ****     
+ 327:..\..\..\BSP/bsp.c ****                                                                 /* ---------------- SET LED COLOR: 
+ 328:..\..\..\BSP/bsp.c ****     color_val = LO8(HI16(color));                               /* Get Red Value from the Desired R
+ 271              		.loc 1 328 0
+ 272 0014 7B68     		ldr	r3, [r7, #4]
+ 273 0016 1A0C     		lsrs	r2, r3, #16
+ 274 0018 0E23     		movs	r3, #14
+ 275 001a FB18     		adds	r3, r7, r3
+ 276 001c 1A70     		strb	r2, [r3]
+ 329:..\..\..\BSP/bsp.c ****     
+ 330:..\..\..\BSP/bsp.c ****                                                                 /* Convert the RGBA Value to a PWM 
+ 331:..\..\..\BSP/bsp.c ****     pwm_color = ((((0xFFu - alpha) * 0xFFu) + (alpha * color_val)) >> BSP_RGB_BRIGHT_SAT_SHIFT);
+ 277              		.loc 1 331 0
+ 278 001e 0F23     		movs	r3, #15
+ 279 0020 FB18     		adds	r3, r7, r3
+ 280 0022 1B78     		ldrb	r3, [r3]
+ 281 0024 1A00     		movs	r2, r3
+ 282 0026 1B02     		lsls	r3, r3, #8
+ 283 0028 D31A     		subs	r3, r2, r3
+ 284 002a 0F22     		movs	r2, #15
+ 285 002c BA18     		adds	r2, r7, r2
+ 286 002e 1278     		ldrb	r2, [r2]
+ 287 0030 0E21     		movs	r1, #14
+ 288 0032 7918     		adds	r1, r7, r1
+ 289 0034 0978     		ldrb	r1, [r1]
+ 290 0036 4A43     		muls	r2, r1
+ 291 0038 9B18     		adds	r3, r3, r2
+ 292 003a 284A     		ldr	r2, .L16
+ 293 003c 9446     		mov	ip, r2
+ 294 003e 6344     		add	r3, r3, ip
+ 295 0040 5A08     		lsrs	r2, r3, #1
+ 296 0042 0C23     		movs	r3, #12
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 12
+
+
+ 297 0044 FB18     		adds	r3, r7, r3
+ 298 0046 1A80     		strh	r2, [r3]
+ 332:..\..\..\BSP/bsp.c ****     PWM_Red_WriteCompare(pwm_color);
+ 299              		.loc 1 332 0
+ 300 0048 0C23     		movs	r3, #12
+ 301 004a FB18     		adds	r3, r7, r3
+ 302 004c 1B88     		ldrh	r3, [r3]
+ 303 004e 1800     		movs	r0, r3
+ 304 0050 FFF7FEFF 		bl	PWM_Red_WriteCompare
+ 333:..\..\..\BSP/bsp.c ****     
+ 334:..\..\..\BSP/bsp.c ****                                                                 /* --------------- SET LED COLOR: G
+ 335:..\..\..\BSP/bsp.c ****     color_val = HI8(LO16(color));                               /* Get Green Value from the Desired
+ 305              		.loc 1 335 0
+ 306 0054 7B68     		ldr	r3, [r7, #4]
+ 307 0056 1A12     		asrs	r2, r3, #8
+ 308 0058 0E23     		movs	r3, #14
+ 309 005a FB18     		adds	r3, r7, r3
+ 310 005c 1A70     		strb	r2, [r3]
+ 336:..\..\..\BSP/bsp.c ****     
+ 337:..\..\..\BSP/bsp.c ****                                                                 /* Convert the RGBA Value to a PWM 
+ 338:..\..\..\BSP/bsp.c ****     pwm_color = ((((0xFFu - alpha) * 0xFFu) + (alpha * color_val)) >> BSP_RGB_BRIGHT_SAT_SHIFT);
+ 311              		.loc 1 338 0
+ 312 005e 0F23     		movs	r3, #15
+ 313 0060 FB18     		adds	r3, r7, r3
+ 314 0062 1B78     		ldrb	r3, [r3]
+ 315 0064 1A00     		movs	r2, r3
+ 316 0066 1B02     		lsls	r3, r3, #8
+ 317 0068 D31A     		subs	r3, r2, r3
+ 318 006a 0F22     		movs	r2, #15
+ 319 006c BA18     		adds	r2, r7, r2
+ 320 006e 1278     		ldrb	r2, [r2]
+ 321 0070 0E21     		movs	r1, #14
+ 322 0072 7918     		adds	r1, r7, r1
+ 323 0074 0978     		ldrb	r1, [r1]
+ 324 0076 4A43     		muls	r2, r1
+ 325 0078 9B18     		adds	r3, r3, r2
+ 326 007a 184A     		ldr	r2, .L16
+ 327 007c 9446     		mov	ip, r2
+ 328 007e 6344     		add	r3, r3, ip
+ 329 0080 5A08     		lsrs	r2, r3, #1
+ 330 0082 0C23     		movs	r3, #12
+ 331 0084 FB18     		adds	r3, r7, r3
+ 332 0086 1A80     		strh	r2, [r3]
+ 339:..\..\..\BSP/bsp.c ****     PWM_Green_WriteCompare(pwm_color);
+ 333              		.loc 1 339 0
+ 334 0088 0C23     		movs	r3, #12
+ 335 008a FB18     		adds	r3, r7, r3
+ 336 008c 1B88     		ldrh	r3, [r3]
+ 337 008e 1800     		movs	r0, r3
+ 338 0090 FFF7FEFF 		bl	PWM_Green_WriteCompare
+ 340:..\..\..\BSP/bsp.c ****     
+ 341:..\..\..\BSP/bsp.c ****                                                                 /* ---------------- SET LED COLOR: 
+ 342:..\..\..\BSP/bsp.c ****     color_val = LO8(LO16(color));                               /* Get Blue Value from the Desired 
+ 339              		.loc 1 342 0
+ 340 0094 0E23     		movs	r3, #14
+ 341 0096 FB18     		adds	r3, r7, r3
+ 342 0098 7A68     		ldr	r2, [r7, #4]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 13
+
+
+ 343 009a 1A70     		strb	r2, [r3]
+ 343:..\..\..\BSP/bsp.c ****     
+ 344:..\..\..\BSP/bsp.c ****                                                                 /* Convert the RGBA Value to a PWM 
+ 345:..\..\..\BSP/bsp.c ****     pwm_color = ((((0xFFu - alpha) * 0xFFu) + (alpha * color_val)) >> BSP_RGB_BRIGHT_SAT_SHIFT);
+ 344              		.loc 1 345 0
+ 345 009c 0F23     		movs	r3, #15
+ 346 009e FB18     		adds	r3, r7, r3
+ 347 00a0 1B78     		ldrb	r3, [r3]
+ 348 00a2 1A00     		movs	r2, r3
+ 349 00a4 1B02     		lsls	r3, r3, #8
+ 350 00a6 D31A     		subs	r3, r2, r3
+ 351 00a8 0F22     		movs	r2, #15
+ 352 00aa BA18     		adds	r2, r7, r2
+ 353 00ac 1278     		ldrb	r2, [r2]
+ 354 00ae 0E21     		movs	r1, #14
+ 355 00b0 7918     		adds	r1, r7, r1
+ 356 00b2 0978     		ldrb	r1, [r1]
+ 357 00b4 4A43     		muls	r2, r1
+ 358 00b6 9B18     		adds	r3, r3, r2
+ 359 00b8 084A     		ldr	r2, .L16
+ 360 00ba 9446     		mov	ip, r2
+ 361 00bc 6344     		add	r3, r3, ip
+ 362 00be 5A08     		lsrs	r2, r3, #1
+ 363 00c0 0C23     		movs	r3, #12
+ 364 00c2 FB18     		adds	r3, r7, r3
+ 365 00c4 1A80     		strh	r2, [r3]
+ 346:..\..\..\BSP/bsp.c ****     PWM_Blue_WriteCompare(pwm_color);
+ 366              		.loc 1 346 0
+ 367 00c6 0C23     		movs	r3, #12
+ 368 00c8 FB18     		adds	r3, r7, r3
+ 369 00ca 1B88     		ldrh	r3, [r3]
+ 370 00cc 1800     		movs	r0, r3
+ 371 00ce FFF7FEFF 		bl	PWM_Blue_WriteCompare
+ 347:..\..\..\BSP/bsp.c **** }
+ 372              		.loc 1 347 0
+ 373 00d2 C046     		nop
+ 374 00d4 BD46     		mov	sp, r7
+ 375 00d6 04B0     		add	sp, sp, #16
+ 376              		@ sp needed
+ 377 00d8 80BD     		pop	{r7, pc}
+ 378              	.L17:
+ 379 00da C046     		.align	2
+ 380              	.L16:
+ 381 00dc 01FE0000 		.word	65025
+ 382              		.cfi_endproc
+ 383              	.LFE38:
+ 384              		.size	BSP_RGB_ColorSet, .-BSP_RGB_ColorSet
+ 385              		.global	__aeabi_uidiv
+ 386              		.section	.text.BSP_RGB_ColorRead,"ax",%progbits
+ 387              		.align	2
+ 388              		.global	BSP_RGB_ColorRead
+ 389              		.code	16
+ 390              		.thumb_func
+ 391              		.type	BSP_RGB_ColorRead, %function
+ 392              	BSP_RGB_ColorRead:
+ 393              	.LFB39:
+ 348:..\..\..\BSP/bsp.c **** 
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 14
+
+
+ 349:..\..\..\BSP/bsp.c **** 
+ 350:..\..\..\BSP/bsp.c **** /*
+ 351:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 352:..\..\..\BSP/bsp.c **** *                                         BSP_RGB_ColorRead()
+ 353:..\..\..\BSP/bsp.c **** *
+ 354:..\..\..\BSP/bsp.c **** * Description : Read and Return the latest Color Value of the RGB LED PWM Signals.
+ 355:..\..\..\BSP/bsp.c **** *
+ 356:..\..\..\BSP/bsp.c **** * Argument(s) : none.
+ 357:..\..\..\BSP/bsp.c **** *
+ 358:..\..\..\BSP/bsp.c **** * Return(s)   : Converted Color Value of the RGB LED.
+ 359:..\..\..\BSP/bsp.c **** *
+ 360:..\..\..\BSP/bsp.c **** * Caller(s)   : Application.
+ 361:..\..\..\BSP/bsp.c **** *
+ 362:..\..\..\BSP/bsp.c **** * Note(s)     : (1) This Function reads the PWM Signals for the Red, Green, and Blue (LED) Signals 
+ 363:..\..\..\BSP/bsp.c **** *                   conver the Individual RGB Value to an RGBA value to return.
+ 364:..\..\..\BSP/bsp.c **** *
+ 365:..\..\..\BSP/bsp.c **** *               (2) This Function assumes a maximum Alpha value (0xFF) will be assigned and used to
+ 366:..\..\..\BSP/bsp.c **** *                   convert PWM signals to RGB color values (in hex).
+ 367:..\..\..\BSP/bsp.c **** *
+ 368:..\..\..\BSP/bsp.c **** *               (3) The RGBA Color Value (in Hex) is represented in the following way:
+ 369:..\..\..\BSP/bsp.c **** *                       Color = 0x FF 12 34 56
+ 370:..\..\..\BSP/bsp.c **** *                                   \  \  \  \
+ 371:..\..\..\BSP/bsp.c **** *                                    \  \  \  - Blue  LED Color.
+ 372:..\..\..\BSP/bsp.c **** *                                     \  \  - - Green LED Color.
+ 373:..\..\..\BSP/bsp.c **** *                                      \  - - - Red   LED Color.
+ 374:..\..\..\BSP/bsp.c **** *                                       - - - - Alpha Index Value.
+ 375:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 376:..\..\..\BSP/bsp.c **** */
+ 377:..\..\..\BSP/bsp.c **** 
+ 378:..\..\..\BSP/bsp.c **** CPU_INT32U  BSP_RGB_ColorRead (void)
+ 379:..\..\..\BSP/bsp.c **** {
+ 394              		.loc 1 379 0
+ 395              		.cfi_startproc
+ 396              		@ args = 0, pretend = 0, frame = 8
+ 397              		@ frame_needed = 1, uses_anonymous_args = 0
+ 398 0000 80B5     		push	{r7, lr}
+ 399              		.cfi_def_cfa_offset 8
+ 400              		.cfi_offset 7, -8
+ 401              		.cfi_offset 14, -4
+ 402 0002 82B0     		sub	sp, sp, #8
+ 403              		.cfi_def_cfa_offset 16
+ 404 0004 00AF     		add	r7, sp, #0
+ 405              		.cfi_def_cfa_register 7
+ 380:..\..\..\BSP/bsp.c ****     CPU_INT32U  color;
+ 381:..\..\..\BSP/bsp.c ****     CPU_INT16U  pwm_color;
+ 382:..\..\..\BSP/bsp.c ****     CPU_INT08U  color_val;
+ 383:..\..\..\BSP/bsp.c ****     
+ 384:..\..\..\BSP/bsp.c ****     
+ 385:..\..\..\BSP/bsp.c ****     color = (BSP_RGB_MAX_ALPHA_VAL << BSP_RGB_ALPHA_POS_SHIFT); /* Set the Max Alpha Value to RGBA 
+ 406              		.loc 1 385 0
+ 407 0006 FF23     		movs	r3, #255
+ 408 0008 1B06     		lsls	r3, r3, #24
+ 409 000a 7B60     		str	r3, [r7, #4]
+ 386:..\..\..\BSP/bsp.c ****     
+ 387:..\..\..\BSP/bsp.c ****                                                                 /* ---------------- GET LED COLOR: 
+ 388:..\..\..\BSP/bsp.c ****     pwm_color = PWM_Red_ReadCompare();                          /* Get the PWM Compared Value to co
+ 410              		.loc 1 388 0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 15
+
+
+ 411 000c FFF7FEFF 		bl	PWM_Red_ReadCompare
+ 412 0010 0200     		movs	r2, r0
+ 413 0012 BB1C     		adds	r3, r7, #2
+ 414 0014 1A80     		strh	r2, [r3]
+ 389:..\..\..\BSP/bsp.c ****     color_val = ((pwm_color << BSP_RGB_BRIGHT_SAT_SHIFT) / BSP_RGB_MAX_ALPHA_VAL);
+ 415              		.loc 1 389 0
+ 416 0016 BB1C     		adds	r3, r7, #2
+ 417 0018 1B88     		ldrh	r3, [r3]
+ 418 001a 5B00     		lsls	r3, r3, #1
+ 419 001c FF21     		movs	r1, #255
+ 420 001e 1800     		movs	r0, r3
+ 421 0020 FFF7FEFF 		bl	__aeabi_uidiv
+ 422 0024 0300     		movs	r3, r0
+ 423 0026 1A00     		movs	r2, r3
+ 424 0028 7B1C     		adds	r3, r7, #1
+ 425 002a 1A70     		strb	r2, [r3]
+ 390:..\..\..\BSP/bsp.c ****     
+ 391:..\..\..\BSP/bsp.c ****     color    |= (color_val << BSP_RGB_RED_POS_SHIFT);           /* Set the RED Converted value to R
+ 426              		.loc 1 391 0
+ 427 002c 7B1C     		adds	r3, r7, #1
+ 428 002e 1B78     		ldrb	r3, [r3]
+ 429 0030 1B04     		lsls	r3, r3, #16
+ 430 0032 1A00     		movs	r2, r3
+ 431 0034 7B68     		ldr	r3, [r7, #4]
+ 432 0036 1343     		orrs	r3, r2
+ 433 0038 7B60     		str	r3, [r7, #4]
+ 392:..\..\..\BSP/bsp.c ****     
+ 393:..\..\..\BSP/bsp.c ****                                                                 /* --------------- GET LED COLOR: G
+ 394:..\..\..\BSP/bsp.c ****     pwm_color = PWM_Green_ReadCompare();                        /* Get the PWM Compared Value to co
+ 434              		.loc 1 394 0
+ 435 003a FFF7FEFF 		bl	PWM_Green_ReadCompare
+ 436 003e 0200     		movs	r2, r0
+ 437 0040 BB1C     		adds	r3, r7, #2
+ 438 0042 1A80     		strh	r2, [r3]
+ 395:..\..\..\BSP/bsp.c ****     color_val = ((pwm_color << BSP_RGB_BRIGHT_SAT_SHIFT) / BSP_RGB_MAX_ALPHA_VAL);
+ 439              		.loc 1 395 0
+ 440 0044 BB1C     		adds	r3, r7, #2
+ 441 0046 1B88     		ldrh	r3, [r3]
+ 442 0048 5B00     		lsls	r3, r3, #1
+ 443 004a FF21     		movs	r1, #255
+ 444 004c 1800     		movs	r0, r3
+ 445 004e FFF7FEFF 		bl	__aeabi_uidiv
+ 446 0052 0300     		movs	r3, r0
+ 447 0054 1A00     		movs	r2, r3
+ 448 0056 7B1C     		adds	r3, r7, #1
+ 449 0058 1A70     		strb	r2, [r3]
+ 396:..\..\..\BSP/bsp.c ****     
+ 397:..\..\..\BSP/bsp.c ****     color    |= (color_val << BSP_RGB_GREEN_POS_SHIFT);         /* Set the GREEN Converted value to
+ 450              		.loc 1 397 0
+ 451 005a 7B1C     		adds	r3, r7, #1
+ 452 005c 1B78     		ldrb	r3, [r3]
+ 453 005e 1B02     		lsls	r3, r3, #8
+ 454 0060 1A00     		movs	r2, r3
+ 455 0062 7B68     		ldr	r3, [r7, #4]
+ 456 0064 1343     		orrs	r3, r2
+ 457 0066 7B60     		str	r3, [r7, #4]
+ 398:..\..\..\BSP/bsp.c ****     
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 16
+
+
+ 399:..\..\..\BSP/bsp.c ****                                                                 /* ---------------- GET LED COLOR: 
+ 400:..\..\..\BSP/bsp.c ****     pwm_color = PWM_Blue_ReadCompare();                         /* Get the PWM Compared Value to co
+ 458              		.loc 1 400 0
+ 459 0068 FFF7FEFF 		bl	PWM_Blue_ReadCompare
+ 460 006c 0200     		movs	r2, r0
+ 461 006e BB1C     		adds	r3, r7, #2
+ 462 0070 1A80     		strh	r2, [r3]
+ 401:..\..\..\BSP/bsp.c ****     color_val = ((pwm_color << BSP_RGB_BRIGHT_SAT_SHIFT) / BSP_RGB_MAX_ALPHA_VAL);
+ 463              		.loc 1 401 0
+ 464 0072 BB1C     		adds	r3, r7, #2
+ 465 0074 1B88     		ldrh	r3, [r3]
+ 466 0076 5B00     		lsls	r3, r3, #1
+ 467 0078 FF21     		movs	r1, #255
+ 468 007a 1800     		movs	r0, r3
+ 469 007c FFF7FEFF 		bl	__aeabi_uidiv
+ 470 0080 0300     		movs	r3, r0
+ 471 0082 1A00     		movs	r2, r3
+ 472 0084 7B1C     		adds	r3, r7, #1
+ 473 0086 1A70     		strb	r2, [r3]
+ 402:..\..\..\BSP/bsp.c ****     
+ 403:..\..\..\BSP/bsp.c ****     color    |= (color_val << BSP_RGB_BLUE_POS_SHIFT);          /* Set the BLUE Converted value to 
+ 474              		.loc 1 403 0
+ 475 0088 7B1C     		adds	r3, r7, #1
+ 476 008a 1B78     		ldrb	r3, [r3]
+ 477 008c 7A68     		ldr	r2, [r7, #4]
+ 478 008e 1343     		orrs	r3, r2
+ 479 0090 7B60     		str	r3, [r7, #4]
+ 404:..\..\..\BSP/bsp.c ****     
+ 405:..\..\..\BSP/bsp.c ****     return (color);
+ 480              		.loc 1 405 0
+ 481 0092 7B68     		ldr	r3, [r7, #4]
+ 406:..\..\..\BSP/bsp.c **** }
+ 482              		.loc 1 406 0
+ 483 0094 1800     		movs	r0, r3
+ 484 0096 BD46     		mov	sp, r7
+ 485 0098 02B0     		add	sp, sp, #8
+ 486              		@ sp needed
+ 487 009a 80BD     		pop	{r7, pc}
+ 488              		.cfi_endproc
+ 489              	.LFE39:
+ 490              		.size	BSP_RGB_ColorRead, .-BSP_RGB_ColorRead
+ 491              		.section	.text.BSP_PB_StatusGet,"ax",%progbits
+ 492              		.align	2
+ 493              		.global	BSP_PB_StatusGet
+ 494              		.code	16
+ 495              		.thumb_func
+ 496              		.type	BSP_PB_StatusGet, %function
+ 497              	BSP_PB_StatusGet:
+ 498              	.LFB40:
+ 407:..\..\..\BSP/bsp.c **** 
+ 408:..\..\..\BSP/bsp.c **** 
+ 409:..\..\..\BSP/bsp.c **** /*
+ 410:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 411:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 412:..\..\..\BSP/bsp.c **** *                                        PUSH BUTTON FUNCTIONS
+ 413:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 414:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 17
+
+
+ 415:..\..\..\BSP/bsp.c **** */
+ 416:..\..\..\BSP/bsp.c **** 
+ 417:..\..\..\BSP/bsp.c **** /*
+ 418:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 419:..\..\..\BSP/bsp.c **** *                                          BSP_PB_StatusGet()
+ 420:..\..\..\BSP/bsp.c **** *
+ 421:..\..\..\BSP/bsp.c **** * Description : Get the current status of the push buttons.
+ 422:..\..\..\BSP/bsp.c **** *
+ 423:..\..\..\BSP/bsp.c **** * Argument(s) : none.
+ 424:..\..\..\BSP/bsp.c **** *
+ 425:..\..\..\BSP/bsp.c **** * Return(s)   : Status of the Push Button (Active Low).
+ 426:..\..\..\BSP/bsp.c **** *                   - DEF_ON    If the push button is pressed.
+ 427:..\..\..\BSP/bsp.c **** *                   - DEF_OFF,  Otherwise.
+ 428:..\..\..\BSP/bsp.c **** *
+ 429:..\..\..\BSP/bsp.c **** * Caller(s)   : Application
+ 430:..\..\..\BSP/bsp.c **** *
+ 431:..\..\..\BSP/bsp.c **** * Note(s)     : (1) 'SW2' is the Set name of the only Push button (USER SW) found on the board. If 
+ 432:..\..\..\BSP/bsp.c **** *                   push button name changes, this Function call must be updated.
+ 433:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 434:..\..\..\BSP/bsp.c **** */
+ 435:..\..\..\BSP/bsp.c **** 
+ 436:..\..\..\BSP/bsp.c **** CPU_BOOLEAN  BSP_PB_StatusGet (void)
+ 437:..\..\..\BSP/bsp.c **** {
+ 499              		.loc 1 437 0
+ 500              		.cfi_startproc
+ 501              		@ args = 0, pretend = 0, frame = 8
+ 502              		@ frame_needed = 1, uses_anonymous_args = 0
+ 503 0000 90B5     		push	{r4, r7, lr}
+ 504              		.cfi_def_cfa_offset 12
+ 505              		.cfi_offset 4, -12
+ 506              		.cfi_offset 7, -8
+ 507              		.cfi_offset 14, -4
+ 508 0002 83B0     		sub	sp, sp, #12
+ 509              		.cfi_def_cfa_offset 24
+ 510 0004 00AF     		add	r7, sp, #0
+ 511              		.cfi_def_cfa_register 7
+ 438:..\..\..\BSP/bsp.c ****     CPU_BOOLEAN  pb_status;
+ 439:..\..\..\BSP/bsp.c ****     CPU_INT08U   sw_val;
+ 440:..\..\..\BSP/bsp.c **** 
+ 441:..\..\..\BSP/bsp.c ****     
+ 442:..\..\..\BSP/bsp.c ****     sw_val = SW2_Read();                                        /* Get Push Button 'SW2' Status.   
+ 512              		.loc 1 442 0
+ 513 0006 FC1D     		adds	r4, r7, #7
+ 514 0008 FFF7FEFF 		bl	SW2_Read
+ 515 000c 0300     		movs	r3, r0
+ 516 000e 2370     		strb	r3, [r4]
+ 443:..\..\..\BSP/bsp.c ****     pb_status = DEF_BIT_IS_CLR(sw_val, DEF_BIT_00);             /* Check if 'SW2' was pressed. Acti
+ 517              		.loc 1 443 0
+ 518 0010 FB1D     		adds	r3, r7, #7
+ 519 0012 1B78     		ldrb	r3, [r3]
+ 520 0014 0122     		movs	r2, #1
+ 521 0016 1340     		ands	r3, r2
+ 522 0018 01D1     		bne	.L21
+ 523              		.loc 1 443 0 is_stmt 0 discriminator 1
+ 524 001a 0122     		movs	r2, #1
+ 525 001c 00E0     		b	.L22
+ 526              	.L21:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 18
+
+
+ 527              		.loc 1 443 0 discriminator 2
+ 528 001e 0022     		movs	r2, #0
+ 529              	.L22:
+ 530              		.loc 1 443 0 discriminator 4
+ 531 0020 BB1D     		adds	r3, r7, #6
+ 532 0022 1A70     		strb	r2, [r3]
+ 444:..\..\..\BSP/bsp.c **** 
+ 445:..\..\..\BSP/bsp.c ****     return (pb_status);
+ 533              		.loc 1 445 0 is_stmt 1 discriminator 4
+ 534 0024 BB1D     		adds	r3, r7, #6
+ 535 0026 1B78     		ldrb	r3, [r3]
+ 446:..\..\..\BSP/bsp.c **** }
+ 536              		.loc 1 446 0 discriminator 4
+ 537 0028 1800     		movs	r0, r3
+ 538 002a BD46     		mov	sp, r7
+ 539 002c 03B0     		add	sp, sp, #12
+ 540              		@ sp needed
+ 541 002e 90BD     		pop	{r4, r7, pc}
+ 542              		.cfi_endproc
+ 543              	.LFE40:
+ 544              		.size	BSP_PB_StatusGet, .-BSP_PB_StatusGet
+ 545              		.section	.text.BSP_Accel_Init,"ax",%progbits
+ 546              		.align	2
+ 547              		.global	BSP_Accel_Init
+ 548              		.code	16
+ 549              		.thumb_func
+ 550              		.type	BSP_Accel_Init, %function
+ 551              	BSP_Accel_Init:
+ 552              	.LFB41:
+ 447:..\..\..\BSP/bsp.c **** 
+ 448:..\..\..\BSP/bsp.c **** 
+ 449:..\..\..\BSP/bsp.c **** /*
+ 450:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 451:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 452:..\..\..\BSP/bsp.c **** *                                    ACCELEROMETER (I2C) FUNCTIONS
+ 453:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 454:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 455:..\..\..\BSP/bsp.c **** */
+ 456:..\..\..\BSP/bsp.c **** 
+ 457:..\..\..\BSP/bsp.c **** /*
+ 458:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 459:..\..\..\BSP/bsp.c **** *                                           BSP_Accel_Init()
+ 460:..\..\..\BSP/bsp.c **** *
+ 461:..\..\..\BSP/bsp.c **** * Description : Initialize the Accelerometer, connected via I2C communication, for proper operation
+ 462:..\..\..\BSP/bsp.c **** *
+ 463:..\..\..\BSP/bsp.c **** * Argument(s) : none.
+ 464:..\..\..\BSP/bsp.c **** *
+ 465:..\..\..\BSP/bsp.c **** * Return(s)   : none.
+ 466:..\..\..\BSP/bsp.c **** *
+ 467:..\..\..\BSP/bsp.c **** * Caller(s)   : BSP_Init().
+ 468:..\..\..\BSP/bsp.c **** *
+ 469:..\..\..\BSP/bsp.c **** * Note(s)     : (1) The Desired Wake Up Timer Counts should be Calculated using the following equat
+ 470:..\..\..\BSP/bsp.c **** *                       Counts = Desired Delay Time (sec) x ODR Period (Hz) [OWUF]
+ 471:..\..\..\BSP/bsp.c **** *
+ 472:..\..\..\BSP/bsp.c **** *                   Every Count is Calculated as 1/OWUF Delay Period.
+ 473:..\..\..\BSP/bsp.c **** *
+ 474:..\..\..\BSP/bsp.c **** *               (2) The Desired Wake Up Threshold Counts should be Calculated using the following e
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 19
+
+
+ 475:..\..\..\BSP/bsp.c **** *                       Threshold Counts = Desired Threshold (g) x 16 (counts/g)
+ 476:..\..\..\BSP/bsp.c **** *
+ 477:..\..\..\BSP/bsp.c **** *                   The Factory Setting of the value is set to a change in Acceleration of 0.5g
+ 478:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 479:..\..\..\BSP/bsp.c **** */
+ 480:..\..\..\BSP/bsp.c **** 
+ 481:..\..\..\BSP/bsp.c **** void  BSP_Accel_Init (void)
+ 482:..\..\..\BSP/bsp.c **** {
+ 553              		.loc 1 482 0
+ 554              		.cfi_startproc
+ 555              		@ args = 0, pretend = 0, frame = 8
+ 556              		@ frame_needed = 1, uses_anonymous_args = 0
+ 557 0000 90B5     		push	{r4, r7, lr}
+ 558              		.cfi_def_cfa_offset 12
+ 559              		.cfi_offset 4, -12
+ 560              		.cfi_offset 7, -8
+ 561              		.cfi_offset 14, -4
+ 562 0002 83B0     		sub	sp, sp, #12
+ 563              		.cfi_def_cfa_offset 24
+ 564 0004 00AF     		add	r7, sp, #0
+ 565              		.cfi_def_cfa_register 7
+ 483:..\..\..\BSP/bsp.c ****     CPU_BOOLEAN  accel_status;
+ 484:..\..\..\BSP/bsp.c ****     CPU_INT08U   data_resp;
+ 485:..\..\..\BSP/bsp.c ****     
+ 486:..\..\..\BSP/bsp.c ****                                                                 /* ----------- INIT I2C BLOCK & ISR
+ 487:..\..\..\BSP/bsp.c ****     I2C_Start();                                                /* Enable and Start the I2C Block f
+ 566              		.loc 1 487 0
+ 567 0006 FFF7FEFF 		bl	I2C_Start
+ 488:..\..\..\BSP/bsp.c ****     Accel_ISR_StartEx(BSP_Accel_ISR_Handler);                   /* Enable, Start, and Set the ISR H
+ 568              		.loc 1 488 0
+ 569 000a 374B     		ldr	r3, .L28
+ 570 000c 1800     		movs	r0, r3
+ 571 000e FFF7FEFF 		bl	Accel_ISR_StartEx
+ 489:..\..\..\BSP/bsp.c ****     
+ 490:..\..\..\BSP/bsp.c ****     BSP_OS_TimeDlyMs(50u);                                      /* Delay for 50ms to Allow the Acce
+ 572              		.loc 1 490 0
+ 573 0012 3220     		movs	r0, #50
+ 574 0014 FFF7FEFF 		bl	BSP_OS_TimeDlyMs
+ 491:..\..\..\BSP/bsp.c ****     
+ 492:..\..\..\BSP/bsp.c ****     accel_status = BSP_Accel_InitSelfTst();                     /* Run the Accel Self-Test to Ensur
+ 575              		.loc 1 492 0
+ 576 0018 FC1D     		adds	r4, r7, #7
+ 577 001a FFF7FEFF 		bl	BSP_Accel_InitSelfTst
+ 578 001e 0300     		movs	r3, r0
+ 579 0020 2370     		strb	r3, [r4]
+ 493:..\..\..\BSP/bsp.c ****     if (accel_status != DEF_OK) {
+ 580              		.loc 1 493 0
+ 581 0022 FB1D     		adds	r3, r7, #7
+ 582 0024 1B78     		ldrb	r3, [r3]
+ 583 0026 012B     		cmp	r3, #1
+ 584 0028 59D1     		bne	.L27
+ 494:..\..\..\BSP/bsp.c ****         return;                                                 /* Error Checking, if Self Test Fai
+ 495:..\..\..\BSP/bsp.c ****     }
+ 496:..\..\..\BSP/bsp.c ****                                                                 /* ------------- SET CONTROL REG 1 
+ 497:..\..\..\BSP/bsp.c ****     data_resp = (BSP_ACC_KXTJ2_CTRL_REG1_RES      |             /* CTRL_REG1: High Current 12-Bit/1
+ 585              		.loc 1 497 0
+ 586 002a BB1D     		adds	r3, r7, #6
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 20
+
+
+ 587 002c 6222     		movs	r2, #98
+ 588 002e 1A70     		strb	r2, [r3]
+ 498:..\..\..\BSP/bsp.c ****                  BSP_ACC_KXTJ2_CTRL_REG1_DRDYE    |             /*          : Reflect New Accel Dat
+ 499:..\..\..\BSP/bsp.c ****                  BSP_ACC_KXTJ2_CTRL_REG1_GSELx_2G |             /*          : Acceleration Range of
+ 500:..\..\..\BSP/bsp.c ****                  BSP_ACC_KXTJ2_CTRL_REG1_WUFE     );            /*          : Wake Up on Motion Det
+ 501:..\..\..\BSP/bsp.c ****                                                                 /*          : Set Stand-By Mode. (B
+ 502:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_WRITE,                     /* Write the Control Register #1 Se
+ 589              		.loc 1 502 0
+ 590 0030 BB1D     		adds	r3, r7, #6
+ 591 0032 1A00     		movs	r2, r3
+ 592 0034 1B21     		movs	r1, #27
+ 593 0036 0020     		movs	r0, #0
+ 594 0038 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 503:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_CTRL_REG1,
+ 504:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 505:..\..\..\BSP/bsp.c ****                                                                 /* ------------- SET CONTROL REG 2 
+ 506:..\..\..\BSP/bsp.c ****     data_resp =  BSP_ACC_KXTJ2_CTRL_REG2_OWUFx_12_5Hz;          /* CTRL_REG2: Wake Up Fnct Output D
+ 595              		.loc 1 506 0
+ 596 003c BB1D     		adds	r3, r7, #6
+ 597 003e 0422     		movs	r2, #4
+ 598 0040 1A70     		strb	r2, [r3]
+ 507:..\..\..\BSP/bsp.c ****                                                                 /*          : DISABLE Software Rese
+ 508:..\..\..\BSP/bsp.c ****                                                                 /*          : Do Not Perform Self-T
+ 509:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_WRITE,                     /* Write the Control Register #2 Se
+ 599              		.loc 1 509 0
+ 600 0042 BB1D     		adds	r3, r7, #6
+ 601 0044 1A00     		movs	r2, r3
+ 602 0046 1D21     		movs	r1, #29
+ 603 0048 0020     		movs	r0, #0
+ 604 004a FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 510:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_CTRL_REG2,
+ 511:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 512:..\..\..\BSP/bsp.c ****                                                                 /* ----------- SET INTERRUPT CONTRO
+ 513:..\..\..\BSP/bsp.c ****     data_resp = (BSP_ACC_KXTJ2_INT_CTRL_REG1_IEN |              /* INT_CTRL1: ENABLE Interrupt Pin.
+ 605              		.loc 1 513 0
+ 606 004e BB1D     		adds	r3, r7, #6
+ 607 0050 3022     		movs	r2, #48
+ 608 0052 1A70     		strb	r2, [r3]
+ 514:..\..\..\BSP/bsp.c ****                  BSP_ACC_KXTJ2_INT_CTRL_REG1_IEA );             /*          : Interrupt Polarity, A
+ 515:..\..\..\BSP/bsp.c ****                                                                 /*          : Interrupt Latches Unt
+ 516:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_WRITE,                     /* Write the Interrupt Control Regi
+ 609              		.loc 1 516 0
+ 610 0054 BB1D     		adds	r3, r7, #6
+ 611 0056 1A00     		movs	r2, r3
+ 612 0058 1E21     		movs	r1, #30
+ 613 005a 0020     		movs	r0, #0
+ 614 005c FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 517:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_INT_CTRL_REG1,
+ 518:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 519:..\..\..\BSP/bsp.c ****     
+ 520:..\..\..\BSP/bsp.c ****     data_resp = (BSP_ACC_KXTJ2_INT_CTRL_REG2_XNWUE |            /* INT_CTRL2: Enable Interrupt Moti
+ 615              		.loc 1 520 0
+ 616 0060 BB1D     		adds	r3, r7, #6
+ 617 0062 3F22     		movs	r2, #63
+ 618 0064 1A70     		strb	r2, [r3]
+ 521:..\..\..\BSP/bsp.c ****                  BSP_ACC_KXTJ2_INT_CTRL_REG2_XPWUE |            /*          :                      
+ 522:..\..\..\BSP/bsp.c ****                  BSP_ACC_KXTJ2_INT_CTRL_REG2_YNWUE |            /*          :                      
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 21
+
+
+ 523:..\..\..\BSP/bsp.c ****                  BSP_ACC_KXTJ2_INT_CTRL_REG2_YPWUE |            /*          :                      
+ 524:..\..\..\BSP/bsp.c ****                  BSP_ACC_KXTJ2_INT_CTRL_REG2_ZNWUE |            /*          :                      
+ 525:..\..\..\BSP/bsp.c ****                  BSP_ACC_KXTJ2_INT_CTRL_REG2_ZPWUE );           /*          :                      
+ 526:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_WRITE,                     /* Write the Interrupt Control Regi
+ 619              		.loc 1 526 0
+ 620 0066 BB1D     		adds	r3, r7, #6
+ 621 0068 1A00     		movs	r2, r3
+ 622 006a 1F21     		movs	r1, #31
+ 623 006c 0020     		movs	r0, #0
+ 624 006e FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 527:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_INT_CTRL_REG2,
+ 528:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 529:..\..\..\BSP/bsp.c ****                                                                 /* --------------- DATA CONTROL OPT
+ 530:..\..\..\BSP/bsp.c ****     data_resp =  BSP_ACC_KXTJ2_DATA_CTRL_OSAx_50Hz;             /* DATA_CTRL_REG: Set Accel Output 
+ 625              		.loc 1 530 0
+ 626 0072 BB1D     		adds	r3, r7, #6
+ 627 0074 0222     		movs	r2, #2
+ 628 0076 1A70     		strb	r2, [r3]
+ 531:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_WRITE,                     /* Write the Data Control Register 
+ 629              		.loc 1 531 0
+ 630 0078 BB1D     		adds	r3, r7, #6
+ 631 007a 1A00     		movs	r2, r3
+ 632 007c 2121     		movs	r1, #33
+ 633 007e 0020     		movs	r0, #0
+ 634 0080 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 532:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_DATA_CTRL_REG,
+ 533:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 534:..\..\..\BSP/bsp.c ****                                                                 /* ------------------ WAKEUP OPTION
+ 535:..\..\..\BSP/bsp.c ****     data_resp = BSP_ACCEL_WAKEUP_CNTS;                          /* Set the Wake Up Timer Counts. Se
+ 635              		.loc 1 535 0
+ 636 0084 BB1D     		adds	r3, r7, #6
+ 637 0086 3222     		movs	r2, #50
+ 638 0088 1A70     		strb	r2, [r3]
+ 536:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_WRITE,                     /* Write the Wakeup Timer Register 
+ 639              		.loc 1 536 0
+ 640 008a BB1D     		adds	r3, r7, #6
+ 641 008c 1A00     		movs	r2, r3
+ 642 008e 2921     		movs	r1, #41
+ 643 0090 0020     		movs	r0, #0
+ 644 0092 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 537:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_WAKEUP_TIMER,
+ 538:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 539:..\..\..\BSP/bsp.c ****     
+ 540:..\..\..\BSP/bsp.c ****     data_resp = BSP_ACCEL_WAKEUP_THRESH_CNTS;                   /* Set the Wake Up Threshold Counts
+ 645              		.loc 1 540 0
+ 646 0096 BB1D     		adds	r3, r7, #6
+ 647 0098 0822     		movs	r2, #8
+ 648 009a 1A70     		strb	r2, [r3]
+ 541:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_WRITE,                     /* Write the Wakeup Threshold Regis
+ 649              		.loc 1 541 0
+ 650 009c BB1D     		adds	r3, r7, #6
+ 651 009e 1A00     		movs	r2, r3
+ 652 00a0 6A21     		movs	r1, #106
+ 653 00a2 0020     		movs	r0, #0
+ 654 00a4 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 542:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_WAKUP_THRESHOLD,
+ 543:..\..\..\BSP/bsp.c ****                       &data_resp);
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 22
+
+
+ 544:..\..\..\BSP/bsp.c ****                                                                 /* ---------------- START ACCELEROM
+ 545:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,                      /* Get Control Register #1 Current 
+ 655              		.loc 1 545 0
+ 656 00a8 BB1D     		adds	r3, r7, #6
+ 657 00aa 1A00     		movs	r2, r3
+ 658 00ac 1B21     		movs	r1, #27
+ 659 00ae 0120     		movs	r0, #1
+ 660 00b0 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 546:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_CTRL_REG1,
+ 547:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 548:..\..\..\BSP/bsp.c ****     
+ 549:..\..\..\BSP/bsp.c ****     DEF_BIT_SET(data_resp, BSP_ACC_KXTJ2_CTRL_REG1_PC1);        /* Clear PC1 Bit to set KXTJ2 Modul
+ 661              		.loc 1 549 0
+ 662 00b4 BB1D     		adds	r3, r7, #6
+ 663 00b6 1B78     		ldrb	r3, [r3]
+ 664 00b8 8022     		movs	r2, #128
+ 665 00ba 5242     		rsbs	r2, r2, #0
+ 666 00bc 1343     		orrs	r3, r2
+ 667 00be DAB2     		uxtb	r2, r3
+ 668 00c0 BB1D     		adds	r3, r7, #6
+ 669 00c2 1A70     		strb	r2, [r3]
+ 550:..\..\..\BSP/bsp.c ****     
+ 551:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_WRITE,                     /* Write the Updated Control Regist
+ 670              		.loc 1 551 0
+ 671 00c4 BB1D     		adds	r3, r7, #6
+ 672 00c6 1A00     		movs	r2, r3
+ 673 00c8 1B21     		movs	r1, #27
+ 674 00ca 0020     		movs	r0, #0
+ 675 00cc FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 552:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_CTRL_REG1,
+ 553:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 554:..\..\..\BSP/bsp.c ****                                                                 /* ----------------- CLR PENDING IN
+ 555:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,                      /* Read INT_REL to Clear any Int Sr
+ 676              		.loc 1 555 0
+ 677 00d0 BB1D     		adds	r3, r7, #6
+ 678 00d2 1A00     		movs	r2, r3
+ 679 00d4 1A21     		movs	r1, #26
+ 680 00d6 0120     		movs	r0, #1
+ 681 00d8 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 682 00dc 00E0     		b	.L24
+ 683              	.L27:
+ 494:..\..\..\BSP/bsp.c ****     }
+ 684              		.loc 1 494 0
+ 685 00de C046     		nop
+ 686              	.L24:
+ 556:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_INT_REL,
+ 557:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 558:..\..\..\BSP/bsp.c **** }
+ 687              		.loc 1 558 0
+ 688 00e0 BD46     		mov	sp, r7
+ 689 00e2 03B0     		add	sp, sp, #12
+ 690              		@ sp needed
+ 691 00e4 90BD     		pop	{r4, r7, pc}
+ 692              	.L29:
+ 693 00e6 C046     		.align	2
+ 694              	.L28:
+ 695 00e8 00000000 		.word	BSP_Accel_ISR_Handler
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 23
+
+
+ 696              		.cfi_endproc
+ 697              	.LFE41:
+ 698              		.size	BSP_Accel_Init, .-BSP_Accel_Init
+ 699              		.section	.text.BSP_Accel_InitSelfTst,"ax",%progbits
+ 700              		.align	2
+ 701              		.code	16
+ 702              		.thumb_func
+ 703              		.type	BSP_Accel_InitSelfTst, %function
+ 704              	BSP_Accel_InitSelfTst:
+ 705              	.LFB42:
+ 559:..\..\..\BSP/bsp.c **** 
+ 560:..\..\..\BSP/bsp.c **** 
+ 561:..\..\..\BSP/bsp.c **** /*
+ 562:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 563:..\..\..\BSP/bsp.c **** *                                       BSP_Accel_InitSelfTst()
+ 564:..\..\..\BSP/bsp.c **** *
+ 565:..\..\..\BSP/bsp.c **** * Description : Runs a Test Routine to make sure the Accelerometer Communication is Functional at I
+ 566:..\..\..\BSP/bsp.c **** *
+ 567:..\..\..\BSP/bsp.c **** * Argument(s) : none.
+ 568:..\..\..\BSP/bsp.c **** *
+ 569:..\..\..\BSP/bsp.c **** * Return(s)   : I2C Communication Status
+ 570:..\..\..\BSP/bsp.c **** *                   - DEF_FAIL: If Error in I2C Communication Sequence.
+ 571:..\..\..\BSP/bsp.c **** *                   - DEF_OK  : Otherwise, Everything went OK.
+ 572:..\..\..\BSP/bsp.c **** *
+ 573:..\..\..\BSP/bsp.c **** * Caller(s)   : BSP_Accel_Init()
+ 574:..\..\..\BSP/bsp.c **** *
+ 575:..\..\..\BSP/bsp.c **** * Note(s)     : none.
+ 576:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 577:..\..\..\BSP/bsp.c **** */
+ 578:..\..\..\BSP/bsp.c **** 
+ 579:..\..\..\BSP/bsp.c **** CPU_BOOLEAN  BSP_Accel_InitSelfTst (void)
+ 580:..\..\..\BSP/bsp.c **** {
+ 706              		.loc 1 580 0
+ 707              		.cfi_startproc
+ 708              		@ args = 0, pretend = 0, frame = 8
+ 709              		@ frame_needed = 1, uses_anonymous_args = 0
+ 710 0000 90B5     		push	{r4, r7, lr}
+ 711              		.cfi_def_cfa_offset 12
+ 712              		.cfi_offset 4, -12
+ 713              		.cfi_offset 7, -8
+ 714              		.cfi_offset 14, -4
+ 715 0002 83B0     		sub	sp, sp, #12
+ 716              		.cfi_def_cfa_offset 24
+ 717 0004 00AF     		add	r7, sp, #0
+ 718              		.cfi_def_cfa_register 7
+ 581:..\..\..\BSP/bsp.c ****     CPU_BOOLEAN  test_status;
+ 582:..\..\..\BSP/bsp.c ****     CPU_BOOLEAN  accel_resp;
+ 583:..\..\..\BSP/bsp.c ****     CPU_INT08U   data_resp;
+ 584:..\..\..\BSP/bsp.c ****     
+ 585:..\..\..\BSP/bsp.c ****                                                                 /* ------------ MODULE/CIRCUIT VERI
+ 586:..\..\..\BSP/bsp.c ****     accel_resp = BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,         /* Read DCST Reg to verify proper C
+ 719              		.loc 1 586 0
+ 720 0006 FC1D     		adds	r4, r7, #7
+ 721 0008 BB1D     		adds	r3, r7, #6
+ 722 000a 1A00     		movs	r2, r3
+ 723 000c 0C21     		movs	r1, #12
+ 724 000e 0120     		movs	r0, #1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 24
+
+
+ 725 0010 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 726 0014 0300     		movs	r3, r0
+ 727 0016 2370     		strb	r3, [r4]
+ 587:..\..\..\BSP/bsp.c ****                                     BSP_ACCEL_REG_DCST_RESP,
+ 588:..\..\..\BSP/bsp.c ****                                    &data_resp);
+ 589:..\..\..\BSP/bsp.c ****     if ((accel_resp != DEF_OK) ||
+ 728              		.loc 1 589 0
+ 729 0018 FB1D     		adds	r3, r7, #7
+ 730 001a 1B78     		ldrb	r3, [r3]
+ 731 001c 012B     		cmp	r3, #1
+ 732 001e 03D1     		bne	.L31
+ 590:..\..\..\BSP/bsp.c ****         (data_resp  != BSP_ACC_KXTJ2_DCST_RESP_1)) {            /* If Communication was OK & Data R
+ 733              		.loc 1 590 0 discriminator 1
+ 734 0020 BB1D     		adds	r3, r7, #6
+ 735 0022 1B78     		ldrb	r3, [r3]
+ 589:..\..\..\BSP/bsp.c ****         (data_resp  != BSP_ACC_KXTJ2_DCST_RESP_1)) {            /* If Communication was OK & Data R
+ 736              		.loc 1 589 0 discriminator 1
+ 737 0024 552B     		cmp	r3, #85
+ 738 0026 01D0     		beq	.L32
+ 739              	.L31:
+ 591:..\..\..\BSP/bsp.c ****         return (DEF_FAIL);                                      /* ... Key #1, then Continue with S
+ 740              		.loc 1 591 0
+ 741 0028 0023     		movs	r3, #0
+ 742 002a 4CE0     		b	.L38
+ 743              	.L32:
+ 592:..\..\..\BSP/bsp.c ****     }
+ 593:..\..\..\BSP/bsp.c ****                                                                 /* ---------------- SET OPERATING M
+ 594:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,                      /* Get current Control Register #1 
+ 744              		.loc 1 594 0
+ 745 002c BB1D     		adds	r3, r7, #6
+ 746 002e 1A00     		movs	r2, r3
+ 747 0030 1B21     		movs	r1, #27
+ 748 0032 0120     		movs	r0, #1
+ 749 0034 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 595:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_CTRL_REG1,
+ 596:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 597:..\..\..\BSP/bsp.c ****     
+ 598:..\..\..\BSP/bsp.c ****     DEF_BIT_CLR(data_resp, BSP_ACC_KXTJ2_CTRL_REG1_PC1);        /* Clear PC1 Bit to set KXTJ2 Modul
+ 750              		.loc 1 598 0
+ 751 0038 BB1D     		adds	r3, r7, #6
+ 752 003a 1B78     		ldrb	r3, [r3]
+ 753 003c 7F22     		movs	r2, #127
+ 754 003e 1340     		ands	r3, r2
+ 755 0040 DAB2     		uxtb	r2, r3
+ 756 0042 BB1D     		adds	r3, r7, #6
+ 757 0044 1A70     		strb	r2, [r3]
+ 599:..\..\..\BSP/bsp.c ****     
+ 600:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_WRITE,                     /* Write the Updated Control Regist
+ 758              		.loc 1 600 0
+ 759 0046 BB1D     		adds	r3, r7, #6
+ 760 0048 1A00     		movs	r2, r3
+ 761 004a 1B21     		movs	r1, #27
+ 762 004c 0020     		movs	r0, #0
+ 763 004e FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 601:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_CTRL_REG1,
+ 602:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 603:..\..\..\BSP/bsp.c ****                                                                 /* ----------------- PERFORM SELF-T
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 25
+
+
+ 604:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,                      /* Get current Control Register #2 
+ 764              		.loc 1 604 0
+ 765 0052 BB1D     		adds	r3, r7, #6
+ 766 0054 1A00     		movs	r2, r3
+ 767 0056 1D21     		movs	r1, #29
+ 768 0058 0120     		movs	r0, #1
+ 769 005a FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 605:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_CTRL_REG2,
+ 606:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 607:..\..\..\BSP/bsp.c ****     
+ 608:..\..\..\BSP/bsp.c ****     DEF_BIT_SET(data_resp, BSP_ACC_KXTJ2_CTRL_REG2_DCST);       /* Set the DCST Bit to Perform the 
+ 770              		.loc 1 608 0
+ 771 005e BB1D     		adds	r3, r7, #6
+ 772 0060 1B78     		ldrb	r3, [r3]
+ 773 0062 1022     		movs	r2, #16
+ 774 0064 1343     		orrs	r3, r2
+ 775 0066 DAB2     		uxtb	r2, r3
+ 776 0068 BB1D     		adds	r3, r7, #6
+ 777 006a 1A70     		strb	r2, [r3]
+ 609:..\..\..\BSP/bsp.c ****     
+ 610:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_WRITE,                     /* Write the Updated Control Regist
+ 778              		.loc 1 610 0
+ 779 006c BB1D     		adds	r3, r7, #6
+ 780 006e 1A00     		movs	r2, r3
+ 781 0070 1D21     		movs	r1, #29
+ 782 0072 0020     		movs	r0, #0
+ 783 0074 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 611:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_CTRL_REG2,
+ 612:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 613:..\..\..\BSP/bsp.c ****                                                                 /* ------------------- STATUS CHECK
+ 614:..\..\..\BSP/bsp.c ****     accel_resp = BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,         /* Read DCST Reg to Confirm Self-Te
+ 784              		.loc 1 614 0
+ 785 0078 FC1D     		adds	r4, r7, #7
+ 786 007a BB1D     		adds	r3, r7, #6
+ 787 007c 1A00     		movs	r2, r3
+ 788 007e 0C21     		movs	r1, #12
+ 789 0080 0120     		movs	r0, #1
+ 790 0082 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 791 0086 0300     		movs	r3, r0
+ 792 0088 2370     		strb	r3, [r4]
+ 615:..\..\..\BSP/bsp.c ****                                     BSP_ACCEL_REG_DCST_RESP,
+ 616:..\..\..\BSP/bsp.c ****                                    &data_resp);
+ 617:..\..\..\BSP/bsp.c ****     if ((accel_resp != DEF_OK) ||
+ 793              		.loc 1 617 0
+ 794 008a FB1D     		adds	r3, r7, #7
+ 795 008c 1B78     		ldrb	r3, [r3]
+ 796 008e 012B     		cmp	r3, #1
+ 797 0090 03D1     		bne	.L34
+ 618:..\..\..\BSP/bsp.c ****         (data_resp  != BSP_ACC_KXTJ2_DCST_RESP_2)) {            /* If Communication was OK & Data R
+ 798              		.loc 1 618 0 discriminator 1
+ 799 0092 BB1D     		adds	r3, r7, #6
+ 800 0094 1B78     		ldrb	r3, [r3]
+ 617:..\..\..\BSP/bsp.c ****         (data_resp  != BSP_ACC_KXTJ2_DCST_RESP_2)) {            /* If Communication was OK & Data R
+ 801              		.loc 1 617 0 discriminator 1
+ 802 0096 AA2B     		cmp	r3, #170
+ 803 0098 01D0     		beq	.L35
+ 804              	.L34:
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 26
+
+
+ 619:..\..\..\BSP/bsp.c ****         return (DEF_FAIL);                                      /* ... Key #2, then Continue with S
+ 805              		.loc 1 619 0
+ 806 009a 0023     		movs	r3, #0
+ 807 009c 13E0     		b	.L38
+ 808              	.L35:
+ 620:..\..\..\BSP/bsp.c ****     }
+ 621:..\..\..\BSP/bsp.c ****     
+ 622:..\..\..\BSP/bsp.c ****     accel_resp = BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,         /* Read DCST Reg Once More, Value M
+ 809              		.loc 1 622 0
+ 810 009e FC1D     		adds	r4, r7, #7
+ 811 00a0 BB1D     		adds	r3, r7, #6
+ 812 00a2 1A00     		movs	r2, r3
+ 813 00a4 0C21     		movs	r1, #12
+ 814 00a6 0120     		movs	r0, #1
+ 815 00a8 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 816 00ac 0300     		movs	r3, r0
+ 817 00ae 2370     		strb	r3, [r4]
+ 623:..\..\..\BSP/bsp.c ****                                     BSP_ACCEL_REG_DCST_RESP,
+ 624:..\..\..\BSP/bsp.c ****                                    &data_resp);
+ 625:..\..\..\BSP/bsp.c ****     if ((accel_resp != DEF_OK) ||
+ 818              		.loc 1 625 0
+ 819 00b0 FB1D     		adds	r3, r7, #7
+ 820 00b2 1B78     		ldrb	r3, [r3]
+ 821 00b4 012B     		cmp	r3, #1
+ 822 00b6 03D1     		bne	.L36
+ 626:..\..\..\BSP/bsp.c ****         (data_resp  != BSP_ACC_KXTJ2_DCST_RESP_1)) {            /* If Communication was OK & Data R
+ 823              		.loc 1 626 0 discriminator 1
+ 824 00b8 BB1D     		adds	r3, r7, #6
+ 825 00ba 1B78     		ldrb	r3, [r3]
+ 625:..\..\..\BSP/bsp.c ****         (data_resp  != BSP_ACC_KXTJ2_DCST_RESP_1)) {            /* If Communication was OK & Data R
+ 826              		.loc 1 625 0 discriminator 1
+ 827 00bc 552B     		cmp	r3, #85
+ 828 00be 01D0     		beq	.L37
+ 829              	.L36:
+ 627:..\..\..\BSP/bsp.c ****         return (DEF_FAIL);                                      /* ... Key #1, then end the Init Se
+ 830              		.loc 1 627 0
+ 831 00c0 0023     		movs	r3, #0
+ 832 00c2 00E0     		b	.L38
+ 833              	.L37:
+ 628:..\..\..\BSP/bsp.c ****     }
+ 629:..\..\..\BSP/bsp.c ****     
+ 630:..\..\..\BSP/bsp.c ****     return (DEF_OK);
+ 834              		.loc 1 630 0
+ 835 00c4 0123     		movs	r3, #1
+ 836              	.L38:
+ 631:..\..\..\BSP/bsp.c **** }
+ 837              		.loc 1 631 0 discriminator 1
+ 838 00c6 1800     		movs	r0, r3
+ 839 00c8 BD46     		mov	sp, r7
+ 840 00ca 03B0     		add	sp, sp, #12
+ 841              		@ sp needed
+ 842 00cc 90BD     		pop	{r4, r7, pc}
+ 843              		.cfi_endproc
+ 844              	.LFE42:
+ 845              		.size	BSP_Accel_InitSelfTst, .-BSP_Accel_InitSelfTst
+ 846 00ce C046     		.section	.text.BSP_Accel_RegRdWr,"ax",%progbits
+ 847              		.align	2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 27
+
+
+ 848              		.code	16
+ 849              		.thumb_func
+ 850              		.type	BSP_Accel_RegRdWr, %function
+ 851              	BSP_Accel_RegRdWr:
+ 852              	.LFB43:
+ 632:..\..\..\BSP/bsp.c **** 
+ 633:..\..\..\BSP/bsp.c **** 
+ 634:..\..\..\BSP/bsp.c **** /*
+ 635:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 636:..\..\..\BSP/bsp.c **** *                                         BSP_Accel_RegRdWr()
+ 637:..\..\..\BSP/bsp.c **** *
+ 638:..\..\..\BSP/bsp.c **** * Description : Read or Write a Byte from a specific Register location via I2C Communication.
+ 639:..\..\..\BSP/bsp.c **** *
+ 640:..\..\..\BSP/bsp.c **** * Argument(s) : rd_wr       Direction Status Flag:
+ 641:..\..\..\BSP/bsp.c **** *                               - BSP_KXTJ2_DIR_WRITE: Write a Data Byte
+ 642:..\..\..\BSP/bsp.c **** *                               - BSP_KXTJ2_DIR_READ : Read  a Data Byte
+ 643:..\..\..\BSP/bsp.c **** *
+ 644:..\..\..\BSP/bsp.c **** *               reg         Address of Desired Register to either Read or Write from.
+ 645:..\..\..\BSP/bsp.c **** *
+ 646:..\..\..\BSP/bsp.c **** *               value       When Writing: The Value Desired Byte to Write.
+ 647:..\..\..\BSP/bsp.c **** *                           When Reading: The Location to Store the Read Byte.
+ 648:..\..\..\BSP/bsp.c **** *
+ 649:..\..\..\BSP/bsp.c **** * Return(s)   : I2C Communication Status
+ 650:..\..\..\BSP/bsp.c **** *                   - DEF_FAIL: If Error in I2C Communication Sequence.
+ 651:..\..\..\BSP/bsp.c **** *                   - DEF_OK  : Otherwise, Everything went OK.
+ 652:..\..\..\BSP/bsp.c **** *
+ 653:..\..\..\BSP/bsp.c **** * Caller(s)   : BSP_Accel_Init().
+ 654:..\..\..\BSP/bsp.c **** *               BSP_Accel_InitSelfTst().
+ 655:..\..\..\BSP/bsp.c **** *               BSP_Accel_Rd().
+ 656:..\..\..\BSP/bsp.c **** *
+ 657:..\..\..\BSP/bsp.c **** * Note(s)     : none.
+ 658:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 659:..\..\..\BSP/bsp.c **** */
+ 660:..\..\..\BSP/bsp.c **** 
+ 661:..\..\..\BSP/bsp.c **** CPU_BOOLEAN  BSP_Accel_RegRdWr (BSP_KXTJ2_DATA_DIR   rd_wr,
+ 662:..\..\..\BSP/bsp.c ****                                 CPU_INT08U           reg,
+ 663:..\..\..\BSP/bsp.c ****                                 CPU_INT08U          *value)
+ 664:..\..\..\BSP/bsp.c **** {
+ 853              		.loc 1 664 0
+ 854              		.cfi_startproc
+ 855              		@ args = 0, pretend = 0, frame = 16
+ 856              		@ frame_needed = 1, uses_anonymous_args = 0
+ 857 0000 80B5     		push	{r7, lr}
+ 858              		.cfi_def_cfa_offset 8
+ 859              		.cfi_offset 7, -8
+ 860              		.cfi_offset 14, -4
+ 861 0002 84B0     		sub	sp, sp, #16
+ 862              		.cfi_def_cfa_offset 24
+ 863 0004 00AF     		add	r7, sp, #0
+ 864              		.cfi_def_cfa_register 7
+ 865 0006 3A60     		str	r2, [r7]
+ 866 0008 FB1D     		adds	r3, r7, #7
+ 867 000a 021C     		adds	r2, r0, #0
+ 868 000c 1A70     		strb	r2, [r3]
+ 869 000e BB1D     		adds	r3, r7, #6
+ 870 0010 0A1C     		adds	r2, r1, #0
+ 871 0012 1A70     		strb	r2, [r3]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 28
+
+
+ 665:..\..\..\BSP/bsp.c ****     CPU_INT08U   i2c_status;
+ 666:..\..\..\BSP/bsp.c ****     CPU_BOOLEAN  accel_status;
+ 667:..\..\..\BSP/bsp.c ****     CPU_INT08U retAck;
+ 668:..\..\..\BSP/bsp.c ****     
+ 669:..\..\..\BSP/bsp.c ****                                                                 /* ------------- START SEQUENCE CON
+ 670:..\..\..\BSP/bsp.c ****     i2c_status = I2C_I2CMasterSendStart(BSP_I2C_KXTJ2_ACC_SLV_ADDR, BSP_KXTJ2_DIR_WRITE, 0x000);
+ 872              		.loc 1 670 0
+ 873 0014 0022     		movs	r2, #0
+ 874 0016 0021     		movs	r1, #0
+ 875 0018 0F20     		movs	r0, #15
+ 876 001a FFF7FEFF 		bl	I2C_I2CMasterSendStart
+ 877 001e 0200     		movs	r2, r0
+ 878 0020 0E23     		movs	r3, #14
+ 879 0022 FB18     		adds	r3, r7, r3
+ 880 0024 1A70     		strb	r2, [r3]
+ 671:..\..\..\BSP/bsp.c ****     if (i2c_status == I2C_I2C_MSTR_NO_ERROR) {                  /* Sequence Start Successful, Perfo
+ 881              		.loc 1 671 0
+ 882 0026 0E23     		movs	r3, #14
+ 883 0028 FB18     		adds	r3, r7, r3
+ 884 002a 1B78     		ldrb	r3, [r3]
+ 885 002c 002B     		cmp	r3, #0
+ 886 002e 3DD1     		bne	.L40
+ 672:..\..\..\BSP/bsp.c ****         i2c_status = I2C_I2CMasterWriteByte(reg, 0x000);               /* Select Register Address t
+ 887              		.loc 1 672 0
+ 888 0030 BB1D     		adds	r3, r7, #6
+ 889 0032 1B78     		ldrb	r3, [r3]
+ 890 0034 0021     		movs	r1, #0
+ 891 0036 1800     		movs	r0, r3
+ 892 0038 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 893 003c 0200     		movs	r2, r0
+ 894 003e 0E23     		movs	r3, #14
+ 895 0040 FB18     		adds	r3, r7, r3
+ 896 0042 1A70     		strb	r2, [r3]
+ 673:..\..\..\BSP/bsp.c ****         
+ 674:..\..\..\BSP/bsp.c ****         if (rd_wr == BSP_KXTJ2_DIR_WRITE) {                     /* -------------------- WRITE DATA 
+ 897              		.loc 1 674 0
+ 898 0044 FB1D     		adds	r3, r7, #7
+ 899 0046 1B78     		ldrb	r3, [r3]
+ 900 0048 002B     		cmp	r3, #0
+ 901 004a 0ED1     		bne	.L41
+ 675:..\..\..\BSP/bsp.c ****             i2c_status   = I2C_I2CMasterWriteByte(*value, 0x000);      /* Write Data Byte to the De
+ 902              		.loc 1 675 0
+ 903 004c 3B68     		ldr	r3, [r7]
+ 904 004e 1B78     		ldrb	r3, [r3]
+ 905 0050 0021     		movs	r1, #0
+ 906 0052 1800     		movs	r0, r3
+ 907 0054 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 908 0058 0200     		movs	r2, r0
+ 909 005a 0E23     		movs	r3, #14
+ 910 005c FB18     		adds	r3, r7, r3
+ 911 005e 1A70     		strb	r2, [r3]
+ 676:..\..\..\BSP/bsp.c ****             accel_status = DEF_OK;
+ 912              		.loc 1 676 0
+ 913 0060 0F23     		movs	r3, #15
+ 914 0062 FB18     		adds	r3, r7, r3
+ 915 0064 0122     		movs	r2, #1
+ 916 0066 1A70     		strb	r2, [r3]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 29
+
+
+ 917 0068 24E0     		b	.L44
+ 918              	.L41:
+ 677:..\..\..\BSP/bsp.c ****             
+ 678:..\..\..\BSP/bsp.c ****         } else if (rd_wr == BSP_KXTJ2_DIR_READ) {               /* --------------------- READ DATA 
+ 919              		.loc 1 678 0
+ 920 006a FB1D     		adds	r3, r7, #7
+ 921 006c 1B78     		ldrb	r3, [r3]
+ 922 006e 012B     		cmp	r3, #1
+ 923 0070 17D1     		bne	.L43
+ 679:..\..\..\BSP/bsp.c ****                                                                 /* Restart Start Condition to Read 
+ 680:..\..\..\BSP/bsp.c ****             i2c_status   = I2C_I2CMasterSendRestart(BSP_I2C_KXTJ2_ACC_SLV_ADDR,
+ 924              		.loc 1 680 0
+ 925 0072 0022     		movs	r2, #0
+ 926 0074 0121     		movs	r1, #1
+ 927 0076 0F20     		movs	r0, #15
+ 928 0078 FFF7FEFF 		bl	I2C_I2CMasterSendRestart
+ 929 007c 0200     		movs	r2, r0
+ 930 007e 0E23     		movs	r3, #14
+ 931 0080 FB18     		adds	r3, r7, r3
+ 932 0082 1A70     		strb	r2, [r3]
+ 681:..\..\..\BSP/bsp.c ****                                                     BSP_KXTJ2_DIR_READ, 0x000);
+ 682:..\..\..\BSP/bsp.c ****                                                                 /* Read Data Byte from Register, Re
+ 683:..\..\..\BSP/bsp.c ****            //*value        = I2C_I2CMasterReadByte(I2C_I2C_NAK_DATA, 0x0000, 0x000);
+ 684:..\..\..\BSP/bsp.c ****             retAck        = I2C_I2CMasterReadByte(I2C_I2C_NAK_DATA, value, 0x000);
+ 933              		.loc 1 684 0
+ 934 0084 3B68     		ldr	r3, [r7]
+ 935 0086 0022     		movs	r2, #0
+ 936 0088 1900     		movs	r1, r3
+ 937 008a 0120     		movs	r0, #1
+ 938 008c FFF7FEFF 		bl	I2C_I2CMasterReadByte
+ 939 0090 0200     		movs	r2, r0
+ 940 0092 0D23     		movs	r3, #13
+ 941 0094 FB18     		adds	r3, r7, r3
+ 942 0096 1A70     		strb	r2, [r3]
+ 685:..\..\..\BSP/bsp.c ****             accel_status = DEF_OK;
+ 943              		.loc 1 685 0
+ 944 0098 0F23     		movs	r3, #15
+ 945 009a FB18     		adds	r3, r7, r3
+ 946 009c 0122     		movs	r2, #1
+ 947 009e 1A70     		strb	r2, [r3]
+ 948 00a0 08E0     		b	.L44
+ 949              	.L43:
+ 686:..\..\..\BSP/bsp.c ****             
+ 687:..\..\..\BSP/bsp.c ****         } else {
+ 688:..\..\..\BSP/bsp.c ****             accel_status = DEF_FAIL;                            /* Wrong Direction, Either Read or 
+ 950              		.loc 1 688 0
+ 951 00a2 0F23     		movs	r3, #15
+ 952 00a4 FB18     		adds	r3, r7, r3
+ 953 00a6 0022     		movs	r2, #0
+ 954 00a8 1A70     		strb	r2, [r3]
+ 955 00aa 03E0     		b	.L44
+ 956              	.L40:
+ 689:..\..\..\BSP/bsp.c ****         }
+ 690:..\..\..\BSP/bsp.c ****     } else {                                                    /* Sequence Start Failed, Return wi
+ 691:..\..\..\BSP/bsp.c ****         accel_status = DEF_FAIL;
+ 957              		.loc 1 691 0
+ 958 00ac 0F23     		movs	r3, #15
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 30
+
+
+ 959 00ae FB18     		adds	r3, r7, r3
+ 960 00b0 0022     		movs	r2, #0
+ 961 00b2 1A70     		strb	r2, [r3]
+ 962              	.L44:
+ 692:..\..\..\BSP/bsp.c ****     }
+ 693:..\..\..\BSP/bsp.c ****                                                                 /* -------------- STOP SEQUENCE CON
+ 694:..\..\..\BSP/bsp.c ****     i2c_status = I2C_I2CMasterSendStop(0x000);                       /* Send the Stop Condition to 
+ 963              		.loc 1 694 0
+ 964 00b4 0020     		movs	r0, #0
+ 965 00b6 FFF7FEFF 		bl	I2C_I2CMasterSendStop
+ 966 00ba 0200     		movs	r2, r0
+ 967 00bc 0E23     		movs	r3, #14
+ 968 00be FB18     		adds	r3, r7, r3
+ 969 00c0 1A70     		strb	r2, [r3]
+ 695:..\..\..\BSP/bsp.c ****     if (i2c_status != I2C_I2C_MSTR_NO_ERROR) {                  /* Sequence Failed to Stopped, Retu
+ 970              		.loc 1 695 0
+ 971 00c2 0E23     		movs	r3, #14
+ 972 00c4 FB18     		adds	r3, r7, r3
+ 973 00c6 1B78     		ldrb	r3, [r3]
+ 974 00c8 002B     		cmp	r3, #0
+ 975 00ca 03D0     		beq	.L45
+ 696:..\..\..\BSP/bsp.c ****         accel_status = DEF_FAIL;
+ 976              		.loc 1 696 0
+ 977 00cc 0F23     		movs	r3, #15
+ 978 00ce FB18     		adds	r3, r7, r3
+ 979 00d0 0022     		movs	r2, #0
+ 980 00d2 1A70     		strb	r2, [r3]
+ 981              	.L45:
+ 697:..\..\..\BSP/bsp.c ****     }
+ 698:..\..\..\BSP/bsp.c ****     
+ 699:..\..\..\BSP/bsp.c ****     return (accel_status);
+ 982              		.loc 1 699 0
+ 983 00d4 0F23     		movs	r3, #15
+ 984 00d6 FB18     		adds	r3, r7, r3
+ 985 00d8 1B78     		ldrb	r3, [r3]
+ 700:..\..\..\BSP/bsp.c **** }
+ 986              		.loc 1 700 0
+ 987 00da 1800     		movs	r0, r3
+ 988 00dc BD46     		mov	sp, r7
+ 989 00de 04B0     		add	sp, sp, #16
+ 990              		@ sp needed
+ 991 00e0 80BD     		pop	{r7, pc}
+ 992              		.cfi_endproc
+ 993              	.LFE43:
+ 994              		.size	BSP_Accel_RegRdWr, .-BSP_Accel_RegRdWr
+ 995 00e2 C046     		.section	.text.BSP_Accel_Rd,"ax",%progbits
+ 996              		.align	2
+ 997              		.global	BSP_Accel_Rd
+ 998              		.code	16
+ 999              		.thumb_func
+ 1000              		.type	BSP_Accel_Rd, %function
+ 1001              	BSP_Accel_Rd:
+ 1002              	.LFB44:
+ 701:..\..\..\BSP/bsp.c **** 
+ 702:..\..\..\BSP/bsp.c **** 
+ 703:..\..\..\BSP/bsp.c **** /*
+ 704:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 31
+
+
+ 705:..\..\..\BSP/bsp.c **** *                                            BSP_Accel_Rd()
+ 706:..\..\..\BSP/bsp.c **** *
+ 707:..\..\..\BSP/bsp.c **** * Description : Reads the Accelerometer's Acceleration Values in the X, Y, and Z Directions.
+ 708:..\..\..\BSP/bsp.c **** *
+ 709:..\..\..\BSP/bsp.c **** * Argument(s) : x_axis      Variable in where the X-Direction's Acceleration Data will be Stored.
+ 710:..\..\..\BSP/bsp.c **** *
+ 711:..\..\..\BSP/bsp.c **** *               y_axis      Variable in where the Y-Direction's Acceleration Data will be Stored.
+ 712:..\..\..\BSP/bsp.c **** *
+ 713:..\..\..\BSP/bsp.c **** *               z_axis      Variable in where the Z-Direction's Acceleration Data will be Stored.
+ 714:..\..\..\BSP/bsp.c **** *
+ 715:..\..\..\BSP/bsp.c **** * Return(s)   : none.
+ 716:..\..\..\BSP/bsp.c **** *
+ 717:..\..\..\BSP/bsp.c **** * Caller(s)   : Application
+ 718:..\..\..\BSP/bsp.c **** *
+ 719:..\..\..\BSP/bsp.c **** * Note(s)     : none.
+ 720:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 721:..\..\..\BSP/bsp.c **** */
+ 722:..\..\..\BSP/bsp.c **** 
+ 723:..\..\..\BSP/bsp.c **** void  BSP_Accel_Rd (CPU_INT16S  *x_axis,
+ 724:..\..\..\BSP/bsp.c ****                     CPU_INT16S  *y_axis,
+ 725:..\..\..\BSP/bsp.c ****                     CPU_INT16S  *z_axis)
+ 726:..\..\..\BSP/bsp.c **** {
+ 1003              		.loc 1 726 0
+ 1004              		.cfi_startproc
+ 1005              		@ args = 0, pretend = 0, frame = 24
+ 1006              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1007 0000 80B5     		push	{r7, lr}
+ 1008              		.cfi_def_cfa_offset 8
+ 1009              		.cfi_offset 7, -8
+ 1010              		.cfi_offset 14, -4
+ 1011 0002 86B0     		sub	sp, sp, #24
+ 1012              		.cfi_def_cfa_offset 32
+ 1013 0004 00AF     		add	r7, sp, #0
+ 1014              		.cfi_def_cfa_register 7
+ 1015 0006 F860     		str	r0, [r7, #12]
+ 1016 0008 B960     		str	r1, [r7, #8]
+ 1017 000a 7A60     		str	r2, [r7, #4]
+ 727:..\..\..\BSP/bsp.c ****     CPU_INT16S  axis_val;
+ 728:..\..\..\BSP/bsp.c ****     CPU_INT08U  data_resp;
+ 729:..\..\..\BSP/bsp.c ****     
+ 730:..\..\..\BSP/bsp.c ****                                                                 /* ----------------- READ X-AXIS DA
+ 731:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,                      /* Read the X-Axis HIGH Register fo
+ 1018              		.loc 1 731 0
+ 1019 000c 1523     		movs	r3, #21
+ 1020 000e FB18     		adds	r3, r7, r3
+ 1021 0010 1A00     		movs	r2, r3
+ 1022 0012 0721     		movs	r1, #7
+ 1023 0014 0120     		movs	r0, #1
+ 1024 0016 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 732:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_XOUT_H,
+ 733:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 734:..\..\..\BSP/bsp.c ****     
+ 735:..\..\..\BSP/bsp.c ****     axis_val  = (data_resp << DEF_OCTET_NBR_BITS);              /* Place X-Axis TOP Half Value onto
+ 1025              		.loc 1 735 0
+ 1026 001a 1523     		movs	r3, #21
+ 1027 001c FB18     		adds	r3, r7, r3
+ 1028 001e 1B78     		ldrb	r3, [r3]
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 32
+
+
+ 1029 0020 1A02     		lsls	r2, r3, #8
+ 1030 0022 1623     		movs	r3, #22
+ 1031 0024 FB18     		adds	r3, r7, r3
+ 1032 0026 1A80     		strh	r2, [r3]
+ 736:..\..\..\BSP/bsp.c **** 
+ 737:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,                      /* Read the X-Axis LOW  Register fo
+ 1033              		.loc 1 737 0
+ 1034 0028 1523     		movs	r3, #21
+ 1035 002a FB18     		adds	r3, r7, r3
+ 1036 002c 1A00     		movs	r2, r3
+ 1037 002e 0621     		movs	r1, #6
+ 1038 0030 0120     		movs	r0, #1
+ 1039 0032 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 738:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_XOUT_L,
+ 739:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 740:..\..\..\BSP/bsp.c ****     
+ 741:..\..\..\BSP/bsp.c ****     axis_val |=  data_resp;                                     /* Add the X-Axis BOTTOM Half Value
+ 1040              		.loc 1 741 0
+ 1041 0036 1523     		movs	r3, #21
+ 1042 0038 FB18     		adds	r3, r7, r3
+ 1043 003a 1B78     		ldrb	r3, [r3]
+ 1044 003c 19B2     		sxth	r1, r3
+ 1045 003e 1623     		movs	r3, #22
+ 1046 0040 FB18     		adds	r3, r7, r3
+ 1047 0042 1622     		movs	r2, #22
+ 1048 0044 BA18     		adds	r2, r7, r2
+ 1049 0046 1288     		ldrh	r2, [r2]
+ 1050 0048 0A43     		orrs	r2, r1
+ 1051 004a 1A80     		strh	r2, [r3]
+ 742:..\..\..\BSP/bsp.c ****     
+ 743:..\..\..\BSP/bsp.c ****     if (DEF_BIT_IS_SET(axis_val, DEF_BIT_15) == DEF_YES) {      /* Adjust X-Axis Value if Over Limi
+ 1052              		.loc 1 743 0
+ 1053 004c 1623     		movs	r3, #22
+ 1054 004e FB18     		adds	r3, r7, r3
+ 1055 0050 0022     		movs	r2, #0
+ 1056 0052 9B5E     		ldrsh	r3, [r3, r2]
+ 1057 0054 002B     		cmp	r3, #0
+ 1058 0056 11DA     		bge	.L48
+ 744:..\..\..\BSP/bsp.c ****         axis_val >>= DEF_NIBBLE_NBR_BITS;                       /* Shift Back a Nibble, Since Accel
+ 1059              		.loc 1 744 0
+ 1060 0058 1623     		movs	r3, #22
+ 1061 005a FB18     		adds	r3, r7, r3
+ 1062 005c 1622     		movs	r2, #22
+ 1063 005e BA18     		adds	r2, r7, r2
+ 1064 0060 0021     		movs	r1, #0
+ 1065 0062 525E     		ldrsh	r2, [r2, r1]
+ 1066 0064 1211     		asrs	r2, r2, #4
+ 1067 0066 1A80     		strh	r2, [r3]
+ 745:..\..\..\BSP/bsp.c ****         axis_val  |= BSP_ACCEL_INVALID_MSK;                     /* Invalidate Upper Nibble on X-Axi
+ 1068              		.loc 1 745 0
+ 1069 0068 1623     		movs	r3, #22
+ 1070 006a FB18     		adds	r3, r7, r3
+ 1071 006c 1B88     		ldrh	r3, [r3]
+ 1072 006e 514A     		ldr	r2, .L54
+ 1073 0070 1343     		orrs	r3, r2
+ 1074 0072 9AB2     		uxth	r2, r3
+ 1075 0074 1623     		movs	r3, #22
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 33
+
+
+ 1076 0076 FB18     		adds	r3, r7, r3
+ 1077 0078 1A80     		strh	r2, [r3]
+ 1078 007a 07E0     		b	.L49
+ 1079              	.L48:
+ 746:..\..\..\BSP/bsp.c ****     } else {
+ 747:..\..\..\BSP/bsp.c ****         axis_val >>= DEF_NIBBLE_NBR_BITS;                       /* Do Not Invalidate, just Shift Si
+ 1080              		.loc 1 747 0
+ 1081 007c 1623     		movs	r3, #22
+ 1082 007e FB18     		adds	r3, r7, r3
+ 1083 0080 1622     		movs	r2, #22
+ 1084 0082 BA18     		adds	r2, r7, r2
+ 1085 0084 0021     		movs	r1, #0
+ 1086 0086 525E     		ldrsh	r2, [r2, r1]
+ 1087 0088 1211     		asrs	r2, r2, #4
+ 1088 008a 1A80     		strh	r2, [r3]
+ 1089              	.L49:
+ 748:..\..\..\BSP/bsp.c ****     }
+ 749:..\..\..\BSP/bsp.c ****     
+ 750:..\..\..\BSP/bsp.c ****    *x_axis = axis_val;                                          /* Assign X-Axis Value to Return.  
+ 1090              		.loc 1 750 0
+ 1091 008c FB68     		ldr	r3, [r7, #12]
+ 1092 008e 1622     		movs	r2, #22
+ 1093 0090 BA18     		adds	r2, r7, r2
+ 1094 0092 1288     		ldrh	r2, [r2]
+ 1095 0094 1A80     		strh	r2, [r3]
+ 751:..\..\..\BSP/bsp.c **** 
+ 752:..\..\..\BSP/bsp.c ****                                                                 /* ----------------- READ Y-AXIS DA
+ 753:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,                      /* Read the Y-Axis HIGH Register fo
+ 1096              		.loc 1 753 0
+ 1097 0096 1523     		movs	r3, #21
+ 1098 0098 FB18     		adds	r3, r7, r3
+ 1099 009a 1A00     		movs	r2, r3
+ 1100 009c 0921     		movs	r1, #9
+ 1101 009e 0120     		movs	r0, #1
+ 1102 00a0 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 754:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_YOUT_H,
+ 755:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 756:..\..\..\BSP/bsp.c ****     
+ 757:..\..\..\BSP/bsp.c ****     axis_val  = (data_resp << DEF_OCTET_NBR_BITS);              /* Place Y-Axis TOP Half Value onto
+ 1103              		.loc 1 757 0
+ 1104 00a4 1523     		movs	r3, #21
+ 1105 00a6 FB18     		adds	r3, r7, r3
+ 1106 00a8 1B78     		ldrb	r3, [r3]
+ 1107 00aa 1A02     		lsls	r2, r3, #8
+ 1108 00ac 1623     		movs	r3, #22
+ 1109 00ae FB18     		adds	r3, r7, r3
+ 1110 00b0 1A80     		strh	r2, [r3]
+ 758:..\..\..\BSP/bsp.c **** 
+ 759:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,                      /* Read the Y-Axis LOW  Register fo
+ 1111              		.loc 1 759 0
+ 1112 00b2 1523     		movs	r3, #21
+ 1113 00b4 FB18     		adds	r3, r7, r3
+ 1114 00b6 1A00     		movs	r2, r3
+ 1115 00b8 0821     		movs	r1, #8
+ 1116 00ba 0120     		movs	r0, #1
+ 1117 00bc FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 760:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_YOUT_L,
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 34
+
+
+ 761:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 762:..\..\..\BSP/bsp.c ****     
+ 763:..\..\..\BSP/bsp.c ****     axis_val |=  data_resp;                                     /* Add the Y-Axis BOTTOM Half Value
+ 1118              		.loc 1 763 0
+ 1119 00c0 1523     		movs	r3, #21
+ 1120 00c2 FB18     		adds	r3, r7, r3
+ 1121 00c4 1B78     		ldrb	r3, [r3]
+ 1122 00c6 19B2     		sxth	r1, r3
+ 1123 00c8 1623     		movs	r3, #22
+ 1124 00ca FB18     		adds	r3, r7, r3
+ 1125 00cc 1622     		movs	r2, #22
+ 1126 00ce BA18     		adds	r2, r7, r2
+ 1127 00d0 1288     		ldrh	r2, [r2]
+ 1128 00d2 0A43     		orrs	r2, r1
+ 1129 00d4 1A80     		strh	r2, [r3]
+ 764:..\..\..\BSP/bsp.c ****     
+ 765:..\..\..\BSP/bsp.c ****     if (DEF_BIT_IS_SET(axis_val, DEF_BIT_15) == DEF_YES) {      /* Adjust Y-Axis Value if Over Limi
+ 1130              		.loc 1 765 0
+ 1131 00d6 1623     		movs	r3, #22
+ 1132 00d8 FB18     		adds	r3, r7, r3
+ 1133 00da 0022     		movs	r2, #0
+ 1134 00dc 9B5E     		ldrsh	r3, [r3, r2]
+ 1135 00de 002B     		cmp	r3, #0
+ 1136 00e0 11DA     		bge	.L50
+ 766:..\..\..\BSP/bsp.c ****         axis_val >>= DEF_NIBBLE_NBR_BITS;                       /* Shift Back a Nibble, Since Accel
+ 1137              		.loc 1 766 0
+ 1138 00e2 1623     		movs	r3, #22
+ 1139 00e4 FB18     		adds	r3, r7, r3
+ 1140 00e6 1622     		movs	r2, #22
+ 1141 00e8 BA18     		adds	r2, r7, r2
+ 1142 00ea 0021     		movs	r1, #0
+ 1143 00ec 525E     		ldrsh	r2, [r2, r1]
+ 1144 00ee 1211     		asrs	r2, r2, #4
+ 1145 00f0 1A80     		strh	r2, [r3]
+ 767:..\..\..\BSP/bsp.c ****         axis_val  |= BSP_ACCEL_INVALID_MSK;                     /* Invalidate Upper Nibble on Y-Axi
+ 1146              		.loc 1 767 0
+ 1147 00f2 1623     		movs	r3, #22
+ 1148 00f4 FB18     		adds	r3, r7, r3
+ 1149 00f6 1B88     		ldrh	r3, [r3]
+ 1150 00f8 2E4A     		ldr	r2, .L54
+ 1151 00fa 1343     		orrs	r3, r2
+ 1152 00fc 9AB2     		uxth	r2, r3
+ 1153 00fe 1623     		movs	r3, #22
+ 1154 0100 FB18     		adds	r3, r7, r3
+ 1155 0102 1A80     		strh	r2, [r3]
+ 1156 0104 07E0     		b	.L51
+ 1157              	.L50:
+ 768:..\..\..\BSP/bsp.c ****     } else {
+ 769:..\..\..\BSP/bsp.c ****         axis_val >>= DEF_NIBBLE_NBR_BITS;                       /* Do Not Invalidate, just Shift Si
+ 1158              		.loc 1 769 0
+ 1159 0106 1623     		movs	r3, #22
+ 1160 0108 FB18     		adds	r3, r7, r3
+ 1161 010a 1622     		movs	r2, #22
+ 1162 010c BA18     		adds	r2, r7, r2
+ 1163 010e 0021     		movs	r1, #0
+ 1164 0110 525E     		ldrsh	r2, [r2, r1]
+ 1165 0112 1211     		asrs	r2, r2, #4
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 35
+
+
+ 1166 0114 1A80     		strh	r2, [r3]
+ 1167              	.L51:
+ 770:..\..\..\BSP/bsp.c ****     }
+ 771:..\..\..\BSP/bsp.c ****     
+ 772:..\..\..\BSP/bsp.c ****    *y_axis = axis_val;                                          /* Assign Y-Axis Value to Return.  
+ 1168              		.loc 1 772 0
+ 1169 0116 BB68     		ldr	r3, [r7, #8]
+ 1170 0118 1622     		movs	r2, #22
+ 1171 011a BA18     		adds	r2, r7, r2
+ 1172 011c 1288     		ldrh	r2, [r2]
+ 1173 011e 1A80     		strh	r2, [r3]
+ 773:..\..\..\BSP/bsp.c ****     
+ 774:..\..\..\BSP/bsp.c ****                                                                 /* ----------------- READ Z-AXIS DA
+ 775:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,                      /* Read the Z-Axis HIGH Register fo
+ 1174              		.loc 1 775 0
+ 1175 0120 1523     		movs	r3, #21
+ 1176 0122 FB18     		adds	r3, r7, r3
+ 1177 0124 1A00     		movs	r2, r3
+ 1178 0126 0B21     		movs	r1, #11
+ 1179 0128 0120     		movs	r0, #1
+ 1180 012a FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 776:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_ZOUT_H,
+ 777:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 778:..\..\..\BSP/bsp.c ****     
+ 779:..\..\..\BSP/bsp.c ****     axis_val  = (data_resp << DEF_OCTET_NBR_BITS);              /* Place Z-Axis TOP Half Value onto
+ 1181              		.loc 1 779 0
+ 1182 012e 1523     		movs	r3, #21
+ 1183 0130 FB18     		adds	r3, r7, r3
+ 1184 0132 1B78     		ldrb	r3, [r3]
+ 1185 0134 1A02     		lsls	r2, r3, #8
+ 1186 0136 1623     		movs	r3, #22
+ 1187 0138 FB18     		adds	r3, r7, r3
+ 1188 013a 1A80     		strh	r2, [r3]
+ 780:..\..\..\BSP/bsp.c **** 
+ 781:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,                      /* Read the Z-Axis LOW  Register fo
+ 1189              		.loc 1 781 0
+ 1190 013c 1523     		movs	r3, #21
+ 1191 013e FB18     		adds	r3, r7, r3
+ 1192 0140 1A00     		movs	r2, r3
+ 1193 0142 0A21     		movs	r1, #10
+ 1194 0144 0120     		movs	r0, #1
+ 1195 0146 FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 782:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_ZOUT_L,
+ 783:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 784:..\..\..\BSP/bsp.c ****     
+ 785:..\..\..\BSP/bsp.c ****     axis_val |=  data_resp;                                     /* Add the Z-Axis BOTTOM Half Value
+ 1196              		.loc 1 785 0
+ 1197 014a 1523     		movs	r3, #21
+ 1198 014c FB18     		adds	r3, r7, r3
+ 1199 014e 1B78     		ldrb	r3, [r3]
+ 1200 0150 19B2     		sxth	r1, r3
+ 1201 0152 1623     		movs	r3, #22
+ 1202 0154 FB18     		adds	r3, r7, r3
+ 1203 0156 1622     		movs	r2, #22
+ 1204 0158 BA18     		adds	r2, r7, r2
+ 1205 015a 1288     		ldrh	r2, [r2]
+ 1206 015c 0A43     		orrs	r2, r1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 36
+
+
+ 1207 015e 1A80     		strh	r2, [r3]
+ 786:..\..\..\BSP/bsp.c ****     
+ 787:..\..\..\BSP/bsp.c ****     if (DEF_BIT_IS_SET(axis_val, DEF_BIT_15) == DEF_YES) {      /* Adjust Z-Axis Value if Over Limi
+ 1208              		.loc 1 787 0
+ 1209 0160 1623     		movs	r3, #22
+ 1210 0162 FB18     		adds	r3, r7, r3
+ 1211 0164 0022     		movs	r2, #0
+ 1212 0166 9B5E     		ldrsh	r3, [r3, r2]
+ 1213 0168 002B     		cmp	r3, #0
+ 1214 016a 11DA     		bge	.L52
+ 788:..\..\..\BSP/bsp.c ****         axis_val >>= DEF_NIBBLE_NBR_BITS;                       /* Shift Back a Nibble, Since Accel
+ 1215              		.loc 1 788 0
+ 1216 016c 1623     		movs	r3, #22
+ 1217 016e FB18     		adds	r3, r7, r3
+ 1218 0170 1622     		movs	r2, #22
+ 1219 0172 BA18     		adds	r2, r7, r2
+ 1220 0174 0021     		movs	r1, #0
+ 1221 0176 525E     		ldrsh	r2, [r2, r1]
+ 1222 0178 1211     		asrs	r2, r2, #4
+ 1223 017a 1A80     		strh	r2, [r3]
+ 789:..\..\..\BSP/bsp.c ****         axis_val  |= BSP_ACCEL_INVALID_MSK;                     /* Invalidate Upper Nibble on Z-Axi
+ 1224              		.loc 1 789 0
+ 1225 017c 1623     		movs	r3, #22
+ 1226 017e FB18     		adds	r3, r7, r3
+ 1227 0180 1B88     		ldrh	r3, [r3]
+ 1228 0182 0C4A     		ldr	r2, .L54
+ 1229 0184 1343     		orrs	r3, r2
+ 1230 0186 9AB2     		uxth	r2, r3
+ 1231 0188 1623     		movs	r3, #22
+ 1232 018a FB18     		adds	r3, r7, r3
+ 1233 018c 1A80     		strh	r2, [r3]
+ 1234 018e 07E0     		b	.L53
+ 1235              	.L52:
+ 790:..\..\..\BSP/bsp.c ****     } else {
+ 791:..\..\..\BSP/bsp.c ****         axis_val >>= DEF_NIBBLE_NBR_BITS;                       /* Do Not Invalidate, just Shift Si
+ 1236              		.loc 1 791 0
+ 1237 0190 1623     		movs	r3, #22
+ 1238 0192 FB18     		adds	r3, r7, r3
+ 1239 0194 1622     		movs	r2, #22
+ 1240 0196 BA18     		adds	r2, r7, r2
+ 1241 0198 0021     		movs	r1, #0
+ 1242 019a 525E     		ldrsh	r2, [r2, r1]
+ 1243 019c 1211     		asrs	r2, r2, #4
+ 1244 019e 1A80     		strh	r2, [r3]
+ 1245              	.L53:
+ 792:..\..\..\BSP/bsp.c ****     }
+ 793:..\..\..\BSP/bsp.c ****     
+ 794:..\..\..\BSP/bsp.c ****    *z_axis = axis_val;                                          /* Assign Z-Axis Value to Return.  
+ 1246              		.loc 1 794 0
+ 1247 01a0 7B68     		ldr	r3, [r7, #4]
+ 1248 01a2 1622     		movs	r2, #22
+ 1249 01a4 BA18     		adds	r2, r7, r2
+ 1250 01a6 1288     		ldrh	r2, [r2]
+ 1251 01a8 1A80     		strh	r2, [r3]
+ 795:..\..\..\BSP/bsp.c **** }
+ 1252              		.loc 1 795 0
+ 1253 01aa C046     		nop
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 37
+
+
+ 1254 01ac BD46     		mov	sp, r7
+ 1255 01ae 06B0     		add	sp, sp, #24
+ 1256              		@ sp needed
+ 1257 01b0 80BD     		pop	{r7, pc}
+ 1258              	.L55:
+ 1259 01b2 C046     		.align	2
+ 1260              	.L54:
+ 1261 01b4 00F0FFFF 		.word	-4096
+ 1262              		.cfi_endproc
+ 1263              	.LFE44:
+ 1264              		.size	BSP_Accel_Rd, .-BSP_Accel_Rd
+ 1265              		.section	.text.BSP_Accel_ISR_Handler,"ax",%progbits
+ 1266              		.align	2
+ 1267              		.global	BSP_Accel_ISR_Handler
+ 1268              		.code	16
+ 1269              		.thumb_func
+ 1270              		.type	BSP_Accel_ISR_Handler, %function
+ 1271              	BSP_Accel_ISR_Handler:
+ 1272              	.LFB45:
+ 796:..\..\..\BSP/bsp.c **** 
+ 797:..\..\..\BSP/bsp.c **** 
+ 798:..\..\..\BSP/bsp.c **** /*
+ 799:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 800:..\..\..\BSP/bsp.c **** *                                       BSP_Accel_ISR_Handler()
+ 801:..\..\..\BSP/bsp.c **** *
+ 802:..\..\..\BSP/bsp.c **** * Description : ISR Handler (I2C Based) for the KXTJ2-1009 3-Axis Accelerometer.
+ 803:..\..\..\BSP/bsp.c **** *
+ 804:..\..\..\BSP/bsp.c **** * Argument(s) : none.
+ 805:..\..\..\BSP/bsp.c **** *
+ 806:..\..\..\BSP/bsp.c **** * Return(s)   : none.
+ 807:..\..\..\BSP/bsp.c **** *
+ 808:..\..\..\BSP/bsp.c **** * Caller(s)   : This is an ISR.
+ 809:..\..\..\BSP/bsp.c **** *
+ 810:..\..\..\BSP/bsp.c **** * Note(s)     : (1) See BSP_Init Note (3) for more information on how to convert this ISR Handler i
+ 811:..\..\..\BSP/bsp.c **** *                   an OS-Aware ISR Handler.
+ 812:..\..\..\BSP/bsp.c **** ***************************************************************************************************
+ 813:..\..\..\BSP/bsp.c **** */
+ 814:..\..\..\BSP/bsp.c **** 
+ 815:..\..\..\BSP/bsp.c **** CY_ISR(BSP_Accel_ISR_Handler)
+ 816:..\..\..\BSP/bsp.c **** {
+ 1273              		.loc 1 816 0
+ 1274              		.cfi_startproc
+ 1275              		@ args = 0, pretend = 0, frame = 8
+ 1276              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1277 0000 80B5     		push	{r7, lr}
+ 1278              		.cfi_def_cfa_offset 8
+ 1279              		.cfi_offset 7, -8
+ 1280              		.cfi_offset 14, -4
+ 1281 0002 82B0     		sub	sp, sp, #8
+ 1282              		.cfi_def_cfa_offset 16
+ 1283 0004 00AF     		add	r7, sp, #0
+ 1284              		.cfi_def_cfa_register 7
+ 817:..\..\..\BSP/bsp.c ****     CPU_INT08U  data_resp;
+ 818:..\..\..\BSP/bsp.c ****     
+ 819:..\..\..\BSP/bsp.c ****                                                                 /* ----------------- CLR PENDING IN
+ 820:..\..\..\BSP/bsp.c ****     BSP_Accel_RegRdWr( BSP_KXTJ2_DIR_READ,                      /* Read INT_REL to Clear any Int Sr
+ 1285              		.loc 1 820 0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 38
+
+
+ 1286 0006 FB1D     		adds	r3, r7, #7
+ 1287 0008 1A00     		movs	r2, r3
+ 1288 000a 1A21     		movs	r1, #26
+ 1289 000c 0120     		movs	r0, #1
+ 1290 000e FFF7FEFF 		bl	BSP_Accel_RegRdWr
+ 821:..\..\..\BSP/bsp.c ****                        BSP_ACCEL_REG_INT_REL,
+ 822:..\..\..\BSP/bsp.c ****                       &data_resp);
+ 823:..\..\..\BSP/bsp.c ****     
+ 824:..\..\..\BSP/bsp.c ****     Accel_Pin_ClearInterrupt();                                 /* Clear Pending GPIO Interrupt.   
+ 1291              		.loc 1 824 0
+ 1292 0012 FFF7FEFF 		bl	Accel_Pin_ClearInterrupt
+ 825:..\..\..\BSP/bsp.c **** }...
+ 1293              		.loc 1 825 0
+ 1294 0016 C046     		nop
+ 1295 0018 BD46     		mov	sp, r7
+ 1296 001a 02B0     		add	sp, sp, #8
+ 1297              		@ sp needed
+ 1298 001c 80BD     		pop	{r7, pc}
+ 1299              		.cfi_endproc
+ 1300              	.LFE45:
+ 1301              		.size	BSP_Accel_ISR_Handler, .-BSP_Accel_ISR_Handler
+ 1302 001e C046     		.text
+ 1303              	.Letext0:
+ 1304              		.file 2 "..\\..\\..\\..\\..\\..\\Software\\uC-CPU\\ARM-Cortex-M0\\GNU/cpu.h"
+ 1305              		.file 3 "Generated_Source\\PSoC4/cytypes.h"
+ 1306              		.file 4 "..\\..\\..\\BSP\\bsp.h"
+ 1307              		.section	.debug_info,"",%progbits
+ 1308              	.Ldebug_info0:
+ 1309 0000 2C040000 		.4byte	0x42c
+ 1310 0004 0400     		.2byte	0x4
+ 1311 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1312 000a 04       		.byte	0x4
+ 1313 000b 01       		.uleb128 0x1
+ 1314 000c 8C010000 		.4byte	.LASF60
+ 1315 0010 0C       		.byte	0xc
+ 1316 0011 07000000 		.4byte	.LASF61
+ 1317 0015 BF000000 		.4byte	.LASF62
+ 1318 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 1319 001d 00000000 		.4byte	0
+ 1320 0021 00000000 		.4byte	.Ldebug_line0
+ 1321 0025 02       		.uleb128 0x2
+ 1322 0026 01       		.byte	0x1
+ 1323 0027 06       		.byte	0x6
+ 1324 0028 B3000000 		.4byte	.LASF0
+ 1325 002c 02       		.uleb128 0x2
+ 1326 002d 01       		.byte	0x1
+ 1327 002e 08       		.byte	0x8
+ 1328 002f 49020000 		.4byte	.LASF1
+ 1329 0033 02       		.uleb128 0x2
+ 1330 0034 02       		.byte	0x2
+ 1331 0035 05       		.byte	0x5
+ 1332 0036 37000000 		.4byte	.LASF2
+ 1333 003a 02       		.uleb128 0x2
+ 1334 003b 02       		.byte	0x2
+ 1335 003c 07       		.byte	0x7
+ 1336 003d B9020000 		.4byte	.LASF3
+ 1337 0041 02       		.uleb128 0x2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 39
+
+
+ 1338 0042 04       		.byte	0x4
+ 1339 0043 05       		.byte	0x5
+ 1340 0044 59010000 		.4byte	.LASF4
+ 1341 0048 02       		.uleb128 0x2
+ 1342 0049 04       		.byte	0x4
+ 1343 004a 07       		.byte	0x7
+ 1344 004b 48030000 		.4byte	.LASF5
+ 1345 004f 02       		.uleb128 0x2
+ 1346 0050 08       		.byte	0x8
+ 1347 0051 05       		.byte	0x5
+ 1348 0052 33010000 		.4byte	.LASF6
+ 1349 0056 02       		.uleb128 0x2
+ 1350 0057 08       		.byte	0x8
+ 1351 0058 07       		.byte	0x7
+ 1352 0059 60020000 		.4byte	.LASF7
+ 1353 005d 03       		.uleb128 0x3
+ 1354 005e 04       		.byte	0x4
+ 1355 005f 05       		.byte	0x5
+ 1356 0060 696E7400 		.ascii	"int\000"
+ 1357 0064 02       		.uleb128 0x2
+ 1358 0065 04       		.byte	0x4
+ 1359 0066 07       		.byte	0x7
+ 1360 0067 77020000 		.4byte	.LASF8
+ 1361 006b 02       		.uleb128 0x2
+ 1362 006c 08       		.byte	0x8
+ 1363 006d 04       		.byte	0x4
+ 1364 006e 29020000 		.4byte	.LASF9
+ 1365 0072 02       		.uleb128 0x2
+ 1366 0073 04       		.byte	0x4
+ 1367 0074 07       		.byte	0x7
+ 1368 0075 9D030000 		.4byte	.LASF10
+ 1369 0079 02       		.uleb128 0x2
+ 1370 007a 01       		.byte	0x1
+ 1371 007b 08       		.byte	0x8
+ 1372 007c F6020000 		.4byte	.LASF11
+ 1373 0080 04       		.uleb128 0x4
+ 1374 0081 4D010000 		.4byte	.LASF12
+ 1375 0085 02       		.byte	0x2
+ 1376 0086 7D       		.byte	0x7d
+ 1377 0087 2C000000 		.4byte	0x2c
+ 1378 008b 04       		.uleb128 0x4
+ 1379 008c EB020000 		.4byte	.LASF13
+ 1380 0090 02       		.byte	0x2
+ 1381 0091 7E       		.byte	0x7e
+ 1382 0092 2C000000 		.4byte	0x2c
+ 1383 0096 04       		.uleb128 0x4
+ 1384 0097 E3030000 		.4byte	.LASF14
+ 1385 009b 02       		.byte	0x2
+ 1386 009c 80       		.byte	0x80
+ 1387 009d 3A000000 		.4byte	0x3a
+ 1388 00a1 04       		.uleb128 0x4
+ 1389 00a2 D8030000 		.4byte	.LASF15
+ 1390 00a6 02       		.byte	0x2
+ 1391 00a7 81       		.byte	0x81
+ 1392 00a8 33000000 		.4byte	0x33
+ 1393 00ac 04       		.uleb128 0x4
+ 1394 00ad 2C030000 		.4byte	.LASF16
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 40
+
+
+ 1395 00b1 02       		.byte	0x2
+ 1396 00b2 82       		.byte	0x82
+ 1397 00b3 64000000 		.4byte	0x64
+ 1398 00b7 04       		.uleb128 0x4
+ 1399 00b8 92030000 		.4byte	.LASF17
+ 1400 00bc 02       		.byte	0x2
+ 1401 00bd 84       		.byte	0x84
+ 1402 00be 56000000 		.4byte	0x56
+ 1403 00c2 02       		.uleb128 0x2
+ 1404 00c3 04       		.byte	0x4
+ 1405 00c4 04       		.byte	0x4
+ 1406 00c5 2D010000 		.4byte	.LASF18
+ 1407 00c9 02       		.uleb128 0x2
+ 1408 00ca 08       		.byte	0x8
+ 1409 00cb 04       		.byte	0x4
+ 1410 00cc 66030000 		.4byte	.LASF19
+ 1411 00d0 04       		.uleb128 0x4
+ 1412 00d1 37030000 		.4byte	.LASF20
+ 1413 00d5 02       		.byte	0x2
+ 1414 00d6 8D       		.byte	0x8d
+ 1415 00d7 DB000000 		.4byte	0xdb
+ 1416 00db 05       		.uleb128 0x5
+ 1417 00dc AC000000 		.4byte	0xac
+ 1418 00e0 06       		.uleb128 0x6
+ 1419 00e1 91000000 		.4byte	.LASF21
+ 1420 00e5 03       		.byte	0x3
+ 1421 00e6 E401     		.2byte	0x1e4
+ 1422 00e8 2C000000 		.4byte	0x2c
+ 1423 00ec 06       		.uleb128 0x6
+ 1424 00ed 79000000 		.4byte	.LASF22
+ 1425 00f1 03       		.byte	0x3
+ 1426 00f2 E501     		.2byte	0x1e5
+ 1427 00f4 3A000000 		.4byte	0x3a
+ 1428 00f8 06       		.uleb128 0x6
+ 1429 00f9 41030000 		.4byte	.LASF23
+ 1430 00fd 03       		.byte	0x3
+ 1431 00fe E601     		.2byte	0x1e6
+ 1432 0100 48000000 		.4byte	0x48
+ 1433 0104 07       		.uleb128 0x7
+ 1434 0105 13030000 		.4byte	.LASF63
+ 1435 0109 01       		.byte	0x1
+ 1436 010a 2C000000 		.4byte	0x2c
+ 1437 010e 04       		.byte	0x4
+ 1438 010f EB       		.byte	0xeb
+ 1439 0110 27010000 		.4byte	0x127
+ 1440 0114 08       		.uleb128 0x8
+ 1441 0115 35020000 		.4byte	.LASF24
+ 1442 0119 00       		.byte	0
+ 1443 011a 08       		.uleb128 0x8
+ 1444 011b EE030000 		.4byte	.LASF25
+ 1445 011f 01       		.byte	0x1
+ 1446 0120 08       		.uleb128 0x8
+ 1447 0121 A0000000 		.4byte	.LASF26
+ 1448 0125 02       		.byte	0x2
+ 1449 0126 00       		.byte	0
+ 1450 0127 04       		.uleb128 0x4
+ 1451 0128 78030000 		.4byte	.LASF27
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 41
+
+
+ 1452 012c 04       		.byte	0x4
+ 1453 012d EF       		.byte	0xef
+ 1454 012e 04010000 		.4byte	0x104
+ 1455 0132 09       		.uleb128 0x9
+ 1456 0133 97000000 		.4byte	.LASF30
+ 1457 0137 01       		.byte	0x1
+ 1458 0138 9E       		.byte	0x9e
+ 1459 0139 00000000 		.4byte	.LFB33
+ 1460 013d 5C000000 		.4byte	.LFE33-.LFB33
+ 1461 0141 01       		.uleb128 0x1
+ 1462 0142 9C       		.byte	0x9c
+ 1463 0143 64010000 		.4byte	0x164
+ 1464 0147 0A       		.uleb128 0xa
+ 1465 0148 A7020000 		.4byte	.LASF28
+ 1466 014c 01       		.byte	0x1
+ 1467 014d A0       		.byte	0xa0
+ 1468 014e AC000000 		.4byte	0xac
+ 1469 0152 02       		.uleb128 0x2
+ 1470 0153 91       		.byte	0x91
+ 1471 0154 74       		.sleb128 -12
+ 1472 0155 0A       		.uleb128 0xa
+ 1473 0156 6D030000 		.4byte	.LASF29
+ 1474 015a 01       		.byte	0x1
+ 1475 015b A1       		.byte	0xa1
+ 1476 015c 64010000 		.4byte	0x164
+ 1477 0160 02       		.uleb128 0x2
+ 1478 0161 91       		.byte	0x91
+ 1479 0162 70       		.sleb128 -16
+ 1480 0163 00       		.byte	0
+ 1481 0164 0B       		.uleb128 0xb
+ 1482 0165 04       		.byte	0x4
+ 1483 0166 AC000000 		.4byte	0xac
+ 1484 016a 09       		.uleb128 0x9
+ 1485 016b 62010000 		.4byte	.LASF31
+ 1486 016f 01       		.byte	0x1
+ 1487 0170 CD       		.byte	0xcd
+ 1488 0171 00000000 		.4byte	.LFB34
+ 1489 0175 1E000000 		.4byte	.LFE34-.LFB34
+ 1490 0179 01       		.uleb128 0x1
+ 1491 017a 9C       		.byte	0x9c
+ 1492 017b 8E010000 		.4byte	0x18e
+ 1493 017f 0A       		.uleb128 0xa
+ 1494 0180 DE020000 		.4byte	.LASF32
+ 1495 0184 01       		.byte	0x1
+ 1496 0185 CF       		.byte	0xcf
+ 1497 0186 AC000000 		.4byte	0xac
+ 1498 018a 02       		.uleb128 0x2
+ 1499 018b 91       		.byte	0x91
+ 1500 018c 74       		.sleb128 -12
+ 1501 018d 00       		.byte	0
+ 1502 018e 0C       		.uleb128 0xc
+ 1503 018f 01040000 		.4byte	.LASF64
+ 1504 0193 01       		.byte	0x1
+ 1505 0194 E8       		.byte	0xe8
+ 1506 0195 AC000000 		.4byte	0xac
+ 1507 0199 00000000 		.4byte	.LFB35
+ 1508 019d 10000000 		.4byte	.LFE35-.LFB35
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 42
+
+
+ 1509 01a1 01       		.uleb128 0x1
+ 1510 01a2 9C       		.byte	0x9c
+ 1511 01a3 0D       		.uleb128 0xd
+ 1512 01a4 86000000 		.4byte	.LASF33
+ 1513 01a8 01       		.byte	0x1
+ 1514 01a9 0801     		.2byte	0x108
+ 1515 01ab 00000000 		.4byte	.LFB36
+ 1516 01af 18000000 		.4byte	.LFE36-.LFB36
+ 1517 01b3 01       		.uleb128 0x1
+ 1518 01b4 9C       		.byte	0x9c
+ 1519 01b5 0D       		.uleb128 0xd
+ 1520 01b6 73010000 		.4byte	.LASF34
+ 1521 01ba 01       		.byte	0x1
+ 1522 01bb 2101     		.2byte	0x121
+ 1523 01bd 00000000 		.4byte	.LFB37
+ 1524 01c1 24000000 		.4byte	.LFE37-.LFB37
+ 1525 01c5 01       		.uleb128 0x1
+ 1526 01c6 9C       		.byte	0x9c
+ 1527 01c7 0E       		.uleb128 0xe
+ 1528 01c8 8B020000 		.4byte	.LASF35
+ 1529 01cc 01       		.byte	0x1
+ 1530 01cd 3E01     		.2byte	0x13e
+ 1531 01cf 00000000 		.4byte	.LFB38
+ 1532 01d3 E0000000 		.4byte	.LFE38-.LFB38
+ 1533 01d7 01       		.uleb128 0x1
+ 1534 01d8 9C       		.byte	0x9c
+ 1535 01d9 1A020000 		.4byte	0x21a
+ 1536 01dd 0F       		.uleb128 0xf
+ 1537 01de 41000000 		.4byte	.LASF39
+ 1538 01e2 01       		.byte	0x1
+ 1539 01e3 3E01     		.2byte	0x13e
+ 1540 01e5 AC000000 		.4byte	0xac
+ 1541 01e9 02       		.uleb128 0x2
+ 1542 01ea 91       		.byte	0x91
+ 1543 01eb 6C       		.sleb128 -20
+ 1544 01ec 10       		.uleb128 0x10
+ 1545 01ed 80000000 		.4byte	.LASF36
+ 1546 01f1 01       		.byte	0x1
+ 1547 01f2 4001     		.2byte	0x140
+ 1548 01f4 8B000000 		.4byte	0x8b
+ 1549 01f8 02       		.uleb128 0x2
+ 1550 01f9 91       		.byte	0x91
+ 1551 01fa 77       		.sleb128 -9
+ 1552 01fb 10       		.uleb128 0x10
+ 1553 01fc CE030000 		.4byte	.LASF37
+ 1554 0200 01       		.byte	0x1
+ 1555 0201 4101     		.2byte	0x141
+ 1556 0203 8B000000 		.4byte	0x8b
+ 1557 0207 02       		.uleb128 0x2
+ 1558 0208 91       		.byte	0x91
+ 1559 0209 76       		.sleb128 -10
+ 1560 020a 10       		.uleb128 0x10
+ 1561 020b AF020000 		.4byte	.LASF38
+ 1562 020f 01       		.byte	0x1
+ 1563 0210 4201     		.2byte	0x142
+ 1564 0212 96000000 		.4byte	0x96
+ 1565 0216 02       		.uleb128 0x2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 43
+
+
+ 1566 0217 91       		.byte	0x91
+ 1567 0218 74       		.sleb128 -12
+ 1568 0219 00       		.byte	0
+ 1569 021a 11       		.uleb128 0x11
+ 1570 021b A6030000 		.4byte	.LASF40
+ 1571 021f 01       		.byte	0x1
+ 1572 0220 7A01     		.2byte	0x17a
+ 1573 0222 AC000000 		.4byte	0xac
+ 1574 0226 00000000 		.4byte	.LFB39
+ 1575 022a 9C000000 		.4byte	.LFE39-.LFB39
+ 1576 022e 01       		.uleb128 0x1
+ 1577 022f 9C       		.byte	0x9c
+ 1578 0230 62020000 		.4byte	0x262
+ 1579 0234 10       		.uleb128 0x10
+ 1580 0235 41000000 		.4byte	.LASF39
+ 1581 0239 01       		.byte	0x1
+ 1582 023a 7C01     		.2byte	0x17c
+ 1583 023c AC000000 		.4byte	0xac
+ 1584 0240 02       		.uleb128 0x2
+ 1585 0241 91       		.byte	0x91
+ 1586 0242 74       		.sleb128 -12
+ 1587 0243 10       		.uleb128 0x10
+ 1588 0244 AF020000 		.4byte	.LASF38
+ 1589 0248 01       		.byte	0x1
+ 1590 0249 7D01     		.2byte	0x17d
+ 1591 024b 96000000 		.4byte	0x96
+ 1592 024f 02       		.uleb128 0x2
+ 1593 0250 91       		.byte	0x91
+ 1594 0251 72       		.sleb128 -14
+ 1595 0252 10       		.uleb128 0x10
+ 1596 0253 CE030000 		.4byte	.LASF37
+ 1597 0257 01       		.byte	0x1
+ 1598 0258 7E01     		.2byte	0x17e
+ 1599 025a 8B000000 		.4byte	0x8b
+ 1600 025e 02       		.uleb128 0x2
+ 1601 025f 91       		.byte	0x91
+ 1602 0260 71       		.sleb128 -15
+ 1603 0261 00       		.byte	0
+ 1604 0262 11       		.uleb128 0x11
+ 1605 0263 58000000 		.4byte	.LASF41
+ 1606 0267 01       		.byte	0x1
+ 1607 0268 B401     		.2byte	0x1b4
+ 1608 026a 80000000 		.4byte	0x80
+ 1609 026e 00000000 		.4byte	.LFB40
+ 1610 0272 30000000 		.4byte	.LFE40-.LFB40
+ 1611 0276 01       		.uleb128 0x1
+ 1612 0277 9C       		.byte	0x9c
+ 1613 0278 9B020000 		.4byte	0x29b
+ 1614 027c 10       		.uleb128 0x10
+ 1615 027d 69000000 		.4byte	.LASF42
+ 1616 0281 01       		.byte	0x1
+ 1617 0282 B601     		.2byte	0x1b6
+ 1618 0284 80000000 		.4byte	0x80
+ 1619 0288 02       		.uleb128 0x2
+ 1620 0289 91       		.byte	0x91
+ 1621 028a 6E       		.sleb128 -18
+ 1622 028b 10       		.uleb128 0x10
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 44
+
+
+ 1623 028c 84020000 		.4byte	.LASF43
+ 1624 0290 01       		.byte	0x1
+ 1625 0291 B701     		.2byte	0x1b7
+ 1626 0293 8B000000 		.4byte	0x8b
+ 1627 0297 02       		.uleb128 0x2
+ 1628 0298 91       		.byte	0x91
+ 1629 0299 6F       		.sleb128 -17
+ 1630 029a 00       		.byte	0
+ 1631 029b 0E       		.uleb128 0xe
+ 1632 029c 1A020000 		.4byte	.LASF44
+ 1633 02a0 01       		.byte	0x1
+ 1634 02a1 E101     		.2byte	0x1e1
+ 1635 02a3 00000000 		.4byte	.LFB41
+ 1636 02a7 EC000000 		.4byte	.LFE41-.LFB41
+ 1637 02ab 01       		.uleb128 0x1
+ 1638 02ac 9C       		.byte	0x9c
+ 1639 02ad D0020000 		.4byte	0x2d0
+ 1640 02b1 10       		.uleb128 0x10
+ 1641 02b2 7F010000 		.4byte	.LASF45
+ 1642 02b6 01       		.byte	0x1
+ 1643 02b7 E301     		.2byte	0x1e3
+ 1644 02b9 80000000 		.4byte	0x80
+ 1645 02bd 02       		.uleb128 0x2
+ 1646 02be 91       		.byte	0x91
+ 1647 02bf 6F       		.sleb128 -17
+ 1648 02c0 10       		.uleb128 0x10
+ 1649 02c1 4E000000 		.4byte	.LASF46
+ 1650 02c5 01       		.byte	0x1
+ 1651 02c6 E401     		.2byte	0x1e4
+ 1652 02c8 8B000000 		.4byte	0x8b
+ 1653 02cc 02       		.uleb128 0x2
+ 1654 02cd 91       		.byte	0x91
+ 1655 02ce 6E       		.sleb128 -18
+ 1656 02cf 00       		.byte	0
+ 1657 02d0 12       		.uleb128 0x12
+ 1658 02d1 B8030000 		.4byte	.LASF48
+ 1659 02d5 01       		.byte	0x1
+ 1660 02d6 4302     		.2byte	0x243
+ 1661 02d8 80000000 		.4byte	0x80
+ 1662 02dc 00000000 		.4byte	.LFB42
+ 1663 02e0 CE000000 		.4byte	.LFE42-.LFB42
+ 1664 02e4 01       		.uleb128 0x1
+ 1665 02e5 9C       		.byte	0x9c
+ 1666 02e6 15030000 		.4byte	0x315
+ 1667 02ea 13       		.uleb128 0x13
+ 1668 02eb 41010000 		.4byte	.LASF65
+ 1669 02ef 01       		.byte	0x1
+ 1670 02f0 4502     		.2byte	0x245
+ 1671 02f2 80000000 		.4byte	0x80
+ 1672 02f6 10       		.uleb128 0x10
+ 1673 02f7 FB020000 		.4byte	.LASF47
+ 1674 02fb 01       		.byte	0x1
+ 1675 02fc 4602     		.2byte	0x246
+ 1676 02fe 80000000 		.4byte	0x80
+ 1677 0302 02       		.uleb128 0x2
+ 1678 0303 91       		.byte	0x91
+ 1679 0304 6F       		.sleb128 -17
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 45
+
+
+ 1680 0305 10       		.uleb128 0x10
+ 1681 0306 4E000000 		.4byte	.LASF46
+ 1682 030a 01       		.byte	0x1
+ 1683 030b 4702     		.2byte	0x247
+ 1684 030d 8B000000 		.4byte	0x8b
+ 1685 0311 02       		.uleb128 0x2
+ 1686 0312 91       		.byte	0x91
+ 1687 0313 6E       		.sleb128 -18
+ 1688 0314 00       		.byte	0
+ 1689 0315 12       		.uleb128 0x12
+ 1690 0316 CC020000 		.4byte	.LASF49
+ 1691 031a 01       		.byte	0x1
+ 1692 031b 9502     		.2byte	0x295
+ 1693 031d 80000000 		.4byte	0x80
+ 1694 0321 00000000 		.4byte	.LFB43
+ 1695 0325 E2000000 		.4byte	.LFE43-.LFB43
+ 1696 0329 01       		.uleb128 0x1
+ 1697 032a 9C       		.byte	0x9c
+ 1698 032b 8A030000 		.4byte	0x38a
+ 1699 032f 0F       		.uleb128 0xf
+ 1700 0330 26030000 		.4byte	.LASF50
+ 1701 0334 01       		.byte	0x1
+ 1702 0335 9502     		.2byte	0x295
+ 1703 0337 27010000 		.4byte	0x127
+ 1704 033b 02       		.uleb128 0x2
+ 1705 033c 91       		.byte	0x91
+ 1706 033d 6F       		.sleb128 -17
+ 1707 033e 14       		.uleb128 0x14
+ 1708 033f 72656700 		.ascii	"reg\000"
+ 1709 0343 01       		.byte	0x1
+ 1710 0344 9602     		.2byte	0x296
+ 1711 0346 8B000000 		.4byte	0x8b
+ 1712 034a 02       		.uleb128 0x2
+ 1713 034b 91       		.byte	0x91
+ 1714 034c 6E       		.sleb128 -18
+ 1715 034d 0F       		.uleb128 0xf
+ 1716 034e 73000000 		.4byte	.LASF51
+ 1717 0352 01       		.byte	0x1
+ 1718 0353 9702     		.2byte	0x297
+ 1719 0355 8A030000 		.4byte	0x38a
+ 1720 0359 02       		.uleb128 0x2
+ 1721 035a 91       		.byte	0x91
+ 1722 035b 68       		.sleb128 -24
+ 1723 035c 10       		.uleb128 0x10
+ 1724 035d 9C020000 		.4byte	.LASF52
+ 1725 0361 01       		.byte	0x1
+ 1726 0362 9902     		.2byte	0x299
+ 1727 0364 8B000000 		.4byte	0x8b
+ 1728 0368 02       		.uleb128 0x2
+ 1729 0369 91       		.byte	0x91
+ 1730 036a 76       		.sleb128 -10
+ 1731 036b 10       		.uleb128 0x10
+ 1732 036c 7F010000 		.4byte	.LASF45
+ 1733 0370 01       		.byte	0x1
+ 1734 0371 9A02     		.2byte	0x29a
+ 1735 0373 80000000 		.4byte	0x80
+ 1736 0377 02       		.uleb128 0x2
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 46
+
+
+ 1737 0378 91       		.byte	0x91
+ 1738 0379 77       		.sleb128 -9
+ 1739 037a 10       		.uleb128 0x10
+ 1740 037b 8B030000 		.4byte	.LASF53
+ 1741 037f 01       		.byte	0x1
+ 1742 0380 9B02     		.2byte	0x29b
+ 1743 0382 8B000000 		.4byte	0x8b
+ 1744 0386 02       		.uleb128 0x2
+ 1745 0387 91       		.byte	0x91
+ 1746 0388 75       		.sleb128 -11
+ 1747 0389 00       		.byte	0
+ 1748 038a 0B       		.uleb128 0xb
+ 1749 038b 04       		.byte	0x4
+ 1750 038c 8B000000 		.4byte	0x8b
+ 1751 0390 0E       		.uleb128 0xe
+ 1752 0391 06030000 		.4byte	.LASF54
+ 1753 0395 01       		.byte	0x1
+ 1754 0396 D302     		.2byte	0x2d3
+ 1755 0398 00000000 		.4byte	.LFB44
+ 1756 039c B8010000 		.4byte	.LFE44-.LFB44
+ 1757 03a0 01       		.uleb128 0x1
+ 1758 03a1 9C       		.byte	0x9c
+ 1759 03a2 F2030000 		.4byte	0x3f2
+ 1760 03a6 0F       		.uleb128 0xf
+ 1761 03a7 1A000000 		.4byte	.LASF55
+ 1762 03ab 01       		.byte	0x1
+ 1763 03ac D302     		.2byte	0x2d3
+ 1764 03ae F2030000 		.4byte	0x3f2
+ 1765 03b2 02       		.uleb128 0x2
+ 1766 03b3 91       		.byte	0x91
+ 1767 03b4 6C       		.sleb128 -20
+ 1768 03b5 0F       		.uleb128 0xf
+ 1769 03b6 47000000 		.4byte	.LASF56
+ 1770 03ba 01       		.byte	0x1
+ 1771 03bb D402     		.2byte	0x2d4
+ 1772 03bd F2030000 		.4byte	0x3f2
+ 1773 03c1 02       		.uleb128 0x2
+ 1774 03c2 91       		.byte	0x91
+ 1775 03c3 68       		.sleb128 -24
+ 1776 03c4 0F       		.uleb128 0xf
+ 1777 03c5 00000000 		.4byte	.LASF57
+ 1778 03c9 01       		.byte	0x1
+ 1779 03ca D502     		.2byte	0x2d5
+ 1780 03cc F2030000 		.4byte	0x3f2
+ 1781 03d0 02       		.uleb128 0x2
+ 1782 03d1 91       		.byte	0x91
+ 1783 03d2 64       		.sleb128 -28
+ 1784 03d3 10       		.uleb128 0x10
+ 1785 03d4 57020000 		.4byte	.LASF58
+ 1786 03d8 01       		.byte	0x1
+ 1787 03d9 D702     		.2byte	0x2d7
+ 1788 03db A1000000 		.4byte	0xa1
+ 1789 03df 02       		.uleb128 0x2
+ 1790 03e0 91       		.byte	0x91
+ 1791 03e1 76       		.sleb128 -10
+ 1792 03e2 10       		.uleb128 0x10
+ 1793 03e3 4E000000 		.4byte	.LASF46
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 47
+
+
+ 1794 03e7 01       		.byte	0x1
+ 1795 03e8 D802     		.2byte	0x2d8
+ 1796 03ea 8B000000 		.4byte	0x8b
+ 1797 03ee 02       		.uleb128 0x2
+ 1798 03ef 91       		.byte	0x91
+ 1799 03f0 75       		.sleb128 -11
+ 1800 03f1 00       		.byte	0
+ 1801 03f2 0B       		.uleb128 0xb
+ 1802 03f3 04       		.byte	0x4
+ 1803 03f4 A1000000 		.4byte	0xa1
+ 1804 03f8 0E       		.uleb128 0xe
+ 1805 03f9 21000000 		.4byte	.LASF59
+ 1806 03fd 01       		.byte	0x1
+ 1807 03fe 2F03     		.2byte	0x32f
+ 1808 0400 00000000 		.4byte	.LFB45
+ 1809 0404 1E000000 		.4byte	.LFE45-.LFB45
+ 1810 0408 01       		.uleb128 0x1
+ 1811 0409 9C       		.byte	0x9c
+ 1812 040a 1E040000 		.4byte	0x41e
+ 1813 040e 10       		.uleb128 0x10
+ 1814 040f 4E000000 		.4byte	.LASF46
+ 1815 0413 01       		.byte	0x1
+ 1816 0414 3103     		.2byte	0x331
+ 1817 0416 8B000000 		.4byte	0x8b
+ 1818 041a 02       		.uleb128 0x2
+ 1819 041b 91       		.byte	0x91
+ 1820 041c 77       		.sleb128 -9
+ 1821 041d 00       		.byte	0
+ 1822 041e 15       		.uleb128 0x15
+ 1823 041f 5A030000 		.4byte	.LASF66
+ 1824 0423 01       		.byte	0x1
+ 1825 0424 54       		.byte	0x54
+ 1826 0425 AC000000 		.4byte	0xac
+ 1827 0429 05       		.uleb128 0x5
+ 1828 042a 03       		.byte	0x3
+ 1829 042b 00000000 		.4byte	RGB_PrevVal
+ 1830 042f 00       		.byte	0
+ 1831              		.section	.debug_abbrev,"",%progbits
+ 1832              	.Ldebug_abbrev0:
+ 1833 0000 01       		.uleb128 0x1
+ 1834 0001 11       		.uleb128 0x11
+ 1835 0002 01       		.byte	0x1
+ 1836 0003 25       		.uleb128 0x25
+ 1837 0004 0E       		.uleb128 0xe
+ 1838 0005 13       		.uleb128 0x13
+ 1839 0006 0B       		.uleb128 0xb
+ 1840 0007 03       		.uleb128 0x3
+ 1841 0008 0E       		.uleb128 0xe
+ 1842 0009 1B       		.uleb128 0x1b
+ 1843 000a 0E       		.uleb128 0xe
+ 1844 000b 55       		.uleb128 0x55
+ 1845 000c 17       		.uleb128 0x17
+ 1846 000d 11       		.uleb128 0x11
+ 1847 000e 01       		.uleb128 0x1
+ 1848 000f 10       		.uleb128 0x10
+ 1849 0010 17       		.uleb128 0x17
+ 1850 0011 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 48
+
+
+ 1851 0012 00       		.byte	0
+ 1852 0013 02       		.uleb128 0x2
+ 1853 0014 24       		.uleb128 0x24
+ 1854 0015 00       		.byte	0
+ 1855 0016 0B       		.uleb128 0xb
+ 1856 0017 0B       		.uleb128 0xb
+ 1857 0018 3E       		.uleb128 0x3e
+ 1858 0019 0B       		.uleb128 0xb
+ 1859 001a 03       		.uleb128 0x3
+ 1860 001b 0E       		.uleb128 0xe
+ 1861 001c 00       		.byte	0
+ 1862 001d 00       		.byte	0
+ 1863 001e 03       		.uleb128 0x3
+ 1864 001f 24       		.uleb128 0x24
+ 1865 0020 00       		.byte	0
+ 1866 0021 0B       		.uleb128 0xb
+ 1867 0022 0B       		.uleb128 0xb
+ 1868 0023 3E       		.uleb128 0x3e
+ 1869 0024 0B       		.uleb128 0xb
+ 1870 0025 03       		.uleb128 0x3
+ 1871 0026 08       		.uleb128 0x8
+ 1872 0027 00       		.byte	0
+ 1873 0028 00       		.byte	0
+ 1874 0029 04       		.uleb128 0x4
+ 1875 002a 16       		.uleb128 0x16
+ 1876 002b 00       		.byte	0
+ 1877 002c 03       		.uleb128 0x3
+ 1878 002d 0E       		.uleb128 0xe
+ 1879 002e 3A       		.uleb128 0x3a
+ 1880 002f 0B       		.uleb128 0xb
+ 1881 0030 3B       		.uleb128 0x3b
+ 1882 0031 0B       		.uleb128 0xb
+ 1883 0032 49       		.uleb128 0x49
+ 1884 0033 13       		.uleb128 0x13
+ 1885 0034 00       		.byte	0
+ 1886 0035 00       		.byte	0
+ 1887 0036 05       		.uleb128 0x5
+ 1888 0037 35       		.uleb128 0x35
+ 1889 0038 00       		.byte	0
+ 1890 0039 49       		.uleb128 0x49
+ 1891 003a 13       		.uleb128 0x13
+ 1892 003b 00       		.byte	0
+ 1893 003c 00       		.byte	0
+ 1894 003d 06       		.uleb128 0x6
+ 1895 003e 16       		.uleb128 0x16
+ 1896 003f 00       		.byte	0
+ 1897 0040 03       		.uleb128 0x3
+ 1898 0041 0E       		.uleb128 0xe
+ 1899 0042 3A       		.uleb128 0x3a
+ 1900 0043 0B       		.uleb128 0xb
+ 1901 0044 3B       		.uleb128 0x3b
+ 1902 0045 05       		.uleb128 0x5
+ 1903 0046 49       		.uleb128 0x49
+ 1904 0047 13       		.uleb128 0x13
+ 1905 0048 00       		.byte	0
+ 1906 0049 00       		.byte	0
+ 1907 004a 07       		.uleb128 0x7
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 49
+
+
+ 1908 004b 04       		.uleb128 0x4
+ 1909 004c 01       		.byte	0x1
+ 1910 004d 03       		.uleb128 0x3
+ 1911 004e 0E       		.uleb128 0xe
+ 1912 004f 0B       		.uleb128 0xb
+ 1913 0050 0B       		.uleb128 0xb
+ 1914 0051 49       		.uleb128 0x49
+ 1915 0052 13       		.uleb128 0x13
+ 1916 0053 3A       		.uleb128 0x3a
+ 1917 0054 0B       		.uleb128 0xb
+ 1918 0055 3B       		.uleb128 0x3b
+ 1919 0056 0B       		.uleb128 0xb
+ 1920 0057 01       		.uleb128 0x1
+ 1921 0058 13       		.uleb128 0x13
+ 1922 0059 00       		.byte	0
+ 1923 005a 00       		.byte	0
+ 1924 005b 08       		.uleb128 0x8
+ 1925 005c 28       		.uleb128 0x28
+ 1926 005d 00       		.byte	0
+ 1927 005e 03       		.uleb128 0x3
+ 1928 005f 0E       		.uleb128 0xe
+ 1929 0060 1C       		.uleb128 0x1c
+ 1930 0061 0B       		.uleb128 0xb
+ 1931 0062 00       		.byte	0
+ 1932 0063 00       		.byte	0
+ 1933 0064 09       		.uleb128 0x9
+ 1934 0065 2E       		.uleb128 0x2e
+ 1935 0066 01       		.byte	0x1
+ 1936 0067 3F       		.uleb128 0x3f
+ 1937 0068 19       		.uleb128 0x19
+ 1938 0069 03       		.uleb128 0x3
+ 1939 006a 0E       		.uleb128 0xe
+ 1940 006b 3A       		.uleb128 0x3a
+ 1941 006c 0B       		.uleb128 0xb
+ 1942 006d 3B       		.uleb128 0x3b
+ 1943 006e 0B       		.uleb128 0xb
+ 1944 006f 27       		.uleb128 0x27
+ 1945 0070 19       		.uleb128 0x19
+ 1946 0071 11       		.uleb128 0x11
+ 1947 0072 01       		.uleb128 0x1
+ 1948 0073 12       		.uleb128 0x12
+ 1949 0074 06       		.uleb128 0x6
+ 1950 0075 40       		.uleb128 0x40
+ 1951 0076 18       		.uleb128 0x18
+ 1952 0077 9642     		.uleb128 0x2116
+ 1953 0079 19       		.uleb128 0x19
+ 1954 007a 01       		.uleb128 0x1
+ 1955 007b 13       		.uleb128 0x13
+ 1956 007c 00       		.byte	0
+ 1957 007d 00       		.byte	0
+ 1958 007e 0A       		.uleb128 0xa
+ 1959 007f 34       		.uleb128 0x34
+ 1960 0080 00       		.byte	0
+ 1961 0081 03       		.uleb128 0x3
+ 1962 0082 0E       		.uleb128 0xe
+ 1963 0083 3A       		.uleb128 0x3a
+ 1964 0084 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 50
+
+
+ 1965 0085 3B       		.uleb128 0x3b
+ 1966 0086 0B       		.uleb128 0xb
+ 1967 0087 49       		.uleb128 0x49
+ 1968 0088 13       		.uleb128 0x13
+ 1969 0089 02       		.uleb128 0x2
+ 1970 008a 18       		.uleb128 0x18
+ 1971 008b 00       		.byte	0
+ 1972 008c 00       		.byte	0
+ 1973 008d 0B       		.uleb128 0xb
+ 1974 008e 0F       		.uleb128 0xf
+ 1975 008f 00       		.byte	0
+ 1976 0090 0B       		.uleb128 0xb
+ 1977 0091 0B       		.uleb128 0xb
+ 1978 0092 49       		.uleb128 0x49
+ 1979 0093 13       		.uleb128 0x13
+ 1980 0094 00       		.byte	0
+ 1981 0095 00       		.byte	0
+ 1982 0096 0C       		.uleb128 0xc
+ 1983 0097 2E       		.uleb128 0x2e
+ 1984 0098 00       		.byte	0
+ 1985 0099 3F       		.uleb128 0x3f
+ 1986 009a 19       		.uleb128 0x19
+ 1987 009b 03       		.uleb128 0x3
+ 1988 009c 0E       		.uleb128 0xe
+ 1989 009d 3A       		.uleb128 0x3a
+ 1990 009e 0B       		.uleb128 0xb
+ 1991 009f 3B       		.uleb128 0x3b
+ 1992 00a0 0B       		.uleb128 0xb
+ 1993 00a1 27       		.uleb128 0x27
+ 1994 00a2 19       		.uleb128 0x19
+ 1995 00a3 49       		.uleb128 0x49
+ 1996 00a4 13       		.uleb128 0x13
+ 1997 00a5 11       		.uleb128 0x11
+ 1998 00a6 01       		.uleb128 0x1
+ 1999 00a7 12       		.uleb128 0x12
+ 2000 00a8 06       		.uleb128 0x6
+ 2001 00a9 40       		.uleb128 0x40
+ 2002 00aa 18       		.uleb128 0x18
+ 2003 00ab 9742     		.uleb128 0x2117
+ 2004 00ad 19       		.uleb128 0x19
+ 2005 00ae 00       		.byte	0
+ 2006 00af 00       		.byte	0
+ 2007 00b0 0D       		.uleb128 0xd
+ 2008 00b1 2E       		.uleb128 0x2e
+ 2009 00b2 00       		.byte	0
+ 2010 00b3 3F       		.uleb128 0x3f
+ 2011 00b4 19       		.uleb128 0x19
+ 2012 00b5 03       		.uleb128 0x3
+ 2013 00b6 0E       		.uleb128 0xe
+ 2014 00b7 3A       		.uleb128 0x3a
+ 2015 00b8 0B       		.uleb128 0xb
+ 2016 00b9 3B       		.uleb128 0x3b
+ 2017 00ba 05       		.uleb128 0x5
+ 2018 00bb 27       		.uleb128 0x27
+ 2019 00bc 19       		.uleb128 0x19
+ 2020 00bd 11       		.uleb128 0x11
+ 2021 00be 01       		.uleb128 0x1
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 51
+
+
+ 2022 00bf 12       		.uleb128 0x12
+ 2023 00c0 06       		.uleb128 0x6
+ 2024 00c1 40       		.uleb128 0x40
+ 2025 00c2 18       		.uleb128 0x18
+ 2026 00c3 9642     		.uleb128 0x2116
+ 2027 00c5 19       		.uleb128 0x19
+ 2028 00c6 00       		.byte	0
+ 2029 00c7 00       		.byte	0
+ 2030 00c8 0E       		.uleb128 0xe
+ 2031 00c9 2E       		.uleb128 0x2e
+ 2032 00ca 01       		.byte	0x1
+ 2033 00cb 3F       		.uleb128 0x3f
+ 2034 00cc 19       		.uleb128 0x19
+ 2035 00cd 03       		.uleb128 0x3
+ 2036 00ce 0E       		.uleb128 0xe
+ 2037 00cf 3A       		.uleb128 0x3a
+ 2038 00d0 0B       		.uleb128 0xb
+ 2039 00d1 3B       		.uleb128 0x3b
+ 2040 00d2 05       		.uleb128 0x5
+ 2041 00d3 27       		.uleb128 0x27
+ 2042 00d4 19       		.uleb128 0x19
+ 2043 00d5 11       		.uleb128 0x11
+ 2044 00d6 01       		.uleb128 0x1
+ 2045 00d7 12       		.uleb128 0x12
+ 2046 00d8 06       		.uleb128 0x6
+ 2047 00d9 40       		.uleb128 0x40
+ 2048 00da 18       		.uleb128 0x18
+ 2049 00db 9642     		.uleb128 0x2116
+ 2050 00dd 19       		.uleb128 0x19
+ 2051 00de 01       		.uleb128 0x1
+ 2052 00df 13       		.uleb128 0x13
+ 2053 00e0 00       		.byte	0
+ 2054 00e1 00       		.byte	0
+ 2055 00e2 0F       		.uleb128 0xf
+ 2056 00e3 05       		.uleb128 0x5
+ 2057 00e4 00       		.byte	0
+ 2058 00e5 03       		.uleb128 0x3
+ 2059 00e6 0E       		.uleb128 0xe
+ 2060 00e7 3A       		.uleb128 0x3a
+ 2061 00e8 0B       		.uleb128 0xb
+ 2062 00e9 3B       		.uleb128 0x3b
+ 2063 00ea 05       		.uleb128 0x5
+ 2064 00eb 49       		.uleb128 0x49
+ 2065 00ec 13       		.uleb128 0x13
+ 2066 00ed 02       		.uleb128 0x2
+ 2067 00ee 18       		.uleb128 0x18
+ 2068 00ef 00       		.byte	0
+ 2069 00f0 00       		.byte	0
+ 2070 00f1 10       		.uleb128 0x10
+ 2071 00f2 34       		.uleb128 0x34
+ 2072 00f3 00       		.byte	0
+ 2073 00f4 03       		.uleb128 0x3
+ 2074 00f5 0E       		.uleb128 0xe
+ 2075 00f6 3A       		.uleb128 0x3a
+ 2076 00f7 0B       		.uleb128 0xb
+ 2077 00f8 3B       		.uleb128 0x3b
+ 2078 00f9 05       		.uleb128 0x5
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 52
+
+
+ 2079 00fa 49       		.uleb128 0x49
+ 2080 00fb 13       		.uleb128 0x13
+ 2081 00fc 02       		.uleb128 0x2
+ 2082 00fd 18       		.uleb128 0x18
+ 2083 00fe 00       		.byte	0
+ 2084 00ff 00       		.byte	0
+ 2085 0100 11       		.uleb128 0x11
+ 2086 0101 2E       		.uleb128 0x2e
+ 2087 0102 01       		.byte	0x1
+ 2088 0103 3F       		.uleb128 0x3f
+ 2089 0104 19       		.uleb128 0x19
+ 2090 0105 03       		.uleb128 0x3
+ 2091 0106 0E       		.uleb128 0xe
+ 2092 0107 3A       		.uleb128 0x3a
+ 2093 0108 0B       		.uleb128 0xb
+ 2094 0109 3B       		.uleb128 0x3b
+ 2095 010a 05       		.uleb128 0x5
+ 2096 010b 27       		.uleb128 0x27
+ 2097 010c 19       		.uleb128 0x19
+ 2098 010d 49       		.uleb128 0x49
+ 2099 010e 13       		.uleb128 0x13
+ 2100 010f 11       		.uleb128 0x11
+ 2101 0110 01       		.uleb128 0x1
+ 2102 0111 12       		.uleb128 0x12
+ 2103 0112 06       		.uleb128 0x6
+ 2104 0113 40       		.uleb128 0x40
+ 2105 0114 18       		.uleb128 0x18
+ 2106 0115 9642     		.uleb128 0x2116
+ 2107 0117 19       		.uleb128 0x19
+ 2108 0118 01       		.uleb128 0x1
+ 2109 0119 13       		.uleb128 0x13
+ 2110 011a 00       		.byte	0
+ 2111 011b 00       		.byte	0
+ 2112 011c 12       		.uleb128 0x12
+ 2113 011d 2E       		.uleb128 0x2e
+ 2114 011e 01       		.byte	0x1
+ 2115 011f 03       		.uleb128 0x3
+ 2116 0120 0E       		.uleb128 0xe
+ 2117 0121 3A       		.uleb128 0x3a
+ 2118 0122 0B       		.uleb128 0xb
+ 2119 0123 3B       		.uleb128 0x3b
+ 2120 0124 05       		.uleb128 0x5
+ 2121 0125 27       		.uleb128 0x27
+ 2122 0126 19       		.uleb128 0x19
+ 2123 0127 49       		.uleb128 0x49
+ 2124 0128 13       		.uleb128 0x13
+ 2125 0129 11       		.uleb128 0x11
+ 2126 012a 01       		.uleb128 0x1
+ 2127 012b 12       		.uleb128 0x12
+ 2128 012c 06       		.uleb128 0x6
+ 2129 012d 40       		.uleb128 0x40
+ 2130 012e 18       		.uleb128 0x18
+ 2131 012f 9642     		.uleb128 0x2116
+ 2132 0131 19       		.uleb128 0x19
+ 2133 0132 01       		.uleb128 0x1
+ 2134 0133 13       		.uleb128 0x13
+ 2135 0134 00       		.byte	0
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 53
+
+
+ 2136 0135 00       		.byte	0
+ 2137 0136 13       		.uleb128 0x13
+ 2138 0137 34       		.uleb128 0x34
+ 2139 0138 00       		.byte	0
+ 2140 0139 03       		.uleb128 0x3
+ 2141 013a 0E       		.uleb128 0xe
+ 2142 013b 3A       		.uleb128 0x3a
+ 2143 013c 0B       		.uleb128 0xb
+ 2144 013d 3B       		.uleb128 0x3b
+ 2145 013e 05       		.uleb128 0x5
+ 2146 013f 49       		.uleb128 0x49
+ 2147 0140 13       		.uleb128 0x13
+ 2148 0141 00       		.byte	0
+ 2149 0142 00       		.byte	0
+ 2150 0143 14       		.uleb128 0x14
+ 2151 0144 05       		.uleb128 0x5
+ 2152 0145 00       		.byte	0
+ 2153 0146 03       		.uleb128 0x3
+ 2154 0147 08       		.uleb128 0x8
+ 2155 0148 3A       		.uleb128 0x3a
+ 2156 0149 0B       		.uleb128 0xb
+ 2157 014a 3B       		.uleb128 0x3b
+ 2158 014b 05       		.uleb128 0x5
+ 2159 014c 49       		.uleb128 0x49
+ 2160 014d 13       		.uleb128 0x13
+ 2161 014e 02       		.uleb128 0x2
+ 2162 014f 18       		.uleb128 0x18
+ 2163 0150 00       		.byte	0
+ 2164 0151 00       		.byte	0
+ 2165 0152 15       		.uleb128 0x15
+ 2166 0153 34       		.uleb128 0x34
+ 2167 0154 00       		.byte	0
+ 2168 0155 03       		.uleb128 0x3
+ 2169 0156 0E       		.uleb128 0xe
+ 2170 0157 3A       		.uleb128 0x3a
+ 2171 0158 0B       		.uleb128 0xb
+ 2172 0159 3B       		.uleb128 0x3b
+ 2173 015a 0B       		.uleb128 0xb
+ 2174 015b 49       		.uleb128 0x49
+ 2175 015c 13       		.uleb128 0x13
+ 2176 015d 3F       		.uleb128 0x3f
+ 2177 015e 19       		.uleb128 0x19
+ 2178 015f 02       		.uleb128 0x2
+ 2179 0160 18       		.uleb128 0x18
+ 2180 0161 00       		.byte	0
+ 2181 0162 00       		.byte	0
+ 2182 0163 00       		.byte	0
+ 2183              		.section	.debug_aranges,"",%progbits
+ 2184 0000 7C000000 		.4byte	0x7c
+ 2185 0004 0200     		.2byte	0x2
+ 2186 0006 00000000 		.4byte	.Ldebug_info0
+ 2187 000a 04       		.byte	0x4
+ 2188 000b 00       		.byte	0
+ 2189 000c 0000     		.2byte	0
+ 2190 000e 0000     		.2byte	0
+ 2191 0010 00000000 		.4byte	.LFB33
+ 2192 0014 5C000000 		.4byte	.LFE33-.LFB33
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 54
+
+
+ 2193 0018 00000000 		.4byte	.LFB34
+ 2194 001c 1E000000 		.4byte	.LFE34-.LFB34
+ 2195 0020 00000000 		.4byte	.LFB35
+ 2196 0024 10000000 		.4byte	.LFE35-.LFB35
+ 2197 0028 00000000 		.4byte	.LFB36
+ 2198 002c 18000000 		.4byte	.LFE36-.LFB36
+ 2199 0030 00000000 		.4byte	.LFB37
+ 2200 0034 24000000 		.4byte	.LFE37-.LFB37
+ 2201 0038 00000000 		.4byte	.LFB38
+ 2202 003c E0000000 		.4byte	.LFE38-.LFB38
+ 2203 0040 00000000 		.4byte	.LFB39
+ 2204 0044 9C000000 		.4byte	.LFE39-.LFB39
+ 2205 0048 00000000 		.4byte	.LFB40
+ 2206 004c 30000000 		.4byte	.LFE40-.LFB40
+ 2207 0050 00000000 		.4byte	.LFB41
+ 2208 0054 EC000000 		.4byte	.LFE41-.LFB41
+ 2209 0058 00000000 		.4byte	.LFB42
+ 2210 005c CE000000 		.4byte	.LFE42-.LFB42
+ 2211 0060 00000000 		.4byte	.LFB43
+ 2212 0064 E2000000 		.4byte	.LFE43-.LFB43
+ 2213 0068 00000000 		.4byte	.LFB44
+ 2214 006c B8010000 		.4byte	.LFE44-.LFB44
+ 2215 0070 00000000 		.4byte	.LFB45
+ 2216 0074 1E000000 		.4byte	.LFE45-.LFB45
+ 2217 0078 00000000 		.4byte	0
+ 2218 007c 00000000 		.4byte	0
+ 2219              		.section	.debug_ranges,"",%progbits
+ 2220              	.Ldebug_ranges0:
+ 2221 0000 00000000 		.4byte	.LFB33
+ 2222 0004 5C000000 		.4byte	.LFE33
+ 2223 0008 00000000 		.4byte	.LFB34
+ 2224 000c 1E000000 		.4byte	.LFE34
+ 2225 0010 00000000 		.4byte	.LFB35
+ 2226 0014 10000000 		.4byte	.LFE35
+ 2227 0018 00000000 		.4byte	.LFB36
+ 2228 001c 18000000 		.4byte	.LFE36
+ 2229 0020 00000000 		.4byte	.LFB37
+ 2230 0024 24000000 		.4byte	.LFE37
+ 2231 0028 00000000 		.4byte	.LFB38
+ 2232 002c E0000000 		.4byte	.LFE38
+ 2233 0030 00000000 		.4byte	.LFB39
+ 2234 0034 9C000000 		.4byte	.LFE39
+ 2235 0038 00000000 		.4byte	.LFB40
+ 2236 003c 30000000 		.4byte	.LFE40
+ 2237 0040 00000000 		.4byte	.LFB41
+ 2238 0044 EC000000 		.4byte	.LFE41
+ 2239 0048 00000000 		.4byte	.LFB42
+ 2240 004c CE000000 		.4byte	.LFE42
+ 2241 0050 00000000 		.4byte	.LFB43
+ 2242 0054 E2000000 		.4byte	.LFE43
+ 2243 0058 00000000 		.4byte	.LFB44
+ 2244 005c B8010000 		.4byte	.LFE44
+ 2245 0060 00000000 		.4byte	.LFB45
+ 2246 0064 1E000000 		.4byte	.LFE45
+ 2247 0068 00000000 		.4byte	0
+ 2248 006c 00000000 		.4byte	0
+ 2249              		.section	.debug_line,"",%progbits
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 55
+
+
+ 2250              	.Ldebug_line0:
+ 2251 0000 38020000 		.section	.debug_str,"MS",%progbits,1
+ 2251      02009300 
+ 2251      00000201 
+ 2251      FB0E0D00 
+ 2251      01010101 
+ 2252              	.LASF57:
+ 2253 0000 7A5F6178 		.ascii	"z_axis\000"
+ 2253      697300
+ 2254              	.LASF61:
+ 2255 0007 2E2E5C2E 		.ascii	"..\\..\\..\\BSP\\bsp.c\000"
+ 2255      2E5C2E2E 
+ 2255      5C425350 
+ 2255      5C627370 
+ 2255      2E6300
+ 2256              	.LASF55:
+ 2257 001a 785F6178 		.ascii	"x_axis\000"
+ 2257      697300
+ 2258              	.LASF59:
+ 2259 0021 4253505F 		.ascii	"BSP_Accel_ISR_Handler\000"
+ 2259      41636365 
+ 2259      6C5F4953 
+ 2259      525F4861 
+ 2259      6E646C65 
+ 2260              	.LASF2:
+ 2261 0037 73686F72 		.ascii	"short int\000"
+ 2261      7420696E 
+ 2261      7400
+ 2262              	.LASF39:
+ 2263 0041 636F6C6F 		.ascii	"color\000"
+ 2263      7200
+ 2264              	.LASF56:
+ 2265 0047 795F6178 		.ascii	"y_axis\000"
+ 2265      697300
+ 2266              	.LASF46:
+ 2267 004e 64617461 		.ascii	"data_resp\000"
+ 2267      5F726573 
+ 2267      7000
+ 2268              	.LASF41:
+ 2269 0058 4253505F 		.ascii	"BSP_PB_StatusGet\000"
+ 2269      50425F53 
+ 2269      74617475 
+ 2269      73476574 
+ 2269      00
+ 2270              	.LASF42:
+ 2271 0069 70625F73 		.ascii	"pb_status\000"
+ 2271      74617475 
+ 2271      7300
+ 2272              	.LASF51:
+ 2273 0073 76616C75 		.ascii	"value\000"
+ 2273      6500
+ 2274              	.LASF22:
+ 2275 0079 75696E74 		.ascii	"uint16\000"
+ 2275      313600
+ 2276              	.LASF36:
+ 2277 0080 616C7068 		.ascii	"alpha\000"
+ 2277      6100
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 56
+
+
+ 2278              	.LASF33:
+ 2279 0086 4253505F 		.ascii	"BSP_RGB_On\000"
+ 2279      5247425F 
+ 2279      4F6E00
+ 2280              	.LASF21:
+ 2281 0091 75696E74 		.ascii	"uint8\000"
+ 2281      3800
+ 2282              	.LASF30:
+ 2283 0097 4253505F 		.ascii	"BSP_Init\000"
+ 2283      496E6974 
+ 2283      00
+ 2284              	.LASF26:
+ 2285 00a0 4253505F 		.ascii	"BSP_KXTJ2_DIR_NONE\000"
+ 2285      4B58544A 
+ 2285      325F4449 
+ 2285      525F4E4F 
+ 2285      4E4500
+ 2286              	.LASF0:
+ 2287 00b3 7369676E 		.ascii	"signed char\000"
+ 2287      65642063 
+ 2287      68617200 
+ 2288              	.LASF62:
+ 2289 00bf 433A5C55 		.ascii	"C:\\Users\\edulu.DESKTOP-961TG4K\\Documents\\PSoC C"
+ 2289      73657273 
+ 2289      5C656475 
+ 2289      6C752E44 
+ 2289      45534B54 
+ 2290 00ee 72656174 		.ascii	"reator\\Micrium\\Examples\\Cypress\\CY8CKIT-044\\OS"
+ 2290      6F725C4D 
+ 2290      69637269 
+ 2290      756D5C45 
+ 2290      78616D70 
+ 2291 011c 335C5053 		.ascii	"3\\PSoC\\OS3.cydsn\000"
+ 2291      6F435C4F 
+ 2291      53332E63 
+ 2291      7964736E 
+ 2291      00
+ 2292              	.LASF18:
+ 2293 012d 666C6F61 		.ascii	"float\000"
+ 2293      7400
+ 2294              	.LASF6:
+ 2295 0133 6C6F6E67 		.ascii	"long long int\000"
+ 2295      206C6F6E 
+ 2295      6720696E 
+ 2295      7400
+ 2296              	.LASF65:
+ 2297 0141 74657374 		.ascii	"test_status\000"
+ 2297      5F737461 
+ 2297      74757300 
+ 2298              	.LASF12:
+ 2299 014d 4350555F 		.ascii	"CPU_BOOLEAN\000"
+ 2299      424F4F4C 
+ 2299      45414E00 
+ 2300              	.LASF4:
+ 2301 0159 6C6F6E67 		.ascii	"long int\000"
+ 2301      20696E74 
+ 2301      00
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 57
+
+
+ 2302              	.LASF31:
+ 2303 0162 4253505F 		.ascii	"BSP_CPU_TickInit\000"
+ 2303      4350555F 
+ 2303      5469636B 
+ 2303      496E6974 
+ 2303      00
+ 2304              	.LASF34:
+ 2305 0173 4253505F 		.ascii	"BSP_RGB_Off\000"
+ 2305      5247425F 
+ 2305      4F666600 
+ 2306              	.LASF45:
+ 2307 017f 61636365 		.ascii	"accel_status\000"
+ 2307      6C5F7374 
+ 2307      61747573 
+ 2307      00
+ 2308              	.LASF60:
+ 2309 018c 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2309      43313120 
+ 2309      352E342E 
+ 2309      31203230 
+ 2309      31363036 
+ 2310 01bf 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 2310      20726576 
+ 2310      6973696F 
+ 2310      6E203233 
+ 2310      37373135 
+ 2311 01f2 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 2311      66756E63 
+ 2311      74696F6E 
+ 2311      2D736563 
+ 2311      74696F6E 
+ 2312              	.LASF44:
+ 2313 021a 4253505F 		.ascii	"BSP_Accel_Init\000"
+ 2313      41636365 
+ 2313      6C5F496E 
+ 2313      697400
+ 2314              	.LASF9:
+ 2315 0229 6C6F6E67 		.ascii	"long double\000"
+ 2315      20646F75 
+ 2315      626C6500 
+ 2316              	.LASF24:
+ 2317 0235 4253505F 		.ascii	"BSP_KXTJ2_DIR_WRITE\000"
+ 2317      4B58544A 
+ 2317      325F4449 
+ 2317      525F5752 
+ 2317      49544500 
+ 2318              	.LASF1:
+ 2319 0249 756E7369 		.ascii	"unsigned char\000"
+ 2319      676E6564 
+ 2319      20636861 
+ 2319      7200
+ 2320              	.LASF58:
+ 2321 0257 61786973 		.ascii	"axis_val\000"
+ 2321      5F76616C 
+ 2321      00
+ 2322              	.LASF7:
+ 2323 0260 6C6F6E67 		.ascii	"long long unsigned int\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 58
+
+
+ 2323      206C6F6E 
+ 2323      6720756E 
+ 2323      7369676E 
+ 2323      65642069 
+ 2324              	.LASF8:
+ 2325 0277 756E7369 		.ascii	"unsigned int\000"
+ 2325      676E6564 
+ 2325      20696E74 
+ 2325      00
+ 2326              	.LASF43:
+ 2327 0284 73775F76 		.ascii	"sw_val\000"
+ 2327      616C00
+ 2328              	.LASF35:
+ 2329 028b 4253505F 		.ascii	"BSP_RGB_ColorSet\000"
+ 2329      5247425F 
+ 2329      436F6C6F 
+ 2329      72536574 
+ 2329      00
+ 2330              	.LASF52:
+ 2331 029c 6932635F 		.ascii	"i2c_status\000"
+ 2331      73746174 
+ 2331      757300
+ 2332              	.LASF28:
+ 2333 02a7 7265675F 		.ascii	"reg_val\000"
+ 2333      76616C00 
+ 2334              	.LASF38:
+ 2335 02af 70776D5F 		.ascii	"pwm_color\000"
+ 2335      636F6C6F 
+ 2335      7200
+ 2336              	.LASF3:
+ 2337 02b9 73686F72 		.ascii	"short unsigned int\000"
+ 2337      7420756E 
+ 2337      7369676E 
+ 2337      65642069 
+ 2337      6E7400
+ 2338              	.LASF49:
+ 2339 02cc 4253505F 		.ascii	"BSP_Accel_RegRdWr\000"
+ 2339      41636365 
+ 2339      6C5F5265 
+ 2339      67526457 
+ 2339      7200
+ 2340              	.LASF32:
+ 2341 02de 6370755F 		.ascii	"cpu_clk_freq\000"
+ 2341      636C6B5F 
+ 2341      66726571 
+ 2341      00
+ 2342              	.LASF13:
+ 2343 02eb 4350555F 		.ascii	"CPU_INT08U\000"
+ 2343      494E5430 
+ 2343      385500
+ 2344              	.LASF11:
+ 2345 02f6 63686172 		.ascii	"char\000"
+ 2345      00
+ 2346              	.LASF47:
+ 2347 02fb 61636365 		.ascii	"accel_resp\000"
+ 2347      6C5F7265 
+ 2347      737000
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 59
+
+
+ 2348              	.LASF54:
+ 2349 0306 4253505F 		.ascii	"BSP_Accel_Rd\000"
+ 2349      41636365 
+ 2349      6C5F5264 
+ 2349      00
+ 2350              	.LASF63:
+ 2351 0313 6273705F 		.ascii	"bsp_kxtj2_data_dir\000"
+ 2351      6B78746A 
+ 2351      325F6461 
+ 2351      74615F64 
+ 2351      697200
+ 2352              	.LASF50:
+ 2353 0326 72645F77 		.ascii	"rd_wr\000"
+ 2353      7200
+ 2354              	.LASF16:
+ 2355 032c 4350555F 		.ascii	"CPU_INT32U\000"
+ 2355      494E5433 
+ 2355      325500
+ 2356              	.LASF20:
+ 2357 0337 4350555F 		.ascii	"CPU_REG32\000"
+ 2357      52454733 
+ 2357      3200
+ 2358              	.LASF23:
+ 2359 0341 75696E74 		.ascii	"uint32\000"
+ 2359      333200
+ 2360              	.LASF5:
+ 2361 0348 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2361      20756E73 
+ 2361      69676E65 
+ 2361      6420696E 
+ 2361      7400
+ 2362              	.LASF66:
+ 2363 035a 5247425F 		.ascii	"RGB_PrevVal\000"
+ 2363      50726576 
+ 2363      56616C00 
+ 2364              	.LASF19:
+ 2365 0366 646F7562 		.ascii	"double\000"
+ 2365      6C6500
+ 2366              	.LASF29:
+ 2367 036d 705F7665 		.ascii	"p_vect_tbl\000"
+ 2367      63745F74 
+ 2367      626C00
+ 2368              	.LASF27:
+ 2369 0378 4253505F 		.ascii	"BSP_KXTJ2_DATA_DIR\000"
+ 2369      4B58544A 
+ 2369      325F4441 
+ 2369      54415F44 
+ 2369      495200
+ 2370              	.LASF53:
+ 2371 038b 72657441 		.ascii	"retAck\000"
+ 2371      636B00
+ 2372              	.LASF17:
+ 2373 0392 4350555F 		.ascii	"CPU_INT64U\000"
+ 2373      494E5436 
+ 2373      345500
+ 2374              	.LASF10:
+ 2375 039d 73697A65 		.ascii	"sizetype\000"
+ARM GAS  C:\Users\EDULU~1.DES\AppData\Local\Temp\cc7AIsPe.s 			page 60
+
+
+ 2375      74797065 
+ 2375      00
+ 2376              	.LASF40:
+ 2377 03a6 4253505F 		.ascii	"BSP_RGB_ColorRead\000"
+ 2377      5247425F 
+ 2377      436F6C6F 
+ 2377      72526561 
+ 2377      6400
+ 2378              	.LASF48:
+ 2379 03b8 4253505F 		.ascii	"BSP_Accel_InitSelfTst\000"
+ 2379      41636365 
+ 2379      6C5F496E 
+ 2379      69745365 
+ 2379      6C665473 
+ 2380              	.LASF37:
+ 2381 03ce 636F6C6F 		.ascii	"color_val\000"
+ 2381      725F7661 
+ 2381      6C00
+ 2382              	.LASF15:
+ 2383 03d8 4350555F 		.ascii	"CPU_INT16S\000"
+ 2383      494E5431 
+ 2383      365300
+ 2384              	.LASF14:
+ 2385 03e3 4350555F 		.ascii	"CPU_INT16U\000"
+ 2385      494E5431 
+ 2385      365500
+ 2386              	.LASF25:
+ 2387 03ee 4253505F 		.ascii	"BSP_KXTJ2_DIR_READ\000"
+ 2387      4B58544A 
+ 2387      325F4449 
+ 2387      525F5245 
+ 2387      414400
+ 2388              	.LASF64:
+ 2389 0401 4253505F 		.ascii	"BSP_CPU_ClkFreq\000"
+ 2389      4350555F 
+ 2389      436C6B46 
+ 2389      72657100 
+ 2390              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

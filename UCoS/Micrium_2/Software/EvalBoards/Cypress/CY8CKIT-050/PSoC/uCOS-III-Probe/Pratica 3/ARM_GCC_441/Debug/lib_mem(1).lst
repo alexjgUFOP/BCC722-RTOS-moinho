@@ -1,0 +1,2971 @@
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"lib_mem.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 76010000 		.text
+  20      02006F00 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.section	.text.Mem_Init,"ax",%progbits
+  24              		.align	2
+  25              		.global	Mem_Init
+  26              		.thumb
+  27              		.thumb_func
+  28              		.type	Mem_Init, %function
+  29              	Mem_Init:
+  30              	.LFB0:
+  31              		.file 1 "C:\\Micrium\\Software\\uC-LIB\\lib_mem.c"
+   1:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+   2:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+   3:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                                uC/LIB
+   4:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                        CUSTOM LIBRARY MODULES
+   5:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+   6:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                          (c) Copyright 2004-2012; Micrium, Inc.; Weston, FL
+   7:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+   8:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               All rights reserved.  Protected by international copyright laws.
+   9:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+  10:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               uC/LIB is provided in source form to registered licensees ONLY.  It is
+  11:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               illegal to distribute this source code to any third party unless you receive
+  12:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               written permission by an authorized Micrium representative.  Knowledge of
+  13:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               the source code may NOT be used to develop a similar product.
+  14:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+  15:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               Please help us continue to provide the Embedded community with the finest
+  16:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               software available.  Your honesty is greatly appreciated.
+  17:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+  18:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               You can contact us at www.micrium.com.
+  19:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  20:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+  21:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  22:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 2
+
+
+  23:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  24:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+  25:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                     STANDARD MEMORY OPERATIONS
+  26:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+  27:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Filename      : lib_mem.c
+  28:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Version       : V1.37.00
+  29:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Programmer(s) : ITJ
+  30:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                 FGK
+  31:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                 JFD
+  32:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                 FBJ
+  33:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  34:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Note(s)       : (1) NO compiler-supplied standard library functions are used in library or produc
+  35:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+  36:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                     (a) ALL standard library functions are implemented in the custom library modu
+  37:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+  38:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                         (1) \<Custom Library Directory>\lib_*.*
+  39:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+  40:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                         (2) \<Custom Library Directory>\Ports\<cpu>\<compiler>\lib*_a.*
+  41:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+  42:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                               where
+  43:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                       <Custom Library Directory>      directory path for custom l
+  44:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                       <cpu>                           directory name for specific
+  45:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                       <compiler>                      directory name for specific
+  46:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+  47:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                     (b) Product-specific library functions are implemented in individual products
+  48:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  49:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+  50:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  51:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  52:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+  53:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  54:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                            INCLUDE FILES
+  55:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  56:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+  57:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  58:C:\Micrium\Software\uC-LIB\lib_mem.c **** #define    MICRIUM_SOURCE
+  59:C:\Micrium\Software\uC-LIB\lib_mem.c **** #define    LIB_MEM_MODULE
+  60:C:\Micrium\Software\uC-LIB\lib_mem.c **** #include  <lib_mem.h>
+  61:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  62:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  63:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*$PAGE*/
+  64:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+  65:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  66:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                            LOCAL DEFINES
+  67:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  68:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+  69:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  70:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  71:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+  72:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  73:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                           LOCAL CONSTANTS
+  74:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  75:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+  76:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  77:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  78:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+  79:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 3
+
+
+  80:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                          LOCAL DATA TYPES
+  81:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  82:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+  83:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  84:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  85:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+  86:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  87:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                            LOCAL TABLES
+  88:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  89:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+  90:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  91:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  92:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+  93:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  94:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                       LOCAL GLOBAL VARIABLES
+  95:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+  96:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+  97:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+  98:C:\Micrium\Software\uC-LIB\lib_mem.c **** #if     (LIB_MEM_CFG_ALLOC_EN == DEF_ENABLED)
+  99:C:\Micrium\Software\uC-LIB\lib_mem.c **** MEM_POOL    *Mem_PoolTbl;                                               /* Mem      pool/seg tbl.  
+ 100:C:\Micrium\Software\uC-LIB\lib_mem.c **** MEM_POOL     Mem_PoolHeap;                                              /* Mem heap pool/seg.      
+ 101:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 102:C:\Micrium\Software\uC-LIB\lib_mem.c **** #ifndef  LIB_MEM_CFG_HEAP_BASE_ADDR
+ 103:C:\Micrium\Software\uC-LIB\lib_mem.c **** CPU_INT08U   Mem_Heap[LIB_MEM_CFG_HEAP_SIZE];                           /* Mem heap.               
+ 104:C:\Micrium\Software\uC-LIB\lib_mem.c **** #endif
+ 105:C:\Micrium\Software\uC-LIB\lib_mem.c **** #endif
+ 106:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 107:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 108:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+ 109:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 110:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                      LOCAL FUNCTION PROTOTYPES
+ 111:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 112:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+ 113:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 114:C:\Micrium\Software\uC-LIB\lib_mem.c **** #if (LIB_MEM_CFG_ALLOC_EN == DEF_ENABLED)                               /* -------------- MEM POOL 
+ 115:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 116:C:\Micrium\Software\uC-LIB\lib_mem.c **** #if (LIB_MEM_CFG_ARG_CHK_EXT_EN == DEF_ENABLED)
+ 117:C:\Micrium\Software\uC-LIB\lib_mem.c **** static  CPU_BOOLEAN   Mem_PoolBlkIsValidAddr(MEM_POOL          *pmem_pool,
+ 118:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                              void              *pmem_blk);
+ 119:C:\Micrium\Software\uC-LIB\lib_mem.c **** #endif
+ 120:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 121:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 122:C:\Micrium\Software\uC-LIB\lib_mem.c **** static  CPU_SIZE_T    Mem_SegCalcTotSize    (void              *pmem_addr,
+ 123:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                              MEM_POOL_BLK_QTY   blk_nbr,
+ 124:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                              CPU_SIZE_T         blk_size,
+ 125:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                              CPU_SIZE_T         blk_align);
+ 126:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 127:C:\Micrium\Software\uC-LIB\lib_mem.c **** static  void         *Mem_SegAlloc          (MEM_POOL          *pmem_pool,
+ 128:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                              CPU_SIZE_T         size,
+ 129:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                              CPU_SIZE_T         align);
+ 130:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 131:C:\Micrium\Software\uC-LIB\lib_mem.c **** #endif
+ 132:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 133:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 134:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+ 135:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 136:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                     LOCAL CONFIGURATION ERRORS
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 4
+
+
+ 137:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 138:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+ 139:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 140:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 141:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*$PAGE*/
+ 142:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+ 143:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 144:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                             Mem_Init()
+ 145:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 146:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Description : (1) Initialize Memory Management Module :
+ 147:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 148:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   (a) Initialize heap memory pool
+ 149:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   (b) Initialize      memory pool table
+ 150:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 151:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 152:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Argument(s) : none.
+ 153:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 154:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Return(s)   : none.
+ 155:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 156:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Caller(s)   : Application.
+ 157:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 158:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Note(s)     : (2) Mem_Init() MUST be called ... :
+ 159:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 160:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   (a) ONLY ONCE from a product's application; ...
+ 161:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   (b) BEFORE product's application calls any memory library module function(s)
+ 162:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 163:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+ 164:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 165:C:\Micrium\Software\uC-LIB\lib_mem.c **** void  Mem_Init (void)
+ 166:C:\Micrium\Software\uC-LIB\lib_mem.c **** {
+  32              		.loc 1 166 0
+  33              		.cfi_startproc
+  34              		@ args = 0, pretend = 0, frame = 0
+  35              		@ frame_needed = 1, uses_anonymous_args = 0
+  36              		@ link register save eliminated.
+  37 0000 80B4     		push	{r7}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 4
+  40 0002 00AF     		add	r7, sp, #0
+  41              		.cfi_offset 7, -4
+  42              	.LCFI1:
+  43              		.cfi_def_cfa_register 7
+ 167:C:\Micrium\Software\uC-LIB\lib_mem.c **** #if (LIB_MEM_CFG_ALLOC_EN == DEF_ENABLED)
+ 168:C:\Micrium\Software\uC-LIB\lib_mem.c ****     MEM_POOL  *pmem_pool;
+ 169:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 170:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                                                         /* --------- INIT MEM HEAP 
+ 171:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool                   = (MEM_POOL   *)&Mem_PoolHeap;
+ 172:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->Type             = (LIB_MEM_TYPE) LIB_MEM_TYPE_HEAP;
+ 173:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->SegHeadPtr       = (MEM_POOL   *)&Mem_PoolHeap;          /* Heap seg head = heap seg
+ 174:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->SegPrevPtr       = (MEM_POOL   *) 0;
+ 175:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->SegNextPtr       = (MEM_POOL   *) 0;
+ 176:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->PoolPrevPtr      = (MEM_POOL   *) 0;
+ 177:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->PoolNextPtr      = (MEM_POOL   *) 0;
+ 178:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->PoolAddrStart    = (void       *) 0;
+ 179:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->PoolAddrEnd      = (void       *) 0;
+ 180:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->PoolPtrs         = (void      **) 0;
+ 181:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->BlkSize          = (CPU_SIZE_T  ) 0u;
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 5
+
+
+ 182:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->BlkNbr           = (CPU_SIZE_T  ) 0u;
+ 183:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->BlkIx            = (MEM_POOL_IX ) 0u;
+ 184:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 185:C:\Micrium\Software\uC-LIB\lib_mem.c **** #ifdef  LIB_MEM_CFG_HEAP_BASE_ADDR
+ 186:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->SegAddr          = (void       *) LIB_MEM_CFG_HEAP_BASE_ADDR;
+ 187:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->SegAddrNextAvail = (void       *) LIB_MEM_CFG_HEAP_BASE_ADDR;
+ 188:C:\Micrium\Software\uC-LIB\lib_mem.c **** #else
+ 189:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->SegAddr          = (void       *)&Mem_Heap[0];
+ 190:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->SegAddrNextAvail = (void       *)&Mem_Heap[0];
+ 191:C:\Micrium\Software\uC-LIB\lib_mem.c **** #endif
+ 192:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 193:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->SegSizeTot       = (CPU_SIZE_T  ) LIB_MEM_CFG_HEAP_SIZE;
+ 194:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_pool->SegSizeRem       = (CPU_SIZE_T  ) LIB_MEM_CFG_HEAP_SIZE;
+ 195:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 196:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                                                         /* ------------ INIT MEM PO
+ 197:C:\Micrium\Software\uC-LIB\lib_mem.c ****     Mem_PoolTbl = &Mem_PoolHeap;
+ 198:C:\Micrium\Software\uC-LIB\lib_mem.c **** #endif
+ 199:C:\Micrium\Software\uC-LIB\lib_mem.c **** }
+  44              		.loc 1 199 0
+  45 0004 BD46     		mov	sp, r7
+  46 0006 80BC     		pop	{r7}
+  47 0008 7047     		bx	lr
+  48              		.cfi_endproc
+  49              	.LFE0:
+  50              		.size	Mem_Init, .-Mem_Init
+  51 000a 00BF     		.section	.text.Mem_Clr,"ax",%progbits
+  52              		.align	2
+  53              		.global	Mem_Clr
+  54              		.thumb
+  55              		.thumb_func
+  56              		.type	Mem_Clr, %function
+  57              	Mem_Clr:
+  58              	.LFB1:
+ 200:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 201:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 202:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*$PAGE*/
+ 203:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+ 204:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 205:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                              Mem_Clr()
+ 206:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 207:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Description : Clear data buffer (see Note #2).
+ 208:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 209:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Argument(s) : pmem        Pointer to memory buffer to clear.
+ 210:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 211:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               size        Number of data buffer octets to clear (see Note #1).
+ 212:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 213:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Return(s)   : none.
+ 214:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 215:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Caller(s)   : Application.
+ 216:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 217:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Note(s)     : (1) Null clears allowed (i.e. zero-length clears).
+ 218:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 219:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   See also 'Mem_Set()  Note #1'.
+ 220:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 221:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               (2) Clear data by setting each data octet to 0.
+ 222:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 223:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 6
+
+
+ 224:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 225:C:\Micrium\Software\uC-LIB\lib_mem.c **** void  Mem_Clr (void        *pmem,
+ 226:C:\Micrium\Software\uC-LIB\lib_mem.c ****                CPU_SIZE_T   size)
+ 227:C:\Micrium\Software\uC-LIB\lib_mem.c **** {
+  59              		.loc 1 227 0
+  60              		.cfi_startproc
+  61              		@ args = 0, pretend = 0, frame = 8
+  62              		@ frame_needed = 1, uses_anonymous_args = 0
+  63 0000 80B5     		push	{r7, lr}
+  64              	.LCFI2:
+  65              		.cfi_def_cfa_offset 8
+  66 0002 82B0     		sub	sp, sp, #8
+  67              	.LCFI3:
+  68              		.cfi_def_cfa_offset 16
+  69 0004 00AF     		add	r7, sp, #0
+  70              		.cfi_offset 14, -4
+  71              		.cfi_offset 7, -8
+  72              	.LCFI4:
+  73              		.cfi_def_cfa_register 7
+  74 0006 7860     		str	r0, [r7, #4]
+  75 0008 3960     		str	r1, [r7, #0]
+ 228:C:\Micrium\Software\uC-LIB\lib_mem.c ****     Mem_Set(pmem,
+  76              		.loc 1 228 0
+  77 000a 7868     		ldr	r0, [r7, #4]
+  78 000c 4FF00001 		mov	r1, #0
+  79 0010 3A68     		ldr	r2, [r7, #0]
+  80 0012 FFF7FEFF 		bl	Mem_Set
+ 229:C:\Micrium\Software\uC-LIB\lib_mem.c ****             0u,                                                 /* See Note #2.                    
+ 230:C:\Micrium\Software\uC-LIB\lib_mem.c ****             size);
+ 231:C:\Micrium\Software\uC-LIB\lib_mem.c **** }
+  81              		.loc 1 231 0
+  82 0016 07F10807 		add	r7, r7, #8
+  83 001a BD46     		mov	sp, r7
+  84 001c 80BD     		pop	{r7, pc}
+  85              		.cfi_endproc
+  86              	.LFE1:
+  87              		.size	Mem_Clr, .-Mem_Clr
+  88 001e 00BF     		.section	.text.Mem_Set,"ax",%progbits
+  89              		.align	2
+  90              		.global	Mem_Set
+  91              		.thumb
+  92              		.thumb_func
+  93              		.type	Mem_Set, %function
+  94              	Mem_Set:
+  95              	.LFB2:
+ 232:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 233:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 234:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*$PAGE*/
+ 235:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+ 236:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 237:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                              Mem_Set()
+ 238:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 239:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Description : Fill data buffer with specified data octet.
+ 240:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 241:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Argument(s) : pmem        Pointer to memory buffer to fill with specified data octet.
+ 242:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 243:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               data_val    Data fill octet value.
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 7
+
+
+ 244:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 245:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               size        Number of data buffer octets to fill (see Note #1).
+ 246:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 247:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Return(s)   : none.
+ 248:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 249:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Caller(s)   : Application.
+ 250:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 251:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Note(s)     : (1) Null sets allowed (i.e. zero-length sets).
+ 252:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 253:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               (2) For best CPU performance, optimized to fill data buffer using 'CPU_ALIGN'-sized
+ 254:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   words.
+ 255:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 256:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   (a) Since many word-aligned processors REQUIRE that multi-octet words be access
+ 257:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       word-aligned addresses, 'CPU_ALIGN'-sized words MUST be accessed on 'CPU_AL
+ 258:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       addresses.
+ 259:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 260:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               (3) Modulo arithmetic is used to determine whether a memory buffer starts on a 'CPU
+ 261:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   address boundary.
+ 262:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 263:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   Modulo arithmetic in ANSI-C REQUIREs operations performed on integer values.  T
+ 264:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   address values MUST be cast to an appropriately-sized integer value PRIOR to an
+ 265:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                  'mem_align_mod' arithmetic operation.
+ 266:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 267:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+ 268:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 269:C:\Micrium\Software\uC-LIB\lib_mem.c **** void  Mem_Set (void        *pmem,
+ 270:C:\Micrium\Software\uC-LIB\lib_mem.c ****                CPU_INT08U   data_val,
+ 271:C:\Micrium\Software\uC-LIB\lib_mem.c ****                CPU_SIZE_T   size)
+ 272:C:\Micrium\Software\uC-LIB\lib_mem.c **** {
+  96              		.loc 1 272 0
+  97              		.cfi_startproc
+  98              		@ args = 0, pretend = 0, frame = 40
+  99              		@ frame_needed = 1, uses_anonymous_args = 0
+ 100              		@ link register save eliminated.
+ 101 0000 80B4     		push	{r7}
+ 102              	.LCFI5:
+ 103              		.cfi_def_cfa_offset 4
+ 104 0002 8BB0     		sub	sp, sp, #44
+ 105              	.LCFI6:
+ 106              		.cfi_def_cfa_offset 48
+ 107 0004 00AF     		add	r7, sp, #0
+ 108              		.cfi_offset 7, -4
+ 109              	.LCFI7:
+ 110              		.cfi_def_cfa_register 7
+ 111 0006 F860     		str	r0, [r7, #12]
+ 112 0008 0B46     		mov	r3, r1
+ 113 000a 7A60     		str	r2, [r7, #4]
+ 114 000c FB72     		strb	r3, [r7, #11]
+ 273:C:\Micrium\Software\uC-LIB\lib_mem.c ****     CPU_SIZE_T   size_rem;
+ 274:C:\Micrium\Software\uC-LIB\lib_mem.c ****     CPU_ALIGN    data_align;
+ 275:C:\Micrium\Software\uC-LIB\lib_mem.c ****     CPU_ALIGN   *pmem_align;
+ 276:C:\Micrium\Software\uC-LIB\lib_mem.c ****     CPU_INT08U  *pmem_08;
+ 277:C:\Micrium\Software\uC-LIB\lib_mem.c ****     CPU_DATA     mem_align_mod;
+ 278:C:\Micrium\Software\uC-LIB\lib_mem.c ****     CPU_DATA     i;
+ 279:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 280:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 281:C:\Micrium\Software\uC-LIB\lib_mem.c **** #if (LIB_MEM_CFG_ARG_CHK_EXT_EN == DEF_ENABLED)
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 8
+
+
+ 282:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (size < 1) {                                             /* See Note #1.                    
+ 283:C:\Micrium\Software\uC-LIB\lib_mem.c ****         return;
+ 284:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 285:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (pmem == (void *)0) {
+ 286:C:\Micrium\Software\uC-LIB\lib_mem.c ****         return;
+ 287:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 288:C:\Micrium\Software\uC-LIB\lib_mem.c **** #endif
+ 289:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 290:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 291:C:\Micrium\Software\uC-LIB\lib_mem.c ****     data_align = 0u;
+ 115              		.loc 1 291 0
+ 116 000e 4FF00003 		mov	r3, #0
+ 117 0012 7B61     		str	r3, [r7, #20]
+ 292:C:\Micrium\Software\uC-LIB\lib_mem.c ****     for (i = 0u; i < sizeof(CPU_ALIGN); i++) {                  /* Fill each data_align octet with 
+ 118              		.loc 1 292 0
+ 119 0014 4FF00003 		mov	r3, #0
+ 120 0018 7B62     		str	r3, [r7, #36]
+ 121 001a 0CE0     		b	.L6
+ 122              	.L7:
+ 293:C:\Micrium\Software\uC-LIB\lib_mem.c ****         data_align <<=  DEF_OCTET_NBR_BITS;
+ 123              		.loc 1 293 0
+ 124 001c 7B69     		ldr	r3, [r7, #20]
+ 125 001e 4FEA0323 		lsl	r3, r3, #8
+ 126 0022 7B61     		str	r3, [r7, #20]
+ 294:C:\Micrium\Software\uC-LIB\lib_mem.c ****         data_align  |= (CPU_ALIGN)data_val;
+ 127              		.loc 1 294 0
+ 128 0024 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 129 0026 7A69     		ldr	r2, [r7, #20]
+ 130 0028 42EA0303 		orr	r3, r2, r3
+ 131 002c 7B61     		str	r3, [r7, #20]
+ 132              		.loc 1 292 0
+ 133 002e 7B6A     		ldr	r3, [r7, #36]
+ 134 0030 03F10103 		add	r3, r3, #1
+ 135 0034 7B62     		str	r3, [r7, #36]
+ 136              	.L6:
+ 137 0036 7B6A     		ldr	r3, [r7, #36]
+ 138 0038 032B     		cmp	r3, #3
+ 139 003a EFD9     		bls	.L7
+ 295:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 296:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 297:C:\Micrium\Software\uC-LIB\lib_mem.c ****     size_rem      =  size;
+ 140              		.loc 1 297 0
+ 141 003c 7B68     		ldr	r3, [r7, #4]
+ 142 003e 3B61     		str	r3, [r7, #16]
+ 298:C:\Micrium\Software\uC-LIB\lib_mem.c ****     mem_align_mod = (CPU_INT08U)((CPU_ADDR)pmem % sizeof(CPU_ALIGN));   /* See Note #3.            
+ 143              		.loc 1 298 0
+ 144 0040 FB68     		ldr	r3, [r7, #12]
+ 145 0042 DBB2     		uxtb	r3, r3
+ 146 0044 03F00303 		and	r3, r3, #3
+ 147 0048 3B62     		str	r3, [r7, #32]
+ 299:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 300:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_08 = (CPU_INT08U *)pmem;
+ 148              		.loc 1 300 0
+ 149 004a FB68     		ldr	r3, [r7, #12]
+ 150 004c FB61     		str	r3, [r7, #28]
+ 301:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (mem_align_mod != 0u) {                                  /* If leading octets avail,        
+ 151              		.loc 1 301 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 9
+
+
+ 152 004e 3B6A     		ldr	r3, [r7, #32]
+ 153 0050 002B     		cmp	r3, #0
+ 154 0052 17D0     		beq	.L8
+ 302:C:\Micrium\Software\uC-LIB\lib_mem.c ****         i = mem_align_mod;
+ 155              		.loc 1 302 0
+ 156 0054 3B6A     		ldr	r3, [r7, #32]
+ 157 0056 7B62     		str	r3, [r7, #36]
+ 303:C:\Micrium\Software\uC-LIB\lib_mem.c ****         while ((size_rem > 0) &&                                /* ... start mem buf fill with lead
+ 158              		.loc 1 303 0
+ 159 0058 0EE0     		b	.L9
+ 160              	.L10:
+ 304:C:\Micrium\Software\uC-LIB\lib_mem.c ****                (i        < sizeof(CPU_ALIGN ))) {               /* ... until next CPU_ALIGN word bo
+ 305:C:\Micrium\Software\uC-LIB\lib_mem.c ****            *pmem_08++ = data_val;
+ 161              		.loc 1 305 0
+ 162 005a FB69     		ldr	r3, [r7, #28]
+ 163 005c FA7A     		ldrb	r2, [r7, #11]
+ 164 005e 1A70     		strb	r2, [r3, #0]
+ 165 0060 FB69     		ldr	r3, [r7, #28]
+ 166 0062 03F10103 		add	r3, r3, #1
+ 167 0066 FB61     		str	r3, [r7, #28]
+ 306:C:\Micrium\Software\uC-LIB\lib_mem.c ****             size_rem -= sizeof(CPU_INT08U);
+ 168              		.loc 1 306 0
+ 169 0068 3B69     		ldr	r3, [r7, #16]
+ 170 006a 03F1FF33 		add	r3, r3, #-1
+ 171 006e 3B61     		str	r3, [r7, #16]
+ 307:C:\Micrium\Software\uC-LIB\lib_mem.c ****             i++;
+ 172              		.loc 1 307 0
+ 173 0070 7B6A     		ldr	r3, [r7, #36]
+ 174 0072 03F10103 		add	r3, r3, #1
+ 175 0076 7B62     		str	r3, [r7, #36]
+ 176              	.L9:
+ 177              		.loc 1 303 0
+ 178 0078 3B69     		ldr	r3, [r7, #16]
+ 179 007a 002B     		cmp	r3, #0
+ 180 007c 02D0     		beq	.L8
+ 181 007e 7B6A     		ldr	r3, [r7, #36]
+ 182 0080 032B     		cmp	r3, #3
+ 183 0082 EAD9     		bls	.L10
+ 184              	.L8:
+ 308:C:\Micrium\Software\uC-LIB\lib_mem.c ****         }
+ 309:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 310:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 311:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_align = (CPU_ALIGN *)pmem_08;                          /* See Note #2a.                   
+ 185              		.loc 1 311 0
+ 186 0084 FB69     		ldr	r3, [r7, #28]
+ 187 0086 BB61     		str	r3, [r7, #24]
+ 312:C:\Micrium\Software\uC-LIB\lib_mem.c ****     while (size_rem >= sizeof(CPU_ALIGN)) {                     /* While mem buf aligned on CPU_ALI
+ 188              		.loc 1 312 0
+ 189 0088 0AE0     		b	.L11
+ 190              	.L12:
+ 313:C:\Micrium\Software\uC-LIB\lib_mem.c ****        *pmem_align++ = data_align;                              /* ... fill mem buf with    CPU_ALI
+ 191              		.loc 1 313 0
+ 192 008a BB69     		ldr	r3, [r7, #24]
+ 193 008c 7A69     		ldr	r2, [r7, #20]
+ 194 008e 1A60     		str	r2, [r3, #0]
+ 195 0090 BB69     		ldr	r3, [r7, #24]
+ 196 0092 03F10403 		add	r3, r3, #4
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 10
+
+
+ 197 0096 BB61     		str	r3, [r7, #24]
+ 314:C:\Micrium\Software\uC-LIB\lib_mem.c ****         size_rem    -= sizeof(CPU_ALIGN);
+ 198              		.loc 1 314 0
+ 199 0098 3B69     		ldr	r3, [r7, #16]
+ 200 009a A3F10403 		sub	r3, r3, #4
+ 201 009e 3B61     		str	r3, [r7, #16]
+ 202              	.L11:
+ 203              		.loc 1 312 0
+ 204 00a0 3B69     		ldr	r3, [r7, #16]
+ 205 00a2 032B     		cmp	r3, #3
+ 206 00a4 F1D8     		bhi	.L12
+ 315:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 316:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 317:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_08 = (CPU_INT08U *)pmem_align;
+ 207              		.loc 1 317 0
+ 208 00a6 BB69     		ldr	r3, [r7, #24]
+ 209 00a8 FB61     		str	r3, [r7, #28]
+ 318:C:\Micrium\Software\uC-LIB\lib_mem.c ****     while (size_rem > 0) {                                      /* Finish mem buf fill with trailin
+ 210              		.loc 1 318 0
+ 211 00aa 0AE0     		b	.L13
+ 212              	.L14:
+ 319:C:\Micrium\Software\uC-LIB\lib_mem.c ****        *pmem_08++   = data_val;
+ 213              		.loc 1 319 0
+ 214 00ac FB69     		ldr	r3, [r7, #28]
+ 215 00ae FA7A     		ldrb	r2, [r7, #11]
+ 216 00b0 1A70     		strb	r2, [r3, #0]
+ 217 00b2 FB69     		ldr	r3, [r7, #28]
+ 218 00b4 03F10103 		add	r3, r3, #1
+ 219 00b8 FB61     		str	r3, [r7, #28]
+ 320:C:\Micrium\Software\uC-LIB\lib_mem.c ****         size_rem   -= sizeof(CPU_INT08U);
+ 220              		.loc 1 320 0
+ 221 00ba 3B69     		ldr	r3, [r7, #16]
+ 222 00bc 03F1FF33 		add	r3, r3, #-1
+ 223 00c0 3B61     		str	r3, [r7, #16]
+ 224              	.L13:
+ 225              		.loc 1 318 0
+ 226 00c2 3B69     		ldr	r3, [r7, #16]
+ 227 00c4 002B     		cmp	r3, #0
+ 228 00c6 F1D1     		bne	.L14
+ 321:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 322:C:\Micrium\Software\uC-LIB\lib_mem.c **** }
+ 229              		.loc 1 322 0
+ 230 00c8 07F12C07 		add	r7, r7, #44
+ 231 00cc BD46     		mov	sp, r7
+ 232 00ce 80BC     		pop	{r7}
+ 233 00d0 7047     		bx	lr
+ 234              		.cfi_endproc
+ 235              	.LFE2:
+ 236              		.size	Mem_Set, .-Mem_Set
+ 237 00d2 00BF     		.section	.text.Mem_Copy,"ax",%progbits
+ 238              		.align	2
+ 239              		.global	Mem_Copy
+ 240              		.thumb
+ 241              		.thumb_func
+ 242              		.type	Mem_Copy, %function
+ 243              	Mem_Copy:
+ 244              	.LFB3:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 11
+
+
+ 323:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 324:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 325:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*$PAGE*/
+ 326:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+ 327:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 328:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                             Mem_Copy()
+ 329:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 330:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Description : Copy data octets from one memory buffer to another memory buffer.
+ 331:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 332:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Argument(s) : pdest       Pointer to destination memory buffer.
+ 333:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 334:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               psrc        Pointer to source      memory buffer.
+ 335:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 336:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               size        Number of octets to copy (see Note #1).
+ 337:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 338:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Return(s)   : none.
+ 339:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 340:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Caller(s)   : Application.
+ 341:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 342:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Note(s)     : (1) Null copies allowed (i.e. zero-length copies).
+ 343:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 344:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               (2) Memory buffers NOT checked for overlapping.
+ 345:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 346:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   (a) IEEE Std 1003.1, 2004 Edition, Section 'memcpy() : DESCRIPTION' states that
+ 347:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       copying takes place between objects that overlap, the behavior is undefined
+ 348:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 349:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   (b) However, data octets from a source memory buffer at a higher address value 
+ 350:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       successfully copy to a destination memory buffer at a lower  address value 
+ 351:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       if any octets of the memory buffers overlap as long as no individual, atomi
+ 352:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       word copy overlaps.
+ 353:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 354:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       Since Mem_Copy() performs the data octet copy via 'CPU_ALIGN'-sized words &
+ 355:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       octets; & since 'CPU_ALIGN'-sized words MUST be accessed on word-aligned ad
+ 356:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       (see Note #3b), neither 'CPU_ALIGN'-sized words nor octets at unique addres
+ 357:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       ever overlap.
+ 358:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 359:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       Therefore, Mem_Copy() SHOULD be able to successfully copy overlapping memor
+ 360:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       buffers as long as the source memory buffer is at a higher address value th
+ 361:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       destination memory buffer.
+ 362:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 363:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               (3) For best CPU performance, optimized to copy data buffer using 'CPU_ALIGN'-sized
+ 364:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   words.
+ 365:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 366:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   (a) Since many word-aligned processors REQUIRE that multi-octet words be access
+ 367:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       word-aligned addresses, 'CPU_ALIGN'-sized words MUST be accessed on 'CPU_AL
+ 368:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       addresses.
+ 369:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 370:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               (4) Modulo arithmetic is used to determine whether a memory buffer starts on a 'CPU
+ 371:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   address boundary.
+ 372:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 373:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   Modulo arithmetic in ANSI-C REQUIREs operations performed on integer values.  T
+ 374:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   address values MUST be cast to an appropriately-sized integer value PRIOR to an
+ 375:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                  'mem_align_mod' arithmetic operation.
+ 376:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 377:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+ 378:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*$PAGE*/
+ 379:C:\Micrium\Software\uC-LIB\lib_mem.c **** #if (LIB_MEM_CFG_OPTIMIZE_ASM_EN != DEF_ENABLED)
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 12
+
+
+ 380:C:\Micrium\Software\uC-LIB\lib_mem.c **** void  Mem_Copy (       void        *pdest,
+ 381:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 const  void        *psrc,
+ 382:C:\Micrium\Software\uC-LIB\lib_mem.c ****                        CPU_SIZE_T   size)
+ 383:C:\Micrium\Software\uC-LIB\lib_mem.c **** {
+ 245              		.loc 1 383 0
+ 246              		.cfi_startproc
+ 247              		@ args = 0, pretend = 0, frame = 56
+ 248              		@ frame_needed = 1, uses_anonymous_args = 0
+ 249              		@ link register save eliminated.
+ 250 0000 80B4     		push	{r7}
+ 251              	.LCFI8:
+ 252              		.cfi_def_cfa_offset 4
+ 253 0002 8FB0     		sub	sp, sp, #60
+ 254              	.LCFI9:
+ 255              		.cfi_def_cfa_offset 64
+ 256 0004 00AF     		add	r7, sp, #0
+ 257              		.cfi_offset 7, -4
+ 258              	.LCFI10:
+ 259              		.cfi_def_cfa_register 7
+ 260 0006 F860     		str	r0, [r7, #12]
+ 261 0008 B960     		str	r1, [r7, #8]
+ 262 000a 7A60     		str	r2, [r7, #4]
+ 384:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_SIZE_T    size_rem;
+ 385:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_SIZE_T    mem_gap_octets;
+ 386:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_ALIGN    *pmem_align_dest;
+ 387:C:\Micrium\Software\uC-LIB\lib_mem.c ****     const  CPU_ALIGN    *pmem_align_src;
+ 388:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_INT08U   *pmem_08_dest;
+ 389:C:\Micrium\Software\uC-LIB\lib_mem.c ****     const  CPU_INT08U   *pmem_08_src;
+ 390:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_DATA      i;
+ 391:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_DATA      mem_align_mod_dest;
+ 392:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_DATA      mem_align_mod_src;
+ 393:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_BOOLEAN   mem_aligned;
+ 394:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 395:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 396:C:\Micrium\Software\uC-LIB\lib_mem.c **** #if (LIB_MEM_CFG_ARG_CHK_EXT_EN == DEF_ENABLED)
+ 397:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (size < 1) {                                             /* See Note #1.                    
+ 398:C:\Micrium\Software\uC-LIB\lib_mem.c ****         return;
+ 399:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 400:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (pdest == (void *)0) {
+ 401:C:\Micrium\Software\uC-LIB\lib_mem.c ****         return;
+ 402:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 403:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (psrc  == (void *)0) {
+ 404:C:\Micrium\Software\uC-LIB\lib_mem.c ****         return;
+ 405:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 406:C:\Micrium\Software\uC-LIB\lib_mem.c **** #endif
+ 407:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 408:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 409:C:\Micrium\Software\uC-LIB\lib_mem.c ****     size_rem           =  size;
+ 263              		.loc 1 409 0
+ 264 000c 7B68     		ldr	r3, [r7, #4]
+ 265 000e 3B61     		str	r3, [r7, #16]
+ 410:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 411:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_08_dest       = (      CPU_INT08U *)pdest;
+ 266              		.loc 1 411 0
+ 267 0010 FB68     		ldr	r3, [r7, #12]
+ 268 0012 3B62     		str	r3, [r7, #32]
+ 412:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_08_src        = (const CPU_INT08U *)psrc;
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 13
+
+
+ 269              		.loc 1 412 0
+ 270 0014 BB68     		ldr	r3, [r7, #8]
+ 271 0016 7B62     		str	r3, [r7, #36]
+ 413:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 414:C:\Micrium\Software\uC-LIB\lib_mem.c ****     mem_gap_octets     = pmem_08_src - pmem_08_dest;
+ 272              		.loc 1 414 0
+ 273 0018 7A6A     		ldr	r2, [r7, #36]
+ 274 001a 3B6A     		ldr	r3, [r7, #32]
+ 275 001c C3EB0203 		rsb	r3, r3, r2
+ 276 0020 7B61     		str	r3, [r7, #20]
+ 415:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 416:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 417:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (mem_gap_octets >= sizeof(CPU_ALIGN)) {                  /* Avoid bufs overlap.             
+ 277              		.loc 1 417 0
+ 278 0022 7B69     		ldr	r3, [r7, #20]
+ 279 0024 032B     		cmp	r3, #3
+ 280 0026 65D9     		bls	.L25
+ 418:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                                                 /* See Note #4.                    
+ 419:C:\Micrium\Software\uC-LIB\lib_mem.c ****         mem_align_mod_dest = (CPU_INT08U)((CPU_ADDR)pmem_08_dest % sizeof(CPU_ALIGN));
+ 281              		.loc 1 419 0
+ 282 0028 3B6A     		ldr	r3, [r7, #32]
+ 283 002a DBB2     		uxtb	r3, r3
+ 284 002c 03F00303 		and	r3, r3, #3
+ 285 0030 FB62     		str	r3, [r7, #44]
+ 420:C:\Micrium\Software\uC-LIB\lib_mem.c ****         mem_align_mod_src  = (CPU_INT08U)((CPU_ADDR)pmem_08_src  % sizeof(CPU_ALIGN));
+ 286              		.loc 1 420 0
+ 287 0032 7B6A     		ldr	r3, [r7, #36]
+ 288 0034 DBB2     		uxtb	r3, r3
+ 289 0036 03F00303 		and	r3, r3, #3
+ 290 003a 3B63     		str	r3, [r7, #48]
+ 421:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 422:C:\Micrium\Software\uC-LIB\lib_mem.c ****         mem_aligned        = (mem_align_mod_dest == mem_align_mod_src) ? DEF_YES : DEF_NO;
+ 291              		.loc 1 422 0
+ 292 003c FA6A     		ldr	r2, [r7, #44]
+ 293 003e 3B6B     		ldr	r3, [r7, #48]
+ 294 0040 9A42     		cmp	r2, r3
+ 295 0042 02D1     		bne	.L18
+ 296 0044 4FF00103 		mov	r3, #1
+ 297 0048 01E0     		b	.L19
+ 298              	.L18:
+ 299 004a 4FF00003 		mov	r3, #0
+ 300              	.L19:
+ 301 004e 87F83730 		strb	r3, [r7, #55]
+ 423:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 424:C:\Micrium\Software\uC-LIB\lib_mem.c ****         if (mem_aligned == DEF_YES) {                           /* If mem bufs' alignment offset eq
+ 302              		.loc 1 424 0
+ 303 0052 97F83730 		ldrb	r3, [r7, #55]	@ zero_extendqisi2
+ 304 0056 012B     		cmp	r3, #1
+ 305 0058 4CD1     		bne	.L25
+ 425:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                                                 /* ... optimize copy for mem buf al
+ 426:C:\Micrium\Software\uC-LIB\lib_mem.c ****             if (mem_align_mod_dest != 0u) {                     /* If leading octets avail,        
+ 306              		.loc 1 426 0
+ 307 005a FB6A     		ldr	r3, [r7, #44]
+ 308 005c 002B     		cmp	r3, #0
+ 309 005e 1CD0     		beq	.L20
+ 427:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 i = mem_align_mod_dest;
+ 310              		.loc 1 427 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 14
+
+
+ 311 0060 FB6A     		ldr	r3, [r7, #44]
+ 312 0062 BB62     		str	r3, [r7, #40]
+ 428:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 while ((size_rem   >  0) &&                     /* ... start mem buf copy with lead
+ 313              		.loc 1 428 0
+ 314 0064 13E0     		b	.L21
+ 315              	.L22:
+ 429:C:\Micrium\Software\uC-LIB\lib_mem.c ****                        (i          <  sizeof(CPU_ALIGN ))) {    /* ... until next CPU_ALIGN word bo
+ 430:C:\Micrium\Software\uC-LIB\lib_mem.c ****                    *pmem_08_dest++ = *pmem_08_src++;
+ 316              		.loc 1 430 0
+ 317 0066 7B6A     		ldr	r3, [r7, #36]
+ 318 0068 1A78     		ldrb	r2, [r3, #0]	@ zero_extendqisi2
+ 319 006a 3B6A     		ldr	r3, [r7, #32]
+ 320 006c 1A70     		strb	r2, [r3, #0]
+ 321 006e 3B6A     		ldr	r3, [r7, #32]
+ 322 0070 03F10103 		add	r3, r3, #1
+ 323 0074 3B62     		str	r3, [r7, #32]
+ 324 0076 7B6A     		ldr	r3, [r7, #36]
+ 325 0078 03F10103 		add	r3, r3, #1
+ 326 007c 7B62     		str	r3, [r7, #36]
+ 431:C:\Micrium\Software\uC-LIB\lib_mem.c ****                     size_rem      -=  sizeof(CPU_INT08U);
+ 327              		.loc 1 431 0
+ 328 007e 3B69     		ldr	r3, [r7, #16]
+ 329 0080 03F1FF33 		add	r3, r3, #-1
+ 330 0084 3B61     		str	r3, [r7, #16]
+ 432:C:\Micrium\Software\uC-LIB\lib_mem.c ****                     i++;
+ 331              		.loc 1 432 0
+ 332 0086 BB6A     		ldr	r3, [r7, #40]
+ 333 0088 03F10103 		add	r3, r3, #1
+ 334 008c BB62     		str	r3, [r7, #40]
+ 335              	.L21:
+ 336              		.loc 1 428 0
+ 337 008e 3B69     		ldr	r3, [r7, #16]
+ 338 0090 002B     		cmp	r3, #0
+ 339 0092 02D0     		beq	.L20
+ 340 0094 BB6A     		ldr	r3, [r7, #40]
+ 341 0096 032B     		cmp	r3, #3
+ 342 0098 E5D9     		bls	.L22
+ 343              	.L20:
+ 433:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 }
+ 434:C:\Micrium\Software\uC-LIB\lib_mem.c ****             }
+ 435:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 436:C:\Micrium\Software\uC-LIB\lib_mem.c ****             pmem_align_dest = (      CPU_ALIGN *)pmem_08_dest;  /* See Note #3a.                   
+ 344              		.loc 1 436 0
+ 345 009a 3B6A     		ldr	r3, [r7, #32]
+ 346 009c BB61     		str	r3, [r7, #24]
+ 437:C:\Micrium\Software\uC-LIB\lib_mem.c ****             pmem_align_src  = (const CPU_ALIGN *)pmem_08_src;
+ 347              		.loc 1 437 0
+ 348 009e 7B6A     		ldr	r3, [r7, #36]
+ 349 00a0 FB61     		str	r3, [r7, #28]
+ 438:C:\Micrium\Software\uC-LIB\lib_mem.c ****             while (size_rem      >=  sizeof(CPU_ALIGN)) {       /* While mem bufs aligned on CPU_AL
+ 350              		.loc 1 438 0
+ 351 00a2 0FE0     		b	.L23
+ 352              	.L24:
+ 439:C:\Micrium\Software\uC-LIB\lib_mem.c ****                *pmem_align_dest++ = *pmem_align_src++;          /* ... copy psrc to pdest with CPU_
+ 353              		.loc 1 439 0
+ 354 00a4 FB69     		ldr	r3, [r7, #28]
+ 355 00a6 1A68     		ldr	r2, [r3, #0]
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 15
+
+
+ 356 00a8 BB69     		ldr	r3, [r7, #24]
+ 357 00aa 1A60     		str	r2, [r3, #0]
+ 358 00ac BB69     		ldr	r3, [r7, #24]
+ 359 00ae 03F10403 		add	r3, r3, #4
+ 360 00b2 BB61     		str	r3, [r7, #24]
+ 361 00b4 FB69     		ldr	r3, [r7, #28]
+ 362 00b6 03F10403 		add	r3, r3, #4
+ 363 00ba FB61     		str	r3, [r7, #28]
+ 440:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 size_rem         -=  sizeof(CPU_ALIGN);
+ 364              		.loc 1 440 0
+ 365 00bc 3B69     		ldr	r3, [r7, #16]
+ 366 00be A3F10403 		sub	r3, r3, #4
+ 367 00c2 3B61     		str	r3, [r7, #16]
+ 368              	.L23:
+ 369              		.loc 1 438 0
+ 370 00c4 3B69     		ldr	r3, [r7, #16]
+ 371 00c6 032B     		cmp	r3, #3
+ 372 00c8 ECD8     		bhi	.L24
+ 441:C:\Micrium\Software\uC-LIB\lib_mem.c ****             }
+ 442:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 443:C:\Micrium\Software\uC-LIB\lib_mem.c ****             pmem_08_dest = (      CPU_INT08U *)pmem_align_dest;
+ 373              		.loc 1 443 0
+ 374 00ca BB69     		ldr	r3, [r7, #24]
+ 375 00cc 3B62     		str	r3, [r7, #32]
+ 444:C:\Micrium\Software\uC-LIB\lib_mem.c ****             pmem_08_src  = (const CPU_INT08U *)pmem_align_src;
+ 376              		.loc 1 444 0
+ 377 00ce FB69     		ldr	r3, [r7, #28]
+ 378 00d0 7B62     		str	r3, [r7, #36]
+ 445:C:\Micrium\Software\uC-LIB\lib_mem.c ****         }
+ 446:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 447:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 448:C:\Micrium\Software\uC-LIB\lib_mem.c ****     while (size_rem > 0) {                                      /* For unaligned mem bufs or traili
+ 379              		.loc 1 448 0
+ 380 00d2 0FE0     		b	.L25
+ 381              	.L26:
+ 449:C:\Micrium\Software\uC-LIB\lib_mem.c ****        *pmem_08_dest++ = *pmem_08_src++;                        /* ... copy psrc to pdest by octets
+ 382              		.loc 1 449 0
+ 383 00d4 7B6A     		ldr	r3, [r7, #36]
+ 384 00d6 1A78     		ldrb	r2, [r3, #0]	@ zero_extendqisi2
+ 385 00d8 3B6A     		ldr	r3, [r7, #32]
+ 386 00da 1A70     		strb	r2, [r3, #0]
+ 387 00dc 3B6A     		ldr	r3, [r7, #32]
+ 388 00de 03F10103 		add	r3, r3, #1
+ 389 00e2 3B62     		str	r3, [r7, #32]
+ 390 00e4 7B6A     		ldr	r3, [r7, #36]
+ 391 00e6 03F10103 		add	r3, r3, #1
+ 392 00ea 7B62     		str	r3, [r7, #36]
+ 450:C:\Micrium\Software\uC-LIB\lib_mem.c ****         size_rem      -=  sizeof(CPU_INT08U);
+ 393              		.loc 1 450 0
+ 394 00ec 3B69     		ldr	r3, [r7, #16]
+ 395 00ee 03F1FF33 		add	r3, r3, #-1
+ 396 00f2 3B61     		str	r3, [r7, #16]
+ 397              	.L25:
+ 398              		.loc 1 448 0
+ 399 00f4 3B69     		ldr	r3, [r7, #16]
+ 400 00f6 002B     		cmp	r3, #0
+ 401 00f8 ECD1     		bne	.L26
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 16
+
+
+ 451:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 452:C:\Micrium\Software\uC-LIB\lib_mem.c **** }
+ 402              		.loc 1 452 0
+ 403 00fa 07F13C07 		add	r7, r7, #60
+ 404 00fe BD46     		mov	sp, r7
+ 405 0100 80BC     		pop	{r7}
+ 406 0102 7047     		bx	lr
+ 407              		.cfi_endproc
+ 408              	.LFE3:
+ 409              		.size	Mem_Copy, .-Mem_Copy
+ 410              		.section	.text.Mem_Move,"ax",%progbits
+ 411              		.align	2
+ 412              		.global	Mem_Move
+ 413              		.thumb
+ 414              		.thumb_func
+ 415              		.type	Mem_Move, %function
+ 416              	Mem_Move:
+ 417              	.LFB4:
+ 453:C:\Micrium\Software\uC-LIB\lib_mem.c **** #endif
+ 454:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 455:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 456:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+ 457:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 458:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                             Mem_Move()
+ 459:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 460:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Description : Move data octets from one memory buffer to another memory buffer, or within the sam
+ 461:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               memory buffer. Overlapping is correctly handled for all move operations.
+ 462:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 463:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Argument(s) : pdest       Pointer to destination memory buffer.
+ 464:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 465:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               psrc        Pointer to source      memory buffer.
+ 466:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 467:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               size        Number of octets to move (see Note #1).
+ 468:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 469:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Return(s)   : none.
+ 470:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 471:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Caller(s)   : Application.
+ 472:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 473:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Note(s)     : (1) Null move operations allowed (i.e. zero-length).
+ 474:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 475:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               (2) Memory buffers checked for overlapping.
+ 476:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 477:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               (3) For best CPU performance, optimized to copy data buffer using 'CPU_ALIGN'-sized
+ 478:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   words.
+ 479:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 480:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   (a) Since many word-aligned processors REQUIRE that multi-octet words be access
+ 481:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       word-aligned addresses, 'CPU_ALIGN'-sized words MUST be accessed on 'CPU_AL
+ 482:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       addresses.
+ 483:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 484:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               (4) Modulo arithmetic is used to determine whether a memory buffer starts on a 'CPU
+ 485:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   address boundary.
+ 486:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 487:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   Modulo arithmetic in ANSI-C REQUIREs operations performed on integer values.  T
+ 488:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   address values MUST be cast to an appropriately-sized integer value PRIOR to an
+ 489:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                  'mem_align_mod' arithmetic operation.
+ 490:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 491:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 17
+
+
+ 492:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*$PAGE*/
+ 493:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 494:C:\Micrium\Software\uC-LIB\lib_mem.c **** void  Mem_Move (       void        *pdest,
+ 495:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 const  void        *psrc,
+ 496:C:\Micrium\Software\uC-LIB\lib_mem.c ****                        CPU_SIZE_T   size)
+ 497:C:\Micrium\Software\uC-LIB\lib_mem.c **** {
+ 418              		.loc 1 497 0
+ 419              		.cfi_startproc
+ 420              		@ args = 0, pretend = 0, frame = 56
+ 421              		@ frame_needed = 1, uses_anonymous_args = 0
+ 422 0000 80B5     		push	{r7, lr}
+ 423              	.LCFI11:
+ 424              		.cfi_def_cfa_offset 8
+ 425 0002 8EB0     		sub	sp, sp, #56
+ 426              	.LCFI12:
+ 427              		.cfi_def_cfa_offset 64
+ 428 0004 00AF     		add	r7, sp, #0
+ 429              		.cfi_offset 14, -4
+ 430              		.cfi_offset 7, -8
+ 431              	.LCFI13:
+ 432              		.cfi_def_cfa_register 7
+ 433 0006 F860     		str	r0, [r7, #12]
+ 434 0008 B960     		str	r1, [r7, #8]
+ 435 000a 7A60     		str	r2, [r7, #4]
+ 498:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_SIZE_T    size_rem;
+ 499:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_SIZE_T    mem_gap_octets;
+ 500:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_ALIGN    *pmem_align_dest;
+ 501:C:\Micrium\Software\uC-LIB\lib_mem.c ****     const  CPU_ALIGN    *pmem_align_src;
+ 502:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_INT08U   *pmem_08_dest;
+ 503:C:\Micrium\Software\uC-LIB\lib_mem.c ****     const  CPU_INT08U   *pmem_08_src;
+ 504:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_INT08S    i;
+ 505:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_DATA      mem_align_mod_dest;
+ 506:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_DATA      mem_align_mod_src;
+ 507:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_BOOLEAN   mem_aligned;
+ 508:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 509:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 510:C:\Micrium\Software\uC-LIB\lib_mem.c **** #if (LIB_MEM_CFG_ARG_CHK_EXT_EN == DEF_ENABLED)
+ 511:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (size < 1) {
+ 512:C:\Micrium\Software\uC-LIB\lib_mem.c ****         return;
+ 513:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 514:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (pdest == (void *)0) {
+ 515:C:\Micrium\Software\uC-LIB\lib_mem.c ****         return;
+ 516:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 517:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (psrc  == (void *)0) {
+ 518:C:\Micrium\Software\uC-LIB\lib_mem.c ****         return;
+ 519:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 520:C:\Micrium\Software\uC-LIB\lib_mem.c **** #endif
+ 521:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 522:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_08_src  = (const CPU_INT08U *)psrc;
+ 436              		.loc 1 522 0
+ 437 000c BB68     		ldr	r3, [r7, #8]
+ 438 000e 7B62     		str	r3, [r7, #36]
+ 523:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_08_dest = (      CPU_INT08U *)pdest;
+ 439              		.loc 1 523 0
+ 440 0010 FB68     		ldr	r3, [r7, #12]
+ 441 0012 3B62     		str	r3, [r7, #32]
+ 524:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (pmem_08_src > pmem_08_dest) {
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 18
+
+
+ 442              		.loc 1 524 0
+ 443 0014 7A6A     		ldr	r2, [r7, #36]
+ 444 0016 3B6A     		ldr	r3, [r7, #32]
+ 445 0018 9A42     		cmp	r2, r3
+ 446 001a 05D9     		bls	.L29
+ 525:C:\Micrium\Software\uC-LIB\lib_mem.c ****         Mem_Copy(pdest, psrc, size);
+ 447              		.loc 1 525 0
+ 448 001c F868     		ldr	r0, [r7, #12]
+ 449 001e B968     		ldr	r1, [r7, #8]
+ 450 0020 7A68     		ldr	r2, [r7, #4]
+ 451 0022 FFF7FEFF 		bl	Mem_Copy
+ 526:C:\Micrium\Software\uC-LIB\lib_mem.c ****         return;
+ 452              		.loc 1 526 0
+ 453 0026 8AE0     		b	.L41
+ 454              	.L29:
+ 527:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 528:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 529:C:\Micrium\Software\uC-LIB\lib_mem.c ****     size_rem           =  size;
+ 455              		.loc 1 529 0
+ 456 0028 7B68     		ldr	r3, [r7, #4]
+ 457 002a 3B61     		str	r3, [r7, #16]
+ 530:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 531:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_08_dest       = (      CPU_INT08U *)pdest + size - 1;
+ 458              		.loc 1 531 0
+ 459 002c FA68     		ldr	r2, [r7, #12]
+ 460 002e 7B68     		ldr	r3, [r7, #4]
+ 461 0030 03F1FF33 		add	r3, r3, #-1
+ 462 0034 1344     		add	r3, r2, r3
+ 463 0036 3B62     		str	r3, [r7, #32]
+ 532:C:\Micrium\Software\uC-LIB\lib_mem.c ****     pmem_08_src        = (const CPU_INT08U *)psrc  + size - 1;
+ 464              		.loc 1 532 0
+ 465 0038 BA68     		ldr	r2, [r7, #8]
+ 466 003a 7B68     		ldr	r3, [r7, #4]
+ 467 003c 03F1FF33 		add	r3, r3, #-1
+ 468 0040 1344     		add	r3, r2, r3
+ 469 0042 7B62     		str	r3, [r7, #36]
+ 533:C:\Micrium\Software\uC-LIB\lib_mem.c ****     
+ 534:C:\Micrium\Software\uC-LIB\lib_mem.c ****     mem_gap_octets     = pmem_08_dest - pmem_08_src;
+ 470              		.loc 1 534 0
+ 471 0044 3A6A     		ldr	r2, [r7, #32]
+ 472 0046 7B6A     		ldr	r3, [r7, #36]
+ 473 0048 C3EB0203 		rsb	r3, r3, r2
+ 474 004c 7B61     		str	r3, [r7, #20]
+ 535:C:\Micrium\Software\uC-LIB\lib_mem.c ****     
+ 536:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 537:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (mem_gap_octets >= sizeof(CPU_ALIGN)) {                  /* Avoid bufs overlap.             
+ 475              		.loc 1 537 0
+ 476 004e 7B69     		ldr	r3, [r7, #20]
+ 477 0050 032B     		cmp	r3, #3
+ 478 0052 71D9     		bls	.L39
+ 538:C:\Micrium\Software\uC-LIB\lib_mem.c ****     
+ 539:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                                                 /* See Note #4.                    
+ 540:C:\Micrium\Software\uC-LIB\lib_mem.c ****         mem_align_mod_dest = (CPU_INT08U)((CPU_ADDR)pmem_08_dest % sizeof(CPU_ALIGN));
+ 479              		.loc 1 540 0
+ 480 0054 3B6A     		ldr	r3, [r7, #32]
+ 481 0056 DBB2     		uxtb	r3, r3
+ 482 0058 03F00303 		and	r3, r3, #3
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 19
+
+
+ 483 005c FB62     		str	r3, [r7, #44]
+ 541:C:\Micrium\Software\uC-LIB\lib_mem.c ****         mem_align_mod_src  = (CPU_INT08U)((CPU_ADDR)pmem_08_src  % sizeof(CPU_ALIGN));
+ 484              		.loc 1 541 0
+ 485 005e 7B6A     		ldr	r3, [r7, #36]
+ 486 0060 DBB2     		uxtb	r3, r3
+ 487 0062 03F00303 		and	r3, r3, #3
+ 488 0066 3B63     		str	r3, [r7, #48]
+ 542:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 543:C:\Micrium\Software\uC-LIB\lib_mem.c ****         mem_aligned        = (mem_align_mod_dest == mem_align_mod_src) ? DEF_YES : DEF_NO;
+ 489              		.loc 1 543 0
+ 490 0068 FA6A     		ldr	r2, [r7, #44]
+ 491 006a 3B6B     		ldr	r3, [r7, #48]
+ 492 006c 9A42     		cmp	r2, r3
+ 493 006e 02D1     		bne	.L32
+ 494 0070 4FF00103 		mov	r3, #1
+ 495 0074 01E0     		b	.L33
+ 496              	.L32:
+ 497 0076 4FF00003 		mov	r3, #0
+ 498              	.L33:
+ 499 007a 87F83730 		strb	r3, [r7, #55]
+ 544:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 545:C:\Micrium\Software\uC-LIB\lib_mem.c ****         if (mem_aligned == DEF_YES) {                           /* If mem bufs' alignment offset eq
+ 500              		.loc 1 545 0
+ 501 007e 97F83730 		ldrb	r3, [r7, #55]	@ zero_extendqisi2
+ 502 0082 012B     		cmp	r3, #1
+ 503 0084 58D1     		bne	.L39
+ 546:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                                                 /* ... optimize copy for mem buf al
+ 547:C:\Micrium\Software\uC-LIB\lib_mem.c ****             if (mem_align_mod_dest != (sizeof(CPU_ALIGN) - 1)) {/* If leading octets avail,        
+ 504              		.loc 1 547 0
+ 505 0086 FB6A     		ldr	r3, [r7, #44]
+ 506 0088 032B     		cmp	r3, #3
+ 507 008a 20D0     		beq	.L34
+ 548:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 i = mem_align_mod_dest;
+ 508              		.loc 1 548 0
+ 509 008c FB6A     		ldr	r3, [r7, #44]
+ 510 008e 87F82B30 		strb	r3, [r7, #43]
+ 549:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 while ((size_rem   >  0) &&                     /* ... start mem buf copy with lead
+ 511              		.loc 1 549 0
+ 512 0092 15E0     		b	.L35
+ 513              	.L36:
+ 550:C:\Micrium\Software\uC-LIB\lib_mem.c ****                        (i          >= 0)) {                     /* ... until next CPU_ALIGN word bo
+ 551:C:\Micrium\Software\uC-LIB\lib_mem.c ****                    *pmem_08_dest-- = *pmem_08_src--;
+ 514              		.loc 1 551 0
+ 515 0094 7B6A     		ldr	r3, [r7, #36]
+ 516 0096 1A78     		ldrb	r2, [r3, #0]	@ zero_extendqisi2
+ 517 0098 3B6A     		ldr	r3, [r7, #32]
+ 518 009a 1A70     		strb	r2, [r3, #0]
+ 519 009c 3B6A     		ldr	r3, [r7, #32]
+ 520 009e 03F1FF33 		add	r3, r3, #-1
+ 521 00a2 3B62     		str	r3, [r7, #32]
+ 522 00a4 7B6A     		ldr	r3, [r7, #36]
+ 523 00a6 03F1FF33 		add	r3, r3, #-1
+ 524 00aa 7B62     		str	r3, [r7, #36]
+ 552:C:\Micrium\Software\uC-LIB\lib_mem.c ****                     size_rem      -=  sizeof(CPU_INT08U);
+ 525              		.loc 1 552 0
+ 526 00ac 3B69     		ldr	r3, [r7, #16]
+ 527 00ae 03F1FF33 		add	r3, r3, #-1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 20
+
+
+ 528 00b2 3B61     		str	r3, [r7, #16]
+ 553:C:\Micrium\Software\uC-LIB\lib_mem.c ****                     i--;
+ 529              		.loc 1 553 0
+ 530 00b4 97F82B30 		ldrb	r3, [r7, #43]
+ 531 00b8 03F1FF33 		add	r3, r3, #-1
+ 532 00bc 87F82B30 		strb	r3, [r7, #43]
+ 533              	.L35:
+ 534              		.loc 1 549 0
+ 535 00c0 3B69     		ldr	r3, [r7, #16]
+ 536 00c2 002B     		cmp	r3, #0
+ 537 00c4 03D0     		beq	.L34
+ 538 00c6 97F92B30 		ldrsb	r3, [r7, #43]
+ 539 00ca 002B     		cmp	r3, #0
+ 540 00cc E2DA     		bge	.L36
+ 541              	.L34:
+ 554:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 }
+ 555:C:\Micrium\Software\uC-LIB\lib_mem.c ****             }
+ 556:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 557:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                                                 /* See Note #3a.                   
+ 558:C:\Micrium\Software\uC-LIB\lib_mem.c ****             pmem_align_dest = (      CPU_ALIGN *)pmem_08_dest - sizeof(CPU_ALIGN) + 1;
+ 542              		.loc 1 558 0
+ 543 00ce 3B6A     		ldr	r3, [r7, #32]
+ 544 00d0 A3F10C03 		sub	r3, r3, #12
+ 545 00d4 BB61     		str	r3, [r7, #24]
+ 559:C:\Micrium\Software\uC-LIB\lib_mem.c ****             pmem_align_src  = (const CPU_ALIGN *)pmem_08_src  - sizeof(CPU_ALIGN) + 1;
+ 546              		.loc 1 559 0
+ 547 00d6 7B6A     		ldr	r3, [r7, #36]
+ 548 00d8 A3F10C03 		sub	r3, r3, #12
+ 549 00dc FB61     		str	r3, [r7, #28]
+ 560:C:\Micrium\Software\uC-LIB\lib_mem.c ****             while (size_rem      >=  sizeof(CPU_ALIGN)) {       /* While mem bufs aligned on CPU_AL
+ 550              		.loc 1 560 0
+ 551 00de 0FE0     		b	.L37
+ 552              	.L38:
+ 561:C:\Micrium\Software\uC-LIB\lib_mem.c ****                *pmem_align_dest-- = *pmem_align_src--;          /* ... copy psrc to pdest with CPU_
+ 553              		.loc 1 561 0
+ 554 00e0 FB69     		ldr	r3, [r7, #28]
+ 555 00e2 1A68     		ldr	r2, [r3, #0]
+ 556 00e4 BB69     		ldr	r3, [r7, #24]
+ 557 00e6 1A60     		str	r2, [r3, #0]
+ 558 00e8 BB69     		ldr	r3, [r7, #24]
+ 559 00ea A3F10403 		sub	r3, r3, #4
+ 560 00ee BB61     		str	r3, [r7, #24]
+ 561 00f0 FB69     		ldr	r3, [r7, #28]
+ 562 00f2 A3F10403 		sub	r3, r3, #4
+ 563 00f6 FB61     		str	r3, [r7, #28]
+ 562:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 size_rem         -=  sizeof(CPU_ALIGN);
+ 564              		.loc 1 562 0
+ 565 00f8 3B69     		ldr	r3, [r7, #16]
+ 566 00fa A3F10403 		sub	r3, r3, #4
+ 567 00fe 3B61     		str	r3, [r7, #16]
+ 568              	.L37:
+ 569              		.loc 1 560 0
+ 570 0100 3B69     		ldr	r3, [r7, #16]
+ 571 0102 032B     		cmp	r3, #3
+ 572 0104 ECD8     		bhi	.L38
+ 563:C:\Micrium\Software\uC-LIB\lib_mem.c ****             }
+ 564:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 21
+
+
+ 565:C:\Micrium\Software\uC-LIB\lib_mem.c ****             pmem_08_dest = (      CPU_INT08U *)pmem_align_dest + sizeof(CPU_ALIGN) - 1;
+ 573              		.loc 1 565 0
+ 574 0106 BB69     		ldr	r3, [r7, #24]
+ 575 0108 03F10303 		add	r3, r3, #3
+ 576 010c 3B62     		str	r3, [r7, #32]
+ 566:C:\Micrium\Software\uC-LIB\lib_mem.c ****             pmem_08_src  = (const CPU_INT08U *)pmem_align_src  + sizeof(CPU_ALIGN) - 1;
+ 577              		.loc 1 566 0
+ 578 010e FB69     		ldr	r3, [r7, #28]
+ 579 0110 03F10303 		add	r3, r3, #3
+ 580 0114 7B62     		str	r3, [r7, #36]
+ 567:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 568:C:\Micrium\Software\uC-LIB\lib_mem.c ****         }
+ 569:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 570:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 571:C:\Micrium\Software\uC-LIB\lib_mem.c ****     while (size_rem > 0) {                                      /* For unaligned mem bufs or traili
+ 581              		.loc 1 571 0
+ 582 0116 0FE0     		b	.L39
+ 583              	.L40:
+ 572:C:\Micrium\Software\uC-LIB\lib_mem.c ****        *pmem_08_dest-- = *pmem_08_src--;                        /* ... copy psrc to pdest by octets
+ 584              		.loc 1 572 0
+ 585 0118 7B6A     		ldr	r3, [r7, #36]
+ 586 011a 1A78     		ldrb	r2, [r3, #0]	@ zero_extendqisi2
+ 587 011c 3B6A     		ldr	r3, [r7, #32]
+ 588 011e 1A70     		strb	r2, [r3, #0]
+ 589 0120 3B6A     		ldr	r3, [r7, #32]
+ 590 0122 03F1FF33 		add	r3, r3, #-1
+ 591 0126 3B62     		str	r3, [r7, #32]
+ 592 0128 7B6A     		ldr	r3, [r7, #36]
+ 593 012a 03F1FF33 		add	r3, r3, #-1
+ 594 012e 7B62     		str	r3, [r7, #36]
+ 573:C:\Micrium\Software\uC-LIB\lib_mem.c ****         size_rem      -=  sizeof(CPU_INT08U);
+ 595              		.loc 1 573 0
+ 596 0130 3B69     		ldr	r3, [r7, #16]
+ 597 0132 03F1FF33 		add	r3, r3, #-1
+ 598 0136 3B61     		str	r3, [r7, #16]
+ 599              	.L39:
+ 600              		.loc 1 571 0
+ 601 0138 3B69     		ldr	r3, [r7, #16]
+ 602 013a 002B     		cmp	r3, #0
+ 603 013c ECD1     		bne	.L40
+ 604              	.L41:
+ 574:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 575:C:\Micrium\Software\uC-LIB\lib_mem.c **** }
+ 605              		.loc 1 575 0
+ 606 013e 07F13807 		add	r7, r7, #56
+ 607 0142 BD46     		mov	sp, r7
+ 608 0144 80BD     		pop	{r7, pc}
+ 609              		.cfi_endproc
+ 610              	.LFE4:
+ 611              		.size	Mem_Move, .-Mem_Move
+ 612 0146 00BF     		.section	.text.Mem_Cmp,"ax",%progbits
+ 613              		.align	2
+ 614              		.global	Mem_Cmp
+ 615              		.thumb
+ 616              		.thumb_func
+ 617              		.type	Mem_Cmp, %function
+ 618              	Mem_Cmp:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 22
+
+
+ 619              	.LFB5:
+ 576:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 577:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 578:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*$PAGE*/
+ 579:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*
+ 580:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 581:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                                              Mem_Cmp()
+ 582:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 583:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Description : Verify that ALL data octets in two memory buffers are identical in sequence.
+ 584:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 585:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Argument(s) : p1_mem      Pointer to first  memory buffer.
+ 586:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 587:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               p2_mem      Pointer to second memory buffer.
+ 588:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 589:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               size        Number of data buffer octets to compare (see Note #1).
+ 590:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 591:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Return(s)   : DEF_YES, if 'size' number of data octets are identical in both memory buffers.
+ 592:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 593:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               DEF_NO,  otherwise.
+ 594:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 595:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Caller(s)   : Application.
+ 596:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 597:C:\Micrium\Software\uC-LIB\lib_mem.c **** * Note(s)     : (1) Null compares allowed (i.e. zero-length compares); 'DEF_YES' returned to indica
+ 598:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   identical null compare.
+ 599:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 600:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               (2) Many memory buffer comparisons vary ONLY in the least significant octets -- e.g
+ 601:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   network address buffers.  Consequently, memory buffer comparison is more effici
+ 602:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   if the comparison starts from the end of the memory buffers which will abort so
+ 603:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   on dissimilar memory buffers that vary only in the least significant octets.
+ 604:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 605:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               (3) For best CPU performance, optimized to compare data buffers using 'CPU_ALIGN'-s
+ 606:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   data words.
+ 607:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 608:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   (a) Since many word-aligned processors REQUIRE that multi-octet words be access
+ 609:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       word-aligned addresses, 'CPU_ALIGN'-sized words MUST be accessed on 'CPU_AL
+ 610:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                       addresses.
+ 611:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 612:C:\Micrium\Software\uC-LIB\lib_mem.c **** *               (4) Modulo arithmetic is used to determine whether a memory buffer starts on a 'CPU
+ 613:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   address boundary.
+ 614:C:\Micrium\Software\uC-LIB\lib_mem.c **** *
+ 615:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   Modulo arithmetic in ANSI-C REQUIREs operations performed on integer values.  T
+ 616:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                   address values MUST be cast to an appropriately-sized integer value PRIOR to an
+ 617:C:\Micrium\Software\uC-LIB\lib_mem.c **** *                  'mem_align_mod' arithmetic operation.
+ 618:C:\Micrium\Software\uC-LIB\lib_mem.c **** ***************************************************************************************************
+ 619:C:\Micrium\Software\uC-LIB\lib_mem.c **** */
+ 620:C:\Micrium\Software\uC-LIB\lib_mem.c **** /*$PAGE*/
+ 621:C:\Micrium\Software\uC-LIB\lib_mem.c **** CPU_BOOLEAN  Mem_Cmp (const  void        *p1_mem,
+ 622:C:\Micrium\Software\uC-LIB\lib_mem.c ****                       const  void        *p2_mem,
+ 623:C:\Micrium\Software\uC-LIB\lib_mem.c ****                              CPU_SIZE_T   size)
+ 624:C:\Micrium\Software\uC-LIB\lib_mem.c **** {
+ 620              		.loc 1 624 0
+ 621              		.cfi_startproc
+ 622              		@ args = 0, pretend = 0, frame = 56
+ 623              		@ frame_needed = 1, uses_anonymous_args = 0
+ 624              		@ link register save eliminated.
+ 625 0000 80B4     		push	{r7}
+ 626              	.LCFI14:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 23
+
+
+ 627              		.cfi_def_cfa_offset 4
+ 628 0002 8FB0     		sub	sp, sp, #60
+ 629              	.LCFI15:
+ 630              		.cfi_def_cfa_offset 64
+ 631 0004 00AF     		add	r7, sp, #0
+ 632              		.cfi_offset 7, -4
+ 633              	.LCFI16:
+ 634              		.cfi_def_cfa_register 7
+ 635 0006 F860     		str	r0, [r7, #12]
+ 636 0008 B960     		str	r1, [r7, #8]
+ 637 000a 7A60     		str	r2, [r7, #4]
+ 625:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_SIZE_T    size_rem;
+ 626:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_ALIGN    *p1_mem_align;
+ 627:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_ALIGN    *p2_mem_align;
+ 628:C:\Micrium\Software\uC-LIB\lib_mem.c ****     const  CPU_INT08U   *p1_mem_08;
+ 629:C:\Micrium\Software\uC-LIB\lib_mem.c ****     const  CPU_INT08U   *p2_mem_08;
+ 630:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_DATA      i;
+ 631:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_DATA      mem_align_mod_1;
+ 632:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_DATA      mem_align_mod_2;
+ 633:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_BOOLEAN   mem_aligned;
+ 634:C:\Micrium\Software\uC-LIB\lib_mem.c ****            CPU_BOOLEAN   mem_cmp;
+ 635:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 636:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 637:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (size < 1) {                                             /* See Note #1.                    
+ 638              		.loc 1 637 0
+ 639 000c 7B68     		ldr	r3, [r7, #4]
+ 640 000e 002B     		cmp	r3, #0
+ 641 0010 02D1     		bne	.L43
+ 638:C:\Micrium\Software\uC-LIB\lib_mem.c ****         return (DEF_YES);
+ 642              		.loc 1 638 0
+ 643 0012 4FF00103 		mov	r3, #1
+ 644 0016 A6E0     		b	.L44
+ 645              	.L43:
+ 639:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 640:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (p1_mem == (void *)0) {
+ 646              		.loc 1 640 0
+ 647 0018 FB68     		ldr	r3, [r7, #12]
+ 648 001a 002B     		cmp	r3, #0
+ 649 001c 02D1     		bne	.L45
+ 641:C:\Micrium\Software\uC-LIB\lib_mem.c ****         return (DEF_NO);
+ 650              		.loc 1 641 0
+ 651 001e 4FF00003 		mov	r3, #0
+ 652 0022 A0E0     		b	.L44
+ 653              	.L45:
+ 642:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 643:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (p2_mem == (void *)0) {
+ 654              		.loc 1 643 0
+ 655 0024 BB68     		ldr	r3, [r7, #8]
+ 656 0026 002B     		cmp	r3, #0
+ 657 0028 02D1     		bne	.L46
+ 644:C:\Micrium\Software\uC-LIB\lib_mem.c ****         return (DEF_NO);
+ 658              		.loc 1 644 0
+ 659 002a 4FF00003 		mov	r3, #0
+ 660 002e 9AE0     		b	.L44
+ 661              	.L46:
+ 645:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 646:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 24
+
+
+ 647:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 648:C:\Micrium\Software\uC-LIB\lib_mem.c ****     mem_cmp         =  DEF_YES;                                 /* Assume mem bufs are identical un
+ 662              		.loc 1 648 0
+ 663 0030 4FF00103 		mov	r3, #1
+ 664 0034 87F83730 		strb	r3, [r7, #55]
+ 649:C:\Micrium\Software\uC-LIB\lib_mem.c ****     size_rem        =  size;
+ 665              		.loc 1 649 0
+ 666 0038 7B68     		ldr	r3, [r7, #4]
+ 667 003a 7B61     		str	r3, [r7, #20]
+ 650:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                                                 /* Start @ end of mem bufs (see Not
+ 651:C:\Micrium\Software\uC-LIB\lib_mem.c ****     p1_mem_08       = (const CPU_INT08U *)p1_mem + size;
+ 668              		.loc 1 651 0
+ 669 003c FA68     		ldr	r2, [r7, #12]
+ 670 003e 7B68     		ldr	r3, [r7, #4]
+ 671 0040 1344     		add	r3, r2, r3
+ 672 0042 3B62     		str	r3, [r7, #32]
+ 652:C:\Micrium\Software\uC-LIB\lib_mem.c ****     p2_mem_08       = (const CPU_INT08U *)p2_mem + size;
+ 673              		.loc 1 652 0
+ 674 0044 BA68     		ldr	r2, [r7, #8]
+ 675 0046 7B68     		ldr	r3, [r7, #4]
+ 676 0048 1344     		add	r3, r2, r3
+ 677 004a 7B62     		str	r3, [r7, #36]
+ 653:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                                                 /* See Note #4.                    
+ 654:C:\Micrium\Software\uC-LIB\lib_mem.c ****     mem_align_mod_1 = (CPU_INT08U)((CPU_ADDR)p1_mem_08 % sizeof(CPU_ALIGN));
+ 678              		.loc 1 654 0
+ 679 004c 3B6A     		ldr	r3, [r7, #32]
+ 680 004e DBB2     		uxtb	r3, r3
+ 681 0050 03F00303 		and	r3, r3, #3
+ 682 0054 FB62     		str	r3, [r7, #44]
+ 655:C:\Micrium\Software\uC-LIB\lib_mem.c ****     mem_align_mod_2 = (CPU_INT08U)((CPU_ADDR)p2_mem_08 % sizeof(CPU_ALIGN));
+ 683              		.loc 1 655 0
+ 684 0056 7B6A     		ldr	r3, [r7, #36]
+ 685 0058 DBB2     		uxtb	r3, r3
+ 686 005a 03F00303 		and	r3, r3, #3
+ 687 005e 3B63     		str	r3, [r7, #48]
+ 656:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 657:C:\Micrium\Software\uC-LIB\lib_mem.c ****     mem_aligned     = (mem_align_mod_1 == mem_align_mod_2) ? DEF_YES : DEF_NO;
+ 688              		.loc 1 657 0
+ 689 0060 FA6A     		ldr	r2, [r7, #44]
+ 690 0062 3B6B     		ldr	r3, [r7, #48]
+ 691 0064 9A42     		cmp	r2, r3
+ 692 0066 02D1     		bne	.L47
+ 693 0068 4FF00103 		mov	r3, #1
+ 694 006c 01E0     		b	.L48
+ 695              	.L47:
+ 696 006e 4FF00003 		mov	r3, #0
+ 697              	.L48:
+ 698 0072 87F83630 		strb	r3, [r7, #54]
+ 658:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 659:C:\Micrium\Software\uC-LIB\lib_mem.c ****     if (mem_aligned == DEF_YES) {                               /* If mem bufs' alignment offset eq
+ 699              		.loc 1 659 0
+ 700 0076 97F83630 		ldrb	r3, [r7, #54]	@ zero_extendqisi2
+ 701 007a 012B     		cmp	r3, #1
+ 702 007c 6AD1     		bne	.L58
+ 660:C:\Micrium\Software\uC-LIB\lib_mem.c ****                                                                 /* ... optimize cmp for mem buf ali
+ 661:C:\Micrium\Software\uC-LIB\lib_mem.c ****         if (mem_align_mod_1 != 0u) {                            /* If trailing octets avail,       
+ 703              		.loc 1 661 0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 25
+
+
+ 704 007e FB6A     		ldr	r3, [r7, #44]
+ 705 0080 002B     		cmp	r3, #0
+ 706 0082 26D0     		beq	.L50
+ 662:C:\Micrium\Software\uC-LIB\lib_mem.c ****             i = mem_align_mod_1;
+ 707              		.loc 1 662 0
+ 708 0084 FB6A     		ldr	r3, [r7, #44]
+ 709 0086 BB62     		str	r3, [r7, #40]
+ 663:C:\Micrium\Software\uC-LIB\lib_mem.c ****             while ((mem_cmp == DEF_YES) &&                      /* ... cmp mem bufs while identical
+ 710              		.loc 1 663 0
+ 711 0088 19E0     		b	.L51
+ 712              	.L53:
+ 664:C:\Micrium\Software\uC-LIB\lib_mem.c ****                    (size_rem > 0)       &&                      /* ... start mem buf cmp with trail
+ 665:C:\Micrium\Software\uC-LIB\lib_mem.c ****                    (i        > 0)) {                            /* ... until next CPU_ALIGN word bo
+ 666:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 p1_mem_08--;
+ 713              		.loc 1 666 0
+ 714 008a 3B6A     		ldr	r3, [r7, #32]
+ 715 008c 03F1FF33 		add	r3, r3, #-1
+ 716 0090 3B62     		str	r3, [r7, #32]
+ 667:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 p2_mem_08--;
+ 717              		.loc 1 667 0
+ 718 0092 7B6A     		ldr	r3, [r7, #36]
+ 719 0094 03F1FF33 		add	r3, r3, #-1
+ 720 0098 7B62     		str	r3, [r7, #36]
+ 668:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 if (*p1_mem_08 != *p2_mem_08) {                 /* If ANY data octet(s) NOT identic
+ 721              		.loc 1 668 0
+ 722 009a 3B6A     		ldr	r3, [r7, #32]
+ 723 009c 1A78     		ldrb	r2, [r3, #0]	@ zero_extendqisi2
+ 724 009e 7B6A     		ldr	r3, [r7, #36]
+ 725 00a0 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 726 00a2 9A42     		cmp	r2, r3
+ 727 00a4 03D0     		beq	.L52
+ 669:C:\Micrium\Software\uC-LIB\lib_mem.c ****                      mem_cmp = DEF_NO;
+ 728              		.loc 1 669 0
+ 729 00a6 4FF00003 		mov	r3, #0
+ 730 00aa 87F83730 		strb	r3, [r7, #55]
+ 731              	.L52:
+ 670:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 }
+ 671:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 size_rem -= sizeof(CPU_INT08U);
+ 732              		.loc 1 671 0
+ 733 00ae 7B69     		ldr	r3, [r7, #20]
+ 734 00b0 03F1FF33 		add	r3, r3, #-1
+ 735 00b4 7B61     		str	r3, [r7, #20]
+ 672:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 i--;
+ 736              		.loc 1 672 0
+ 737 00b6 BB6A     		ldr	r3, [r7, #40]
+ 738 00b8 03F1FF33 		add	r3, r3, #-1
+ 739 00bc BB62     		str	r3, [r7, #40]
+ 740              	.L51:
+ 741              		.loc 1 663 0
+ 742 00be 97F83730 		ldrb	r3, [r7, #55]	@ zero_extendqisi2
+ 743 00c2 012B     		cmp	r3, #1
+ 744 00c4 05D1     		bne	.L50
+ 745 00c6 7B69     		ldr	r3, [r7, #20]
+ 746 00c8 002B     		cmp	r3, #0
+ 747 00ca 02D0     		beq	.L50
+ 748 00cc BB6A     		ldr	r3, [r7, #40]
+ 749 00ce 002B     		cmp	r3, #0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 26
+
+
+ 750 00d0 DBD1     		bne	.L53
+ 751              	.L50:
+ 673:C:\Micrium\Software\uC-LIB\lib_mem.c ****             }
+ 674:C:\Micrium\Software\uC-LIB\lib_mem.c ****         }
+ 675:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 676:C:\Micrium\Software\uC-LIB\lib_mem.c ****         if (mem_cmp == DEF_YES) {                               /* If cmp still identical, cmp alig
+ 752              		.loc 1 676 0
+ 753 00d2 97F83730 		ldrb	r3, [r7, #55]	@ zero_extendqisi2
+ 754 00d6 012B     		cmp	r3, #1
+ 755 00d8 3CD1     		bne	.L58
+ 677:C:\Micrium\Software\uC-LIB\lib_mem.c ****             p1_mem_align = (CPU_ALIGN *)p1_mem_08;              /* See Note #3a.                   
+ 756              		.loc 1 677 0
+ 757 00da 3B6A     		ldr	r3, [r7, #32]
+ 758 00dc BB61     		str	r3, [r7, #24]
+ 678:C:\Micrium\Software\uC-LIB\lib_mem.c ****             p2_mem_align = (CPU_ALIGN *)p2_mem_08;
+ 759              		.loc 1 678 0
+ 760 00de 7B6A     		ldr	r3, [r7, #36]
+ 761 00e0 FB61     		str	r3, [r7, #28]
+ 679:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 680:C:\Micrium\Software\uC-LIB\lib_mem.c ****             while ((mem_cmp  == DEF_YES) &&                     /* Cmp mem bufs while identical & .
+ 762              		.loc 1 680 0
+ 763 00e2 15E0     		b	.L54
+ 764              	.L57:
+ 681:C:\Micrium\Software\uC-LIB\lib_mem.c ****                    (size_rem >= sizeof(CPU_ALIGN))) {           /* ... mem bufs aligned on CPU_ALIG
+ 682:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 p1_mem_align--;
+ 765              		.loc 1 682 0
+ 766 00e4 BB69     		ldr	r3, [r7, #24]
+ 767 00e6 A3F10403 		sub	r3, r3, #4
+ 768 00ea BB61     		str	r3, [r7, #24]
+ 683:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 p2_mem_align--;
+ 769              		.loc 1 683 0
+ 770 00ec FB69     		ldr	r3, [r7, #28]
+ 771 00ee A3F10403 		sub	r3, r3, #4
+ 772 00f2 FB61     		str	r3, [r7, #28]
+ 684:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 if (*p1_mem_align != *p2_mem_align) {           /* If ANY data octet(s) NOT identic
+ 773              		.loc 1 684 0
+ 774 00f4 BB69     		ldr	r3, [r7, #24]
+ 775 00f6 1A68     		ldr	r2, [r3, #0]
+ 776 00f8 FB69     		ldr	r3, [r7, #28]
+ 777 00fa 1B68     		ldr	r3, [r3, #0]
+ 778 00fc 9A42     		cmp	r2, r3
+ 779 00fe 03D0     		beq	.L55
+ 685:C:\Micrium\Software\uC-LIB\lib_mem.c ****                      mem_cmp = DEF_NO;
+ 780              		.loc 1 685 0
+ 781 0100 4FF00003 		mov	r3, #0
+ 782 0104 87F83730 		strb	r3, [r7, #55]
+ 783              	.L55:
+ 686:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 }
+ 687:C:\Micrium\Software\uC-LIB\lib_mem.c ****                 size_rem -= sizeof(CPU_ALIGN);
+ 784              		.loc 1 687 0
+ 785 0108 7B69     		ldr	r3, [r7, #20]
+ 786 010a A3F10403 		sub	r3, r3, #4
+ 787 010e 7B61     		str	r3, [r7, #20]
+ 788              	.L54:
+ 789              		.loc 1 680 0
+ 790 0110 97F83730 		ldrb	r3, [r7, #55]	@ zero_extendqisi2
+ 791 0114 012B     		cmp	r3, #1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 27
+
+
+ 792 0116 02D1     		bne	.L56
+ 793 0118 7B69     		ldr	r3, [r7, #20]
+ 794 011a 032B     		cmp	r3, #3
+ 795 011c E2D8     		bhi	.L57
+ 796              	.L56:
+ 688:C:\Micrium\Software\uC-LIB\lib_mem.c ****             }
+ 689:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 690:C:\Micrium\Software\uC-LIB\lib_mem.c ****             p1_mem_08 = (CPU_INT08U *)p1_mem_align;
+ 797              		.loc 1 690 0
+ 798 011e BB69     		ldr	r3, [r7, #24]
+ 799 0120 3B62     		str	r3, [r7, #32]
+ 691:C:\Micrium\Software\uC-LIB\lib_mem.c ****             p2_mem_08 = (CPU_INT08U *)p2_mem_align;
+ 800              		.loc 1 691 0
+ 801 0122 FB69     		ldr	r3, [r7, #28]
+ 802 0124 7B62     		str	r3, [r7, #36]
+ 692:C:\Micrium\Software\uC-LIB\lib_mem.c ****         }
+ 693:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 694:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 695:C:\Micrium\Software\uC-LIB\lib_mem.c ****     while ((mem_cmp == DEF_YES) &&                              /* Cmp mem bufs while identical ...
+ 803              		.loc 1 695 0
+ 804 0126 15E0     		b	.L58
+ 805              	.L61:
+ 696:C:\Micrium\Software\uC-LIB\lib_mem.c ****            (size_rem > 0)) {                                    /* ... for unaligned mem bufs or tr
+ 697:C:\Micrium\Software\uC-LIB\lib_mem.c ****         p1_mem_08--;
+ 806              		.loc 1 697 0
+ 807 0128 3B6A     		ldr	r3, [r7, #32]
+ 808 012a 03F1FF33 		add	r3, r3, #-1
+ 809 012e 3B62     		str	r3, [r7, #32]
+ 698:C:\Micrium\Software\uC-LIB\lib_mem.c ****         p2_mem_08--;
+ 810              		.loc 1 698 0
+ 811 0130 7B6A     		ldr	r3, [r7, #36]
+ 812 0132 03F1FF33 		add	r3, r3, #-1
+ 813 0136 7B62     		str	r3, [r7, #36]
+ 699:C:\Micrium\Software\uC-LIB\lib_mem.c ****         if (*p1_mem_08 != *p2_mem_08) {                         /* If ANY data octet(s) NOT identic
+ 814              		.loc 1 699 0
+ 815 0138 3B6A     		ldr	r3, [r7, #32]
+ 816 013a 1A78     		ldrb	r2, [r3, #0]	@ zero_extendqisi2
+ 817 013c 7B6A     		ldr	r3, [r7, #36]
+ 818 013e 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 819 0140 9A42     		cmp	r2, r3
+ 820 0142 03D0     		beq	.L59
+ 700:C:\Micrium\Software\uC-LIB\lib_mem.c ****              mem_cmp = DEF_NO;
+ 821              		.loc 1 700 0
+ 822 0144 4FF00003 		mov	r3, #0
+ 823 0148 87F83730 		strb	r3, [r7, #55]
+ 824              	.L59:
+ 701:C:\Micrium\Software\uC-LIB\lib_mem.c ****         }
+ 702:C:\Micrium\Software\uC-LIB\lib_mem.c ****         size_rem -= sizeof(CPU_INT08U);
+ 825              		.loc 1 702 0
+ 826 014c 7B69     		ldr	r3, [r7, #20]
+ 827 014e 03F1FF33 		add	r3, r3, #-1
+ 828 0152 7B61     		str	r3, [r7, #20]
+ 829              	.L58:
+ 830              		.loc 1 695 0
+ 831 0154 97F83730 		ldrb	r3, [r7, #55]	@ zero_extendqisi2
+ 832 0158 012B     		cmp	r3, #1
+ 833 015a 02D1     		bne	.L60
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 28
+
+
+ 834 015c 7B69     		ldr	r3, [r7, #20]
+ 835 015e 002B     		cmp	r3, #0
+ 836 0160 E2D1     		bne	.L61
+ 837              	.L60:
+ 703:C:\Micrium\Software\uC-LIB\lib_mem.c ****     }
+ 704:C:\Micrium\Software\uC-LIB\lib_mem.c **** 
+ 705:C:\Micrium\Software\uC-LIB\lib_mem.c ****     return (mem_cmp);
+ 838              		.loc 1 705 0
+ 839 0162 97F83730 		ldrb	r3, [r7, #55]	@ zero_extendqisi2
+ 840              	.L44:
+ 706:C:\Micrium\Software\uC-LIB\lib_mem.c **** }
+ 841              		.loc 1 706 0
+ 842 0166 1846     		mov	r0, r3
+ 843 0168 07F13C07 		add	r7, r7, #60
+ 844 016c BD46     		mov	sp, r7
+ 845 016e 80BC     		pop	{r7}
+ 846 0170 7047     		bx	lr
+ 847              		.cfi_endproc
+ 848              	.LFE5:
+ 849              		.size	Mem_Cmp, .-Mem_Cmp
+ 850 0172 00BF     		.text
+ 851              	.Letext0:
+ 852              		.section	.debug_loc,"",%progbits
+ 853              	.Ldebug_loc0:
+ 854              	.LLST0:
+ 855 0000 00000000 		.4byte	.LFB0
+ 856 0004 02000000 		.4byte	.LCFI0
+ 857 0008 0100     		.2byte	0x1
+ 858 000a 5D       		.byte	0x5d
+ 859 000b 02000000 		.4byte	.LCFI0
+ 860 000f 04000000 		.4byte	.LCFI1
+ 861 0013 0200     		.2byte	0x2
+ 862 0015 7D       		.byte	0x7d
+ 863 0016 04       		.sleb128 4
+ 864 0017 04000000 		.4byte	.LCFI1
+ 865 001b 0A000000 		.4byte	.LFE0
+ 866 001f 0200     		.2byte	0x2
+ 867 0021 77       		.byte	0x77
+ 868 0022 04       		.sleb128 4
+ 869 0023 00000000 		.4byte	0x0
+ 870 0027 00000000 		.4byte	0x0
+ 871              	.LLST1:
+ 872 002b 00000000 		.4byte	.LFB1
+ 873 002f 02000000 		.4byte	.LCFI2
+ 874 0033 0100     		.2byte	0x1
+ 875 0035 5D       		.byte	0x5d
+ 876 0036 02000000 		.4byte	.LCFI2
+ 877 003a 04000000 		.4byte	.LCFI3
+ 878 003e 0200     		.2byte	0x2
+ 879 0040 7D       		.byte	0x7d
+ 880 0041 08       		.sleb128 8
+ 881 0042 04000000 		.4byte	.LCFI3
+ 882 0046 06000000 		.4byte	.LCFI4
+ 883 004a 0200     		.2byte	0x2
+ 884 004c 7D       		.byte	0x7d
+ 885 004d 10       		.sleb128 16
+ 886 004e 06000000 		.4byte	.LCFI4
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 29
+
+
+ 887 0052 1E000000 		.4byte	.LFE1
+ 888 0056 0200     		.2byte	0x2
+ 889 0058 77       		.byte	0x77
+ 890 0059 10       		.sleb128 16
+ 891 005a 00000000 		.4byte	0x0
+ 892 005e 00000000 		.4byte	0x0
+ 893              	.LLST2:
+ 894 0062 00000000 		.4byte	.LFB2
+ 895 0066 02000000 		.4byte	.LCFI5
+ 896 006a 0100     		.2byte	0x1
+ 897 006c 5D       		.byte	0x5d
+ 898 006d 02000000 		.4byte	.LCFI5
+ 899 0071 04000000 		.4byte	.LCFI6
+ 900 0075 0200     		.2byte	0x2
+ 901 0077 7D       		.byte	0x7d
+ 902 0078 04       		.sleb128 4
+ 903 0079 04000000 		.4byte	.LCFI6
+ 904 007d 06000000 		.4byte	.LCFI7
+ 905 0081 0200     		.2byte	0x2
+ 906 0083 7D       		.byte	0x7d
+ 907 0084 30       		.sleb128 48
+ 908 0085 06000000 		.4byte	.LCFI7
+ 909 0089 D2000000 		.4byte	.LFE2
+ 910 008d 0200     		.2byte	0x2
+ 911 008f 77       		.byte	0x77
+ 912 0090 30       		.sleb128 48
+ 913 0091 00000000 		.4byte	0x0
+ 914 0095 00000000 		.4byte	0x0
+ 915              	.LLST3:
+ 916 0099 00000000 		.4byte	.LFB3
+ 917 009d 02000000 		.4byte	.LCFI8
+ 918 00a1 0100     		.2byte	0x1
+ 919 00a3 5D       		.byte	0x5d
+ 920 00a4 02000000 		.4byte	.LCFI8
+ 921 00a8 04000000 		.4byte	.LCFI9
+ 922 00ac 0200     		.2byte	0x2
+ 923 00ae 7D       		.byte	0x7d
+ 924 00af 04       		.sleb128 4
+ 925 00b0 04000000 		.4byte	.LCFI9
+ 926 00b4 06000000 		.4byte	.LCFI10
+ 927 00b8 0300     		.2byte	0x3
+ 928 00ba 7D       		.byte	0x7d
+ 929 00bb C000     		.sleb128 64
+ 930 00bd 06000000 		.4byte	.LCFI10
+ 931 00c1 04010000 		.4byte	.LFE3
+ 932 00c5 0300     		.2byte	0x3
+ 933 00c7 77       		.byte	0x77
+ 934 00c8 C000     		.sleb128 64
+ 935 00ca 00000000 		.4byte	0x0
+ 936 00ce 00000000 		.4byte	0x0
+ 937              	.LLST4:
+ 938 00d2 00000000 		.4byte	.LFB4
+ 939 00d6 02000000 		.4byte	.LCFI11
+ 940 00da 0100     		.2byte	0x1
+ 941 00dc 5D       		.byte	0x5d
+ 942 00dd 02000000 		.4byte	.LCFI11
+ 943 00e1 04000000 		.4byte	.LCFI12
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 30
+
+
+ 944 00e5 0200     		.2byte	0x2
+ 945 00e7 7D       		.byte	0x7d
+ 946 00e8 08       		.sleb128 8
+ 947 00e9 04000000 		.4byte	.LCFI12
+ 948 00ed 06000000 		.4byte	.LCFI13
+ 949 00f1 0300     		.2byte	0x3
+ 950 00f3 7D       		.byte	0x7d
+ 951 00f4 C000     		.sleb128 64
+ 952 00f6 06000000 		.4byte	.LCFI13
+ 953 00fa 46010000 		.4byte	.LFE4
+ 954 00fe 0300     		.2byte	0x3
+ 955 0100 77       		.byte	0x77
+ 956 0101 C000     		.sleb128 64
+ 957 0103 00000000 		.4byte	0x0
+ 958 0107 00000000 		.4byte	0x0
+ 959              	.LLST5:
+ 960 010b 00000000 		.4byte	.LFB5
+ 961 010f 02000000 		.4byte	.LCFI14
+ 962 0113 0100     		.2byte	0x1
+ 963 0115 5D       		.byte	0x5d
+ 964 0116 02000000 		.4byte	.LCFI14
+ 965 011a 04000000 		.4byte	.LCFI15
+ 966 011e 0200     		.2byte	0x2
+ 967 0120 7D       		.byte	0x7d
+ 968 0121 04       		.sleb128 4
+ 969 0122 04000000 		.4byte	.LCFI15
+ 970 0126 06000000 		.4byte	.LCFI16
+ 971 012a 0300     		.2byte	0x3
+ 972 012c 7D       		.byte	0x7d
+ 973 012d C000     		.sleb128 64
+ 974 012f 06000000 		.4byte	.LCFI16
+ 975 0133 72010000 		.4byte	.LFE5
+ 976 0137 0300     		.2byte	0x3
+ 977 0139 77       		.byte	0x77
+ 978 013a C000     		.sleb128 64
+ 979 013c 00000000 		.4byte	0x0
+ 980 0140 00000000 		.4byte	0x0
+ 981              		.file 2 "..\\..\\..\\..\\..\\..\\uC-CPU\\ARM-Cortex-M3\\GNU/cpu.h"
+ 982              		.section	.debug_info
+ 983 0000 75040000 		.4byte	0x475
+ 984 0004 0200     		.2byte	0x2
+ 985 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 986 000a 04       		.byte	0x4
+ 987 000b 01       		.uleb128 0x1
+ 988 000c AF020000 		.4byte	.LASF50
+ 989 0010 01       		.byte	0x1
+ 990 0011 14020000 		.4byte	.LASF51
+ 991 0015 77010000 		.4byte	.LASF52
+ 992 0019 00000000 		.4byte	0x0
+ 993 001d 00000000 		.4byte	0x0
+ 994 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 995 0025 00000000 		.4byte	.Ldebug_line0
+ 996 0029 02       		.uleb128 0x2
+ 997 002a 01       		.byte	0x1
+ 998 002b 08       		.byte	0x8
+ 999 002c 72010000 		.4byte	.LASF0
+ 1000 0030 03       		.uleb128 0x3
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 31
+
+
+ 1001 0031 8C000000 		.4byte	.LASF2
+ 1002 0035 02       		.byte	0x2
+ 1003 0036 77       		.byte	0x77
+ 1004 0037 3B000000 		.4byte	0x3b
+ 1005 003b 02       		.uleb128 0x2
+ 1006 003c 01       		.byte	0x1
+ 1007 003d 08       		.byte	0x8
+ 1008 003e D5000000 		.4byte	.LASF1
+ 1009 0042 03       		.uleb128 0x3
+ 1010 0043 67010000 		.4byte	.LASF3
+ 1011 0047 02       		.byte	0x2
+ 1012 0048 78       		.byte	0x78
+ 1013 0049 3B000000 		.4byte	0x3b
+ 1014 004d 03       		.uleb128 0x3
+ 1015 004e 53010000 		.4byte	.LASF4
+ 1016 0052 02       		.byte	0x2
+ 1017 0053 79       		.byte	0x79
+ 1018 0054 58000000 		.4byte	0x58
+ 1019 0058 02       		.uleb128 0x2
+ 1020 0059 01       		.byte	0x1
+ 1021 005a 06       		.byte	0x6
+ 1022 005b FC000000 		.4byte	.LASF5
+ 1023 005f 02       		.uleb128 0x2
+ 1024 0060 02       		.byte	0x2
+ 1025 0061 07       		.byte	0x7
+ 1026 0062 40010000 		.4byte	.LASF6
+ 1027 0066 02       		.uleb128 0x2
+ 1028 0067 02       		.byte	0x2
+ 1029 0068 05       		.byte	0x5
+ 1030 0069 27000000 		.4byte	.LASF7
+ 1031 006d 03       		.uleb128 0x3
+ 1032 006e 39020000 		.4byte	.LASF8
+ 1033 0072 02       		.byte	0x2
+ 1034 0073 7C       		.byte	0x7c
+ 1035 0074 78000000 		.4byte	0x78
+ 1036 0078 02       		.uleb128 0x2
+ 1037 0079 04       		.byte	0x4
+ 1038 007a 07       		.byte	0x7
+ 1039 007b 1F010000 		.4byte	.LASF9
+ 1040 007f 04       		.uleb128 0x4
+ 1041 0080 04       		.byte	0x4
+ 1042 0081 05       		.byte	0x5
+ 1043 0082 696E7400 		.ascii	"int\000"
+ 1044 0086 02       		.uleb128 0x2
+ 1045 0087 08       		.byte	0x8
+ 1046 0088 07       		.byte	0x7
+ 1047 0089 08010000 		.4byte	.LASF10
+ 1048 008d 02       		.uleb128 0x2
+ 1049 008e 08       		.byte	0x8
+ 1050 008f 05       		.byte	0x5
+ 1051 0090 7E000000 		.4byte	.LASF11
+ 1052 0094 02       		.uleb128 0x2
+ 1053 0095 04       		.byte	0x4
+ 1054 0096 04       		.byte	0x4
+ 1055 0097 78000000 		.4byte	.LASF12
+ 1056 009b 02       		.uleb128 0x2
+ 1057 009c 08       		.byte	0x8
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 32
+
+
+ 1058 009d 04       		.byte	0x4
+ 1059 009e 6E020000 		.4byte	.LASF13
+ 1060 00a2 05       		.uleb128 0x5
+ 1061 00a3 04       		.byte	0x4
+ 1062 00a4 03       		.uleb128 0x3
+ 1063 00a5 6F000000 		.4byte	.LASF14
+ 1064 00a9 02       		.byte	0x2
+ 1065 00aa B5       		.byte	0xb5
+ 1066 00ab 6D000000 		.4byte	0x6d
+ 1067 00af 03       		.uleb128 0x3
+ 1068 00b0 5E010000 		.4byte	.LASF15
+ 1069 00b4 02       		.byte	0x2
+ 1070 00b5 BE       		.byte	0xbe
+ 1071 00b6 6D000000 		.4byte	0x6d
+ 1072 00ba 03       		.uleb128 0x3
+ 1073 00bb 83020000 		.4byte	.LASF16
+ 1074 00bf 02       		.byte	0x2
+ 1075 00c0 C6       		.byte	0xc6
+ 1076 00c1 AF000000 		.4byte	0xaf
+ 1077 00c5 03       		.uleb128 0x3
+ 1078 00c6 9C020000 		.4byte	.LASF17
+ 1079 00ca 02       		.byte	0x2
+ 1080 00cb C7       		.byte	0xc7
+ 1081 00cc A4000000 		.4byte	0xa4
+ 1082 00d0 06       		.uleb128 0x6
+ 1083 00d1 01       		.byte	0x1
+ 1084 00d2 38000000 		.4byte	.LASF53
+ 1085 00d6 01       		.byte	0x1
+ 1086 00d7 A5       		.byte	0xa5
+ 1087 00d8 01       		.byte	0x1
+ 1088 00d9 00000000 		.4byte	.LFB0
+ 1089 00dd 0A000000 		.4byte	.LFE0
+ 1090 00e1 00000000 		.4byte	.LLST0
+ 1091 00e5 07       		.uleb128 0x7
+ 1092 00e6 01       		.byte	0x1
+ 1093 00e7 ED020000 		.4byte	.LASF20
+ 1094 00eb 01       		.byte	0x1
+ 1095 00ec E1       		.byte	0xe1
+ 1096 00ed 01       		.byte	0x1
+ 1097 00ee 00000000 		.4byte	.LFB1
+ 1098 00f2 1E000000 		.4byte	.LFE1
+ 1099 00f6 2B000000 		.4byte	.LLST1
+ 1100 00fa 1B010000 		.4byte	0x11b
+ 1101 00fe 08       		.uleb128 0x8
+ 1102 00ff D0000000 		.4byte	.LASF18
+ 1103 0103 01       		.byte	0x1
+ 1104 0104 E1       		.byte	0xe1
+ 1105 0105 A2000000 		.4byte	0xa2
+ 1106 0109 02       		.byte	0x2
+ 1107 010a 91       		.byte	0x91
+ 1108 010b 74       		.sleb128 -12
+ 1109 010c 08       		.uleb128 0x8
+ 1110 010d 8D020000 		.4byte	.LASF19
+ 1111 0111 01       		.byte	0x1
+ 1112 0112 E2       		.byte	0xe2
+ 1113 0113 C5000000 		.4byte	0xc5
+ 1114 0117 02       		.byte	0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 33
+
+
+ 1115 0118 91       		.byte	0x91
+ 1116 0119 70       		.sleb128 -16
+ 1117 011a 00       		.byte	0x0
+ 1118 011b 09       		.uleb128 0x9
+ 1119 011c 01       		.byte	0x1
+ 1120 011d 5B000000 		.4byte	.LASF21
+ 1121 0121 01       		.byte	0x1
+ 1122 0122 0D01     		.2byte	0x10d
+ 1123 0124 01       		.byte	0x1
+ 1124 0125 00000000 		.4byte	.LFB2
+ 1125 0129 D2000000 		.4byte	.LFE2
+ 1126 012d 62000000 		.4byte	.LLST2
+ 1127 0131 BB010000 		.4byte	0x1bb
+ 1128 0135 0A       		.uleb128 0xa
+ 1129 0136 D0000000 		.4byte	.LASF18
+ 1130 013a 01       		.byte	0x1
+ 1131 013b 0D01     		.2byte	0x10d
+ 1132 013d A2000000 		.4byte	0xa2
+ 1133 0141 02       		.byte	0x2
+ 1134 0142 91       		.byte	0x91
+ 1135 0143 5C       		.sleb128 -36
+ 1136 0144 0A       		.uleb128 0xa
+ 1137 0145 EA000000 		.4byte	.LASF22
+ 1138 0149 01       		.byte	0x1
+ 1139 014a 0E01     		.2byte	0x10e
+ 1140 014c 42000000 		.4byte	0x42
+ 1141 0150 02       		.byte	0x2
+ 1142 0151 91       		.byte	0x91
+ 1143 0152 5B       		.sleb128 -37
+ 1144 0153 0A       		.uleb128 0xa
+ 1145 0154 8D020000 		.4byte	.LASF19
+ 1146 0158 01       		.byte	0x1
+ 1147 0159 0F01     		.2byte	0x10f
+ 1148 015b C5000000 		.4byte	0xc5
+ 1149 015f 02       		.byte	0x2
+ 1150 0160 91       		.byte	0x91
+ 1151 0161 54       		.sleb128 -44
+ 1152 0162 0B       		.uleb128 0xb
+ 1153 0163 37010000 		.4byte	.LASF23
+ 1154 0167 01       		.byte	0x1
+ 1155 0168 1101     		.2byte	0x111
+ 1156 016a C5000000 		.4byte	0xc5
+ 1157 016e 02       		.byte	0x2
+ 1158 016f 91       		.byte	0x91
+ 1159 0170 60       		.sleb128 -32
+ 1160 0171 0B       		.uleb128 0xb
+ 1161 0172 00000000 		.4byte	.LASF24
+ 1162 0176 01       		.byte	0x1
+ 1163 0177 1201     		.2byte	0x112
+ 1164 0179 BA000000 		.4byte	0xba
+ 1165 017d 02       		.byte	0x2
+ 1166 017e 91       		.byte	0x91
+ 1167 017f 64       		.sleb128 -28
+ 1168 0180 0B       		.uleb128 0xb
+ 1169 0181 2C010000 		.4byte	.LASF25
+ 1170 0185 01       		.byte	0x1
+ 1171 0186 1301     		.2byte	0x113
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 34
+
+
+ 1172 0188 BB010000 		.4byte	0x1bb
+ 1173 018c 02       		.byte	0x2
+ 1174 018d 91       		.byte	0x91
+ 1175 018e 68       		.sleb128 -24
+ 1176 018f 0B       		.uleb128 0xb
+ 1177 0190 66020000 		.4byte	.LASF26
+ 1178 0194 01       		.byte	0x1
+ 1179 0195 1401     		.2byte	0x114
+ 1180 0197 C1010000 		.4byte	0x1c1
+ 1181 019b 02       		.byte	0x2
+ 1182 019c 91       		.byte	0x91
+ 1183 019d 6C       		.sleb128 -20
+ 1184 019e 0B       		.uleb128 0xb
+ 1185 019f 75020000 		.4byte	.LASF27
+ 1186 01a3 01       		.byte	0x1
+ 1187 01a4 1501     		.2byte	0x115
+ 1188 01a6 AF000000 		.4byte	0xaf
+ 1189 01aa 02       		.byte	0x2
+ 1190 01ab 91       		.byte	0x91
+ 1191 01ac 70       		.sleb128 -16
+ 1192 01ad 0C       		.uleb128 0xc
+ 1193 01ae 6900     		.ascii	"i\000"
+ 1194 01b0 01       		.byte	0x1
+ 1195 01b1 1601     		.2byte	0x116
+ 1196 01b3 AF000000 		.4byte	0xaf
+ 1197 01b7 02       		.byte	0x2
+ 1198 01b8 91       		.byte	0x91
+ 1199 01b9 74       		.sleb128 -12
+ 1200 01ba 00       		.byte	0x0
+ 1201 01bb 0D       		.uleb128 0xd
+ 1202 01bc 04       		.byte	0x4
+ 1203 01bd BA000000 		.4byte	0xba
+ 1204 01c1 0D       		.uleb128 0xd
+ 1205 01c2 04       		.byte	0x4
+ 1206 01c3 42000000 		.4byte	0x42
+ 1207 01c7 09       		.uleb128 0x9
+ 1208 01c8 01       		.byte	0x1
+ 1209 01c9 C7000000 		.4byte	.LASF28
+ 1210 01cd 01       		.byte	0x1
+ 1211 01ce 7C01     		.2byte	0x17c
+ 1212 01d0 01       		.byte	0x1
+ 1213 01d1 00000000 		.4byte	.LFB3
+ 1214 01d5 04010000 		.4byte	.LFE3
+ 1215 01d9 99000000 		.4byte	.LLST3
+ 1216 01dd A3020000 		.4byte	0x2a3
+ 1217 01e1 0A       		.uleb128 0xa
+ 1218 01e2 50020000 		.4byte	.LASF29
+ 1219 01e6 01       		.byte	0x1
+ 1220 01e7 7C01     		.2byte	0x17c
+ 1221 01e9 A2000000 		.4byte	0xa2
+ 1222 01ed 02       		.byte	0x2
+ 1223 01ee 91       		.byte	0x91
+ 1224 01ef 4C       		.sleb128 -52
+ 1225 01f0 0A       		.uleb128 0xa
+ 1226 01f1 41000000 		.4byte	.LASF30
+ 1227 01f5 01       		.byte	0x1
+ 1228 01f6 7D01     		.2byte	0x17d
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 35
+
+
+ 1229 01f8 A3020000 		.4byte	0x2a3
+ 1230 01fc 02       		.byte	0x2
+ 1231 01fd 91       		.byte	0x91
+ 1232 01fe 48       		.sleb128 -56
+ 1233 01ff 0A       		.uleb128 0xa
+ 1234 0200 8D020000 		.4byte	.LASF19
+ 1235 0204 01       		.byte	0x1
+ 1236 0205 7E01     		.2byte	0x17e
+ 1237 0207 C5000000 		.4byte	0xc5
+ 1238 020b 02       		.byte	0x2
+ 1239 020c 91       		.byte	0x91
+ 1240 020d 44       		.sleb128 -60
+ 1241 020e 0B       		.uleb128 0xb
+ 1242 020f 37010000 		.4byte	.LASF23
+ 1243 0213 01       		.byte	0x1
+ 1244 0214 8001     		.2byte	0x180
+ 1245 0216 C5000000 		.4byte	0xc5
+ 1246 021a 02       		.byte	0x2
+ 1247 021b 91       		.byte	0x91
+ 1248 021c 50       		.sleb128 -48
+ 1249 021d 0B       		.uleb128 0xb
+ 1250 021e 98000000 		.4byte	.LASF31
+ 1251 0222 01       		.byte	0x1
+ 1252 0223 8101     		.2byte	0x181
+ 1253 0225 C5000000 		.4byte	0xc5
+ 1254 0229 02       		.byte	0x2
+ 1255 022a 91       		.byte	0x91
+ 1256 022b 54       		.sleb128 -44
+ 1257 022c 0B       		.uleb128 0xb
+ 1258 022d 56020000 		.4byte	.LASF32
+ 1259 0231 01       		.byte	0x1
+ 1260 0232 8201     		.2byte	0x182
+ 1261 0234 BB010000 		.4byte	0x1bb
+ 1262 0238 02       		.byte	0x2
+ 1263 0239 91       		.byte	0x91
+ 1264 023a 58       		.sleb128 -40
+ 1265 023b 0B       		.uleb128 0xb
+ 1266 023c 0B000000 		.4byte	.LASF33
+ 1267 0240 01       		.byte	0x1
+ 1268 0241 8301     		.2byte	0x183
+ 1269 0243 AA020000 		.4byte	0x2aa
+ 1270 0247 02       		.byte	0x2
+ 1271 0248 91       		.byte	0x91
+ 1272 0249 5C       		.sleb128 -36
+ 1273 024a 0B       		.uleb128 0xb
+ 1274 024b 4E000000 		.4byte	.LASF34
+ 1275 024f 01       		.byte	0x1
+ 1276 0250 8401     		.2byte	0x184
+ 1277 0252 C1010000 		.4byte	0x1c1
+ 1278 0256 02       		.byte	0x2
+ 1279 0257 91       		.byte	0x91
+ 1280 0258 60       		.sleb128 -32
+ 1281 0259 0B       		.uleb128 0xb
+ 1282 025a 44020000 		.4byte	.LASF35
+ 1283 025e 01       		.byte	0x1
+ 1284 025f 8501     		.2byte	0x185
+ 1285 0261 B5020000 		.4byte	0x2b5
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 36
+
+
+ 1286 0265 02       		.byte	0x2
+ 1287 0266 91       		.byte	0x91
+ 1288 0267 64       		.sleb128 -28
+ 1289 0268 0C       		.uleb128 0xc
+ 1290 0269 6900     		.ascii	"i\000"
+ 1291 026b 01       		.byte	0x1
+ 1292 026c 8601     		.2byte	0x186
+ 1293 026e AF000000 		.4byte	0xaf
+ 1294 0272 02       		.byte	0x2
+ 1295 0273 91       		.byte	0x91
+ 1296 0274 68       		.sleb128 -24
+ 1297 0275 0B       		.uleb128 0xb
+ 1298 0276 DA020000 		.4byte	.LASF36
+ 1299 027a 01       		.byte	0x1
+ 1300 027b 8701     		.2byte	0x187
+ 1301 027d AF000000 		.4byte	0xaf
+ 1302 0281 02       		.byte	0x2
+ 1303 0282 91       		.byte	0x91
+ 1304 0283 6C       		.sleb128 -20
+ 1305 0284 0B       		.uleb128 0xb
+ 1306 0285 BB020000 		.4byte	.LASF37
+ 1307 0289 01       		.byte	0x1
+ 1308 028a 8801     		.2byte	0x188
+ 1309 028c AF000000 		.4byte	0xaf
+ 1310 0290 02       		.byte	0x2
+ 1311 0291 91       		.byte	0x91
+ 1312 0292 70       		.sleb128 -16
+ 1313 0293 0B       		.uleb128 0xb
+ 1314 0294 63000000 		.4byte	.LASF38
+ 1315 0298 01       		.byte	0x1
+ 1316 0299 8901     		.2byte	0x189
+ 1317 029b 30000000 		.4byte	0x30
+ 1318 029f 02       		.byte	0x2
+ 1319 02a0 91       		.byte	0x91
+ 1320 02a1 77       		.sleb128 -9
+ 1321 02a2 00       		.byte	0x0
+ 1322 02a3 0D       		.uleb128 0xd
+ 1323 02a4 04       		.byte	0x4
+ 1324 02a5 A9020000 		.4byte	0x2a9
+ 1325 02a9 0E       		.uleb128 0xe
+ 1326 02aa 0D       		.uleb128 0xd
+ 1327 02ab 04       		.byte	0x4
+ 1328 02ac B0020000 		.4byte	0x2b0
+ 1329 02b0 0F       		.uleb128 0xf
+ 1330 02b1 BA000000 		.4byte	0xba
+ 1331 02b5 0D       		.uleb128 0xd
+ 1332 02b6 04       		.byte	0x4
+ 1333 02b7 BB020000 		.4byte	0x2bb
+ 1334 02bb 0F       		.uleb128 0xf
+ 1335 02bc 42000000 		.4byte	0x42
+ 1336 02c0 09       		.uleb128 0x9
+ 1337 02c1 01       		.byte	0x1
+ 1338 02c2 F3000000 		.4byte	.LASF39
+ 1339 02c6 01       		.byte	0x1
+ 1340 02c7 EE01     		.2byte	0x1ee
+ 1341 02c9 01       		.byte	0x1
+ 1342 02ca 00000000 		.4byte	.LFB4
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 37
+
+
+ 1343 02ce 46010000 		.4byte	.LFE4
+ 1344 02d2 D2000000 		.4byte	.LLST4
+ 1345 02d6 9C030000 		.4byte	0x39c
+ 1346 02da 0A       		.uleb128 0xa
+ 1347 02db 50020000 		.4byte	.LASF29
+ 1348 02df 01       		.byte	0x1
+ 1349 02e0 EE01     		.2byte	0x1ee
+ 1350 02e2 A2000000 		.4byte	0xa2
+ 1351 02e6 02       		.byte	0x2
+ 1352 02e7 91       		.byte	0x91
+ 1353 02e8 4C       		.sleb128 -52
+ 1354 02e9 0A       		.uleb128 0xa
+ 1355 02ea 41000000 		.4byte	.LASF30
+ 1356 02ee 01       		.byte	0x1
+ 1357 02ef EF01     		.2byte	0x1ef
+ 1358 02f1 A3020000 		.4byte	0x2a3
+ 1359 02f5 02       		.byte	0x2
+ 1360 02f6 91       		.byte	0x91
+ 1361 02f7 48       		.sleb128 -56
+ 1362 02f8 0A       		.uleb128 0xa
+ 1363 02f9 8D020000 		.4byte	.LASF19
+ 1364 02fd 01       		.byte	0x1
+ 1365 02fe F001     		.2byte	0x1f0
+ 1366 0300 C5000000 		.4byte	0xc5
+ 1367 0304 02       		.byte	0x2
+ 1368 0305 91       		.byte	0x91
+ 1369 0306 44       		.sleb128 -60
+ 1370 0307 0B       		.uleb128 0xb
+ 1371 0308 37010000 		.4byte	.LASF23
+ 1372 030c 01       		.byte	0x1
+ 1373 030d F201     		.2byte	0x1f2
+ 1374 030f C5000000 		.4byte	0xc5
+ 1375 0313 02       		.byte	0x2
+ 1376 0314 91       		.byte	0x91
+ 1377 0315 50       		.sleb128 -48
+ 1378 0316 0B       		.uleb128 0xb
+ 1379 0317 98000000 		.4byte	.LASF31
+ 1380 031b 01       		.byte	0x1
+ 1381 031c F301     		.2byte	0x1f3
+ 1382 031e C5000000 		.4byte	0xc5
+ 1383 0322 02       		.byte	0x2
+ 1384 0323 91       		.byte	0x91
+ 1385 0324 54       		.sleb128 -44
+ 1386 0325 0B       		.uleb128 0xb
+ 1387 0326 56020000 		.4byte	.LASF32
+ 1388 032a 01       		.byte	0x1
+ 1389 032b F401     		.2byte	0x1f4
+ 1390 032d BB010000 		.4byte	0x1bb
+ 1391 0331 02       		.byte	0x2
+ 1392 0332 91       		.byte	0x91
+ 1393 0333 58       		.sleb128 -40
+ 1394 0334 0B       		.uleb128 0xb
+ 1395 0335 0B000000 		.4byte	.LASF33
+ 1396 0339 01       		.byte	0x1
+ 1397 033a F501     		.2byte	0x1f5
+ 1398 033c AA020000 		.4byte	0x2aa
+ 1399 0340 02       		.byte	0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 38
+
+
+ 1400 0341 91       		.byte	0x91
+ 1401 0342 5C       		.sleb128 -36
+ 1402 0343 0B       		.uleb128 0xb
+ 1403 0344 4E000000 		.4byte	.LASF34
+ 1404 0348 01       		.byte	0x1
+ 1405 0349 F601     		.2byte	0x1f6
+ 1406 034b C1010000 		.4byte	0x1c1
+ 1407 034f 02       		.byte	0x2
+ 1408 0350 91       		.byte	0x91
+ 1409 0351 60       		.sleb128 -32
+ 1410 0352 0B       		.uleb128 0xb
+ 1411 0353 44020000 		.4byte	.LASF35
+ 1412 0357 01       		.byte	0x1
+ 1413 0358 F701     		.2byte	0x1f7
+ 1414 035a B5020000 		.4byte	0x2b5
+ 1415 035e 02       		.byte	0x2
+ 1416 035f 91       		.byte	0x91
+ 1417 0360 64       		.sleb128 -28
+ 1418 0361 0C       		.uleb128 0xc
+ 1419 0362 6900     		.ascii	"i\000"
+ 1420 0364 01       		.byte	0x1
+ 1421 0365 F801     		.2byte	0x1f8
+ 1422 0367 4D000000 		.4byte	0x4d
+ 1423 036b 02       		.byte	0x2
+ 1424 036c 91       		.byte	0x91
+ 1425 036d 6B       		.sleb128 -21
+ 1426 036e 0B       		.uleb128 0xb
+ 1427 036f DA020000 		.4byte	.LASF36
+ 1428 0373 01       		.byte	0x1
+ 1429 0374 F901     		.2byte	0x1f9
+ 1430 0376 AF000000 		.4byte	0xaf
+ 1431 037a 02       		.byte	0x2
+ 1432 037b 91       		.byte	0x91
+ 1433 037c 6C       		.sleb128 -20
+ 1434 037d 0B       		.uleb128 0xb
+ 1435 037e BB020000 		.4byte	.LASF37
+ 1436 0382 01       		.byte	0x1
+ 1437 0383 FA01     		.2byte	0x1fa
+ 1438 0385 AF000000 		.4byte	0xaf
+ 1439 0389 02       		.byte	0x2
+ 1440 038a 91       		.byte	0x91
+ 1441 038b 70       		.sleb128 -16
+ 1442 038c 0B       		.uleb128 0xb
+ 1443 038d 63000000 		.4byte	.LASF38
+ 1444 0391 01       		.byte	0x1
+ 1445 0392 FB01     		.2byte	0x1fb
+ 1446 0394 30000000 		.4byte	0x30
+ 1447 0398 02       		.byte	0x2
+ 1448 0399 91       		.byte	0x91
+ 1449 039a 77       		.sleb128 -9
+ 1450 039b 00       		.byte	0x0
+ 1451 039c 10       		.uleb128 0x10
+ 1452 039d 01       		.byte	0x1
+ 1453 039e 46000000 		.4byte	.LASF40
+ 1454 03a2 01       		.byte	0x1
+ 1455 03a3 6D02     		.2byte	0x26d
+ 1456 03a5 01       		.byte	0x1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 39
+
+
+ 1457 03a6 30000000 		.4byte	0x30
+ 1458 03aa 00000000 		.4byte	.LFB5
+ 1459 03ae 72010000 		.4byte	.LFE5
+ 1460 03b2 0B010000 		.4byte	.LLST5
+ 1461 03b6 0A       		.uleb128 0xa
+ 1462 03b7 31000000 		.4byte	.LASF41
+ 1463 03bb 01       		.byte	0x1
+ 1464 03bc 6D02     		.2byte	0x26d
+ 1465 03be A3020000 		.4byte	0x2a3
+ 1466 03c2 02       		.byte	0x2
+ 1467 03c3 91       		.byte	0x91
+ 1468 03c4 4C       		.sleb128 -52
+ 1469 03c5 0A       		.uleb128 0xa
+ 1470 03c6 E3000000 		.4byte	.LASF42
+ 1471 03ca 01       		.byte	0x1
+ 1472 03cb 6E02     		.2byte	0x26e
+ 1473 03cd A3020000 		.4byte	0x2a3
+ 1474 03d1 02       		.byte	0x2
+ 1475 03d2 91       		.byte	0x91
+ 1476 03d3 48       		.sleb128 -56
+ 1477 03d4 0A       		.uleb128 0xa
+ 1478 03d5 8D020000 		.4byte	.LASF19
+ 1479 03d9 01       		.byte	0x1
+ 1480 03da 6F02     		.2byte	0x26f
+ 1481 03dc C5000000 		.4byte	0xc5
+ 1482 03e0 02       		.byte	0x2
+ 1483 03e1 91       		.byte	0x91
+ 1484 03e2 44       		.sleb128 -60
+ 1485 03e3 0B       		.uleb128 0xb
+ 1486 03e4 37010000 		.4byte	.LASF23
+ 1487 03e8 01       		.byte	0x1
+ 1488 03e9 7102     		.2byte	0x271
+ 1489 03eb C5000000 		.4byte	0xc5
+ 1490 03ef 02       		.byte	0x2
+ 1491 03f0 91       		.byte	0x91
+ 1492 03f1 54       		.sleb128 -44
+ 1493 03f2 0B       		.uleb128 0xb
+ 1494 03f3 CD020000 		.4byte	.LASF43
+ 1495 03f7 01       		.byte	0x1
+ 1496 03f8 7202     		.2byte	0x272
+ 1497 03fa BB010000 		.4byte	0x1bb
+ 1498 03fe 02       		.byte	0x2
+ 1499 03ff 91       		.byte	0x91
+ 1500 0400 58       		.sleb128 -40
+ 1501 0401 0B       		.uleb128 0xb
+ 1502 0402 1A000000 		.4byte	.LASF44
+ 1503 0406 01       		.byte	0x1
+ 1504 0407 7302     		.2byte	0x273
+ 1505 0409 BB010000 		.4byte	0x1bb
+ 1506 040d 02       		.byte	0x2
+ 1507 040e 91       		.byte	0x91
+ 1508 040f 5C       		.sleb128 -36
+ 1509 0410 0B       		.uleb128 0xb
+ 1510 0411 F5020000 		.4byte	.LASF45
+ 1511 0415 01       		.byte	0x1
+ 1512 0416 7402     		.2byte	0x274
+ 1513 0418 B5020000 		.4byte	0x2b5
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 40
+
+
+ 1514 041c 02       		.byte	0x2
+ 1515 041d 91       		.byte	0x91
+ 1516 041e 60       		.sleb128 -32
+ 1517 041f 0B       		.uleb128 0xb
+ 1518 0420 92020000 		.4byte	.LASF46
+ 1519 0424 01       		.byte	0x1
+ 1520 0425 7502     		.2byte	0x275
+ 1521 0427 B5020000 		.4byte	0x2b5
+ 1522 042b 02       		.byte	0x2
+ 1523 042c 91       		.byte	0x91
+ 1524 042d 64       		.sleb128 -28
+ 1525 042e 0C       		.uleb128 0xc
+ 1526 042f 6900     		.ascii	"i\000"
+ 1527 0431 01       		.byte	0x1
+ 1528 0432 7602     		.2byte	0x276
+ 1529 0434 AF000000 		.4byte	0xaf
+ 1530 0438 02       		.byte	0x2
+ 1531 0439 91       		.byte	0x91
+ 1532 043a 68       		.sleb128 -24
+ 1533 043b 0B       		.uleb128 0xb
+ 1534 043c A7000000 		.4byte	.LASF47
+ 1535 0440 01       		.byte	0x1
+ 1536 0441 7702     		.2byte	0x277
+ 1537 0443 AF000000 		.4byte	0xaf
+ 1538 0447 02       		.byte	0x2
+ 1539 0448 91       		.byte	0x91
+ 1540 0449 6C       		.sleb128 -20
+ 1541 044a 0B       		.uleb128 0xb
+ 1542 044b B7000000 		.4byte	.LASF48
+ 1543 044f 01       		.byte	0x1
+ 1544 0450 7802     		.2byte	0x278
+ 1545 0452 AF000000 		.4byte	0xaf
+ 1546 0456 02       		.byte	0x2
+ 1547 0457 91       		.byte	0x91
+ 1548 0458 70       		.sleb128 -16
+ 1549 0459 0B       		.uleb128 0xb
+ 1550 045a 63000000 		.4byte	.LASF38
+ 1551 045e 01       		.byte	0x1
+ 1552 045f 7902     		.2byte	0x279
+ 1553 0461 30000000 		.4byte	0x30
+ 1554 0465 02       		.byte	0x2
+ 1555 0466 91       		.byte	0x91
+ 1556 0467 76       		.sleb128 -10
+ 1557 0468 0B       		.uleb128 0xb
+ 1558 0469 A7020000 		.4byte	.LASF49
+ 1559 046d 01       		.byte	0x1
+ 1560 046e 7A02     		.2byte	0x27a
+ 1561 0470 30000000 		.4byte	0x30
+ 1562 0474 02       		.byte	0x2
+ 1563 0475 91       		.byte	0x91
+ 1564 0476 77       		.sleb128 -9
+ 1565 0477 00       		.byte	0x0
+ 1566 0478 00       		.byte	0x0
+ 1567              		.section	.debug_abbrev
+ 1568 0000 01       		.uleb128 0x1
+ 1569 0001 11       		.uleb128 0x11
+ 1570 0002 01       		.byte	0x1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 41
+
+
+ 1571 0003 25       		.uleb128 0x25
+ 1572 0004 0E       		.uleb128 0xe
+ 1573 0005 13       		.uleb128 0x13
+ 1574 0006 0B       		.uleb128 0xb
+ 1575 0007 03       		.uleb128 0x3
+ 1576 0008 0E       		.uleb128 0xe
+ 1577 0009 1B       		.uleb128 0x1b
+ 1578 000a 0E       		.uleb128 0xe
+ 1579 000b 11       		.uleb128 0x11
+ 1580 000c 01       		.uleb128 0x1
+ 1581 000d 52       		.uleb128 0x52
+ 1582 000e 01       		.uleb128 0x1
+ 1583 000f 55       		.uleb128 0x55
+ 1584 0010 06       		.uleb128 0x6
+ 1585 0011 10       		.uleb128 0x10
+ 1586 0012 06       		.uleb128 0x6
+ 1587 0013 00       		.byte	0x0
+ 1588 0014 00       		.byte	0x0
+ 1589 0015 02       		.uleb128 0x2
+ 1590 0016 24       		.uleb128 0x24
+ 1591 0017 00       		.byte	0x0
+ 1592 0018 0B       		.uleb128 0xb
+ 1593 0019 0B       		.uleb128 0xb
+ 1594 001a 3E       		.uleb128 0x3e
+ 1595 001b 0B       		.uleb128 0xb
+ 1596 001c 03       		.uleb128 0x3
+ 1597 001d 0E       		.uleb128 0xe
+ 1598 001e 00       		.byte	0x0
+ 1599 001f 00       		.byte	0x0
+ 1600 0020 03       		.uleb128 0x3
+ 1601 0021 16       		.uleb128 0x16
+ 1602 0022 00       		.byte	0x0
+ 1603 0023 03       		.uleb128 0x3
+ 1604 0024 0E       		.uleb128 0xe
+ 1605 0025 3A       		.uleb128 0x3a
+ 1606 0026 0B       		.uleb128 0xb
+ 1607 0027 3B       		.uleb128 0x3b
+ 1608 0028 0B       		.uleb128 0xb
+ 1609 0029 49       		.uleb128 0x49
+ 1610 002a 13       		.uleb128 0x13
+ 1611 002b 00       		.byte	0x0
+ 1612 002c 00       		.byte	0x0
+ 1613 002d 04       		.uleb128 0x4
+ 1614 002e 24       		.uleb128 0x24
+ 1615 002f 00       		.byte	0x0
+ 1616 0030 0B       		.uleb128 0xb
+ 1617 0031 0B       		.uleb128 0xb
+ 1618 0032 3E       		.uleb128 0x3e
+ 1619 0033 0B       		.uleb128 0xb
+ 1620 0034 03       		.uleb128 0x3
+ 1621 0035 08       		.uleb128 0x8
+ 1622 0036 00       		.byte	0x0
+ 1623 0037 00       		.byte	0x0
+ 1624 0038 05       		.uleb128 0x5
+ 1625 0039 0F       		.uleb128 0xf
+ 1626 003a 00       		.byte	0x0
+ 1627 003b 0B       		.uleb128 0xb
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 42
+
+
+ 1628 003c 0B       		.uleb128 0xb
+ 1629 003d 00       		.byte	0x0
+ 1630 003e 00       		.byte	0x0
+ 1631 003f 06       		.uleb128 0x6
+ 1632 0040 2E       		.uleb128 0x2e
+ 1633 0041 00       		.byte	0x0
+ 1634 0042 3F       		.uleb128 0x3f
+ 1635 0043 0C       		.uleb128 0xc
+ 1636 0044 03       		.uleb128 0x3
+ 1637 0045 0E       		.uleb128 0xe
+ 1638 0046 3A       		.uleb128 0x3a
+ 1639 0047 0B       		.uleb128 0xb
+ 1640 0048 3B       		.uleb128 0x3b
+ 1641 0049 0B       		.uleb128 0xb
+ 1642 004a 27       		.uleb128 0x27
+ 1643 004b 0C       		.uleb128 0xc
+ 1644 004c 11       		.uleb128 0x11
+ 1645 004d 01       		.uleb128 0x1
+ 1646 004e 12       		.uleb128 0x12
+ 1647 004f 01       		.uleb128 0x1
+ 1648 0050 40       		.uleb128 0x40
+ 1649 0051 06       		.uleb128 0x6
+ 1650 0052 00       		.byte	0x0
+ 1651 0053 00       		.byte	0x0
+ 1652 0054 07       		.uleb128 0x7
+ 1653 0055 2E       		.uleb128 0x2e
+ 1654 0056 01       		.byte	0x1
+ 1655 0057 3F       		.uleb128 0x3f
+ 1656 0058 0C       		.uleb128 0xc
+ 1657 0059 03       		.uleb128 0x3
+ 1658 005a 0E       		.uleb128 0xe
+ 1659 005b 3A       		.uleb128 0x3a
+ 1660 005c 0B       		.uleb128 0xb
+ 1661 005d 3B       		.uleb128 0x3b
+ 1662 005e 0B       		.uleb128 0xb
+ 1663 005f 27       		.uleb128 0x27
+ 1664 0060 0C       		.uleb128 0xc
+ 1665 0061 11       		.uleb128 0x11
+ 1666 0062 01       		.uleb128 0x1
+ 1667 0063 12       		.uleb128 0x12
+ 1668 0064 01       		.uleb128 0x1
+ 1669 0065 40       		.uleb128 0x40
+ 1670 0066 06       		.uleb128 0x6
+ 1671 0067 01       		.uleb128 0x1
+ 1672 0068 13       		.uleb128 0x13
+ 1673 0069 00       		.byte	0x0
+ 1674 006a 00       		.byte	0x0
+ 1675 006b 08       		.uleb128 0x8
+ 1676 006c 05       		.uleb128 0x5
+ 1677 006d 00       		.byte	0x0
+ 1678 006e 03       		.uleb128 0x3
+ 1679 006f 0E       		.uleb128 0xe
+ 1680 0070 3A       		.uleb128 0x3a
+ 1681 0071 0B       		.uleb128 0xb
+ 1682 0072 3B       		.uleb128 0x3b
+ 1683 0073 0B       		.uleb128 0xb
+ 1684 0074 49       		.uleb128 0x49
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 43
+
+
+ 1685 0075 13       		.uleb128 0x13
+ 1686 0076 02       		.uleb128 0x2
+ 1687 0077 0A       		.uleb128 0xa
+ 1688 0078 00       		.byte	0x0
+ 1689 0079 00       		.byte	0x0
+ 1690 007a 09       		.uleb128 0x9
+ 1691 007b 2E       		.uleb128 0x2e
+ 1692 007c 01       		.byte	0x1
+ 1693 007d 3F       		.uleb128 0x3f
+ 1694 007e 0C       		.uleb128 0xc
+ 1695 007f 03       		.uleb128 0x3
+ 1696 0080 0E       		.uleb128 0xe
+ 1697 0081 3A       		.uleb128 0x3a
+ 1698 0082 0B       		.uleb128 0xb
+ 1699 0083 3B       		.uleb128 0x3b
+ 1700 0084 05       		.uleb128 0x5
+ 1701 0085 27       		.uleb128 0x27
+ 1702 0086 0C       		.uleb128 0xc
+ 1703 0087 11       		.uleb128 0x11
+ 1704 0088 01       		.uleb128 0x1
+ 1705 0089 12       		.uleb128 0x12
+ 1706 008a 01       		.uleb128 0x1
+ 1707 008b 40       		.uleb128 0x40
+ 1708 008c 06       		.uleb128 0x6
+ 1709 008d 01       		.uleb128 0x1
+ 1710 008e 13       		.uleb128 0x13
+ 1711 008f 00       		.byte	0x0
+ 1712 0090 00       		.byte	0x0
+ 1713 0091 0A       		.uleb128 0xa
+ 1714 0092 05       		.uleb128 0x5
+ 1715 0093 00       		.byte	0x0
+ 1716 0094 03       		.uleb128 0x3
+ 1717 0095 0E       		.uleb128 0xe
+ 1718 0096 3A       		.uleb128 0x3a
+ 1719 0097 0B       		.uleb128 0xb
+ 1720 0098 3B       		.uleb128 0x3b
+ 1721 0099 05       		.uleb128 0x5
+ 1722 009a 49       		.uleb128 0x49
+ 1723 009b 13       		.uleb128 0x13
+ 1724 009c 02       		.uleb128 0x2
+ 1725 009d 0A       		.uleb128 0xa
+ 1726 009e 00       		.byte	0x0
+ 1727 009f 00       		.byte	0x0
+ 1728 00a0 0B       		.uleb128 0xb
+ 1729 00a1 34       		.uleb128 0x34
+ 1730 00a2 00       		.byte	0x0
+ 1731 00a3 03       		.uleb128 0x3
+ 1732 00a4 0E       		.uleb128 0xe
+ 1733 00a5 3A       		.uleb128 0x3a
+ 1734 00a6 0B       		.uleb128 0xb
+ 1735 00a7 3B       		.uleb128 0x3b
+ 1736 00a8 05       		.uleb128 0x5
+ 1737 00a9 49       		.uleb128 0x49
+ 1738 00aa 13       		.uleb128 0x13
+ 1739 00ab 02       		.uleb128 0x2
+ 1740 00ac 0A       		.uleb128 0xa
+ 1741 00ad 00       		.byte	0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 44
+
+
+ 1742 00ae 00       		.byte	0x0
+ 1743 00af 0C       		.uleb128 0xc
+ 1744 00b0 34       		.uleb128 0x34
+ 1745 00b1 00       		.byte	0x0
+ 1746 00b2 03       		.uleb128 0x3
+ 1747 00b3 08       		.uleb128 0x8
+ 1748 00b4 3A       		.uleb128 0x3a
+ 1749 00b5 0B       		.uleb128 0xb
+ 1750 00b6 3B       		.uleb128 0x3b
+ 1751 00b7 05       		.uleb128 0x5
+ 1752 00b8 49       		.uleb128 0x49
+ 1753 00b9 13       		.uleb128 0x13
+ 1754 00ba 02       		.uleb128 0x2
+ 1755 00bb 0A       		.uleb128 0xa
+ 1756 00bc 00       		.byte	0x0
+ 1757 00bd 00       		.byte	0x0
+ 1758 00be 0D       		.uleb128 0xd
+ 1759 00bf 0F       		.uleb128 0xf
+ 1760 00c0 00       		.byte	0x0
+ 1761 00c1 0B       		.uleb128 0xb
+ 1762 00c2 0B       		.uleb128 0xb
+ 1763 00c3 49       		.uleb128 0x49
+ 1764 00c4 13       		.uleb128 0x13
+ 1765 00c5 00       		.byte	0x0
+ 1766 00c6 00       		.byte	0x0
+ 1767 00c7 0E       		.uleb128 0xe
+ 1768 00c8 26       		.uleb128 0x26
+ 1769 00c9 00       		.byte	0x0
+ 1770 00ca 00       		.byte	0x0
+ 1771 00cb 00       		.byte	0x0
+ 1772 00cc 0F       		.uleb128 0xf
+ 1773 00cd 26       		.uleb128 0x26
+ 1774 00ce 00       		.byte	0x0
+ 1775 00cf 49       		.uleb128 0x49
+ 1776 00d0 13       		.uleb128 0x13
+ 1777 00d1 00       		.byte	0x0
+ 1778 00d2 00       		.byte	0x0
+ 1779 00d3 10       		.uleb128 0x10
+ 1780 00d4 2E       		.uleb128 0x2e
+ 1781 00d5 01       		.byte	0x1
+ 1782 00d6 3F       		.uleb128 0x3f
+ 1783 00d7 0C       		.uleb128 0xc
+ 1784 00d8 03       		.uleb128 0x3
+ 1785 00d9 0E       		.uleb128 0xe
+ 1786 00da 3A       		.uleb128 0x3a
+ 1787 00db 0B       		.uleb128 0xb
+ 1788 00dc 3B       		.uleb128 0x3b
+ 1789 00dd 05       		.uleb128 0x5
+ 1790 00de 27       		.uleb128 0x27
+ 1791 00df 0C       		.uleb128 0xc
+ 1792 00e0 49       		.uleb128 0x49
+ 1793 00e1 13       		.uleb128 0x13
+ 1794 00e2 11       		.uleb128 0x11
+ 1795 00e3 01       		.uleb128 0x1
+ 1796 00e4 12       		.uleb128 0x12
+ 1797 00e5 01       		.uleb128 0x1
+ 1798 00e6 40       		.uleb128 0x40
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 45
+
+
+ 1799 00e7 06       		.uleb128 0x6
+ 1800 00e8 00       		.byte	0x0
+ 1801 00e9 00       		.byte	0x0
+ 1802 00ea 00       		.byte	0x0
+ 1803              		.section	.debug_pubnames,"",%progbits
+ 1804 0000 59000000 		.4byte	0x59
+ 1805 0004 0200     		.2byte	0x2
+ 1806 0006 00000000 		.4byte	.Ldebug_info0
+ 1807 000a 79040000 		.4byte	0x479
+ 1808 000e D0000000 		.4byte	0xd0
+ 1809 0012 4D656D5F 		.ascii	"Mem_Init\000"
+ 1809      496E6974 
+ 1809      00
+ 1810 001b E5000000 		.4byte	0xe5
+ 1811 001f 4D656D5F 		.ascii	"Mem_Clr\000"
+ 1811      436C7200 
+ 1812 0027 1B010000 		.4byte	0x11b
+ 1813 002b 4D656D5F 		.ascii	"Mem_Set\000"
+ 1813      53657400 
+ 1814 0033 C7010000 		.4byte	0x1c7
+ 1815 0037 4D656D5F 		.ascii	"Mem_Copy\000"
+ 1815      436F7079 
+ 1815      00
+ 1816 0040 C0020000 		.4byte	0x2c0
+ 1817 0044 4D656D5F 		.ascii	"Mem_Move\000"
+ 1817      4D6F7665 
+ 1817      00
+ 1818 004d 9C030000 		.4byte	0x39c
+ 1819 0051 4D656D5F 		.ascii	"Mem_Cmp\000"
+ 1819      436D7000 
+ 1820 0059 00000000 		.4byte	0x0
+ 1821              		.section	.debug_aranges,"",%progbits
+ 1822 0000 44000000 		.4byte	0x44
+ 1823 0004 0200     		.2byte	0x2
+ 1824 0006 00000000 		.4byte	.Ldebug_info0
+ 1825 000a 04       		.byte	0x4
+ 1826 000b 00       		.byte	0x0
+ 1827 000c 0000     		.2byte	0x0
+ 1828 000e 0000     		.2byte	0x0
+ 1829 0010 00000000 		.4byte	.LFB0
+ 1830 0014 0A000000 		.4byte	.LFE0-.LFB0
+ 1831 0018 00000000 		.4byte	.LFB1
+ 1832 001c 1E000000 		.4byte	.LFE1-.LFB1
+ 1833 0020 00000000 		.4byte	.LFB2
+ 1834 0024 D2000000 		.4byte	.LFE2-.LFB2
+ 1835 0028 00000000 		.4byte	.LFB3
+ 1836 002c 04010000 		.4byte	.LFE3-.LFB3
+ 1837 0030 00000000 		.4byte	.LFB4
+ 1838 0034 46010000 		.4byte	.LFE4-.LFB4
+ 1839 0038 00000000 		.4byte	.LFB5
+ 1840 003c 72010000 		.4byte	.LFE5-.LFB5
+ 1841 0040 00000000 		.4byte	0x0
+ 1842 0044 00000000 		.4byte	0x0
+ 1843              		.section	.debug_ranges,"",%progbits
+ 1844              	.Ldebug_ranges0:
+ 1845 0000 00000000 		.4byte	.Ltext0
+ 1846 0004 00000000 		.4byte	.Letext0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 46
+
+
+ 1847 0008 00000000 		.4byte	.LFB0
+ 1848 000c 0A000000 		.4byte	.LFE0
+ 1849 0010 00000000 		.4byte	.LFB1
+ 1850 0014 1E000000 		.4byte	.LFE1
+ 1851 0018 00000000 		.4byte	.LFB2
+ 1852 001c D2000000 		.4byte	.LFE2
+ 1853 0020 00000000 		.4byte	.LFB3
+ 1854 0024 04010000 		.4byte	.LFE3
+ 1855 0028 00000000 		.4byte	.LFB4
+ 1856 002c 46010000 		.4byte	.LFE4
+ 1857 0030 00000000 		.4byte	.LFB5
+ 1858 0034 72010000 		.4byte	.LFE5
+ 1859 0038 00000000 		.4byte	0x0
+ 1860 003c 00000000 		.4byte	0x0
+ 1861              		.section	.debug_str,"MS",%progbits,1
+ 1862              	.LASF24:
+ 1863 0000 64617461 		.ascii	"data_align\000"
+ 1863      5F616C69 
+ 1863      676E00
+ 1864              	.LASF33:
+ 1865 000b 706D656D 		.ascii	"pmem_align_src\000"
+ 1865      5F616C69 
+ 1865      676E5F73 
+ 1865      726300
+ 1866              	.LASF44:
+ 1867 001a 70325F6D 		.ascii	"p2_mem_align\000"
+ 1867      656D5F61 
+ 1867      6C69676E 
+ 1867      00
+ 1868              	.LASF7:
+ 1869 0027 73686F72 		.ascii	"short int\000"
+ 1869      7420696E 
+ 1869      7400
+ 1870              	.LASF41:
+ 1871 0031 70315F6D 		.ascii	"p1_mem\000"
+ 1871      656D00
+ 1872              	.LASF53:
+ 1873 0038 4D656D5F 		.ascii	"Mem_Init\000"
+ 1873      496E6974 
+ 1873      00
+ 1874              	.LASF30:
+ 1875 0041 70737263 		.ascii	"psrc\000"
+ 1875      00
+ 1876              	.LASF40:
+ 1877 0046 4D656D5F 		.ascii	"Mem_Cmp\000"
+ 1877      436D7000 
+ 1878              	.LASF34:
+ 1879 004e 706D656D 		.ascii	"pmem_08_dest\000"
+ 1879      5F30385F 
+ 1879      64657374 
+ 1879      00
+ 1880              	.LASF21:
+ 1881 005b 4D656D5F 		.ascii	"Mem_Set\000"
+ 1881      53657400 
+ 1882              	.LASF38:
+ 1883 0063 6D656D5F 		.ascii	"mem_aligned\000"
+ 1883      616C6967 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 47
+
+
+ 1883      6E656400 
+ 1884              	.LASF14:
+ 1885 006f 4350555F 		.ascii	"CPU_ADDR\000"
+ 1885      41444452 
+ 1885      00
+ 1886              	.LASF12:
+ 1887 0078 666C6F61 		.ascii	"float\000"
+ 1887      7400
+ 1888              	.LASF11:
+ 1889 007e 6C6F6E67 		.ascii	"long long int\000"
+ 1889      206C6F6E 
+ 1889      6720696E 
+ 1889      7400
+ 1890              	.LASF2:
+ 1891 008c 4350555F 		.ascii	"CPU_BOOLEAN\000"
+ 1891      424F4F4C 
+ 1891      45414E00 
+ 1892              	.LASF31:
+ 1893 0098 6D656D5F 		.ascii	"mem_gap_octets\000"
+ 1893      6761705F 
+ 1893      6F637465 
+ 1893      747300
+ 1894              	.LASF47:
+ 1895 00a7 6D656D5F 		.ascii	"mem_align_mod_1\000"
+ 1895      616C6967 
+ 1895      6E5F6D6F 
+ 1895      645F3100 
+ 1896              	.LASF48:
+ 1897 00b7 6D656D5F 		.ascii	"mem_align_mod_2\000"
+ 1897      616C6967 
+ 1897      6E5F6D6F 
+ 1897      645F3200 
+ 1898              	.LASF28:
+ 1899 00c7 4D656D5F 		.ascii	"Mem_Copy\000"
+ 1899      436F7079 
+ 1899      00
+ 1900              	.LASF18:
+ 1901 00d0 706D656D 		.ascii	"pmem\000"
+ 1901      00
+ 1902              	.LASF1:
+ 1903 00d5 756E7369 		.ascii	"unsigned char\000"
+ 1903      676E6564 
+ 1903      20636861 
+ 1903      7200
+ 1904              	.LASF42:
+ 1905 00e3 70325F6D 		.ascii	"p2_mem\000"
+ 1905      656D00
+ 1906              	.LASF22:
+ 1907 00ea 64617461 		.ascii	"data_val\000"
+ 1907      5F76616C 
+ 1907      00
+ 1908              	.LASF39:
+ 1909 00f3 4D656D5F 		.ascii	"Mem_Move\000"
+ 1909      4D6F7665 
+ 1909      00
+ 1910              	.LASF5:
+ 1911 00fc 7369676E 		.ascii	"signed char\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 48
+
+
+ 1911      65642063 
+ 1911      68617200 
+ 1912              	.LASF10:
+ 1913 0108 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1913      206C6F6E 
+ 1913      6720756E 
+ 1913      7369676E 
+ 1913      65642069 
+ 1914              	.LASF9:
+ 1915 011f 756E7369 		.ascii	"unsigned int\000"
+ 1915      676E6564 
+ 1915      20696E74 
+ 1915      00
+ 1916              	.LASF25:
+ 1917 012c 706D656D 		.ascii	"pmem_align\000"
+ 1917      5F616C69 
+ 1917      676E00
+ 1918              	.LASF23:
+ 1919 0137 73697A65 		.ascii	"size_rem\000"
+ 1919      5F72656D 
+ 1919      00
+ 1920              	.LASF6:
+ 1921 0140 73686F72 		.ascii	"short unsigned int\000"
+ 1921      7420756E 
+ 1921      7369676E 
+ 1921      65642069 
+ 1921      6E7400
+ 1922              	.LASF4:
+ 1923 0153 4350555F 		.ascii	"CPU_INT08S\000"
+ 1923      494E5430 
+ 1923      385300
+ 1924              	.LASF15:
+ 1925 015e 4350555F 		.ascii	"CPU_DATA\000"
+ 1925      44415441 
+ 1925      00
+ 1926              	.LASF3:
+ 1927 0167 4350555F 		.ascii	"CPU_INT08U\000"
+ 1927      494E5430 
+ 1927      385500
+ 1928              	.LASF0:
+ 1929 0172 63686172 		.ascii	"char\000"
+ 1929      00
+ 1930              	.LASF52:
+ 1931 0177 433A5C55 		.ascii	"C:\\Users\\daniel01\\Desktop\\CY8CKIT-050_uCOS-III\\"
+ 1931      73657273 
+ 1931      5C64616E 
+ 1931      69656C30 
+ 1931      315C4465 
+ 1932 01a6 43593843 		.ascii	"CY8CKIT-050_uCOS-III\\Micrium\\Software\\EvalBoards"
+ 1932      4B49542D 
+ 1932      3035305F 
+ 1932      75434F53 
+ 1932      2D494949 
+ 1933 01d6 5C437970 		.ascii	"\\Cypress\\CY8CKIT-050\\PSoC\\uCOS-III-Probe\\uCOS-"
+ 1933      72657373 
+ 1933      5C435938 
+ 1933      434B4954 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 49
+
+
+ 1933      2D303530 
+ 1934 0204 4949492D 		.ascii	"III-Probe.cydsn\000"
+ 1934      50726F62 
+ 1934      652E6379 
+ 1934      64736E00 
+ 1935              	.LASF51:
+ 1936 0214 433A5C4D 		.ascii	"C:\\Micrium\\Software\\uC-LIB\\lib_mem.c\000"
+ 1936      69637269 
+ 1936      756D5C53 
+ 1936      6F667477 
+ 1936      6172655C 
+ 1937              	.LASF8:
+ 1938 0239 4350555F 		.ascii	"CPU_INT32U\000"
+ 1938      494E5433 
+ 1938      325500
+ 1939              	.LASF35:
+ 1940 0244 706D656D 		.ascii	"pmem_08_src\000"
+ 1940      5F30385F 
+ 1940      73726300 
+ 1941              	.LASF29:
+ 1942 0250 70646573 		.ascii	"pdest\000"
+ 1942      7400
+ 1943              	.LASF32:
+ 1944 0256 706D656D 		.ascii	"pmem_align_dest\000"
+ 1944      5F616C69 
+ 1944      676E5F64 
+ 1944      65737400 
+ 1945              	.LASF26:
+ 1946 0266 706D656D 		.ascii	"pmem_08\000"
+ 1946      5F303800 
+ 1947              	.LASF13:
+ 1948 026e 646F7562 		.ascii	"double\000"
+ 1948      6C6500
+ 1949              	.LASF27:
+ 1950 0275 6D656D5F 		.ascii	"mem_align_mod\000"
+ 1950      616C6967 
+ 1950      6E5F6D6F 
+ 1950      6400
+ 1951              	.LASF16:
+ 1952 0283 4350555F 		.ascii	"CPU_ALIGN\000"
+ 1952      414C4947 
+ 1952      4E00
+ 1953              	.LASF19:
+ 1954 028d 73697A65 		.ascii	"size\000"
+ 1954      00
+ 1955              	.LASF46:
+ 1956 0292 70325F6D 		.ascii	"p2_mem_08\000"
+ 1956      656D5F30 
+ 1956      3800
+ 1957              	.LASF17:
+ 1958 029c 4350555F 		.ascii	"CPU_SIZE_T\000"
+ 1958      53495A45 
+ 1958      5F5400
+ 1959              	.LASF49:
+ 1960 02a7 6D656D5F 		.ascii	"mem_cmp\000"
+ 1960      636D7000 
+ 1961              	.LASF50:
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccJZvVod.s 			page 50
+
+
+ 1962 02af 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 1962      4320342E 
+ 1962      342E3100 
+ 1963              	.LASF37:
+ 1964 02bb 6D656D5F 		.ascii	"mem_align_mod_src\000"
+ 1964      616C6967 
+ 1964      6E5F6D6F 
+ 1964      645F7372 
+ 1964      6300
+ 1965              	.LASF43:
+ 1966 02cd 70315F6D 		.ascii	"p1_mem_align\000"
+ 1966      656D5F61 
+ 1966      6C69676E 
+ 1966      00
+ 1967              	.LASF36:
+ 1968 02da 6D656D5F 		.ascii	"mem_align_mod_dest\000"
+ 1968      616C6967 
+ 1968      6E5F6D6F 
+ 1968      645F6465 
+ 1968      737400
+ 1969              	.LASF20:
+ 1970 02ed 4D656D5F 		.ascii	"Mem_Clr\000"
+ 1970      436C7200 
+ 1971              	.LASF45:
+ 1972 02f5 70315F6D 		.ascii	"p1_mem_08\000"
+ 1972      656D5F30 
+ 1972      3800
+ 1973              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"

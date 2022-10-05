@@ -1,0 +1,1204 @@
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"os_prio.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 07010000 		.text
+  20      0200A700 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.comm	OSPrioTbl,4,4
+  24              		.section	.text.OS_PrioInit,"ax",%progbits
+  25              		.align	2
+  26              		.global	OS_PrioInit
+  27              		.thumb
+  28              		.thumb_func
+  29              		.type	OS_PrioInit, %function
+  30              	OS_PrioInit:
+  31              	.LFB0:
+  32              		.file 1 "C:\\Micrium\\Software\\uCOS-III\\Source\\os_prio.c"
+   1:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** /*
+   2:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** ***************************************************************************************************
+   3:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *                                                      uC/OS-III
+   4:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *                                                 The Real-Time Kernel
+   5:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+   6:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *                                  (c) Copyright 2009-2012; Micrium, Inc.; Weston, FL
+   7:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *                           All rights reserved.  Protected by international copyright laws.
+   8:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+   9:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *                                                 PRIORITY MANAGEMENT
+  10:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+  11:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * File    : OS_PRIO.C
+  12:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * By      : JJL
+  13:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Version : V3.03.01
+  14:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+  15:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * LICENSING TERMS:
+  16:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * ---------------
+  17:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *           uC/OS-III is provided in source form for FREE short-term evaluation, for educational us
+  18:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *           for peaceful research.  If you plan or intend to use uC/OS-III in a commercial applicat
+  19:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *           product then, you need to contact Micrium to properly license uC/OS-III for its use in 
+  20:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *           application/product.   We provide ALL the source code for your convenience and to help 
+  21:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *           experience uC/OS-III.  The fact that the source is provided does NOT mean that you can 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 2
+
+
+  22:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *           it commercially without paying a licensing fee.
+  23:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+  24:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *           Knowledge of the source code may NOT be used to develop a similar product.
+  25:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+  26:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *           Please help us continue to provide the embedded community with the finest software avai
+  27:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *           Your honesty is greatly appreciated.
+  28:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+  29:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *           You can contact us at www.micrium.com, or by phone at +1 (954) 217-2036.
+  30:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** ***************************************************************************************************
+  31:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** */
+  32:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+  33:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** #define  MICRIUM_SOURCE
+  34:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** #include <os.h>
+  35:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+  36:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** #ifdef VSC_INCLUDE_SOURCE_FILE_NAMES
+  37:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** const  CPU_CHAR  *os_prio__c = "$Id: $";
+  38:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** #endif
+  39:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+  40:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+  41:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** CPU_DATA   OSPrioTbl[OS_PRIO_TBL_SIZE];                     /* Declare the array local to this file
+  42:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****                                                             /* ... optimization.  In other words, t
+  43:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****                                                             /* ... table to be located in fast memo
+  44:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+  45:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** /*
+  46:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** ***************************************************************************************************
+  47:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *                                               INITIALIZE THE PRIORITY LIST
+  48:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+  49:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Description: This function is called by uC/OS-III to initialize the list of ready priorities.
+  50:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+  51:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Arguments  : none
+  52:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+  53:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Returns    : none
+  54:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+  55:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Note       : This function is INTERNAL to uC/OS-III and your application should not call it.
+  56:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** ***************************************************************************************************
+  57:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** */
+  58:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+  59:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** void  OS_PrioInit (void)
+  60:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** {
+  33              		.loc 1 60 0
+  34              		.cfi_startproc
+  35              		@ args = 0, pretend = 0, frame = 8
+  36              		@ frame_needed = 1, uses_anonymous_args = 0
+  37              		@ link register save eliminated.
+  38 0000 80B4     		push	{r7}
+  39              	.LCFI0:
+  40              		.cfi_def_cfa_offset 4
+  41 0002 83B0     		sub	sp, sp, #12
+  42              	.LCFI1:
+  43              		.cfi_def_cfa_offset 16
+  44 0004 00AF     		add	r7, sp, #0
+  45              		.cfi_offset 7, -4
+  46              	.LCFI2:
+  47              		.cfi_def_cfa_register 7
+  61:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     CPU_DATA  i;
+  62:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+  63:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 3
+
+
+  64:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****                                                             /* Clear the bitmap table ... no task i
+  65:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     for (i = 0u; i < OS_PRIO_TBL_SIZE; i++) {
+  48              		.loc 1 65 0
+  49 0006 4FF00003 		mov	r3, #0
+  50 000a 7B60     		str	r3, [r7, #4]
+  51 000c 0CE0     		b	.L2
+  52              	.L3:
+  66:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****          OSPrioTbl[i] = (CPU_DATA)0;
+  53              		.loc 1 66 0
+  54 000e 7A68     		ldr	r2, [r7, #4]
+  55 0010 40F20003 		movw	r3, #:lower16:OSPrioTbl
+  56 0014 C0F20003 		movt	r3, #:upper16:OSPrioTbl
+  57 0018 4FF00001 		mov	r1, #0
+  58 001c 43F82210 		str	r1, [r3, r2, lsl #2]
+  59              		.loc 1 65 0
+  60 0020 7B68     		ldr	r3, [r7, #4]
+  61 0022 03F10103 		add	r3, r3, #1
+  62 0026 7B60     		str	r3, [r7, #4]
+  63              	.L2:
+  64 0028 7B68     		ldr	r3, [r7, #4]
+  65 002a 002B     		cmp	r3, #0
+  66 002c EFD0     		beq	.L3
+  67:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     }
+  68:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** }
+  67              		.loc 1 68 0
+  68 002e 07F10C07 		add	r7, r7, #12
+  69 0032 BD46     		mov	sp, r7
+  70 0034 80BC     		pop	{r7}
+  71 0036 7047     		bx	lr
+  72              		.cfi_endproc
+  73              	.LFE0:
+  74              		.size	OS_PrioInit, .-OS_PrioInit
+  75              		.section	.text.OS_PrioGetHighest,"ax",%progbits
+  76              		.align	2
+  77              		.global	OS_PrioGetHighest
+  78              		.thumb
+  79              		.thumb_func
+  80              		.type	OS_PrioGetHighest, %function
+  81              	OS_PrioGetHighest:
+  82              	.LFB1:
+  69:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+  70:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** /*
+  71:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** ***************************************************************************************************
+  72:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *                                           GET HIGHEST PRIORITY TASK WAITING
+  73:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+  74:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Description: This function is called by other uC/OS-III services to determine the highest priorit
+  75:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *              waiting on the event.
+  76:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+  77:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Arguments  : none
+  78:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+  79:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Returns    : The priority of the Highest Priority Task (HPT) waiting for the event
+  80:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+  81:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+  82:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** ***************************************************************************************************
+  83:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** */
+  84:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+  85:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** OS_PRIO  OS_PrioGetHighest (void)
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 4
+
+
+  86:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** {
+  83              		.loc 1 86 0
+  84              		.cfi_startproc
+  85              		@ args = 0, pretend = 0, frame = 8
+  86              		@ frame_needed = 1, uses_anonymous_args = 0
+  87 0000 80B5     		push	{r7, lr}
+  88              	.LCFI3:
+  89              		.cfi_def_cfa_offset 8
+  90 0002 82B0     		sub	sp, sp, #8
+  91              	.LCFI4:
+  92              		.cfi_def_cfa_offset 16
+  93 0004 00AF     		add	r7, sp, #0
+  94              		.cfi_offset 14, -4
+  95              		.cfi_offset 7, -8
+  96              	.LCFI5:
+  97              		.cfi_def_cfa_register 7
+  87:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     CPU_DATA  *p_tbl;
+  88:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     OS_PRIO    prio;
+  89:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+  90:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+  91:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     prio  = (OS_PRIO)0;
+  98              		.loc 1 91 0
+  99 0006 4FF00003 		mov	r3, #0
+ 100 000a FB71     		strb	r3, [r7, #7]
+  92:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     p_tbl = &OSPrioTbl[0];
+ 101              		.loc 1 92 0
+ 102 000c 40F20003 		movw	r3, #:lower16:OSPrioTbl
+ 103 0010 C0F20003 		movt	r3, #:upper16:OSPrioTbl
+ 104 0014 3B60     		str	r3, [r7, #0]
+  93:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     while (*p_tbl == (CPU_DATA)0) {                         /* Search the bitmap table for the high
+ 105              		.loc 1 93 0
+ 106 0016 07E0     		b	.L6
+ 107              	.L7:
+  94:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****         prio += DEF_INT_CPU_NBR_BITS;                       /* Compute the step of each CPU_DATA en
+ 108              		.loc 1 94 0
+ 109 0018 FB79     		ldrb	r3, [r7, #7]
+ 110 001a 03F12003 		add	r3, r3, #32
+ 111 001e FB71     		strb	r3, [r7, #7]
+  95:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****         p_tbl++;
+ 112              		.loc 1 95 0
+ 113 0020 3B68     		ldr	r3, [r7, #0]
+ 114 0022 03F10403 		add	r3, r3, #4
+ 115 0026 3B60     		str	r3, [r7, #0]
+ 116              	.L6:
+ 117              		.loc 1 93 0
+ 118 0028 3B68     		ldr	r3, [r7, #0]
+ 119 002a 1B68     		ldr	r3, [r3, #0]
+ 120 002c 002B     		cmp	r3, #0
+ 121 002e F3D0     		beq	.L7
+  96:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     }
+  97:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     prio += (OS_PRIO)CPU_CntLeadZeros(*p_tbl);              /* Find the position of the first bit s
+ 122              		.loc 1 97 0
+ 123 0030 3B68     		ldr	r3, [r7, #0]
+ 124 0032 1B68     		ldr	r3, [r3, #0]
+ 125 0034 1846     		mov	r0, r3
+ 126 0036 FFF7FEFF 		bl	CPU_CntLeadZeros
+ 127 003a 0346     		mov	r3, r0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 5
+
+
+ 128 003c DAB2     		uxtb	r2, r3
+ 129 003e FB79     		ldrb	r3, [r7, #7]
+ 130 0040 1344     		add	r3, r2, r3
+ 131 0042 FB71     		strb	r3, [r7, #7]
+  98:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     return (prio);
+ 132              		.loc 1 98 0
+ 133 0044 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  99:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** }
+ 134              		.loc 1 99 0
+ 135 0046 1846     		mov	r0, r3
+ 136 0048 07F10807 		add	r7, r7, #8
+ 137 004c BD46     		mov	sp, r7
+ 138 004e 80BD     		pop	{r7, pc}
+ 139              		.cfi_endproc
+ 140              	.LFE1:
+ 141              		.size	OS_PrioGetHighest, .-OS_PrioGetHighest
+ 142              		.section	.text.OS_PrioInsert,"ax",%progbits
+ 143              		.align	2
+ 144              		.global	OS_PrioInsert
+ 145              		.thumb
+ 146              		.thumb_func
+ 147              		.type	OS_PrioInsert, %function
+ 148              	OS_PrioInsert:
+ 149              	.LFB2:
+ 100:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+ 101:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** /*
+ 102:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** ***************************************************************************************************
+ 103:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *                                                  INSERT PRIORITY
+ 104:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+ 105:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Description: This function is called to insert a priority in the priority table.
+ 106:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+ 107:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Arguments  : prio     is the priority to insert
+ 108:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+ 109:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Returns    : none
+ 110:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+ 111:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+ 112:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** ***************************************************************************************************
+ 113:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** */
+ 114:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+ 115:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** void  OS_PrioInsert (OS_PRIO  prio)
+ 116:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** {
+ 150              		.loc 1 116 0
+ 151              		.cfi_startproc
+ 152              		@ args = 0, pretend = 0, frame = 24
+ 153              		@ frame_needed = 1, uses_anonymous_args = 0
+ 154              		@ link register save eliminated.
+ 155 0000 80B4     		push	{r7}
+ 156              	.LCFI6:
+ 157              		.cfi_def_cfa_offset 4
+ 158 0002 87B0     		sub	sp, sp, #28
+ 159              	.LCFI7:
+ 160              		.cfi_def_cfa_offset 32
+ 161 0004 00AF     		add	r7, sp, #0
+ 162              		.cfi_offset 7, -4
+ 163              	.LCFI8:
+ 164              		.cfi_def_cfa_register 7
+ 165 0006 0346     		mov	r3, r0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 6
+
+
+ 166 0008 FB71     		strb	r3, [r7, #7]
+ 117:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     CPU_DATA  bit;
+ 118:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     CPU_DATA  bit_nbr;
+ 119:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     OS_PRIO   ix;
+ 120:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+ 121:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+ 122:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     ix             = prio / DEF_INT_CPU_NBR_BITS;
+ 167              		.loc 1 122 0
+ 168 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 169 000c 4FEA5313 		lsr	r3, r3, #5
+ 170 0010 FB75     		strb	r3, [r7, #23]
+ 123:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     bit_nbr        = (CPU_DATA)prio & (DEF_INT_CPU_NBR_BITS - 1u);
+ 171              		.loc 1 123 0
+ 172 0012 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 173 0014 03F01F03 		and	r3, r3, #31
+ 174 0018 3B61     		str	r3, [r7, #16]
+ 124:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     bit            = 1u;
+ 175              		.loc 1 124 0
+ 176 001a 4FF00103 		mov	r3, #1
+ 177 001e FB60     		str	r3, [r7, #12]
+ 125:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     bit          <<= (DEF_INT_CPU_NBR_BITS - 1u) - bit_nbr;
+ 178              		.loc 1 125 0
+ 179 0020 3B69     		ldr	r3, [r7, #16]
+ 180 0022 C3F11F03 		rsb	r3, r3, #31
+ 181 0026 FA68     		ldr	r2, [r7, #12]
+ 182 0028 02FA03F3 		lsl	r3, r2, r3
+ 183 002c FB60     		str	r3, [r7, #12]
+ 126:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     OSPrioTbl[ix] |= bit;
+ 184              		.loc 1 126 0
+ 185 002e FA7D     		ldrb	r2, [r7, #23]	@ zero_extendqisi2
+ 186 0030 F97D     		ldrb	r1, [r7, #23]	@ zero_extendqisi2
+ 187 0032 40F20003 		movw	r3, #:lower16:OSPrioTbl
+ 188 0036 C0F20003 		movt	r3, #:upper16:OSPrioTbl
+ 189 003a 53F82110 		ldr	r1, [r3, r1, lsl #2]
+ 190 003e FB68     		ldr	r3, [r7, #12]
+ 191 0040 41EA0301 		orr	r1, r1, r3
+ 192 0044 40F20003 		movw	r3, #:lower16:OSPrioTbl
+ 193 0048 C0F20003 		movt	r3, #:upper16:OSPrioTbl
+ 194 004c 43F82210 		str	r1, [r3, r2, lsl #2]
+ 127:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** }
+ 195              		.loc 1 127 0
+ 196 0050 07F11C07 		add	r7, r7, #28
+ 197 0054 BD46     		mov	sp, r7
+ 198 0056 80BC     		pop	{r7}
+ 199 0058 7047     		bx	lr
+ 200              		.cfi_endproc
+ 201              	.LFE2:
+ 202              		.size	OS_PrioInsert, .-OS_PrioInsert
+ 203 005a 00BF     		.section	.text.OS_PrioRemove,"ax",%progbits
+ 204              		.align	2
+ 205              		.global	OS_PrioRemove
+ 206              		.thumb
+ 207              		.thumb_func
+ 208              		.type	OS_PrioRemove, %function
+ 209              	OS_PrioRemove:
+ 210              	.LFB3:
+ 128:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 7
+
+
+ 129:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** /*
+ 130:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** ***************************************************************************************************
+ 131:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *                                                   REMOVE PRIORITY
+ 132:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+ 133:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Description: This function is called to remove a priority in the priority table.
+ 134:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+ 135:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Arguments  : prio     is the priority to remove
+ 136:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+ 137:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Returns    : none
+ 138:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** *
+ 139:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+ 140:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** ***************************************************************************************************
+ 141:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** */
+ 142:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+ 143:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** void  OS_PrioRemove (OS_PRIO  prio)
+ 144:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** {
+ 211              		.loc 1 144 0
+ 212              		.cfi_startproc
+ 213              		@ args = 0, pretend = 0, frame = 24
+ 214              		@ frame_needed = 1, uses_anonymous_args = 0
+ 215              		@ link register save eliminated.
+ 216 0000 80B4     		push	{r7}
+ 217              	.LCFI9:
+ 218              		.cfi_def_cfa_offset 4
+ 219 0002 87B0     		sub	sp, sp, #28
+ 220              	.LCFI10:
+ 221              		.cfi_def_cfa_offset 32
+ 222 0004 00AF     		add	r7, sp, #0
+ 223              		.cfi_offset 7, -4
+ 224              	.LCFI11:
+ 225              		.cfi_def_cfa_register 7
+ 226 0006 0346     		mov	r3, r0
+ 227 0008 FB71     		strb	r3, [r7, #7]
+ 145:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     CPU_DATA  bit;
+ 146:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     CPU_DATA  bit_nbr;
+ 147:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     OS_PRIO   ix;
+ 148:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+ 149:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** 
+ 150:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     ix             = prio / DEF_INT_CPU_NBR_BITS;
+ 228              		.loc 1 150 0
+ 229 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 230 000c 4FEA5313 		lsr	r3, r3, #5
+ 231 0010 FB75     		strb	r3, [r7, #23]
+ 151:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     bit_nbr        = (CPU_DATA)prio & (DEF_INT_CPU_NBR_BITS - 1u);
+ 232              		.loc 1 151 0
+ 233 0012 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 234 0014 03F01F03 		and	r3, r3, #31
+ 235 0018 3B61     		str	r3, [r7, #16]
+ 152:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     bit            = 1u;
+ 236              		.loc 1 152 0
+ 237 001a 4FF00103 		mov	r3, #1
+ 238 001e FB60     		str	r3, [r7, #12]
+ 153:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     bit          <<= (DEF_INT_CPU_NBR_BITS - 1u) - bit_nbr;
+ 239              		.loc 1 153 0
+ 240 0020 3B69     		ldr	r3, [r7, #16]
+ 241 0022 C3F11F03 		rsb	r3, r3, #31
+ 242 0026 FA68     		ldr	r2, [r7, #12]
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 8
+
+
+ 243 0028 02FA03F3 		lsl	r3, r2, r3
+ 244 002c FB60     		str	r3, [r7, #12]
+ 154:C:\Micrium\Software\uCOS-III\Source\os_prio.c ****     OSPrioTbl[ix] &= ~bit;
+ 245              		.loc 1 154 0
+ 246 002e FA7D     		ldrb	r2, [r7, #23]	@ zero_extendqisi2
+ 247 0030 F97D     		ldrb	r1, [r7, #23]	@ zero_extendqisi2
+ 248 0032 40F20003 		movw	r3, #:lower16:OSPrioTbl
+ 249 0036 C0F20003 		movt	r3, #:upper16:OSPrioTbl
+ 250 003a 53F82110 		ldr	r1, [r3, r1, lsl #2]
+ 251 003e FB68     		ldr	r3, [r7, #12]
+ 252 0040 6FEA0303 		mvn	r3, r3
+ 253 0044 01EA0301 		and	r1, r1, r3
+ 254 0048 40F20003 		movw	r3, #:lower16:OSPrioTbl
+ 255 004c C0F20003 		movt	r3, #:upper16:OSPrioTbl
+ 256 0050 43F82210 		str	r1, [r3, r2, lsl #2]
+ 155:C:\Micrium\Software\uCOS-III\Source\os_prio.c **** }
+ 257              		.loc 1 155 0
+ 258 0054 07F11C07 		add	r7, r7, #28
+ 259 0058 BD46     		mov	sp, r7
+ 260 005a 80BC     		pop	{r7}
+ 261 005c 7047     		bx	lr
+ 262              		.cfi_endproc
+ 263              	.LFE3:
+ 264              		.size	OS_PrioRemove, .-OS_PrioRemove
+ 265 005e 00BF     		.text
+ 266              	.Letext0:
+ 267              		.section	.debug_loc,"",%progbits
+ 268              	.Ldebug_loc0:
+ 269              	.LLST0:
+ 270 0000 00000000 		.4byte	.LFB0
+ 271 0004 02000000 		.4byte	.LCFI0
+ 272 0008 0100     		.2byte	0x1
+ 273 000a 5D       		.byte	0x5d
+ 274 000b 02000000 		.4byte	.LCFI0
+ 275 000f 04000000 		.4byte	.LCFI1
+ 276 0013 0200     		.2byte	0x2
+ 277 0015 7D       		.byte	0x7d
+ 278 0016 04       		.sleb128 4
+ 279 0017 04000000 		.4byte	.LCFI1
+ 280 001b 06000000 		.4byte	.LCFI2
+ 281 001f 0200     		.2byte	0x2
+ 282 0021 7D       		.byte	0x7d
+ 283 0022 10       		.sleb128 16
+ 284 0023 06000000 		.4byte	.LCFI2
+ 285 0027 38000000 		.4byte	.LFE0
+ 286 002b 0200     		.2byte	0x2
+ 287 002d 77       		.byte	0x77
+ 288 002e 10       		.sleb128 16
+ 289 002f 00000000 		.4byte	0x0
+ 290 0033 00000000 		.4byte	0x0
+ 291              	.LLST1:
+ 292 0037 00000000 		.4byte	.LFB1
+ 293 003b 02000000 		.4byte	.LCFI3
+ 294 003f 0100     		.2byte	0x1
+ 295 0041 5D       		.byte	0x5d
+ 296 0042 02000000 		.4byte	.LCFI3
+ 297 0046 04000000 		.4byte	.LCFI4
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 9
+
+
+ 298 004a 0200     		.2byte	0x2
+ 299 004c 7D       		.byte	0x7d
+ 300 004d 08       		.sleb128 8
+ 301 004e 04000000 		.4byte	.LCFI4
+ 302 0052 06000000 		.4byte	.LCFI5
+ 303 0056 0200     		.2byte	0x2
+ 304 0058 7D       		.byte	0x7d
+ 305 0059 10       		.sleb128 16
+ 306 005a 06000000 		.4byte	.LCFI5
+ 307 005e 50000000 		.4byte	.LFE1
+ 308 0062 0200     		.2byte	0x2
+ 309 0064 77       		.byte	0x77
+ 310 0065 10       		.sleb128 16
+ 311 0066 00000000 		.4byte	0x0
+ 312 006a 00000000 		.4byte	0x0
+ 313              	.LLST2:
+ 314 006e 00000000 		.4byte	.LFB2
+ 315 0072 02000000 		.4byte	.LCFI6
+ 316 0076 0100     		.2byte	0x1
+ 317 0078 5D       		.byte	0x5d
+ 318 0079 02000000 		.4byte	.LCFI6
+ 319 007d 04000000 		.4byte	.LCFI7
+ 320 0081 0200     		.2byte	0x2
+ 321 0083 7D       		.byte	0x7d
+ 322 0084 04       		.sleb128 4
+ 323 0085 04000000 		.4byte	.LCFI7
+ 324 0089 06000000 		.4byte	.LCFI8
+ 325 008d 0200     		.2byte	0x2
+ 326 008f 7D       		.byte	0x7d
+ 327 0090 20       		.sleb128 32
+ 328 0091 06000000 		.4byte	.LCFI8
+ 329 0095 5A000000 		.4byte	.LFE2
+ 330 0099 0200     		.2byte	0x2
+ 331 009b 77       		.byte	0x77
+ 332 009c 20       		.sleb128 32
+ 333 009d 00000000 		.4byte	0x0
+ 334 00a1 00000000 		.4byte	0x0
+ 335              	.LLST3:
+ 336 00a5 00000000 		.4byte	.LFB3
+ 337 00a9 02000000 		.4byte	.LCFI9
+ 338 00ad 0100     		.2byte	0x1
+ 339 00af 5D       		.byte	0x5d
+ 340 00b0 02000000 		.4byte	.LCFI9
+ 341 00b4 04000000 		.4byte	.LCFI10
+ 342 00b8 0200     		.2byte	0x2
+ 343 00ba 7D       		.byte	0x7d
+ 344 00bb 04       		.sleb128 4
+ 345 00bc 04000000 		.4byte	.LCFI10
+ 346 00c0 06000000 		.4byte	.LCFI11
+ 347 00c4 0200     		.2byte	0x2
+ 348 00c6 7D       		.byte	0x7d
+ 349 00c7 20       		.sleb128 32
+ 350 00c8 06000000 		.4byte	.LCFI11
+ 351 00cc 5E000000 		.4byte	.LFE3
+ 352 00d0 0200     		.2byte	0x2
+ 353 00d2 77       		.byte	0x77
+ 354 00d3 20       		.sleb128 32
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 10
+
+
+ 355 00d4 00000000 		.4byte	0x0
+ 356 00d8 00000000 		.4byte	0x0
+ 357              		.file 2 "..\\..\\..\\..\\..\\..\\uC-CPU\\ARM-Cortex-M3\\GNU/cpu.h"
+ 358              		.file 3 "..\\..\\..\\..\\..\\..\\uCOS-III\\Source/os_type.h"
+ 359              		.section	.debug_info
+ 360 0000 CC010000 		.4byte	0x1cc
+ 361 0004 0200     		.2byte	0x2
+ 362 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 363 000a 04       		.byte	0x4
+ 364 000b 01       		.uleb128 0x1
+ 365 000c A1000000 		.4byte	.LASF20
+ 366 0010 01       		.byte	0x1
+ 367 0011 43000000 		.4byte	.LASF21
+ 368 0015 29010000 		.4byte	.LASF22
+ 369 0019 00000000 		.4byte	0x0
+ 370 001d 00000000 		.4byte	0x0
+ 371 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 372 0025 00000000 		.4byte	.Ldebug_line0
+ 373 0029 02       		.uleb128 0x2
+ 374 002a 01       		.byte	0x1
+ 375 002b 08       		.byte	0x8
+ 376 002c BB000000 		.4byte	.LASF0
+ 377 0030 02       		.uleb128 0x2
+ 378 0031 01       		.byte	0x1
+ 379 0032 08       		.byte	0x8
+ 380 0033 AD000000 		.4byte	.LASF1
+ 381 0037 03       		.uleb128 0x3
+ 382 0038 11010000 		.4byte	.LASF5
+ 383 003c 02       		.byte	0x2
+ 384 003d 78       		.byte	0x78
+ 385 003e 30000000 		.4byte	0x30
+ 386 0042 02       		.uleb128 0x2
+ 387 0043 01       		.byte	0x1
+ 388 0044 06       		.byte	0x6
+ 389 0045 F6000000 		.4byte	.LASF2
+ 390 0049 02       		.uleb128 0x2
+ 391 004a 02       		.byte	0x2
+ 392 004b 07       		.byte	0x7
+ 393 004c E3000000 		.4byte	.LASF3
+ 394 0050 02       		.uleb128 0x2
+ 395 0051 02       		.byte	0x2
+ 396 0052 05       		.byte	0x5
+ 397 0053 D2000000 		.4byte	.LASF4
+ 398 0057 03       		.uleb128 0x3
+ 399 0058 1C000000 		.4byte	.LASF6
+ 400 005c 02       		.byte	0x2
+ 401 005d 7C       		.byte	0x7c
+ 402 005e 62000000 		.4byte	0x62
+ 403 0062 02       		.uleb128 0x2
+ 404 0063 04       		.byte	0x4
+ 405 0064 07       		.byte	0x7
+ 406 0065 1C010000 		.4byte	.LASF7
+ 407 0069 04       		.uleb128 0x4
+ 408 006a 04       		.byte	0x4
+ 409 006b 05       		.byte	0x5
+ 410 006c 696E7400 		.ascii	"int\000"
+ 411 0070 02       		.uleb128 0x2
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 11
+
+
+ 412 0071 08       		.byte	0x8
+ 413 0072 07       		.byte	0x7
+ 414 0073 85000000 		.4byte	.LASF8
+ 415 0077 02       		.uleb128 0x2
+ 416 0078 08       		.byte	0x8
+ 417 0079 05       		.byte	0x5
+ 418 007a 00000000 		.4byte	.LASF9
+ 419 007e 02       		.uleb128 0x2
+ 420 007f 04       		.byte	0x4
+ 421 0080 04       		.byte	0x4
+ 422 0081 02010000 		.4byte	.LASF10
+ 423 0085 02       		.uleb128 0x2
+ 424 0086 08       		.byte	0x8
+ 425 0087 04       		.byte	0x4
+ 426 0088 DC000000 		.4byte	.LASF11
+ 427 008c 03       		.uleb128 0x3
+ 428 008d 08010000 		.4byte	.LASF12
+ 429 0091 02       		.byte	0x2
+ 430 0092 BE       		.byte	0xbe
+ 431 0093 57000000 		.4byte	0x57
+ 432 0097 03       		.uleb128 0x3
+ 433 0098 27000000 		.4byte	.LASF13
+ 434 009c 03       		.byte	0x3
+ 435 009d 49       		.byte	0x49
+ 436 009e 37000000 		.4byte	0x37
+ 437 00a2 05       		.uleb128 0x5
+ 438 00a3 04       		.byte	0x4
+ 439 00a4 07       		.byte	0x7
+ 440 00a5 06       		.uleb128 0x6
+ 441 00a6 01       		.byte	0x1
+ 442 00a7 71000000 		.4byte	.LASF16
+ 443 00ab 01       		.byte	0x1
+ 444 00ac 3B       		.byte	0x3b
+ 445 00ad 01       		.byte	0x1
+ 446 00ae 00000000 		.4byte	.LFB0
+ 447 00b2 38000000 		.4byte	.LFE0
+ 448 00b6 00000000 		.4byte	.LLST0
+ 449 00ba CB000000 		.4byte	0xcb
+ 450 00be 07       		.uleb128 0x7
+ 451 00bf 6900     		.ascii	"i\000"
+ 452 00c1 01       		.byte	0x1
+ 453 00c2 3D       		.byte	0x3d
+ 454 00c3 8C000000 		.4byte	0x8c
+ 455 00c7 02       		.byte	0x2
+ 456 00c8 91       		.byte	0x91
+ 457 00c9 74       		.sleb128 -12
+ 458 00ca 00       		.byte	0x0
+ 459 00cb 08       		.uleb128 0x8
+ 460 00cc 01       		.byte	0x1
+ 461 00cd C0000000 		.4byte	.LASF23
+ 462 00d1 01       		.byte	0x1
+ 463 00d2 55       		.byte	0x55
+ 464 00d3 01       		.byte	0x1
+ 465 00d4 97000000 		.4byte	0x97
+ 466 00d8 00000000 		.4byte	.LFB1
+ 467 00dc 50000000 		.4byte	.LFE1
+ 468 00e0 37000000 		.4byte	.LLST1
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 12
+
+
+ 469 00e4 05010000 		.4byte	0x105
+ 470 00e8 09       		.uleb128 0x9
+ 471 00e9 3D000000 		.4byte	.LASF14
+ 472 00ed 01       		.byte	0x1
+ 473 00ee 57       		.byte	0x57
+ 474 00ef 05010000 		.4byte	0x105
+ 475 00f3 02       		.byte	0x2
+ 476 00f4 91       		.byte	0x91
+ 477 00f5 70       		.sleb128 -16
+ 478 00f6 09       		.uleb128 0x9
+ 479 00f7 9C000000 		.4byte	.LASF15
+ 480 00fb 01       		.byte	0x1
+ 481 00fc 58       		.byte	0x58
+ 482 00fd 97000000 		.4byte	0x97
+ 483 0101 02       		.byte	0x2
+ 484 0102 91       		.byte	0x91
+ 485 0103 77       		.sleb128 -9
+ 486 0104 00       		.byte	0x0
+ 487 0105 0A       		.uleb128 0xa
+ 488 0106 04       		.byte	0x4
+ 489 0107 8C000000 		.4byte	0x8c
+ 490 010b 06       		.uleb128 0x6
+ 491 010c 01       		.byte	0x1
+ 492 010d 0E000000 		.4byte	.LASF17
+ 493 0111 01       		.byte	0x1
+ 494 0112 73       		.byte	0x73
+ 495 0113 01       		.byte	0x1
+ 496 0114 00000000 		.4byte	.LFB2
+ 497 0118 5A000000 		.4byte	.LFE2
+ 498 011c 6E000000 		.4byte	.LLST2
+ 499 0120 5C010000 		.4byte	0x15c
+ 500 0124 0B       		.uleb128 0xb
+ 501 0125 9C000000 		.4byte	.LASF15
+ 502 0129 01       		.byte	0x1
+ 503 012a 73       		.byte	0x73
+ 504 012b 97000000 		.4byte	0x97
+ 505 012f 02       		.byte	0x2
+ 506 0130 91       		.byte	0x91
+ 507 0131 67       		.sleb128 -25
+ 508 0132 07       		.uleb128 0x7
+ 509 0133 62697400 		.ascii	"bit\000"
+ 510 0137 01       		.byte	0x1
+ 511 0138 75       		.byte	0x75
+ 512 0139 8C000000 		.4byte	0x8c
+ 513 013d 02       		.byte	0x2
+ 514 013e 91       		.byte	0x91
+ 515 013f 6C       		.sleb128 -20
+ 516 0140 09       		.uleb128 0x9
+ 517 0141 7D000000 		.4byte	.LASF18
+ 518 0145 01       		.byte	0x1
+ 519 0146 76       		.byte	0x76
+ 520 0147 8C000000 		.4byte	0x8c
+ 521 014b 02       		.byte	0x2
+ 522 014c 91       		.byte	0x91
+ 523 014d 70       		.sleb128 -16
+ 524 014e 07       		.uleb128 0x7
+ 525 014f 697800   		.ascii	"ix\000"
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 13
+
+
+ 526 0152 01       		.byte	0x1
+ 527 0153 77       		.byte	0x77
+ 528 0154 97000000 		.4byte	0x97
+ 529 0158 02       		.byte	0x2
+ 530 0159 91       		.byte	0x91
+ 531 015a 77       		.sleb128 -9
+ 532 015b 00       		.byte	0x0
+ 533 015c 06       		.uleb128 0x6
+ 534 015d 01       		.byte	0x1
+ 535 015e 2F000000 		.4byte	.LASF19
+ 536 0162 01       		.byte	0x1
+ 537 0163 8F       		.byte	0x8f
+ 538 0164 01       		.byte	0x1
+ 539 0165 00000000 		.4byte	.LFB3
+ 540 0169 5E000000 		.4byte	.LFE3
+ 541 016d A5000000 		.4byte	.LLST3
+ 542 0171 AD010000 		.4byte	0x1ad
+ 543 0175 0B       		.uleb128 0xb
+ 544 0176 9C000000 		.4byte	.LASF15
+ 545 017a 01       		.byte	0x1
+ 546 017b 8F       		.byte	0x8f
+ 547 017c 97000000 		.4byte	0x97
+ 548 0180 02       		.byte	0x2
+ 549 0181 91       		.byte	0x91
+ 550 0182 67       		.sleb128 -25
+ 551 0183 07       		.uleb128 0x7
+ 552 0184 62697400 		.ascii	"bit\000"
+ 553 0188 01       		.byte	0x1
+ 554 0189 91       		.byte	0x91
+ 555 018a 8C000000 		.4byte	0x8c
+ 556 018e 02       		.byte	0x2
+ 557 018f 91       		.byte	0x91
+ 558 0190 6C       		.sleb128 -20
+ 559 0191 09       		.uleb128 0x9
+ 560 0192 7D000000 		.4byte	.LASF18
+ 561 0196 01       		.byte	0x1
+ 562 0197 92       		.byte	0x92
+ 563 0198 8C000000 		.4byte	0x8c
+ 564 019c 02       		.byte	0x2
+ 565 019d 91       		.byte	0x91
+ 566 019e 70       		.sleb128 -16
+ 567 019f 07       		.uleb128 0x7
+ 568 01a0 697800   		.ascii	"ix\000"
+ 569 01a3 01       		.byte	0x1
+ 570 01a4 93       		.byte	0x93
+ 571 01a5 97000000 		.4byte	0x97
+ 572 01a9 02       		.byte	0x2
+ 573 01aa 91       		.byte	0x91
+ 574 01ab 77       		.sleb128 -9
+ 575 01ac 00       		.byte	0x0
+ 576 01ad 0C       		.uleb128 0xc
+ 577 01ae 8C000000 		.4byte	0x8c
+ 578 01b2 BD010000 		.4byte	0x1bd
+ 579 01b6 0D       		.uleb128 0xd
+ 580 01b7 A2000000 		.4byte	0xa2
+ 581 01bb 00       		.byte	0x0
+ 582 01bc 00       		.byte	0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 14
+
+
+ 583 01bd 0E       		.uleb128 0xe
+ 584 01be C6010000 		.4byte	.LASF24
+ 585 01c2 01       		.byte	0x1
+ 586 01c3 29       		.byte	0x29
+ 587 01c4 AD010000 		.4byte	0x1ad
+ 588 01c8 01       		.byte	0x1
+ 589 01c9 05       		.byte	0x5
+ 590 01ca 03       		.byte	0x3
+ 591 01cb 00000000 		.4byte	OSPrioTbl
+ 592 01cf 00       		.byte	0x0
+ 593              		.section	.debug_abbrev
+ 594 0000 01       		.uleb128 0x1
+ 595 0001 11       		.uleb128 0x11
+ 596 0002 01       		.byte	0x1
+ 597 0003 25       		.uleb128 0x25
+ 598 0004 0E       		.uleb128 0xe
+ 599 0005 13       		.uleb128 0x13
+ 600 0006 0B       		.uleb128 0xb
+ 601 0007 03       		.uleb128 0x3
+ 602 0008 0E       		.uleb128 0xe
+ 603 0009 1B       		.uleb128 0x1b
+ 604 000a 0E       		.uleb128 0xe
+ 605 000b 11       		.uleb128 0x11
+ 606 000c 01       		.uleb128 0x1
+ 607 000d 52       		.uleb128 0x52
+ 608 000e 01       		.uleb128 0x1
+ 609 000f 55       		.uleb128 0x55
+ 610 0010 06       		.uleb128 0x6
+ 611 0011 10       		.uleb128 0x10
+ 612 0012 06       		.uleb128 0x6
+ 613 0013 00       		.byte	0x0
+ 614 0014 00       		.byte	0x0
+ 615 0015 02       		.uleb128 0x2
+ 616 0016 24       		.uleb128 0x24
+ 617 0017 00       		.byte	0x0
+ 618 0018 0B       		.uleb128 0xb
+ 619 0019 0B       		.uleb128 0xb
+ 620 001a 3E       		.uleb128 0x3e
+ 621 001b 0B       		.uleb128 0xb
+ 622 001c 03       		.uleb128 0x3
+ 623 001d 0E       		.uleb128 0xe
+ 624 001e 00       		.byte	0x0
+ 625 001f 00       		.byte	0x0
+ 626 0020 03       		.uleb128 0x3
+ 627 0021 16       		.uleb128 0x16
+ 628 0022 00       		.byte	0x0
+ 629 0023 03       		.uleb128 0x3
+ 630 0024 0E       		.uleb128 0xe
+ 631 0025 3A       		.uleb128 0x3a
+ 632 0026 0B       		.uleb128 0xb
+ 633 0027 3B       		.uleb128 0x3b
+ 634 0028 0B       		.uleb128 0xb
+ 635 0029 49       		.uleb128 0x49
+ 636 002a 13       		.uleb128 0x13
+ 637 002b 00       		.byte	0x0
+ 638 002c 00       		.byte	0x0
+ 639 002d 04       		.uleb128 0x4
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 15
+
+
+ 640 002e 24       		.uleb128 0x24
+ 641 002f 00       		.byte	0x0
+ 642 0030 0B       		.uleb128 0xb
+ 643 0031 0B       		.uleb128 0xb
+ 644 0032 3E       		.uleb128 0x3e
+ 645 0033 0B       		.uleb128 0xb
+ 646 0034 03       		.uleb128 0x3
+ 647 0035 08       		.uleb128 0x8
+ 648 0036 00       		.byte	0x0
+ 649 0037 00       		.byte	0x0
+ 650 0038 05       		.uleb128 0x5
+ 651 0039 24       		.uleb128 0x24
+ 652 003a 00       		.byte	0x0
+ 653 003b 0B       		.uleb128 0xb
+ 654 003c 0B       		.uleb128 0xb
+ 655 003d 3E       		.uleb128 0x3e
+ 656 003e 0B       		.uleb128 0xb
+ 657 003f 00       		.byte	0x0
+ 658 0040 00       		.byte	0x0
+ 659 0041 06       		.uleb128 0x6
+ 660 0042 2E       		.uleb128 0x2e
+ 661 0043 01       		.byte	0x1
+ 662 0044 3F       		.uleb128 0x3f
+ 663 0045 0C       		.uleb128 0xc
+ 664 0046 03       		.uleb128 0x3
+ 665 0047 0E       		.uleb128 0xe
+ 666 0048 3A       		.uleb128 0x3a
+ 667 0049 0B       		.uleb128 0xb
+ 668 004a 3B       		.uleb128 0x3b
+ 669 004b 0B       		.uleb128 0xb
+ 670 004c 27       		.uleb128 0x27
+ 671 004d 0C       		.uleb128 0xc
+ 672 004e 11       		.uleb128 0x11
+ 673 004f 01       		.uleb128 0x1
+ 674 0050 12       		.uleb128 0x12
+ 675 0051 01       		.uleb128 0x1
+ 676 0052 40       		.uleb128 0x40
+ 677 0053 06       		.uleb128 0x6
+ 678 0054 01       		.uleb128 0x1
+ 679 0055 13       		.uleb128 0x13
+ 680 0056 00       		.byte	0x0
+ 681 0057 00       		.byte	0x0
+ 682 0058 07       		.uleb128 0x7
+ 683 0059 34       		.uleb128 0x34
+ 684 005a 00       		.byte	0x0
+ 685 005b 03       		.uleb128 0x3
+ 686 005c 08       		.uleb128 0x8
+ 687 005d 3A       		.uleb128 0x3a
+ 688 005e 0B       		.uleb128 0xb
+ 689 005f 3B       		.uleb128 0x3b
+ 690 0060 0B       		.uleb128 0xb
+ 691 0061 49       		.uleb128 0x49
+ 692 0062 13       		.uleb128 0x13
+ 693 0063 02       		.uleb128 0x2
+ 694 0064 0A       		.uleb128 0xa
+ 695 0065 00       		.byte	0x0
+ 696 0066 00       		.byte	0x0
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 16
+
+
+ 697 0067 08       		.uleb128 0x8
+ 698 0068 2E       		.uleb128 0x2e
+ 699 0069 01       		.byte	0x1
+ 700 006a 3F       		.uleb128 0x3f
+ 701 006b 0C       		.uleb128 0xc
+ 702 006c 03       		.uleb128 0x3
+ 703 006d 0E       		.uleb128 0xe
+ 704 006e 3A       		.uleb128 0x3a
+ 705 006f 0B       		.uleb128 0xb
+ 706 0070 3B       		.uleb128 0x3b
+ 707 0071 0B       		.uleb128 0xb
+ 708 0072 27       		.uleb128 0x27
+ 709 0073 0C       		.uleb128 0xc
+ 710 0074 49       		.uleb128 0x49
+ 711 0075 13       		.uleb128 0x13
+ 712 0076 11       		.uleb128 0x11
+ 713 0077 01       		.uleb128 0x1
+ 714 0078 12       		.uleb128 0x12
+ 715 0079 01       		.uleb128 0x1
+ 716 007a 40       		.uleb128 0x40
+ 717 007b 06       		.uleb128 0x6
+ 718 007c 01       		.uleb128 0x1
+ 719 007d 13       		.uleb128 0x13
+ 720 007e 00       		.byte	0x0
+ 721 007f 00       		.byte	0x0
+ 722 0080 09       		.uleb128 0x9
+ 723 0081 34       		.uleb128 0x34
+ 724 0082 00       		.byte	0x0
+ 725 0083 03       		.uleb128 0x3
+ 726 0084 0E       		.uleb128 0xe
+ 727 0085 3A       		.uleb128 0x3a
+ 728 0086 0B       		.uleb128 0xb
+ 729 0087 3B       		.uleb128 0x3b
+ 730 0088 0B       		.uleb128 0xb
+ 731 0089 49       		.uleb128 0x49
+ 732 008a 13       		.uleb128 0x13
+ 733 008b 02       		.uleb128 0x2
+ 734 008c 0A       		.uleb128 0xa
+ 735 008d 00       		.byte	0x0
+ 736 008e 00       		.byte	0x0
+ 737 008f 0A       		.uleb128 0xa
+ 738 0090 0F       		.uleb128 0xf
+ 739 0091 00       		.byte	0x0
+ 740 0092 0B       		.uleb128 0xb
+ 741 0093 0B       		.uleb128 0xb
+ 742 0094 49       		.uleb128 0x49
+ 743 0095 13       		.uleb128 0x13
+ 744 0096 00       		.byte	0x0
+ 745 0097 00       		.byte	0x0
+ 746 0098 0B       		.uleb128 0xb
+ 747 0099 05       		.uleb128 0x5
+ 748 009a 00       		.byte	0x0
+ 749 009b 03       		.uleb128 0x3
+ 750 009c 0E       		.uleb128 0xe
+ 751 009d 3A       		.uleb128 0x3a
+ 752 009e 0B       		.uleb128 0xb
+ 753 009f 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 17
+
+
+ 754 00a0 0B       		.uleb128 0xb
+ 755 00a1 49       		.uleb128 0x49
+ 756 00a2 13       		.uleb128 0x13
+ 757 00a3 02       		.uleb128 0x2
+ 758 00a4 0A       		.uleb128 0xa
+ 759 00a5 00       		.byte	0x0
+ 760 00a6 00       		.byte	0x0
+ 761 00a7 0C       		.uleb128 0xc
+ 762 00a8 01       		.uleb128 0x1
+ 763 00a9 01       		.byte	0x1
+ 764 00aa 49       		.uleb128 0x49
+ 765 00ab 13       		.uleb128 0x13
+ 766 00ac 01       		.uleb128 0x1
+ 767 00ad 13       		.uleb128 0x13
+ 768 00ae 00       		.byte	0x0
+ 769 00af 00       		.byte	0x0
+ 770 00b0 0D       		.uleb128 0xd
+ 771 00b1 21       		.uleb128 0x21
+ 772 00b2 00       		.byte	0x0
+ 773 00b3 49       		.uleb128 0x49
+ 774 00b4 13       		.uleb128 0x13
+ 775 00b5 2F       		.uleb128 0x2f
+ 776 00b6 0B       		.uleb128 0xb
+ 777 00b7 00       		.byte	0x0
+ 778 00b8 00       		.byte	0x0
+ 779 00b9 0E       		.uleb128 0xe
+ 780 00ba 34       		.uleb128 0x34
+ 781 00bb 00       		.byte	0x0
+ 782 00bc 03       		.uleb128 0x3
+ 783 00bd 0E       		.uleb128 0xe
+ 784 00be 3A       		.uleb128 0x3a
+ 785 00bf 0B       		.uleb128 0xb
+ 786 00c0 3B       		.uleb128 0x3b
+ 787 00c1 0B       		.uleb128 0xb
+ 788 00c2 49       		.uleb128 0x49
+ 789 00c3 13       		.uleb128 0x13
+ 790 00c4 3F       		.uleb128 0x3f
+ 791 00c5 0C       		.uleb128 0xc
+ 792 00c6 02       		.uleb128 0x2
+ 793 00c7 0A       		.uleb128 0xa
+ 794 00c8 00       		.byte	0x0
+ 795 00c9 00       		.byte	0x0
+ 796 00ca 00       		.byte	0x0
+ 797              		.section	.debug_pubnames,"",%progbits
+ 798 0000 66000000 		.4byte	0x66
+ 799 0004 0200     		.2byte	0x2
+ 800 0006 00000000 		.4byte	.Ldebug_info0
+ 801 000a D0010000 		.4byte	0x1d0
+ 802 000e A5000000 		.4byte	0xa5
+ 803 0012 4F535F50 		.ascii	"OS_PrioInit\000"
+ 803      72696F49 
+ 803      6E697400 
+ 804 001e CB000000 		.4byte	0xcb
+ 805 0022 4F535F50 		.ascii	"OS_PrioGetHighest\000"
+ 805      72696F47 
+ 805      65744869 
+ 805      67686573 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 18
+
+
+ 805      7400
+ 806 0034 0B010000 		.4byte	0x10b
+ 807 0038 4F535F50 		.ascii	"OS_PrioInsert\000"
+ 807      72696F49 
+ 807      6E736572 
+ 807      7400
+ 808 0046 5C010000 		.4byte	0x15c
+ 809 004a 4F535F50 		.ascii	"OS_PrioRemove\000"
+ 809      72696F52 
+ 809      656D6F76 
+ 809      6500
+ 810 0058 BD010000 		.4byte	0x1bd
+ 811 005c 4F535072 		.ascii	"OSPrioTbl\000"
+ 811      696F5462 
+ 811      6C00
+ 812 0066 00000000 		.4byte	0x0
+ 813              		.section	.debug_aranges,"",%progbits
+ 814 0000 34000000 		.4byte	0x34
+ 815 0004 0200     		.2byte	0x2
+ 816 0006 00000000 		.4byte	.Ldebug_info0
+ 817 000a 04       		.byte	0x4
+ 818 000b 00       		.byte	0x0
+ 819 000c 0000     		.2byte	0x0
+ 820 000e 0000     		.2byte	0x0
+ 821 0010 00000000 		.4byte	.LFB0
+ 822 0014 38000000 		.4byte	.LFE0-.LFB0
+ 823 0018 00000000 		.4byte	.LFB1
+ 824 001c 50000000 		.4byte	.LFE1-.LFB1
+ 825 0020 00000000 		.4byte	.LFB2
+ 826 0024 5A000000 		.4byte	.LFE2-.LFB2
+ 827 0028 00000000 		.4byte	.LFB3
+ 828 002c 5E000000 		.4byte	.LFE3-.LFB3
+ 829 0030 00000000 		.4byte	0x0
+ 830 0034 00000000 		.4byte	0x0
+ 831              		.section	.debug_ranges,"",%progbits
+ 832              	.Ldebug_ranges0:
+ 833 0000 00000000 		.4byte	.Ltext0
+ 834 0004 00000000 		.4byte	.Letext0
+ 835 0008 00000000 		.4byte	.LFB0
+ 836 000c 38000000 		.4byte	.LFE0
+ 837 0010 00000000 		.4byte	.LFB1
+ 838 0014 50000000 		.4byte	.LFE1
+ 839 0018 00000000 		.4byte	.LFB2
+ 840 001c 5A000000 		.4byte	.LFE2
+ 841 0020 00000000 		.4byte	.LFB3
+ 842 0024 5E000000 		.4byte	.LFE3
+ 843 0028 00000000 		.4byte	0x0
+ 844 002c 00000000 		.4byte	0x0
+ 845              		.section	.debug_str,"MS",%progbits,1
+ 846              	.LASF9:
+ 847 0000 6C6F6E67 		.ascii	"long long int\000"
+ 847      206C6F6E 
+ 847      6720696E 
+ 847      7400
+ 848              	.LASF17:
+ 849 000e 4F535F50 		.ascii	"OS_PrioInsert\000"
+ 849      72696F49 
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 19
+
+
+ 849      6E736572 
+ 849      7400
+ 850              	.LASF6:
+ 851 001c 4350555F 		.ascii	"CPU_INT32U\000"
+ 851      494E5433 
+ 851      325500
+ 852              	.LASF13:
+ 853 0027 4F535F50 		.ascii	"OS_PRIO\000"
+ 853      52494F00 
+ 854              	.LASF19:
+ 855 002f 4F535F50 		.ascii	"OS_PrioRemove\000"
+ 855      72696F52 
+ 855      656D6F76 
+ 855      6500
+ 856              	.LASF14:
+ 857 003d 705F7462 		.ascii	"p_tbl\000"
+ 857      6C00
+ 858              	.LASF21:
+ 859 0043 433A5C4D 		.ascii	"C:\\Micrium\\Software\\uCOS-III\\Source\\os_prio.c\000"
+ 859      69637269 
+ 859      756D5C53 
+ 859      6F667477 
+ 859      6172655C 
+ 860              	.LASF16:
+ 861 0071 4F535F50 		.ascii	"OS_PrioInit\000"
+ 861      72696F49 
+ 861      6E697400 
+ 862              	.LASF18:
+ 863 007d 6269745F 		.ascii	"bit_nbr\000"
+ 863      6E627200 
+ 864              	.LASF8:
+ 865 0085 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 865      206C6F6E 
+ 865      6720756E 
+ 865      7369676E 
+ 865      65642069 
+ 866              	.LASF15:
+ 867 009c 7072696F 		.ascii	"prio\000"
+ 867      00
+ 868              	.LASF20:
+ 869 00a1 474E5520 		.ascii	"GNU C 4.4.1\000"
+ 869      4320342E 
+ 869      342E3100 
+ 870              	.LASF1:
+ 871 00ad 756E7369 		.ascii	"unsigned char\000"
+ 871      676E6564 
+ 871      20636861 
+ 871      7200
+ 872              	.LASF0:
+ 873 00bb 63686172 		.ascii	"char\000"
+ 873      00
+ 874              	.LASF23:
+ 875 00c0 4F535F50 		.ascii	"OS_PrioGetHighest\000"
+ 875      72696F47 
+ 875      65744869 
+ 875      67686573 
+ 875      7400
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 20
+
+
+ 876              	.LASF4:
+ 877 00d2 73686F72 		.ascii	"short int\000"
+ 877      7420696E 
+ 877      7400
+ 878              	.LASF11:
+ 879 00dc 646F7562 		.ascii	"double\000"
+ 879      6C6500
+ 880              	.LASF3:
+ 881 00e3 73686F72 		.ascii	"short unsigned int\000"
+ 881      7420756E 
+ 881      7369676E 
+ 881      65642069 
+ 881      6E7400
+ 882              	.LASF2:
+ 883 00f6 7369676E 		.ascii	"signed char\000"
+ 883      65642063 
+ 883      68617200 
+ 884              	.LASF10:
+ 885 0102 666C6F61 		.ascii	"float\000"
+ 885      7400
+ 886              	.LASF12:
+ 887 0108 4350555F 		.ascii	"CPU_DATA\000"
+ 887      44415441 
+ 887      00
+ 888              	.LASF5:
+ 889 0111 4350555F 		.ascii	"CPU_INT08U\000"
+ 889      494E5430 
+ 889      385500
+ 890              	.LASF7:
+ 891 011c 756E7369 		.ascii	"unsigned int\000"
+ 891      676E6564 
+ 891      20696E74 
+ 891      00
+ 892              	.LASF22:
+ 893 0129 433A5C55 		.ascii	"C:\\Users\\daniel01\\Desktop\\CY8CKIT-050_uCOS-III\\"
+ 893      73657273 
+ 893      5C64616E 
+ 893      69656C30 
+ 893      315C4465 
+ 894 0158 43593843 		.ascii	"CY8CKIT-050_uCOS-III\\Micrium\\Software\\EvalBoards"
+ 894      4B49542D 
+ 894      3035305F 
+ 894      75434F53 
+ 894      2D494949 
+ 895 0188 5C437970 		.ascii	"\\Cypress\\CY8CKIT-050\\PSoC\\uCOS-III-Probe\\uCOS-"
+ 895      72657373 
+ 895      5C435938 
+ 895      434B4954 
+ 895      2D303530 
+ 896 01b6 4949492D 		.ascii	"III-Probe.cydsn\000"
+ 896      50726F62 
+ 896      652E6379 
+ 896      64736E00 
+ 897              	.LASF24:
+ 898 01c6 4F535072 		.ascii	"OSPrioTbl\000"
+ 898      696F5462 
+ 898      6C00
+ARM GAS  C:\Users\daniel01\AppData\Local\Temp\ccsgsVjV.s 			page 21
+
+
+ 899              		.ident	"GCC: (Sourcery G++ Lite 2010q1-188) 4.4.1"
