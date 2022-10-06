@@ -37,6 +37,7 @@
 #include <project.h>                /* incluindo api do psoc */
 
 //////////////// comentario teste - apagar
+//////////////// outro comentario de teste
 /*
 *********************************************************************************************************
 *                                             LOCAL DEFINES
