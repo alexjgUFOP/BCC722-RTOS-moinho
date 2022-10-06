@@ -1,3 +1,3 @@
 # BCC722-RTOS-moinho
 
-Projeto de implementação de um moinho pilo com oPSoC 5
+Projeto de implementação de um moinho piloto com oPSoC 5
