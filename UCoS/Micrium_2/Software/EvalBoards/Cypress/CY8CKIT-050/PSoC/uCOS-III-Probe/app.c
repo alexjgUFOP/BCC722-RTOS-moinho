@@ -362,6 +362,80 @@ static  void  App_TaskCreate (void)
                  (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR      *)&os_err);
     
+    // ======== task IHM  ========
+    OSTaskCreate((OS_TCB      *)&App_Task_Ihm_TCB,                             // endereço da task para OS_TCB
+                 (CPU_CHAR    *)"IHM_Task",                                    // string com nome da task
+                 (OS_TASK_PTR  )App_Task_Ihm,                                  // endereco da funcao sem. veiculo 01 que define comportamento da task
+                 (void        *)0,                                              // parametros passados na criacao - sem nenhum valor passado
+                 (OS_PRIO      )APP_CFG_TASK_IHM_PRIO,                         // prioridade de execucao da task
+                 (CPU_STK     *)&App_Task_Ihm_Stk[0],                          // endereco base da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_IHM_STK_SIZE_LIMIT,               // endereco final da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_IHM_STK_SIZE,                     // tamanho da pilha
+                 (OS_MSG_QTY   )0u,                                             // task incapaz de receber mensagens
+                 (OS_TICK      )0u,                                             // clock tick default
+                 (void        *)0,                                              // sem endereço de memoria local passado
+                 (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
+                 (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
+ 
+    // ======== task Emergencia  ========
+    OSTaskCreate((OS_TCB      *)&App_Task_Emerg_TCB,                             // endereço da task para OS_TCB
+                 (CPU_CHAR    *)"Emerg_Task",                                    // string com nome da task
+                 (OS_TASK_PTR  )App_Task_Emerg,                                  // endereco da funcao sem. veiculo 01 que define comportamento da task
+                 (void        *)0,                                              // parametros passados na criacao - sem nenhum valor passado
+                 (OS_PRIO      )APP_CFG_TASK_EMERG_PRIO,                         // prioridade de execucao da task
+                 (CPU_STK     *)&App_Task_Emerg_Stk[0],                          // endereco base da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_EMERG_STK_SIZE_LIMIT,               // endereco final da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_EMERG_STK_SIZE,                     // tamanho da pilha
+                 (OS_MSG_QTY   )0u,                                             // task incapaz de receber mensagens
+                 (OS_TICK      )0u,                                             // clock tick default
+                 (void        *)0,                                              // sem endereço de memoria local passado
+                 (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
+                 (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
+
+    // ======== task sen. mec.  ========
+    OSTaskCreate((OS_TCB      *)&App_Task_Sen_Mec_TCB,                             // endereço da task para OS_TCB
+                 (CPU_CHAR    *)"Sen_Mec_Task",                                    // string com nome da task
+                 (OS_TASK_PTR  )App_Task_Sen_Mec,                                  // endereco da funcao sem. veiculo 01 que define comportamento da task
+                 (void        *)0,                                              // parametros passados na criacao - sem nenhum valor passado
+                 (OS_PRIO      )APP_CFG_TASK_SEN_MEC_PRIO,                         // prioridade de execucao da task
+                 (CPU_STK     *)&App_Task_Sen_Mec_Stk[0],                          // endereco base da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_SEN_MEC_STK_SIZE_LIMIT,               // endereco final da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_SEN_MEC_STK_SIZE,                     // tamanho da pilha
+                 (OS_MSG_QTY   )0u,                                             // task incapaz de receber mensagens
+                 (OS_TICK      )0u,                                             // clock tick default
+                 (void        *)0,                                              // sem endereço de memoria local passado
+                 (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
+                 (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
+    
+    // ======== task sen. temp.  ========
+    OSTaskCreate((OS_TCB      *)&App_Task_Sen_Mec_TCB,                             // endereço da task para OS_TCB
+                 (CPU_CHAR    *)"Sen_Temp_Task",                                    // string com nome da task
+                 (OS_TASK_PTR  )App_Task_Sen_Temp,                                  // endereco da funcao sem. veiculo 01 que define comportamento da task
+                 (void        *)0,                                              // parametros passados na criacao - sem nenhum valor passado
+                 (OS_PRIO      )APP_CFG_TASK_SEN_TEMP_PRIO,                         // prioridade de execucao da task
+                 (CPU_STK     *)&App_Task_Sen_Temp_Stk[0],                          // endereco base da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_SEN_TEMP_STK_SIZE_LIMIT,               // endereco final da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_SEN_TEMP_STK_SIZE,                     // tamanho da pilha
+                 (OS_MSG_QTY   )0u,                                             // task incapaz de receber mensagens
+                 (OS_TICK      )0u,                                             // clock tick default
+                 (void        *)0,                                              // sem endereço de memoria local passado
+                 (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
+                 (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
+    
+    // ======== task diz play  ========
+    OSTaskCreate((OS_TCB      *)&App_Task_Display_TCB,                             // endereço da task para OS_TCB
+                 (CPU_CHAR    *)"Display_Task",                                    // string com nome da task
+                 (OS_TASK_PTR  )App_Task_Display,                                  // endereco da funcao sem. veiculo 01 que define comportamento da task
+                 (void        *)0,                                              // parametros passados na criacao - sem nenhum valor passado
+                 (OS_PRIO      )APP_CFG_TASK_DISPLAY_PRIO,                         // prioridade de execucao da task
+                 (CPU_STK     *)&App_Task_Display_Stk[0],                          // endereco base da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_DISPLAY_STK_SIZE_LIMIT,               // endereco final da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_DISPLAY_STK_SIZE,                     // tamanho da pilha
+                 (OS_MSG_QTY   )0u,                                             // task incapaz de receber mensagens
+                 (OS_TICK      )0u,                                             // clock tick default
+                 (void        *)0,                                              // sem endereço de memoria local passado
+                 (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
+                 (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
     
     
     // ======== task semaforo veiculo 01  ========
@@ -426,6 +500,153 @@ static  void  App_TaskCreate (void)
     
     
 }
+
+static  void  App_Task_Ihm(void *p_arg)
+{
+    
+    /* estruturas */
+    
+    typedef enum{E1,E2,E3} estados_t;                   /* 
+                                                            maquina de estados
+                                                            E1: ST: VR - SP: VD
+                                                            E2: ST: VD - SP: VR
+                                                            E3: ST: AM - SP: VR
+                                                        */
+
+    /* variaveis locais */
+
+    //CPU_INT16U      t_qtde = TIVE;                    /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
+    estados_t       estado;                             /* declatando struct para estados */
+    void            *p_msg;                             /* recebe mensagens da ISR do botao 01 - pend */
+    OS_MSG_SIZE     msg_size;                           /* tamanho da mensagem */
+    CPU_TS          ts;                                 /* indica quando a mensagem foi postada */  
+    OS_ERR          err;                                /* var com os erros do processo */
+    
+
+     
+   (void)p_arg;
+
+
+    
+}
+
+static  void  App_Task_Emerg(void *p_arg)
+{
+    
+    /* estruturas */
+    
+    typedef enum{E1,E2,E3} estados_t;                   /* 
+                                                            maquina de estados
+                                                            E1: ST: VR - SP: VD
+                                                            E2: ST: VD - SP: VR
+                                                            E3: ST: AM - SP: VR
+                                                        */
+
+    /* variaveis locais */
+
+    //CPU_INT16U      t_qtde = TIVE;                    /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
+    estados_t       estado;                             /* declatando struct para estados */
+    void            *p_msg;                             /* recebe mensagens da ISR do botao 01 - pend */
+    OS_MSG_SIZE     msg_size;                           /* tamanho da mensagem */
+    CPU_TS          ts;                                 /* indica quando a mensagem foi postada */  
+    OS_ERR          err;                                /* var com os erros do processo */
+    
+
+     
+   (void)p_arg;
+
+
+    
+}
+
+static  void  App_Task_Sen_Mec(void *p_arg)
+{
+    
+    /* estruturas */
+    
+    typedef enum{E1,E2,E3} estados_t;                   /* 
+                                                            maquina de estados
+                                                            E1: ST: VR - SP: VD
+                                                            E2: ST: VD - SP: VR
+                                                            E3: ST: AM - SP: VR
+                                                        */
+
+    /* variaveis locais */
+
+    //CPU_INT16U      t_qtde = TIVE;                    /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
+    estados_t       estado;                             /* declatando struct para estados */
+    void            *p_msg;                             /* recebe mensagens da ISR do botao 01 - pend */
+    OS_MSG_SIZE     msg_size;                           /* tamanho da mensagem */
+    CPU_TS          ts;                                 /* indica quando a mensagem foi postada */  
+    OS_ERR          err;                                /* var com os erros do processo */
+    
+
+     
+   (void)p_arg;
+
+
+    
+}
+
+static  void  App_Task_Sen_Temp(void *p_arg)
+{
+    
+    /* estruturas */
+    
+    typedef enum{E1,E2,E3} estados_t;                   /* 
+                                                            maquina de estados
+                                                            E1: ST: VR - SP: VD
+                                                            E2: ST: VD - SP: VR
+                                                            E3: ST: AM - SP: VR
+                                                        */
+
+    /* variaveis locais */
+
+    //CPU_INT16U      t_qtde = TIVE;                    /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
+    estados_t       estado;                             /* declatando struct para estados */
+    void            *p_msg;                             /* recebe mensagens da ISR do botao 01 - pend */
+    OS_MSG_SIZE     msg_size;                           /* tamanho da mensagem */
+    CPU_TS          ts;                                 /* indica quando a mensagem foi postada */  
+    OS_ERR          err;                                /* var com os erros do processo */
+    
+
+     
+   (void)p_arg;
+
+
+    
+}
+
+static  void  App_Task_Display(void *p_arg)
+{
+    
+    /* estruturas */
+    
+    typedef enum{E1,E2,E3} estados_t;                   /* 
+                                                            maquina de estados
+                                                            E1: ST: VR - SP: VD
+                                                            E2: ST: VD - SP: VR
+                                                            E3: ST: AM - SP: VR
+                                                        */
+
+    /* variaveis locais */
+
+    //CPU_INT16U      t_qtde = TIVE;                    /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
+    estados_t       estado;                             /* declatando struct para estados */
+    void            *p_msg;                             /* recebe mensagens da ISR do botao 01 - pend */
+    OS_MSG_SIZE     msg_size;                           /* tamanho da mensagem */
+    CPU_TS          ts;                                 /* indica quando a mensagem foi postada */  
+    OS_ERR          err;                                /* var com os erros do processo */
+    
+
+     
+   (void)p_arg;
+
+
+    
+}
+
+////////////////////////////////////////
 
 static  void  App_Task_SV01(void *p_arg)
 {
