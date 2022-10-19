@@ -49,14 +49,14 @@
 #define  APP_USER_IF_CTXSW                          3u
 #define  APP_USER_IF_STATE_MAX                      4u
 
-#define TIVM  0                                     /* intervalo de t. inicial VM  no s. tran. */
-#define TFVM 50                                     /* intervalo de t. final   VM no s. tran.  */
-#define TIVE 50                                     /* intervalo de t. inicial VE no s. tran.  */
-#define TFVE 95                                     /* intervalo de t. final   VE no s. tran.  */
-#define TCVE (TIVE + 30)                            /* intervalo de t. para ctrl do VE no s. tran. */
-#define TIAM 95                                     /* intervalo de t. inicial AM no s. tran. */
-#define TFAM 100                                    /* intervalo de t. final   AM no s. tran. */
-#define TASJ (TFVM - (TFAM - TIAM))                 /* ajuste de tempo entre semaforos */
+ #define TIVM  0                                     /* intervalo de t. inicial VM  no s. tran. */
+ #define TFVM 50                                     /* intervalo de t. final   VM no s. tran.  */
+ #define TIVE 50                                     /* intervalo de t. inicial VE no s. tran.  */
+ #define TFVE 95                                     /* intervalo de t. final   VE no s. tran.  */
+ #define TCVE (TIVE + 30)                            /* intervalo de t. para ctrl do VE no s. tran. */
+ #define TIAM 95                                     /* intervalo de t. inicial AM no s. tran. */
+ #define TFAM 100                                    /* intervalo de t. final   AM no s. tran. */
+ #define TASJ (TFVM - (TFAM - TIAM))                 /* ajuste de tempo entre semaforos */
 
 #define SEM1 1
 #define SEM2 2
@@ -75,6 +75,27 @@ static  CPU_STK     App_TaskStartStk[APP_CFG_TASK_START_STK_SIZE];
 static  OS_TCB      App_TaskUserIF_TCB;
 static  CPU_STK     App_TaskUserIFStk[APP_CFG_TASK_USER_IF_STK_SIZE];
 
+                                                                        // criando as estruras do TCB e STK da task                                       
+static  OS_TCB      App_Task_Ihm_TCB;
+static  CPU_STK     App_Task_Ihm_Stk[APP_CFG_TASK_IHM_STK_SIZE];
+
+                                                                        // criando as estruras do TCB e STK da task                                       
+static  OS_TCB      App_Task_Emerg_TCB;
+static  CPU_STK     App_Task_Emerg_Stk[APP_CFG_TASK_EMERG_STK_SIZE];
+
+                                                                        // criando as estruras do TCB e STK da task                                       
+static  OS_TCB      App_Task_Sen_Mec_TCB;
+static  CPU_STK     App_Task_Sen_Mec_Stk[APP_CFG_TASK_SEN_MEC_STK_SIZE];
+
+                                                                        // criando as estruras do TCB e STK da task                                       
+static  OS_TCB      App_Task_Sen_Temp_TCB;
+static  CPU_STK     App_Task_Sen_Temp_Stk[APP_CFG_TASK_SEN_TEMP_STK_SIZE];
+
+                                                                        // criando as estruras do TCB e STK da task                                       
+static  OS_TCB      App_Task_Display_TCB;
+static  CPU_STK     App_Task_Display_Stk[APP_CFG_TASK_DISPLAY_STK_SIZE];
+
+///////////////////////////////
                                                                         // criando as estruras do TCB e STK da task                                       
 static  OS_TCB      App_Task_SV01_TCB;
 static  CPU_STK     App_Task_SVO1_Stk[APP_CFG_TASK_SV01_STK_SIZE];
@@ -110,6 +131,13 @@ static  void  App_TaskUserIF (void *p_arg);
 
 static  void  App_TaskCreate (void);
 static  void  App_ObjCreate  (void);
+
+static  void  App_Task_Ihm      (void *p_arg);             /* prototipo da funcao que define a task de ihm */
+static  void  App_Task_Emerg    (void *p_arg);             /* prototipo da funcao que define a task de emerg*/
+static  void  App_Task_Sen_Mec  (void *p_arg);             /* prototipo da funcao que define a task de sen. prot. mec. */
+static  void  App_Task_Sen_Temp (void *p_arg);             /* prototipo da funcao que define a task de sen. temp. */
+static  void  App_Task_Display  (void *p_arg);             /* prototipo da funcao que define a task de sem. display */
+
 
 static  void  App_Task_SV01 (void *p_arg);             /* prototipo da funcao que define a task de sem. v. 01 */
 static  void  App_Task_SP01 (void *p_arg);             /* prototipo da funcao que define a task de sem. p. 01 */
@@ -209,8 +237,9 @@ int  main (void)
 {
     
     
-    Pin_BP01_int_StartEx(Pin_BP01_Handler);                     /* habilita ISR do pino*/
-    Pin_BP02_int_StartEx(Pin_BP02_Handler);                     /* habilita ISR do pino*/
+    //Pin_BP01_int_StartEx(Pin_BP01_Handler);                     /* habilita ISR do pino*/
+    //Pin_BP02_int_StartEx(Pin_BP02_Handler);                     /* habilita ISR do pino*/
+    
     
     OS_ERR  os_err;
 

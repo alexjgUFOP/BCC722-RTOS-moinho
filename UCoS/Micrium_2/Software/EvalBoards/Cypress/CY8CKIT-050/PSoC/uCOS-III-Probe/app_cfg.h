@@ -46,7 +46,14 @@
 
 #define  APP_CFG_TASK_START_PRIO                        2u
 #define  APP_CFG_TASK_USER_IF_PRIO                      3u      // APAGAR DEPOIS
+
+#define  APP_CFG_TASK_IHM_PRIO                          6u      // prioriradade de task ihm
+#define  APP_CFG_TASK_EMERG_PRIO                        3u      // prioriradade de task da emerg.
+#define  APP_CFG_TASK_SEN_MEC_PRIO                      4u      // prioriradade de task dos sen. de protec. mec.
+#define  APP_CFG_TASK_SEN_TEMP_PRIO                     5u      // prioriradade de task do sen. de temp.
+#define  APP_CFG_TASK_DISPLAY_PRIO                      7u      // prioriradade de task do display
     
+    ////////////////////////
 #define  APP_CFG_TASK_SV01_PRIO                         4u      // prioriradade de task do sem. v. 01
 #define  APP_CFG_TASK_SP01_PRIO                         3u      // prioriradade de task do sem. p. 01
     
@@ -66,6 +73,15 @@
     
 #define  APP_CFG_TASK_USER_IF_STK_SIZE                  256u       // APAGAR DEPOIS
     
+    
+
+#define  APP_CFG_TASK_IHM_STK_SIZE                      64u       // tamanho da pilha de task do ihm
+#define  APP_CFG_TASK_EMERG_STK_SIZE                    64u       // tamanho da pilha de task de emerg
+#define  APP_CFG_TASK_SEN_MEC_STK_SIZE                  64u       // tamanho da pilha de task de sen. prot. mec.
+#define  APP_CFG_TASK_SEN_TEMP_STK_SIZE                 64u       // tamanho da pilha de task do sen. temp.
+#define  APP_CFG_TASK_DISPLAY_STK_SIZE                  64u       // tamanho da pilha de task do display
+    
+    /////////////////////////
 #define  APP_CFG_TASK_SV01_STK_SIZE                     256u       // tamanho da pilha de task do sem. v. 01
 #define  APP_CFG_TASK_SP01_STK_SIZE                     256u       // tamanho da pilha de task do sem. p. 01
     
@@ -78,13 +94,36 @@
 *********************************************************************************************************
 */
 
-/* alarmes para pilha no limite */
+                                                                    // alarmes para estouro de pilha
 #define  APP_CFG_TASK_START_STK_SIZE_PCT_FULL           90u
 #define  APP_CFG_TASK_START_STK_SIZE_LIMIT         (APP_CFG_TASK_START_STK_SIZE    * (100u - APP_CFG_TASK_START_STK_SIZE_PCT_FULL))    / 100u
 
 #define  APP_CFG_TASK_USER_IF_STK_SIZE_PCT_FULL         90u
 #define  APP_CFG_TASK_USER_IF_STK_SIZE_LIMIT       (APP_CFG_TASK_USER_IF_STK_SIZE  * (100u - APP_CFG_TASK_USER_IF_STK_SIZE_PCT_FULL))  / 100u
     
+
+
+                                                                    // alerta estouro de pilha task IHM
+#define  APP_CFG_TASK_IHM_STK_SIZE_PCT_FULL         90u
+#define  APP_CFG_TASK_IHM_STK_SIZE_LIMIT       (APP_CFG_TASK_IHM_STK_SIZE  * (100u - APP_CFG_TASK_IHM_STK_SIZE_PCT_FULL))  / 100u
+    
+                                                                    // alerta estouro de pilha task emerg.
+#define  APP_CFG_TASK_EMERG_STK_SIZE_PCT_FULL         90u
+#define  APP_CFG_TASK_EMERG_STK_SIZE_LIMIT       (APP_CFG_TASK_EMERG_STK_SIZE  * (100u - APP_CFG_TASK_EMERG_STK_SIZE_PCT_FULL))  / 100u
+    
+                                                                    // alerta estouro de pilha task de sensor de prot. mec.
+#define  APP_CFG_TASK_SEN_MEC_STK_SIZE_PCT_FULL         90u
+#define  APP_CFG_TASK_SEN_MEC_STK_SIZE_LIMIT       (APP_CFG_TASK_SEN_MEC_STK_SIZE  * (100u - APP_CFG_TASK_SEN_MEC_STK_SIZE_PCT_FULL))  / 100u
+    
+                                                                    // alerta estouro de pilha sen. de temp.
+#define  APP_CFG_TASK_SEN_TEMP_STK_SIZE_PCT_FULL         90u
+#define  APP_CFG_TASK_SEN_TEMP_STK_SIZE_LIMIT       (APP_CFG_TASK_SEN_TEMP_STK_SIZE  * (100u - APP_CFG_TASK_SEN_TEMP_STK_SIZE_PCT_FULL))  / 100u
+    
+                                                                    // alerta estouro de pilha task display
+#define  APP_CFG_TASK_DISPLAY_STK_SIZE_PCT_FULL         90u
+#define  APP_CFG_TASK_DISPLAY_STK_SIZE_LIMIT       (APP_CFG_TASK_DISPLAY_STK_SIZE  * (100u - APP_CFG_TASK_DISPLAY_STK_SIZE_PCT_FULL))  / 100u
+    
+    //////////////////////////////////////
                                                     // alarme de estouro de pilha da task sem. v. 01 em 90%
 #define  APP_CFG_TASK_SV01_STK_SIZE_PCT_FULL            90u
 #define  APP_CFG_TASK_SV01_STK_SIZE_LIMIT           (APP_CFG_TASK_SV01_STK_SIZE  * (100u - APP_CFG_TASK_SV01_STK_SIZE_PCT_FULL))  / 100u
