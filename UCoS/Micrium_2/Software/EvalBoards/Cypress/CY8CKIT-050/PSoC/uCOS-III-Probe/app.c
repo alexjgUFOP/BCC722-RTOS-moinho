@@ -35,6 +35,7 @@
 
 #include <includes.h>
 #include <project.h>                /* incluindo api do psoc */
+//#include <math.h>                   // biblioteca matematica padrao do C - para calc de temperatura
 
 
 /*
@@ -48,6 +49,11 @@
 #define  APP_USER_IF_CPU                            2u
 #define  APP_USER_IF_CTXSW                          3u
 #define  APP_USER_IF_STATE_MAX                      4u
+
+#define DEBOUNCE 200u                               // tempo de debounce para botoes
+#define NTC_B   4275.0                              // constante B do termistor
+#define NTC_R0  100000.0                            // R0 = 100k kit grove
+
 
  #define TIVM  0                                     /* intervalo de t. inicial VM  no s. tran. */
  #define TFVM 50                                     /* intervalo de t. final   VM no s. tran.  */
@@ -110,14 +116,24 @@ static  CPU_STK     App_Task_SVO2_Stk[APP_CFG_TASK_SV02_STK_SIZE];
 static  OS_TCB      App_Task_SP02_TCB;
 static  CPU_STK     App_Task_SPO2_Stk[APP_CFG_TASK_SP02_STK_SIZE];
 
+
+
         CPU_INT08U  bp01Msg = 0;                                        /* mensagem a ser enviada pelo botao 1 */
         CPU_INT08U  bp02Msg = 0;                                        /* mensagem a ser enviada pelo botao 2 */
         OS_ERR      err_ISR;                                            /* erros no envio de mensagens pela ISR do bt. 01 */
         //OS_ERR      err_ISR_BP02 = 0;                                 /* erros no envio de mensagens pela ISR do bt. 02 */
-CPU_INT16U      t_qtde1 = TIVM,                                         /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
-                t_qtde2 = TIVM,                                         /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
-                t_qtde3 = TIVE,                                         /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
-                t_qtde4 = TIVE;                                         /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
+CPU_INT16U          t_qtde1 = TIVM,                                     /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
+                    t_qtde2 = TIVM,                                     /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
+                    t_qtde3 = TIVE,                                     /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
+                    t_qtde4 = TIVE;                                     /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
+
+        CPU_INT08U  motor = 0,                                          // estado do motor - 1: ligado / 0: desligado
+                    emerg = 0,                                          // var. para monitorar estado de emergem
+                    rearme = 0,                                         // var. para monitorar estado de rearme
+                    alerta = 0;                                         // var. para monitorar estado de alerta - sensores de monitoramento
+
+        float       tempM = 0,                                          // var. para temperatura do motor
+                    tempQ = 0;                                          // var. para temperatura do quadro
 
 /*
 *********************************************************************************************************
@@ -157,6 +173,39 @@ static  void  App_Task_SP02 (void *p_arg);             /* prototipo da funcao qu
 *********************************************************************************************************
 */
 
+CY_ISR(se_indut_porta_Handler){                     // implementando rotina de tratamento de interrupção  - interrupt handler 
+    
+     // tratando debounce do botão
+    OSTimeDly(100,OS_ERR_TIME_DLY_ISR, NULL);
+    
+                                                    // trata sens. indut da protecao mec. da porta
+    alerta = 1;                                     // setando estado de alerta
+    
+    
+}
+
+CY_ISR(se_indut_motor_Handler){                     // implementando rotina de tratamento de interrupção  - interrupt handler 
+  
+    // tratando debounce do botão
+    OSTimeDly(100,OS_ERR_TIME_DLY_ISR, NULL);
+    
+                                                    // trata sens. indut da protecao mec. do motor
+    alerta = 1;                                     // setando estado de alerta
+    
+}
+
+CY_ISR(bt_emerg_int_Handler){                       // implementando rotina de tratamento de interrupção  - interrupt handler 
+    
+    
+                                                    // tratando debounce do botão
+    OSTimeDly(100,OS_ERR_TIME_DLY_ISR, NULL);
+    
+                                                    // trata botao de emerg
+    emerg = 1;                                      // mudando status da emergencia
+    
+}
+
+        
 CY_ISR(Pin_BP01_Handler){                           /* implementando rotina de interrupção  - interrupt handler */
     
     
@@ -239,7 +288,9 @@ int  main (void)
     
     //Pin_BP01_int_StartEx(Pin_BP01_Handler);                     /* habilita ISR do pino*/
     //Pin_BP02_int_StartEx(Pin_BP02_Handler);                     /* habilita ISR do pino*/
-    
+    se_indut_porta_int_StartEx(se_indut_porta_Handler);         // habilita ISR do pino
+    se_indut_motor_int_StartEx(se_indut_motor_Handler);         // habilita ISR do pino
+    bt_emerg_int_StartEx(bt_emerg_int_Handler);                 // habilita ISR do pino
     
     OS_ERR  os_err;
 
@@ -347,7 +398,7 @@ static  void  App_TaskCreate (void)
 
     OS_ERR  os_err;
 
-   
+    /*
     OSTaskCreate((OS_TCB      *)&App_TaskUserIF_TCB,
                  (CPU_CHAR    *)"Start",
                  (OS_TASK_PTR  )App_TaskUserIF, 
@@ -361,6 +412,7 @@ static  void  App_TaskCreate (void)
                  (void        *)0,
                  (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR      *)&os_err);
+    */
     
     // ======== task IHM  ========
     OSTaskCreate((OS_TCB      *)&App_Task_Ihm_TCB,                             // endereço da task para OS_TCB
@@ -421,11 +473,11 @@ static  void  App_TaskCreate (void)
                  (void        *)0,                                              // sem endereço de memoria local passado
                  (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
                  (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
-    
+    /*
     // ======== task diz play  ========
     OSTaskCreate((OS_TCB      *)&App_Task_Display_TCB,                             // endereço da task para OS_TCB
                  (CPU_CHAR    *)"Display_Task",                                    // string com nome da task
-                 (OS_TASK_PTR  )App_Task_Display,                                  // endereco da funcao sem. veiculo 01 que define comportamento da task
+                 (OS_TASK_PTR  )App_TaskUserIF,                                  // endereco da funcao sem. veiculo 01 que define comportamento da task
                  (void        *)0,                                              // parametros passados na criacao - sem nenhum valor passado
                  (OS_PRIO      )APP_CFG_TASK_DISPLAY_PRIO,                         // prioridade de execucao da task
                  (CPU_STK     *)&App_Task_Display_Stk[0],                          // endereco base da pilha reservada para tarefa
@@ -436,8 +488,10 @@ static  void  App_TaskCreate (void)
                  (void        *)0,                                              // sem endereço de memoria local passado
                  (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
                  (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
+    */
     
     
+    /*
     // ======== task semaforo veiculo 01  ========
     OSTaskCreate((OS_TCB      *)&App_Task_SV01_TCB,                             // endereço da task para OS_TCB
                  (CPU_CHAR    *)"SV01_Task",                                    // string com nome da task
@@ -497,35 +551,46 @@ static  void  App_TaskCreate (void)
                  (void        *)0,                                              // sem endereço de memoria local passado
                  (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
                  (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
-    
+    */
     
 }
 
 static  void  App_Task_Ihm(void *p_arg)
 {
     
-    /* estruturas */
-    
-    typedef enum{E1,E2,E3} estados_t;                   /* 
-                                                            maquina de estados
-                                                            E1: ST: VR - SP: VD
-                                                            E2: ST: VD - SP: VR
-                                                            E3: ST: AM - SP: VR
-                                                        */
-
-    /* variaveis locais */
-
-    //CPU_INT16U      t_qtde = TIVE;                    /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
-    estados_t       estado;                             /* declatando struct para estados */
-    void            *p_msg;                             /* recebe mensagens da ISR do botao 01 - pend */
-    OS_MSG_SIZE     msg_size;                           /* tamanho da mensagem */
-    CPU_TS          ts;                                 /* indica quando a mensagem foi postada */  
     OS_ERR          err;                                /* var com os erros do processo */
-    
-
-     
+         
    (void)p_arg;
 
+    while(DEF_ON){
+                                                            // tratamento de acionamento do motor - liga   
+        if(bt_liga_Read() && !emerg && !rearme && !alerta){ // botao liga pressionado caso nao esteja em status de emergencia, rearme ou alerta
+            OSTimeDly(100,OS_OPT_TIME_DLY, &err);           // debounce do botao
+            ct_motor_Write(1);                              // aciona o contator de potencia
+            si_liga_Write(1);                               // aciona sinaleiro de motor ligado
+            si_desl_Write(0);                               // deslig sinaleiro de motor desligado
+            
+        }
+         
+                                                            // tratamento botao desliga
+        if(bt_desl_Read()){                                 // caso botao desliga seja pressionado
+            ct_motor_Write(0);                              // desliga motor
+            si_desl_Write(1);                               // deslig sinaleiro de motor desligado
+            si_liga_Write(0);                               // aciona sinaleiro de motor ligado
+            
+        }
+        
+                                                            // tratamento do rearme
+        if(bt_rearme_Read() && !emerg && !alerta){          // ativa rearme apenas se botao for pressionado e nao estiver em condicao adversa
+            rearme = 0;                                     // desativa status de rearme
+            si_rearme_Write(0);                             // desativa sinaleira de rearme
+            
+        }
+        else if(rearme){                                    // se o rearme estiver com status ativo
+            si_rearme_Write(1);                             // aciona sinaleira de rearme
+        }
+    
+    }
 
     
 }
@@ -533,117 +598,235 @@ static  void  App_Task_Ihm(void *p_arg)
 static  void  App_Task_Emerg(void *p_arg)
 {
     
-    /* estruturas */
-    
-    typedef enum{E1,E2,E3} estados_t;                   /* 
-                                                            maquina de estados
-                                                            E1: ST: VR - SP: VD
-                                                            E2: ST: VD - SP: VR
-                                                            E3: ST: AM - SP: VR
-                                                        */
-
-    /* variaveis locais */
-
-    //CPU_INT16U      t_qtde = TIVE;                    /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
-    estados_t       estado;                             /* declatando struct para estados */
-    void            *p_msg;                             /* recebe mensagens da ISR do botao 01 - pend */
-    OS_MSG_SIZE     msg_size;                           /* tamanho da mensagem */
-    CPU_TS          ts;                                 /* indica quando a mensagem foi postada */  
     OS_ERR          err;                                /* var com os erros do processo */
-    
-
-     
+         
    (void)p_arg;
 
 
+    while(DEF_ON){                                                    // tratamento de ocorrencia de emergencia
+        
+        if(emerg){                                          // se ocorreu uma emergencia
+            si_emerg_Write(1);                              // ativa sinaleira de emerg.
+            al_sonoro_Write(1);                             // aciona alarme sonoro
+            ct_motor_Write(0);                              // desliga contator do motor
+            rearme = 1;                                     // seta flag indicando necessidade de rearme
+                    
+        }
+        else{
+            si_emerg_Write(0);                              // desabilita sinaleira de emerg.
+            al_sonoro_Write(0);                             // desabilita alarme sonoro
+        }
+        
+        if(!bt_emerg_Read()){                               // se o botao foi liberado libera a emergencia
+            emerg = 0;
+        }
+    }
     
 }
 
 static  void  App_Task_Sen_Mec(void *p_arg)
 {
     
-    /* estruturas */
+      
+    OS_ERR          err;                                    /* var com os erros do processo */
     
-    typedef enum{E1,E2,E3} estados_t;                   /* 
-                                                            maquina de estados
-                                                            E1: ST: VR - SP: VD
-                                                            E2: ST: VD - SP: VR
-                                                            E3: ST: AM - SP: VR
-                                                        */
-
-    /* variaveis locais */
-
-    //CPU_INT16U      t_qtde = TIVE;                    /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
-    estados_t       estado;                             /* declatando struct para estados */
-    void            *p_msg;                             /* recebe mensagens da ISR do botao 01 - pend */
-    OS_MSG_SIZE     msg_size;                           /* tamanho da mensagem */
-    CPU_TS          ts;                                 /* indica quando a mensagem foi postada */  
-    OS_ERR          err;                                /* var com os erros do processo */
-    
-
-     
    (void)p_arg;
 
-
+    while(DEF_ON){
+            
+                                                            // tratamento de ocorrencia de alerta
+        
+        if(alerta){                                         // se ocorreu um alerta
+            si_alerta_Write(1);                             // ativa sinaleira de emerg.
+            ct_motor_Write(0);                              // desliga contator do motor
+            rearme = 1;                                     // seta flag indicando necessidade de rearme
+                    
+        }
+        else{
+            si_alerta_Write(0);                             // ativa sinaleira de alerta
+            
+        }
     
+    }
 }
 
 static  void  App_Task_Sen_Temp(void *p_arg)
 {
-    
-    /* estruturas */
-    
-    typedef enum{E1,E2,E3} estados_t;                   /* 
-                                                            maquina de estados
-                                                            E1: ST: VR - SP: VD
-                                                            E2: ST: VD - SP: VR
-                                                            E3: ST: AM - SP: VR
-                                                        */
-
-    /* variaveis locais */
-
-    //CPU_INT16U      t_qtde = TIVE;                    /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
-    estados_t       estado;                             /* declatando struct para estados */
-    void            *p_msg;                             /* recebe mensagens da ISR do botao 01 - pend */
-    OS_MSG_SIZE     msg_size;                           /* tamanho da mensagem */
-    CPU_TS          ts;                                 /* indica quando a mensagem foi postada */  
-    OS_ERR          err;                                /* var com os erros do processo */
-    
-
      
+    OS_ERR          err;                                    /* var com os erros do processo */
+    CPU_INT16U temp1 = 0, temp2 = 0;                        // var aux com bits da temp. do adc
+    float R1 = 0, R2 = 0;
+    
+    
    (void)p_arg;
 
+    //Math_Init();
+    ADC_SAR_Seq_Start();
+    
+    /* StartConvert() must be called to initiate 
+       conversion in Free Running Mode
+    */
+    ADC_SAR_Seq_StartConvert();
 
+    while(DEF_ON){
+        ADC_SAR_Seq_IsEndConversion(ADC_SAR_Seq_WAIT_FOR_RESULT);
+        temp1 = ADC_SAR_Seq_GetResult16(0u);
+        temp2 = ADC_SAR_Seq_GetResult16(1u);
+        
+        R1 = 4095.0/temp1-1.0; // resistencia lida
+        R2 = 4095.0/temp2-1.0; // resistencia lida
+        
+     
+        tempM = 1.0/(log(R1/NTC_R0)/NTC_B+1/298.15) -273.15; // convert to temperature via datasheet
+        tempQ = 1.0/(log(R2/NTC_R0)/NTC_B+1/298.15) -273.15; // convert to temperature via datasheet
+        
+        
+        // fonte: https://wiki.seeedstudio.com/Grove-Temperature_Sensor_V1.2/
+        // log: adicionando "Libm.a" no projeto https://community.infineon.com/t5/PSoC-Creator-Designer/Using-Thermistor-but-pow-and-log-functions-inaccessible/m-p/228391#M12773
+    
+    }
+ 
     
 }
 
-static  void  App_Task_Display(void *p_arg)
+static  void  App_Task_Display (void *p_arg)
 {
-    
-    /* estruturas */
-    
-    typedef enum{E1,E2,E3} estados_t;                   /* 
-                                                            maquina de estados
-                                                            E1: ST: VR - SP: VD
-                                                            E2: ST: VD - SP: VR
-                                                            E3: ST: AM - SP: VR
-                                                        */
-
-    /* variaveis locais */
-
-    //CPU_INT16U      t_qtde = TIVE;                    /* base para periodo de tempo para delay padrao de 1s = 1000ms */    
-    estados_t       estado;                             /* declatando struct para estados */
-    void            *p_msg;                             /* recebe mensagens da ISR do botao 01 - pend */
-    OS_MSG_SIZE     msg_size;                           /* tamanho da mensagem */
-    CPU_TS          ts;                                 /* indica quando a mensagem foi postada */  
-    OS_ERR          err;                                /* var com os erros do processo */
-    
-
-     
+   CPU_INT32U   val;
+   CPU_INT08U   user_if_state_cur;
+   CPU_INT08U   user_if_state_prev;   
+   CPU_BOOLEAN  pb2_state_cur;
+   CPU_BOOLEAN  pb2_state_prev;
+   CPU_BOOLEAN  pb3_state_cur;
+   CPU_BOOLEAN  pb3_state_prev;
+   OS_ERR       os_err;
+   CPU_CHAR     line_str[17];
+   
+   
    (void)p_arg;
+   
+   LCD_Disp_Start();                                             /* Initialize the LCD screen.                       */
+   
+   LCD_Disp_Position(0u, 0u);                                    /* Clear LCD screen                                 */
+   LCD_Disp_PrintString((uint8 *)"                ");
+   LCD_Disp_Position(1u, 0u);
+   LCD_Disp_PrintString((uint8 *)"                ");
+   
+   LCD_Disp_PrintString((uint8 *)"Micrium uC/OS-III");
 
+   user_if_state_cur  = APP_USER_IF_SIGN_ON;
+   user_if_state_prev = APP_USER_IF_SIGN_ON;
+   pb2_state_cur      = DEF_OFF;
+   pb2_state_prev     = DEF_OFF;
+   pb3_state_cur      = DEF_OFF;
+   pb3_state_prev     = DEF_OFF;
+   
+   
+    while (DEF_TRUE) {    
 
-    
+        if (user_if_state_cur != user_if_state_prev) {
+            LCD_Disp_Position(0u, 0u);
+            LCD_Disp_PrintString((uint8 *)"                ");
+            LCD_Disp_Position(1u, 0u);
+            LCD_Disp_PrintString((uint8 *)"                ");
+            user_if_state_prev = user_if_state_cur;
+        }
+
+        switch (user_if_state_cur) {
+            case APP_USER_IF_VER_TICK_RATE:
+                 Str_Copy(line_str, "uC/OS-III Vx.yyy");
+                 val          = (CPU_INT32U)OSVersion(&os_err);
+                 line_str[11] = (val        )  / 1000u + '0';
+                 line_str[13] = (val % 1000u)  /  100u + '0';
+                 line_str[14] = (val %  100u)  /   10u + '0';
+                 line_str[15] = (val %   10u)          + '0';
+                 LCD_Disp_Position(0u, 0u);
+                 LCD_Disp_PrintString((uint8 *)line_str);
+
+                 Str_Copy(line_str, "TickRate:   xxxx");
+                 val = (CPU_INT32U)OSCfg_TickRate_Hz;
+                 Str_FmtNbr_Int32U((CPU_INT32U     )val, 
+                                   (CPU_INT08U     )4u,
+                                   (CPU_INT08U     )10,
+                                   (CPU_CHAR       )0,
+                                   (CPU_BOOLEAN    )DEF_NO,
+                                   (CPU_BOOLEAN    )DEF_YES,
+                                   (CPU_CHAR      *)&line_str[12]);
+                 LCD_Disp_Position(1u, 0u);
+                 LCD_Disp_PrintString((uint8 *)line_str);
+                 break;
+
+            case APP_USER_IF_CPU:
+                 Str_Copy(line_str, "CPU Usage:xx %  ");
+                 val          = (CPU_INT32U)OSStatTaskCPUUsage;
+                 line_str[10] = (val / 10u) + '0';
+                 line_str[11] = (val % 10u) + '0';
+                 LCD_Disp_Position(0u, 0u);
+                 LCD_Disp_PrintString((uint8 *)line_str);
+                 
+                 Str_Copy(line_str, "CPU Speed:xxxMHz");
+                 val          = (CPU_INT32U)BSP_CPU_ClkFreq();
+                 val         /= 1000000u;
+                 line_str[10] = (val       ) / 100u + '0';
+                 line_str[11] = (val % 100u) /  10u + '0';
+                 line_str[12] = (val % 10u)         + '0';
+                 LCD_Disp_Position(1u, 0u);
+                 LCD_Disp_PrintString((uint8 *)line_str);
+                 break;
+
+            case APP_USER_IF_CTXSW:
+                 Str_Copy(line_str, "#Ticks: xxxxxxxx");
+                 val = (CPU_INT32U)OSTickCtr;
+                 Str_FmtNbr_Int32U((CPU_INT32U     )val, 
+                                   (CPU_INT08U     )8u,
+                                   (CPU_INT08U     )10,
+                                   (CPU_CHAR       )0,
+                                   (CPU_BOOLEAN    )DEF_NO,
+                                   (CPU_BOOLEAN    )DEF_YES,
+                                   (CPU_CHAR      *)&line_str[8]);
+                 LCD_Disp_Position(0u, 0u);
+                 LCD_Disp_PrintString((uint8 *)line_str);
+                 
+                 Str_Copy(line_str, "#CtxSw: xxxxxxxx");
+                 val          = (CPU_INT32U)OSTaskCtxSwCtr;
+                 Str_FmtNbr_Int32U((CPU_INT32U     )val, 
+                                   (CPU_INT08U     )8u,
+                                   (CPU_INT08U     )10,
+                                   (CPU_CHAR       )0,
+                                   (CPU_BOOLEAN    )DEF_NO,
+                                   (CPU_BOOLEAN    )DEF_YES,
+                                   (CPU_CHAR      *)&line_str[8]);
+                 LCD_Disp_Position(1u, 0u);
+                 LCD_Disp_PrintString((uint8 *)line_str);
+                 break;
+
+            case APP_USER_IF_SIGN_ON:
+            default:
+                 LCD_Disp_Position(0u, 0u);
+                 LCD_Disp_PrintString((uint8 *)"=== Micrium === ");
+                 LCD_Disp_Position(1u, 0u);
+                 LCD_Disp_PrintString((uint8 *)"   uC/OS-III    ");
+                 break;
+        }
+
+        pb2_state_cur = BSP_PB_StatusGet(2);
+        pb3_state_cur = BSP_PB_StatusGet(3);
+        if ((pb2_state_cur  == DEF_ON ) &&
+            (pb2_state_prev == DEF_OFF)) {     
+            user_if_state_cur = (user_if_state_cur + 1u) % APP_USER_IF_STATE_MAX;
+        }
+
+        if ((pb3_state_cur  == DEF_ON ) &&
+            (pb3_state_prev == DEF_OFF)) { 
+            user_if_state_cur = (user_if_state_cur - 1u) % APP_USER_IF_STATE_MAX;
+        }
+
+        OSTimeDlyHMSM(0, 0, 0, 100, 
+                      OS_OPT_TIME_HMSM_STRICT, 
+                      &os_err);
+
+        pb2_state_prev = pb2_state_cur;
+        pb3_state_prev = pb3_state_cur;	
+    }
 }
 
 ////////////////////////////////////////

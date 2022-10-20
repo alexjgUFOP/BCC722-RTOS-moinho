@@ -45,13 +45,13 @@
 */
 
 #define  APP_CFG_TASK_START_PRIO                        2u
-#define  APP_CFG_TASK_USER_IF_PRIO                      3u      // APAGAR DEPOIS
+#define  APP_CFG_TASK_USER_IF_PRIO                      2u      // APAGAR DEPOIS
 
-#define  APP_CFG_TASK_IHM_PRIO                          6u      // prioriradade de task ihm
-#define  APP_CFG_TASK_EMERG_PRIO                        3u      // prioriradade de task da emerg.
-#define  APP_CFG_TASK_SEN_MEC_PRIO                      4u      // prioriradade de task dos sen. de protec. mec.
-#define  APP_CFG_TASK_SEN_TEMP_PRIO                     5u      // prioriradade de task do sen. de temp.
-#define  APP_CFG_TASK_DISPLAY_PRIO                      7u      // prioriradade de task do display
+#define  APP_CFG_TASK_IHM_PRIO                          3u      // prioriradade de task ihm
+#define  APP_CFG_TASK_EMERG_PRIO                        2u      // prioriradade de task da emerg.
+#define  APP_CFG_TASK_SEN_MEC_PRIO                      2u      // prioriradade de task dos sen. de protec. mec.
+#define  APP_CFG_TASK_SEN_TEMP_PRIO                     2u      // prioriradade de task do sen. de temp.
+#define  APP_CFG_TASK_DISPLAY_PRIO                      1u      // prioriradade de task do display
     
     ////////////////////////
 #define  APP_CFG_TASK_SV01_PRIO                         4u      // prioriradade de task do sem. v. 01
@@ -79,14 +79,14 @@
 #define  APP_CFG_TASK_EMERG_STK_SIZE                    64u       // tamanho da pilha de task de emerg
 #define  APP_CFG_TASK_SEN_MEC_STK_SIZE                  64u       // tamanho da pilha de task de sen. prot. mec.
 #define  APP_CFG_TASK_SEN_TEMP_STK_SIZE                 64u       // tamanho da pilha de task do sen. temp.
-#define  APP_CFG_TASK_DISPLAY_STK_SIZE                  64u       // tamanho da pilha de task do display
+#define  APP_CFG_TASK_DISPLAY_STK_SIZE                  256u       // tamanho da pilha de task do display
     
     /////////////////////////
-#define  APP_CFG_TASK_SV01_STK_SIZE                     256u       // tamanho da pilha de task do sem. v. 01
-#define  APP_CFG_TASK_SP01_STK_SIZE                     256u       // tamanho da pilha de task do sem. p. 01
+#define  APP_CFG_TASK_SV01_STK_SIZE                     64u       // tamanho da pilha de task do sem. v. 01
+#define  APP_CFG_TASK_SP01_STK_SIZE                     64u       // tamanho da pilha de task do sem. p. 01
     
-#define  APP_CFG_TASK_SV02_STK_SIZE                     256u       // tamanho da pilha de task do sem. v. 02
-#define  APP_CFG_TASK_SP02_STK_SIZE                     256u       // tamanho da pilha de task do sem. p. 02
+#define  APP_CFG_TASK_SV02_STK_SIZE                     64u       // tamanho da pilha de task do sem. v. 02
+#define  APP_CFG_TASK_SP02_STK_SIZE                     64u       // tamanho da pilha de task do sem. p. 02
 
 /*
 *********************************************************************************************************
