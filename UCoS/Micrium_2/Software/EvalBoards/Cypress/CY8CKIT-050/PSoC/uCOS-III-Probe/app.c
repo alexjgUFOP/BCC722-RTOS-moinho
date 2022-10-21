@@ -158,7 +158,7 @@ CY_ISR(se_indut_motor_Handler){                     // implementando rotina de t
                                                     // trata sens. indut da protecao mec. do motor
     alerta = 1;                                     // setando estado de alerta
     
-    //se_indut_motor_ClearInterrupt();                // limpa flag de interrupçao
+    se_indut_motor_ClearInterrupt();                // limpa flag de interrupçao
     
 }
 
@@ -166,10 +166,11 @@ CY_ISR(bt_emerg_int_Handler){                       // implementando rotina de t
     
     
                                                     // tratando debounce do botão
-    OSTimeDly(DEBOUNCE,OS_ERR_TIME_DLY_ISR, NULL);
+    OSTimeDly(200,OS_ERR_TIME_DLY_ISR, NULL);
     
                                                     // trata botao de emerg
-    emerg = !emerg;                                      // mudando status da emergencia
+    si_emerg_Write(!si_emerg_Read());               // mudando status da emergencia
+    rearme = 1;
     
     
     bt_emerg_ClearInterrupt();                      // limpa flag de interrupçao
@@ -412,7 +413,7 @@ static  void  App_Task_Ihm(void *p_arg)
 
     while(DEF_ON){
                                                             // tratamento de acionamento do motor - liga   
-        if(!bt_liga_Read() && !emerg && !rearme && !alerta){ // botao liga pressionado caso nao esteja em status de emergencia, rearme ou alerta
+        if(!bt_liga_Read() && !si_emerg_Read() && !rearme && !alerta){ // botao liga pressionado caso nao esteja em status de emergencia, rearme ou alerta
             OSTimeDly(100,OS_OPT_TIME_DLY, &err);           // debounce do botao
             ct_motor_Write(1);                              // aciona o contator de potencia
             si_liga_Write(1);                               // aciona sinaleiro de motor ligado
@@ -429,7 +430,7 @@ static  void  App_Task_Ihm(void *p_arg)
         }
         
                                                             // tratamento do rearme
-        if(!bt_rearme_Read() && !emerg && !alerta){          // ativa rearme apenas se botao for pressionado e nao estiver em condicao adversa
+        if(!bt_rearme_Read() && !si_emerg_Read() && !alerta){          // ativa rearme apenas se botao for pressionado e nao estiver em condicao adversa
             rearme = 0;                                     // desativa status de rearme
             si_rearme_Write(0);                             // desativa sinaleira de rearme
             
@@ -438,11 +439,7 @@ static  void  App_Task_Ihm(void *p_arg)
             si_rearme_Write(1);                             // aciona sinaleira de rearme
         }
         
-        if(!bt_emerg_Read()){                                // se o botao foi liberado libera a emergencia
-            emerg = 0;
-            si_emerg_Write(0);
-        }
-    
+            
     }
 
     
@@ -473,10 +470,10 @@ static  void  App_Task_Emerg(void *p_arg)
         
         
         
-        if(!bt_emerg_Read()){                                // se o botao foi liberado libera a emergencia
-            emerg = 0;
-            si_emerg_Write(0);
-        }
+        //if(bt_emerg_Read()){                                // se o botao foi liberado libera a emergencia
+        //    emerg = 0;
+        //    si_emerg_Write(0);
+        //}
     }
     
 }
