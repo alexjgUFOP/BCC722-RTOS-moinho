@@ -1,0 +1,2869 @@
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"lib_mem.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.Mem_Init,"ax",%progbits
+  20              		.align	2
+  21              		.global	Mem_Init
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	Mem_Init, %function
+  25              	Mem_Init:
+  26              	.LFB0:
+  27              		.file 1 "..\\..\\..\\..\\..\\..\\uC-LIB\\lib_mem.c"
+   1:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+   2:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+   3:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                                uC/LIB
+   4:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                        CUSTOM LIBRARY MODULES
+   5:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+   6:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                          (c) Copyright 2004-2012; Micrium, Inc.; Weston, FL
+   7:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+   8:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               All rights reserved.  Protected by international copyright laws.
+   9:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+  10:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               uC/LIB is provided in source form to registered licensees ONLY.  It is
+  11:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               illegal to distribute this source code to any third party unless you receive
+  12:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               written permission by an authorized Micrium representative.  Knowledge of
+  13:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               the source code may NOT be used to develop a similar product.
+  14:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+  15:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               Please help us continue to provide the Embedded community with the finest
+  16:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               software available.  Your honesty is greatly appreciated.
+  17:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+  18:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               You can contact us at www.micrium.com.
+  19:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  20:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+  21:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  22:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+  23:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  24:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+  25:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                     STANDARD MEMORY OPERATIONS
+  26:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+  27:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Filename      : lib_mem.c
+  28:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Version       : V1.37.00
+  29:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Programmer(s) : ITJ
+  30:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                 FGK
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 2
+
+
+  31:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                 JFD
+  32:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                 FBJ
+  33:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  34:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Note(s)       : (1) NO compiler-supplied standard library functions are used in library or produc
+  35:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+  36:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                     (a) ALL standard library functions are implemented in the custom library modu
+  37:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+  38:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                         (1) \<Custom Library Directory>\lib_*.*
+  39:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+  40:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                         (2) \<Custom Library Directory>\Ports\<cpu>\<compiler>\lib*_a.*
+  41:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+  42:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                               where
+  43:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                       <Custom Library Directory>      directory path for custom l
+  44:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                       <cpu>                           directory name for specific
+  45:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                       <compiler>                      directory name for specific
+  46:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+  47:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                     (b) Product-specific library functions are implemented in individual products
+  48:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  49:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+  50:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  51:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  52:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+  53:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  54:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                            INCLUDE FILES
+  55:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  56:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+  57:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  58:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #define    MICRIUM_SOURCE
+  59:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #define    LIB_MEM_MODULE
+  60:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #include  <lib_mem.h>
+  61:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  62:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  63:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*$PAGE*/
+  64:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+  65:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  66:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                            LOCAL DEFINES
+  67:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  68:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+  69:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  70:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  71:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+  72:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  73:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                           LOCAL CONSTANTS
+  74:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  75:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+  76:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  77:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  78:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+  79:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  80:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                          LOCAL DATA TYPES
+  81:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  82:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+  83:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  84:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  85:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+  86:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  87:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                            LOCAL TABLES
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 3
+
+
+  88:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  89:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+  90:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  91:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  92:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+  93:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  94:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                       LOCAL GLOBAL VARIABLES
+  95:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+  96:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+  97:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+  98:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #if     (LIB_MEM_CFG_ALLOC_EN == DEF_ENABLED)
+  99:..\..\..\..\..\..\uC-LIB/lib_mem.c **** MEM_POOL    *Mem_PoolTbl;                                               /* Mem      pool/seg tbl.  
+ 100:..\..\..\..\..\..\uC-LIB/lib_mem.c **** MEM_POOL     Mem_PoolHeap;                                              /* Mem heap pool/seg.      
+ 101:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 102:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #ifndef  LIB_MEM_CFG_HEAP_BASE_ADDR
+ 103:..\..\..\..\..\..\uC-LIB/lib_mem.c **** CPU_INT08U   Mem_Heap[LIB_MEM_CFG_HEAP_SIZE];                           /* Mem heap.               
+ 104:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #endif
+ 105:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #endif
+ 106:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 107:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 108:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+ 109:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 110:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                      LOCAL FUNCTION PROTOTYPES
+ 111:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 112:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+ 113:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 114:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #if (LIB_MEM_CFG_ALLOC_EN == DEF_ENABLED)                               /* -------------- MEM POOL 
+ 115:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 116:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #if (LIB_MEM_CFG_ARG_CHK_EXT_EN == DEF_ENABLED)
+ 117:..\..\..\..\..\..\uC-LIB/lib_mem.c **** static  CPU_BOOLEAN   Mem_PoolBlkIsValidAddr(MEM_POOL          *pmem_pool,
+ 118:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                              void              *pmem_blk);
+ 119:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #endif
+ 120:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 121:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 122:..\..\..\..\..\..\uC-LIB/lib_mem.c **** static  CPU_SIZE_T    Mem_SegCalcTotSize    (void              *pmem_addr,
+ 123:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                              MEM_POOL_BLK_QTY   blk_nbr,
+ 124:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                              CPU_SIZE_T         blk_size,
+ 125:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                              CPU_SIZE_T         blk_align);
+ 126:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 127:..\..\..\..\..\..\uC-LIB/lib_mem.c **** static  void         *Mem_SegAlloc          (MEM_POOL          *pmem_pool,
+ 128:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                              CPU_SIZE_T         size,
+ 129:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                              CPU_SIZE_T         align);
+ 130:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 131:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #endif
+ 132:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 133:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 134:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+ 135:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 136:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                     LOCAL CONFIGURATION ERRORS
+ 137:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 138:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+ 139:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 140:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 141:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*$PAGE*/
+ 142:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+ 143:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 144:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                             Mem_Init()
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 4
+
+
+ 145:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 146:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Description : (1) Initialize Memory Management Module :
+ 147:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 148:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   (a) Initialize heap memory pool
+ 149:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   (b) Initialize      memory pool table
+ 150:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 151:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 152:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Argument(s) : none.
+ 153:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 154:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Return(s)   : none.
+ 155:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 156:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Caller(s)   : Application.
+ 157:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 158:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Note(s)     : (2) Mem_Init() MUST be called ... :
+ 159:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 160:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   (a) ONLY ONCE from a product's application; ...
+ 161:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   (b) BEFORE product's application calls any memory library module function(s)
+ 162:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 163:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+ 164:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 165:..\..\..\..\..\..\uC-LIB/lib_mem.c **** void  Mem_Init (void)
+ 166:..\..\..\..\..\..\uC-LIB/lib_mem.c **** {
+  28              		.loc 1 166 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 80B4     		push	{r7}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 7, -4
+  36 0002 00AF     		add	r7, sp, #0
+  37              		.cfi_def_cfa_register 7
+ 167:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #if (LIB_MEM_CFG_ALLOC_EN == DEF_ENABLED)
+ 168:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     MEM_POOL  *pmem_pool;
+ 169:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 170:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                                                         /* --------- INIT MEM HEAP 
+ 171:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool                   = (MEM_POOL   *)&Mem_PoolHeap;
+ 172:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->Type             = (LIB_MEM_TYPE) LIB_MEM_TYPE_HEAP;
+ 173:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->SegHeadPtr       = (MEM_POOL   *)&Mem_PoolHeap;          /* Heap seg head = heap seg
+ 174:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->SegPrevPtr       = (MEM_POOL   *) 0;
+ 175:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->SegNextPtr       = (MEM_POOL   *) 0;
+ 176:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->PoolPrevPtr      = (MEM_POOL   *) 0;
+ 177:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->PoolNextPtr      = (MEM_POOL   *) 0;
+ 178:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->PoolAddrStart    = (void       *) 0;
+ 179:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->PoolAddrEnd      = (void       *) 0;
+ 180:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->PoolPtrs         = (void      **) 0;
+ 181:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->BlkSize          = (CPU_SIZE_T  ) 0u;
+ 182:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->BlkNbr           = (CPU_SIZE_T  ) 0u;
+ 183:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->BlkIx            = (MEM_POOL_IX ) 0u;
+ 184:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 185:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #ifdef  LIB_MEM_CFG_HEAP_BASE_ADDR
+ 186:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->SegAddr          = (void       *) LIB_MEM_CFG_HEAP_BASE_ADDR;
+ 187:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->SegAddrNextAvail = (void       *) LIB_MEM_CFG_HEAP_BASE_ADDR;
+ 188:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #else
+ 189:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->SegAddr          = (void       *)&Mem_Heap[0];
+ 190:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->SegAddrNextAvail = (void       *)&Mem_Heap[0];
+ 191:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #endif
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 5
+
+
+ 192:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 193:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->SegSizeTot       = (CPU_SIZE_T  ) LIB_MEM_CFG_HEAP_SIZE;
+ 194:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_pool->SegSizeRem       = (CPU_SIZE_T  ) LIB_MEM_CFG_HEAP_SIZE;
+ 195:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 196:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                                                         /* ------------ INIT MEM PO
+ 197:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     Mem_PoolTbl = &Mem_PoolHeap;
+ 198:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #endif
+ 199:..\..\..\..\..\..\uC-LIB/lib_mem.c **** }
+  38              		.loc 1 199 0
+  39 0004 00BF     		nop
+  40 0006 BD46     		mov	sp, r7
+  41              		.cfi_def_cfa_register 13
+  42              		@ sp needed
+  43 0008 80BC     		pop	{r7}
+  44              		.cfi_restore 7
+  45              		.cfi_def_cfa_offset 0
+  46 000a 7047     		bx	lr
+  47              		.cfi_endproc
+  48              	.LFE0:
+  49              		.size	Mem_Init, .-Mem_Init
+  50              		.section	.text.Mem_Clr,"ax",%progbits
+  51              		.align	2
+  52              		.global	Mem_Clr
+  53              		.thumb
+  54              		.thumb_func
+  55              		.type	Mem_Clr, %function
+  56              	Mem_Clr:
+  57              	.LFB1:
+ 200:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 201:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 202:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*$PAGE*/
+ 203:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+ 204:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 205:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                              Mem_Clr()
+ 206:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 207:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Description : Clear data buffer (see Note #2).
+ 208:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 209:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Argument(s) : pmem        Pointer to memory buffer to clear.
+ 210:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 211:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               size        Number of data buffer octets to clear (see Note #1).
+ 212:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 213:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Return(s)   : none.
+ 214:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 215:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Caller(s)   : Application.
+ 216:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 217:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Note(s)     : (1) Null clears allowed (i.e. zero-length clears).
+ 218:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 219:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   See also 'Mem_Set()  Note #1'.
+ 220:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 221:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               (2) Clear data by setting each data octet to 0.
+ 222:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 223:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+ 224:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 225:..\..\..\..\..\..\uC-LIB/lib_mem.c **** void  Mem_Clr (void        *pmem,
+ 226:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                CPU_SIZE_T   size)
+ 227:..\..\..\..\..\..\uC-LIB/lib_mem.c **** {
+  58              		.loc 1 227 0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 6
+
+
+  59              		.cfi_startproc
+  60              		@ args = 0, pretend = 0, frame = 8
+  61              		@ frame_needed = 1, uses_anonymous_args = 0
+  62 0000 80B5     		push	{r7, lr}
+  63              		.cfi_def_cfa_offset 8
+  64              		.cfi_offset 7, -8
+  65              		.cfi_offset 14, -4
+  66 0002 82B0     		sub	sp, sp, #8
+  67              		.cfi_def_cfa_offset 16
+  68 0004 00AF     		add	r7, sp, #0
+  69              		.cfi_def_cfa_register 7
+  70 0006 7860     		str	r0, [r7, #4]
+  71 0008 3960     		str	r1, [r7]
+ 228:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     Mem_Set(pmem,
+  72              		.loc 1 228 0
+  73 000a 3A68     		ldr	r2, [r7]
+  74 000c 0021     		movs	r1, #0
+  75 000e 7868     		ldr	r0, [r7, #4]
+  76 0010 FFF7FEFF 		bl	Mem_Set
+ 229:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             0u,                                                 /* See Note #2.                    
+ 230:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             size);
+ 231:..\..\..\..\..\..\uC-LIB/lib_mem.c **** }
+  77              		.loc 1 231 0
+  78 0014 00BF     		nop
+  79 0016 0837     		adds	r7, r7, #8
+  80              		.cfi_def_cfa_offset 8
+  81 0018 BD46     		mov	sp, r7
+  82              		.cfi_def_cfa_register 13
+  83              		@ sp needed
+  84 001a 80BD     		pop	{r7, pc}
+  85              		.cfi_endproc
+  86              	.LFE1:
+  87              		.size	Mem_Clr, .-Mem_Clr
+  88              		.section	.text.Mem_Set,"ax",%progbits
+  89              		.align	2
+  90              		.global	Mem_Set
+  91              		.thumb
+  92              		.thumb_func
+  93              		.type	Mem_Set, %function
+  94              	Mem_Set:
+  95              	.LFB2:
+ 232:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 233:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 234:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*$PAGE*/
+ 235:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+ 236:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 237:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                              Mem_Set()
+ 238:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 239:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Description : Fill data buffer with specified data octet.
+ 240:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 241:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Argument(s) : pmem        Pointer to memory buffer to fill with specified data octet.
+ 242:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 243:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               data_val    Data fill octet value.
+ 244:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 245:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               size        Number of data buffer octets to fill (see Note #1).
+ 246:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 247:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Return(s)   : none.
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 7
+
+
+ 248:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 249:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Caller(s)   : Application.
+ 250:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 251:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Note(s)     : (1) Null sets allowed (i.e. zero-length sets).
+ 252:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 253:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               (2) For best CPU performance, optimized to fill data buffer using 'CPU_ALIGN'-sized
+ 254:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   words.
+ 255:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 256:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   (a) Since many word-aligned processors REQUIRE that multi-octet words be access
+ 257:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       word-aligned addresses, 'CPU_ALIGN'-sized words MUST be accessed on 'CPU_AL
+ 258:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       addresses.
+ 259:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 260:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               (3) Modulo arithmetic is used to determine whether a memory buffer starts on a 'CPU
+ 261:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   address boundary.
+ 262:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 263:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   Modulo arithmetic in ANSI-C REQUIREs operations performed on integer values.  T
+ 264:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   address values MUST be cast to an appropriately-sized integer value PRIOR to an
+ 265:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                  'mem_align_mod' arithmetic operation.
+ 266:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 267:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+ 268:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 269:..\..\..\..\..\..\uC-LIB/lib_mem.c **** void  Mem_Set (void        *pmem,
+ 270:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                CPU_INT08U   data_val,
+ 271:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                CPU_SIZE_T   size)
+ 272:..\..\..\..\..\..\uC-LIB/lib_mem.c **** {
+  96              		.loc 1 272 0
+  97              		.cfi_startproc
+  98              		@ args = 0, pretend = 0, frame = 40
+  99              		@ frame_needed = 1, uses_anonymous_args = 0
+ 100              		@ link register save eliminated.
+ 101 0000 80B4     		push	{r7}
+ 102              		.cfi_def_cfa_offset 4
+ 103              		.cfi_offset 7, -4
+ 104 0002 8BB0     		sub	sp, sp, #44
+ 105              		.cfi_def_cfa_offset 48
+ 106 0004 00AF     		add	r7, sp, #0
+ 107              		.cfi_def_cfa_register 7
+ 108 0006 F860     		str	r0, [r7, #12]
+ 109 0008 0B46     		mov	r3, r1
+ 110 000a 7A60     		str	r2, [r7, #4]
+ 111 000c FB72     		strb	r3, [r7, #11]
+ 273:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     CPU_SIZE_T   size_rem;
+ 274:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     CPU_ALIGN    data_align;
+ 275:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     CPU_ALIGN   *pmem_align;
+ 276:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     CPU_INT08U  *pmem_08;
+ 277:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     CPU_DATA     mem_align_mod;
+ 278:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     CPU_DATA     i;
+ 279:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 280:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 281:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #if (LIB_MEM_CFG_ARG_CHK_EXT_EN == DEF_ENABLED)
+ 282:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (size < 1) {                                             /* See Note #1.                    
+ 283:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         return;
+ 284:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 285:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (pmem == (void *)0) {
+ 286:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         return;
+ 287:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 288:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #endif
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 8
+
+
+ 289:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 290:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 291:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     data_align = 0u;
+ 112              		.loc 1 291 0
+ 113 000e 0023     		movs	r3, #0
+ 114 0010 3B62     		str	r3, [r7, #32]
+ 292:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     for (i = 0u; i < sizeof(CPU_ALIGN); i++) {                  /* Fill each data_align octet with 
+ 115              		.loc 1 292 0
+ 116 0012 0023     		movs	r3, #0
+ 117 0014 7B61     		str	r3, [r7, #20]
+ 118 0016 09E0     		b	.L4
+ 119              	.L5:
+ 293:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         data_align <<=  DEF_OCTET_NBR_BITS;
+ 120              		.loc 1 293 0 discriminator 3
+ 121 0018 3B6A     		ldr	r3, [r7, #32]
+ 122 001a 1B02     		lsls	r3, r3, #8
+ 123 001c 3B62     		str	r3, [r7, #32]
+ 294:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         data_align  |= (CPU_ALIGN)data_val;
+ 124              		.loc 1 294 0 discriminator 3
+ 125 001e FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 126 0020 3A6A     		ldr	r2, [r7, #32]
+ 127 0022 1343     		orrs	r3, r3, r2
+ 128 0024 3B62     		str	r3, [r7, #32]
+ 292:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     for (i = 0u; i < sizeof(CPU_ALIGN); i++) {                  /* Fill each data_align octet with 
+ 129              		.loc 1 292 0 discriminator 3
+ 130 0026 7B69     		ldr	r3, [r7, #20]
+ 131 0028 0133     		adds	r3, r3, #1
+ 132 002a 7B61     		str	r3, [r7, #20]
+ 133              	.L4:
+ 292:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     for (i = 0u; i < sizeof(CPU_ALIGN); i++) {                  /* Fill each data_align octet with 
+ 134              		.loc 1 292 0 is_stmt 0 discriminator 1
+ 135 002c 7B69     		ldr	r3, [r7, #20]
+ 136 002e 032B     		cmp	r3, #3
+ 137 0030 F2D9     		bls	.L5
+ 295:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 296:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 297:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     size_rem      =  size;
+ 138              		.loc 1 297 0 is_stmt 1
+ 139 0032 7B68     		ldr	r3, [r7, #4]
+ 140 0034 7B62     		str	r3, [r7, #36]
+ 298:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     mem_align_mod = (CPU_INT08U)((CPU_ADDR)pmem % sizeof(CPU_ALIGN));   /* See Note #3.            
+ 141              		.loc 1 298 0
+ 142 0036 FB68     		ldr	r3, [r7, #12]
+ 143 0038 03F00303 		and	r3, r3, #3
+ 144 003c 3B61     		str	r3, [r7, #16]
+ 299:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 300:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_08 = (CPU_INT08U *)pmem;
+ 145              		.loc 1 300 0
+ 146 003e FB68     		ldr	r3, [r7, #12]
+ 147 0040 BB61     		str	r3, [r7, #24]
+ 301:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (mem_align_mod != 0u) {                                  /* If leading octets avail,        
+ 148              		.loc 1 301 0
+ 149 0042 3B69     		ldr	r3, [r7, #16]
+ 150 0044 002B     		cmp	r3, #0
+ 151 0046 13D0     		beq	.L6
+ 302:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         i = mem_align_mod;
+ 152              		.loc 1 302 0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 9
+
+
+ 153 0048 3B69     		ldr	r3, [r7, #16]
+ 154 004a 7B61     		str	r3, [r7, #20]
+ 303:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         while ((size_rem > 0) &&                                /* ... start mem buf fill with lead
+ 155              		.loc 1 303 0
+ 156 004c 0AE0     		b	.L7
+ 157              	.L8:
+ 304:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                (i        < sizeof(CPU_ALIGN ))) {               /* ... until next CPU_ALIGN word bo
+ 305:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            *pmem_08++ = data_val;
+ 158              		.loc 1 305 0
+ 159 004e BB69     		ldr	r3, [r7, #24]
+ 160 0050 5A1C     		adds	r2, r3, #1
+ 161 0052 BA61     		str	r2, [r7, #24]
+ 162 0054 FA7A     		ldrb	r2, [r7, #11]
+ 163 0056 1A70     		strb	r2, [r3]
+ 306:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             size_rem -= sizeof(CPU_INT08U);
+ 164              		.loc 1 306 0
+ 165 0058 7B6A     		ldr	r3, [r7, #36]
+ 166 005a 013B     		subs	r3, r3, #1
+ 167 005c 7B62     		str	r3, [r7, #36]
+ 307:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             i++;
+ 168              		.loc 1 307 0
+ 169 005e 7B69     		ldr	r3, [r7, #20]
+ 170 0060 0133     		adds	r3, r3, #1
+ 171 0062 7B61     		str	r3, [r7, #20]
+ 172              	.L7:
+ 303:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                (i        < sizeof(CPU_ALIGN ))) {               /* ... until next CPU_ALIGN word bo
+ 173              		.loc 1 303 0
+ 174 0064 7B6A     		ldr	r3, [r7, #36]
+ 175 0066 002B     		cmp	r3, #0
+ 176 0068 02D0     		beq	.L6
+ 303:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                (i        < sizeof(CPU_ALIGN ))) {               /* ... until next CPU_ALIGN word bo
+ 177              		.loc 1 303 0 is_stmt 0 discriminator 1
+ 178 006a 7B69     		ldr	r3, [r7, #20]
+ 179 006c 032B     		cmp	r3, #3
+ 180 006e EED9     		bls	.L8
+ 181              	.L6:
+ 308:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         }
+ 309:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 310:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 311:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_align = (CPU_ALIGN *)pmem_08;                          /* See Note #2a.                   
+ 182              		.loc 1 311 0 is_stmt 1
+ 183 0070 BB69     		ldr	r3, [r7, #24]
+ 184 0072 FB61     		str	r3, [r7, #28]
+ 312:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     while (size_rem >= sizeof(CPU_ALIGN)) {                     /* While mem buf aligned on CPU_ALI
+ 185              		.loc 1 312 0
+ 186 0074 07E0     		b	.L9
+ 187              	.L10:
+ 313:..\..\..\..\..\..\uC-LIB/lib_mem.c ****        *pmem_align++ = data_align;                              /* ... fill mem buf with    CPU_ALI
+ 188              		.loc 1 313 0
+ 189 0076 FB69     		ldr	r3, [r7, #28]
+ 190 0078 1A1D     		adds	r2, r3, #4
+ 191 007a FA61     		str	r2, [r7, #28]
+ 192 007c 3A6A     		ldr	r2, [r7, #32]
+ 193 007e 1A60     		str	r2, [r3]
+ 314:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         size_rem    -= sizeof(CPU_ALIGN);
+ 194              		.loc 1 314 0
+ 195 0080 7B6A     		ldr	r3, [r7, #36]
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 10
+
+
+ 196 0082 043B     		subs	r3, r3, #4
+ 197 0084 7B62     		str	r3, [r7, #36]
+ 198              	.L9:
+ 312:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     while (size_rem >= sizeof(CPU_ALIGN)) {                     /* While mem buf aligned on CPU_ALI
+ 199              		.loc 1 312 0
+ 200 0086 7B6A     		ldr	r3, [r7, #36]
+ 201 0088 032B     		cmp	r3, #3
+ 202 008a F4D8     		bhi	.L10
+ 315:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 316:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 317:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_08 = (CPU_INT08U *)pmem_align;
+ 203              		.loc 1 317 0
+ 204 008c FB69     		ldr	r3, [r7, #28]
+ 205 008e BB61     		str	r3, [r7, #24]
+ 318:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     while (size_rem > 0) {                                      /* Finish mem buf fill with trailin
+ 206              		.loc 1 318 0
+ 207 0090 07E0     		b	.L11
+ 208              	.L12:
+ 319:..\..\..\..\..\..\uC-LIB/lib_mem.c ****        *pmem_08++   = data_val;
+ 209              		.loc 1 319 0
+ 210 0092 BB69     		ldr	r3, [r7, #24]
+ 211 0094 5A1C     		adds	r2, r3, #1
+ 212 0096 BA61     		str	r2, [r7, #24]
+ 213 0098 FA7A     		ldrb	r2, [r7, #11]
+ 214 009a 1A70     		strb	r2, [r3]
+ 320:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         size_rem   -= sizeof(CPU_INT08U);
+ 215              		.loc 1 320 0
+ 216 009c 7B6A     		ldr	r3, [r7, #36]
+ 217 009e 013B     		subs	r3, r3, #1
+ 218 00a0 7B62     		str	r3, [r7, #36]
+ 219              	.L11:
+ 318:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     while (size_rem > 0) {                                      /* Finish mem buf fill with trailin
+ 220              		.loc 1 318 0
+ 221 00a2 7B6A     		ldr	r3, [r7, #36]
+ 222 00a4 002B     		cmp	r3, #0
+ 223 00a6 F4D1     		bne	.L12
+ 321:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 322:..\..\..\..\..\..\uC-LIB/lib_mem.c **** }
+ 224              		.loc 1 322 0
+ 225 00a8 00BF     		nop
+ 226 00aa 2C37     		adds	r7, r7, #44
+ 227              		.cfi_def_cfa_offset 4
+ 228 00ac BD46     		mov	sp, r7
+ 229              		.cfi_def_cfa_register 13
+ 230              		@ sp needed
+ 231 00ae 80BC     		pop	{r7}
+ 232              		.cfi_restore 7
+ 233              		.cfi_def_cfa_offset 0
+ 234 00b0 7047     		bx	lr
+ 235              		.cfi_endproc
+ 236              	.LFE2:
+ 237              		.size	Mem_Set, .-Mem_Set
+ 238 00b2 00BF     		.section	.text.Mem_Copy,"ax",%progbits
+ 239              		.align	2
+ 240              		.global	Mem_Copy
+ 241              		.thumb
+ 242              		.thumb_func
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 11
+
+
+ 243              		.type	Mem_Copy, %function
+ 244              	Mem_Copy:
+ 245              	.LFB3:
+ 323:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 324:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 325:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*$PAGE*/
+ 326:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+ 327:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 328:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                             Mem_Copy()
+ 329:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 330:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Description : Copy data octets from one memory buffer to another memory buffer.
+ 331:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 332:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Argument(s) : pdest       Pointer to destination memory buffer.
+ 333:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 334:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               psrc        Pointer to source      memory buffer.
+ 335:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 336:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               size        Number of octets to copy (see Note #1).
+ 337:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 338:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Return(s)   : none.
+ 339:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 340:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Caller(s)   : Application.
+ 341:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 342:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Note(s)     : (1) Null copies allowed (i.e. zero-length copies).
+ 343:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 344:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               (2) Memory buffers NOT checked for overlapping.
+ 345:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 346:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   (a) IEEE Std 1003.1, 2004 Edition, Section 'memcpy() : DESCRIPTION' states that
+ 347:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       copying takes place between objects that overlap, the behavior is undefined
+ 348:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 349:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   (b) However, data octets from a source memory buffer at a higher address value 
+ 350:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       successfully copy to a destination memory buffer at a lower  address value 
+ 351:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       if any octets of the memory buffers overlap as long as no individual, atomi
+ 352:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       word copy overlaps.
+ 353:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 354:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       Since Mem_Copy() performs the data octet copy via 'CPU_ALIGN'-sized words &
+ 355:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       octets; & since 'CPU_ALIGN'-sized words MUST be accessed on word-aligned ad
+ 356:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       (see Note #3b), neither 'CPU_ALIGN'-sized words nor octets at unique addres
+ 357:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       ever overlap.
+ 358:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 359:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       Therefore, Mem_Copy() SHOULD be able to successfully copy overlapping memor
+ 360:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       buffers as long as the source memory buffer is at a higher address value th
+ 361:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       destination memory buffer.
+ 362:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 363:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               (3) For best CPU performance, optimized to copy data buffer using 'CPU_ALIGN'-sized
+ 364:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   words.
+ 365:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 366:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   (a) Since many word-aligned processors REQUIRE that multi-octet words be access
+ 367:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       word-aligned addresses, 'CPU_ALIGN'-sized words MUST be accessed on 'CPU_AL
+ 368:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       addresses.
+ 369:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 370:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               (4) Modulo arithmetic is used to determine whether a memory buffer starts on a 'CPU
+ 371:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   address boundary.
+ 372:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 373:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   Modulo arithmetic in ANSI-C REQUIREs operations performed on integer values.  T
+ 374:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   address values MUST be cast to an appropriately-sized integer value PRIOR to an
+ 375:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                  'mem_align_mod' arithmetic operation.
+ 376:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 12
+
+
+ 377:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+ 378:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*$PAGE*/
+ 379:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #if (LIB_MEM_CFG_OPTIMIZE_ASM_EN != DEF_ENABLED)
+ 380:..\..\..\..\..\..\uC-LIB/lib_mem.c **** void  Mem_Copy (       void        *pdest,
+ 381:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 const  void        *psrc,
+ 382:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                        CPU_SIZE_T   size)
+ 383:..\..\..\..\..\..\uC-LIB/lib_mem.c **** {
+ 246              		.loc 1 383 0
+ 247              		.cfi_startproc
+ 248              		@ args = 0, pretend = 0, frame = 56
+ 249              		@ frame_needed = 1, uses_anonymous_args = 0
+ 250              		@ link register save eliminated.
+ 251 0000 80B4     		push	{r7}
+ 252              		.cfi_def_cfa_offset 4
+ 253              		.cfi_offset 7, -4
+ 254 0002 8FB0     		sub	sp, sp, #60
+ 255              		.cfi_def_cfa_offset 64
+ 256 0004 00AF     		add	r7, sp, #0
+ 257              		.cfi_def_cfa_register 7
+ 258 0006 F860     		str	r0, [r7, #12]
+ 259 0008 B960     		str	r1, [r7, #8]
+ 260 000a 7A60     		str	r2, [r7, #4]
+ 384:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_SIZE_T    size_rem;
+ 385:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_SIZE_T    mem_gap_octets;
+ 386:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_ALIGN    *pmem_align_dest;
+ 387:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     const  CPU_ALIGN    *pmem_align_src;
+ 388:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_INT08U   *pmem_08_dest;
+ 389:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     const  CPU_INT08U   *pmem_08_src;
+ 390:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_DATA      i;
+ 391:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_DATA      mem_align_mod_dest;
+ 392:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_DATA      mem_align_mod_src;
+ 393:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_BOOLEAN   mem_aligned;
+ 394:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 395:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 396:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #if (LIB_MEM_CFG_ARG_CHK_EXT_EN == DEF_ENABLED)
+ 397:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (size < 1) {                                             /* See Note #1.                    
+ 398:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         return;
+ 399:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 400:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (pdest == (void *)0) {
+ 401:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         return;
+ 402:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 403:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (psrc  == (void *)0) {
+ 404:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         return;
+ 405:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 406:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #endif
+ 407:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 408:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 409:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     size_rem           =  size;
+ 261              		.loc 1 409 0
+ 262 000c 7B68     		ldr	r3, [r7, #4]
+ 263 000e 7B63     		str	r3, [r7, #52]
+ 410:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 411:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_08_dest       = (      CPU_INT08U *)pdest;
+ 264              		.loc 1 411 0
+ 265 0010 FB68     		ldr	r3, [r7, #12]
+ 266 0012 BB62     		str	r3, [r7, #40]
+ 412:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_08_src        = (const CPU_INT08U *)psrc;
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 13
+
+
+ 267              		.loc 1 412 0
+ 268 0014 BB68     		ldr	r3, [r7, #8]
+ 269 0016 7B62     		str	r3, [r7, #36]
+ 413:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 414:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     mem_gap_octets     = pmem_08_src - pmem_08_dest;
+ 270              		.loc 1 414 0
+ 271 0018 7A6A     		ldr	r2, [r7, #36]
+ 272 001a BB6A     		ldr	r3, [r7, #40]
+ 273 001c D31A     		subs	r3, r2, r3
+ 274 001e FB61     		str	r3, [r7, #28]
+ 415:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 416:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 417:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (mem_gap_octets >= sizeof(CPU_ALIGN)) {                  /* Avoid bufs overlap.             
+ 275              		.loc 1 417 0
+ 276 0020 FB69     		ldr	r3, [r7, #28]
+ 277 0022 032B     		cmp	r3, #3
+ 278 0024 4FD9     		bls	.L22
+ 418:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                                                 /* See Note #4.                    
+ 419:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         mem_align_mod_dest = (CPU_INT08U)((CPU_ADDR)pmem_08_dest % sizeof(CPU_ALIGN));
+ 279              		.loc 1 419 0
+ 280 0026 BB6A     		ldr	r3, [r7, #40]
+ 281 0028 03F00303 		and	r3, r3, #3
+ 282 002c BB61     		str	r3, [r7, #24]
+ 420:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         mem_align_mod_src  = (CPU_INT08U)((CPU_ADDR)pmem_08_src  % sizeof(CPU_ALIGN));
+ 283              		.loc 1 420 0
+ 284 002e 7B6A     		ldr	r3, [r7, #36]
+ 285 0030 03F00303 		and	r3, r3, #3
+ 286 0034 7B61     		str	r3, [r7, #20]
+ 421:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 422:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         mem_aligned        = (mem_align_mod_dest == mem_align_mod_src) ? DEF_YES : DEF_NO;
+ 287              		.loc 1 422 0
+ 288 0036 BA69     		ldr	r2, [r7, #24]
+ 289 0038 7B69     		ldr	r3, [r7, #20]
+ 290 003a 9A42     		cmp	r2, r3
+ 291 003c 01D1     		bne	.L15
+ 292              		.loc 1 422 0 is_stmt 0 discriminator 1
+ 293 003e 0123     		movs	r3, #1
+ 294 0040 00E0     		b	.L16
+ 295              	.L15:
+ 296              		.loc 1 422 0 discriminator 2
+ 297 0042 0023     		movs	r3, #0
+ 298              	.L16:
+ 299              		.loc 1 422 0 discriminator 4
+ 300 0044 FB74     		strb	r3, [r7, #19]
+ 423:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 424:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         if (mem_aligned == DEF_YES) {                           /* If mem bufs' alignment offset eq
+ 301              		.loc 1 424 0 is_stmt 1 discriminator 4
+ 302 0046 FB7C     		ldrb	r3, [r7, #19]	@ zero_extendqisi2
+ 303 0048 012B     		cmp	r3, #1
+ 304 004a 3CD1     		bne	.L22
+ 425:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                                                 /* ... optimize copy for mem buf al
+ 426:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             if (mem_align_mod_dest != 0u) {                     /* If leading octets avail,        
+ 305              		.loc 1 426 0
+ 306 004c BB69     		ldr	r3, [r7, #24]
+ 307 004e 002B     		cmp	r3, #0
+ 308 0050 16D0     		beq	.L17
+ 427:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 i = mem_align_mod_dest;
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 14
+
+
+ 309              		.loc 1 427 0
+ 310 0052 BB69     		ldr	r3, [r7, #24]
+ 311 0054 3B62     		str	r3, [r7, #32]
+ 428:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 while ((size_rem   >  0) &&                     /* ... start mem buf copy with lead
+ 312              		.loc 1 428 0
+ 313 0056 0DE0     		b	.L18
+ 314              	.L19:
+ 429:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                        (i          <  sizeof(CPU_ALIGN ))) {    /* ... until next CPU_ALIGN word bo
+ 430:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                    *pmem_08_dest++ = *pmem_08_src++;
+ 315              		.loc 1 430 0
+ 316 0058 BB6A     		ldr	r3, [r7, #40]
+ 317 005a 5A1C     		adds	r2, r3, #1
+ 318 005c BA62     		str	r2, [r7, #40]
+ 319 005e 7A6A     		ldr	r2, [r7, #36]
+ 320 0060 511C     		adds	r1, r2, #1
+ 321 0062 7962     		str	r1, [r7, #36]
+ 322 0064 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 323 0066 1A70     		strb	r2, [r3]
+ 431:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                     size_rem      -=  sizeof(CPU_INT08U);
+ 324              		.loc 1 431 0
+ 325 0068 7B6B     		ldr	r3, [r7, #52]
+ 326 006a 013B     		subs	r3, r3, #1
+ 327 006c 7B63     		str	r3, [r7, #52]
+ 432:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                     i++;
+ 328              		.loc 1 432 0
+ 329 006e 3B6A     		ldr	r3, [r7, #32]
+ 330 0070 0133     		adds	r3, r3, #1
+ 331 0072 3B62     		str	r3, [r7, #32]
+ 332              	.L18:
+ 428:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                        (i          <  sizeof(CPU_ALIGN ))) {    /* ... until next CPU_ALIGN word bo
+ 333              		.loc 1 428 0
+ 334 0074 7B6B     		ldr	r3, [r7, #52]
+ 335 0076 002B     		cmp	r3, #0
+ 336 0078 02D0     		beq	.L17
+ 428:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                        (i          <  sizeof(CPU_ALIGN ))) {    /* ... until next CPU_ALIGN word bo
+ 337              		.loc 1 428 0 is_stmt 0 discriminator 1
+ 338 007a 3B6A     		ldr	r3, [r7, #32]
+ 339 007c 032B     		cmp	r3, #3
+ 340 007e EBD9     		bls	.L19
+ 341              	.L17:
+ 433:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 }
+ 434:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             }
+ 435:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 436:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             pmem_align_dest = (      CPU_ALIGN *)pmem_08_dest;  /* See Note #3a.                   
+ 342              		.loc 1 436 0 is_stmt 1
+ 343 0080 BB6A     		ldr	r3, [r7, #40]
+ 344 0082 3B63     		str	r3, [r7, #48]
+ 437:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             pmem_align_src  = (const CPU_ALIGN *)pmem_08_src;
+ 345              		.loc 1 437 0
+ 346 0084 7B6A     		ldr	r3, [r7, #36]
+ 347 0086 FB62     		str	r3, [r7, #44]
+ 438:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             while (size_rem      >=  sizeof(CPU_ALIGN)) {       /* While mem bufs aligned on CPU_AL
+ 348              		.loc 1 438 0
+ 349 0088 0AE0     		b	.L20
+ 350              	.L21:
+ 439:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                *pmem_align_dest++ = *pmem_align_src++;          /* ... copy psrc to pdest with CPU_
+ 351              		.loc 1 439 0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 15
+
+
+ 352 008a 3B6B     		ldr	r3, [r7, #48]
+ 353 008c 1A1D     		adds	r2, r3, #4
+ 354 008e 3A63     		str	r2, [r7, #48]
+ 355 0090 FA6A     		ldr	r2, [r7, #44]
+ 356 0092 111D     		adds	r1, r2, #4
+ 357 0094 F962     		str	r1, [r7, #44]
+ 358 0096 1268     		ldr	r2, [r2]
+ 359 0098 1A60     		str	r2, [r3]
+ 440:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 size_rem         -=  sizeof(CPU_ALIGN);
+ 360              		.loc 1 440 0
+ 361 009a 7B6B     		ldr	r3, [r7, #52]
+ 362 009c 043B     		subs	r3, r3, #4
+ 363 009e 7B63     		str	r3, [r7, #52]
+ 364              	.L20:
+ 438:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             while (size_rem      >=  sizeof(CPU_ALIGN)) {       /* While mem bufs aligned on CPU_AL
+ 365              		.loc 1 438 0
+ 366 00a0 7B6B     		ldr	r3, [r7, #52]
+ 367 00a2 032B     		cmp	r3, #3
+ 368 00a4 F1D8     		bhi	.L21
+ 441:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             }
+ 442:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 443:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             pmem_08_dest = (      CPU_INT08U *)pmem_align_dest;
+ 369              		.loc 1 443 0
+ 370 00a6 3B6B     		ldr	r3, [r7, #48]
+ 371 00a8 BB62     		str	r3, [r7, #40]
+ 444:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             pmem_08_src  = (const CPU_INT08U *)pmem_align_src;
+ 372              		.loc 1 444 0
+ 373 00aa FB6A     		ldr	r3, [r7, #44]
+ 374 00ac 7B62     		str	r3, [r7, #36]
+ 445:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         }
+ 446:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 447:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 448:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     while (size_rem > 0) {                                      /* For unaligned mem bufs or traili
+ 375              		.loc 1 448 0
+ 376 00ae 0AE0     		b	.L22
+ 377              	.L23:
+ 449:..\..\..\..\..\..\uC-LIB/lib_mem.c ****        *pmem_08_dest++ = *pmem_08_src++;                        /* ... copy psrc to pdest by octets
+ 378              		.loc 1 449 0
+ 379 00b0 BB6A     		ldr	r3, [r7, #40]
+ 380 00b2 5A1C     		adds	r2, r3, #1
+ 381 00b4 BA62     		str	r2, [r7, #40]
+ 382 00b6 7A6A     		ldr	r2, [r7, #36]
+ 383 00b8 511C     		adds	r1, r2, #1
+ 384 00ba 7962     		str	r1, [r7, #36]
+ 385 00bc 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 386 00be 1A70     		strb	r2, [r3]
+ 450:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         size_rem      -=  sizeof(CPU_INT08U);
+ 387              		.loc 1 450 0
+ 388 00c0 7B6B     		ldr	r3, [r7, #52]
+ 389 00c2 013B     		subs	r3, r3, #1
+ 390 00c4 7B63     		str	r3, [r7, #52]
+ 391              	.L22:
+ 448:..\..\..\..\..\..\uC-LIB/lib_mem.c ****        *pmem_08_dest++ = *pmem_08_src++;                        /* ... copy psrc to pdest by octets
+ 392              		.loc 1 448 0
+ 393 00c6 7B6B     		ldr	r3, [r7, #52]
+ 394 00c8 002B     		cmp	r3, #0
+ 395 00ca F1D1     		bne	.L23
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 16
+
+
+ 451:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 452:..\..\..\..\..\..\uC-LIB/lib_mem.c **** }
+ 396              		.loc 1 452 0
+ 397 00cc 00BF     		nop
+ 398 00ce 3C37     		adds	r7, r7, #60
+ 399              		.cfi_def_cfa_offset 4
+ 400 00d0 BD46     		mov	sp, r7
+ 401              		.cfi_def_cfa_register 13
+ 402              		@ sp needed
+ 403 00d2 80BC     		pop	{r7}
+ 404              		.cfi_restore 7
+ 405              		.cfi_def_cfa_offset 0
+ 406 00d4 7047     		bx	lr
+ 407              		.cfi_endproc
+ 408              	.LFE3:
+ 409              		.size	Mem_Copy, .-Mem_Copy
+ 410 00d6 00BF     		.section	.text.Mem_Move,"ax",%progbits
+ 411              		.align	2
+ 412              		.global	Mem_Move
+ 413              		.thumb
+ 414              		.thumb_func
+ 415              		.type	Mem_Move, %function
+ 416              	Mem_Move:
+ 417              	.LFB4:
+ 453:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #endif
+ 454:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 455:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 456:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+ 457:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 458:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                             Mem_Move()
+ 459:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 460:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Description : Move data octets from one memory buffer to another memory buffer, or within the sam
+ 461:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               memory buffer. Overlapping is correctly handled for all move operations.
+ 462:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 463:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Argument(s) : pdest       Pointer to destination memory buffer.
+ 464:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 465:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               psrc        Pointer to source      memory buffer.
+ 466:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 467:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               size        Number of octets to move (see Note #1).
+ 468:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 469:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Return(s)   : none.
+ 470:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 471:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Caller(s)   : Application.
+ 472:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 473:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Note(s)     : (1) Null move operations allowed (i.e. zero-length).
+ 474:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 475:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               (2) Memory buffers checked for overlapping.
+ 476:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 477:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               (3) For best CPU performance, optimized to copy data buffer using 'CPU_ALIGN'-sized
+ 478:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   words.
+ 479:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 480:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   (a) Since many word-aligned processors REQUIRE that multi-octet words be access
+ 481:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       word-aligned addresses, 'CPU_ALIGN'-sized words MUST be accessed on 'CPU_AL
+ 482:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       addresses.
+ 483:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 484:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               (4) Modulo arithmetic is used to determine whether a memory buffer starts on a 'CPU
+ 485:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   address boundary.
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 17
+
+
+ 486:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 487:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   Modulo arithmetic in ANSI-C REQUIREs operations performed on integer values.  T
+ 488:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   address values MUST be cast to an appropriately-sized integer value PRIOR to an
+ 489:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                  'mem_align_mod' arithmetic operation.
+ 490:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 491:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+ 492:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*$PAGE*/
+ 493:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 494:..\..\..\..\..\..\uC-LIB/lib_mem.c **** void  Mem_Move (       void        *pdest,
+ 495:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 const  void        *psrc,
+ 496:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                        CPU_SIZE_T   size)
+ 497:..\..\..\..\..\..\uC-LIB/lib_mem.c **** {
+ 418              		.loc 1 497 0
+ 419              		.cfi_startproc
+ 420              		@ args = 0, pretend = 0, frame = 56
+ 421              		@ frame_needed = 1, uses_anonymous_args = 0
+ 422 0000 80B5     		push	{r7, lr}
+ 423              		.cfi_def_cfa_offset 8
+ 424              		.cfi_offset 7, -8
+ 425              		.cfi_offset 14, -4
+ 426 0002 8EB0     		sub	sp, sp, #56
+ 427              		.cfi_def_cfa_offset 64
+ 428 0004 00AF     		add	r7, sp, #0
+ 429              		.cfi_def_cfa_register 7
+ 430 0006 F860     		str	r0, [r7, #12]
+ 431 0008 B960     		str	r1, [r7, #8]
+ 432 000a 7A60     		str	r2, [r7, #4]
+ 498:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_SIZE_T    size_rem;
+ 499:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_SIZE_T    mem_gap_octets;
+ 500:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_ALIGN    *pmem_align_dest;
+ 501:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     const  CPU_ALIGN    *pmem_align_src;
+ 502:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_INT08U   *pmem_08_dest;
+ 503:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     const  CPU_INT08U   *pmem_08_src;
+ 504:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_INT08S    i;
+ 505:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_DATA      mem_align_mod_dest;
+ 506:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_DATA      mem_align_mod_src;
+ 507:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_BOOLEAN   mem_aligned;
+ 508:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 509:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 510:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #if (LIB_MEM_CFG_ARG_CHK_EXT_EN == DEF_ENABLED)
+ 511:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (size < 1) {
+ 512:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         return;
+ 513:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 514:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (pdest == (void *)0) {
+ 515:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         return;
+ 516:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 517:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (psrc  == (void *)0) {
+ 518:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         return;
+ 519:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 520:..\..\..\..\..\..\uC-LIB/lib_mem.c **** #endif
+ 521:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 522:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_08_src  = (const CPU_INT08U *)psrc;
+ 433              		.loc 1 522 0
+ 434 000c BB68     		ldr	r3, [r7, #8]
+ 435 000e 7B62     		str	r3, [r7, #36]
+ 523:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_08_dest = (      CPU_INT08U *)pdest;
+ 436              		.loc 1 523 0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 18
+
+
+ 437 0010 FB68     		ldr	r3, [r7, #12]
+ 438 0012 BB62     		str	r3, [r7, #40]
+ 524:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (pmem_08_src > pmem_08_dest) {
+ 439              		.loc 1 524 0
+ 440 0014 7A6A     		ldr	r2, [r7, #36]
+ 441 0016 BB6A     		ldr	r3, [r7, #40]
+ 442 0018 9A42     		cmp	r2, r3
+ 443 001a 05D9     		bls	.L25
+ 525:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         Mem_Copy(pdest, psrc, size);
+ 444              		.loc 1 525 0
+ 445 001c 7A68     		ldr	r2, [r7, #4]
+ 446 001e B968     		ldr	r1, [r7, #8]
+ 447 0020 F868     		ldr	r0, [r7, #12]
+ 448 0022 FFF7FEFF 		bl	Mem_Copy
+ 526:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         return;
+ 449              		.loc 1 526 0
+ 450 0026 6FE0     		b	.L24
+ 451              	.L25:
+ 527:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 528:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 529:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     size_rem           =  size;
+ 452              		.loc 1 529 0
+ 453 0028 7B68     		ldr	r3, [r7, #4]
+ 454 002a 7B63     		str	r3, [r7, #52]
+ 530:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 531:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_08_dest       = (      CPU_INT08U *)pdest + size - 1;
+ 455              		.loc 1 531 0
+ 456 002c 7B68     		ldr	r3, [r7, #4]
+ 457 002e 013B     		subs	r3, r3, #1
+ 458 0030 FA68     		ldr	r2, [r7, #12]
+ 459 0032 1344     		add	r3, r3, r2
+ 460 0034 BB62     		str	r3, [r7, #40]
+ 532:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     pmem_08_src        = (const CPU_INT08U *)psrc  + size - 1;
+ 461              		.loc 1 532 0
+ 462 0036 7B68     		ldr	r3, [r7, #4]
+ 463 0038 013B     		subs	r3, r3, #1
+ 464 003a BA68     		ldr	r2, [r7, #8]
+ 465 003c 1344     		add	r3, r3, r2
+ 466 003e 7B62     		str	r3, [r7, #36]
+ 533:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     
+ 534:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     mem_gap_octets     = pmem_08_dest - pmem_08_src;
+ 467              		.loc 1 534 0
+ 468 0040 BA6A     		ldr	r2, [r7, #40]
+ 469 0042 7B6A     		ldr	r3, [r7, #36]
+ 470 0044 D31A     		subs	r3, r2, r3
+ 471 0046 FB61     		str	r3, [r7, #28]
+ 535:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     
+ 536:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 537:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (mem_gap_octets >= sizeof(CPU_ALIGN)) {                  /* Avoid bufs overlap.             
+ 472              		.loc 1 537 0
+ 473 0048 FB69     		ldr	r3, [r7, #28]
+ 474 004a 032B     		cmp	r3, #3
+ 475 004c 59D9     		bls	.L35
+ 538:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     
+ 539:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                                                 /* See Note #4.                    
+ 540:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         mem_align_mod_dest = (CPU_INT08U)((CPU_ADDR)pmem_08_dest % sizeof(CPU_ALIGN));
+ 476              		.loc 1 540 0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 19
+
+
+ 477 004e BB6A     		ldr	r3, [r7, #40]
+ 478 0050 03F00303 		and	r3, r3, #3
+ 479 0054 BB61     		str	r3, [r7, #24]
+ 541:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         mem_align_mod_src  = (CPU_INT08U)((CPU_ADDR)pmem_08_src  % sizeof(CPU_ALIGN));
+ 480              		.loc 1 541 0
+ 481 0056 7B6A     		ldr	r3, [r7, #36]
+ 482 0058 03F00303 		and	r3, r3, #3
+ 483 005c 7B61     		str	r3, [r7, #20]
+ 542:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 543:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         mem_aligned        = (mem_align_mod_dest == mem_align_mod_src) ? DEF_YES : DEF_NO;
+ 484              		.loc 1 543 0
+ 485 005e BA69     		ldr	r2, [r7, #24]
+ 486 0060 7B69     		ldr	r3, [r7, #20]
+ 487 0062 9A42     		cmp	r2, r3
+ 488 0064 01D1     		bne	.L28
+ 489              		.loc 1 543 0 is_stmt 0 discriminator 1
+ 490 0066 0123     		movs	r3, #1
+ 491 0068 00E0     		b	.L29
+ 492              	.L28:
+ 493              		.loc 1 543 0 discriminator 2
+ 494 006a 0023     		movs	r3, #0
+ 495              	.L29:
+ 496              		.loc 1 543 0 discriminator 4
+ 497 006c FB74     		strb	r3, [r7, #19]
+ 544:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 545:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         if (mem_aligned == DEF_YES) {                           /* If mem bufs' alignment offset eq
+ 498              		.loc 1 545 0 is_stmt 1 discriminator 4
+ 499 006e FB7C     		ldrb	r3, [r7, #19]	@ zero_extendqisi2
+ 500 0070 012B     		cmp	r3, #1
+ 501 0072 46D1     		bne	.L35
+ 546:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                                                 /* ... optimize copy for mem buf al
+ 547:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             if (mem_align_mod_dest != (sizeof(CPU_ALIGN) - 1)) {/* If leading octets avail,        
+ 502              		.loc 1 547 0
+ 503 0074 BB69     		ldr	r3, [r7, #24]
+ 504 0076 032B     		cmp	r3, #3
+ 505 0078 1CD0     		beq	.L30
+ 548:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 i = mem_align_mod_dest;
+ 506              		.loc 1 548 0
+ 507 007a BB69     		ldr	r3, [r7, #24]
+ 508 007c 87F82330 		strb	r3, [r7, #35]
+ 549:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 while ((size_rem   >  0) &&                     /* ... start mem buf copy with lead
+ 509              		.loc 1 549 0
+ 510 0080 11E0     		b	.L31
+ 511              	.L32:
+ 550:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                        (i          >= 0)) {                     /* ... until next CPU_ALIGN word bo
+ 551:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                    *pmem_08_dest-- = *pmem_08_src--;
+ 512              		.loc 1 551 0
+ 513 0082 BB6A     		ldr	r3, [r7, #40]
+ 514 0084 5A1E     		subs	r2, r3, #1
+ 515 0086 BA62     		str	r2, [r7, #40]
+ 516 0088 7A6A     		ldr	r2, [r7, #36]
+ 517 008a 511E     		subs	r1, r2, #1
+ 518 008c 7962     		str	r1, [r7, #36]
+ 519 008e 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 520 0090 1A70     		strb	r2, [r3]
+ 552:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                     size_rem      -=  sizeof(CPU_INT08U);
+ 521              		.loc 1 552 0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 20
+
+
+ 522 0092 7B6B     		ldr	r3, [r7, #52]
+ 523 0094 013B     		subs	r3, r3, #1
+ 524 0096 7B63     		str	r3, [r7, #52]
+ 553:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                     i--;
+ 525              		.loc 1 553 0
+ 526 0098 97F92330 		ldrsb	r3, [r7, #35]
+ 527 009c DBB2     		uxtb	r3, r3
+ 528 009e 013B     		subs	r3, r3, #1
+ 529 00a0 DBB2     		uxtb	r3, r3
+ 530 00a2 87F82330 		strb	r3, [r7, #35]
+ 531              	.L31:
+ 549:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                        (i          >= 0)) {                     /* ... until next CPU_ALIGN word bo
+ 532              		.loc 1 549 0
+ 533 00a6 7B6B     		ldr	r3, [r7, #52]
+ 534 00a8 002B     		cmp	r3, #0
+ 535 00aa 03D0     		beq	.L30
+ 549:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                        (i          >= 0)) {                     /* ... until next CPU_ALIGN word bo
+ 536              		.loc 1 549 0 is_stmt 0 discriminator 1
+ 537 00ac 97F92330 		ldrsb	r3, [r7, #35]
+ 538 00b0 002B     		cmp	r3, #0
+ 539 00b2 E6DA     		bge	.L32
+ 540              	.L30:
+ 554:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 }
+ 555:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             }
+ 556:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 557:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                                                 /* See Note #3a.                   
+ 558:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             pmem_align_dest = (      CPU_ALIGN *)pmem_08_dest - sizeof(CPU_ALIGN) + 1;
+ 541              		.loc 1 558 0 is_stmt 1
+ 542 00b4 BB6A     		ldr	r3, [r7, #40]
+ 543 00b6 0C3B     		subs	r3, r3, #12
+ 544 00b8 3B63     		str	r3, [r7, #48]
+ 559:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             pmem_align_src  = (const CPU_ALIGN *)pmem_08_src  - sizeof(CPU_ALIGN) + 1;
+ 545              		.loc 1 559 0
+ 546 00ba 7B6A     		ldr	r3, [r7, #36]
+ 547 00bc 0C3B     		subs	r3, r3, #12
+ 548 00be FB62     		str	r3, [r7, #44]
+ 560:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             while (size_rem      >=  sizeof(CPU_ALIGN)) {       /* While mem bufs aligned on CPU_AL
+ 549              		.loc 1 560 0
+ 550 00c0 0AE0     		b	.L33
+ 551              	.L34:
+ 561:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                *pmem_align_dest-- = *pmem_align_src--;          /* ... copy psrc to pdest with CPU_
+ 552              		.loc 1 561 0
+ 553 00c2 3B6B     		ldr	r3, [r7, #48]
+ 554 00c4 1A1F     		subs	r2, r3, #4
+ 555 00c6 3A63     		str	r2, [r7, #48]
+ 556 00c8 FA6A     		ldr	r2, [r7, #44]
+ 557 00ca 111F     		subs	r1, r2, #4
+ 558 00cc F962     		str	r1, [r7, #44]
+ 559 00ce 1268     		ldr	r2, [r2]
+ 560 00d0 1A60     		str	r2, [r3]
+ 562:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 size_rem         -=  sizeof(CPU_ALIGN);
+ 561              		.loc 1 562 0
+ 562 00d2 7B6B     		ldr	r3, [r7, #52]
+ 563 00d4 043B     		subs	r3, r3, #4
+ 564 00d6 7B63     		str	r3, [r7, #52]
+ 565              	.L33:
+ 560:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             while (size_rem      >=  sizeof(CPU_ALIGN)) {       /* While mem bufs aligned on CPU_AL
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 21
+
+
+ 566              		.loc 1 560 0
+ 567 00d8 7B6B     		ldr	r3, [r7, #52]
+ 568 00da 032B     		cmp	r3, #3
+ 569 00dc F1D8     		bhi	.L34
+ 563:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             }
+ 564:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 565:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             pmem_08_dest = (      CPU_INT08U *)pmem_align_dest + sizeof(CPU_ALIGN) - 1;
+ 570              		.loc 1 565 0
+ 571 00de 3B6B     		ldr	r3, [r7, #48]
+ 572 00e0 0333     		adds	r3, r3, #3
+ 573 00e2 BB62     		str	r3, [r7, #40]
+ 566:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             pmem_08_src  = (const CPU_INT08U *)pmem_align_src  + sizeof(CPU_ALIGN) - 1;
+ 574              		.loc 1 566 0
+ 575 00e4 FB6A     		ldr	r3, [r7, #44]
+ 576 00e6 0333     		adds	r3, r3, #3
+ 577 00e8 7B62     		str	r3, [r7, #36]
+ 567:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 568:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         }
+ 569:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 570:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 571:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     while (size_rem > 0) {                                      /* For unaligned mem bufs or traili
+ 578              		.loc 1 571 0
+ 579 00ea 0AE0     		b	.L35
+ 580              	.L36:
+ 572:..\..\..\..\..\..\uC-LIB/lib_mem.c ****        *pmem_08_dest-- = *pmem_08_src--;                        /* ... copy psrc to pdest by octets
+ 581              		.loc 1 572 0
+ 582 00ec BB6A     		ldr	r3, [r7, #40]
+ 583 00ee 5A1E     		subs	r2, r3, #1
+ 584 00f0 BA62     		str	r2, [r7, #40]
+ 585 00f2 7A6A     		ldr	r2, [r7, #36]
+ 586 00f4 511E     		subs	r1, r2, #1
+ 587 00f6 7962     		str	r1, [r7, #36]
+ 588 00f8 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 589 00fa 1A70     		strb	r2, [r3]
+ 573:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         size_rem      -=  sizeof(CPU_INT08U);
+ 590              		.loc 1 573 0
+ 591 00fc 7B6B     		ldr	r3, [r7, #52]
+ 592 00fe 013B     		subs	r3, r3, #1
+ 593 0100 7B63     		str	r3, [r7, #52]
+ 594              	.L35:
+ 571:..\..\..\..\..\..\uC-LIB/lib_mem.c ****        *pmem_08_dest-- = *pmem_08_src--;                        /* ... copy psrc to pdest by octets
+ 595              		.loc 1 571 0
+ 596 0102 7B6B     		ldr	r3, [r7, #52]
+ 597 0104 002B     		cmp	r3, #0
+ 598 0106 F1D1     		bne	.L36
+ 599              	.L24:
+ 574:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 575:..\..\..\..\..\..\uC-LIB/lib_mem.c **** }
+ 600              		.loc 1 575 0
+ 601 0108 3837     		adds	r7, r7, #56
+ 602              		.cfi_def_cfa_offset 8
+ 603 010a BD46     		mov	sp, r7
+ 604              		.cfi_def_cfa_register 13
+ 605              		@ sp needed
+ 606 010c 80BD     		pop	{r7, pc}
+ 607              		.cfi_endproc
+ 608              	.LFE4:
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 22
+
+
+ 609              		.size	Mem_Move, .-Mem_Move
+ 610 010e 00BF     		.section	.text.Mem_Cmp,"ax",%progbits
+ 611              		.align	2
+ 612              		.global	Mem_Cmp
+ 613              		.thumb
+ 614              		.thumb_func
+ 615              		.type	Mem_Cmp, %function
+ 616              	Mem_Cmp:
+ 617              	.LFB5:
+ 576:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 577:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 578:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*$PAGE*/
+ 579:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*
+ 580:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 581:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                                              Mem_Cmp()
+ 582:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 583:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Description : Verify that ALL data octets in two memory buffers are identical in sequence.
+ 584:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 585:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Argument(s) : p1_mem      Pointer to first  memory buffer.
+ 586:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 587:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               p2_mem      Pointer to second memory buffer.
+ 588:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 589:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               size        Number of data buffer octets to compare (see Note #1).
+ 590:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 591:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Return(s)   : DEF_YES, if 'size' number of data octets are identical in both memory buffers.
+ 592:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 593:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               DEF_NO,  otherwise.
+ 594:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 595:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Caller(s)   : Application.
+ 596:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 597:..\..\..\..\..\..\uC-LIB/lib_mem.c **** * Note(s)     : (1) Null compares allowed (i.e. zero-length compares); 'DEF_YES' returned to indica
+ 598:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   identical null compare.
+ 599:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 600:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               (2) Many memory buffer comparisons vary ONLY in the least significant octets -- e.g
+ 601:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   network address buffers.  Consequently, memory buffer comparison is more effici
+ 602:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   if the comparison starts from the end of the memory buffers which will abort so
+ 603:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   on dissimilar memory buffers that vary only in the least significant octets.
+ 604:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 605:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               (3) For best CPU performance, optimized to compare data buffers using 'CPU_ALIGN'-s
+ 606:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   data words.
+ 607:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 608:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   (a) Since many word-aligned processors REQUIRE that multi-octet words be access
+ 609:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       word-aligned addresses, 'CPU_ALIGN'-sized words MUST be accessed on 'CPU_AL
+ 610:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                       addresses.
+ 611:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 612:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *               (4) Modulo arithmetic is used to determine whether a memory buffer starts on a 'CPU
+ 613:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   address boundary.
+ 614:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *
+ 615:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   Modulo arithmetic in ANSI-C REQUIREs operations performed on integer values.  T
+ 616:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                   address values MUST be cast to an appropriately-sized integer value PRIOR to an
+ 617:..\..\..\..\..\..\uC-LIB/lib_mem.c **** *                  'mem_align_mod' arithmetic operation.
+ 618:..\..\..\..\..\..\uC-LIB/lib_mem.c **** ***************************************************************************************************
+ 619:..\..\..\..\..\..\uC-LIB/lib_mem.c **** */
+ 620:..\..\..\..\..\..\uC-LIB/lib_mem.c **** /*$PAGE*/
+ 621:..\..\..\..\..\..\uC-LIB/lib_mem.c **** CPU_BOOLEAN  Mem_Cmp (const  void        *p1_mem,
+ 622:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                       const  void        *p2_mem,
+ 623:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                              CPU_SIZE_T   size)
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 23
+
+
+ 624:..\..\..\..\..\..\uC-LIB/lib_mem.c **** {
+ 618              		.loc 1 624 0
+ 619              		.cfi_startproc
+ 620              		@ args = 0, pretend = 0, frame = 56
+ 621              		@ frame_needed = 1, uses_anonymous_args = 0
+ 622              		@ link register save eliminated.
+ 623 0000 80B4     		push	{r7}
+ 624              		.cfi_def_cfa_offset 4
+ 625              		.cfi_offset 7, -4
+ 626 0002 8FB0     		sub	sp, sp, #60
+ 627              		.cfi_def_cfa_offset 64
+ 628 0004 00AF     		add	r7, sp, #0
+ 629              		.cfi_def_cfa_register 7
+ 630 0006 F860     		str	r0, [r7, #12]
+ 631 0008 B960     		str	r1, [r7, #8]
+ 632 000a 7A60     		str	r2, [r7, #4]
+ 625:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_SIZE_T    size_rem;
+ 626:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_ALIGN    *p1_mem_align;
+ 627:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_ALIGN    *p2_mem_align;
+ 628:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     const  CPU_INT08U   *p1_mem_08;
+ 629:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     const  CPU_INT08U   *p2_mem_08;
+ 630:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_DATA      i;
+ 631:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_DATA      mem_align_mod_1;
+ 632:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_DATA      mem_align_mod_2;
+ 633:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_BOOLEAN   mem_aligned;
+ 634:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            CPU_BOOLEAN   mem_cmp;
+ 635:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 636:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 637:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (size < 1) {                                             /* See Note #1.                    
+ 633              		.loc 1 637 0
+ 634 000c 7B68     		ldr	r3, [r7, #4]
+ 635 000e 002B     		cmp	r3, #0
+ 636 0010 01D1     		bne	.L38
+ 638:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         return (DEF_YES);
+ 637              		.loc 1 638 0
+ 638 0012 0123     		movs	r3, #1
+ 639 0014 87E0     		b	.L39
+ 640              	.L38:
+ 639:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 640:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (p1_mem == (void *)0) {
+ 641              		.loc 1 640 0
+ 642 0016 FB68     		ldr	r3, [r7, #12]
+ 643 0018 002B     		cmp	r3, #0
+ 644 001a 01D1     		bne	.L40
+ 641:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         return (DEF_NO);
+ 645              		.loc 1 641 0
+ 646 001c 0023     		movs	r3, #0
+ 647 001e 82E0     		b	.L39
+ 648              	.L40:
+ 642:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 643:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (p2_mem == (void *)0) {
+ 649              		.loc 1 643 0
+ 650 0020 BB68     		ldr	r3, [r7, #8]
+ 651 0022 002B     		cmp	r3, #0
+ 652 0024 01D1     		bne	.L41
+ 644:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         return (DEF_NO);
+ 653              		.loc 1 644 0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 24
+
+
+ 654 0026 0023     		movs	r3, #0
+ 655 0028 7DE0     		b	.L39
+ 656              	.L41:
+ 645:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 646:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 647:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 648:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     mem_cmp         =  DEF_YES;                                 /* Assume mem bufs are identical un
+ 657              		.loc 1 648 0
+ 658 002a 0123     		movs	r3, #1
+ 659 002c FB77     		strb	r3, [r7, #31]
+ 649:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     size_rem        =  size;
+ 660              		.loc 1 649 0
+ 661 002e 7B68     		ldr	r3, [r7, #4]
+ 662 0030 7B63     		str	r3, [r7, #52]
+ 650:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                                                 /* Start @ end of mem bufs (see Not
+ 651:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     p1_mem_08       = (const CPU_INT08U *)p1_mem + size;
+ 663              		.loc 1 651 0
+ 664 0032 FA68     		ldr	r2, [r7, #12]
+ 665 0034 7B68     		ldr	r3, [r7, #4]
+ 666 0036 1344     		add	r3, r3, r2
+ 667 0038 BB62     		str	r3, [r7, #40]
+ 652:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     p2_mem_08       = (const CPU_INT08U *)p2_mem + size;
+ 668              		.loc 1 652 0
+ 669 003a BA68     		ldr	r2, [r7, #8]
+ 670 003c 7B68     		ldr	r3, [r7, #4]
+ 671 003e 1344     		add	r3, r3, r2
+ 672 0040 7B62     		str	r3, [r7, #36]
+ 653:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                                                 /* See Note #4.                    
+ 654:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     mem_align_mod_1 = (CPU_INT08U)((CPU_ADDR)p1_mem_08 % sizeof(CPU_ALIGN));
+ 673              		.loc 1 654 0
+ 674 0042 BB6A     		ldr	r3, [r7, #40]
+ 675 0044 03F00303 		and	r3, r3, #3
+ 676 0048 BB61     		str	r3, [r7, #24]
+ 655:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     mem_align_mod_2 = (CPU_INT08U)((CPU_ADDR)p2_mem_08 % sizeof(CPU_ALIGN));
+ 677              		.loc 1 655 0
+ 678 004a 7B6A     		ldr	r3, [r7, #36]
+ 679 004c 03F00303 		and	r3, r3, #3
+ 680 0050 7B61     		str	r3, [r7, #20]
+ 656:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 657:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     mem_aligned     = (mem_align_mod_1 == mem_align_mod_2) ? DEF_YES : DEF_NO;
+ 681              		.loc 1 657 0
+ 682 0052 BA69     		ldr	r2, [r7, #24]
+ 683 0054 7B69     		ldr	r3, [r7, #20]
+ 684 0056 9A42     		cmp	r2, r3
+ 685 0058 01D1     		bne	.L42
+ 686              		.loc 1 657 0 is_stmt 0 discriminator 1
+ 687 005a 0123     		movs	r3, #1
+ 688 005c 00E0     		b	.L43
+ 689              	.L42:
+ 690              		.loc 1 657 0 discriminator 2
+ 691 005e 0023     		movs	r3, #0
+ 692              	.L43:
+ 693              		.loc 1 657 0 discriminator 4
+ 694 0060 FB74     		strb	r3, [r7, #19]
+ 658:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 659:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     if (mem_aligned == DEF_YES) {                               /* If mem bufs' alignment offset eq
+ 695              		.loc 1 659 0 is_stmt 1 discriminator 4
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 25
+
+
+ 696 0062 FB7C     		ldrb	r3, [r7, #19]	@ zero_extendqisi2
+ 697 0064 012B     		cmp	r3, #1
+ 698 0066 57D1     		bne	.L53
+ 660:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                                                                 /* ... optimize cmp for mem buf ali
+ 661:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         if (mem_align_mod_1 != 0u) {                            /* If trailing octets avail,       
+ 699              		.loc 1 661 0
+ 700 0068 BB69     		ldr	r3, [r7, #24]
+ 701 006a 002B     		cmp	r3, #0
+ 702 006c 1FD0     		beq	.L45
+ 662:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             i = mem_align_mod_1;
+ 703              		.loc 1 662 0
+ 704 006e BB69     		ldr	r3, [r7, #24]
+ 705 0070 3B62     		str	r3, [r7, #32]
+ 663:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             while ((mem_cmp == DEF_YES) &&                      /* ... cmp mem bufs while identical
+ 706              		.loc 1 663 0
+ 707 0072 13E0     		b	.L46
+ 708              	.L48:
+ 664:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                    (size_rem > 0)       &&                      /* ... start mem buf cmp with trail
+ 665:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                    (i        > 0)) {                            /* ... until next CPU_ALIGN word bo
+ 666:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 p1_mem_08--;
+ 709              		.loc 1 666 0
+ 710 0074 BB6A     		ldr	r3, [r7, #40]
+ 711 0076 013B     		subs	r3, r3, #1
+ 712 0078 BB62     		str	r3, [r7, #40]
+ 667:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 p2_mem_08--;
+ 713              		.loc 1 667 0
+ 714 007a 7B6A     		ldr	r3, [r7, #36]
+ 715 007c 013B     		subs	r3, r3, #1
+ 716 007e 7B62     		str	r3, [r7, #36]
+ 668:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 if (*p1_mem_08 != *p2_mem_08) {                 /* If ANY data octet(s) NOT identic
+ 717              		.loc 1 668 0
+ 718 0080 BB6A     		ldr	r3, [r7, #40]
+ 719 0082 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 720 0084 7B6A     		ldr	r3, [r7, #36]
+ 721 0086 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 722 0088 9A42     		cmp	r2, r3
+ 723 008a 01D0     		beq	.L47
+ 669:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                      mem_cmp = DEF_NO;
+ 724              		.loc 1 669 0
+ 725 008c 0023     		movs	r3, #0
+ 726 008e FB77     		strb	r3, [r7, #31]
+ 727              	.L47:
+ 670:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 }
+ 671:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 size_rem -= sizeof(CPU_INT08U);
+ 728              		.loc 1 671 0
+ 729 0090 7B6B     		ldr	r3, [r7, #52]
+ 730 0092 013B     		subs	r3, r3, #1
+ 731 0094 7B63     		str	r3, [r7, #52]
+ 672:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 i--;
+ 732              		.loc 1 672 0
+ 733 0096 3B6A     		ldr	r3, [r7, #32]
+ 734 0098 013B     		subs	r3, r3, #1
+ 735 009a 3B62     		str	r3, [r7, #32]
+ 736              	.L46:
+ 663:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                    (size_rem > 0)       &&                      /* ... start mem buf cmp with trail
+ 737              		.loc 1 663 0
+ 738 009c FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 26
+
+
+ 739 009e 012B     		cmp	r3, #1
+ 740 00a0 05D1     		bne	.L45
+ 663:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                    (size_rem > 0)       &&                      /* ... start mem buf cmp with trail
+ 741              		.loc 1 663 0 is_stmt 0 discriminator 1
+ 742 00a2 7B6B     		ldr	r3, [r7, #52]
+ 743 00a4 002B     		cmp	r3, #0
+ 744 00a6 02D0     		beq	.L45
+ 664:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                    (i        > 0)) {                            /* ... until next CPU_ALIGN word bo
+ 745              		.loc 1 664 0 is_stmt 1
+ 746 00a8 3B6A     		ldr	r3, [r7, #32]
+ 747 00aa 002B     		cmp	r3, #0
+ 748 00ac E2D1     		bne	.L48
+ 749              	.L45:
+ 673:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             }
+ 674:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         }
+ 675:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 676:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         if (mem_cmp == DEF_YES) {                               /* If cmp still identical, cmp alig
+ 750              		.loc 1 676 0
+ 751 00ae FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ 752 00b0 012B     		cmp	r3, #1
+ 753 00b2 31D1     		bne	.L53
+ 677:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             p1_mem_align = (CPU_ALIGN *)p1_mem_08;              /* See Note #3a.                   
+ 754              		.loc 1 677 0
+ 755 00b4 BB6A     		ldr	r3, [r7, #40]
+ 756 00b6 3B63     		str	r3, [r7, #48]
+ 678:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             p2_mem_align = (CPU_ALIGN *)p2_mem_08;
+ 757              		.loc 1 678 0
+ 758 00b8 7B6A     		ldr	r3, [r7, #36]
+ 759 00ba FB62     		str	r3, [r7, #44]
+ 679:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 680:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             while ((mem_cmp  == DEF_YES) &&                     /* Cmp mem bufs while identical & .
+ 760              		.loc 1 680 0
+ 761 00bc 10E0     		b	.L49
+ 762              	.L52:
+ 681:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                    (size_rem >= sizeof(CPU_ALIGN))) {           /* ... mem bufs aligned on CPU_ALIG
+ 682:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 p1_mem_align--;
+ 763              		.loc 1 682 0
+ 764 00be 3B6B     		ldr	r3, [r7, #48]
+ 765 00c0 043B     		subs	r3, r3, #4
+ 766 00c2 3B63     		str	r3, [r7, #48]
+ 683:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 p2_mem_align--;
+ 767              		.loc 1 683 0
+ 768 00c4 FB6A     		ldr	r3, [r7, #44]
+ 769 00c6 043B     		subs	r3, r3, #4
+ 770 00c8 FB62     		str	r3, [r7, #44]
+ 684:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 if (*p1_mem_align != *p2_mem_align) {           /* If ANY data octet(s) NOT identic
+ 771              		.loc 1 684 0
+ 772 00ca 3B6B     		ldr	r3, [r7, #48]
+ 773 00cc 1A68     		ldr	r2, [r3]
+ 774 00ce FB6A     		ldr	r3, [r7, #44]
+ 775 00d0 1B68     		ldr	r3, [r3]
+ 776 00d2 9A42     		cmp	r2, r3
+ 777 00d4 01D0     		beq	.L50
+ 685:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                      mem_cmp = DEF_NO;
+ 778              		.loc 1 685 0
+ 779 00d6 0023     		movs	r3, #0
+ 780 00d8 FB77     		strb	r3, [r7, #31]
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 27
+
+
+ 781              	.L50:
+ 686:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 }
+ 687:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                 size_rem -= sizeof(CPU_ALIGN);
+ 782              		.loc 1 687 0
+ 783 00da 7B6B     		ldr	r3, [r7, #52]
+ 784 00dc 043B     		subs	r3, r3, #4
+ 785 00de 7B63     		str	r3, [r7, #52]
+ 786              	.L49:
+ 680:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                    (size_rem >= sizeof(CPU_ALIGN))) {           /* ... mem bufs aligned on CPU_ALIG
+ 787              		.loc 1 680 0
+ 788 00e0 FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ 789 00e2 012B     		cmp	r3, #1
+ 790 00e4 02D1     		bne	.L51
+ 680:..\..\..\..\..\..\uC-LIB/lib_mem.c ****                    (size_rem >= sizeof(CPU_ALIGN))) {           /* ... mem bufs aligned on CPU_ALIG
+ 791              		.loc 1 680 0 is_stmt 0 discriminator 1
+ 792 00e6 7B6B     		ldr	r3, [r7, #52]
+ 793 00e8 032B     		cmp	r3, #3
+ 794 00ea E8D8     		bhi	.L52
+ 795              	.L51:
+ 688:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             }
+ 689:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 690:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             p1_mem_08 = (CPU_INT08U *)p1_mem_align;
+ 796              		.loc 1 690 0 is_stmt 1
+ 797 00ec 3B6B     		ldr	r3, [r7, #48]
+ 798 00ee BB62     		str	r3, [r7, #40]
+ 691:..\..\..\..\..\..\uC-LIB/lib_mem.c ****             p2_mem_08 = (CPU_INT08U *)p2_mem_align;
+ 799              		.loc 1 691 0
+ 800 00f0 FB6A     		ldr	r3, [r7, #44]
+ 801 00f2 7B62     		str	r3, [r7, #36]
+ 692:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         }
+ 693:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 694:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 695:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     while ((mem_cmp == DEF_YES) &&                              /* Cmp mem bufs while identical ...
+ 802              		.loc 1 695 0
+ 803 00f4 10E0     		b	.L53
+ 804              	.L56:
+ 696:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            (size_rem > 0)) {                                    /* ... for unaligned mem bufs or tr
+ 697:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         p1_mem_08--;
+ 805              		.loc 1 697 0
+ 806 00f6 BB6A     		ldr	r3, [r7, #40]
+ 807 00f8 013B     		subs	r3, r3, #1
+ 808 00fa BB62     		str	r3, [r7, #40]
+ 698:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         p2_mem_08--;
+ 809              		.loc 1 698 0
+ 810 00fc 7B6A     		ldr	r3, [r7, #36]
+ 811 00fe 013B     		subs	r3, r3, #1
+ 812 0100 7B62     		str	r3, [r7, #36]
+ 699:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         if (*p1_mem_08 != *p2_mem_08) {                         /* If ANY data octet(s) NOT identic
+ 813              		.loc 1 699 0
+ 814 0102 BB6A     		ldr	r3, [r7, #40]
+ 815 0104 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 816 0106 7B6A     		ldr	r3, [r7, #36]
+ 817 0108 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 818 010a 9A42     		cmp	r2, r3
+ 819 010c 01D0     		beq	.L54
+ 700:..\..\..\..\..\..\uC-LIB/lib_mem.c ****              mem_cmp = DEF_NO;
+ 820              		.loc 1 700 0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 28
+
+
+ 821 010e 0023     		movs	r3, #0
+ 822 0110 FB77     		strb	r3, [r7, #31]
+ 823              	.L54:
+ 701:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         }
+ 702:..\..\..\..\..\..\uC-LIB/lib_mem.c ****         size_rem -= sizeof(CPU_INT08U);
+ 824              		.loc 1 702 0
+ 825 0112 7B6B     		ldr	r3, [r7, #52]
+ 826 0114 013B     		subs	r3, r3, #1
+ 827 0116 7B63     		str	r3, [r7, #52]
+ 828              	.L53:
+ 695:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            (size_rem > 0)) {                                    /* ... for unaligned mem bufs or tr
+ 829              		.loc 1 695 0
+ 830 0118 FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ 831 011a 012B     		cmp	r3, #1
+ 832 011c 02D1     		bne	.L55
+ 695:..\..\..\..\..\..\uC-LIB/lib_mem.c ****            (size_rem > 0)) {                                    /* ... for unaligned mem bufs or tr
+ 833              		.loc 1 695 0 is_stmt 0 discriminator 1
+ 834 011e 7B6B     		ldr	r3, [r7, #52]
+ 835 0120 002B     		cmp	r3, #0
+ 836 0122 E8D1     		bne	.L56
+ 837              	.L55:
+ 703:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     }
+ 704:..\..\..\..\..\..\uC-LIB/lib_mem.c **** 
+ 705:..\..\..\..\..\..\uC-LIB/lib_mem.c ****     return (mem_cmp);
+ 838              		.loc 1 705 0 is_stmt 1
+ 839 0124 FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ 840              	.L39:
+ 706:..\..\..\..\..\..\uC-LIB/lib_mem.c **** }
+ 841              		.loc 1 706 0
+ 842 0126 1846     		mov	r0, r3
+ 843 0128 3C37     		adds	r7, r7, #60
+ 844              		.cfi_def_cfa_offset 4
+ 845 012a BD46     		mov	sp, r7
+ 846              		.cfi_def_cfa_register 13
+ 847              		@ sp needed
+ 848 012c 80BC     		pop	{r7}
+ 849              		.cfi_restore 7
+ 850              		.cfi_def_cfa_offset 0
+ 851 012e 7047     		bx	lr
+ 852              		.cfi_endproc
+ 853              	.LFE5:
+ 854              		.size	Mem_Cmp, .-Mem_Cmp
+ 855              		.text
+ 856              	.Letext0:
+ 857              		.file 2 "..\\..\\..\\..\\..\\..\\uC-CPU\\ARM-Cortex-M3\\GNU/cpu.h"
+ 858              		.section	.debug_info,"",%progbits
+ 859              	.Ldebug_info0:
+ 860 0000 59040000 		.4byte	0x459
+ 861 0004 0400     		.2byte	0x4
+ 862 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 863 000a 04       		.byte	0x4
+ 864 000b 01       		.uleb128 0x1
+ 865 000c 39000000 		.4byte	.LASF50
+ 866 0010 0C       		.byte	0xc
+ 867 0011 2F030000 		.4byte	.LASF51
+ 868 0015 07010000 		.4byte	.LASF52
+ 869 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 29
+
+
+ 870 001d 00000000 		.4byte	0
+ 871 0021 00000000 		.4byte	.Ldebug_line0
+ 872 0025 02       		.uleb128 0x2
+ 873 0026 01       		.byte	0x1
+ 874 0027 08       		.byte	0x8
+ 875 0028 7B020000 		.4byte	.LASF0
+ 876 002c 03       		.uleb128 0x3
+ 877 002d 95010000 		.4byte	.LASF2
+ 878 0031 02       		.byte	0x2
+ 879 0032 77       		.byte	0x77
+ 880 0033 37000000 		.4byte	0x37
+ 881 0037 02       		.uleb128 0x2
+ 882 0038 01       		.byte	0x1
+ 883 0039 08       		.byte	0x8
+ 884 003a DE010000 		.4byte	.LASF1
+ 885 003e 03       		.uleb128 0x3
+ 886 003f 70020000 		.4byte	.LASF3
+ 887 0043 02       		.byte	0x2
+ 888 0044 78       		.byte	0x78
+ 889 0045 37000000 		.4byte	0x37
+ 890 0049 03       		.uleb128 0x3
+ 891 004a 5C020000 		.4byte	.LASF4
+ 892 004e 02       		.byte	0x2
+ 893 004f 79       		.byte	0x79
+ 894 0050 54000000 		.4byte	0x54
+ 895 0054 02       		.uleb128 0x2
+ 896 0055 01       		.byte	0x1
+ 897 0056 06       		.byte	0x6
+ 898 0057 05020000 		.4byte	.LASF5
+ 899 005b 02       		.uleb128 0x2
+ 900 005c 02       		.byte	0x2
+ 901 005d 07       		.byte	0x7
+ 902 005e 49020000 		.4byte	.LASF6
+ 903 0062 02       		.uleb128 0x2
+ 904 0063 02       		.byte	0x2
+ 905 0064 05       		.byte	0x5
+ 906 0065 27000000 		.4byte	.LASF7
+ 907 0069 03       		.uleb128 0x3
+ 908 006a 80020000 		.4byte	.LASF8
+ 909 006e 02       		.byte	0x2
+ 910 006f 7C       		.byte	0x7c
+ 911 0070 74000000 		.4byte	0x74
+ 912 0074 02       		.uleb128 0x2
+ 913 0075 04       		.byte	0x4
+ 914 0076 07       		.byte	0x7
+ 915 0077 28020000 		.4byte	.LASF9
+ 916 007b 04       		.uleb128 0x4
+ 917 007c 04       		.byte	0x4
+ 918 007d 05       		.byte	0x5
+ 919 007e 696E7400 		.ascii	"int\000"
+ 920 0082 02       		.uleb128 0x2
+ 921 0083 08       		.byte	0x8
+ 922 0084 07       		.byte	0x7
+ 923 0085 11020000 		.4byte	.LASF10
+ 924 0089 02       		.uleb128 0x2
+ 925 008a 08       		.byte	0x8
+ 926 008b 05       		.byte	0x5
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 30
+
+
+ 927 008c 87010000 		.4byte	.LASF11
+ 928 0090 02       		.uleb128 0x2
+ 929 0091 04       		.byte	0x4
+ 930 0092 04       		.byte	0x4
+ 931 0093 81010000 		.4byte	.LASF12
+ 932 0097 02       		.uleb128 0x2
+ 933 0098 08       		.byte	0x8
+ 934 0099 04       		.byte	0x4
+ 935 009a BC020000 		.4byte	.LASF13
+ 936 009e 05       		.uleb128 0x5
+ 937 009f 04       		.byte	0x4
+ 938 00a0 03       		.uleb128 0x3
+ 939 00a1 FE000000 		.4byte	.LASF14
+ 940 00a5 02       		.byte	0x2
+ 941 00a6 B5       		.byte	0xb5
+ 942 00a7 69000000 		.4byte	0x69
+ 943 00ab 03       		.uleb128 0x3
+ 944 00ac 67020000 		.4byte	.LASF15
+ 945 00b0 02       		.byte	0x2
+ 946 00b1 BE       		.byte	0xbe
+ 947 00b2 69000000 		.4byte	0x69
+ 948 00b6 03       		.uleb128 0x3
+ 949 00b7 D1020000 		.4byte	.LASF16
+ 950 00bb 02       		.byte	0x2
+ 951 00bc C6       		.byte	0xc6
+ 952 00bd AB000000 		.4byte	0xab
+ 953 00c1 03       		.uleb128 0x3
+ 954 00c2 EA020000 		.4byte	.LASF17
+ 955 00c6 02       		.byte	0x2
+ 956 00c7 C7       		.byte	0xc7
+ 957 00c8 A0000000 		.4byte	0xa0
+ 958 00cc 06       		.uleb128 0x6
+ 959 00cd C7000000 		.4byte	.LASF53
+ 960 00d1 01       		.byte	0x1
+ 961 00d2 A5       		.byte	0xa5
+ 962 00d3 00000000 		.4byte	.LFB0
+ 963 00d7 0C000000 		.4byte	.LFE0-.LFB0
+ 964 00db 01       		.uleb128 0x1
+ 965 00dc 9C       		.byte	0x9c
+ 966 00dd 07       		.uleb128 0x7
+ 967 00de 31000000 		.4byte	.LASF20
+ 968 00e2 01       		.byte	0x1
+ 969 00e3 E1       		.byte	0xe1
+ 970 00e4 00000000 		.4byte	.LFB1
+ 971 00e8 1C000000 		.4byte	.LFE1-.LFB1
+ 972 00ec 01       		.uleb128 0x1
+ 973 00ed 9C       		.byte	0x9c
+ 974 00ee 0F010000 		.4byte	0x10f
+ 975 00f2 08       		.uleb128 0x8
+ 976 00f3 D9010000 		.4byte	.LASF18
+ 977 00f7 01       		.byte	0x1
+ 978 00f8 E1       		.byte	0xe1
+ 979 00f9 9E000000 		.4byte	0x9e
+ 980 00fd 02       		.uleb128 0x2
+ 981 00fe 91       		.byte	0x91
+ 982 00ff 74       		.sleb128 -12
+ 983 0100 08       		.uleb128 0x8
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 31
+
+
+ 984 0101 DB020000 		.4byte	.LASF19
+ 985 0105 01       		.byte	0x1
+ 986 0106 E2       		.byte	0xe2
+ 987 0107 C1000000 		.4byte	0xc1
+ 988 010b 02       		.uleb128 0x2
+ 989 010c 91       		.byte	0x91
+ 990 010d 70       		.sleb128 -16
+ 991 010e 00       		.byte	0
+ 992 010f 09       		.uleb128 0x9
+ 993 0110 EA000000 		.4byte	.LASF21
+ 994 0114 01       		.byte	0x1
+ 995 0115 0D01     		.2byte	0x10d
+ 996 0117 00000000 		.4byte	.LFB2
+ 997 011b B2000000 		.4byte	.LFE2-.LFB2
+ 998 011f 01       		.uleb128 0x1
+ 999 0120 9C       		.byte	0x9c
+ 1000 0121 AB010000 		.4byte	0x1ab
+ 1001 0125 0A       		.uleb128 0xa
+ 1002 0126 D9010000 		.4byte	.LASF18
+ 1003 012a 01       		.byte	0x1
+ 1004 012b 0D01     		.2byte	0x10d
+ 1005 012d 9E000000 		.4byte	0x9e
+ 1006 0131 02       		.uleb128 0x2
+ 1007 0132 91       		.byte	0x91
+ 1008 0133 5C       		.sleb128 -36
+ 1009 0134 0A       		.uleb128 0xa
+ 1010 0135 F3010000 		.4byte	.LASF22
+ 1011 0139 01       		.byte	0x1
+ 1012 013a 0E01     		.2byte	0x10e
+ 1013 013c 3E000000 		.4byte	0x3e
+ 1014 0140 02       		.uleb128 0x2
+ 1015 0141 91       		.byte	0x91
+ 1016 0142 5B       		.sleb128 -37
+ 1017 0143 0A       		.uleb128 0xa
+ 1018 0144 DB020000 		.4byte	.LASF19
+ 1019 0148 01       		.byte	0x1
+ 1020 0149 0F01     		.2byte	0x10f
+ 1021 014b C1000000 		.4byte	0xc1
+ 1022 014f 02       		.uleb128 0x2
+ 1023 0150 91       		.byte	0x91
+ 1024 0151 54       		.sleb128 -44
+ 1025 0152 0B       		.uleb128 0xb
+ 1026 0153 40020000 		.4byte	.LASF23
+ 1027 0157 01       		.byte	0x1
+ 1028 0158 1101     		.2byte	0x111
+ 1029 015a C1000000 		.4byte	0xc1
+ 1030 015e 02       		.uleb128 0x2
+ 1031 015f 91       		.byte	0x91
+ 1032 0160 74       		.sleb128 -12
+ 1033 0161 0B       		.uleb128 0xb
+ 1034 0162 00000000 		.4byte	.LASF24
+ 1035 0166 01       		.byte	0x1
+ 1036 0167 1201     		.2byte	0x112
+ 1037 0169 B6000000 		.4byte	0xb6
+ 1038 016d 02       		.uleb128 0x2
+ 1039 016e 91       		.byte	0x91
+ 1040 016f 70       		.sleb128 -16
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 32
+
+
+ 1041 0170 0B       		.uleb128 0xb
+ 1042 0171 35020000 		.4byte	.LASF25
+ 1043 0175 01       		.byte	0x1
+ 1044 0176 1301     		.2byte	0x113
+ 1045 0178 AB010000 		.4byte	0x1ab
+ 1046 017c 02       		.uleb128 0x2
+ 1047 017d 91       		.byte	0x91
+ 1048 017e 6C       		.sleb128 -20
+ 1049 017f 0B       		.uleb128 0xb
+ 1050 0180 AD020000 		.4byte	.LASF26
+ 1051 0184 01       		.byte	0x1
+ 1052 0185 1401     		.2byte	0x114
+ 1053 0187 B1010000 		.4byte	0x1b1
+ 1054 018b 02       		.uleb128 0x2
+ 1055 018c 91       		.byte	0x91
+ 1056 018d 68       		.sleb128 -24
+ 1057 018e 0B       		.uleb128 0xb
+ 1058 018f C3020000 		.4byte	.LASF27
+ 1059 0193 01       		.byte	0x1
+ 1060 0194 1501     		.2byte	0x115
+ 1061 0196 AB000000 		.4byte	0xab
+ 1062 019a 02       		.uleb128 0x2
+ 1063 019b 91       		.byte	0x91
+ 1064 019c 60       		.sleb128 -32
+ 1065 019d 0C       		.uleb128 0xc
+ 1066 019e 6900     		.ascii	"i\000"
+ 1067 01a0 01       		.byte	0x1
+ 1068 01a1 1601     		.2byte	0x116
+ 1069 01a3 AB000000 		.4byte	0xab
+ 1070 01a7 02       		.uleb128 0x2
+ 1071 01a8 91       		.byte	0x91
+ 1072 01a9 64       		.sleb128 -28
+ 1073 01aa 00       		.byte	0
+ 1074 01ab 0D       		.uleb128 0xd
+ 1075 01ac 04       		.byte	0x4
+ 1076 01ad B6000000 		.4byte	0xb6
+ 1077 01b1 0D       		.uleb128 0xd
+ 1078 01b2 04       		.byte	0x4
+ 1079 01b3 3E000000 		.4byte	0x3e
+ 1080 01b7 09       		.uleb128 0x9
+ 1081 01b8 D0010000 		.4byte	.LASF28
+ 1082 01bc 01       		.byte	0x1
+ 1083 01bd 7C01     		.2byte	0x17c
+ 1084 01bf 00000000 		.4byte	.LFB3
+ 1085 01c3 D6000000 		.4byte	.LFE3-.LFB3
+ 1086 01c7 01       		.uleb128 0x1
+ 1087 01c8 9C       		.byte	0x9c
+ 1088 01c9 8F020000 		.4byte	0x28f
+ 1089 01cd 0A       		.uleb128 0xa
+ 1090 01ce 97020000 		.4byte	.LASF29
+ 1091 01d2 01       		.byte	0x1
+ 1092 01d3 7C01     		.2byte	0x17c
+ 1093 01d5 9E000000 		.4byte	0x9e
+ 1094 01d9 02       		.uleb128 0x2
+ 1095 01da 91       		.byte	0x91
+ 1096 01db 4C       		.sleb128 -52
+ 1097 01dc 0A       		.uleb128 0xa
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 33
+
+
+ 1098 01dd D0000000 		.4byte	.LASF30
+ 1099 01e1 01       		.byte	0x1
+ 1100 01e2 7D01     		.2byte	0x17d
+ 1101 01e4 8F020000 		.4byte	0x28f
+ 1102 01e8 02       		.uleb128 0x2
+ 1103 01e9 91       		.byte	0x91
+ 1104 01ea 48       		.sleb128 -56
+ 1105 01eb 0A       		.uleb128 0xa
+ 1106 01ec DB020000 		.4byte	.LASF19
+ 1107 01f0 01       		.byte	0x1
+ 1108 01f1 7E01     		.2byte	0x17e
+ 1109 01f3 C1000000 		.4byte	0xc1
+ 1110 01f7 02       		.uleb128 0x2
+ 1111 01f8 91       		.byte	0x91
+ 1112 01f9 44       		.sleb128 -60
+ 1113 01fa 0B       		.uleb128 0xb
+ 1114 01fb 40020000 		.4byte	.LASF23
+ 1115 01ff 01       		.byte	0x1
+ 1116 0200 8001     		.2byte	0x180
+ 1117 0202 C1000000 		.4byte	0xc1
+ 1118 0206 02       		.uleb128 0x2
+ 1119 0207 91       		.byte	0x91
+ 1120 0208 74       		.sleb128 -12
+ 1121 0209 0B       		.uleb128 0xb
+ 1122 020a A1010000 		.4byte	.LASF31
+ 1123 020e 01       		.byte	0x1
+ 1124 020f 8101     		.2byte	0x181
+ 1125 0211 C1000000 		.4byte	0xc1
+ 1126 0215 02       		.uleb128 0x2
+ 1127 0216 91       		.byte	0x91
+ 1128 0217 5C       		.sleb128 -36
+ 1129 0218 0B       		.uleb128 0xb
+ 1130 0219 9D020000 		.4byte	.LASF32
+ 1131 021d 01       		.byte	0x1
+ 1132 021e 8201     		.2byte	0x182
+ 1133 0220 AB010000 		.4byte	0x1ab
+ 1134 0224 02       		.uleb128 0x2
+ 1135 0225 91       		.byte	0x91
+ 1136 0226 70       		.sleb128 -16
+ 1137 0227 0B       		.uleb128 0xb
+ 1138 0228 0B000000 		.4byte	.LASF33
+ 1139 022c 01       		.byte	0x1
+ 1140 022d 8301     		.2byte	0x183
+ 1141 022f 96020000 		.4byte	0x296
+ 1142 0233 02       		.uleb128 0x2
+ 1143 0234 91       		.byte	0x91
+ 1144 0235 6C       		.sleb128 -20
+ 1145 0236 0B       		.uleb128 0xb
+ 1146 0237 DD000000 		.4byte	.LASF34
+ 1147 023b 01       		.byte	0x1
+ 1148 023c 8401     		.2byte	0x184
+ 1149 023e B1010000 		.4byte	0x1b1
+ 1150 0242 02       		.uleb128 0x2
+ 1151 0243 91       		.byte	0x91
+ 1152 0244 68       		.sleb128 -24
+ 1153 0245 0B       		.uleb128 0xb
+ 1154 0246 8B020000 		.4byte	.LASF35
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 34
+
+
+ 1155 024a 01       		.byte	0x1
+ 1156 024b 8501     		.2byte	0x185
+ 1157 024d A1020000 		.4byte	0x2a1
+ 1158 0251 02       		.uleb128 0x2
+ 1159 0252 91       		.byte	0x91
+ 1160 0253 64       		.sleb128 -28
+ 1161 0254 0C       		.uleb128 0xc
+ 1162 0255 6900     		.ascii	"i\000"
+ 1163 0257 01       		.byte	0x1
+ 1164 0258 8601     		.2byte	0x186
+ 1165 025a AB000000 		.4byte	0xab
+ 1166 025e 02       		.uleb128 0x2
+ 1167 025f 91       		.byte	0x91
+ 1168 0260 60       		.sleb128 -32
+ 1169 0261 0B       		.uleb128 0xb
+ 1170 0262 1C030000 		.4byte	.LASF36
+ 1171 0266 01       		.byte	0x1
+ 1172 0267 8701     		.2byte	0x187
+ 1173 0269 AB000000 		.4byte	0xab
+ 1174 026d 02       		.uleb128 0x2
+ 1175 026e 91       		.byte	0x91
+ 1176 026f 58       		.sleb128 -40
+ 1177 0270 0B       		.uleb128 0xb
+ 1178 0271 FD020000 		.4byte	.LASF37
+ 1179 0275 01       		.byte	0x1
+ 1180 0276 8801     		.2byte	0x188
+ 1181 0278 AB000000 		.4byte	0xab
+ 1182 027c 02       		.uleb128 0x2
+ 1183 027d 91       		.byte	0x91
+ 1184 027e 54       		.sleb128 -44
+ 1185 027f 0B       		.uleb128 0xb
+ 1186 0280 F2000000 		.4byte	.LASF38
+ 1187 0284 01       		.byte	0x1
+ 1188 0285 8901     		.2byte	0x189
+ 1189 0287 2C000000 		.4byte	0x2c
+ 1190 028b 02       		.uleb128 0x2
+ 1191 028c 91       		.byte	0x91
+ 1192 028d 53       		.sleb128 -45
+ 1193 028e 00       		.byte	0
+ 1194 028f 0D       		.uleb128 0xd
+ 1195 0290 04       		.byte	0x4
+ 1196 0291 95020000 		.4byte	0x295
+ 1197 0295 0E       		.uleb128 0xe
+ 1198 0296 0D       		.uleb128 0xd
+ 1199 0297 04       		.byte	0x4
+ 1200 0298 9C020000 		.4byte	0x29c
+ 1201 029c 0F       		.uleb128 0xf
+ 1202 029d B6000000 		.4byte	0xb6
+ 1203 02a1 0D       		.uleb128 0xd
+ 1204 02a2 04       		.byte	0x4
+ 1205 02a3 A7020000 		.4byte	0x2a7
+ 1206 02a7 0F       		.uleb128 0xf
+ 1207 02a8 3E000000 		.4byte	0x3e
+ 1208 02ac 10       		.uleb128 0x10
+ 1209 02ad FC010000 		.4byte	.LASF39
+ 1210 02b1 01       		.byte	0x1
+ 1211 02b2 EE01     		.2byte	0x1ee
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 35
+
+
+ 1212 02b4 00000000 		.4byte	.LFB4
+ 1213 02b8 0E010000 		.4byte	.LFE4-.LFB4
+ 1214 02bc 01       		.uleb128 0x1
+ 1215 02bd 9C       		.byte	0x9c
+ 1216 02be 84030000 		.4byte	0x384
+ 1217 02c2 0A       		.uleb128 0xa
+ 1218 02c3 97020000 		.4byte	.LASF29
+ 1219 02c7 01       		.byte	0x1
+ 1220 02c8 EE01     		.2byte	0x1ee
+ 1221 02ca 9E000000 		.4byte	0x9e
+ 1222 02ce 02       		.uleb128 0x2
+ 1223 02cf 91       		.byte	0x91
+ 1224 02d0 4C       		.sleb128 -52
+ 1225 02d1 0A       		.uleb128 0xa
+ 1226 02d2 D0000000 		.4byte	.LASF30
+ 1227 02d6 01       		.byte	0x1
+ 1228 02d7 EF01     		.2byte	0x1ef
+ 1229 02d9 8F020000 		.4byte	0x28f
+ 1230 02dd 02       		.uleb128 0x2
+ 1231 02de 91       		.byte	0x91
+ 1232 02df 48       		.sleb128 -56
+ 1233 02e0 0A       		.uleb128 0xa
+ 1234 02e1 DB020000 		.4byte	.LASF19
+ 1235 02e5 01       		.byte	0x1
+ 1236 02e6 F001     		.2byte	0x1f0
+ 1237 02e8 C1000000 		.4byte	0xc1
+ 1238 02ec 02       		.uleb128 0x2
+ 1239 02ed 91       		.byte	0x91
+ 1240 02ee 44       		.sleb128 -60
+ 1241 02ef 0B       		.uleb128 0xb
+ 1242 02f0 40020000 		.4byte	.LASF23
+ 1243 02f4 01       		.byte	0x1
+ 1244 02f5 F201     		.2byte	0x1f2
+ 1245 02f7 C1000000 		.4byte	0xc1
+ 1246 02fb 02       		.uleb128 0x2
+ 1247 02fc 91       		.byte	0x91
+ 1248 02fd 74       		.sleb128 -12
+ 1249 02fe 0B       		.uleb128 0xb
+ 1250 02ff A1010000 		.4byte	.LASF31
+ 1251 0303 01       		.byte	0x1
+ 1252 0304 F301     		.2byte	0x1f3
+ 1253 0306 C1000000 		.4byte	0xc1
+ 1254 030a 02       		.uleb128 0x2
+ 1255 030b 91       		.byte	0x91
+ 1256 030c 5C       		.sleb128 -36
+ 1257 030d 0B       		.uleb128 0xb
+ 1258 030e 9D020000 		.4byte	.LASF32
+ 1259 0312 01       		.byte	0x1
+ 1260 0313 F401     		.2byte	0x1f4
+ 1261 0315 AB010000 		.4byte	0x1ab
+ 1262 0319 02       		.uleb128 0x2
+ 1263 031a 91       		.byte	0x91
+ 1264 031b 70       		.sleb128 -16
+ 1265 031c 0B       		.uleb128 0xb
+ 1266 031d 0B000000 		.4byte	.LASF33
+ 1267 0321 01       		.byte	0x1
+ 1268 0322 F501     		.2byte	0x1f5
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 36
+
+
+ 1269 0324 96020000 		.4byte	0x296
+ 1270 0328 02       		.uleb128 0x2
+ 1271 0329 91       		.byte	0x91
+ 1272 032a 6C       		.sleb128 -20
+ 1273 032b 0B       		.uleb128 0xb
+ 1274 032c DD000000 		.4byte	.LASF34
+ 1275 0330 01       		.byte	0x1
+ 1276 0331 F601     		.2byte	0x1f6
+ 1277 0333 B1010000 		.4byte	0x1b1
+ 1278 0337 02       		.uleb128 0x2
+ 1279 0338 91       		.byte	0x91
+ 1280 0339 68       		.sleb128 -24
+ 1281 033a 0B       		.uleb128 0xb
+ 1282 033b 8B020000 		.4byte	.LASF35
+ 1283 033f 01       		.byte	0x1
+ 1284 0340 F701     		.2byte	0x1f7
+ 1285 0342 A1020000 		.4byte	0x2a1
+ 1286 0346 02       		.uleb128 0x2
+ 1287 0347 91       		.byte	0x91
+ 1288 0348 64       		.sleb128 -28
+ 1289 0349 0C       		.uleb128 0xc
+ 1290 034a 6900     		.ascii	"i\000"
+ 1291 034c 01       		.byte	0x1
+ 1292 034d F801     		.2byte	0x1f8
+ 1293 034f 49000000 		.4byte	0x49
+ 1294 0353 02       		.uleb128 0x2
+ 1295 0354 91       		.byte	0x91
+ 1296 0355 63       		.sleb128 -29
+ 1297 0356 0B       		.uleb128 0xb
+ 1298 0357 1C030000 		.4byte	.LASF36
+ 1299 035b 01       		.byte	0x1
+ 1300 035c F901     		.2byte	0x1f9
+ 1301 035e AB000000 		.4byte	0xab
+ 1302 0362 02       		.uleb128 0x2
+ 1303 0363 91       		.byte	0x91
+ 1304 0364 58       		.sleb128 -40
+ 1305 0365 0B       		.uleb128 0xb
+ 1306 0366 FD020000 		.4byte	.LASF37
+ 1307 036a 01       		.byte	0x1
+ 1308 036b FA01     		.2byte	0x1fa
+ 1309 036d AB000000 		.4byte	0xab
+ 1310 0371 02       		.uleb128 0x2
+ 1311 0372 91       		.byte	0x91
+ 1312 0373 54       		.sleb128 -44
+ 1313 0374 0B       		.uleb128 0xb
+ 1314 0375 F2000000 		.4byte	.LASF38
+ 1315 0379 01       		.byte	0x1
+ 1316 037a FB01     		.2byte	0x1fb
+ 1317 037c 2C000000 		.4byte	0x2c
+ 1318 0380 02       		.uleb128 0x2
+ 1319 0381 91       		.byte	0x91
+ 1320 0382 53       		.sleb128 -45
+ 1321 0383 00       		.byte	0
+ 1322 0384 11       		.uleb128 0x11
+ 1323 0385 D5000000 		.4byte	.LASF40
+ 1324 0389 01       		.byte	0x1
+ 1325 038a 6D02     		.2byte	0x26d
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 37
+
+
+ 1326 038c 2C000000 		.4byte	0x2c
+ 1327 0390 00000000 		.4byte	.LFB5
+ 1328 0394 30010000 		.4byte	.LFE5-.LFB5
+ 1329 0398 01       		.uleb128 0x1
+ 1330 0399 9C       		.byte	0x9c
+ 1331 039a 0A       		.uleb128 0xa
+ 1332 039b B5020000 		.4byte	.LASF41
+ 1333 039f 01       		.byte	0x1
+ 1334 03a0 6D02     		.2byte	0x26d
+ 1335 03a2 8F020000 		.4byte	0x28f
+ 1336 03a6 02       		.uleb128 0x2
+ 1337 03a7 91       		.byte	0x91
+ 1338 03a8 4C       		.sleb128 -52
+ 1339 03a9 0A       		.uleb128 0xa
+ 1340 03aa EC010000 		.4byte	.LASF42
+ 1341 03ae 01       		.byte	0x1
+ 1342 03af 6E02     		.2byte	0x26e
+ 1343 03b1 8F020000 		.4byte	0x28f
+ 1344 03b5 02       		.uleb128 0x2
+ 1345 03b6 91       		.byte	0x91
+ 1346 03b7 48       		.sleb128 -56
+ 1347 03b8 0A       		.uleb128 0xa
+ 1348 03b9 DB020000 		.4byte	.LASF19
+ 1349 03bd 01       		.byte	0x1
+ 1350 03be 6F02     		.2byte	0x26f
+ 1351 03c0 C1000000 		.4byte	0xc1
+ 1352 03c4 02       		.uleb128 0x2
+ 1353 03c5 91       		.byte	0x91
+ 1354 03c6 44       		.sleb128 -60
+ 1355 03c7 0B       		.uleb128 0xb
+ 1356 03c8 40020000 		.4byte	.LASF23
+ 1357 03cc 01       		.byte	0x1
+ 1358 03cd 7102     		.2byte	0x271
+ 1359 03cf C1000000 		.4byte	0xc1
+ 1360 03d3 02       		.uleb128 0x2
+ 1361 03d4 91       		.byte	0x91
+ 1362 03d5 74       		.sleb128 -12
+ 1363 03d6 0B       		.uleb128 0xb
+ 1364 03d7 0F030000 		.4byte	.LASF43
+ 1365 03db 01       		.byte	0x1
+ 1366 03dc 7202     		.2byte	0x272
+ 1367 03de AB010000 		.4byte	0x1ab
+ 1368 03e2 02       		.uleb128 0x2
+ 1369 03e3 91       		.byte	0x91
+ 1370 03e4 70       		.sleb128 -16
+ 1371 03e5 0B       		.uleb128 0xb
+ 1372 03e6 1A000000 		.4byte	.LASF44
+ 1373 03ea 01       		.byte	0x1
+ 1374 03eb 7302     		.2byte	0x273
+ 1375 03ed AB010000 		.4byte	0x1ab
+ 1376 03f1 02       		.uleb128 0x2
+ 1377 03f2 91       		.byte	0x91
+ 1378 03f3 6C       		.sleb128 -20
+ 1379 03f4 0B       		.uleb128 0xb
+ 1380 03f5 52030000 		.4byte	.LASF45
+ 1381 03f9 01       		.byte	0x1
+ 1382 03fa 7402     		.2byte	0x274
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 38
+
+
+ 1383 03fc A1020000 		.4byte	0x2a1
+ 1384 0400 02       		.uleb128 0x2
+ 1385 0401 91       		.byte	0x91
+ 1386 0402 68       		.sleb128 -24
+ 1387 0403 0B       		.uleb128 0xb
+ 1388 0404 E0020000 		.4byte	.LASF46
+ 1389 0408 01       		.byte	0x1
+ 1390 0409 7502     		.2byte	0x275
+ 1391 040b A1020000 		.4byte	0x2a1
+ 1392 040f 02       		.uleb128 0x2
+ 1393 0410 91       		.byte	0x91
+ 1394 0411 64       		.sleb128 -28
+ 1395 0412 0C       		.uleb128 0xc
+ 1396 0413 6900     		.ascii	"i\000"
+ 1397 0415 01       		.byte	0x1
+ 1398 0416 7602     		.2byte	0x276
+ 1399 0418 AB000000 		.4byte	0xab
+ 1400 041c 02       		.uleb128 0x2
+ 1401 041d 91       		.byte	0x91
+ 1402 041e 60       		.sleb128 -32
+ 1403 041f 0B       		.uleb128 0xb
+ 1404 0420 B0010000 		.4byte	.LASF47
+ 1405 0424 01       		.byte	0x1
+ 1406 0425 7702     		.2byte	0x277
+ 1407 0427 AB000000 		.4byte	0xab
+ 1408 042b 02       		.uleb128 0x2
+ 1409 042c 91       		.byte	0x91
+ 1410 042d 58       		.sleb128 -40
+ 1411 042e 0B       		.uleb128 0xb
+ 1412 042f C0010000 		.4byte	.LASF48
+ 1413 0433 01       		.byte	0x1
+ 1414 0434 7802     		.2byte	0x278
+ 1415 0436 AB000000 		.4byte	0xab
+ 1416 043a 02       		.uleb128 0x2
+ 1417 043b 91       		.byte	0x91
+ 1418 043c 54       		.sleb128 -44
+ 1419 043d 0B       		.uleb128 0xb
+ 1420 043e F2000000 		.4byte	.LASF38
+ 1421 0442 01       		.byte	0x1
+ 1422 0443 7902     		.2byte	0x279
+ 1423 0445 2C000000 		.4byte	0x2c
+ 1424 0449 02       		.uleb128 0x2
+ 1425 044a 91       		.byte	0x91
+ 1426 044b 53       		.sleb128 -45
+ 1427 044c 0B       		.uleb128 0xb
+ 1428 044d F5020000 		.4byte	.LASF49
+ 1429 0451 01       		.byte	0x1
+ 1430 0452 7A02     		.2byte	0x27a
+ 1431 0454 2C000000 		.4byte	0x2c
+ 1432 0458 02       		.uleb128 0x2
+ 1433 0459 91       		.byte	0x91
+ 1434 045a 5F       		.sleb128 -33
+ 1435 045b 00       		.byte	0
+ 1436 045c 00       		.byte	0
+ 1437              		.section	.debug_abbrev,"",%progbits
+ 1438              	.Ldebug_abbrev0:
+ 1439 0000 01       		.uleb128 0x1
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 39
+
+
+ 1440 0001 11       		.uleb128 0x11
+ 1441 0002 01       		.byte	0x1
+ 1442 0003 25       		.uleb128 0x25
+ 1443 0004 0E       		.uleb128 0xe
+ 1444 0005 13       		.uleb128 0x13
+ 1445 0006 0B       		.uleb128 0xb
+ 1446 0007 03       		.uleb128 0x3
+ 1447 0008 0E       		.uleb128 0xe
+ 1448 0009 1B       		.uleb128 0x1b
+ 1449 000a 0E       		.uleb128 0xe
+ 1450 000b 55       		.uleb128 0x55
+ 1451 000c 17       		.uleb128 0x17
+ 1452 000d 11       		.uleb128 0x11
+ 1453 000e 01       		.uleb128 0x1
+ 1454 000f 10       		.uleb128 0x10
+ 1455 0010 17       		.uleb128 0x17
+ 1456 0011 00       		.byte	0
+ 1457 0012 00       		.byte	0
+ 1458 0013 02       		.uleb128 0x2
+ 1459 0014 24       		.uleb128 0x24
+ 1460 0015 00       		.byte	0
+ 1461 0016 0B       		.uleb128 0xb
+ 1462 0017 0B       		.uleb128 0xb
+ 1463 0018 3E       		.uleb128 0x3e
+ 1464 0019 0B       		.uleb128 0xb
+ 1465 001a 03       		.uleb128 0x3
+ 1466 001b 0E       		.uleb128 0xe
+ 1467 001c 00       		.byte	0
+ 1468 001d 00       		.byte	0
+ 1469 001e 03       		.uleb128 0x3
+ 1470 001f 16       		.uleb128 0x16
+ 1471 0020 00       		.byte	0
+ 1472 0021 03       		.uleb128 0x3
+ 1473 0022 0E       		.uleb128 0xe
+ 1474 0023 3A       		.uleb128 0x3a
+ 1475 0024 0B       		.uleb128 0xb
+ 1476 0025 3B       		.uleb128 0x3b
+ 1477 0026 0B       		.uleb128 0xb
+ 1478 0027 49       		.uleb128 0x49
+ 1479 0028 13       		.uleb128 0x13
+ 1480 0029 00       		.byte	0
+ 1481 002a 00       		.byte	0
+ 1482 002b 04       		.uleb128 0x4
+ 1483 002c 24       		.uleb128 0x24
+ 1484 002d 00       		.byte	0
+ 1485 002e 0B       		.uleb128 0xb
+ 1486 002f 0B       		.uleb128 0xb
+ 1487 0030 3E       		.uleb128 0x3e
+ 1488 0031 0B       		.uleb128 0xb
+ 1489 0032 03       		.uleb128 0x3
+ 1490 0033 08       		.uleb128 0x8
+ 1491 0034 00       		.byte	0
+ 1492 0035 00       		.byte	0
+ 1493 0036 05       		.uleb128 0x5
+ 1494 0037 0F       		.uleb128 0xf
+ 1495 0038 00       		.byte	0
+ 1496 0039 0B       		.uleb128 0xb
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 40
+
+
+ 1497 003a 0B       		.uleb128 0xb
+ 1498 003b 00       		.byte	0
+ 1499 003c 00       		.byte	0
+ 1500 003d 06       		.uleb128 0x6
+ 1501 003e 2E       		.uleb128 0x2e
+ 1502 003f 00       		.byte	0
+ 1503 0040 3F       		.uleb128 0x3f
+ 1504 0041 19       		.uleb128 0x19
+ 1505 0042 03       		.uleb128 0x3
+ 1506 0043 0E       		.uleb128 0xe
+ 1507 0044 3A       		.uleb128 0x3a
+ 1508 0045 0B       		.uleb128 0xb
+ 1509 0046 3B       		.uleb128 0x3b
+ 1510 0047 0B       		.uleb128 0xb
+ 1511 0048 27       		.uleb128 0x27
+ 1512 0049 19       		.uleb128 0x19
+ 1513 004a 11       		.uleb128 0x11
+ 1514 004b 01       		.uleb128 0x1
+ 1515 004c 12       		.uleb128 0x12
+ 1516 004d 06       		.uleb128 0x6
+ 1517 004e 40       		.uleb128 0x40
+ 1518 004f 18       		.uleb128 0x18
+ 1519 0050 9742     		.uleb128 0x2117
+ 1520 0052 19       		.uleb128 0x19
+ 1521 0053 00       		.byte	0
+ 1522 0054 00       		.byte	0
+ 1523 0055 07       		.uleb128 0x7
+ 1524 0056 2E       		.uleb128 0x2e
+ 1525 0057 01       		.byte	0x1
+ 1526 0058 3F       		.uleb128 0x3f
+ 1527 0059 19       		.uleb128 0x19
+ 1528 005a 03       		.uleb128 0x3
+ 1529 005b 0E       		.uleb128 0xe
+ 1530 005c 3A       		.uleb128 0x3a
+ 1531 005d 0B       		.uleb128 0xb
+ 1532 005e 3B       		.uleb128 0x3b
+ 1533 005f 0B       		.uleb128 0xb
+ 1534 0060 27       		.uleb128 0x27
+ 1535 0061 19       		.uleb128 0x19
+ 1536 0062 11       		.uleb128 0x11
+ 1537 0063 01       		.uleb128 0x1
+ 1538 0064 12       		.uleb128 0x12
+ 1539 0065 06       		.uleb128 0x6
+ 1540 0066 40       		.uleb128 0x40
+ 1541 0067 18       		.uleb128 0x18
+ 1542 0068 9642     		.uleb128 0x2116
+ 1543 006a 19       		.uleb128 0x19
+ 1544 006b 01       		.uleb128 0x1
+ 1545 006c 13       		.uleb128 0x13
+ 1546 006d 00       		.byte	0
+ 1547 006e 00       		.byte	0
+ 1548 006f 08       		.uleb128 0x8
+ 1549 0070 05       		.uleb128 0x5
+ 1550 0071 00       		.byte	0
+ 1551 0072 03       		.uleb128 0x3
+ 1552 0073 0E       		.uleb128 0xe
+ 1553 0074 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 41
+
+
+ 1554 0075 0B       		.uleb128 0xb
+ 1555 0076 3B       		.uleb128 0x3b
+ 1556 0077 0B       		.uleb128 0xb
+ 1557 0078 49       		.uleb128 0x49
+ 1558 0079 13       		.uleb128 0x13
+ 1559 007a 02       		.uleb128 0x2
+ 1560 007b 18       		.uleb128 0x18
+ 1561 007c 00       		.byte	0
+ 1562 007d 00       		.byte	0
+ 1563 007e 09       		.uleb128 0x9
+ 1564 007f 2E       		.uleb128 0x2e
+ 1565 0080 01       		.byte	0x1
+ 1566 0081 3F       		.uleb128 0x3f
+ 1567 0082 19       		.uleb128 0x19
+ 1568 0083 03       		.uleb128 0x3
+ 1569 0084 0E       		.uleb128 0xe
+ 1570 0085 3A       		.uleb128 0x3a
+ 1571 0086 0B       		.uleb128 0xb
+ 1572 0087 3B       		.uleb128 0x3b
+ 1573 0088 05       		.uleb128 0x5
+ 1574 0089 27       		.uleb128 0x27
+ 1575 008a 19       		.uleb128 0x19
+ 1576 008b 11       		.uleb128 0x11
+ 1577 008c 01       		.uleb128 0x1
+ 1578 008d 12       		.uleb128 0x12
+ 1579 008e 06       		.uleb128 0x6
+ 1580 008f 40       		.uleb128 0x40
+ 1581 0090 18       		.uleb128 0x18
+ 1582 0091 9742     		.uleb128 0x2117
+ 1583 0093 19       		.uleb128 0x19
+ 1584 0094 01       		.uleb128 0x1
+ 1585 0095 13       		.uleb128 0x13
+ 1586 0096 00       		.byte	0
+ 1587 0097 00       		.byte	0
+ 1588 0098 0A       		.uleb128 0xa
+ 1589 0099 05       		.uleb128 0x5
+ 1590 009a 00       		.byte	0
+ 1591 009b 03       		.uleb128 0x3
+ 1592 009c 0E       		.uleb128 0xe
+ 1593 009d 3A       		.uleb128 0x3a
+ 1594 009e 0B       		.uleb128 0xb
+ 1595 009f 3B       		.uleb128 0x3b
+ 1596 00a0 05       		.uleb128 0x5
+ 1597 00a1 49       		.uleb128 0x49
+ 1598 00a2 13       		.uleb128 0x13
+ 1599 00a3 02       		.uleb128 0x2
+ 1600 00a4 18       		.uleb128 0x18
+ 1601 00a5 00       		.byte	0
+ 1602 00a6 00       		.byte	0
+ 1603 00a7 0B       		.uleb128 0xb
+ 1604 00a8 34       		.uleb128 0x34
+ 1605 00a9 00       		.byte	0
+ 1606 00aa 03       		.uleb128 0x3
+ 1607 00ab 0E       		.uleb128 0xe
+ 1608 00ac 3A       		.uleb128 0x3a
+ 1609 00ad 0B       		.uleb128 0xb
+ 1610 00ae 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 42
+
+
+ 1611 00af 05       		.uleb128 0x5
+ 1612 00b0 49       		.uleb128 0x49
+ 1613 00b1 13       		.uleb128 0x13
+ 1614 00b2 02       		.uleb128 0x2
+ 1615 00b3 18       		.uleb128 0x18
+ 1616 00b4 00       		.byte	0
+ 1617 00b5 00       		.byte	0
+ 1618 00b6 0C       		.uleb128 0xc
+ 1619 00b7 34       		.uleb128 0x34
+ 1620 00b8 00       		.byte	0
+ 1621 00b9 03       		.uleb128 0x3
+ 1622 00ba 08       		.uleb128 0x8
+ 1623 00bb 3A       		.uleb128 0x3a
+ 1624 00bc 0B       		.uleb128 0xb
+ 1625 00bd 3B       		.uleb128 0x3b
+ 1626 00be 05       		.uleb128 0x5
+ 1627 00bf 49       		.uleb128 0x49
+ 1628 00c0 13       		.uleb128 0x13
+ 1629 00c1 02       		.uleb128 0x2
+ 1630 00c2 18       		.uleb128 0x18
+ 1631 00c3 00       		.byte	0
+ 1632 00c4 00       		.byte	0
+ 1633 00c5 0D       		.uleb128 0xd
+ 1634 00c6 0F       		.uleb128 0xf
+ 1635 00c7 00       		.byte	0
+ 1636 00c8 0B       		.uleb128 0xb
+ 1637 00c9 0B       		.uleb128 0xb
+ 1638 00ca 49       		.uleb128 0x49
+ 1639 00cb 13       		.uleb128 0x13
+ 1640 00cc 00       		.byte	0
+ 1641 00cd 00       		.byte	0
+ 1642 00ce 0E       		.uleb128 0xe
+ 1643 00cf 26       		.uleb128 0x26
+ 1644 00d0 00       		.byte	0
+ 1645 00d1 00       		.byte	0
+ 1646 00d2 00       		.byte	0
+ 1647 00d3 0F       		.uleb128 0xf
+ 1648 00d4 26       		.uleb128 0x26
+ 1649 00d5 00       		.byte	0
+ 1650 00d6 49       		.uleb128 0x49
+ 1651 00d7 13       		.uleb128 0x13
+ 1652 00d8 00       		.byte	0
+ 1653 00d9 00       		.byte	0
+ 1654 00da 10       		.uleb128 0x10
+ 1655 00db 2E       		.uleb128 0x2e
+ 1656 00dc 01       		.byte	0x1
+ 1657 00dd 3F       		.uleb128 0x3f
+ 1658 00de 19       		.uleb128 0x19
+ 1659 00df 03       		.uleb128 0x3
+ 1660 00e0 0E       		.uleb128 0xe
+ 1661 00e1 3A       		.uleb128 0x3a
+ 1662 00e2 0B       		.uleb128 0xb
+ 1663 00e3 3B       		.uleb128 0x3b
+ 1664 00e4 05       		.uleb128 0x5
+ 1665 00e5 27       		.uleb128 0x27
+ 1666 00e6 19       		.uleb128 0x19
+ 1667 00e7 11       		.uleb128 0x11
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 43
+
+
+ 1668 00e8 01       		.uleb128 0x1
+ 1669 00e9 12       		.uleb128 0x12
+ 1670 00ea 06       		.uleb128 0x6
+ 1671 00eb 40       		.uleb128 0x40
+ 1672 00ec 18       		.uleb128 0x18
+ 1673 00ed 9642     		.uleb128 0x2116
+ 1674 00ef 19       		.uleb128 0x19
+ 1675 00f0 01       		.uleb128 0x1
+ 1676 00f1 13       		.uleb128 0x13
+ 1677 00f2 00       		.byte	0
+ 1678 00f3 00       		.byte	0
+ 1679 00f4 11       		.uleb128 0x11
+ 1680 00f5 2E       		.uleb128 0x2e
+ 1681 00f6 01       		.byte	0x1
+ 1682 00f7 3F       		.uleb128 0x3f
+ 1683 00f8 19       		.uleb128 0x19
+ 1684 00f9 03       		.uleb128 0x3
+ 1685 00fa 0E       		.uleb128 0xe
+ 1686 00fb 3A       		.uleb128 0x3a
+ 1687 00fc 0B       		.uleb128 0xb
+ 1688 00fd 3B       		.uleb128 0x3b
+ 1689 00fe 05       		.uleb128 0x5
+ 1690 00ff 27       		.uleb128 0x27
+ 1691 0100 19       		.uleb128 0x19
+ 1692 0101 49       		.uleb128 0x49
+ 1693 0102 13       		.uleb128 0x13
+ 1694 0103 11       		.uleb128 0x11
+ 1695 0104 01       		.uleb128 0x1
+ 1696 0105 12       		.uleb128 0x12
+ 1697 0106 06       		.uleb128 0x6
+ 1698 0107 40       		.uleb128 0x40
+ 1699 0108 18       		.uleb128 0x18
+ 1700 0109 9742     		.uleb128 0x2117
+ 1701 010b 19       		.uleb128 0x19
+ 1702 010c 00       		.byte	0
+ 1703 010d 00       		.byte	0
+ 1704 010e 00       		.byte	0
+ 1705              		.section	.debug_aranges,"",%progbits
+ 1706 0000 44000000 		.4byte	0x44
+ 1707 0004 0200     		.2byte	0x2
+ 1708 0006 00000000 		.4byte	.Ldebug_info0
+ 1709 000a 04       		.byte	0x4
+ 1710 000b 00       		.byte	0
+ 1711 000c 0000     		.2byte	0
+ 1712 000e 0000     		.2byte	0
+ 1713 0010 00000000 		.4byte	.LFB0
+ 1714 0014 0C000000 		.4byte	.LFE0-.LFB0
+ 1715 0018 00000000 		.4byte	.LFB1
+ 1716 001c 1C000000 		.4byte	.LFE1-.LFB1
+ 1717 0020 00000000 		.4byte	.LFB2
+ 1718 0024 B2000000 		.4byte	.LFE2-.LFB2
+ 1719 0028 00000000 		.4byte	.LFB3
+ 1720 002c D6000000 		.4byte	.LFE3-.LFB3
+ 1721 0030 00000000 		.4byte	.LFB4
+ 1722 0034 0E010000 		.4byte	.LFE4-.LFB4
+ 1723 0038 00000000 		.4byte	.LFB5
+ 1724 003c 30010000 		.4byte	.LFE5-.LFB5
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 44
+
+
+ 1725 0040 00000000 		.4byte	0
+ 1726 0044 00000000 		.4byte	0
+ 1727              		.section	.debug_ranges,"",%progbits
+ 1728              	.Ldebug_ranges0:
+ 1729 0000 00000000 		.4byte	.LFB0
+ 1730 0004 0C000000 		.4byte	.LFE0
+ 1731 0008 00000000 		.4byte	.LFB1
+ 1732 000c 1C000000 		.4byte	.LFE1
+ 1733 0010 00000000 		.4byte	.LFB2
+ 1734 0014 B2000000 		.4byte	.LFE2
+ 1735 0018 00000000 		.4byte	.LFB3
+ 1736 001c D6000000 		.4byte	.LFE3
+ 1737 0020 00000000 		.4byte	.LFB4
+ 1738 0024 0E010000 		.4byte	.LFE4
+ 1739 0028 00000000 		.4byte	.LFB5
+ 1740 002c 30010000 		.4byte	.LFE5
+ 1741 0030 00000000 		.4byte	0
+ 1742 0034 00000000 		.4byte	0
+ 1743              		.section	.debug_line,"",%progbits
+ 1744              	.Ldebug_line0:
+ 1745 0000 F1010000 		.section	.debug_str,"MS",%progbits,1
+ 1745      02006D00 
+ 1745      00000201 
+ 1745      FB0E0D00 
+ 1745      01010101 
+ 1746              	.LASF24:
+ 1747 0000 64617461 		.ascii	"data_align\000"
+ 1747      5F616C69 
+ 1747      676E00
+ 1748              	.LASF33:
+ 1749 000b 706D656D 		.ascii	"pmem_align_src\000"
+ 1749      5F616C69 
+ 1749      676E5F73 
+ 1749      726300
+ 1750              	.LASF44:
+ 1751 001a 70325F6D 		.ascii	"p2_mem_align\000"
+ 1751      656D5F61 
+ 1751      6C69676E 
+ 1751      00
+ 1752              	.LASF7:
+ 1753 0027 73686F72 		.ascii	"short int\000"
+ 1753      7420696E 
+ 1753      7400
+ 1754              	.LASF20:
+ 1755 0031 4D656D5F 		.ascii	"Mem_Clr\000"
+ 1755      436C7200 
+ 1756              	.LASF50:
+ 1757 0039 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1757      43313120 
+ 1757      352E342E 
+ 1757      31203230 
+ 1757      31363036 
+ 1758 006c 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1758      20726576 
+ 1758      6973696F 
+ 1758      6E203233 
+ 1758      37373135 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 45
+
+
+ 1759 009f 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1759      66756E63 
+ 1759      74696F6E 
+ 1759      2D736563 
+ 1759      74696F6E 
+ 1760              	.LASF53:
+ 1761 00c7 4D656D5F 		.ascii	"Mem_Init\000"
+ 1761      496E6974 
+ 1761      00
+ 1762              	.LASF30:
+ 1763 00d0 70737263 		.ascii	"psrc\000"
+ 1763      00
+ 1764              	.LASF40:
+ 1765 00d5 4D656D5F 		.ascii	"Mem_Cmp\000"
+ 1765      436D7000 
+ 1766              	.LASF34:
+ 1767 00dd 706D656D 		.ascii	"pmem_08_dest\000"
+ 1767      5F30385F 
+ 1767      64657374 
+ 1767      00
+ 1768              	.LASF21:
+ 1769 00ea 4D656D5F 		.ascii	"Mem_Set\000"
+ 1769      53657400 
+ 1770              	.LASF38:
+ 1771 00f2 6D656D5F 		.ascii	"mem_aligned\000"
+ 1771      616C6967 
+ 1771      6E656400 
+ 1772              	.LASF14:
+ 1773 00fe 4350555F 		.ascii	"CPU_ADDR\000"
+ 1773      41444452 
+ 1773      00
+ 1774              	.LASF52:
+ 1775 0107 483A5C42 		.ascii	"H:\\BCC722-RTOS-moinho\\UCoS\\Micrium_2\\Software\\"
+ 1775      43433732 
+ 1775      322D5254 
+ 1775      4F532D6D 
+ 1775      6F696E68 
+ 1776 0135 4576616C 		.ascii	"EvalBoards\\Cypress\\CY8CKIT-050\\PSoC\\uCOS-III-Pr"
+ 1776      426F6172 
+ 1776      64735C43 
+ 1776      79707265 
+ 1776      73735C43 
+ 1777 0164 6F62655C 		.ascii	"obe\\BCC722-RTOS-MOINHO.cydsn\000"
+ 1777      42434337 
+ 1777      32322D52 
+ 1777      544F532D 
+ 1777      4D4F494E 
+ 1778              	.LASF12:
+ 1779 0181 666C6F61 		.ascii	"float\000"
+ 1779      7400
+ 1780              	.LASF11:
+ 1781 0187 6C6F6E67 		.ascii	"long long int\000"
+ 1781      206C6F6E 
+ 1781      6720696E 
+ 1781      7400
+ 1782              	.LASF2:
+ 1783 0195 4350555F 		.ascii	"CPU_BOOLEAN\000"
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 46
+
+
+ 1783      424F4F4C 
+ 1783      45414E00 
+ 1784              	.LASF31:
+ 1785 01a1 6D656D5F 		.ascii	"mem_gap_octets\000"
+ 1785      6761705F 
+ 1785      6F637465 
+ 1785      747300
+ 1786              	.LASF47:
+ 1787 01b0 6D656D5F 		.ascii	"mem_align_mod_1\000"
+ 1787      616C6967 
+ 1787      6E5F6D6F 
+ 1787      645F3100 
+ 1788              	.LASF48:
+ 1789 01c0 6D656D5F 		.ascii	"mem_align_mod_2\000"
+ 1789      616C6967 
+ 1789      6E5F6D6F 
+ 1789      645F3200 
+ 1790              	.LASF28:
+ 1791 01d0 4D656D5F 		.ascii	"Mem_Copy\000"
+ 1791      436F7079 
+ 1791      00
+ 1792              	.LASF18:
+ 1793 01d9 706D656D 		.ascii	"pmem\000"
+ 1793      00
+ 1794              	.LASF1:
+ 1795 01de 756E7369 		.ascii	"unsigned char\000"
+ 1795      676E6564 
+ 1795      20636861 
+ 1795      7200
+ 1796              	.LASF42:
+ 1797 01ec 70325F6D 		.ascii	"p2_mem\000"
+ 1797      656D00
+ 1798              	.LASF22:
+ 1799 01f3 64617461 		.ascii	"data_val\000"
+ 1799      5F76616C 
+ 1799      00
+ 1800              	.LASF39:
+ 1801 01fc 4D656D5F 		.ascii	"Mem_Move\000"
+ 1801      4D6F7665 
+ 1801      00
+ 1802              	.LASF5:
+ 1803 0205 7369676E 		.ascii	"signed char\000"
+ 1803      65642063 
+ 1803      68617200 
+ 1804              	.LASF10:
+ 1805 0211 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1805      206C6F6E 
+ 1805      6720756E 
+ 1805      7369676E 
+ 1805      65642069 
+ 1806              	.LASF9:
+ 1807 0228 756E7369 		.ascii	"unsigned int\000"
+ 1807      676E6564 
+ 1807      20696E74 
+ 1807      00
+ 1808              	.LASF25:
+ 1809 0235 706D656D 		.ascii	"pmem_align\000"
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 47
+
+
+ 1809      5F616C69 
+ 1809      676E00
+ 1810              	.LASF23:
+ 1811 0240 73697A65 		.ascii	"size_rem\000"
+ 1811      5F72656D 
+ 1811      00
+ 1812              	.LASF6:
+ 1813 0249 73686F72 		.ascii	"short unsigned int\000"
+ 1813      7420756E 
+ 1813      7369676E 
+ 1813      65642069 
+ 1813      6E7400
+ 1814              	.LASF4:
+ 1815 025c 4350555F 		.ascii	"CPU_INT08S\000"
+ 1815      494E5430 
+ 1815      385300
+ 1816              	.LASF15:
+ 1817 0267 4350555F 		.ascii	"CPU_DATA\000"
+ 1817      44415441 
+ 1817      00
+ 1818              	.LASF3:
+ 1819 0270 4350555F 		.ascii	"CPU_INT08U\000"
+ 1819      494E5430 
+ 1819      385500
+ 1820              	.LASF0:
+ 1821 027b 63686172 		.ascii	"char\000"
+ 1821      00
+ 1822              	.LASF8:
+ 1823 0280 4350555F 		.ascii	"CPU_INT32U\000"
+ 1823      494E5433 
+ 1823      325500
+ 1824              	.LASF35:
+ 1825 028b 706D656D 		.ascii	"pmem_08_src\000"
+ 1825      5F30385F 
+ 1825      73726300 
+ 1826              	.LASF29:
+ 1827 0297 70646573 		.ascii	"pdest\000"
+ 1827      7400
+ 1828              	.LASF32:
+ 1829 029d 706D656D 		.ascii	"pmem_align_dest\000"
+ 1829      5F616C69 
+ 1829      676E5F64 
+ 1829      65737400 
+ 1830              	.LASF26:
+ 1831 02ad 706D656D 		.ascii	"pmem_08\000"
+ 1831      5F303800 
+ 1832              	.LASF41:
+ 1833 02b5 70315F6D 		.ascii	"p1_mem\000"
+ 1833      656D00
+ 1834              	.LASF13:
+ 1835 02bc 646F7562 		.ascii	"double\000"
+ 1835      6C6500
+ 1836              	.LASF27:
+ 1837 02c3 6D656D5F 		.ascii	"mem_align_mod\000"
+ 1837      616C6967 
+ 1837      6E5F6D6F 
+ 1837      6400
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccY7vY4P.s 			page 48
+
+
+ 1838              	.LASF16:
+ 1839 02d1 4350555F 		.ascii	"CPU_ALIGN\000"
+ 1839      414C4947 
+ 1839      4E00
+ 1840              	.LASF19:
+ 1841 02db 73697A65 		.ascii	"size\000"
+ 1841      00
+ 1842              	.LASF46:
+ 1843 02e0 70325F6D 		.ascii	"p2_mem_08\000"
+ 1843      656D5F30 
+ 1843      3800
+ 1844              	.LASF17:
+ 1845 02ea 4350555F 		.ascii	"CPU_SIZE_T\000"
+ 1845      53495A45 
+ 1845      5F5400
+ 1846              	.LASF49:
+ 1847 02f5 6D656D5F 		.ascii	"mem_cmp\000"
+ 1847      636D7000 
+ 1848              	.LASF37:
+ 1849 02fd 6D656D5F 		.ascii	"mem_align_mod_src\000"
+ 1849      616C6967 
+ 1849      6E5F6D6F 
+ 1849      645F7372 
+ 1849      6300
+ 1850              	.LASF43:
+ 1851 030f 70315F6D 		.ascii	"p1_mem_align\000"
+ 1851      656D5F61 
+ 1851      6C69676E 
+ 1851      00
+ 1852              	.LASF36:
+ 1853 031c 6D656D5F 		.ascii	"mem_align_mod_dest\000"
+ 1853      616C6967 
+ 1853      6E5F6D6F 
+ 1853      645F6465 
+ 1853      737400
+ 1854              	.LASF51:
+ 1855 032f 2E2E5C2E 		.ascii	"..\\..\\..\\..\\..\\..\\uC-LIB\\lib_mem.c\000"
+ 1855      2E5C2E2E 
+ 1855      5C2E2E5C 
+ 1855      2E2E5C2E 
+ 1855      2E5C7543 
+ 1856              	.LASF45:
+ 1857 0352 70315F6D 		.ascii	"p1_mem_08\000"
+ 1857      656D5F30 
+ 1857      3800
+ 1858              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

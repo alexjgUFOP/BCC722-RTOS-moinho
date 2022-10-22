@@ -1,0 +1,3749 @@
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"os_msg.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.OS_MsgPoolInit,"ax",%progbits
+  20              		.align	2
+  21              		.global	OS_MsgPoolInit
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	OS_MsgPoolInit, %function
+  25              	OS_MsgPoolInit:
+  26              	.LFB0:
+  27              		.file 1 "..\\..\\..\\..\\..\\..\\uCOS-III\\Source\\os_msg.c"
+   1:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** /*
+   2:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** ***************************************************************************************************
+   3:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                                                      uC/OS-III
+   4:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                                                 The Real-Time Kernel
+   5:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+   6:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                                  (c) Copyright 2009-2012; Micrium, Inc.; Weston, FL
+   7:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                           All rights reserved.  Protected by international copyright laws.
+   8:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+   9:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                                              MESSAGE HANDLING SERVICES
+  10:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+  11:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * File    : OS_MSG.C
+  12:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * By      : JJL
+  13:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Version : V3.03.01
+  14:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+  15:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * LICENSING TERMS:
+  16:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * ---------------
+  17:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *           uC/OS-III is provided in source form for FREE short-term evaluation, for educational us
+  18:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *           for peaceful research.  If you plan or intend to use uC/OS-III in a commercial applicat
+  19:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *           product then, you need to contact Micrium to properly license uC/OS-III for its use in 
+  20:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *           application/product.   We provide ALL the source code for your convenience and to help 
+  21:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *           experience uC/OS-III.  The fact that the source is provided does NOT mean that you can 
+  22:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *           it commercially without paying a licensing fee.
+  23:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+  24:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *           Knowledge of the source code may NOT be used to develop a similar product.
+  25:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+  26:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *           Please help us continue to provide the embedded community with the finest software avai
+  27:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *           Your honesty is greatly appreciated.
+  28:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+  29:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *           You can contact us at www.micrium.com, or by phone at +1 (954) 217-2036.
+  30:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** ***************************************************************************************************
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 2
+
+
+  31:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** */
+  32:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+  33:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** #define  MICRIUM_SOURCE
+  34:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** #include <os.h>
+  35:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+  36:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** #ifdef VSC_INCLUDE_SOURCE_FILE_NAMES
+  37:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** const  CPU_CHAR  *os_msg__c = "$Id: $";
+  38:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** #endif
+  39:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+  40:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+  41:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** #if OS_MSG_EN > 0u
+  42:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** /*$PAGE*/
+  43:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** /*
+  44:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** ***************************************************************************************************
+  45:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                                            INITIALIZE THE POOL OF 'OS_MSG'
+  46:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+  47:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Description: This function is called by OSInit() to initialize the free list of OS_MSGs.
+  48:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+  49:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Argument(s): p_err     is a pointer to a variable that will contain an error code returned by thi
+  50:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+  51:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                            OS_ERR_MSG_POOL_NULL_PTR
+  52:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                            OS_ERR_MSG_POOL_EMPTY
+  53:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                            OS_ERR_NONE
+  54:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+  55:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Returns    : none
+  56:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+  57:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+  58:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** ***************************************************************************************************
+  59:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** */
+  60:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+  61:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** void  OS_MsgPoolInit (OS_ERR  *p_err)
+  62:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** {
+  28              		.loc 1 62 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 24
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 80B4     		push	{r7}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 7, -4
+  36 0002 87B0     		sub	sp, sp, #28
+  37              		.cfi_def_cfa_offset 32
+  38 0004 00AF     		add	r7, sp, #0
+  39              		.cfi_def_cfa_register 7
+  40 0006 7860     		str	r0, [r7, #4]
+  63:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OS_MSG      *p_msg1;
+  64:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OS_MSG      *p_msg2;
+  65:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OS_MSG_QTY   i;
+  66:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OS_MSG_QTY   loops;
+  67:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+  68:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+  69:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+  70:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** #ifdef OS_SAFETY_CRITICAL
+  71:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (p_err == (OS_ERR *)0) {
+  72:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+  73:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         return;
+  74:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 3
+
+
+  75:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** #endif
+  76:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+  77:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** #if OS_CFG_ARG_CHK_EN > 0u
+  78:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (OSCfg_MsgPoolBasePtr == (OS_MSG *)0) {
+  41              		.loc 1 78 0
+  42 0008 2D4B     		ldr	r3, .L7
+  43 000a 1B68     		ldr	r3, [r3]
+  44 000c 002B     		cmp	r3, #0
+  45 000e 04D1     		bne	.L2
+  79:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****        *p_err = OS_ERR_MSG_POOL_NULL_PTR;
+  46              		.loc 1 79 0
+  47 0010 7B68     		ldr	r3, [r7, #4]
+  48 0012 45F21E72 		movw	r2, #22302
+  49 0016 1A80     		strh	r2, [r3]	@ movhi
+  80:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         return;
+  50              		.loc 1 80 0
+  51 0018 4EE0     		b	.L1
+  52              	.L2:
+  81:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+  82:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (OSCfg_MsgPoolSize == (OS_MSG_QTY)0) {
+  53              		.loc 1 82 0
+  54 001a 2A4B     		ldr	r3, .L7+4
+  55 001c 1B88     		ldrh	r3, [r3]
+  56 001e 002B     		cmp	r3, #0
+  57 0020 04D1     		bne	.L4
+  83:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****        *p_err = OS_ERR_MSG_POOL_EMPTY;
+  58              		.loc 1 83 0
+  59 0022 7B68     		ldr	r3, [r7, #4]
+  60 0024 45F21D72 		movw	r2, #22301
+  61 0028 1A80     		strh	r2, [r3]	@ movhi
+  84:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         return;
+  62              		.loc 1 84 0
+  63 002a 45E0     		b	.L1
+  64              	.L4:
+  85:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+  86:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** #endif
+  87:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+  88:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg1 = OSCfg_MsgPoolBasePtr;
+  65              		.loc 1 88 0
+  66 002c 244B     		ldr	r3, .L7
+  67 002e 1B68     		ldr	r3, [r3]
+  68 0030 7B61     		str	r3, [r7, #20]
+  89:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg2 = OSCfg_MsgPoolBasePtr;
+  69              		.loc 1 89 0
+  70 0032 234B     		ldr	r3, .L7
+  71 0034 1B68     		ldr	r3, [r3]
+  72 0036 3B61     		str	r3, [r7, #16]
+  90:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg2++;
+  73              		.loc 1 90 0
+  74 0038 3B69     		ldr	r3, [r7, #16]
+  75 003a 1033     		adds	r3, r3, #16
+  76 003c 3B61     		str	r3, [r7, #16]
+  91:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     loops  = OSCfg_MsgPoolSize - 1u;
+  77              		.loc 1 91 0
+  78 003e 214B     		ldr	r3, .L7+4
+  79 0040 1B88     		ldrh	r3, [r3]
+  80 0042 013B     		subs	r3, r3, #1
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 4
+
+
+  81 0044 BB81     		strh	r3, [r7, #12]	@ movhi
+  92:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     for (i = 0u; i < loops; i++) {                          /* Init. list of free OS_MSGs          
+  82              		.loc 1 92 0
+  83 0046 0023     		movs	r3, #0
+  84 0048 FB81     		strh	r3, [r7, #14]	@ movhi
+  85 004a 14E0     		b	.L5
+  86              	.L6:
+  93:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg1->NextPtr = p_msg2;
+  87              		.loc 1 93 0 discriminator 3
+  88 004c 7B69     		ldr	r3, [r7, #20]
+  89 004e 3A69     		ldr	r2, [r7, #16]
+  90 0050 1A60     		str	r2, [r3]
+  94:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg1->MsgPtr  = (void      *)0;
+  91              		.loc 1 94 0 discriminator 3
+  92 0052 7B69     		ldr	r3, [r7, #20]
+  93 0054 0022     		movs	r2, #0
+  94 0056 5A60     		str	r2, [r3, #4]
+  95:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg1->MsgSize = (OS_MSG_SIZE)0u;
+  95              		.loc 1 95 0 discriminator 3
+  96 0058 7B69     		ldr	r3, [r7, #20]
+  97 005a 0022     		movs	r2, #0
+  98 005c 1A81     		strh	r2, [r3, #8]	@ movhi
+  96:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg1->MsgTS   = (CPU_TS     )0u;
+  99              		.loc 1 96 0 discriminator 3
+ 100 005e 7B69     		ldr	r3, [r7, #20]
+ 101 0060 0022     		movs	r2, #0
+ 102 0062 DA60     		str	r2, [r3, #12]
+  97:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg1++;
+ 103              		.loc 1 97 0 discriminator 3
+ 104 0064 7B69     		ldr	r3, [r7, #20]
+ 105 0066 1033     		adds	r3, r3, #16
+ 106 0068 7B61     		str	r3, [r7, #20]
+  98:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg2++;
+ 107              		.loc 1 98 0 discriminator 3
+ 108 006a 3B69     		ldr	r3, [r7, #16]
+ 109 006c 1033     		adds	r3, r3, #16
+ 110 006e 3B61     		str	r3, [r7, #16]
+  92:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg1->NextPtr = p_msg2;
+ 111              		.loc 1 92 0 discriminator 3
+ 112 0070 FB89     		ldrh	r3, [r7, #14]
+ 113 0072 0133     		adds	r3, r3, #1
+ 114 0074 FB81     		strh	r3, [r7, #14]	@ movhi
+ 115              	.L5:
+  92:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg1->NextPtr = p_msg2;
+ 116              		.loc 1 92 0 is_stmt 0 discriminator 1
+ 117 0076 FA89     		ldrh	r2, [r7, #14]
+ 118 0078 BB89     		ldrh	r3, [r7, #12]
+ 119 007a 9A42     		cmp	r2, r3
+ 120 007c E6D3     		bcc	.L6
+  99:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+ 100:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg1->NextPtr = (OS_MSG    *)0;                       /* Last OS_MSG                         
+ 121              		.loc 1 100 0 is_stmt 1
+ 122 007e 7B69     		ldr	r3, [r7, #20]
+ 123 0080 0022     		movs	r2, #0
+ 124 0082 1A60     		str	r2, [r3]
+ 101:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg1->MsgPtr  = (void      *)0;
+ 125              		.loc 1 101 0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 5
+
+
+ 126 0084 7B69     		ldr	r3, [r7, #20]
+ 127 0086 0022     		movs	r2, #0
+ 128 0088 5A60     		str	r2, [r3, #4]
+ 102:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg1->MsgSize = (OS_MSG_SIZE)0u;
+ 129              		.loc 1 102 0
+ 130 008a 7B69     		ldr	r3, [r7, #20]
+ 131 008c 0022     		movs	r2, #0
+ 132 008e 1A81     		strh	r2, [r3, #8]	@ movhi
+ 103:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg1->MsgTS   = (CPU_TS     )0u;
+ 133              		.loc 1 103 0
+ 134 0090 7B69     		ldr	r3, [r7, #20]
+ 135 0092 0022     		movs	r2, #0
+ 136 0094 DA60     		str	r2, [r3, #12]
+ 104:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 105:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OSMsgPool.NextPtr    =  OSCfg_MsgPoolBasePtr;
+ 137              		.loc 1 105 0
+ 138 0096 0A4B     		ldr	r3, .L7
+ 139 0098 1B68     		ldr	r3, [r3]
+ 140 009a 0B4A     		ldr	r2, .L7+8
+ 141 009c 1360     		str	r3, [r2]
+ 106:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OSMsgPool.NbrFree    =  OSCfg_MsgPoolSize;
+ 142              		.loc 1 106 0
+ 143 009e 094B     		ldr	r3, .L7+4
+ 144 00a0 1A88     		ldrh	r2, [r3]
+ 145 00a2 094B     		ldr	r3, .L7+8
+ 146 00a4 9A80     		strh	r2, [r3, #4]	@ movhi
+ 107:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OSMsgPool.NbrUsed    = (OS_MSG_QTY)0;
+ 147              		.loc 1 107 0
+ 148 00a6 084B     		ldr	r3, .L7+8
+ 149 00a8 0022     		movs	r2, #0
+ 150 00aa DA80     		strh	r2, [r3, #6]	@ movhi
+ 108:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OSMsgPool.NbrUsedMax = (OS_MSG_QTY)0;
+ 151              		.loc 1 108 0
+ 152 00ac 064B     		ldr	r3, .L7+8
+ 153 00ae 0022     		movs	r2, #0
+ 154 00b0 1A81     		strh	r2, [r3, #8]	@ movhi
+ 109:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****    *p_err                =  OS_ERR_NONE;
+ 155              		.loc 1 109 0
+ 156 00b2 7B68     		ldr	r3, [r7, #4]
+ 157 00b4 0022     		movs	r2, #0
+ 158 00b6 1A80     		strh	r2, [r3]	@ movhi
+ 159              	.L1:
+ 110:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** }
+ 160              		.loc 1 110 0
+ 161 00b8 1C37     		adds	r7, r7, #28
+ 162              		.cfi_def_cfa_offset 4
+ 163 00ba BD46     		mov	sp, r7
+ 164              		.cfi_def_cfa_register 13
+ 165              		@ sp needed
+ 166 00bc 80BC     		pop	{r7}
+ 167              		.cfi_restore 7
+ 168              		.cfi_def_cfa_offset 0
+ 169 00be 7047     		bx	lr
+ 170              	.L8:
+ 171              		.align	2
+ 172              	.L7:
+ 173 00c0 00000000 		.word	OSCfg_MsgPoolBasePtr
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 6
+
+
+ 174 00c4 00000000 		.word	OSCfg_MsgPoolSize
+ 175 00c8 00000000 		.word	OSMsgPool
+ 176              		.cfi_endproc
+ 177              	.LFE0:
+ 178              		.size	OS_MsgPoolInit, .-OS_MsgPoolInit
+ 179              		.section	.text.OS_MsgQFreeAll,"ax",%progbits
+ 180              		.align	2
+ 181              		.global	OS_MsgQFreeAll
+ 182              		.thumb
+ 183              		.thumb_func
+ 184              		.type	OS_MsgQFreeAll, %function
+ 185              	OS_MsgQFreeAll:
+ 186              	.LFB1:
+ 111:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 112:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** /*$PAGE*/
+ 113:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** /*
+ 114:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** ***************************************************************************************************
+ 115:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                                        RELEASE ALL MESSAGE IN MESSAGE QUEUE
+ 116:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 117:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Description: This function returns all the messages in a message queue to the free list.
+ 118:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 119:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Arguments  : p_msg_q       is a pointer to the OS_MSG_Q structure containing messages to free.
+ 120:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *              -------
+ 121:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 122:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Returns    : the number of OS_MSGs returned to the free list
+ 123:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 124:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+ 125:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** ***************************************************************************************************
+ 126:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** */
+ 127:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 128:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** OS_MSG_QTY  OS_MsgQFreeAll (OS_MSG_Q  *p_msg_q)
+ 129:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** {
+ 187              		.loc 1 129 0
+ 188              		.cfi_startproc
+ 189              		@ args = 0, pretend = 0, frame = 16
+ 190              		@ frame_needed = 1, uses_anonymous_args = 0
+ 191              		@ link register save eliminated.
+ 192 0000 80B4     		push	{r7}
+ 193              		.cfi_def_cfa_offset 4
+ 194              		.cfi_offset 7, -4
+ 195 0002 85B0     		sub	sp, sp, #20
+ 196              		.cfi_def_cfa_offset 24
+ 197 0004 00AF     		add	r7, sp, #0
+ 198              		.cfi_def_cfa_register 7
+ 199 0006 7860     		str	r0, [r7, #4]
+ 130:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OS_MSG      *p_msg;
+ 131:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OS_MSG_QTY   qty;
+ 132:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 133:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 134:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 135:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     qty = p_msg_q->NbrEntries;                              /* Get the number of OS_MSGs being free
+ 200              		.loc 1 135 0
+ 201 0008 7B68     		ldr	r3, [r7, #4]
+ 202 000a 5B89     		ldrh	r3, [r3, #10]	@ movhi
+ 203 000c FB81     		strh	r3, [r7, #14]	@ movhi
+ 136:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (p_msg_q->NbrEntries > (OS_MSG_QTY)0) {
+ 204              		.loc 1 136 0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 7
+
+
+ 205 000e 7B68     		ldr	r3, [r7, #4]
+ 206 0010 5B89     		ldrh	r3, [r3, #10]
+ 207 0012 002B     		cmp	r3, #0
+ 208 0014 26D0     		beq	.L10
+ 137:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg                   = p_msg_q->InPtr;           /* Point to end of message chain       
+ 209              		.loc 1 137 0
+ 210 0016 7B68     		ldr	r3, [r7, #4]
+ 211 0018 1B68     		ldr	r3, [r3]
+ 212 001a BB60     		str	r3, [r7, #8]
+ 138:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg->NextPtr          = OSMsgPool.NextPtr;
+ 213              		.loc 1 138 0
+ 214 001c 144B     		ldr	r3, .L12
+ 215 001e 1A68     		ldr	r2, [r3]
+ 216 0020 BB68     		ldr	r3, [r7, #8]
+ 217 0022 1A60     		str	r2, [r3]
+ 139:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         OSMsgPool.NextPtr       = p_msg_q->OutPtr;          /* Point to beginning of message chain 
+ 218              		.loc 1 139 0
+ 219 0024 7B68     		ldr	r3, [r7, #4]
+ 220 0026 5B68     		ldr	r3, [r3, #4]
+ 221 0028 114A     		ldr	r2, .L12
+ 222 002a 1360     		str	r3, [r2]
+ 140:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         OSMsgPool.NbrUsed      -= p_msg_q->NbrEntries;      /* Update statistics for free list of m
+ 223              		.loc 1 140 0
+ 224 002c 104B     		ldr	r3, .L12
+ 225 002e DA88     		ldrh	r2, [r3, #6]
+ 226 0030 7B68     		ldr	r3, [r7, #4]
+ 227 0032 5B89     		ldrh	r3, [r3, #10]
+ 228 0034 D31A     		subs	r3, r2, r3
+ 229 0036 9AB2     		uxth	r2, r3
+ 230 0038 0D4B     		ldr	r3, .L12
+ 231 003a DA80     		strh	r2, [r3, #6]	@ movhi
+ 141:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         OSMsgPool.NbrFree      += p_msg_q->NbrEntries;
+ 232              		.loc 1 141 0
+ 233 003c 0C4B     		ldr	r3, .L12
+ 234 003e 9A88     		ldrh	r2, [r3, #4]
+ 235 0040 7B68     		ldr	r3, [r7, #4]
+ 236 0042 5B89     		ldrh	r3, [r3, #10]
+ 237 0044 1344     		add	r3, r3, r2
+ 238 0046 9AB2     		uxth	r2, r3
+ 239 0048 094B     		ldr	r3, .L12
+ 240 004a 9A80     		strh	r2, [r3, #4]	@ movhi
+ 142:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg_q->NbrEntries     = (OS_MSG_QTY)0;            /* Flush the message queue             
+ 241              		.loc 1 142 0
+ 242 004c 7B68     		ldr	r3, [r7, #4]
+ 243 004e 0022     		movs	r2, #0
+ 244 0050 5A81     		strh	r2, [r3, #10]	@ movhi
+ 143:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg_q->NbrEntriesMax  = (OS_MSG_QTY)0;
+ 245              		.loc 1 143 0
+ 246 0052 7B68     		ldr	r3, [r7, #4]
+ 247 0054 0022     		movs	r2, #0
+ 248 0056 9A81     		strh	r2, [r3, #12]	@ movhi
+ 144:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg_q->InPtr          = (OS_MSG   *)0;
+ 249              		.loc 1 144 0
+ 250 0058 7B68     		ldr	r3, [r7, #4]
+ 251 005a 0022     		movs	r2, #0
+ 252 005c 1A60     		str	r2, [r3]
+ 145:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg_q->OutPtr         = (OS_MSG   *)0;
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 8
+
+
+ 253              		.loc 1 145 0
+ 254 005e 7B68     		ldr	r3, [r7, #4]
+ 255 0060 0022     		movs	r2, #0
+ 256 0062 5A60     		str	r2, [r3, #4]
+ 257              	.L10:
+ 146:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+ 147:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     return (qty);
+ 258              		.loc 1 147 0
+ 259 0064 FB89     		ldrh	r3, [r7, #14]
+ 148:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** }
+ 260              		.loc 1 148 0
+ 261 0066 1846     		mov	r0, r3
+ 262 0068 1437     		adds	r7, r7, #20
+ 263              		.cfi_def_cfa_offset 4
+ 264 006a BD46     		mov	sp, r7
+ 265              		.cfi_def_cfa_register 13
+ 266              		@ sp needed
+ 267 006c 80BC     		pop	{r7}
+ 268              		.cfi_restore 7
+ 269              		.cfi_def_cfa_offset 0
+ 270 006e 7047     		bx	lr
+ 271              	.L13:
+ 272              		.align	2
+ 273              	.L12:
+ 274 0070 00000000 		.word	OSMsgPool
+ 275              		.cfi_endproc
+ 276              	.LFE1:
+ 277              		.size	OS_MsgQFreeAll, .-OS_MsgQFreeAll
+ 278              		.section	.text.OS_MsgQInit,"ax",%progbits
+ 279              		.align	2
+ 280              		.global	OS_MsgQInit
+ 281              		.thumb
+ 282              		.thumb_func
+ 283              		.type	OS_MsgQInit, %function
+ 284              	OS_MsgQInit:
+ 285              	.LFB2:
+ 149:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 150:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** /*$PAGE*/
+ 151:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** /*
+ 152:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** ***************************************************************************************************
+ 153:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                                               INITIALIZE A MESSAGE QUEUE
+ 154:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 155:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Description: This function is called to initialize a message queue
+ 156:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 157:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Arguments  : p_msg_q      is a pointer to the message queue to initialize
+ 158:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *              -------
+ 159:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 160:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *              max          is the maximum number of entries that a message queue can have.
+ 161:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 162:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Returns    : none
+ 163:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 164:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+ 165:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** ***************************************************************************************************
+ 166:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** */
+ 167:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 168:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** void  OS_MsgQInit (OS_MSG_Q    *p_msg_q,
+ 169:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****                    OS_MSG_QTY   size)
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 9
+
+
+ 170:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** {
+ 286              		.loc 1 170 0
+ 287              		.cfi_startproc
+ 288              		@ args = 0, pretend = 0, frame = 8
+ 289              		@ frame_needed = 1, uses_anonymous_args = 0
+ 290              		@ link register save eliminated.
+ 291 0000 80B4     		push	{r7}
+ 292              		.cfi_def_cfa_offset 4
+ 293              		.cfi_offset 7, -4
+ 294 0002 83B0     		sub	sp, sp, #12
+ 295              		.cfi_def_cfa_offset 16
+ 296 0004 00AF     		add	r7, sp, #0
+ 297              		.cfi_def_cfa_register 7
+ 298 0006 7860     		str	r0, [r7, #4]
+ 299 0008 0B46     		mov	r3, r1
+ 300 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 171:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg_q->NbrEntriesSize = (OS_MSG_QTY)size;
+ 301              		.loc 1 171 0
+ 302 000c 7B68     		ldr	r3, [r7, #4]
+ 303 000e 7A88     		ldrh	r2, [r7, #2]	@ movhi
+ 304 0010 1A81     		strh	r2, [r3, #8]	@ movhi
+ 172:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg_q->NbrEntries     = (OS_MSG_QTY)0;
+ 305              		.loc 1 172 0
+ 306 0012 7B68     		ldr	r3, [r7, #4]
+ 307 0014 0022     		movs	r2, #0
+ 308 0016 5A81     		strh	r2, [r3, #10]	@ movhi
+ 173:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg_q->NbrEntriesMax  = (OS_MSG_QTY)0;
+ 309              		.loc 1 173 0
+ 310 0018 7B68     		ldr	r3, [r7, #4]
+ 311 001a 0022     		movs	r2, #0
+ 312 001c 9A81     		strh	r2, [r3, #12]	@ movhi
+ 174:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg_q->InPtr          = (OS_MSG   *)0;
+ 313              		.loc 1 174 0
+ 314 001e 7B68     		ldr	r3, [r7, #4]
+ 315 0020 0022     		movs	r2, #0
+ 316 0022 1A60     		str	r2, [r3]
+ 175:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg_q->OutPtr         = (OS_MSG   *)0;
+ 317              		.loc 1 175 0
+ 318 0024 7B68     		ldr	r3, [r7, #4]
+ 319 0026 0022     		movs	r2, #0
+ 320 0028 5A60     		str	r2, [r3, #4]
+ 176:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** }
+ 321              		.loc 1 176 0
+ 322 002a 00BF     		nop
+ 323 002c 0C37     		adds	r7, r7, #12
+ 324              		.cfi_def_cfa_offset 4
+ 325 002e BD46     		mov	sp, r7
+ 326              		.cfi_def_cfa_register 13
+ 327              		@ sp needed
+ 328 0030 80BC     		pop	{r7}
+ 329              		.cfi_restore 7
+ 330              		.cfi_def_cfa_offset 0
+ 331 0032 7047     		bx	lr
+ 332              		.cfi_endproc
+ 333              	.LFE2:
+ 334              		.size	OS_MsgQInit, .-OS_MsgQInit
+ 335              		.section	.text.OS_MsgQGet,"ax",%progbits
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 10
+
+
+ 336              		.align	2
+ 337              		.global	OS_MsgQGet
+ 338              		.thumb
+ 339              		.thumb_func
+ 340              		.type	OS_MsgQGet, %function
+ 341              	OS_MsgQGet:
+ 342              	.LFB3:
+ 177:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 178:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** /*$PAGE*/
+ 179:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** /*
+ 180:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** ***************************************************************************************************
+ 181:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                                           RETRIEVE MESSAGE FROM MESSAGE QUEUE
+ 182:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 183:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Description: This function retrieves a message from a message queue
+ 184:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 185:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Arguments  : p_msg_q     is a pointer to the message queue where we want to extract the message f
+ 186:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *              -------
+ 187:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 188:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *              p_msg_size  is a pointer to where the size (in bytes) of the message will be placed
+ 189:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 190:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *              p_ts        is a pointer to where the time stamp will be placed
+ 191:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 192:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *              p_err       is a pointer to an error code that will be returned from this call.
+ 193:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 194:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                              OS_ERR_Q_EMPTY
+ 195:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                              OS_ERR_NONE
+ 196:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 197:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Returns    : The message (a pointer)
+ 198:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 199:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+ 200:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** ***************************************************************************************************
+ 201:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** */
+ 202:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 203:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** void  *OS_MsgQGet (OS_MSG_Q     *p_msg_q,
+ 204:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****                    OS_MSG_SIZE  *p_msg_size,
+ 205:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****                    CPU_TS       *p_ts,
+ 206:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****                    OS_ERR       *p_err)
+ 207:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** {
+ 343              		.loc 1 207 0
+ 344              		.cfi_startproc
+ 345              		@ args = 0, pretend = 0, frame = 24
+ 346              		@ frame_needed = 1, uses_anonymous_args = 0
+ 347              		@ link register save eliminated.
+ 348 0000 80B4     		push	{r7}
+ 349              		.cfi_def_cfa_offset 4
+ 350              		.cfi_offset 7, -4
+ 351 0002 87B0     		sub	sp, sp, #28
+ 352              		.cfi_def_cfa_offset 32
+ 353 0004 00AF     		add	r7, sp, #0
+ 354              		.cfi_def_cfa_register 7
+ 355 0006 F860     		str	r0, [r7, #12]
+ 356 0008 B960     		str	r1, [r7, #8]
+ 357 000a 7A60     		str	r2, [r7, #4]
+ 358 000c 3B60     		str	r3, [r7]
+ 208:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OS_MSG  *p_msg;
+ 209:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     void    *p_void;
+ 210:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 11
+
+
+ 211:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 212:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 213:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** #ifdef OS_SAFETY_CRITICAL
+ 214:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (p_err == (OS_ERR *)0) {
+ 215:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 216:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         return ((void *)0);
+ 217:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+ 218:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** #endif
+ 219:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 220:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (p_msg_q->NbrEntries == (OS_MSG_QTY)0) {             /* Is the queue empty?                 
+ 359              		.loc 1 220 0
+ 360 000e FB68     		ldr	r3, [r7, #12]
+ 361 0010 5B89     		ldrh	r3, [r3, #10]
+ 362 0012 002B     		cmp	r3, #0
+ 363 0014 0ED1     		bne	.L16
+ 221:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****        *p_msg_size = (OS_MSG_SIZE)0;                        /* Yes                                 
+ 364              		.loc 1 221 0
+ 365 0016 BB68     		ldr	r3, [r7, #8]
+ 366 0018 0022     		movs	r2, #0
+ 367 001a 1A80     		strh	r2, [r3]	@ movhi
+ 222:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         if (p_ts != (CPU_TS *)0) {
+ 368              		.loc 1 222 0
+ 369 001c 7B68     		ldr	r3, [r7, #4]
+ 370 001e 002B     		cmp	r3, #0
+ 371 0020 02D0     		beq	.L17
+ 223:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****            *p_ts  = (CPU_TS  )0;
+ 372              		.loc 1 223 0
+ 373 0022 7B68     		ldr	r3, [r7, #4]
+ 374 0024 0022     		movs	r2, #0
+ 375 0026 1A60     		str	r2, [r3]
+ 376              	.L17:
+ 224:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         }
+ 225:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****        *p_err = OS_ERR_Q_EMPTY;
+ 377              		.loc 1 225 0
+ 378 0028 3B68     		ldr	r3, [r7]
+ 379 002a 46F29252 		movw	r2, #26002
+ 380 002e 1A80     		strh	r2, [r3]	@ movhi
+ 226:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         return ((void *)0);
+ 381              		.loc 1 226 0
+ 382 0030 0023     		movs	r3, #0
+ 383 0032 3CE0     		b	.L18
+ 384              	.L16:
+ 227:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+ 228:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 229:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg           = p_msg_q->OutPtr;                      /* No, get the next message to extract 
+ 385              		.loc 1 229 0
+ 386 0034 FB68     		ldr	r3, [r7, #12]
+ 387 0036 5B68     		ldr	r3, [r3, #4]
+ 388 0038 7B61     		str	r3, [r7, #20]
+ 230:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_void          = p_msg->MsgPtr;
+ 389              		.loc 1 230 0
+ 390 003a 7B69     		ldr	r3, [r7, #20]
+ 391 003c 5B68     		ldr	r3, [r3, #4]
+ 392 003e 3B61     		str	r3, [r7, #16]
+ 231:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****    *p_msg_size      = p_msg->MsgSize;
+ 393              		.loc 1 231 0
+ 394 0040 7B69     		ldr	r3, [r7, #20]
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 12
+
+
+ 395 0042 1A89     		ldrh	r2, [r3, #8]
+ 396 0044 BB68     		ldr	r3, [r7, #8]
+ 397 0046 1A80     		strh	r2, [r3]	@ movhi
+ 232:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (p_ts != (CPU_TS *)0) {
+ 398              		.loc 1 232 0
+ 399 0048 7B68     		ldr	r3, [r7, #4]
+ 400 004a 002B     		cmp	r3, #0
+ 401 004c 03D0     		beq	.L19
+ 233:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****        *p_ts  = p_msg->MsgTS;
+ 402              		.loc 1 233 0
+ 403 004e 7B69     		ldr	r3, [r7, #20]
+ 404 0050 DA68     		ldr	r2, [r3, #12]
+ 405 0052 7B68     		ldr	r3, [r7, #4]
+ 406 0054 1A60     		str	r2, [r3]
+ 407              	.L19:
+ 234:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+ 235:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 236:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg_q->OutPtr = p_msg->NextPtr;                       /* Point to next message to extract    
+ 408              		.loc 1 236 0
+ 409 0056 7B69     		ldr	r3, [r7, #20]
+ 410 0058 1A68     		ldr	r2, [r3]
+ 411 005a FB68     		ldr	r3, [r7, #12]
+ 412 005c 5A60     		str	r2, [r3, #4]
+ 237:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 238:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (p_msg_q->OutPtr == (OS_MSG *)0) {                   /* Are there any more messages in the q
+ 413              		.loc 1 238 0
+ 414 005e FB68     		ldr	r3, [r7, #12]
+ 415 0060 5B68     		ldr	r3, [r3, #4]
+ 416 0062 002B     		cmp	r3, #0
+ 417 0064 06D1     		bne	.L20
+ 239:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg_q->InPtr      = (OS_MSG   *)0;                /* No                                  
+ 418              		.loc 1 239 0
+ 419 0066 FB68     		ldr	r3, [r7, #12]
+ 420 0068 0022     		movs	r2, #0
+ 421 006a 1A60     		str	r2, [r3]
+ 240:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg_q->NbrEntries = (OS_MSG_QTY)0;
+ 422              		.loc 1 240 0
+ 423 006c FB68     		ldr	r3, [r7, #12]
+ 424 006e 0022     		movs	r2, #0
+ 425 0070 5A81     		strh	r2, [r3, #10]	@ movhi
+ 426 0072 05E0     		b	.L21
+ 427              	.L20:
+ 241:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     } else {
+ 242:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg_q->NbrEntries--;                              /* Yes, One less message in the queue  
+ 428              		.loc 1 242 0
+ 429 0074 FB68     		ldr	r3, [r7, #12]
+ 430 0076 5B89     		ldrh	r3, [r3, #10]
+ 431 0078 013B     		subs	r3, r3, #1
+ 432 007a 9AB2     		uxth	r2, r3
+ 433 007c FB68     		ldr	r3, [r7, #12]
+ 434 007e 5A81     		strh	r2, [r3, #10]	@ movhi
+ 435              	.L21:
+ 243:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+ 244:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 245:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg->NextPtr    = OSMsgPool.NextPtr;                  /* Return message control block to free
+ 436              		.loc 1 245 0
+ 437 0080 0D4B     		ldr	r3, .L22
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 13
+
+
+ 438 0082 1A68     		ldr	r2, [r3]
+ 439 0084 7B69     		ldr	r3, [r7, #20]
+ 440 0086 1A60     		str	r2, [r3]
+ 246:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OSMsgPool.NextPtr = p_msg;
+ 441              		.loc 1 246 0
+ 442 0088 0B4A     		ldr	r2, .L22
+ 443 008a 7B69     		ldr	r3, [r7, #20]
+ 444 008c 1360     		str	r3, [r2]
+ 247:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OSMsgPool.NbrFree++;
+ 445              		.loc 1 247 0
+ 446 008e 0A4B     		ldr	r3, .L22
+ 447 0090 9B88     		ldrh	r3, [r3, #4]
+ 448 0092 0133     		adds	r3, r3, #1
+ 449 0094 9AB2     		uxth	r2, r3
+ 450 0096 084B     		ldr	r3, .L22
+ 451 0098 9A80     		strh	r2, [r3, #4]	@ movhi
+ 248:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OSMsgPool.NbrUsed--;
+ 452              		.loc 1 248 0
+ 453 009a 074B     		ldr	r3, .L22
+ 454 009c DB88     		ldrh	r3, [r3, #6]
+ 455 009e 013B     		subs	r3, r3, #1
+ 456 00a0 9AB2     		uxth	r2, r3
+ 457 00a2 054B     		ldr	r3, .L22
+ 458 00a4 DA80     		strh	r2, [r3, #6]	@ movhi
+ 249:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 250:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****    *p_err             = OS_ERR_NONE;
+ 459              		.loc 1 250 0
+ 460 00a6 3B68     		ldr	r3, [r7]
+ 461 00a8 0022     		movs	r2, #0
+ 462 00aa 1A80     		strh	r2, [r3]	@ movhi
+ 251:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     return (p_void);
+ 463              		.loc 1 251 0
+ 464 00ac 3B69     		ldr	r3, [r7, #16]
+ 465              	.L18:
+ 252:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** }
+ 466              		.loc 1 252 0
+ 467 00ae 1846     		mov	r0, r3
+ 468 00b0 1C37     		adds	r7, r7, #28
+ 469              		.cfi_def_cfa_offset 4
+ 470 00b2 BD46     		mov	sp, r7
+ 471              		.cfi_def_cfa_register 13
+ 472              		@ sp needed
+ 473 00b4 80BC     		pop	{r7}
+ 474              		.cfi_restore 7
+ 475              		.cfi_def_cfa_offset 0
+ 476 00b6 7047     		bx	lr
+ 477              	.L23:
+ 478              		.align	2
+ 479              	.L22:
+ 480 00b8 00000000 		.word	OSMsgPool
+ 481              		.cfi_endproc
+ 482              	.LFE3:
+ 483              		.size	OS_MsgQGet, .-OS_MsgQGet
+ 484              		.section	.text.OS_MsgQPut,"ax",%progbits
+ 485              		.align	2
+ 486              		.global	OS_MsgQPut
+ 487              		.thumb
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 14
+
+
+ 488              		.thumb_func
+ 489              		.type	OS_MsgQPut, %function
+ 490              	OS_MsgQPut:
+ 491              	.LFB4:
+ 253:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 254:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** /*$PAGE*/
+ 255:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** /*
+ 256:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** ***************************************************************************************************
+ 257:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                                           DEPOSIT MESSAGE IN MESSAGE QUEUE
+ 258:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 259:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Description: This function places a message in a message queue
+ 260:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 261:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Arguments  : p_msg_q     is a pointer to the OS_TCB of the task to post the message to
+ 262:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *              -------
+ 263:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 264:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *              p_void      is a pointer to the message to send.
+ 265:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 266:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *              msg_size    is the size of the message (in bytes)
+ 267:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 268:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *              opt         specifies whether the message will be posted in FIFO or LIFO order
+ 269:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 270:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                              OS_OPT_POST_FIFO
+ 271:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                              OS_OPT_POST_LIFO
+ 272:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 273:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *              ts          is a timestamp as to when the message was posted
+ 274:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 275:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *              p_err       is a pointer to a variable that will contain an error code returned by t
+ 276:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 277:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                              OS_ERR_Q_MAX           if the queue is full
+ 278:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                              OS_ERR_MSG_POOL_EMPTY  if we no longer have any OS_MSG to use
+ 279:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *                              OS_ERR_NONE            the message was deposited in the queue
+ 280:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 281:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Returns    : none
+ 282:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** *
+ 283:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** * Note(s)    : 1) This function is INTERNAL to uC/OS-III and your application MUST NOT call it.
+ 284:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** ***************************************************************************************************
+ 285:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** */
+ 286:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 287:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** void  OS_MsgQPut (OS_MSG_Q     *p_msg_q,
+ 288:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****                   void         *p_void,
+ 289:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****                   OS_MSG_SIZE   msg_size,
+ 290:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****                   OS_OPT        opt,
+ 291:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****                   CPU_TS        ts,
+ 292:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****                   OS_ERR       *p_err)
+ 293:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** {
+ 492              		.loc 1 293 0
+ 493              		.cfi_startproc
+ 494              		@ args = 8, pretend = 0, frame = 24
+ 495              		@ frame_needed = 1, uses_anonymous_args = 0
+ 496              		@ link register save eliminated.
+ 497 0000 80B4     		push	{r7}
+ 498              		.cfi_def_cfa_offset 4
+ 499              		.cfi_offset 7, -4
+ 500 0002 87B0     		sub	sp, sp, #28
+ 501              		.cfi_def_cfa_offset 32
+ 502 0004 00AF     		add	r7, sp, #0
+ 503              		.cfi_def_cfa_register 7
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 15
+
+
+ 504 0006 F860     		str	r0, [r7, #12]
+ 505 0008 B960     		str	r1, [r7, #8]
+ 506 000a 1146     		mov	r1, r2
+ 507 000c 1A46     		mov	r2, r3
+ 508 000e 0B46     		mov	r3, r1	@ movhi
+ 509 0010 FB80     		strh	r3, [r7, #6]	@ movhi
+ 510 0012 1346     		mov	r3, r2	@ movhi
+ 511 0014 BB80     		strh	r3, [r7, #4]	@ movhi
+ 294:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OS_MSG  *p_msg;
+ 295:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OS_MSG  *p_msg_in;
+ 296:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 297:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 298:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 299:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** #ifdef OS_SAFETY_CRITICAL
+ 300:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (p_err == (OS_ERR *)0) {
+ 301:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         OS_SAFETY_CRITICAL_EXCEPTION();
+ 302:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         return;
+ 303:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+ 304:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** #endif
+ 305:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 306:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (p_msg_q->NbrEntries >= p_msg_q->NbrEntriesSize) {
+ 512              		.loc 1 306 0
+ 513 0016 FB68     		ldr	r3, [r7, #12]
+ 514 0018 5A89     		ldrh	r2, [r3, #10]
+ 515 001a FB68     		ldr	r3, [r7, #12]
+ 516 001c 1B89     		ldrh	r3, [r3, #8]
+ 517 001e 9A42     		cmp	r2, r3
+ 518 0020 04D3     		bcc	.L25
+ 307:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****        *p_err = OS_ERR_Q_MAX;                               /* Message queue cannot accept any more
+ 519              		.loc 1 307 0
+ 520 0022 7B6A     		ldr	r3, [r7, #36]
+ 521 0024 46F29352 		movw	r2, #26003
+ 522 0028 1A80     		strh	r2, [r3]	@ movhi
+ 308:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         return;
+ 523              		.loc 1 308 0
+ 524 002a 6BE0     		b	.L24
+ 525              	.L25:
+ 309:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+ 310:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 311:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (OSMsgPool.NbrFree == (OS_MSG_QTY)0) {
+ 526              		.loc 1 311 0
+ 527 002c 374B     		ldr	r3, .L34
+ 528 002e 9B88     		ldrh	r3, [r3, #4]
+ 529 0030 002B     		cmp	r3, #0
+ 530 0032 04D1     		bne	.L27
+ 312:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****        *p_err = OS_ERR_MSG_POOL_EMPTY;                      /* No more OS_MSG to use               
+ 531              		.loc 1 312 0
+ 532 0034 7B6A     		ldr	r3, [r7, #36]
+ 533 0036 45F21D72 		movw	r2, #22301
+ 534 003a 1A80     		strh	r2, [r3]	@ movhi
+ 313:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         return;
+ 535              		.loc 1 313 0
+ 536 003c 62E0     		b	.L24
+ 537              	.L27:
+ 314:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+ 315:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 316:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg             = OSMsgPool.NextPtr;                  /* Remove message control block from fr
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 16
+
+
+ 538              		.loc 1 316 0
+ 539 003e 334B     		ldr	r3, .L34
+ 540 0040 1B68     		ldr	r3, [r3]
+ 541 0042 7B61     		str	r3, [r7, #20]
+ 317:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OSMsgPool.NextPtr = p_msg->NextPtr;
+ 542              		.loc 1 317 0
+ 543 0044 7B69     		ldr	r3, [r7, #20]
+ 544 0046 1B68     		ldr	r3, [r3]
+ 545 0048 304A     		ldr	r2, .L34
+ 546 004a 1360     		str	r3, [r2]
+ 318:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OSMsgPool.NbrFree--;
+ 547              		.loc 1 318 0
+ 548 004c 2F4B     		ldr	r3, .L34
+ 549 004e 9B88     		ldrh	r3, [r3, #4]
+ 550 0050 013B     		subs	r3, r3, #1
+ 551 0052 9AB2     		uxth	r2, r3
+ 552 0054 2D4B     		ldr	r3, .L34
+ 553 0056 9A80     		strh	r2, [r3, #4]	@ movhi
+ 319:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     OSMsgPool.NbrUsed++;
+ 554              		.loc 1 319 0
+ 555 0058 2C4B     		ldr	r3, .L34
+ 556 005a DB88     		ldrh	r3, [r3, #6]
+ 557 005c 0133     		adds	r3, r3, #1
+ 558 005e 9AB2     		uxth	r2, r3
+ 559 0060 2A4B     		ldr	r3, .L34
+ 560 0062 DA80     		strh	r2, [r3, #6]	@ movhi
+ 320:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (OSMsgPool.NbrUsedMax < OSMsgPool.NbrUsed) {
+ 561              		.loc 1 320 0
+ 562 0064 294B     		ldr	r3, .L34
+ 563 0066 1A89     		ldrh	r2, [r3, #8]
+ 564 0068 284B     		ldr	r3, .L34
+ 565 006a DB88     		ldrh	r3, [r3, #6]
+ 566 006c 9A42     		cmp	r2, r3
+ 567 006e 03D2     		bcs	.L28
+ 321:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         OSMsgPool.NbrUsedMax = OSMsgPool.NbrUsed;
+ 568              		.loc 1 321 0
+ 569 0070 264B     		ldr	r3, .L34
+ 570 0072 DA88     		ldrh	r2, [r3, #6]
+ 571 0074 254B     		ldr	r3, .L34
+ 572 0076 1A81     		strh	r2, [r3, #8]	@ movhi
+ 573              	.L28:
+ 322:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+ 323:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** 
+ 324:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (p_msg_q->NbrEntries == (OS_MSG_QTY)0) {             /* Is this first message placed in the 
+ 574              		.loc 1 324 0
+ 575 0078 FB68     		ldr	r3, [r7, #12]
+ 576 007a 5B89     		ldrh	r3, [r3, #10]
+ 577 007c 002B     		cmp	r3, #0
+ 578 007e 0CD1     		bne	.L29
+ 325:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg_q->InPtr         = p_msg;                     /* Yes                                 
+ 579              		.loc 1 325 0
+ 580 0080 FB68     		ldr	r3, [r7, #12]
+ 581 0082 7A69     		ldr	r2, [r7, #20]
+ 582 0084 1A60     		str	r2, [r3]
+ 326:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg_q->OutPtr        = p_msg;
+ 583              		.loc 1 326 0
+ 584 0086 FB68     		ldr	r3, [r7, #12]
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 17
+
+
+ 585 0088 7A69     		ldr	r2, [r7, #20]
+ 586 008a 5A60     		str	r2, [r3, #4]
+ 327:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg_q->NbrEntries    = (OS_MSG_QTY)1;
+ 587              		.loc 1 327 0
+ 588 008c FB68     		ldr	r3, [r7, #12]
+ 589 008e 0122     		movs	r2, #1
+ 590 0090 5A81     		strh	r2, [r3, #10]	@ movhi
+ 328:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg->NextPtr         = (OS_MSG *)0;
+ 591              		.loc 1 328 0
+ 592 0092 7B69     		ldr	r3, [r7, #20]
+ 593 0094 0022     		movs	r2, #0
+ 594 0096 1A60     		str	r2, [r3]
+ 595 0098 1EE0     		b	.L30
+ 596              	.L29:
+ 329:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     } else {                                                /* No                                  
+ 330:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         if ((opt & OS_OPT_POST_LIFO) == OS_OPT_POST_FIFO) { /* Is it FIFO or LIFO?                 
+ 597              		.loc 1 330 0
+ 598 009a BB88     		ldrh	r3, [r7, #4]
+ 599 009c 03F01003 		and	r3, r3, #16
+ 600 00a0 002B     		cmp	r3, #0
+ 601 00a2 0CD1     		bne	.L31
+ 331:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****             p_msg_in           = p_msg_q->InPtr;            /* FIFO, add to the head               
+ 602              		.loc 1 331 0
+ 603 00a4 FB68     		ldr	r3, [r7, #12]
+ 604 00a6 1B68     		ldr	r3, [r3]
+ 605 00a8 3B61     		str	r3, [r7, #16]
+ 332:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****             p_msg_in->NextPtr  = p_msg;
+ 606              		.loc 1 332 0
+ 607 00aa 3B69     		ldr	r3, [r7, #16]
+ 608 00ac 7A69     		ldr	r2, [r7, #20]
+ 609 00ae 1A60     		str	r2, [r3]
+ 333:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****             p_msg_q->InPtr     = p_msg;
+ 610              		.loc 1 333 0
+ 611 00b0 FB68     		ldr	r3, [r7, #12]
+ 612 00b2 7A69     		ldr	r2, [r7, #20]
+ 613 00b4 1A60     		str	r2, [r3]
+ 334:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****             p_msg->NextPtr     = (OS_MSG *)0;
+ 614              		.loc 1 334 0
+ 615 00b6 7B69     		ldr	r3, [r7, #20]
+ 616 00b8 0022     		movs	r2, #0
+ 617 00ba 1A60     		str	r2, [r3]
+ 618 00bc 06E0     		b	.L32
+ 619              	.L31:
+ 335:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         } else {
+ 336:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****             p_msg->NextPtr     = p_msg_q->OutPtr;           /* LIFO, add to the tail               
+ 620              		.loc 1 336 0
+ 621 00be FB68     		ldr	r3, [r7, #12]
+ 622 00c0 5A68     		ldr	r2, [r3, #4]
+ 623 00c2 7B69     		ldr	r3, [r7, #20]
+ 624 00c4 1A60     		str	r2, [r3]
+ 337:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****             p_msg_q->OutPtr    = p_msg;
+ 625              		.loc 1 337 0
+ 626 00c6 FB68     		ldr	r3, [r7, #12]
+ 627 00c8 7A69     		ldr	r2, [r7, #20]
+ 628 00ca 5A60     		str	r2, [r3, #4]
+ 629              	.L32:
+ 338:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         }
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 18
+
+
+ 339:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg_q->NbrEntries++;
+ 630              		.loc 1 339 0
+ 631 00cc FB68     		ldr	r3, [r7, #12]
+ 632 00ce 5B89     		ldrh	r3, [r3, #10]
+ 633 00d0 0133     		adds	r3, r3, #1
+ 634 00d2 9AB2     		uxth	r2, r3
+ 635 00d4 FB68     		ldr	r3, [r7, #12]
+ 636 00d6 5A81     		strh	r2, [r3, #10]	@ movhi
+ 637              	.L30:
+ 340:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+ 341:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     if (p_msg_q->NbrEntriesMax < p_msg_q->NbrEntries) {
+ 638              		.loc 1 341 0
+ 639 00d8 FB68     		ldr	r3, [r7, #12]
+ 640 00da 9A89     		ldrh	r2, [r3, #12]
+ 641 00dc FB68     		ldr	r3, [r7, #12]
+ 642 00de 5B89     		ldrh	r3, [r3, #10]
+ 643 00e0 9A42     		cmp	r2, r3
+ 644 00e2 03D2     		bcs	.L33
+ 342:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****         p_msg_q->NbrEntriesMax = p_msg_q->NbrEntries;
+ 645              		.loc 1 342 0
+ 646 00e4 FB68     		ldr	r3, [r7, #12]
+ 647 00e6 5A89     		ldrh	r2, [r3, #10]
+ 648 00e8 FB68     		ldr	r3, [r7, #12]
+ 649 00ea 9A81     		strh	r2, [r3, #12]	@ movhi
+ 650              	.L33:
+ 343:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     }
+ 344:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg->MsgPtr  = p_void;                                /* Deposit message in the message queue
+ 651              		.loc 1 344 0
+ 652 00ec 7B69     		ldr	r3, [r7, #20]
+ 653 00ee BA68     		ldr	r2, [r7, #8]
+ 654 00f0 5A60     		str	r2, [r3, #4]
+ 345:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg->MsgSize = msg_size;
+ 655              		.loc 1 345 0
+ 656 00f2 7B69     		ldr	r3, [r7, #20]
+ 657 00f4 FA88     		ldrh	r2, [r7, #6]	@ movhi
+ 658 00f6 1A81     		strh	r2, [r3, #8]	@ movhi
+ 346:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****     p_msg->MsgTS   = ts;
+ 659              		.loc 1 346 0
+ 660 00f8 7B69     		ldr	r3, [r7, #20]
+ 661 00fa 3A6A     		ldr	r2, [r7, #32]
+ 662 00fc DA60     		str	r2, [r3, #12]
+ 347:..\..\..\..\..\..\uCOS-III\Source/os_msg.c ****    *p_err          = OS_ERR_NONE;
+ 663              		.loc 1 347 0
+ 664 00fe 7B6A     		ldr	r3, [r7, #36]
+ 665 0100 0022     		movs	r2, #0
+ 666 0102 1A80     		strh	r2, [r3]	@ movhi
+ 667              	.L24:
+ 348:..\..\..\..\..\..\uCOS-III\Source/os_msg.c **** }
+ 668              		.loc 1 348 0
+ 669 0104 1C37     		adds	r7, r7, #28
+ 670              		.cfi_def_cfa_offset 4
+ 671 0106 BD46     		mov	sp, r7
+ 672              		.cfi_def_cfa_register 13
+ 673              		@ sp needed
+ 674 0108 80BC     		pop	{r7}
+ 675              		.cfi_restore 7
+ 676              		.cfi_def_cfa_offset 0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 19
+
+
+ 677 010a 7047     		bx	lr
+ 678              	.L35:
+ 679              		.align	2
+ 680              	.L34:
+ 681 010c 00000000 		.word	OSMsgPool
+ 682              		.cfi_endproc
+ 683              	.LFE4:
+ 684              		.size	OS_MsgQPut, .-OS_MsgQPut
+ 685              		.text
+ 686              	.Letext0:
+ 687              		.file 2 "..\\..\\..\\..\\..\\..\\uC-CPU\\ARM-Cortex-M3\\GNU/cpu.h"
+ 688              		.file 3 "..\\..\\..\\..\\..\\..\\uC-CPU/cpu_core.h"
+ 689              		.file 4 "..\\..\\..\\..\\..\\..\\uCOS-III\\Source/os_type.h"
+ 690              		.file 5 "..\\..\\..\\..\\..\\..\\uCOS-III\\Source/os.h"
+ 691              		.section	.debug_info,"",%progbits
+ 692              	.Ldebug_info0:
+ 693 0000 58080000 		.4byte	0x858
+ 694 0004 0400     		.2byte	0x4
+ 695 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 696 000a 04       		.byte	0x4
+ 697 000b 01       		.uleb128 0x1
+ 698 000c 7B020000 		.4byte	.LASF218
+ 699 0010 0C       		.byte	0xc
+ 700 0011 950C0000 		.4byte	.LASF219
+ 701 0015 74060000 		.4byte	.LASF220
+ 702 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 703 001d 00000000 		.4byte	0
+ 704 0021 00000000 		.4byte	.Ldebug_line0
+ 705 0025 02       		.uleb128 0x2
+ 706 0026 01       		.byte	0x1
+ 707 0027 08       		.byte	0x8
+ 708 0028 DF070000 		.4byte	.LASF0
+ 709 002c 02       		.uleb128 0x2
+ 710 002d 01       		.byte	0x1
+ 711 002e 08       		.byte	0x8
+ 712 002f EB0C0000 		.4byte	.LASF1
+ 713 0033 02       		.uleb128 0x2
+ 714 0034 01       		.byte	0x1
+ 715 0035 06       		.byte	0x6
+ 716 0036 E80D0000 		.4byte	.LASF2
+ 717 003a 03       		.uleb128 0x3
+ 718 003b F1080000 		.4byte	.LASF5
+ 719 003f 02       		.byte	0x2
+ 720 0040 7A       		.byte	0x7a
+ 721 0041 45000000 		.4byte	0x45
+ 722 0045 02       		.uleb128 0x2
+ 723 0046 02       		.byte	0x2
+ 724 0047 07       		.byte	0x7
+ 725 0048 0E0E0000 		.4byte	.LASF3
+ 726 004c 02       		.uleb128 0x2
+ 727 004d 02       		.byte	0x2
+ 728 004e 05       		.byte	0x5
+ 729 004f 360B0000 		.4byte	.LASF4
+ 730 0053 03       		.uleb128 0x3
+ 731 0054 A2010000 		.4byte	.LASF6
+ 732 0058 02       		.byte	0x2
+ 733 0059 7C       		.byte	0x7c
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 20
+
+
+ 734 005a 5E000000 		.4byte	0x5e
+ 735 005e 02       		.uleb128 0x2
+ 736 005f 04       		.byte	0x4
+ 737 0060 07       		.byte	0x7
+ 738 0061 F90B0000 		.4byte	.LASF7
+ 739 0065 04       		.uleb128 0x4
+ 740 0066 04       		.byte	0x4
+ 741 0067 05       		.byte	0x5
+ 742 0068 696E7400 		.ascii	"int\000"
+ 743 006c 02       		.uleb128 0x2
+ 744 006d 08       		.byte	0x8
+ 745 006e 07       		.byte	0x7
+ 746 006f 0C050000 		.4byte	.LASF8
+ 747 0073 02       		.uleb128 0x2
+ 748 0074 08       		.byte	0x8
+ 749 0075 05       		.byte	0x5
+ 750 0076 86080000 		.4byte	.LASF9
+ 751 007a 02       		.uleb128 0x2
+ 752 007b 04       		.byte	0x4
+ 753 007c 04       		.byte	0x4
+ 754 007d 7E040000 		.4byte	.LASF10
+ 755 0081 02       		.uleb128 0x2
+ 756 0082 08       		.byte	0x8
+ 757 0083 04       		.byte	0x4
+ 758 0084 870E0000 		.4byte	.LASF11
+ 759 0088 05       		.uleb128 0x5
+ 760 0089 04       		.byte	0x4
+ 761 008a 03       		.uleb128 0x3
+ 762 008b A5090000 		.4byte	.LASF12
+ 763 008f 03       		.byte	0x3
+ 764 0090 C4       		.byte	0xc4
+ 765 0091 53000000 		.4byte	0x53
+ 766 0095 03       		.uleb128 0x3
+ 767 0096 7F080000 		.4byte	.LASF13
+ 768 009a 03       		.byte	0x3
+ 769 009b C7       		.byte	0xc7
+ 770 009c 8A000000 		.4byte	0x8a
+ 771 00a0 03       		.uleb128 0x3
+ 772 00a1 05070000 		.4byte	.LASF14
+ 773 00a5 04       		.byte	0x4
+ 774 00a6 3F       		.byte	0x3f
+ 775 00a7 3A000000 		.4byte	0x3a
+ 776 00ab 03       		.uleb128 0x3
+ 777 00ac 39060000 		.4byte	.LASF15
+ 778 00b0 04       		.byte	0x4
+ 779 00b1 40       		.byte	0x40
+ 780 00b2 3A000000 		.4byte	0x3a
+ 781 00b6 03       		.uleb128 0x3
+ 782 00b7 1E0D0000 		.4byte	.LASF16
+ 783 00bb 04       		.byte	0x4
+ 784 00bc 47       		.byte	0x47
+ 785 00bd 3A000000 		.4byte	0x3a
+ 786 00c1 06       		.uleb128 0x6
+ 787 00c2 4F010000 		.4byte	.LASF221
+ 788 00c6 02       		.byte	0x2
+ 789 00c7 45000000 		.4byte	0x45
+ 790 00cb 05       		.byte	0x5
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 21
+
+
+ 791 00cc A501     		.2byte	0x1a5
+ 792 00ce 39050000 		.4byte	0x539
+ 793 00d2 07       		.uleb128 0x7
+ 794 00d3 4A0E0000 		.4byte	.LASF17
+ 795 00d7 00       		.byte	0
+ 796 00d8 08       		.uleb128 0x8
+ 797 00d9 5D000000 		.4byte	.LASF18
+ 798 00dd 1027     		.2byte	0x2710
+ 799 00df 08       		.uleb128 0x8
+ 800 00e0 58030000 		.4byte	.LASF19
+ 801 00e4 1127     		.2byte	0x2711
+ 802 00e6 08       		.uleb128 0x8
+ 803 00e7 66000000 		.4byte	.LASF20
+ 804 00eb F82A     		.2byte	0x2af8
+ 805 00ed 08       		.uleb128 0x8
+ 806 00ee 6F000000 		.4byte	.LASF21
+ 807 00f2 E02E     		.2byte	0x2ee0
+ 808 00f4 08       		.uleb128 0x8
+ 809 00f5 73010000 		.4byte	.LASF22
+ 810 00f9 E12E     		.2byte	0x2ee1
+ 811 00fb 08       		.uleb128 0x8
+ 812 00fc 78000000 		.4byte	.LASF23
+ 813 0100 C832     		.2byte	0x32c8
+ 814 0102 08       		.uleb128 0x8
+ 815 0103 C3070000 		.4byte	.LASF24
+ 816 0107 C932     		.2byte	0x32c9
+ 817 0109 08       		.uleb128 0x8
+ 818 010a 81000000 		.4byte	.LASF25
+ 819 010e B036     		.2byte	0x36b0
+ 820 0110 08       		.uleb128 0x8
+ 821 0111 8A000000 		.4byte	.LASF26
+ 822 0115 983A     		.2byte	0x3a98
+ 823 0117 08       		.uleb128 0x8
+ 824 0118 FA0D0000 		.4byte	.LASF27
+ 825 011c 993A     		.2byte	0x3a99
+ 826 011e 08       		.uleb128 0x8
+ 827 011f 5E070000 		.4byte	.LASF28
+ 828 0123 FD3A     		.2byte	0x3afd
+ 829 0125 08       		.uleb128 0x8
+ 830 0126 3E0C0000 		.4byte	.LASF29
+ 831 012a FE3A     		.2byte	0x3afe
+ 832 012c 08       		.uleb128 0x8
+ 833 012d 94080000 		.4byte	.LASF30
+ 834 0131 FF3A     		.2byte	0x3aff
+ 835 0133 08       		.uleb128 0x8
+ 836 0134 760E0000 		.4byte	.LASF31
+ 837 0138 003B     		.2byte	0x3b00
+ 838 013a 08       		.uleb128 0x8
+ 839 013b 93000000 		.4byte	.LASF32
+ 840 013f 803E     		.2byte	0x3e80
+ 841 0141 08       		.uleb128 0x8
+ 842 0142 9C000000 		.4byte	.LASF33
+ 843 0146 6842     		.2byte	0x4268
+ 844 0148 08       		.uleb128 0x8
+ 845 0149 A5000000 		.4byte	.LASF34
+ 846 014d 5046     		.2byte	0x4650
+ 847 014f 08       		.uleb128 0x8
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 22
+
+
+ 848 0150 00040000 		.4byte	.LASF35
+ 849 0154 5146     		.2byte	0x4651
+ 850 0156 08       		.uleb128 0x8
+ 851 0157 37030000 		.4byte	.LASF36
+ 852 015b 5246     		.2byte	0x4652
+ 853 015d 08       		.uleb128 0x8
+ 854 015e E3030000 		.4byte	.LASF37
+ 855 0162 5346     		.2byte	0x4653
+ 856 0164 08       		.uleb128 0x8
+ 857 0165 61010000 		.4byte	.LASF38
+ 858 0169 5446     		.2byte	0x4654
+ 859 016b 08       		.uleb128 0x8
+ 860 016c 9B0D0000 		.4byte	.LASF39
+ 861 0170 5546     		.2byte	0x4655
+ 862 0172 08       		.uleb128 0x8
+ 863 0173 350A0000 		.4byte	.LASF40
+ 864 0177 5646     		.2byte	0x4656
+ 865 0179 08       		.uleb128 0x8
+ 866 017a AE000000 		.4byte	.LASF41
+ 867 017e 384A     		.2byte	0x4a38
+ 868 0180 08       		.uleb128 0x8
+ 869 0181 B7000000 		.4byte	.LASF42
+ 870 0185 204E     		.2byte	0x4e20
+ 871 0187 08       		.uleb128 0x8
+ 872 0188 C0000000 		.4byte	.LASF43
+ 873 018c 0852     		.2byte	0x5208
+ 874 018e 08       		.uleb128 0x8
+ 875 018f 1E0B0000 		.4byte	.LASF44
+ 876 0193 0952     		.2byte	0x5209
+ 877 0195 08       		.uleb128 0x8
+ 878 0196 C9000000 		.4byte	.LASF45
+ 879 019a F055     		.2byte	0x55f0
+ 880 019c 08       		.uleb128 0x8
+ 881 019d 300D0000 		.4byte	.LASF46
+ 882 01a1 B956     		.2byte	0x56b9
+ 883 01a3 08       		.uleb128 0x8
+ 884 01a4 64090000 		.4byte	.LASF47
+ 885 01a8 BA56     		.2byte	0x56ba
+ 886 01aa 08       		.uleb128 0x8
+ 887 01ab 040B0000 		.4byte	.LASF48
+ 888 01af BB56     		.2byte	0x56bb
+ 889 01b1 08       		.uleb128 0x8
+ 890 01b2 77070000 		.4byte	.LASF49
+ 891 01b6 BC56     		.2byte	0x56bc
+ 892 01b8 08       		.uleb128 0x8
+ 893 01b9 22090000 		.4byte	.LASF50
+ 894 01bd BD56     		.2byte	0x56bd
+ 895 01bf 08       		.uleb128 0x8
+ 896 01c0 EB0A0000 		.4byte	.LASF51
+ 897 01c4 BE56     		.2byte	0x56be
+ 898 01c6 08       		.uleb128 0x8
+ 899 01c7 8C090000 		.4byte	.LASF52
+ 900 01cb BF56     		.2byte	0x56bf
+ 901 01cd 08       		.uleb128 0x8
+ 902 01ce B1040000 		.4byte	.LASF53
+ 903 01d2 C056     		.2byte	0x56c0
+ 904 01d4 08       		.uleb128 0x8
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 23
+
+
+ 905 01d5 E20E0000 		.4byte	.LASF54
+ 906 01d9 C156     		.2byte	0x56c1
+ 907 01db 08       		.uleb128 0x8
+ 908 01dc A50F0000 		.4byte	.LASF55
+ 909 01e0 C256     		.2byte	0x56c2
+ 910 01e2 08       		.uleb128 0x8
+ 911 01e3 400B0000 		.4byte	.LASF56
+ 912 01e7 1D57     		.2byte	0x571d
+ 913 01e9 08       		.uleb128 0x8
+ 914 01ea 860B0000 		.4byte	.LASF57
+ 915 01ee 1E57     		.2byte	0x571e
+ 916 01f0 08       		.uleb128 0x8
+ 917 01f1 22060000 		.4byte	.LASF58
+ 918 01f5 8157     		.2byte	0x5781
+ 919 01f7 08       		.uleb128 0x8
+ 920 01f8 0E0C0000 		.4byte	.LASF59
+ 921 01fc 8257     		.2byte	0x5782
+ 922 01fe 08       		.uleb128 0x8
+ 923 01ff 82030000 		.4byte	.LASF60
+ 924 0203 8357     		.2byte	0x5783
+ 925 0205 08       		.uleb128 0x8
+ 926 0206 D2000000 		.4byte	.LASF61
+ 927 020a D859     		.2byte	0x59d8
+ 928 020c 08       		.uleb128 0x8
+ 929 020d F2050000 		.4byte	.LASF62
+ 930 0211 D959     		.2byte	0x59d9
+ 931 0213 08       		.uleb128 0x8
+ 932 0214 99040000 		.4byte	.LASF63
+ 933 0218 DA59     		.2byte	0x59da
+ 934 021a 08       		.uleb128 0x8
+ 935 021b DB000000 		.4byte	.LASF64
+ 936 021f C05D     		.2byte	0x5dc0
+ 937 0221 08       		.uleb128 0x8
+ 938 0222 B0030000 		.4byte	.LASF65
+ 939 0226 C15D     		.2byte	0x5dc1
+ 940 0228 08       		.uleb128 0x8
+ 941 0229 70080000 		.4byte	.LASF66
+ 942 022d C25D     		.2byte	0x5dc2
+ 943 022f 08       		.uleb128 0x8
+ 944 0230 3A090000 		.4byte	.LASF67
+ 945 0234 C35D     		.2byte	0x5dc3
+ 946 0236 08       		.uleb128 0x8
+ 947 0237 B70B0000 		.4byte	.LASF68
+ 948 023b C45D     		.2byte	0x5dc4
+ 949 023d 08       		.uleb128 0x8
+ 950 023e F6070000 		.4byte	.LASF69
+ 951 0242 255E     		.2byte	0x5e25
+ 952 0244 08       		.uleb128 0x8
+ 953 0245 AC0A0000 		.4byte	.LASF70
+ 954 0249 895E     		.2byte	0x5e89
+ 955 024b 08       		.uleb128 0x8
+ 956 024c 10070000 		.4byte	.LASF71
+ 957 0250 8A5E     		.2byte	0x5e8a
+ 958 0252 08       		.uleb128 0x8
+ 959 0253 E4000000 		.4byte	.LASF72
+ 960 0257 A861     		.2byte	0x61a8
+ 961 0259 08       		.uleb128 0x8
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 24
+
+
+ 962 025a 8E0E0000 		.4byte	.LASF73
+ 963 025e A961     		.2byte	0x61a9
+ 964 0260 08       		.uleb128 0x8
+ 965 0261 5B0C0000 		.4byte	.LASF74
+ 966 0265 AA61     		.2byte	0x61aa
+ 967 0267 08       		.uleb128 0x8
+ 968 0268 E20B0000 		.4byte	.LASF75
+ 969 026c AB61     		.2byte	0x61ab
+ 970 026e 08       		.uleb128 0x8
+ 971 026f DA080000 		.4byte	.LASF76
+ 972 0273 AC61     		.2byte	0x61ac
+ 973 0275 08       		.uleb128 0x8
+ 974 0276 C40E0000 		.4byte	.LASF77
+ 975 027a AD61     		.2byte	0x61ad
+ 976 027c 08       		.uleb128 0x8
+ 977 027d 6D0D0000 		.4byte	.LASF78
+ 978 0281 AE61     		.2byte	0x61ae
+ 979 0283 08       		.uleb128 0x8
+ 980 0284 44020000 		.4byte	.LASF79
+ 981 0288 AF61     		.2byte	0x61af
+ 982 028a 08       		.uleb128 0x8
+ 983 028b E6010000 		.4byte	.LASF80
+ 984 028f B061     		.2byte	0x61b0
+ 985 0291 08       		.uleb128 0x8
+ 986 0292 84040000 		.4byte	.LASF81
+ 987 0296 0D62     		.2byte	0x620d
+ 988 0298 08       		.uleb128 0x8
+ 989 0299 710C0000 		.4byte	.LASF82
+ 990 029d 0E62     		.2byte	0x620e
+ 991 029f 08       		.uleb128 0x8
+ 992 02a0 930F0000 		.4byte	.LASF83
+ 993 02a4 7162     		.2byte	0x6271
+ 994 02a6 08       		.uleb128 0x8
+ 995 02a7 B80E0000 		.4byte	.LASF84
+ 996 02ab 7262     		.2byte	0x6272
+ 997 02ad 08       		.uleb128 0x8
+ 998 02ae 00000000 		.4byte	.LASF85
+ 999 02b2 7362     		.2byte	0x6273
+ 1000 02b4 08       		.uleb128 0x8
+ 1001 02b5 7C0A0000 		.4byte	.LASF86
+ 1002 02b9 D562     		.2byte	0x62d5
+ 1003 02bb 08       		.uleb128 0x8
+ 1004 02bc ED000000 		.4byte	.LASF87
+ 1005 02c0 9065     		.2byte	0x6590
+ 1006 02c2 08       		.uleb128 0x8
+ 1007 02c3 8D0D0000 		.4byte	.LASF88
+ 1008 02c7 9165     		.2byte	0x6591
+ 1009 02c9 08       		.uleb128 0x8
+ 1010 02ca C2050000 		.4byte	.LASF89
+ 1011 02ce 9265     		.2byte	0x6592
+ 1012 02d0 08       		.uleb128 0x8
+ 1013 02d1 D2070000 		.4byte	.LASF90
+ 1014 02d5 9365     		.2byte	0x6593
+ 1015 02d7 08       		.uleb128 0x8
+ 1016 02d8 CC080000 		.4byte	.LASF91
+ 1017 02dc 9465     		.2byte	0x6594
+ 1018 02de 08       		.uleb128 0x8
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 25
+
+
+ 1019 02df F6000000 		.4byte	.LASF92
+ 1020 02e3 7869     		.2byte	0x6978
+ 1021 02e5 08       		.uleb128 0x8
+ 1022 02e6 4E090000 		.4byte	.LASF93
+ 1023 02ea 7969     		.2byte	0x6979
+ 1024 02ec 08       		.uleb128 0x8
+ 1025 02ed D60A0000 		.4byte	.LASF94
+ 1026 02f1 7A69     		.2byte	0x697a
+ 1027 02f3 08       		.uleb128 0x8
+ 1028 02f4 FC080000 		.4byte	.LASF95
+ 1029 02f8 7B69     		.2byte	0x697b
+ 1030 02fa 08       		.uleb128 0x8
+ 1031 02fb FF000000 		.4byte	.LASF96
+ 1032 02ff 606D     		.2byte	0x6d60
+ 1033 0301 08       		.uleb128 0x8
+ 1034 0302 09080000 		.4byte	.LASF97
+ 1035 0306 616D     		.2byte	0x6d61
+ 1036 0308 08       		.uleb128 0x8
+ 1037 0309 AD070000 		.4byte	.LASF98
+ 1038 030d 626D     		.2byte	0x6d62
+ 1039 030f 08       		.uleb128 0x8
+ 1040 0310 620E0000 		.4byte	.LASF99
+ 1041 0314 636D     		.2byte	0x6d63
+ 1042 0316 08       		.uleb128 0x8
+ 1043 0317 A00E0000 		.4byte	.LASF100
+ 1044 031b 646D     		.2byte	0x6d64
+ 1045 031d 08       		.uleb128 0x8
+ 1046 031e 560B0000 		.4byte	.LASF101
+ 1047 0322 656D     		.2byte	0x6d65
+ 1048 0324 08       		.uleb128 0x8
+ 1049 0325 270F0000 		.4byte	.LASF102
+ 1050 0329 C56D     		.2byte	0x6dc5
+ 1051 032b 08       		.uleb128 0x8
+ 1052 032c 100F0000 		.4byte	.LASF103
+ 1053 0330 C66D     		.2byte	0x6dc6
+ 1054 0332 08       		.uleb128 0x8
+ 1055 0333 23020000 		.4byte	.LASF104
+ 1056 0337 296E     		.2byte	0x6e29
+ 1057 0339 08       		.uleb128 0x8
+ 1058 033a 29080000 		.4byte	.LASF105
+ 1059 033e 2A6E     		.2byte	0x6e2a
+ 1060 0340 08       		.uleb128 0x8
+ 1061 0341 46070000 		.4byte	.LASF106
+ 1062 0345 2B6E     		.2byte	0x6e2b
+ 1063 0347 08       		.uleb128 0x8
+ 1064 0348 210C0000 		.4byte	.LASF107
+ 1065 034c 2C6E     		.2byte	0x6e2c
+ 1066 034e 08       		.uleb128 0x8
+ 1067 034f 8F0A0000 		.4byte	.LASF108
+ 1068 0353 2D6E     		.2byte	0x6e2d
+ 1069 0355 08       		.uleb128 0x8
+ 1070 0356 4E0D0000 		.4byte	.LASF109
+ 1071 035a 2E6E     		.2byte	0x6e2e
+ 1072 035c 08       		.uleb128 0x8
+ 1073 035d BC010000 		.4byte	.LASF110
+ 1074 0361 2F6E     		.2byte	0x6e2f
+ 1075 0363 08       		.uleb128 0x8
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 26
+
+
+ 1076 0364 C00C0000 		.4byte	.LASF111
+ 1077 0368 306E     		.2byte	0x6e30
+ 1078 036a 08       		.uleb128 0x8
+ 1079 036b 65040000 		.4byte	.LASF112
+ 1080 036f 316E     		.2byte	0x6e31
+ 1081 0371 08       		.uleb128 0x8
+ 1082 0372 08010000 		.4byte	.LASF113
+ 1083 0376 4871     		.2byte	0x7148
+ 1084 0378 08       		.uleb128 0x8
+ 1085 0379 FE010000 		.4byte	.LASF114
+ 1086 037d 4971     		.2byte	0x7149
+ 1087 037f 08       		.uleb128 0x8
+ 1088 0380 EE060000 		.4byte	.LASF115
+ 1089 0384 4A71     		.2byte	0x714a
+ 1090 0386 08       		.uleb128 0x8
+ 1091 0387 D00D0000 		.4byte	.LASF116
+ 1092 038b 4B71     		.2byte	0x714b
+ 1093 038d 08       		.uleb128 0x8
+ 1094 038e 360F0000 		.4byte	.LASF117
+ 1095 0392 4C71     		.2byte	0x714c
+ 1096 0394 08       		.uleb128 0x8
+ 1097 0395 6A050000 		.4byte	.LASF118
+ 1098 0399 4D71     		.2byte	0x714d
+ 1099 039b 08       		.uleb128 0x8
+ 1100 039c 680A0000 		.4byte	.LASF119
+ 1101 03a0 4E71     		.2byte	0x714e
+ 1102 03a2 08       		.uleb128 0x8
+ 1103 03a3 EB090000 		.4byte	.LASF120
+ 1104 03a7 4F71     		.2byte	0x714f
+ 1105 03a9 08       		.uleb128 0x8
+ 1106 03aa 74090000 		.4byte	.LASF121
+ 1107 03ae 5071     		.2byte	0x7150
+ 1108 03b0 08       		.uleb128 0x8
+ 1109 03b1 23030000 		.4byte	.LASF122
+ 1110 03b5 5171     		.2byte	0x7151
+ 1111 03b7 08       		.uleb128 0x8
+ 1112 03b8 D5090000 		.4byte	.LASF123
+ 1113 03bc 5271     		.2byte	0x7152
+ 1114 03be 08       		.uleb128 0x8
+ 1115 03bf 09030000 		.4byte	.LASF124
+ 1116 03c3 5371     		.2byte	0x7153
+ 1117 03c5 08       		.uleb128 0x8
+ 1118 03c6 F90C0000 		.4byte	.LASF125
+ 1119 03ca 5471     		.2byte	0x7154
+ 1120 03cc 08       		.uleb128 0x8
+ 1121 03cd CF010000 		.4byte	.LASF126
+ 1122 03d1 5571     		.2byte	0x7155
+ 1123 03d3 08       		.uleb128 0x8
+ 1124 03d4 4D040000 		.4byte	.LASF127
+ 1125 03d8 5671     		.2byte	0x7156
+ 1126 03da 08       		.uleb128 0x8
+ 1127 03db 9F0B0000 		.4byte	.LASF128
+ 1128 03df 5771     		.2byte	0x7157
+ 1129 03e1 08       		.uleb128 0x8
+ 1130 03e2 23050000 		.4byte	.LASF129
+ 1131 03e6 5871     		.2byte	0x7158
+ 1132 03e8 08       		.uleb128 0x8
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 27
+
+
+ 1133 03e9 57020000 		.4byte	.LASF130
+ 1134 03ed 5971     		.2byte	0x7159
+ 1135 03ef 08       		.uleb128 0x8
+ 1136 03f0 FA0E0000 		.4byte	.LASF131
+ 1137 03f4 5A71     		.2byte	0x715a
+ 1138 03f6 08       		.uleb128 0x8
+ 1139 03f7 CA030000 		.4byte	.LASF132
+ 1140 03fb 5B71     		.2byte	0x715b
+ 1141 03fd 08       		.uleb128 0x8
+ 1142 03fe 4A050000 		.4byte	.LASF133
+ 1143 0402 5C71     		.2byte	0x715c
+ 1144 0404 08       		.uleb128 0x8
+ 1145 0405 6A030000 		.4byte	.LASF134
+ 1146 0409 5D71     		.2byte	0x715d
+ 1147 040b 08       		.uleb128 0x8
+ 1148 040c 1C0A0000 		.4byte	.LASF135
+ 1149 0410 5E71     		.2byte	0x715e
+ 1150 0412 08       		.uleb128 0x8
+ 1151 0413 44030000 		.4byte	.LASF136
+ 1152 0417 5F71     		.2byte	0x715f
+ 1153 0419 08       		.uleb128 0x8
+ 1154 041a AF050000 		.4byte	.LASF137
+ 1155 041e AD71     		.2byte	0x71ad
+ 1156 0420 08       		.uleb128 0x8
+ 1157 0421 F6040000 		.4byte	.LASF138
+ 1158 0425 C071     		.2byte	0x71c0
+ 1159 0427 08       		.uleb128 0x8
+ 1160 0428 530A0000 		.4byte	.LASF139
+ 1161 042c C171     		.2byte	0x71c1
+ 1162 042e 08       		.uleb128 0x8
+ 1163 042f 310E0000 		.4byte	.LASF140
+ 1164 0433 C271     		.2byte	0x71c2
+ 1165 0435 08       		.uleb128 0x8
+ 1166 0436 E4070000 		.4byte	.LASF141
+ 1167 043a C371     		.2byte	0x71c3
+ 1168 043c 08       		.uleb128 0x8
+ 1169 043d 05060000 		.4byte	.LASF142
+ 1170 0441 C471     		.2byte	0x71c4
+ 1171 0443 08       		.uleb128 0x8
+ 1172 0444 7A0F0000 		.4byte	.LASF143
+ 1173 0448 1172     		.2byte	0x7211
+ 1174 044a 08       		.uleb128 0x8
+ 1175 044b 6E0B0000 		.4byte	.LASF144
+ 1176 044f 1272     		.2byte	0x7212
+ 1177 0451 08       		.uleb128 0x8
+ 1178 0452 85010000 		.4byte	.LASF145
+ 1179 0456 1372     		.2byte	0x7213
+ 1180 0458 08       		.uleb128 0x8
+ 1181 0459 1B000000 		.4byte	.LASF146
+ 1182 045d 1472     		.2byte	0x7214
+ 1183 045f 08       		.uleb128 0x8
+ 1184 0460 810C0000 		.4byte	.LASF147
+ 1185 0464 7572     		.2byte	0x7275
+ 1186 0466 08       		.uleb128 0x8
+ 1187 0467 5F0F0000 		.4byte	.LASF148
+ 1188 046b 7672     		.2byte	0x7276
+ 1189 046d 08       		.uleb128 0x8
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 28
+
+
+ 1190 046e 4B0F0000 		.4byte	.LASF149
+ 1191 0472 7772     		.2byte	0x7277
+ 1192 0474 08       		.uleb128 0x8
+ 1193 0475 45060000 		.4byte	.LASF150
+ 1194 0479 7872     		.2byte	0x7278
+ 1195 047b 08       		.uleb128 0x8
+ 1196 047c 41000000 		.4byte	.LASF151
+ 1197 0480 7972     		.2byte	0x7279
+ 1198 0482 08       		.uleb128 0x8
+ 1199 0483 B40D0000 		.4byte	.LASF152
+ 1200 0487 7A72     		.2byte	0x727a
+ 1201 0489 08       		.uleb128 0x8
+ 1202 048a D1050000 		.4byte	.LASF153
+ 1203 048e 7B72     		.2byte	0x727b
+ 1204 0490 08       		.uleb128 0x8
+ 1205 0491 42080000 		.4byte	.LASF154
+ 1206 0495 7C72     		.2byte	0x727c
+ 1207 0497 08       		.uleb128 0x8
+ 1208 0498 C20A0000 		.4byte	.LASF155
+ 1209 049c 7D72     		.2byte	0x727d
+ 1210 049e 08       		.uleb128 0x8
+ 1211 049f 31070000 		.4byte	.LASF156
+ 1212 04a3 7E72     		.2byte	0x727e
+ 1213 04a5 08       		.uleb128 0x8
+ 1214 04a6 090D0000 		.4byte	.LASF157
+ 1215 04aa D972     		.2byte	0x72d9
+ 1216 04ac 08       		.uleb128 0x8
+ 1217 04ad E2040000 		.4byte	.LASF158
+ 1218 04b1 3D73     		.2byte	0x733d
+ 1219 04b3 08       		.uleb128 0x8
+ 1220 04b4 95070000 		.4byte	.LASF159
+ 1221 04b8 3E73     		.2byte	0x733e
+ 1222 04ba 08       		.uleb128 0x8
+ 1223 04bb 1F040000 		.4byte	.LASF160
+ 1224 04bf 3F73     		.2byte	0x733f
+ 1225 04c1 08       		.uleb128 0x8
+ 1226 04c2 35010000 		.4byte	.LASF161
+ 1227 04c6 4073     		.2byte	0x7340
+ 1228 04c8 08       		.uleb128 0x8
+ 1229 04c9 97030000 		.4byte	.LASF162
+ 1230 04cd 4173     		.2byte	0x7341
+ 1231 04cf 08       		.uleb128 0x8
+ 1232 04d0 37050000 		.4byte	.LASF163
+ 1233 04d4 4273     		.2byte	0x7342
+ 1234 04d6 08       		.uleb128 0x8
+ 1235 04d7 32000000 		.4byte	.LASF164
+ 1236 04db 4373     		.2byte	0x7343
+ 1237 04dd 08       		.uleb128 0x8
+ 1238 04de CB040000 		.4byte	.LASF165
+ 1239 04e2 4473     		.2byte	0x7344
+ 1240 04e4 08       		.uleb128 0x8
+ 1241 04e5 5F060000 		.4byte	.LASF166
+ 1242 04e9 4573     		.2byte	0x7345
+ 1243 04eb 08       		.uleb128 0x8
+ 1244 04ec FF090000 		.4byte	.LASF167
+ 1245 04f0 4673     		.2byte	0x7346
+ 1246 04f2 08       		.uleb128 0x8
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 29
+
+
+ 1247 04f3 82050000 		.4byte	.LASF168
+ 1248 04f7 4773     		.2byte	0x7347
+ 1249 04f9 08       		.uleb128 0x8
+ 1250 04fa B9090000 		.4byte	.LASF169
+ 1251 04fe 4873     		.2byte	0x7348
+ 1252 0500 08       		.uleb128 0x8
+ 1253 0501 D80C0000 		.4byte	.LASF170
+ 1254 0505 4973     		.2byte	0x7349
+ 1255 0507 08       		.uleb128 0x8
+ 1256 0508 11010000 		.4byte	.LASF171
+ 1257 050c 3075     		.2byte	0x7530
+ 1258 050e 08       		.uleb128 0x8
+ 1259 050f 1A010000 		.4byte	.LASF172
+ 1260 0513 1879     		.2byte	0x7918
+ 1261 0515 08       		.uleb128 0x8
+ 1262 0516 23010000 		.4byte	.LASF173
+ 1263 051a 007D     		.2byte	0x7d00
+ 1264 051c 08       		.uleb128 0x8
+ 1265 051d 2C010000 		.4byte	.LASF174
+ 1266 0521 E880     		.2byte	0x80e8
+ 1267 0523 08       		.uleb128 0x8
+ 1268 0524 640D0000 		.4byte	.LASF175
+ 1269 0528 D084     		.2byte	0x84d0
+ 1270 052a 08       		.uleb128 0x8
+ 1271 052b 5F080000 		.4byte	.LASF176
+ 1272 052f D184     		.2byte	0x84d1
+ 1273 0531 08       		.uleb128 0x8
+ 1274 0532 7D0D0000 		.4byte	.LASF177
+ 1275 0536 B888     		.2byte	0x88b8
+ 1276 0538 00       		.byte	0
+ 1277 0539 09       		.uleb128 0x9
+ 1278 053a 14000000 		.4byte	.LASF178
+ 1279 053e 05       		.byte	0x5
+ 1280 053f 7202     		.2byte	0x272
+ 1281 0541 C1000000 		.4byte	0xc1
+ 1282 0545 09       		.uleb128 0x9
+ 1283 0546 FE050000 		.4byte	.LASF179
+ 1284 054a 05       		.byte	0x5
+ 1285 054b 8202     		.2byte	0x282
+ 1286 054d 51050000 		.4byte	0x551
+ 1287 0551 0A       		.uleb128 0xa
+ 1288 0552 A8050000 		.4byte	.LASF185
+ 1289 0556 10       		.byte	0x10
+ 1290 0557 05       		.byte	0x5
+ 1291 0558 4003     		.2byte	0x340
+ 1292 055a 93050000 		.4byte	0x593
+ 1293 055e 0B       		.uleb128 0xb
+ 1294 055f A40A0000 		.4byte	.LASF180
+ 1295 0563 05       		.byte	0x5
+ 1296 0564 4103     		.2byte	0x341
+ 1297 0566 3C060000 		.4byte	0x63c
+ 1298 056a 00       		.byte	0
+ 1299 056b 0B       		.uleb128 0xb
+ 1300 056c 2A0E0000 		.4byte	.LASF181
+ 1301 0570 05       		.byte	0x5
+ 1302 0571 4203     		.2byte	0x342
+ 1303 0573 88000000 		.4byte	0x88
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 30
+
+
+ 1304 0577 04       		.byte	0x4
+ 1305 0578 0B       		.uleb128 0xb
+ 1306 0579 060C0000 		.4byte	.LASF182
+ 1307 057d 05       		.byte	0x5
+ 1308 057e 4303     		.2byte	0x343
+ 1309 0580 AB000000 		.4byte	0xab
+ 1310 0584 08       		.byte	0x8
+ 1311 0585 0B       		.uleb128 0xb
+ 1312 0586 F40D0000 		.4byte	.LASF183
+ 1313 058a 05       		.byte	0x5
+ 1314 058b 4403     		.2byte	0x344
+ 1315 058d 95000000 		.4byte	0x95
+ 1316 0591 0C       		.byte	0xc
+ 1317 0592 00       		.byte	0
+ 1318 0593 09       		.uleb128 0x9
+ 1319 0594 C0080000 		.4byte	.LASF184
+ 1320 0598 05       		.byte	0x5
+ 1321 0599 8302     		.2byte	0x283
+ 1322 059b 9F050000 		.4byte	0x59f
+ 1323 059f 0A       		.uleb128 0xa
+ 1324 05a0 6F020000 		.4byte	.LASF186
+ 1325 05a4 0C       		.byte	0xc
+ 1326 05a5 05       		.byte	0x5
+ 1327 05a6 4A03     		.2byte	0x34a
+ 1328 05a8 E1050000 		.4byte	0x5e1
+ 1329 05ac 0B       		.uleb128 0xb
+ 1330 05ad A40A0000 		.4byte	.LASF180
+ 1331 05b1 05       		.byte	0x5
+ 1332 05b2 4B03     		.2byte	0x34b
+ 1333 05b4 3C060000 		.4byte	0x63c
+ 1334 05b8 00       		.byte	0
+ 1335 05b9 0B       		.uleb128 0xb
+ 1336 05ba 460D0000 		.4byte	.LASF187
+ 1337 05be 05       		.byte	0x5
+ 1338 05bf 4C03     		.2byte	0x34c
+ 1339 05c1 A0000000 		.4byte	0xa0
+ 1340 05c5 04       		.byte	0x4
+ 1341 05c6 0B       		.uleb128 0xb
+ 1342 05c7 E00D0000 		.4byte	.LASF188
+ 1343 05cb 05       		.byte	0x5
+ 1344 05cc 4D03     		.2byte	0x34d
+ 1345 05ce A0000000 		.4byte	0xa0
+ 1346 05d2 06       		.byte	0x6
+ 1347 05d3 0B       		.uleb128 0xb
+ 1348 05d4 250D0000 		.4byte	.LASF189
+ 1349 05d8 05       		.byte	0x5
+ 1350 05d9 4E03     		.2byte	0x34e
+ 1351 05db A0000000 		.4byte	0xa0
+ 1352 05df 08       		.byte	0x8
+ 1353 05e0 00       		.byte	0
+ 1354 05e1 09       		.uleb128 0x9
+ 1355 05e2 56080000 		.4byte	.LASF190
+ 1356 05e6 05       		.byte	0x5
+ 1357 05e7 8402     		.2byte	0x284
+ 1358 05e9 ED050000 		.4byte	0x5ed
+ 1359 05ed 0A       		.uleb128 0xa
+ 1360 05ee 210E0000 		.4byte	.LASF191
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 31
+
+
+ 1361 05f2 10       		.byte	0x10
+ 1362 05f3 05       		.byte	0x5
+ 1363 05f4 5303     		.2byte	0x353
+ 1364 05f6 3C060000 		.4byte	0x63c
+ 1365 05fa 0B       		.uleb128 0xb
+ 1366 05fb C70B0000 		.4byte	.LASF192
+ 1367 05ff 05       		.byte	0x5
+ 1368 0600 5403     		.2byte	0x354
+ 1369 0602 3C060000 		.4byte	0x63c
+ 1370 0606 00       		.byte	0
+ 1371 0607 0B       		.uleb128 0xb
+ 1372 0608 860D0000 		.4byte	.LASF193
+ 1373 060c 05       		.byte	0x5
+ 1374 060d 5503     		.2byte	0x355
+ 1375 060f 3C060000 		.4byte	0x63c
+ 1376 0613 04       		.byte	0x4
+ 1377 0614 0B       		.uleb128 0xb
+ 1378 0615 22070000 		.4byte	.LASF194
+ 1379 0619 05       		.byte	0x5
+ 1380 061a 5603     		.2byte	0x356
+ 1381 061c A0000000 		.4byte	0xa0
+ 1382 0620 08       		.byte	0x8
+ 1383 0621 0B       		.uleb128 0xb
+ 1384 0622 56010000 		.4byte	.LASF195
+ 1385 0626 05       		.byte	0x5
+ 1386 0627 5703     		.2byte	0x357
+ 1387 0629 A0000000 		.4byte	0xa0
+ 1388 062d 0A       		.byte	0xa
+ 1389 062e 0B       		.uleb128 0xb
+ 1390 062f D40E0000 		.4byte	.LASF196
+ 1391 0633 05       		.byte	0x5
+ 1392 0634 5803     		.2byte	0x358
+ 1393 0636 A0000000 		.4byte	0xa0
+ 1394 063a 0C       		.byte	0xc
+ 1395 063b 00       		.byte	0
+ 1396 063c 0C       		.uleb128 0xc
+ 1397 063d 04       		.byte	0x4
+ 1398 063e 45050000 		.4byte	0x545
+ 1399 0642 02       		.uleb128 0x2
+ 1400 0643 04       		.byte	0x4
+ 1401 0644 07       		.byte	0x7
+ 1402 0645 520C0000 		.4byte	.LASF197
+ 1403 0649 0D       		.uleb128 0xd
+ 1404 064a AD010000 		.4byte	.LASF204
+ 1405 064e 01       		.byte	0x1
+ 1406 064f 3D       		.byte	0x3d
+ 1407 0650 00000000 		.4byte	.LFB0
+ 1408 0654 CC000000 		.4byte	.LFE0-.LFB0
+ 1409 0658 01       		.uleb128 0x1
+ 1410 0659 9C       		.byte	0x9c
+ 1411 065a A3060000 		.4byte	0x6a3
+ 1412 065e 0E       		.uleb128 0xe
+ 1413 065f 8F070000 		.4byte	.LASF201
+ 1414 0663 01       		.byte	0x1
+ 1415 0664 3D       		.byte	0x3d
+ 1416 0665 A3060000 		.4byte	0x6a3
+ 1417 0669 02       		.uleb128 0x2
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 32
+
+
+ 1418 066a 91       		.byte	0x91
+ 1419 066b 64       		.sleb128 -28
+ 1420 066c 0F       		.uleb128 0xf
+ 1421 066d B2080000 		.4byte	.LASF198
+ 1422 0671 01       		.byte	0x1
+ 1423 0672 3F       		.byte	0x3f
+ 1424 0673 3C060000 		.4byte	0x63c
+ 1425 0677 02       		.uleb128 0x2
+ 1426 0678 91       		.byte	0x91
+ 1427 0679 74       		.sleb128 -12
+ 1428 067a 0F       		.uleb128 0xf
+ 1429 067b B9080000 		.4byte	.LASF199
+ 1430 067f 01       		.byte	0x1
+ 1431 0680 40       		.byte	0x40
+ 1432 0681 3C060000 		.4byte	0x63c
+ 1433 0685 02       		.uleb128 0x2
+ 1434 0686 91       		.byte	0x91
+ 1435 0687 70       		.sleb128 -16
+ 1436 0688 10       		.uleb128 0x10
+ 1437 0689 6900     		.ascii	"i\000"
+ 1438 068b 01       		.byte	0x1
+ 1439 068c 41       		.byte	0x41
+ 1440 068d A0000000 		.4byte	0xa0
+ 1441 0691 02       		.uleb128 0x2
+ 1442 0692 91       		.byte	0x91
+ 1443 0693 6E       		.sleb128 -18
+ 1444 0694 0F       		.uleb128 0xf
+ 1445 0695 180D0000 		.4byte	.LASF200
+ 1446 0699 01       		.byte	0x1
+ 1447 069a 42       		.byte	0x42
+ 1448 069b A0000000 		.4byte	0xa0
+ 1449 069f 02       		.uleb128 0x2
+ 1450 06a0 91       		.byte	0x91
+ 1451 06a1 6C       		.sleb128 -20
+ 1452 06a2 00       		.byte	0
+ 1453 06a3 0C       		.uleb128 0xc
+ 1454 06a4 04       		.byte	0x4
+ 1455 06a5 39050000 		.4byte	0x539
+ 1456 06a9 11       		.uleb128 0x11
+ 1457 06aa 99050000 		.4byte	.LASF207
+ 1458 06ae 01       		.byte	0x1
+ 1459 06af 80       		.byte	0x80
+ 1460 06b0 A0000000 		.4byte	0xa0
+ 1461 06b4 00000000 		.4byte	.LFB1
+ 1462 06b8 74000000 		.4byte	.LFE1-.LFB1
+ 1463 06bc 01       		.uleb128 0x1
+ 1464 06bd 9C       		.byte	0x9c
+ 1465 06be ED060000 		.4byte	0x6ed
+ 1466 06c2 0E       		.uleb128 0xe
+ 1467 06c3 1F0F0000 		.4byte	.LASF202
+ 1468 06c7 01       		.byte	0x1
+ 1469 06c8 80       		.byte	0x80
+ 1470 06c9 ED060000 		.4byte	0x6ed
+ 1471 06cd 02       		.uleb128 0x2
+ 1472 06ce 91       		.byte	0x91
+ 1473 06cf 6C       		.sleb128 -20
+ 1474 06d0 0F       		.uleb128 0xf
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 33
+
+
+ 1475 06d1 620A0000 		.4byte	.LASF203
+ 1476 06d5 01       		.byte	0x1
+ 1477 06d6 82       		.byte	0x82
+ 1478 06d7 3C060000 		.4byte	0x63c
+ 1479 06db 02       		.uleb128 0x2
+ 1480 06dc 91       		.byte	0x91
+ 1481 06dd 70       		.sleb128 -16
+ 1482 06de 10       		.uleb128 0x10
+ 1483 06df 71747900 		.ascii	"qty\000"
+ 1484 06e3 01       		.byte	0x1
+ 1485 06e4 83       		.byte	0x83
+ 1486 06e5 A0000000 		.4byte	0xa0
+ 1487 06e9 02       		.uleb128 0x2
+ 1488 06ea 91       		.byte	0x91
+ 1489 06eb 76       		.sleb128 -10
+ 1490 06ec 00       		.byte	0
+ 1491 06ed 0C       		.uleb128 0xc
+ 1492 06ee 04       		.byte	0x4
+ 1493 06ef E1050000 		.4byte	0x5e1
+ 1494 06f3 0D       		.uleb128 0xd
+ 1495 06f4 560E0000 		.4byte	.LASF205
+ 1496 06f8 01       		.byte	0x1
+ 1497 06f9 A8       		.byte	0xa8
+ 1498 06fa 00000000 		.4byte	.LFB2
+ 1499 06fe 34000000 		.4byte	.LFE2-.LFB2
+ 1500 0702 01       		.uleb128 0x1
+ 1501 0703 9C       		.byte	0x9c
+ 1502 0704 25070000 		.4byte	0x725
+ 1503 0708 0E       		.uleb128 0xe
+ 1504 0709 1F0F0000 		.4byte	.LASF202
+ 1505 070d 01       		.byte	0x1
+ 1506 070e A8       		.byte	0xa8
+ 1507 070f ED060000 		.4byte	0x6ed
+ 1508 0713 02       		.uleb128 0x2
+ 1509 0714 91       		.byte	0x91
+ 1510 0715 74       		.sleb128 -12
+ 1511 0716 0E       		.uleb128 0xe
+ 1512 0717 48040000 		.4byte	.LASF206
+ 1513 071b 01       		.byte	0x1
+ 1514 071c A9       		.byte	0xa9
+ 1515 071d A0000000 		.4byte	0xa0
+ 1516 0721 02       		.uleb128 0x2
+ 1517 0722 91       		.byte	0x91
+ 1518 0723 72       		.sleb128 -14
+ 1519 0724 00       		.byte	0
+ 1520 0725 11       		.uleb128 0x11
+ 1521 0726 AE090000 		.4byte	.LASF208
+ 1522 072a 01       		.byte	0x1
+ 1523 072b CB       		.byte	0xcb
+ 1524 072c 88000000 		.4byte	0x88
+ 1525 0730 00000000 		.4byte	.LFB3
+ 1526 0734 BC000000 		.4byte	.LFE3-.LFB3
+ 1527 0738 01       		.uleb128 0x1
+ 1528 0739 9C       		.byte	0x9c
+ 1529 073a 93070000 		.4byte	0x793
+ 1530 073e 0E       		.uleb128 0xe
+ 1531 073f 1F0F0000 		.4byte	.LASF202
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 34
+
+
+ 1532 0743 01       		.byte	0x1
+ 1533 0744 CB       		.byte	0xcb
+ 1534 0745 ED060000 		.4byte	0x6ed
+ 1535 0749 02       		.uleb128 0x2
+ 1536 074a 91       		.byte	0x91
+ 1537 074b 6C       		.sleb128 -20
+ 1538 074c 0E       		.uleb128 0xe
+ 1539 074d 39020000 		.4byte	.LASF209
+ 1540 0751 01       		.byte	0x1
+ 1541 0752 CC       		.byte	0xcc
+ 1542 0753 93070000 		.4byte	0x793
+ 1543 0757 02       		.uleb128 0x2
+ 1544 0758 91       		.byte	0x91
+ 1545 0759 68       		.sleb128 -24
+ 1546 075a 0E       		.uleb128 0xe
+ 1547 075b 170A0000 		.4byte	.LASF210
+ 1548 075f 01       		.byte	0x1
+ 1549 0760 CD       		.byte	0xcd
+ 1550 0761 99070000 		.4byte	0x799
+ 1551 0765 02       		.uleb128 0x2
+ 1552 0766 91       		.byte	0x91
+ 1553 0767 64       		.sleb128 -28
+ 1554 0768 0E       		.uleb128 0xe
+ 1555 0769 8F070000 		.4byte	.LASF201
+ 1556 076d 01       		.byte	0x1
+ 1557 076e CE       		.byte	0xce
+ 1558 076f A3060000 		.4byte	0x6a3
+ 1559 0773 02       		.uleb128 0x2
+ 1560 0774 91       		.byte	0x91
+ 1561 0775 60       		.sleb128 -32
+ 1562 0776 0F       		.uleb128 0xf
+ 1563 0777 620A0000 		.4byte	.LASF203
+ 1564 077b 01       		.byte	0x1
+ 1565 077c D0       		.byte	0xd0
+ 1566 077d 3C060000 		.4byte	0x63c
+ 1567 0781 02       		.uleb128 0x2
+ 1568 0782 91       		.byte	0x91
+ 1569 0783 74       		.sleb128 -12
+ 1570 0784 0F       		.uleb128 0xf
+ 1571 0785 C3030000 		.4byte	.LASF211
+ 1572 0789 01       		.byte	0x1
+ 1573 078a D1       		.byte	0xd1
+ 1574 078b 88000000 		.4byte	0x88
+ 1575 078f 02       		.uleb128 0x2
+ 1576 0790 91       		.byte	0x91
+ 1577 0791 70       		.sleb128 -16
+ 1578 0792 00       		.byte	0
+ 1579 0793 0C       		.uleb128 0xc
+ 1580 0794 04       		.byte	0x4
+ 1581 0795 AB000000 		.4byte	0xab
+ 1582 0799 0C       		.uleb128 0xc
+ 1583 079a 04       		.byte	0x4
+ 1584 079b 95000000 		.4byte	0x95
+ 1585 079f 12       		.uleb128 0x12
+ 1586 07a0 F5030000 		.4byte	.LASF212
+ 1587 07a4 01       		.byte	0x1
+ 1588 07a5 1F01     		.2byte	0x11f
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 35
+
+
+ 1589 07a7 00000000 		.4byte	.LFB4
+ 1590 07ab 10010000 		.4byte	.LFE4-.LFB4
+ 1591 07af 01       		.uleb128 0x1
+ 1592 07b0 9C       		.byte	0x9c
+ 1593 07b1 2D080000 		.4byte	0x82d
+ 1594 07b5 13       		.uleb128 0x13
+ 1595 07b6 1F0F0000 		.4byte	.LASF202
+ 1596 07ba 01       		.byte	0x1
+ 1597 07bb 1F01     		.2byte	0x11f
+ 1598 07bd ED060000 		.4byte	0x6ed
+ 1599 07c1 02       		.uleb128 0x2
+ 1600 07c2 91       		.byte	0x91
+ 1601 07c3 6C       		.sleb128 -20
+ 1602 07c4 13       		.uleb128 0x13
+ 1603 07c5 C3030000 		.4byte	.LASF211
+ 1604 07c9 01       		.byte	0x1
+ 1605 07ca 2001     		.2byte	0x120
+ 1606 07cc 88000000 		.4byte	0x88
+ 1607 07d0 02       		.uleb128 0x2
+ 1608 07d1 91       		.byte	0x91
+ 1609 07d2 68       		.sleb128 -24
+ 1610 07d3 13       		.uleb128 0x13
+ 1611 07d4 A9080000 		.4byte	.LASF213
+ 1612 07d8 01       		.byte	0x1
+ 1613 07d9 2101     		.2byte	0x121
+ 1614 07db AB000000 		.4byte	0xab
+ 1615 07df 02       		.uleb128 0x2
+ 1616 07e0 91       		.byte	0x91
+ 1617 07e1 66       		.sleb128 -26
+ 1618 07e2 14       		.uleb128 0x14
+ 1619 07e3 6F707400 		.ascii	"opt\000"
+ 1620 07e7 01       		.byte	0x1
+ 1621 07e8 2201     		.2byte	0x122
+ 1622 07ea B6000000 		.4byte	0xb6
+ 1623 07ee 02       		.uleb128 0x2
+ 1624 07ef 91       		.byte	0x91
+ 1625 07f0 64       		.sleb128 -28
+ 1626 07f1 14       		.uleb128 0x14
+ 1627 07f2 747300   		.ascii	"ts\000"
+ 1628 07f5 01       		.byte	0x1
+ 1629 07f6 2301     		.2byte	0x123
+ 1630 07f8 95000000 		.4byte	0x95
+ 1631 07fc 02       		.uleb128 0x2
+ 1632 07fd 91       		.byte	0x91
+ 1633 07fe 00       		.sleb128 0
+ 1634 07ff 13       		.uleb128 0x13
+ 1635 0800 8F070000 		.4byte	.LASF201
+ 1636 0804 01       		.byte	0x1
+ 1637 0805 2401     		.2byte	0x124
+ 1638 0807 A3060000 		.4byte	0x6a3
+ 1639 080b 02       		.uleb128 0x2
+ 1640 080c 91       		.byte	0x91
+ 1641 080d 04       		.sleb128 4
+ 1642 080e 15       		.uleb128 0x15
+ 1643 080f 620A0000 		.4byte	.LASF203
+ 1644 0813 01       		.byte	0x1
+ 1645 0814 2601     		.2byte	0x126
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 36
+
+
+ 1646 0816 3C060000 		.4byte	0x63c
+ 1647 081a 02       		.uleb128 0x2
+ 1648 081b 91       		.byte	0x91
+ 1649 081c 74       		.sleb128 -12
+ 1650 081d 15       		.uleb128 0x15
+ 1651 081e 1A020000 		.4byte	.LASF214
+ 1652 0822 01       		.byte	0x1
+ 1653 0823 2701     		.2byte	0x127
+ 1654 0825 3C060000 		.4byte	0x63c
+ 1655 0829 02       		.uleb128 0x2
+ 1656 082a 91       		.byte	0x91
+ 1657 082b 70       		.sleb128 -16
+ 1658 082c 00       		.byte	0
+ 1659 082d 16       		.uleb128 0x16
+ 1660 082e 18090000 		.4byte	.LASF215
+ 1661 0832 05       		.byte	0x5
+ 1662 0833 8404     		.2byte	0x484
+ 1663 0835 93050000 		.4byte	0x593
+ 1664 0839 16       		.uleb128 0x16
+ 1665 083a 36040000 		.4byte	.LASF216
+ 1666 083e 05       		.byte	0x5
+ 1667 083f 0205     		.2byte	0x502
+ 1668 0841 45080000 		.4byte	0x845
+ 1669 0845 17       		.uleb128 0x17
+ 1670 0846 AB000000 		.4byte	0xab
+ 1671 084a 16       		.uleb128 0x16
+ 1672 084b CD0B0000 		.4byte	.LASF217
+ 1673 084f 05       		.byte	0x5
+ 1674 0850 0405     		.2byte	0x504
+ 1675 0852 56080000 		.4byte	0x856
+ 1676 0856 17       		.uleb128 0x17
+ 1677 0857 3C060000 		.4byte	0x63c
+ 1678 085b 00       		.byte	0
+ 1679              		.section	.debug_abbrev,"",%progbits
+ 1680              	.Ldebug_abbrev0:
+ 1681 0000 01       		.uleb128 0x1
+ 1682 0001 11       		.uleb128 0x11
+ 1683 0002 01       		.byte	0x1
+ 1684 0003 25       		.uleb128 0x25
+ 1685 0004 0E       		.uleb128 0xe
+ 1686 0005 13       		.uleb128 0x13
+ 1687 0006 0B       		.uleb128 0xb
+ 1688 0007 03       		.uleb128 0x3
+ 1689 0008 0E       		.uleb128 0xe
+ 1690 0009 1B       		.uleb128 0x1b
+ 1691 000a 0E       		.uleb128 0xe
+ 1692 000b 55       		.uleb128 0x55
+ 1693 000c 17       		.uleb128 0x17
+ 1694 000d 11       		.uleb128 0x11
+ 1695 000e 01       		.uleb128 0x1
+ 1696 000f 10       		.uleb128 0x10
+ 1697 0010 17       		.uleb128 0x17
+ 1698 0011 00       		.byte	0
+ 1699 0012 00       		.byte	0
+ 1700 0013 02       		.uleb128 0x2
+ 1701 0014 24       		.uleb128 0x24
+ 1702 0015 00       		.byte	0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 37
+
+
+ 1703 0016 0B       		.uleb128 0xb
+ 1704 0017 0B       		.uleb128 0xb
+ 1705 0018 3E       		.uleb128 0x3e
+ 1706 0019 0B       		.uleb128 0xb
+ 1707 001a 03       		.uleb128 0x3
+ 1708 001b 0E       		.uleb128 0xe
+ 1709 001c 00       		.byte	0
+ 1710 001d 00       		.byte	0
+ 1711 001e 03       		.uleb128 0x3
+ 1712 001f 16       		.uleb128 0x16
+ 1713 0020 00       		.byte	0
+ 1714 0021 03       		.uleb128 0x3
+ 1715 0022 0E       		.uleb128 0xe
+ 1716 0023 3A       		.uleb128 0x3a
+ 1717 0024 0B       		.uleb128 0xb
+ 1718 0025 3B       		.uleb128 0x3b
+ 1719 0026 0B       		.uleb128 0xb
+ 1720 0027 49       		.uleb128 0x49
+ 1721 0028 13       		.uleb128 0x13
+ 1722 0029 00       		.byte	0
+ 1723 002a 00       		.byte	0
+ 1724 002b 04       		.uleb128 0x4
+ 1725 002c 24       		.uleb128 0x24
+ 1726 002d 00       		.byte	0
+ 1727 002e 0B       		.uleb128 0xb
+ 1728 002f 0B       		.uleb128 0xb
+ 1729 0030 3E       		.uleb128 0x3e
+ 1730 0031 0B       		.uleb128 0xb
+ 1731 0032 03       		.uleb128 0x3
+ 1732 0033 08       		.uleb128 0x8
+ 1733 0034 00       		.byte	0
+ 1734 0035 00       		.byte	0
+ 1735 0036 05       		.uleb128 0x5
+ 1736 0037 0F       		.uleb128 0xf
+ 1737 0038 00       		.byte	0
+ 1738 0039 0B       		.uleb128 0xb
+ 1739 003a 0B       		.uleb128 0xb
+ 1740 003b 00       		.byte	0
+ 1741 003c 00       		.byte	0
+ 1742 003d 06       		.uleb128 0x6
+ 1743 003e 04       		.uleb128 0x4
+ 1744 003f 01       		.byte	0x1
+ 1745 0040 03       		.uleb128 0x3
+ 1746 0041 0E       		.uleb128 0xe
+ 1747 0042 0B       		.uleb128 0xb
+ 1748 0043 0B       		.uleb128 0xb
+ 1749 0044 49       		.uleb128 0x49
+ 1750 0045 13       		.uleb128 0x13
+ 1751 0046 3A       		.uleb128 0x3a
+ 1752 0047 0B       		.uleb128 0xb
+ 1753 0048 3B       		.uleb128 0x3b
+ 1754 0049 05       		.uleb128 0x5
+ 1755 004a 01       		.uleb128 0x1
+ 1756 004b 13       		.uleb128 0x13
+ 1757 004c 00       		.byte	0
+ 1758 004d 00       		.byte	0
+ 1759 004e 07       		.uleb128 0x7
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 38
+
+
+ 1760 004f 28       		.uleb128 0x28
+ 1761 0050 00       		.byte	0
+ 1762 0051 03       		.uleb128 0x3
+ 1763 0052 0E       		.uleb128 0xe
+ 1764 0053 1C       		.uleb128 0x1c
+ 1765 0054 0B       		.uleb128 0xb
+ 1766 0055 00       		.byte	0
+ 1767 0056 00       		.byte	0
+ 1768 0057 08       		.uleb128 0x8
+ 1769 0058 28       		.uleb128 0x28
+ 1770 0059 00       		.byte	0
+ 1771 005a 03       		.uleb128 0x3
+ 1772 005b 0E       		.uleb128 0xe
+ 1773 005c 1C       		.uleb128 0x1c
+ 1774 005d 05       		.uleb128 0x5
+ 1775 005e 00       		.byte	0
+ 1776 005f 00       		.byte	0
+ 1777 0060 09       		.uleb128 0x9
+ 1778 0061 16       		.uleb128 0x16
+ 1779 0062 00       		.byte	0
+ 1780 0063 03       		.uleb128 0x3
+ 1781 0064 0E       		.uleb128 0xe
+ 1782 0065 3A       		.uleb128 0x3a
+ 1783 0066 0B       		.uleb128 0xb
+ 1784 0067 3B       		.uleb128 0x3b
+ 1785 0068 05       		.uleb128 0x5
+ 1786 0069 49       		.uleb128 0x49
+ 1787 006a 13       		.uleb128 0x13
+ 1788 006b 00       		.byte	0
+ 1789 006c 00       		.byte	0
+ 1790 006d 0A       		.uleb128 0xa
+ 1791 006e 13       		.uleb128 0x13
+ 1792 006f 01       		.byte	0x1
+ 1793 0070 03       		.uleb128 0x3
+ 1794 0071 0E       		.uleb128 0xe
+ 1795 0072 0B       		.uleb128 0xb
+ 1796 0073 0B       		.uleb128 0xb
+ 1797 0074 3A       		.uleb128 0x3a
+ 1798 0075 0B       		.uleb128 0xb
+ 1799 0076 3B       		.uleb128 0x3b
+ 1800 0077 05       		.uleb128 0x5
+ 1801 0078 01       		.uleb128 0x1
+ 1802 0079 13       		.uleb128 0x13
+ 1803 007a 00       		.byte	0
+ 1804 007b 00       		.byte	0
+ 1805 007c 0B       		.uleb128 0xb
+ 1806 007d 0D       		.uleb128 0xd
+ 1807 007e 00       		.byte	0
+ 1808 007f 03       		.uleb128 0x3
+ 1809 0080 0E       		.uleb128 0xe
+ 1810 0081 3A       		.uleb128 0x3a
+ 1811 0082 0B       		.uleb128 0xb
+ 1812 0083 3B       		.uleb128 0x3b
+ 1813 0084 05       		.uleb128 0x5
+ 1814 0085 49       		.uleb128 0x49
+ 1815 0086 13       		.uleb128 0x13
+ 1816 0087 38       		.uleb128 0x38
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 39
+
+
+ 1817 0088 0B       		.uleb128 0xb
+ 1818 0089 00       		.byte	0
+ 1819 008a 00       		.byte	0
+ 1820 008b 0C       		.uleb128 0xc
+ 1821 008c 0F       		.uleb128 0xf
+ 1822 008d 00       		.byte	0
+ 1823 008e 0B       		.uleb128 0xb
+ 1824 008f 0B       		.uleb128 0xb
+ 1825 0090 49       		.uleb128 0x49
+ 1826 0091 13       		.uleb128 0x13
+ 1827 0092 00       		.byte	0
+ 1828 0093 00       		.byte	0
+ 1829 0094 0D       		.uleb128 0xd
+ 1830 0095 2E       		.uleb128 0x2e
+ 1831 0096 01       		.byte	0x1
+ 1832 0097 3F       		.uleb128 0x3f
+ 1833 0098 19       		.uleb128 0x19
+ 1834 0099 03       		.uleb128 0x3
+ 1835 009a 0E       		.uleb128 0xe
+ 1836 009b 3A       		.uleb128 0x3a
+ 1837 009c 0B       		.uleb128 0xb
+ 1838 009d 3B       		.uleb128 0x3b
+ 1839 009e 0B       		.uleb128 0xb
+ 1840 009f 27       		.uleb128 0x27
+ 1841 00a0 19       		.uleb128 0x19
+ 1842 00a1 11       		.uleb128 0x11
+ 1843 00a2 01       		.uleb128 0x1
+ 1844 00a3 12       		.uleb128 0x12
+ 1845 00a4 06       		.uleb128 0x6
+ 1846 00a5 40       		.uleb128 0x40
+ 1847 00a6 18       		.uleb128 0x18
+ 1848 00a7 9742     		.uleb128 0x2117
+ 1849 00a9 19       		.uleb128 0x19
+ 1850 00aa 01       		.uleb128 0x1
+ 1851 00ab 13       		.uleb128 0x13
+ 1852 00ac 00       		.byte	0
+ 1853 00ad 00       		.byte	0
+ 1854 00ae 0E       		.uleb128 0xe
+ 1855 00af 05       		.uleb128 0x5
+ 1856 00b0 00       		.byte	0
+ 1857 00b1 03       		.uleb128 0x3
+ 1858 00b2 0E       		.uleb128 0xe
+ 1859 00b3 3A       		.uleb128 0x3a
+ 1860 00b4 0B       		.uleb128 0xb
+ 1861 00b5 3B       		.uleb128 0x3b
+ 1862 00b6 0B       		.uleb128 0xb
+ 1863 00b7 49       		.uleb128 0x49
+ 1864 00b8 13       		.uleb128 0x13
+ 1865 00b9 02       		.uleb128 0x2
+ 1866 00ba 18       		.uleb128 0x18
+ 1867 00bb 00       		.byte	0
+ 1868 00bc 00       		.byte	0
+ 1869 00bd 0F       		.uleb128 0xf
+ 1870 00be 34       		.uleb128 0x34
+ 1871 00bf 00       		.byte	0
+ 1872 00c0 03       		.uleb128 0x3
+ 1873 00c1 0E       		.uleb128 0xe
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 40
+
+
+ 1874 00c2 3A       		.uleb128 0x3a
+ 1875 00c3 0B       		.uleb128 0xb
+ 1876 00c4 3B       		.uleb128 0x3b
+ 1877 00c5 0B       		.uleb128 0xb
+ 1878 00c6 49       		.uleb128 0x49
+ 1879 00c7 13       		.uleb128 0x13
+ 1880 00c8 02       		.uleb128 0x2
+ 1881 00c9 18       		.uleb128 0x18
+ 1882 00ca 00       		.byte	0
+ 1883 00cb 00       		.byte	0
+ 1884 00cc 10       		.uleb128 0x10
+ 1885 00cd 34       		.uleb128 0x34
+ 1886 00ce 00       		.byte	0
+ 1887 00cf 03       		.uleb128 0x3
+ 1888 00d0 08       		.uleb128 0x8
+ 1889 00d1 3A       		.uleb128 0x3a
+ 1890 00d2 0B       		.uleb128 0xb
+ 1891 00d3 3B       		.uleb128 0x3b
+ 1892 00d4 0B       		.uleb128 0xb
+ 1893 00d5 49       		.uleb128 0x49
+ 1894 00d6 13       		.uleb128 0x13
+ 1895 00d7 02       		.uleb128 0x2
+ 1896 00d8 18       		.uleb128 0x18
+ 1897 00d9 00       		.byte	0
+ 1898 00da 00       		.byte	0
+ 1899 00db 11       		.uleb128 0x11
+ 1900 00dc 2E       		.uleb128 0x2e
+ 1901 00dd 01       		.byte	0x1
+ 1902 00de 3F       		.uleb128 0x3f
+ 1903 00df 19       		.uleb128 0x19
+ 1904 00e0 03       		.uleb128 0x3
+ 1905 00e1 0E       		.uleb128 0xe
+ 1906 00e2 3A       		.uleb128 0x3a
+ 1907 00e3 0B       		.uleb128 0xb
+ 1908 00e4 3B       		.uleb128 0x3b
+ 1909 00e5 0B       		.uleb128 0xb
+ 1910 00e6 27       		.uleb128 0x27
+ 1911 00e7 19       		.uleb128 0x19
+ 1912 00e8 49       		.uleb128 0x49
+ 1913 00e9 13       		.uleb128 0x13
+ 1914 00ea 11       		.uleb128 0x11
+ 1915 00eb 01       		.uleb128 0x1
+ 1916 00ec 12       		.uleb128 0x12
+ 1917 00ed 06       		.uleb128 0x6
+ 1918 00ee 40       		.uleb128 0x40
+ 1919 00ef 18       		.uleb128 0x18
+ 1920 00f0 9742     		.uleb128 0x2117
+ 1921 00f2 19       		.uleb128 0x19
+ 1922 00f3 01       		.uleb128 0x1
+ 1923 00f4 13       		.uleb128 0x13
+ 1924 00f5 00       		.byte	0
+ 1925 00f6 00       		.byte	0
+ 1926 00f7 12       		.uleb128 0x12
+ 1927 00f8 2E       		.uleb128 0x2e
+ 1928 00f9 01       		.byte	0x1
+ 1929 00fa 3F       		.uleb128 0x3f
+ 1930 00fb 19       		.uleb128 0x19
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 41
+
+
+ 1931 00fc 03       		.uleb128 0x3
+ 1932 00fd 0E       		.uleb128 0xe
+ 1933 00fe 3A       		.uleb128 0x3a
+ 1934 00ff 0B       		.uleb128 0xb
+ 1935 0100 3B       		.uleb128 0x3b
+ 1936 0101 05       		.uleb128 0x5
+ 1937 0102 27       		.uleb128 0x27
+ 1938 0103 19       		.uleb128 0x19
+ 1939 0104 11       		.uleb128 0x11
+ 1940 0105 01       		.uleb128 0x1
+ 1941 0106 12       		.uleb128 0x12
+ 1942 0107 06       		.uleb128 0x6
+ 1943 0108 40       		.uleb128 0x40
+ 1944 0109 18       		.uleb128 0x18
+ 1945 010a 9742     		.uleb128 0x2117
+ 1946 010c 19       		.uleb128 0x19
+ 1947 010d 01       		.uleb128 0x1
+ 1948 010e 13       		.uleb128 0x13
+ 1949 010f 00       		.byte	0
+ 1950 0110 00       		.byte	0
+ 1951 0111 13       		.uleb128 0x13
+ 1952 0112 05       		.uleb128 0x5
+ 1953 0113 00       		.byte	0
+ 1954 0114 03       		.uleb128 0x3
+ 1955 0115 0E       		.uleb128 0xe
+ 1956 0116 3A       		.uleb128 0x3a
+ 1957 0117 0B       		.uleb128 0xb
+ 1958 0118 3B       		.uleb128 0x3b
+ 1959 0119 05       		.uleb128 0x5
+ 1960 011a 49       		.uleb128 0x49
+ 1961 011b 13       		.uleb128 0x13
+ 1962 011c 02       		.uleb128 0x2
+ 1963 011d 18       		.uleb128 0x18
+ 1964 011e 00       		.byte	0
+ 1965 011f 00       		.byte	0
+ 1966 0120 14       		.uleb128 0x14
+ 1967 0121 05       		.uleb128 0x5
+ 1968 0122 00       		.byte	0
+ 1969 0123 03       		.uleb128 0x3
+ 1970 0124 08       		.uleb128 0x8
+ 1971 0125 3A       		.uleb128 0x3a
+ 1972 0126 0B       		.uleb128 0xb
+ 1973 0127 3B       		.uleb128 0x3b
+ 1974 0128 05       		.uleb128 0x5
+ 1975 0129 49       		.uleb128 0x49
+ 1976 012a 13       		.uleb128 0x13
+ 1977 012b 02       		.uleb128 0x2
+ 1978 012c 18       		.uleb128 0x18
+ 1979 012d 00       		.byte	0
+ 1980 012e 00       		.byte	0
+ 1981 012f 15       		.uleb128 0x15
+ 1982 0130 34       		.uleb128 0x34
+ 1983 0131 00       		.byte	0
+ 1984 0132 03       		.uleb128 0x3
+ 1985 0133 0E       		.uleb128 0xe
+ 1986 0134 3A       		.uleb128 0x3a
+ 1987 0135 0B       		.uleb128 0xb
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 42
+
+
+ 1988 0136 3B       		.uleb128 0x3b
+ 1989 0137 05       		.uleb128 0x5
+ 1990 0138 49       		.uleb128 0x49
+ 1991 0139 13       		.uleb128 0x13
+ 1992 013a 02       		.uleb128 0x2
+ 1993 013b 18       		.uleb128 0x18
+ 1994 013c 00       		.byte	0
+ 1995 013d 00       		.byte	0
+ 1996 013e 16       		.uleb128 0x16
+ 1997 013f 34       		.uleb128 0x34
+ 1998 0140 00       		.byte	0
+ 1999 0141 03       		.uleb128 0x3
+ 2000 0142 0E       		.uleb128 0xe
+ 2001 0143 3A       		.uleb128 0x3a
+ 2002 0144 0B       		.uleb128 0xb
+ 2003 0145 3B       		.uleb128 0x3b
+ 2004 0146 05       		.uleb128 0x5
+ 2005 0147 49       		.uleb128 0x49
+ 2006 0148 13       		.uleb128 0x13
+ 2007 0149 3F       		.uleb128 0x3f
+ 2008 014a 19       		.uleb128 0x19
+ 2009 014b 3C       		.uleb128 0x3c
+ 2010 014c 19       		.uleb128 0x19
+ 2011 014d 00       		.byte	0
+ 2012 014e 00       		.byte	0
+ 2013 014f 17       		.uleb128 0x17
+ 2014 0150 26       		.uleb128 0x26
+ 2015 0151 00       		.byte	0
+ 2016 0152 49       		.uleb128 0x49
+ 2017 0153 13       		.uleb128 0x13
+ 2018 0154 00       		.byte	0
+ 2019 0155 00       		.byte	0
+ 2020 0156 00       		.byte	0
+ 2021              		.section	.debug_aranges,"",%progbits
+ 2022 0000 3C000000 		.4byte	0x3c
+ 2023 0004 0200     		.2byte	0x2
+ 2024 0006 00000000 		.4byte	.Ldebug_info0
+ 2025 000a 04       		.byte	0x4
+ 2026 000b 00       		.byte	0
+ 2027 000c 0000     		.2byte	0
+ 2028 000e 0000     		.2byte	0
+ 2029 0010 00000000 		.4byte	.LFB0
+ 2030 0014 CC000000 		.4byte	.LFE0-.LFB0
+ 2031 0018 00000000 		.4byte	.LFB1
+ 2032 001c 74000000 		.4byte	.LFE1-.LFB1
+ 2033 0020 00000000 		.4byte	.LFB2
+ 2034 0024 34000000 		.4byte	.LFE2-.LFB2
+ 2035 0028 00000000 		.4byte	.LFB3
+ 2036 002c BC000000 		.4byte	.LFE3-.LFB3
+ 2037 0030 00000000 		.4byte	.LFB4
+ 2038 0034 10010000 		.4byte	.LFE4-.LFB4
+ 2039 0038 00000000 		.4byte	0
+ 2040 003c 00000000 		.4byte	0
+ 2041              		.section	.debug_ranges,"",%progbits
+ 2042              	.Ldebug_ranges0:
+ 2043 0000 00000000 		.4byte	.LFB0
+ 2044 0004 CC000000 		.4byte	.LFE0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 43
+
+
+ 2045 0008 00000000 		.4byte	.LFB1
+ 2046 000c 74000000 		.4byte	.LFE1
+ 2047 0010 00000000 		.4byte	.LFB2
+ 2048 0014 34000000 		.4byte	.LFE2
+ 2049 0018 00000000 		.4byte	.LFB3
+ 2050 001c BC000000 		.4byte	.LFE3
+ 2051 0020 00000000 		.4byte	.LFB4
+ 2052 0024 10010000 		.4byte	.LFE4
+ 2053 0028 00000000 		.4byte	0
+ 2054 002c 00000000 		.4byte	0
+ 2055              		.section	.debug_line,"",%progbits
+ 2056              	.Ldebug_line0:
+ 2057 0000 97010000 		.section	.debug_str,"MS",%progbits,1
+ 2057      0200B100 
+ 2057      00000201 
+ 2057      FB0E0D00 
+ 2057      01010101 
+ 2058              	.LASF85:
+ 2059 0000 4F535F45 		.ascii	"OS_ERR_PRIO_INVALID\000"
+ 2059      52525F50 
+ 2059      52494F5F 
+ 2059      494E5641 
+ 2059      4C494400 
+ 2060              	.LASF178:
+ 2061 0014 4F535F45 		.ascii	"OS_ERR\000"
+ 2061      525200
+ 2062              	.LASF146:
+ 2063 001b 4F535F45 		.ascii	"OS_ERR_TICK_WHEEL_SIZE\000"
+ 2063      52525F54 
+ 2063      49434B5F 
+ 2063      57484545 
+ 2063      4C5F5349 
+ 2064              	.LASF164:
+ 2065 0032 4F535F45 		.ascii	"OS_ERR_TMR_ISR\000"
+ 2065      52525F54 
+ 2065      4D525F49 
+ 2065      535200
+ 2066              	.LASF151:
+ 2067 0041 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_MINUTES\000"
+ 2067      52525F54 
+ 2067      494D455F 
+ 2067      494E5641 
+ 2067      4C49445F 
+ 2068              	.LASF18:
+ 2069 005d 4F535F45 		.ascii	"OS_ERR_A\000"
+ 2069      52525F41 
+ 2069      00
+ 2070              	.LASF20:
+ 2071 0066 4F535F45 		.ascii	"OS_ERR_B\000"
+ 2071      52525F42 
+ 2071      00
+ 2072              	.LASF21:
+ 2073 006f 4F535F45 		.ascii	"OS_ERR_C\000"
+ 2073      52525F43 
+ 2073      00
+ 2074              	.LASF23:
+ 2075 0078 4F535F45 		.ascii	"OS_ERR_D\000"
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 44
+
+
+ 2075      52525F44 
+ 2075      00
+ 2076              	.LASF25:
+ 2077 0081 4F535F45 		.ascii	"OS_ERR_E\000"
+ 2077      52525F45 
+ 2077      00
+ 2078              	.LASF26:
+ 2079 008a 4F535F45 		.ascii	"OS_ERR_F\000"
+ 2079      52525F46 
+ 2079      00
+ 2080              	.LASF32:
+ 2081 0093 4F535F45 		.ascii	"OS_ERR_G\000"
+ 2081      52525F47 
+ 2081      00
+ 2082              	.LASF33:
+ 2083 009c 4F535F45 		.ascii	"OS_ERR_H\000"
+ 2083      52525F48 
+ 2083      00
+ 2084              	.LASF34:
+ 2085 00a5 4F535F45 		.ascii	"OS_ERR_I\000"
+ 2085      52525F49 
+ 2085      00
+ 2086              	.LASF41:
+ 2087 00ae 4F535F45 		.ascii	"OS_ERR_J\000"
+ 2087      52525F4A 
+ 2087      00
+ 2088              	.LASF42:
+ 2089 00b7 4F535F45 		.ascii	"OS_ERR_K\000"
+ 2089      52525F4B 
+ 2089      00
+ 2090              	.LASF43:
+ 2091 00c0 4F535F45 		.ascii	"OS_ERR_L\000"
+ 2091      52525F4C 
+ 2091      00
+ 2092              	.LASF45:
+ 2093 00c9 4F535F45 		.ascii	"OS_ERR_M\000"
+ 2093      52525F4D 
+ 2093      00
+ 2094              	.LASF61:
+ 2095 00d2 4F535F45 		.ascii	"OS_ERR_N\000"
+ 2095      52525F4E 
+ 2095      00
+ 2096              	.LASF64:
+ 2097 00db 4F535F45 		.ascii	"OS_ERR_O\000"
+ 2097      52525F4F 
+ 2097      00
+ 2098              	.LASF72:
+ 2099 00e4 4F535F45 		.ascii	"OS_ERR_P\000"
+ 2099      52525F50 
+ 2099      00
+ 2100              	.LASF87:
+ 2101 00ed 4F535F45 		.ascii	"OS_ERR_Q\000"
+ 2101      52525F51 
+ 2101      00
+ 2102              	.LASF92:
+ 2103 00f6 4F535F45 		.ascii	"OS_ERR_R\000"
+ 2103      52525F52 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 45
+
+
+ 2103      00
+ 2104              	.LASF96:
+ 2105 00ff 4F535F45 		.ascii	"OS_ERR_S\000"
+ 2105      52525F53 
+ 2105      00
+ 2106              	.LASF113:
+ 2107 0108 4F535F45 		.ascii	"OS_ERR_T\000"
+ 2107      52525F54 
+ 2107      00
+ 2108              	.LASF171:
+ 2109 0111 4F535F45 		.ascii	"OS_ERR_U\000"
+ 2109      52525F55 
+ 2109      00
+ 2110              	.LASF172:
+ 2111 011a 4F535F45 		.ascii	"OS_ERR_V\000"
+ 2111      52525F56 
+ 2111      00
+ 2112              	.LASF173:
+ 2113 0123 4F535F45 		.ascii	"OS_ERR_W\000"
+ 2113      52525F57 
+ 2113      00
+ 2114              	.LASF174:
+ 2115 012c 4F535F45 		.ascii	"OS_ERR_X\000"
+ 2115      52525F58 
+ 2115      00
+ 2116              	.LASF161:
+ 2117 0135 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_PERIOD\000"
+ 2117      52525F54 
+ 2117      4D525F49 
+ 2117      4E56414C 
+ 2117      49445F50 
+ 2118              	.LASF221:
+ 2119 014f 6F735F65 		.ascii	"os_err\000"
+ 2119      727200
+ 2120              	.LASF195:
+ 2121 0156 4E627245 		.ascii	"NbrEntries\000"
+ 2121      6E747269 
+ 2121      657300
+ 2122              	.LASF38:
+ 2123 0161 4F535F45 		.ascii	"OS_ERR_INT_Q_SIZE\000"
+ 2123      52525F49 
+ 2123      4E545F51 
+ 2123      5F53495A 
+ 2123      4500
+ 2124              	.LASF22:
+ 2125 0173 4F535F45 		.ascii	"OS_ERR_CREATE_ISR\000"
+ 2125      52525F43 
+ 2125      52454154 
+ 2125      455F4953 
+ 2125      5200
+ 2126              	.LASF145:
+ 2127 0185 4F535F45 		.ascii	"OS_ERR_TICK_STK_SIZE_INVALID\000"
+ 2127      52525F54 
+ 2127      49434B5F 
+ 2127      53544B5F 
+ 2127      53495A45 
+ 2128              	.LASF6:
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 46
+
+
+ 2129 01a2 4350555F 		.ascii	"CPU_INT32U\000"
+ 2129      494E5433 
+ 2129      325500
+ 2130              	.LASF204:
+ 2131 01ad 4F535F4D 		.ascii	"OS_MsgPoolInit\000"
+ 2131      7367506F 
+ 2131      6F6C496E 
+ 2131      697400
+ 2132              	.LASF110:
+ 2133 01bc 4F535F45 		.ascii	"OS_ERR_STK_INVALID\000"
+ 2133      52525F53 
+ 2133      544B5F49 
+ 2133      4E56414C 
+ 2133      494400
+ 2134              	.LASF126:
+ 2135 01cf 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_ISR\000"
+ 2135      52525F54 
+ 2135      41534B5F 
+ 2135      52455355 
+ 2135      4D455F49 
+ 2136              	.LASF80:
+ 2137 01e6 4F535F45 		.ascii	"OS_ERR_PEND_WOULD_BLOCK\000"
+ 2137      52525F50 
+ 2137      454E445F 
+ 2137      574F554C 
+ 2137      445F424C 
+ 2138              	.LASF114:
+ 2139 01fe 4F535F45 		.ascii	"OS_ERR_TASK_CHANGE_PRIO_ISR\000"
+ 2139      52525F54 
+ 2139      41534B5F 
+ 2139      4348414E 
+ 2139      47455F50 
+ 2140              	.LASF214:
+ 2141 021a 705F6D73 		.ascii	"p_msg_in\000"
+ 2141      675F696E 
+ 2141      00
+ 2142              	.LASF104:
+ 2143 0223 4F535F45 		.ascii	"OS_ERR_STAT_RESET_ISR\000"
+ 2143      52525F53 
+ 2143      5441545F 
+ 2143      52455345 
+ 2143      545F4953 
+ 2144              	.LASF209:
+ 2145 0239 705F6D73 		.ascii	"p_msg_size\000"
+ 2145      675F7369 
+ 2145      7A6500
+ 2146              	.LASF79:
+ 2147 0244 4F535F45 		.ascii	"OS_ERR_PEND_LOCKED\000"
+ 2147      52525F50 
+ 2147      454E445F 
+ 2147      4C4F434B 
+ 2147      454400
+ 2148              	.LASF130:
+ 2149 0257 4F535F45 		.ascii	"OS_ERR_TASK_STK_CHK_ISR\000"
+ 2149      52525F54 
+ 2149      41534B5F 
+ 2149      53544B5F 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 47
+
+
+ 2149      43484B5F 
+ 2150              	.LASF186:
+ 2151 026f 6F735F6D 		.ascii	"os_msg_pool\000"
+ 2151      73675F70 
+ 2151      6F6F6C00 
+ 2152              	.LASF218:
+ 2153 027b 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2153      43313120 
+ 2153      352E342E 
+ 2153      31203230 
+ 2153      31363036 
+ 2154 02ae 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 2154      20726576 
+ 2154      6973696F 
+ 2154      6E203233 
+ 2154      37373135 
+ 2155 02e1 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 2155      66756E63 
+ 2155      74696F6E 
+ 2155      2D736563 
+ 2155      74696F6E 
+ 2156              	.LASF124:
+ 2157 0309 4F535F45 		.ascii	"OS_ERR_TASK_NOT_SUSPENDED\000"
+ 2157      52525F54 
+ 2157      41534B5F 
+ 2157      4E4F545F 
+ 2157      53555350 
+ 2158              	.LASF122:
+ 2159 0323 4F535F45 		.ascii	"OS_ERR_TASK_NOT_DLY\000"
+ 2159      52525F54 
+ 2159      41534B5F 
+ 2159      4E4F545F 
+ 2159      444C5900 
+ 2160              	.LASF36:
+ 2161 0337 4F535F45 		.ascii	"OS_ERR_INT_Q\000"
+ 2161      52525F49 
+ 2161      4E545F51 
+ 2161      00
+ 2162              	.LASF136:
+ 2163 0344 4F535F45 		.ascii	"OS_ERR_TASK_WAITING\000"
+ 2163      52525F54 
+ 2163      41534B5F 
+ 2163      57414954 
+ 2163      494E4700 
+ 2164              	.LASF19:
+ 2165 0358 4F535F45 		.ascii	"OS_ERR_ACCEPT_ISR\000"
+ 2165      52525F41 
+ 2165      43434550 
+ 2165      545F4953 
+ 2165      5200
+ 2166              	.LASF134:
+ 2167 036a 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_ISR\000"
+ 2167      52525F54 
+ 2167      41534B5F 
+ 2167      53555350 
+ 2167      454E445F 
+ 2168              	.LASF60:
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 48
+
+
+ 2169 0382 4F535F45 		.ascii	"OS_ERR_MUTEX_NESTING\000"
+ 2169      52525F4D 
+ 2169      55544558 
+ 2169      5F4E4553 
+ 2169      54494E47 
+ 2170              	.LASF162:
+ 2171 0397 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_STATE\000"
+ 2171      52525F54 
+ 2171      4D525F49 
+ 2171      4E56414C 
+ 2171      49445F53 
+ 2172              	.LASF65:
+ 2173 03b0 4F535F45 		.ascii	"OS_ERR_OBJ_CREATED\000"
+ 2173      52525F4F 
+ 2173      424A5F43 
+ 2173      52454154 
+ 2173      454400
+ 2174              	.LASF211:
+ 2175 03c3 705F766F 		.ascii	"p_void\000"
+ 2175      696400
+ 2176              	.LASF132:
+ 2177 03ca 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_IDLE\000"
+ 2177      52525F54 
+ 2177      41534B5F 
+ 2177      53555350 
+ 2177      454E445F 
+ 2178              	.LASF37:
+ 2179 03e3 4F535F45 		.ascii	"OS_ERR_INT_Q_FULL\000"
+ 2179      52525F49 
+ 2179      4E545F51 
+ 2179      5F46554C 
+ 2179      4C00
+ 2180              	.LASF212:
+ 2181 03f5 4F535F4D 		.ascii	"OS_MsgQPut\000"
+ 2181      73675150 
+ 2181      757400
+ 2182              	.LASF35:
+ 2183 0400 4F535F45 		.ascii	"OS_ERR_ILLEGAL_CREATE_RUN_TIME\000"
+ 2183      52525F49 
+ 2183      4C4C4547 
+ 2183      414C5F43 
+ 2183      52454154 
+ 2184              	.LASF160:
+ 2185 041f 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_DLY\000"
+ 2185      52525F54 
+ 2185      4D525F49 
+ 2185      4E56414C 
+ 2185      49445F44 
+ 2186              	.LASF216:
+ 2187 0436 4F534366 		.ascii	"OSCfg_MsgPoolSize\000"
+ 2187      675F4D73 
+ 2187      67506F6F 
+ 2187      6C53697A 
+ 2187      6500
+ 2188              	.LASF206:
+ 2189 0448 73697A65 		.ascii	"size\000"
+ 2189      00
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 49
+
+
+ 2190              	.LASF127:
+ 2191 044d 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_PRIO\000"
+ 2191      52525F54 
+ 2191      41534B5F 
+ 2191      52455355 
+ 2191      4D455F50 
+ 2192              	.LASF112:
+ 2193 0465 4F535F45 		.ascii	"OS_ERR_STK_LIMIT_INVALID\000"
+ 2193      52525F53 
+ 2193      544B5F4C 
+ 2193      494D4954 
+ 2193      5F494E56 
+ 2194              	.LASF10:
+ 2195 047e 666C6F61 		.ascii	"float\000"
+ 2195      7400
+ 2196              	.LASF81:
+ 2197 0484 4F535F45 		.ascii	"OS_ERR_POST_NULL_PTR\000"
+ 2197      52525F50 
+ 2197      4F53545F 
+ 2197      4E554C4C 
+ 2197      5F505452 
+ 2198              	.LASF63:
+ 2199 0499 4F535F45 		.ascii	"OS_ERR_NO_MORE_ID_AVAIL\000"
+ 2199      52525F4E 
+ 2199      4F5F4D4F 
+ 2199      52455F49 
+ 2199      445F4156 
+ 2200              	.LASF53:
+ 2201 04b1 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_DATA\000"
+ 2201      52525F4D 
+ 2201      454D5F49 
+ 2201      4E56414C 
+ 2201      49445F50 
+ 2202              	.LASF165:
+ 2203 04cb 4F535F45 		.ascii	"OS_ERR_TMR_NO_CALLBACK\000"
+ 2203      52525F54 
+ 2203      4D525F4E 
+ 2203      4F5F4341 
+ 2203      4C4C4241 
+ 2204              	.LASF158:
+ 2205 04e2 4F535F45 		.ascii	"OS_ERR_TMR_INACTIVE\000"
+ 2205      52525F54 
+ 2205      4D525F49 
+ 2205      4E414354 
+ 2205      49564500 
+ 2206              	.LASF138:
+ 2207 04f6 4F535F45 		.ascii	"OS_ERR_TLS_ID_INVALID\000"
+ 2207      52525F54 
+ 2207      4C535F49 
+ 2207      445F494E 
+ 2207      56414C49 
+ 2208              	.LASF8:
+ 2209 050c 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2209      206C6F6E 
+ 2209      6720756E 
+ 2209      7369676E 
+ 2209      65642069 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 50
+
+
+ 2210              	.LASF129:
+ 2211 0523 4F535F45 		.ascii	"OS_ERR_TASK_RUNNING\000"
+ 2211      52525F54 
+ 2211      41534B5F 
+ 2211      52554E4E 
+ 2211      494E4700 
+ 2212              	.LASF163:
+ 2213 0537 4F535F45 		.ascii	"OS_ERR_TMR_INVALID\000"
+ 2213      52525F54 
+ 2213      4D525F49 
+ 2213      4E56414C 
+ 2213      494400
+ 2214              	.LASF133:
+ 2215 054a 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_INT_HANDLER\000"
+ 2215      52525F54 
+ 2215      41534B5F 
+ 2215      53555350 
+ 2215      454E445F 
+ 2216              	.LASF118:
+ 2217 056a 4F535F45 		.ascii	"OS_ERR_TASK_DEL_INVALID\000"
+ 2217      52525F54 
+ 2217      41534B5F 
+ 2217      44454C5F 
+ 2217      494E5641 
+ 2218              	.LASF168:
+ 2219 0582 4F535F45 		.ascii	"OS_ERR_TMR_STK_INVALID\000"
+ 2219      52525F54 
+ 2219      4D525F53 
+ 2219      544B5F49 
+ 2219      4E56414C 
+ 2220              	.LASF207:
+ 2221 0599 4F535F4D 		.ascii	"OS_MsgQFreeAll\000"
+ 2221      73675146 
+ 2221      72656541 
+ 2221      6C6C00
+ 2222              	.LASF185:
+ 2223 05a8 6F735F6D 		.ascii	"os_msg\000"
+ 2223      736700
+ 2224              	.LASF137:
+ 2225 05af 4F535F45 		.ascii	"OS_ERR_TCB_INVALID\000"
+ 2225      52525F54 
+ 2225      43425F49 
+ 2225      4E56414C 
+ 2225      494400
+ 2226              	.LASF89:
+ 2227 05c2 4F535F45 		.ascii	"OS_ERR_Q_EMPTY\000"
+ 2227      52525F51 
+ 2227      5F454D50 
+ 2227      545900
+ 2228              	.LASF153:
+ 2229 05d1 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_MILLISECONDS\000"
+ 2229      52525F54 
+ 2229      494D455F 
+ 2229      494E5641 
+ 2229      4C49445F 
+ 2230              	.LASF62:
+ 2231 05f2 4F535F45 		.ascii	"OS_ERR_NAME\000"
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 51
+
+
+ 2231      52525F4E 
+ 2231      414D4500 
+ 2232              	.LASF179:
+ 2233 05fe 4F535F4D 		.ascii	"OS_MSG\000"
+ 2233      534700
+ 2234              	.LASF142:
+ 2235 0605 4F535F45 		.ascii	"OS_ERR_TLS_DESTRUCT_ASSIGNED\000"
+ 2235      52525F54 
+ 2235      4C535F44 
+ 2235      45535452 
+ 2235      5543545F 
+ 2236              	.LASF58:
+ 2237 0622 4F535F45 		.ascii	"OS_ERR_MUTEX_NOT_OWNER\000"
+ 2237      52525F4D 
+ 2237      55544558 
+ 2237      5F4E4F54 
+ 2237      5F4F574E 
+ 2238              	.LASF15:
+ 2239 0639 4F535F4D 		.ascii	"OS_MSG_SIZE\000"
+ 2239      53475F53 
+ 2239      495A4500 
+ 2240              	.LASF150:
+ 2241 0645 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_HOURS\000"
+ 2241      52525F54 
+ 2241      494D455F 
+ 2241      494E5641 
+ 2241      4C49445F 
+ 2242              	.LASF166:
+ 2243 065f 4F535F45 		.ascii	"OS_ERR_TMR_NON_AVAIL\000"
+ 2243      52525F54 
+ 2243      4D525F4E 
+ 2243      4F4E5F41 
+ 2243      5641494C 
+ 2244              	.LASF220:
+ 2245 0674 483A5C42 		.ascii	"H:\\BCC722-RTOS-moinho\\UCoS\\Micrium_2\\Software\\"
+ 2245      43433732 
+ 2245      322D5254 
+ 2245      4F532D6D 
+ 2245      6F696E68 
+ 2246 06a2 4576616C 		.ascii	"EvalBoards\\Cypress\\CY8CKIT-050\\PSoC\\uCOS-III-Pr"
+ 2246      426F6172 
+ 2246      64735C43 
+ 2246      79707265 
+ 2246      73735C43 
+ 2247 06d1 6F62655C 		.ascii	"obe\\BCC722-RTOS-MOINHO.cydsn\000"
+ 2247      42434337 
+ 2247      32322D52 
+ 2247      544F532D 
+ 2247      4D4F494E 
+ 2248              	.LASF115:
+ 2249 06ee 4F535F45 		.ascii	"OS_ERR_TASK_CREATE_ISR\000"
+ 2249      52525F54 
+ 2249      41534B5F 
+ 2249      43524541 
+ 2249      54455F49 
+ 2250              	.LASF14:
+ 2251 0705 4F535F4D 		.ascii	"OS_MSG_QTY\000"
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 52
+
+
+ 2251      53475F51 
+ 2251      545900
+ 2252              	.LASF71:
+ 2253 0710 4F535F45 		.ascii	"OS_ERR_OS_RUNNING\000"
+ 2253      52525F4F 
+ 2253      535F5255 
+ 2253      4E4E494E 
+ 2253      4700
+ 2254              	.LASF194:
+ 2255 0722 4E627245 		.ascii	"NbrEntriesSize\000"
+ 2255      6E747269 
+ 2255      65735369 
+ 2255      7A6500
+ 2256              	.LASF156:
+ 2257 0731 4F535F45 		.ascii	"OS_ERR_TIME_ZERO_DLY\000"
+ 2257      52525F54 
+ 2257      494D455F 
+ 2257      5A45524F 
+ 2257      5F444C59 
+ 2258              	.LASF106:
+ 2259 0746 4F535F45 		.ascii	"OS_ERR_STAT_STK_INVALID\000"
+ 2259      52525F53 
+ 2259      5441545F 
+ 2259      53544B5F 
+ 2259      494E5641 
+ 2260              	.LASF28:
+ 2261 075e 4F535F45 		.ascii	"OS_ERR_FLAG_GRP_DEPLETED\000"
+ 2261      52525F46 
+ 2261      4C41475F 
+ 2261      4752505F 
+ 2261      4445504C 
+ 2262              	.LASF49:
+ 2263 0777 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_BLKS\000"
+ 2263      52525F4D 
+ 2263      454D5F49 
+ 2263      4E56414C 
+ 2263      49445F42 
+ 2264              	.LASF201:
+ 2265 078f 705F6572 		.ascii	"p_err\000"
+ 2265      7200
+ 2266              	.LASF159:
+ 2267 0795 4F535F45 		.ascii	"OS_ERR_TMR_INVALID_DEST\000"
+ 2267      52525F54 
+ 2267      4D525F49 
+ 2267      4E56414C 
+ 2267      49445F44 
+ 2268              	.LASF98:
+ 2269 07ad 4F535F45 		.ascii	"OS_ERR_SCHED_LOCK_ISR\000"
+ 2269      52525F53 
+ 2269      43484544 
+ 2269      5F4C4F43 
+ 2269      4B5F4953 
+ 2270              	.LASF24:
+ 2271 07c3 4F535F45 		.ascii	"OS_ERR_DEL_ISR\000"
+ 2271      52525F44 
+ 2271      454C5F49 
+ 2271      535200
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 53
+
+
+ 2272              	.LASF90:
+ 2273 07d2 4F535F45 		.ascii	"OS_ERR_Q_MAX\000"
+ 2273      52525F51 
+ 2273      5F4D4158 
+ 2273      00
+ 2274              	.LASF0:
+ 2275 07df 63686172 		.ascii	"char\000"
+ 2275      00
+ 2276              	.LASF141:
+ 2277 07e4 4F535F45 		.ascii	"OS_ERR_TLS_NOT_EN\000"
+ 2277      52525F54 
+ 2277      4C535F4E 
+ 2277      4F545F45 
+ 2277      4E00
+ 2278              	.LASF69:
+ 2279 07f6 4F535F45 		.ascii	"OS_ERR_OPT_INVALID\000"
+ 2279      52525F4F 
+ 2279      50545F49 
+ 2279      4E56414C 
+ 2279      494400
+ 2280              	.LASF97:
+ 2281 0809 4F535F45 		.ascii	"OS_ERR_SCHED_INVALID_TIME_SLICE\000"
+ 2281      52525F53 
+ 2281      43484544 
+ 2281      5F494E56 
+ 2281      414C4944 
+ 2282              	.LASF105:
+ 2283 0829 4F535F45 		.ascii	"OS_ERR_STAT_PRIO_INVALID\000"
+ 2283      52525F53 
+ 2283      5441545F 
+ 2283      5052494F 
+ 2283      5F494E56 
+ 2284              	.LASF154:
+ 2285 0842 4F535F45 		.ascii	"OS_ERR_TIME_NOT_DLY\000"
+ 2285      52525F54 
+ 2285      494D455F 
+ 2285      4E4F545F 
+ 2285      444C5900 
+ 2286              	.LASF190:
+ 2287 0856 4F535F4D 		.ascii	"OS_MSG_Q\000"
+ 2287      53475F51 
+ 2287      00
+ 2288              	.LASF176:
+ 2289 085f 4F535F45 		.ascii	"OS_ERR_YIELD_ISR\000"
+ 2289      52525F59 
+ 2289      49454C44 
+ 2289      5F495352 
+ 2289      00
+ 2290              	.LASF66:
+ 2291 0870 4F535F45 		.ascii	"OS_ERR_OBJ_DEL\000"
+ 2291      52525F4F 
+ 2291      424A5F44 
+ 2291      454C00
+ 2292              	.LASF13:
+ 2293 087f 4350555F 		.ascii	"CPU_TS\000"
+ 2293      545300
+ 2294              	.LASF9:
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 54
+
+
+ 2295 0886 6C6F6E67 		.ascii	"long long int\000"
+ 2295      206C6F6E 
+ 2295      6720696E 
+ 2295      7400
+ 2296              	.LASF30:
+ 2297 0894 4F535F45 		.ascii	"OS_ERR_FLAG_PEND_OPT\000"
+ 2297      52525F46 
+ 2297      4C41475F 
+ 2297      50454E44 
+ 2297      5F4F5054 
+ 2298              	.LASF213:
+ 2299 08a9 6D73675F 		.ascii	"msg_size\000"
+ 2299      73697A65 
+ 2299      00
+ 2300              	.LASF198:
+ 2301 08b2 705F6D73 		.ascii	"p_msg1\000"
+ 2301      673100
+ 2302              	.LASF199:
+ 2303 08b9 705F6D73 		.ascii	"p_msg2\000"
+ 2303      673200
+ 2304              	.LASF184:
+ 2305 08c0 4F535F4D 		.ascii	"OS_MSG_POOL\000"
+ 2305      53475F50 
+ 2305      4F4F4C00 
+ 2306              	.LASF91:
+ 2307 08cc 4F535F45 		.ascii	"OS_ERR_Q_SIZE\000"
+ 2307      52525F51 
+ 2307      5F53495A 
+ 2307      4500
+ 2308              	.LASF76:
+ 2309 08da 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_SELF\000"
+ 2309      52525F50 
+ 2309      454E445F 
+ 2309      41424F52 
+ 2309      545F5345 
+ 2310              	.LASF5:
+ 2311 08f1 4350555F 		.ascii	"CPU_INT16U\000"
+ 2311      494E5431 
+ 2311      365500
+ 2312              	.LASF95:
+ 2313 08fc 4F535F45 		.ascii	"OS_ERR_ROUND_ROBIN_DISABLED\000"
+ 2313      52525F52 
+ 2313      4F554E44 
+ 2313      5F524F42 
+ 2313      494E5F44 
+ 2314              	.LASF215:
+ 2315 0918 4F534D73 		.ascii	"OSMsgPool\000"
+ 2315      67506F6F 
+ 2315      6C00
+ 2316              	.LASF50:
+ 2317 0922 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_PART\000"
+ 2317      52525F4D 
+ 2317      454D5F49 
+ 2317      4E56414C 
+ 2317      49445F50 
+ 2318              	.LASF67:
+ 2319 093a 4F535F45 		.ascii	"OS_ERR_OBJ_PTR_NULL\000"
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 55
+
+
+ 2319      52525F4F 
+ 2319      424A5F50 
+ 2319      54525F4E 
+ 2319      554C4C00 
+ 2320              	.LASF93:
+ 2321 094e 4F535F45 		.ascii	"OS_ERR_REG_ID_INVALID\000"
+ 2321      52525F52 
+ 2321      45475F49 
+ 2321      445F494E 
+ 2321      56414C49 
+ 2322              	.LASF47:
+ 2323 0964 4F535F45 		.ascii	"OS_ERR_MEM_FULL\000"
+ 2323      52525F4D 
+ 2323      454D5F46 
+ 2323      554C4C00 
+ 2324              	.LASF121:
+ 2325 0974 4F535F45 		.ascii	"OS_ERR_TASK_NO_MORE_TCB\000"
+ 2325      52525F54 
+ 2325      41534B5F 
+ 2325      4E4F5F4D 
+ 2325      4F52455F 
+ 2326              	.LASF52:
+ 2327 098c 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_MEM\000"
+ 2327      52525F4D 
+ 2327      454D5F49 
+ 2327      4E56414C 
+ 2327      49445F50 
+ 2328              	.LASF12:
+ 2329 09a5 4350555F 		.ascii	"CPU_TS32\000"
+ 2329      54533332 
+ 2329      00
+ 2330              	.LASF208:
+ 2331 09ae 4F535F4D 		.ascii	"OS_MsgQGet\000"
+ 2331      73675147 
+ 2331      657400
+ 2332              	.LASF169:
+ 2333 09b9 4F535F45 		.ascii	"OS_ERR_TMR_STK_SIZE_INVALID\000"
+ 2333      52525F54 
+ 2333      4D525F53 
+ 2333      544B5F53 
+ 2333      495A455F 
+ 2334              	.LASF123:
+ 2335 09d5 4F535F45 		.ascii	"OS_ERR_TASK_NOT_EXIST\000"
+ 2335      52525F54 
+ 2335      41534B5F 
+ 2335      4E4F545F 
+ 2335      45584953 
+ 2336              	.LASF120:
+ 2337 09eb 4F535F45 		.ascii	"OS_ERR_TASK_INVALID\000"
+ 2337      52525F54 
+ 2337      41534B5F 
+ 2337      494E5641 
+ 2337      4C494400 
+ 2338              	.LASF167:
+ 2339 09ff 4F535F45 		.ascii	"OS_ERR_TMR_PRIO_INVALID\000"
+ 2339      52525F54 
+ 2339      4D525F50 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 56
+
+
+ 2339      52494F5F 
+ 2339      494E5641 
+ 2340              	.LASF210:
+ 2341 0a17 705F7473 		.ascii	"p_ts\000"
+ 2341      00
+ 2342              	.LASF135:
+ 2343 0a1c 4F535F45 		.ascii	"OS_ERR_TASK_SUSPEND_PRIO\000"
+ 2343      52525F54 
+ 2343      41534B5F 
+ 2343      53555350 
+ 2343      454E445F 
+ 2344              	.LASF40:
+ 2345 0a35 4F535F45 		.ascii	"OS_ERR_INT_Q_STK_SIZE_INVALID\000"
+ 2345      52525F49 
+ 2345      4E545F51 
+ 2345      5F53544B 
+ 2345      5F53495A 
+ 2346              	.LASF139:
+ 2347 0a53 4F535F45 		.ascii	"OS_ERR_TLS_ISR\000"
+ 2347      52525F54 
+ 2347      4C535F49 
+ 2347      535200
+ 2348              	.LASF203:
+ 2349 0a62 705F6D73 		.ascii	"p_msg\000"
+ 2349      6700
+ 2350              	.LASF119:
+ 2351 0a68 4F535F45 		.ascii	"OS_ERR_TASK_DEL_ISR\000"
+ 2351      52525F54 
+ 2351      41534B5F 
+ 2351      44454C5F 
+ 2351      49535200 
+ 2352              	.LASF86:
+ 2353 0a7c 4F535F45 		.ascii	"OS_ERR_PTR_INVALID\000"
+ 2353      52525F50 
+ 2353      54525F49 
+ 2353      4E56414C 
+ 2353      494400
+ 2354              	.LASF108:
+ 2355 0a8f 4F535F45 		.ascii	"OS_ERR_STATE_INVALID\000"
+ 2355      52525F53 
+ 2355      54415445 
+ 2355      5F494E56 
+ 2355      414C4944 
+ 2356              	.LASF180:
+ 2357 0aa4 4E657874 		.ascii	"NextPtr\000"
+ 2357      50747200 
+ 2358              	.LASF70:
+ 2359 0aac 4F535F45 		.ascii	"OS_ERR_OS_NOT_RUNNING\000"
+ 2359      52525F4F 
+ 2359      535F4E4F 
+ 2359      545F5255 
+ 2359      4E4E494E 
+ 2360              	.LASF155:
+ 2361 0ac2 4F535F45 		.ascii	"OS_ERR_TIME_SET_ISR\000"
+ 2361      52525F54 
+ 2361      494D455F 
+ 2361      5345545F 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 57
+
+
+ 2361      49535200 
+ 2362              	.LASF94:
+ 2363 0ad6 4F535F45 		.ascii	"OS_ERR_ROUND_ROBIN_1\000"
+ 2363      52525F52 
+ 2363      4F554E44 
+ 2363      5F524F42 
+ 2363      494E5F31 
+ 2364              	.LASF51:
+ 2365 0aeb 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_BLK\000"
+ 2365      52525F4D 
+ 2365      454D5F49 
+ 2365      4E56414C 
+ 2365      49445F50 
+ 2366              	.LASF48:
+ 2367 0b04 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_P_ADDR\000"
+ 2367      52525F4D 
+ 2367      454D5F49 
+ 2367      4E56414C 
+ 2367      49445F50 
+ 2368              	.LASF44:
+ 2369 0b1e 4F535F45 		.ascii	"OS_ERR_LOCK_NESTING_OVF\000"
+ 2369      52525F4C 
+ 2369      4F434B5F 
+ 2369      4E455354 
+ 2369      494E475F 
+ 2370              	.LASF4:
+ 2371 0b36 73686F72 		.ascii	"short int\000"
+ 2371      7420696E 
+ 2371      7400
+ 2372              	.LASF56:
+ 2373 0b40 4F535F45 		.ascii	"OS_ERR_MSG_POOL_EMPTY\000"
+ 2373      52525F4D 
+ 2373      53475F50 
+ 2373      4F4F4C5F 
+ 2373      454D5054 
+ 2374              	.LASF101:
+ 2375 0b56 4F535F45 		.ascii	"OS_ERR_SCHED_UNLOCK_ISR\000"
+ 2375      52525F53 
+ 2375      43484544 
+ 2375      5F554E4C 
+ 2375      4F434B5F 
+ 2376              	.LASF144:
+ 2377 0b6e 4F535F45 		.ascii	"OS_ERR_TICK_STK_INVALID\000"
+ 2377      52525F54 
+ 2377      49434B5F 
+ 2377      53544B5F 
+ 2377      494E5641 
+ 2378              	.LASF57:
+ 2379 0b86 4F535F45 		.ascii	"OS_ERR_MSG_POOL_NULL_PTR\000"
+ 2379      52525F4D 
+ 2379      53475F50 
+ 2379      4F4F4C5F 
+ 2379      4E554C4C 
+ 2380              	.LASF128:
+ 2381 0b9f 4F535F45 		.ascii	"OS_ERR_TASK_RESUME_SELF\000"
+ 2381      52525F54 
+ 2381      41534B5F 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 58
+
+
+ 2381      52455355 
+ 2381      4D455F53 
+ 2382              	.LASF68:
+ 2383 0bb7 4F535F45 		.ascii	"OS_ERR_OBJ_TYPE\000"
+ 2383      52525F4F 
+ 2383      424A5F54 
+ 2383      59504500 
+ 2384              	.LASF192:
+ 2385 0bc7 496E5074 		.ascii	"InPtr\000"
+ 2385      7200
+ 2386              	.LASF217:
+ 2387 0bcd 4F534366 		.ascii	"OSCfg_MsgPoolBasePtr\000"
+ 2387      675F4D73 
+ 2387      67506F6F 
+ 2387      6C426173 
+ 2387      65507472 
+ 2388              	.LASF75:
+ 2389 0be2 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_NONE\000"
+ 2389      52525F50 
+ 2389      454E445F 
+ 2389      41424F52 
+ 2389      545F4E4F 
+ 2390              	.LASF7:
+ 2391 0bf9 756E7369 		.ascii	"unsigned int\000"
+ 2391      676E6564 
+ 2391      20696E74 
+ 2391      00
+ 2392              	.LASF182:
+ 2393 0c06 4D736753 		.ascii	"MsgSize\000"
+ 2393      697A6500 
+ 2394              	.LASF59:
+ 2395 0c0e 4F535F45 		.ascii	"OS_ERR_MUTEX_OWNER\000"
+ 2395      52525F4D 
+ 2395      55544558 
+ 2395      5F4F574E 
+ 2395      455200
+ 2396              	.LASF107:
+ 2397 0c21 4F535F45 		.ascii	"OS_ERR_STAT_STK_SIZE_INVALID\000"
+ 2397      52525F53 
+ 2397      5441545F 
+ 2397      53544B5F 
+ 2397      53495A45 
+ 2398              	.LASF29:
+ 2399 0c3e 4F535F45 		.ascii	"OS_ERR_FLAG_NOT_RDY\000"
+ 2399      52525F46 
+ 2399      4C41475F 
+ 2399      4E4F545F 
+ 2399      52445900 
+ 2400              	.LASF197:
+ 2401 0c52 73697A65 		.ascii	"sizetype\000"
+ 2401      74797065 
+ 2401      00
+ 2402              	.LASF74:
+ 2403 0c5b 4F535F45 		.ascii	"OS_ERR_PEND_ABORT_ISR\000"
+ 2403      52525F50 
+ 2403      454E445F 
+ 2403      41424F52 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 59
+
+
+ 2403      545F4953 
+ 2404              	.LASF82:
+ 2405 0c71 4F535F45 		.ascii	"OS_ERR_POST_ISR\000"
+ 2405      52525F50 
+ 2405      4F53545F 
+ 2405      49535200 
+ 2406              	.LASF147:
+ 2407 0c81 4F535F45 		.ascii	"OS_ERR_TIME_DLY_ISR\000"
+ 2407      52525F54 
+ 2407      494D455F 
+ 2407      444C595F 
+ 2407      49535200 
+ 2408              	.LASF219:
+ 2409 0c95 2E2E5C2E 		.ascii	"..\\..\\..\\..\\..\\..\\uCOS-III\\Source\\os_msg.c\000"
+ 2409      2E5C2E2E 
+ 2409      5C2E2E5C 
+ 2409      2E2E5C2E 
+ 2409      2E5C7543 
+ 2410              	.LASF111:
+ 2411 0cc0 4F535F45 		.ascii	"OS_ERR_STK_SIZE_INVALID\000"
+ 2411      52525F53 
+ 2411      544B5F53 
+ 2411      495A455F 
+ 2411      494E5641 
+ 2412              	.LASF170:
+ 2413 0cd8 4F535F45 		.ascii	"OS_ERR_TMR_STOPPED\000"
+ 2413      52525F54 
+ 2413      4D525F53 
+ 2413      544F5050 
+ 2413      454400
+ 2414              	.LASF1:
+ 2415 0ceb 756E7369 		.ascii	"unsigned char\000"
+ 2415      676E6564 
+ 2415      20636861 
+ 2415      7200
+ 2416              	.LASF125:
+ 2417 0cf9 4F535F45 		.ascii	"OS_ERR_TASK_OPT\000"
+ 2417      52525F54 
+ 2417      41534B5F 
+ 2417      4F505400 
+ 2418              	.LASF157:
+ 2419 0d09 4F535F45 		.ascii	"OS_ERR_TIMEOUT\000"
+ 2419      52525F54 
+ 2419      494D454F 
+ 2419      555400
+ 2420              	.LASF200:
+ 2421 0d18 6C6F6F70 		.ascii	"loops\000"
+ 2421      7300
+ 2422              	.LASF16:
+ 2423 0d1e 4F535F4F 		.ascii	"OS_OPT\000"
+ 2423      505400
+ 2424              	.LASF189:
+ 2425 0d25 4E627255 		.ascii	"NbrUsedMax\000"
+ 2425      7365644D 
+ 2425      617800
+ 2426              	.LASF46:
+ 2427 0d30 4F535F45 		.ascii	"OS_ERR_MEM_CREATE_ISR\000"
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 60
+
+
+ 2427      52525F4D 
+ 2427      454D5F43 
+ 2427      52454154 
+ 2427      455F4953 
+ 2428              	.LASF187:
+ 2429 0d46 4E627246 		.ascii	"NbrFree\000"
+ 2429      72656500 
+ 2430              	.LASF109:
+ 2431 0d4e 4F535F45 		.ascii	"OS_ERR_STATUS_INVALID\000"
+ 2431      52525F53 
+ 2431      54415455 
+ 2431      535F494E 
+ 2431      56414C49 
+ 2432              	.LASF175:
+ 2433 0d64 4F535F45 		.ascii	"OS_ERR_Y\000"
+ 2433      52525F59 
+ 2433      00
+ 2434              	.LASF78:
+ 2435 0d6d 4F535F45 		.ascii	"OS_ERR_PEND_ISR\000"
+ 2435      52525F50 
+ 2435      454E445F 
+ 2435      49535200 
+ 2436              	.LASF177:
+ 2437 0d7d 4F535F45 		.ascii	"OS_ERR_Z\000"
+ 2437      52525F5A 
+ 2437      00
+ 2438              	.LASF193:
+ 2439 0d86 4F757450 		.ascii	"OutPtr\000"
+ 2439      747200
+ 2440              	.LASF88:
+ 2441 0d8d 4F535F45 		.ascii	"OS_ERR_Q_FULL\000"
+ 2441      52525F51 
+ 2441      5F46554C 
+ 2441      4C00
+ 2442              	.LASF39:
+ 2443 0d9b 4F535F45 		.ascii	"OS_ERR_INT_Q_STK_INVALID\000"
+ 2443      52525F49 
+ 2443      4E545F51 
+ 2443      5F53544B 
+ 2443      5F494E56 
+ 2444              	.LASF152:
+ 2445 0db4 4F535F45 		.ascii	"OS_ERR_TIME_INVALID_SECONDS\000"
+ 2445      52525F54 
+ 2445      494D455F 
+ 2445      494E5641 
+ 2445      4C49445F 
+ 2446              	.LASF116:
+ 2447 0dd0 4F535F45 		.ascii	"OS_ERR_TASK_DEL\000"
+ 2447      52525F54 
+ 2447      41534B5F 
+ 2447      44454C00 
+ 2448              	.LASF188:
+ 2449 0de0 4E627255 		.ascii	"NbrUsed\000"
+ 2449      73656400 
+ 2450              	.LASF2:
+ 2451 0de8 7369676E 		.ascii	"signed char\000"
+ 2451      65642063 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 61
+
+
+ 2451      68617200 
+ 2452              	.LASF183:
+ 2453 0df4 4D736754 		.ascii	"MsgTS\000"
+ 2453      5300
+ 2454              	.LASF27:
+ 2455 0dfa 4F535F45 		.ascii	"OS_ERR_FATAL_RETURN\000"
+ 2455      52525F46 
+ 2455      4154414C 
+ 2455      5F524554 
+ 2455      55524E00 
+ 2456              	.LASF3:
+ 2457 0e0e 73686F72 		.ascii	"short unsigned int\000"
+ 2457      7420756E 
+ 2457      7369676E 
+ 2457      65642069 
+ 2457      6E7400
+ 2458              	.LASF191:
+ 2459 0e21 6F735F6D 		.ascii	"os_msg_q\000"
+ 2459      73675F71 
+ 2459      00
+ 2460              	.LASF181:
+ 2461 0e2a 4D736750 		.ascii	"MsgPtr\000"
+ 2461      747200
+ 2462              	.LASF140:
+ 2463 0e31 4F535F45 		.ascii	"OS_ERR_TLS_NO_MORE_AVAIL\000"
+ 2463      52525F54 
+ 2463      4C535F4E 
+ 2463      4F5F4D4F 
+ 2463      52455F41 
+ 2464              	.LASF17:
+ 2465 0e4a 4F535F45 		.ascii	"OS_ERR_NONE\000"
+ 2465      52525F4E 
+ 2465      4F4E4500 
+ 2466              	.LASF205:
+ 2467 0e56 4F535F4D 		.ascii	"OS_MsgQInit\000"
+ 2467      73675149 
+ 2467      6E697400 
+ 2468              	.LASF99:
+ 2469 0e62 4F535F45 		.ascii	"OS_ERR_SCHED_LOCKED\000"
+ 2469      52525F53 
+ 2469      43484544 
+ 2469      5F4C4F43 
+ 2469      4B454400 
+ 2470              	.LASF31:
+ 2471 0e76 4F535F45 		.ascii	"OS_ERR_FLUSH_ISR\000"
+ 2471      52525F46 
+ 2471      4C555348 
+ 2471      5F495352 
+ 2471      00
+ 2472              	.LASF11:
+ 2473 0e87 646F7562 		.ascii	"double\000"
+ 2473      6C6500
+ 2474              	.LASF73:
+ 2475 0e8e 4F535F45 		.ascii	"OS_ERR_PEND_ABORT\000"
+ 2475      52525F50 
+ 2475      454E445F 
+ 2475      41424F52 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 62
+
+
+ 2475      5400
+ 2476              	.LASF100:
+ 2477 0ea0 4F535F45 		.ascii	"OS_ERR_SCHED_NOT_LOCKED\000"
+ 2477      52525F53 
+ 2477      43484544 
+ 2477      5F4E4F54 
+ 2477      5F4C4F43 
+ 2478              	.LASF84:
+ 2479 0eb8 4F535F45 		.ascii	"OS_ERR_PRIO\000"
+ 2479      52525F50 
+ 2479      52494F00 
+ 2480              	.LASF77:
+ 2481 0ec4 4F535F45 		.ascii	"OS_ERR_PEND_DEL\000"
+ 2481      52525F50 
+ 2481      454E445F 
+ 2481      44454C00 
+ 2482              	.LASF196:
+ 2483 0ed4 4E627245 		.ascii	"NbrEntriesMax\000"
+ 2483      6E747269 
+ 2483      65734D61 
+ 2483      7800
+ 2484              	.LASF54:
+ 2485 0ee2 4F535F45 		.ascii	"OS_ERR_MEM_INVALID_SIZE\000"
+ 2485      52525F4D 
+ 2485      454D5F49 
+ 2485      4E56414C 
+ 2485      49445F53 
+ 2486              	.LASF131:
+ 2487 0efa 4F535F45 		.ascii	"OS_ERR_TASK_SUSPENDED\000"
+ 2487      52525F54 
+ 2487      41534B5F 
+ 2487      53555350 
+ 2487      454E4445 
+ 2488              	.LASF103:
+ 2489 0f10 4F535F45 		.ascii	"OS_ERR_SET_ISR\000"
+ 2489      52525F53 
+ 2489      45545F49 
+ 2489      535200
+ 2490              	.LASF202:
+ 2491 0f1f 705F6D73 		.ascii	"p_msg_q\000"
+ 2491      675F7100 
+ 2492              	.LASF102:
+ 2493 0f27 4F535F45 		.ascii	"OS_ERR_SEM_OVF\000"
+ 2493      52525F53 
+ 2493      454D5F4F 
+ 2493      564600
+ 2494              	.LASF117:
+ 2495 0f36 4F535F45 		.ascii	"OS_ERR_TASK_DEL_IDLE\000"
+ 2495      52525F54 
+ 2495      41534B5F 
+ 2495      44454C5F 
+ 2495      49444C45 
+ 2496              	.LASF149:
+ 2497 0f4b 4F535F45 		.ascii	"OS_ERR_TIME_GET_ISR\000"
+ 2497      52525F54 
+ 2497      494D455F 
+ 2497      4745545F 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\cc1aTUPT.s 			page 63
+
+
+ 2497      49535200 
+ 2498              	.LASF148:
+ 2499 0f5f 4F535F45 		.ascii	"OS_ERR_TIME_DLY_RESUME_ISR\000"
+ 2499      52525F54 
+ 2499      494D455F 
+ 2499      444C595F 
+ 2499      52455355 
+ 2500              	.LASF143:
+ 2501 0f7a 4F535F45 		.ascii	"OS_ERR_TICK_PRIO_INVALID\000"
+ 2501      52525F54 
+ 2501      49434B5F 
+ 2501      5052494F 
+ 2501      5F494E56 
+ 2502              	.LASF83:
+ 2503 0f93 4F535F45 		.ascii	"OS_ERR_PRIO_EXIST\000"
+ 2503      52525F50 
+ 2503      52494F5F 
+ 2503      45584953 
+ 2503      5400
+ 2504              	.LASF55:
+ 2505 0fa5 4F535F45 		.ascii	"OS_ERR_MEM_NO_FREE_BLKS\000"
+ 2505      52525F4D 
+ 2505      454D5F4E 
+ 2505      4F5F4652 
+ 2505      45455F42 
+ 2506              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

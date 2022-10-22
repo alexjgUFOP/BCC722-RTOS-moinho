@@ -1,0 +1,1513 @@
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.syntax unified
+  20              		.global _printf_float
+  21              		.section	.rodata
+  22              		.align	2
+  23              	.LC0:
+  24 0000 496E6974 		.ascii	"Initial\000"
+  24      69616C00 
+  25              		.align	2
+  26              	.LC1:
+  27 0008 56444143 		.ascii	"VDAC settings:\000"
+  27      20736574 
+  27      74696E67 
+  27      733A00
+  28 0017 00       		.align	2
+  29              	.LC2:
+  30 0018 433100   		.ascii	"C1\000"
+  31              		.global	__aeabi_f2d
+  32 001b 00       		.align	2
+  33              	.LC3:
+  34 001c 252B312E 		.ascii	"%+1.2f\000"
+  34      326600
+  35 0023 00       		.align	2
+  36              	.LC4:
+  37 0024 20433200 		.ascii	" C2\000"
+  38              		.align	2
+  39              	.LC5:
+  40 0028 433300   		.ascii	"C3\000"
+  41 002b 00       		.align	2
+  42              	.LC6:
+  43 002c 20433400 		.ascii	" C4\000"
+  44              		.align	2
+  45              	.LC7:
+  46 0030 53746172 		.ascii	"Start\000"
+  46      7400
+  47 0036 0000     		.align	2
+  48              	.LC8:
+  49 0038 696E6372 		.ascii	"incrementing.. \000"
+  49      656D656E 
+  49      74696E67 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 2
+
+
+  49      2E2E2000 
+  50              		.thumb
+  51              		.syntax unified
+  52              		.section	.text.main,"ax",%progbits
+  53              		.align	2
+  54              		.global	main
+  55              		.thumb
+  56              		.thumb_func
+  57              		.type	main, %function
+  58              	main:
+  59              	.LFB64:
+  60              		.file 1 "main.c"
+   1:main.c        **** /*******************************************************************************
+   2:main.c        **** * File Name: main.c
+   3:main.c        **** *
+   4:main.c        **** * Version: 1.0
+   5:main.c        **** *
+   6:main.c        **** * Description:
+   7:main.c        **** *  This is a source code of the example project  
+   8:main.c        **** *  for PSoC 5LP ADC SAR Sequencer component.
+   9:main.c        **** *
+  10:main.c        **** *  Parameters used:
+  11:main.c        **** *   Resolution:      12 bit
+  12:main.c        **** *   Clock Frequency: 1.1 MHz
+  13:main.c        **** *   Sample Mode:     Free Running
+  14:main.c        **** *   Clock Source:    External
+  15:main.c        **** *   Input Range:     Vssa to Vdda (Single Ended)
+  16:main.c        **** *   Reference:       Internal Vref, bypassed
+  17:main.c        **** *   Channels:        4
+  18:main.c        **** *
+  19:main.c        **** *  
+  20:main.c        **** *  The project is configured to use with the 5V voltage, 
+  21:main.c        **** *  therefore switch SW3 (VDD SELECT) to the 5V state. 
+  22:main.c        **** *  If you want to use different input voltage, please, 
+  23:main.c        **** *  change VDDA in the System Tab (.cydwr file) appropriately. 
+  24:main.c        **** *  Four VDACs are used as input voltage sources for the component.
+  25:main.c        **** *  Initial settings for channels (from 1 to 4) are: 0.2, 0.4, 0.6, 0.8 Volts.
+  26:main.c        **** *  Actual converted initial voltages are displayed on the LCD to demonstrate 
+  27:main.c        **** *  that they coincide with each VDAC initial voltage settings.
+  28:main.c        **** *  VDAC APIs are used to subsequently increment each of four voltages in range 
+  29:main.c        **** *  from 0 to DAC Range (4 Volts). 
+  30:main.c        **** *  Converted voltages are displayed on the LCD.
+  31:main.c        **** *
+  32:main.c        **** ********************************************************************************/
+  33:main.c        **** 
+  34:main.c        **** #include <project.h>
+  35:main.c        **** #include <stdio.h>
+  36:main.c        **** 
+  37:main.c        **** #if defined (__GNUC__)
+  38:main.c        ****     /* Add an explicit reference to the floating point printf library */
+  39:main.c        ****     /* to allow the usage of floating point conversion specifiers. */
+  40:main.c        ****     /* This is not linked in by default with the newlib-nano library. */
+  41:main.c        ****     asm (".global _printf_float");
+  42:main.c        **** #endif
+  43:main.c        **** 
+  44:main.c        **** 
+  45:main.c        **** int main()
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 3
+
+
+  46:main.c        **** {
+  61              		.loc 1 46 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 96
+  64              		@ frame_needed = 1, uses_anonymous_args = 0
+  65 0000 90B5     		push	{r4, r7, lr}
+  66              		.cfi_def_cfa_offset 12
+  67              		.cfi_offset 4, -12
+  68              		.cfi_offset 7, -8
+  69              		.cfi_offset 14, -4
+  70 0002 99B0     		sub	sp, sp, #100
+  71              		.cfi_def_cfa_offset 112
+  72 0004 00AF     		add	r7, sp, #0
+  73              		.cfi_def_cfa_register 7
+  47:main.c        ****     /* Declaration of all required variables */
+  48:main.c        ****     uint16 i = 0u;
+  74              		.loc 1 48 0
+  75 0006 0023     		movs	r3, #0
+  76 0008 A7F85E30 		strh	r3, [r7, #94]	@ movhi
+  49:main.c        ****     uint8 j = 0u;
+  77              		.loc 1 49 0
+  78 000c 0023     		movs	r3, #0
+  79 000e 87F85D30 		strb	r3, [r7, #93]
+  50:main.c        ****     uint8 k = 0u;
+  80              		.loc 1 50 0
+  81 0012 0023     		movs	r3, #0
+  82 0014 87F85C30 		strb	r3, [r7, #92]
+  51:main.c        ****     uint8 l = 0u; 
+  83              		.loc 1 51 0
+  84 0018 0023     		movs	r3, #0
+  85 001a 87F85B30 		strb	r3, [r7, #91]
+  52:main.c        ****     uint8 count = 0u;
+  86              		.loc 1 52 0
+  87 001e 0023     		movs	r3, #0
+  88 0020 87F85A30 		strb	r3, [r7, #90]
+  53:main.c        ****     uint8 flag = 0u;
+  89              		.loc 1 53 0
+  90 0024 0023     		movs	r3, #0
+  91 0026 87F85930 		strb	r3, [r7, #89]
+  54:main.c        ****     int16 result1 = 0u;
+  92              		.loc 1 54 0
+  93 002a 0023     		movs	r3, #0
+  94 002c A7F85630 		strh	r3, [r7, #86]	@ movhi
+  55:main.c        ****     int16 result2 = 0u;
+  95              		.loc 1 55 0
+  96 0030 0023     		movs	r3, #0
+  97 0032 A7F85430 		strh	r3, [r7, #84]	@ movhi
+  56:main.c        ****     int16 result3 = 0u;
+  98              		.loc 1 56 0
+  99 0036 0023     		movs	r3, #0
+ 100 0038 A7F85230 		strh	r3, [r7, #82]	@ movhi
+  57:main.c        ****     int16 result4 = 0u;
+ 101              		.loc 1 57 0
+ 102 003c 0023     		movs	r3, #0
+ 103 003e A7F85030 		strh	r3, [r7, #80]	@ movhi
+  58:main.c        ****     float res1 = 0u;
+ 104              		.loc 1 58 0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 4
+
+
+ 105 0042 4FF00003 		mov	r3, #0
+ 106 0046 FB64     		str	r3, [r7, #76]	@ float
+  59:main.c        ****     float res2 = 0u;
+ 107              		.loc 1 59 0
+ 108 0048 4FF00003 		mov	r3, #0
+ 109 004c BB64     		str	r3, [r7, #72]	@ float
+  60:main.c        ****     float res3 = 0u;
+ 110              		.loc 1 60 0
+ 111 004e 4FF00003 		mov	r3, #0
+ 112 0052 7B64     		str	r3, [r7, #68]	@ float
+  61:main.c        ****     float res4 = 0u;
+ 113              		.loc 1 61 0
+ 114 0054 4FF00003 		mov	r3, #0
+ 115 0058 3B64     		str	r3, [r7, #64]	@ float
+  62:main.c        ****     char8 resultStr1[16u];
+  63:main.c        ****     char8 resultStr2[16u];
+  64:main.c        ****     char8 resultStr3[16u];
+  65:main.c        ****     char8 resultStr4[16u];
+  66:main.c        ****     
+  67:main.c        ****     /* Start of all components */
+  68:main.c        ****     LCD_Start();
+ 116              		.loc 1 68 0
+ 117 005a FFF7FEFF 		bl	LCD_Start
+  69:main.c        ****     LCD_ClearDisplay();
+ 118              		.loc 1 69 0
+ 119 005e 0120     		movs	r0, #1
+ 120 0060 FFF7FEFF 		bl	LCD_WriteControl
+  70:main.c        ****     VDAC8_1_Start();
+ 121              		.loc 1 70 0
+ 122 0064 FFF7FEFF 		bl	VDAC8_1_Start
+  71:main.c        ****     VDAC8_2_Start();
+ 123              		.loc 1 71 0
+ 124 0068 FFF7FEFF 		bl	VDAC8_2_Start
+  72:main.c        ****     VDAC8_3_Start();
+ 125              		.loc 1 72 0
+ 126 006c FFF7FEFF 		bl	VDAC8_3_Start
+  73:main.c        ****     VDAC8_4_Start();
+ 127              		.loc 1 73 0
+ 128 0070 FFF7FEFF 		bl	VDAC8_4_Start
+  74:main.c        ****     ADC_SAR_Seq_Start();
+ 129              		.loc 1 74 0
+ 130 0074 FFF7FEFF 		bl	ADC_SAR_Seq_Start
+  75:main.c        ****     
+  76:main.c        ****     /* StartConvert() must be called to initiate 
+  77:main.c        ****        conversion in Free Running Mode
+  78:main.c        ****     */
+  79:main.c        ****     ADC_SAR_Seq_StartConvert();
+ 131              		.loc 1 79 0
+ 132 0078 FFF7FEFF 		bl	ADC_SAR_Seq_StartConvert
+ 133              	.L11:
+  80:main.c        **** 
+  81:main.c        ****     
+  82:main.c        ****     for(;;)
+  83:main.c        ****     {   
+  84:main.c        ****         /* Display initial VDAC voltages */
+  85:main.c        ****         if(flag == 0u)
+ 134              		.loc 1 85 0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 5
+
+
+ 135 007c 97F85930 		ldrb	r3, [r7, #89]	@ zero_extendqisi2
+ 136 0080 002B     		cmp	r3, #0
+ 137 0082 40F0BA80 		bne	.L2
+  86:main.c        ****         {
+  87:main.c        ****             LCD_Position(0u,0u);
+ 138              		.loc 1 87 0
+ 139 0086 0021     		movs	r1, #0
+ 140 0088 0020     		movs	r0, #0
+ 141 008a FFF7FEFF 		bl	LCD_Position
+  88:main.c        ****             LCD_PrintString("Initial");
+ 142              		.loc 1 88 0
+ 143 008e D548     		ldr	r0, .L12
+ 144 0090 FFF7FEFF 		bl	LCD_PrintString
+  89:main.c        ****             LCD_Position(1u,0u);
+ 145              		.loc 1 89 0
+ 146 0094 0021     		movs	r1, #0
+ 147 0096 0120     		movs	r0, #1
+ 148 0098 FFF7FEFF 		bl	LCD_Position
+  90:main.c        ****             LCD_PrintString("VDAC settings:");
+ 149              		.loc 1 90 0
+ 150 009c D248     		ldr	r0, .L12+4
+ 151 009e FFF7FEFF 		bl	LCD_PrintString
+  91:main.c        ****             ADC_SAR_Seq_IsEndConversion(ADC_SAR_Seq_WAIT_FOR_RESULT);
+ 152              		.loc 1 91 0
+ 153 00a2 0020     		movs	r0, #0
+ 154 00a4 FFF7FEFF 		bl	ADC_SAR_Seq_IsEndConversion
+  92:main.c        ****             result1 = ADC_SAR_Seq_GetResult16(0u);
+ 155              		.loc 1 92 0
+ 156 00a8 0020     		movs	r0, #0
+ 157 00aa FFF7FEFF 		bl	ADC_SAR_Seq_GetResult16
+ 158 00ae 0346     		mov	r3, r0
+ 159 00b0 A7F85630 		strh	r3, [r7, #86]	@ movhi
+  93:main.c        ****             result2 = ADC_SAR_Seq_GetResult16(1u);
+ 160              		.loc 1 93 0
+ 161 00b4 0120     		movs	r0, #1
+ 162 00b6 FFF7FEFF 		bl	ADC_SAR_Seq_GetResult16
+ 163 00ba 0346     		mov	r3, r0
+ 164 00bc A7F85430 		strh	r3, [r7, #84]	@ movhi
+  94:main.c        ****             result3 = ADC_SAR_Seq_GetResult16(2u);
+ 165              		.loc 1 94 0
+ 166 00c0 0220     		movs	r0, #2
+ 167 00c2 FFF7FEFF 		bl	ADC_SAR_Seq_GetResult16
+ 168 00c6 0346     		mov	r3, r0
+ 169 00c8 A7F85230 		strh	r3, [r7, #82]	@ movhi
+  95:main.c        ****             result4 = ADC_SAR_Seq_GetResult16(3u);
+ 170              		.loc 1 95 0
+ 171 00cc 0320     		movs	r0, #3
+ 172 00ce FFF7FEFF 		bl	ADC_SAR_Seq_GetResult16
+ 173 00d2 0346     		mov	r3, r0
+ 174 00d4 A7F85030 		strh	r3, [r7, #80]	@ movhi
+  96:main.c        ****             
+  97:main.c        ****             res1 = ADC_SAR_Seq_CountsTo_Volts(result1);
+ 175              		.loc 1 97 0
+ 176 00d8 B7F95630 		ldrsh	r3, [r7, #86]
+ 177 00dc 1846     		mov	r0, r3
+ 178 00de FFF7FEFF 		bl	ADC_SAR_Seq_CountsTo_Volts
+ 179 00e2 F864     		str	r0, [r7, #76]	@ float
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 6
+
+
+  98:main.c        ****             res2 = ADC_SAR_Seq_CountsTo_Volts(result2);
+ 180              		.loc 1 98 0
+ 181 00e4 B7F95430 		ldrsh	r3, [r7, #84]
+ 182 00e8 1846     		mov	r0, r3
+ 183 00ea FFF7FEFF 		bl	ADC_SAR_Seq_CountsTo_Volts
+ 184 00ee B864     		str	r0, [r7, #72]	@ float
+  99:main.c        ****             res3 = ADC_SAR_Seq_CountsTo_Volts(result3);
+ 185              		.loc 1 99 0
+ 186 00f0 B7F95230 		ldrsh	r3, [r7, #82]
+ 187 00f4 1846     		mov	r0, r3
+ 188 00f6 FFF7FEFF 		bl	ADC_SAR_Seq_CountsTo_Volts
+ 189 00fa 7864     		str	r0, [r7, #68]	@ float
+ 100:main.c        ****             res4 = ADC_SAR_Seq_CountsTo_Volts(result4);
+ 190              		.loc 1 100 0
+ 191 00fc B7F95030 		ldrsh	r3, [r7, #80]
+ 192 0100 1846     		mov	r0, r3
+ 193 0102 FFF7FEFF 		bl	ADC_SAR_Seq_CountsTo_Volts
+ 194 0106 3864     		str	r0, [r7, #64]	@ float
+ 101:main.c        ****             
+ 102:main.c        ****             CyDelay(2500u);
+ 195              		.loc 1 102 0
+ 196 0108 40F6C410 		movw	r0, #2500
+ 197 010c FFF7FEFF 		bl	CyDelay
+ 103:main.c        ****             LCD_ClearDisplay();
+ 198              		.loc 1 103 0
+ 199 0110 0120     		movs	r0, #1
+ 200 0112 FFF7FEFF 		bl	LCD_WriteControl
+ 104:main.c        ****             LCD_Position(0u,0u); 
+ 201              		.loc 1 104 0
+ 202 0116 0021     		movs	r1, #0
+ 203 0118 0020     		movs	r0, #0
+ 204 011a FFF7FEFF 		bl	LCD_Position
+ 105:main.c        ****             LCD_PrintString("C1");
+ 205              		.loc 1 105 0
+ 206 011e B348     		ldr	r0, .L12+8
+ 207 0120 FFF7FEFF 		bl	LCD_PrintString
+ 106:main.c        ****             sprintf((char *)resultStr1,"%+1.2f",res1);
+ 208              		.loc 1 106 0
+ 209 0124 F86C     		ldr	r0, [r7, #76]	@ float
+ 210 0126 FFF7FEFF 		bl	__aeabi_f2d
+ 211 012a 0346     		mov	r3, r0
+ 212 012c 0C46     		mov	r4, r1
+ 213 012e 07F13000 		add	r0, r7, #48
+ 214 0132 1A46     		mov	r2, r3
+ 215 0134 2346     		mov	r3, r4
+ 216 0136 AE49     		ldr	r1, .L12+12
+ 217 0138 FFF7FEFF 		bl	sprintf
+ 107:main.c        ****             LCD_PrintString(resultStr1);
+ 218              		.loc 1 107 0
+ 219 013c 07F13003 		add	r3, r7, #48
+ 220 0140 1846     		mov	r0, r3
+ 221 0142 FFF7FEFF 		bl	LCD_PrintString
+ 108:main.c        ****         
+ 109:main.c        ****             LCD_PrintString(" C2");
+ 222              		.loc 1 109 0
+ 223 0146 AB48     		ldr	r0, .L12+16
+ 224 0148 FFF7FEFF 		bl	LCD_PrintString
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 7
+
+
+ 110:main.c        ****             sprintf((char *)resultStr2,"%+1.2f",res2);
+ 225              		.loc 1 110 0
+ 226 014c B86C     		ldr	r0, [r7, #72]	@ float
+ 227 014e FFF7FEFF 		bl	__aeabi_f2d
+ 228 0152 0346     		mov	r3, r0
+ 229 0154 0C46     		mov	r4, r1
+ 230 0156 07F12000 		add	r0, r7, #32
+ 231 015a 1A46     		mov	r2, r3
+ 232 015c 2346     		mov	r3, r4
+ 233 015e A449     		ldr	r1, .L12+12
+ 234 0160 FFF7FEFF 		bl	sprintf
+ 111:main.c        ****             LCD_PrintString(resultStr2);
+ 235              		.loc 1 111 0
+ 236 0164 07F12003 		add	r3, r7, #32
+ 237 0168 1846     		mov	r0, r3
+ 238 016a FFF7FEFF 		bl	LCD_PrintString
+ 112:main.c        ****             
+ 113:main.c        ****             LCD_Position(1u,0u); 
+ 239              		.loc 1 113 0
+ 240 016e 0021     		movs	r1, #0
+ 241 0170 0120     		movs	r0, #1
+ 242 0172 FFF7FEFF 		bl	LCD_Position
+ 114:main.c        ****             LCD_PrintString("C3");
+ 243              		.loc 1 114 0
+ 244 0176 A048     		ldr	r0, .L12+20
+ 245 0178 FFF7FEFF 		bl	LCD_PrintString
+ 115:main.c        ****             sprintf((char *)resultStr3,"%+1.2f",res3);
+ 246              		.loc 1 115 0
+ 247 017c 786C     		ldr	r0, [r7, #68]	@ float
+ 248 017e FFF7FEFF 		bl	__aeabi_f2d
+ 249 0182 0346     		mov	r3, r0
+ 250 0184 0C46     		mov	r4, r1
+ 251 0186 07F11000 		add	r0, r7, #16
+ 252 018a 1A46     		mov	r2, r3
+ 253 018c 2346     		mov	r3, r4
+ 254 018e 9849     		ldr	r1, .L12+12
+ 255 0190 FFF7FEFF 		bl	sprintf
+ 116:main.c        ****             LCD_PrintString(resultStr3);
+ 256              		.loc 1 116 0
+ 257 0194 07F11003 		add	r3, r7, #16
+ 258 0198 1846     		mov	r0, r3
+ 259 019a FFF7FEFF 		bl	LCD_PrintString
+ 117:main.c        ****         
+ 118:main.c        ****             LCD_PrintString(" C4");
+ 260              		.loc 1 118 0
+ 261 019e 9748     		ldr	r0, .L12+24
+ 262 01a0 FFF7FEFF 		bl	LCD_PrintString
+ 119:main.c        ****             sprintf((char *)resultStr4,"%+1.2f",res4);
+ 263              		.loc 1 119 0
+ 264 01a4 386C     		ldr	r0, [r7, #64]	@ float
+ 265 01a6 FFF7FEFF 		bl	__aeabi_f2d
+ 266 01aa 0346     		mov	r3, r0
+ 267 01ac 0C46     		mov	r4, r1
+ 268 01ae 3846     		mov	r0, r7
+ 269 01b0 1A46     		mov	r2, r3
+ 270 01b2 2346     		mov	r3, r4
+ 271 01b4 8E49     		ldr	r1, .L12+12
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 8
+
+
+ 272 01b6 FFF7FEFF 		bl	sprintf
+ 120:main.c        ****             LCD_PrintString(resultStr4);
+ 273              		.loc 1 120 0
+ 274 01ba 3B46     		mov	r3, r7
+ 275 01bc 1846     		mov	r0, r3
+ 276 01be FFF7FEFF 		bl	LCD_PrintString
+ 121:main.c        ****             CyDelay(10000u);
+ 277              		.loc 1 121 0
+ 278 01c2 42F21070 		movw	r0, #10000
+ 279 01c6 FFF7FEFF 		bl	CyDelay
+ 122:main.c        ****             flag = 1u;
+ 280              		.loc 1 122 0
+ 281 01ca 0123     		movs	r3, #1
+ 282 01cc 87F85930 		strb	r3, [r7, #89]
+ 123:main.c        ****             LCD_ClearDisplay();
+ 283              		.loc 1 123 0
+ 284 01d0 0120     		movs	r0, #1
+ 285 01d2 FFF7FEFF 		bl	LCD_WriteControl
+ 124:main.c        ****             LCD_Position(0u,0u);
+ 286              		.loc 1 124 0
+ 287 01d6 0021     		movs	r1, #0
+ 288 01d8 0020     		movs	r0, #0
+ 289 01da FFF7FEFF 		bl	LCD_Position
+ 125:main.c        ****             LCD_PrintString("Start");
+ 290              		.loc 1 125 0
+ 291 01de 8848     		ldr	r0, .L12+28
+ 292 01e0 FFF7FEFF 		bl	LCD_PrintString
+ 126:main.c        ****             LCD_Position(1u,0u);
+ 293              		.loc 1 126 0
+ 294 01e4 0021     		movs	r1, #0
+ 295 01e6 0120     		movs	r0, #1
+ 296 01e8 FFF7FEFF 		bl	LCD_Position
+ 127:main.c        ****             LCD_PrintString("incrementing.. ");
+ 297              		.loc 1 127 0
+ 298 01ec 8548     		ldr	r0, .L12+32
+ 299 01ee FFF7FEFF 		bl	LCD_PrintString
+ 128:main.c        ****             CyDelay(2000u);
+ 300              		.loc 1 128 0
+ 301 01f2 4FF4FA60 		mov	r0, #2000
+ 302 01f6 FFF7FEFF 		bl	CyDelay
+ 303              	.L2:
+ 129:main.c        ****             
+ 130:main.c        ****         }
+ 131:main.c        ****     
+ 132:main.c        ****         /* Start subsequent voltage incrementing for each channel */
+ 133:main.c        ****         if(count < 20u)
+ 304              		.loc 1 133 0
+ 305 01fa 97F85A30 		ldrb	r3, [r7, #90]	@ zero_extendqisi2
+ 306 01fe 132B     		cmp	r3, #19
+ 307 0200 12D8     		bhi	.L3
+ 134:main.c        ****         {
+ 135:main.c        ****             VDAC8_1_SetValue(i);
+ 308              		.loc 1 135 0
+ 309 0202 B7F85E30 		ldrh	r3, [r7, #94]	@ movhi
+ 310 0206 DBB2     		uxtb	r3, r3
+ 311 0208 1846     		mov	r0, r3
+ 312 020a FFF7FEFF 		bl	VDAC8_1_SetValue
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 9
+
+
+ 136:main.c        ****             i += 10u;
+ 313              		.loc 1 136 0
+ 314 020e B7F85E30 		ldrh	r3, [r7, #94]	@ movhi
+ 315 0212 0A33     		adds	r3, r3, #10
+ 316 0214 A7F85E30 		strh	r3, [r7, #94]	@ movhi
+ 137:main.c        ****             if(i > 255u)
+ 317              		.loc 1 137 0
+ 318 0218 B7F85E30 		ldrh	r3, [r7, #94]
+ 319 021c FF2B     		cmp	r3, #255
+ 320 021e 50D9     		bls	.L5
+ 138:main.c        ****             i = 0u;
+ 321              		.loc 1 138 0
+ 322 0220 0023     		movs	r3, #0
+ 323 0222 A7F85E30 		strh	r3, [r7, #94]	@ movhi
+ 324 0226 4CE0     		b	.L5
+ 325              	.L3:
+ 139:main.c        ****          }
+ 140:main.c        ****         else if((count > 20u) && (count < 40u))
+ 326              		.loc 1 140 0
+ 327 0228 97F85A30 		ldrb	r3, [r7, #90]	@ zero_extendqisi2
+ 328 022c 142B     		cmp	r3, #20
+ 329 022e 15D9     		bls	.L6
+ 330              		.loc 1 140 0 is_stmt 0 discriminator 1
+ 331 0230 97F85A30 		ldrb	r3, [r7, #90]	@ zero_extendqisi2
+ 332 0234 272B     		cmp	r3, #39
+ 333 0236 11D8     		bhi	.L6
+ 141:main.c        ****         {
+ 142:main.c        ****             VDAC8_2_SetValue(j);
+ 334              		.loc 1 142 0 is_stmt 1
+ 335 0238 97F85D30 		ldrb	r3, [r7, #93]	@ zero_extendqisi2
+ 336 023c 1846     		mov	r0, r3
+ 337 023e FFF7FEFF 		bl	VDAC8_2_SetValue
+ 143:main.c        ****             j += 10u;
+ 338              		.loc 1 143 0
+ 339 0242 97F85D30 		ldrb	r3, [r7, #93]
+ 340 0246 0A33     		adds	r3, r3, #10
+ 341 0248 87F85D30 		strb	r3, [r7, #93]
+ 144:main.c        ****             if(i > 255u)
+ 342              		.loc 1 144 0
+ 343 024c B7F85E30 		ldrh	r3, [r7, #94]
+ 344 0250 FF2B     		cmp	r3, #255
+ 345 0252 36D9     		bls	.L5
+ 145:main.c        ****             j = 0u;
+ 346              		.loc 1 145 0
+ 347 0254 0023     		movs	r3, #0
+ 348 0256 87F85D30 		strb	r3, [r7, #93]
+ 144:main.c        ****             if(i > 255u)
+ 349              		.loc 1 144 0
+ 350 025a 32E0     		b	.L5
+ 351              	.L6:
+ 146:main.c        ****         }
+ 147:main.c        ****         else if((count > 40u) && (count < 60u))
+ 352              		.loc 1 147 0
+ 353 025c 97F85A30 		ldrb	r3, [r7, #90]	@ zero_extendqisi2
+ 354 0260 282B     		cmp	r3, #40
+ 355 0262 15D9     		bls	.L8
+ 356              		.loc 1 147 0 is_stmt 0 discriminator 1
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 10
+
+
+ 357 0264 97F85A30 		ldrb	r3, [r7, #90]	@ zero_extendqisi2
+ 358 0268 3B2B     		cmp	r3, #59
+ 359 026a 11D8     		bhi	.L8
+ 148:main.c        ****         {
+ 149:main.c        ****             VDAC8_3_SetValue(k);
+ 360              		.loc 1 149 0 is_stmt 1
+ 361 026c 97F85C30 		ldrb	r3, [r7, #92]	@ zero_extendqisi2
+ 362 0270 1846     		mov	r0, r3
+ 363 0272 FFF7FEFF 		bl	VDAC8_3_SetValue
+ 150:main.c        ****             k += 10u;
+ 364              		.loc 1 150 0
+ 365 0276 97F85C30 		ldrb	r3, [r7, #92]
+ 366 027a 0A33     		adds	r3, r3, #10
+ 367 027c 87F85C30 		strb	r3, [r7, #92]
+ 151:main.c        ****             if(i > 255u)
+ 368              		.loc 1 151 0
+ 369 0280 B7F85E30 		ldrh	r3, [r7, #94]
+ 370 0284 FF2B     		cmp	r3, #255
+ 371 0286 1CD9     		bls	.L5
+ 152:main.c        ****             k = 0u;
+ 372              		.loc 1 152 0
+ 373 0288 0023     		movs	r3, #0
+ 374 028a 87F85C30 		strb	r3, [r7, #92]
+ 151:main.c        ****             if(i > 255u)
+ 375              		.loc 1 151 0
+ 376 028e 18E0     		b	.L5
+ 377              	.L8:
+ 153:main.c        ****         }
+ 154:main.c        ****         
+ 155:main.c        ****         else if((count > 60u) && (count < 80u))
+ 378              		.loc 1 155 0
+ 379 0290 97F85A30 		ldrb	r3, [r7, #90]	@ zero_extendqisi2
+ 380 0294 3C2B     		cmp	r3, #60
+ 381 0296 14D9     		bls	.L5
+ 382              		.loc 1 155 0 is_stmt 0 discriminator 1
+ 383 0298 97F85A30 		ldrb	r3, [r7, #90]	@ zero_extendqisi2
+ 384 029c 4F2B     		cmp	r3, #79
+ 385 029e 10D8     		bhi	.L5
+ 156:main.c        ****         {
+ 157:main.c        ****             VDAC8_4_SetValue(l);
+ 386              		.loc 1 157 0 is_stmt 1
+ 387 02a0 97F85B30 		ldrb	r3, [r7, #91]	@ zero_extendqisi2
+ 388 02a4 1846     		mov	r0, r3
+ 389 02a6 FFF7FEFF 		bl	VDAC8_4_SetValue
+ 158:main.c        ****             l += 10u;
+ 390              		.loc 1 158 0
+ 391 02aa 97F85B30 		ldrb	r3, [r7, #91]
+ 392 02ae 0A33     		adds	r3, r3, #10
+ 393 02b0 87F85B30 		strb	r3, [r7, #91]
+ 159:main.c        ****             if(i > 255u)
+ 394              		.loc 1 159 0
+ 395 02b4 B7F85E30 		ldrh	r3, [r7, #94]
+ 396 02b8 FF2B     		cmp	r3, #255
+ 397 02ba 02D9     		bls	.L5
+ 160:main.c        ****             l = 0u;
+ 398              		.loc 1 160 0
+ 399 02bc 0023     		movs	r3, #0
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 11
+
+
+ 400 02be 87F85B30 		strb	r3, [r7, #91]
+ 401              	.L5:
+ 161:main.c        ****         }
+ 162:main.c        ****         
+ 163:main.c        ****         count += 1u;
+ 402              		.loc 1 163 0
+ 403 02c2 97F85A30 		ldrb	r3, [r7, #90]
+ 404 02c6 0133     		adds	r3, r3, #1
+ 405 02c8 87F85A30 		strb	r3, [r7, #90]
+ 164:main.c        ****         if(count > 80u)
+ 406              		.loc 1 164 0
+ 407 02cc 97F85A30 		ldrb	r3, [r7, #90]	@ zero_extendqisi2
+ 408 02d0 502B     		cmp	r3, #80
+ 409 02d2 02D9     		bls	.L10
+ 165:main.c        ****         count = 0u;
+ 410              		.loc 1 165 0
+ 411 02d4 0023     		movs	r3, #0
+ 412 02d6 87F85A30 		strb	r3, [r7, #90]
+ 413              	.L10:
+ 166:main.c        ****         
+ 167:main.c        ****         CyDelay(200u); 
+ 414              		.loc 1 167 0
+ 415 02da C820     		movs	r0, #200
+ 416 02dc FFF7FEFF 		bl	CyDelay
+ 168:main.c        ****         result1 = ADC_SAR_Seq_finalArray[0u];
+ 417              		.loc 1 168 0
+ 418 02e0 494B     		ldr	r3, .L12+36
+ 419 02e2 1B88     		ldrh	r3, [r3]	@ movhi
+ 420 02e4 A7F85630 		strh	r3, [r7, #86]	@ movhi
+ 169:main.c        ****         result2 = ADC_SAR_Seq_finalArray[1u];
+ 421              		.loc 1 169 0
+ 422 02e8 474B     		ldr	r3, .L12+36
+ 423 02ea 5B88     		ldrh	r3, [r3, #2]	@ movhi
+ 424 02ec A7F85430 		strh	r3, [r7, #84]	@ movhi
+ 170:main.c        ****         result3 = ADC_SAR_Seq_finalArray[2u];
+ 425              		.loc 1 170 0
+ 426 02f0 454B     		ldr	r3, .L12+36
+ 427 02f2 9B88     		ldrh	r3, [r3, #4]	@ movhi
+ 428 02f4 A7F85230 		strh	r3, [r7, #82]	@ movhi
+ 171:main.c        ****         result4 = ADC_SAR_Seq_finalArray[3u];
+ 429              		.loc 1 171 0
+ 430 02f8 434B     		ldr	r3, .L12+36
+ 431 02fa DB88     		ldrh	r3, [r3, #6]	@ movhi
+ 432 02fc A7F85030 		strh	r3, [r7, #80]	@ movhi
+ 172:main.c        ****         
+ 173:main.c        ****         res1 = ADC_SAR_Seq_CountsTo_Volts(result1);
+ 433              		.loc 1 173 0
+ 434 0300 B7F95630 		ldrsh	r3, [r7, #86]
+ 435 0304 1846     		mov	r0, r3
+ 436 0306 FFF7FEFF 		bl	ADC_SAR_Seq_CountsTo_Volts
+ 437 030a F864     		str	r0, [r7, #76]	@ float
+ 174:main.c        ****         res2 = ADC_SAR_Seq_CountsTo_Volts(result2);
+ 438              		.loc 1 174 0
+ 439 030c B7F95430 		ldrsh	r3, [r7, #84]
+ 440 0310 1846     		mov	r0, r3
+ 441 0312 FFF7FEFF 		bl	ADC_SAR_Seq_CountsTo_Volts
+ 442 0316 B864     		str	r0, [r7, #72]	@ float
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 12
+
+
+ 175:main.c        ****         res3 = ADC_SAR_Seq_CountsTo_Volts(result3);
+ 443              		.loc 1 175 0
+ 444 0318 B7F95230 		ldrsh	r3, [r7, #82]
+ 445 031c 1846     		mov	r0, r3
+ 446 031e FFF7FEFF 		bl	ADC_SAR_Seq_CountsTo_Volts
+ 447 0322 7864     		str	r0, [r7, #68]	@ float
+ 176:main.c        ****         res4 = ADC_SAR_Seq_CountsTo_Volts(result4);
+ 448              		.loc 1 176 0
+ 449 0324 B7F95030 		ldrsh	r3, [r7, #80]
+ 450 0328 1846     		mov	r0, r3
+ 451 032a FFF7FEFF 		bl	ADC_SAR_Seq_CountsTo_Volts
+ 452 032e 3864     		str	r0, [r7, #64]	@ float
+ 177:main.c        ****         
+ 178:main.c        ****         LCD_ClearDisplay();
+ 453              		.loc 1 178 0
+ 454 0330 0120     		movs	r0, #1
+ 455 0332 FFF7FEFF 		bl	LCD_WriteControl
+ 179:main.c        ****         LCD_Position(0u,0u); 
+ 456              		.loc 1 179 0
+ 457 0336 0021     		movs	r1, #0
+ 458 0338 0020     		movs	r0, #0
+ 459 033a FFF7FEFF 		bl	LCD_Position
+ 180:main.c        ****         LCD_PrintString("C1");
+ 460              		.loc 1 180 0
+ 461 033e 2B48     		ldr	r0, .L12+8
+ 462 0340 FFF7FEFF 		bl	LCD_PrintString
+ 181:main.c        ****         sprintf((char *)resultStr1,"%+1.2f",res4);
+ 463              		.loc 1 181 0
+ 464 0344 386C     		ldr	r0, [r7, #64]	@ float
+ 465 0346 FFF7FEFF 		bl	__aeabi_f2d
+ 466 034a 0346     		mov	r3, r0
+ 467 034c 0C46     		mov	r4, r1
+ 468 034e 07F13000 		add	r0, r7, #48
+ 469 0352 1A46     		mov	r2, r3
+ 470 0354 2346     		mov	r3, r4
+ 471 0356 2649     		ldr	r1, .L12+12
+ 472 0358 FFF7FEFF 		bl	sprintf
+ 182:main.c        ****         LCD_PrintString(resultStr1);
+ 473              		.loc 1 182 0
+ 474 035c 07F13003 		add	r3, r7, #48
+ 475 0360 1846     		mov	r0, r3
+ 476 0362 FFF7FEFF 		bl	LCD_PrintString
+ 183:main.c        ****     
+ 184:main.c        ****         LCD_PrintString(" C2");
+ 477              		.loc 1 184 0
+ 478 0366 2348     		ldr	r0, .L12+16
+ 479 0368 FFF7FEFF 		bl	LCD_PrintString
+ 185:main.c        ****         sprintf((char *)resultStr2,"%+1.2f",res3);
+ 480              		.loc 1 185 0
+ 481 036c 786C     		ldr	r0, [r7, #68]	@ float
+ 482 036e FFF7FEFF 		bl	__aeabi_f2d
+ 483 0372 0346     		mov	r3, r0
+ 484 0374 0C46     		mov	r4, r1
+ 485 0376 07F12000 		add	r0, r7, #32
+ 486 037a 1A46     		mov	r2, r3
+ 487 037c 2346     		mov	r3, r4
+ 488 037e 1C49     		ldr	r1, .L12+12
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 13
+
+
+ 489 0380 FFF7FEFF 		bl	sprintf
+ 186:main.c        ****         LCD_PrintString(resultStr2);
+ 490              		.loc 1 186 0
+ 491 0384 07F12003 		add	r3, r7, #32
+ 492 0388 1846     		mov	r0, r3
+ 493 038a FFF7FEFF 		bl	LCD_PrintString
+ 187:main.c        ****         
+ 188:main.c        ****         LCD_Position(1u,0u); 
+ 494              		.loc 1 188 0
+ 495 038e 0021     		movs	r1, #0
+ 496 0390 0120     		movs	r0, #1
+ 497 0392 FFF7FEFF 		bl	LCD_Position
+ 189:main.c        ****         LCD_PrintString("C3");
+ 498              		.loc 1 189 0
+ 499 0396 1848     		ldr	r0, .L12+20
+ 500 0398 FFF7FEFF 		bl	LCD_PrintString
+ 190:main.c        ****         sprintf((char *)resultStr3,"%+1.2f",res2);
+ 501              		.loc 1 190 0
+ 502 039c B86C     		ldr	r0, [r7, #72]	@ float
+ 503 039e FFF7FEFF 		bl	__aeabi_f2d
+ 504 03a2 0346     		mov	r3, r0
+ 505 03a4 0C46     		mov	r4, r1
+ 506 03a6 07F11000 		add	r0, r7, #16
+ 507 03aa 1A46     		mov	r2, r3
+ 508 03ac 2346     		mov	r3, r4
+ 509 03ae 1049     		ldr	r1, .L12+12
+ 510 03b0 FFF7FEFF 		bl	sprintf
+ 191:main.c        ****         LCD_PrintString(resultStr3);
+ 511              		.loc 1 191 0
+ 512 03b4 07F11003 		add	r3, r7, #16
+ 513 03b8 1846     		mov	r0, r3
+ 514 03ba FFF7FEFF 		bl	LCD_PrintString
+ 192:main.c        ****     
+ 193:main.c        ****         LCD_PrintString(" C4");
+ 515              		.loc 1 193 0
+ 516 03be 0F48     		ldr	r0, .L12+24
+ 517 03c0 FFF7FEFF 		bl	LCD_PrintString
+ 194:main.c        ****         sprintf((char *)resultStr4,"%+1.2f",res1);
+ 518              		.loc 1 194 0
+ 519 03c4 F86C     		ldr	r0, [r7, #76]	@ float
+ 520 03c6 FFF7FEFF 		bl	__aeabi_f2d
+ 521 03ca 0346     		mov	r3, r0
+ 522 03cc 0C46     		mov	r4, r1
+ 523 03ce 3846     		mov	r0, r7
+ 524 03d0 1A46     		mov	r2, r3
+ 525 03d2 2346     		mov	r3, r4
+ 526 03d4 0649     		ldr	r1, .L12+12
+ 527 03d6 FFF7FEFF 		bl	sprintf
+ 195:main.c        ****         LCD_PrintString(resultStr4);
+ 528              		.loc 1 195 0
+ 529 03da 3B46     		mov	r3, r7
+ 530 03dc 1846     		mov	r0, r3
+ 531 03de FFF7FEFF 		bl	LCD_PrintString
+ 196:main.c        ****     }
+ 532              		.loc 1 196 0
+ 533 03e2 4BE6     		b	.L11
+ 534              	.L13:
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 14
+
+
+ 535              		.align	2
+ 536              	.L12:
+ 537 03e4 00000000 		.word	.LC0
+ 538 03e8 08000000 		.word	.LC1
+ 539 03ec 18000000 		.word	.LC2
+ 540 03f0 1C000000 		.word	.LC3
+ 541 03f4 24000000 		.word	.LC4
+ 542 03f8 28000000 		.word	.LC5
+ 543 03fc 2C000000 		.word	.LC6
+ 544 0400 30000000 		.word	.LC7
+ 545 0404 38000000 		.word	.LC8
+ 546 0408 00000000 		.word	ADC_SAR_Seq_finalArray
+ 547              		.cfi_endproc
+ 548              	.LFE64:
+ 549              		.size	main, .-main
+ 550              		.text
+ 551              	.Letext0:
+ 552              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 553              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 554              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 555              		.file 5 "Generated_Source\\PSoC5/ADC_SAR_Seq.h"
+ 556              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ 557              		.section	.debug_info,"",%progbits
+ 558              	.Ldebug_info0:
+ 559 0000 1E020000 		.4byte	0x21e
+ 560 0004 0400     		.2byte	0x4
+ 561 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 562 000a 04       		.byte	0x4
+ 563 000b 01       		.uleb128 0x1
+ 564 000c EE010000 		.4byte	.LASF36
+ 565 0010 0C       		.byte	0xc
+ 566 0011 94010000 		.4byte	.LASF37
+ 567 0015 09010000 		.4byte	.LASF38
+ 568 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 569 001d 00000000 		.4byte	0
+ 570 0021 00000000 		.4byte	.Ldebug_line0
+ 571 0025 02       		.uleb128 0x2
+ 572 0026 01       		.byte	0x1
+ 573 0027 06       		.byte	0x6
+ 574 0028 E2010000 		.4byte	.LASF0
+ 575 002c 02       		.uleb128 0x2
+ 576 002d 01       		.byte	0x1
+ 577 002e 08       		.byte	0x8
+ 578 002f 5C000000 		.4byte	.LASF1
+ 579 0033 02       		.uleb128 0x2
+ 580 0034 02       		.byte	0x2
+ 581 0035 05       		.byte	0x5
+ 582 0036 A6010000 		.4byte	.LASF2
+ 583 003a 02       		.uleb128 0x2
+ 584 003b 02       		.byte	0x2
+ 585 003c 07       		.byte	0x7
+ 586 003d 88000000 		.4byte	.LASF3
+ 587 0041 03       		.uleb128 0x3
+ 588 0042 20000000 		.4byte	.LASF9
+ 589 0046 02       		.byte	0x2
+ 590 0047 3F       		.byte	0x3f
+ 591 0048 4C000000 		.4byte	0x4c
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 15
+
+
+ 592 004c 02       		.uleb128 0x2
+ 593 004d 04       		.byte	0x4
+ 594 004e 05       		.byte	0x5
+ 595 004f CD010000 		.4byte	.LASF4
+ 596 0053 02       		.uleb128 0x2
+ 597 0054 04       		.byte	0x4
+ 598 0055 07       		.byte	0x7
+ 599 0056 76000000 		.4byte	.LASF5
+ 600 005a 02       		.uleb128 0x2
+ 601 005b 08       		.byte	0x8
+ 602 005c 05       		.byte	0x5
+ 603 005d 86010000 		.4byte	.LASF6
+ 604 0061 02       		.uleb128 0x2
+ 605 0062 08       		.byte	0x8
+ 606 0063 07       		.byte	0x7
+ 607 0064 CD000000 		.4byte	.LASF7
+ 608 0068 04       		.uleb128 0x4
+ 609 0069 04       		.byte	0x4
+ 610 006a 05       		.byte	0x5
+ 611 006b 696E7400 		.ascii	"int\000"
+ 612 006f 02       		.uleb128 0x2
+ 613 0070 04       		.byte	0x4
+ 614 0071 07       		.byte	0x7
+ 615 0072 C0000000 		.4byte	.LASF8
+ 616 0076 03       		.uleb128 0x3
+ 617 0077 F8000000 		.4byte	.LASF10
+ 618 007b 03       		.byte	0x3
+ 619 007c 2C       		.byte	0x2c
+ 620 007d 41000000 		.4byte	0x41
+ 621 0081 05       		.uleb128 0x5
+ 622 0082 B0010000 		.4byte	.LASF11
+ 623 0086 04       		.byte	0x4
+ 624 0087 9201     		.2byte	0x192
+ 625 0089 2C000000 		.4byte	0x2c
+ 626 008d 05       		.uleb128 0x5
+ 627 008e B4000000 		.4byte	.LASF12
+ 628 0092 04       		.byte	0x4
+ 629 0093 9301     		.2byte	0x193
+ 630 0095 3A000000 		.4byte	0x3a
+ 631 0099 05       		.uleb128 0x5
+ 632 009a 70000000 		.4byte	.LASF13
+ 633 009e 04       		.byte	0x4
+ 634 009f 9601     		.2byte	0x196
+ 635 00a1 33000000 		.4byte	0x33
+ 636 00a5 02       		.uleb128 0x2
+ 637 00a6 04       		.byte	0x4
+ 638 00a7 04       		.byte	0x4
+ 639 00a8 56000000 		.4byte	.LASF14
+ 640 00ac 02       		.uleb128 0x2
+ 641 00ad 08       		.byte	0x8
+ 642 00ae 04       		.byte	0x4
+ 643 00af A8000000 		.4byte	.LASF15
+ 644 00b3 05       		.uleb128 0x5
+ 645 00b4 6A000000 		.4byte	.LASF16
+ 646 00b8 04       		.byte	0x4
+ 647 00b9 A301     		.2byte	0x1a3
+ 648 00bb BF000000 		.4byte	0xbf
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 16
+
+
+ 649 00bf 02       		.uleb128 0x2
+ 650 00c0 01       		.byte	0x1
+ 651 00c1 08       		.byte	0x8
+ 652 00c2 9B010000 		.4byte	.LASF17
+ 653 00c6 02       		.uleb128 0x2
+ 654 00c7 08       		.byte	0x8
+ 655 00c8 04       		.byte	0x4
+ 656 00c9 D6010000 		.4byte	.LASF18
+ 657 00cd 02       		.uleb128 0x2
+ 658 00ce 04       		.byte	0x4
+ 659 00cf 07       		.byte	0x7
+ 660 00d0 00010000 		.4byte	.LASF19
+ 661 00d4 06       		.uleb128 0x6
+ 662 00d5 AF000000 		.4byte	.LASF39
+ 663 00d9 01       		.byte	0x1
+ 664 00da 2D       		.byte	0x2d
+ 665 00db 68000000 		.4byte	0x68
+ 666 00df 00000000 		.4byte	.LFB64
+ 667 00e3 0C040000 		.4byte	.LFE64-.LFB64
+ 668 00e7 01       		.uleb128 0x1
+ 669 00e8 9C       		.byte	0x9c
+ 670 00e9 E5010000 		.4byte	0x1e5
+ 671 00ed 07       		.uleb128 0x7
+ 672 00ee 6900     		.ascii	"i\000"
+ 673 00f0 01       		.byte	0x1
+ 674 00f1 30       		.byte	0x30
+ 675 00f2 8D000000 		.4byte	0x8d
+ 676 00f6 02       		.uleb128 0x2
+ 677 00f7 91       		.byte	0x91
+ 678 00f8 6E       		.sleb128 -18
+ 679 00f9 07       		.uleb128 0x7
+ 680 00fa 6A00     		.ascii	"j\000"
+ 681 00fc 01       		.byte	0x1
+ 682 00fd 31       		.byte	0x31
+ 683 00fe 81000000 		.4byte	0x81
+ 684 0102 02       		.uleb128 0x2
+ 685 0103 91       		.byte	0x91
+ 686 0104 6D       		.sleb128 -19
+ 687 0105 07       		.uleb128 0x7
+ 688 0106 6B00     		.ascii	"k\000"
+ 689 0108 01       		.byte	0x1
+ 690 0109 32       		.byte	0x32
+ 691 010a 81000000 		.4byte	0x81
+ 692 010e 02       		.uleb128 0x2
+ 693 010f 91       		.byte	0x91
+ 694 0110 6C       		.sleb128 -20
+ 695 0111 07       		.uleb128 0x7
+ 696 0112 6C00     		.ascii	"l\000"
+ 697 0114 01       		.byte	0x1
+ 698 0115 33       		.byte	0x33
+ 699 0116 81000000 		.4byte	0x81
+ 700 011a 02       		.uleb128 0x2
+ 701 011b 91       		.byte	0x91
+ 702 011c 6B       		.sleb128 -21
+ 703 011d 08       		.uleb128 0x8
+ 704 011e A0010000 		.4byte	.LASF20
+ 705 0122 01       		.byte	0x1
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 17
+
+
+ 706 0123 34       		.byte	0x34
+ 707 0124 81000000 		.4byte	0x81
+ 708 0128 02       		.uleb128 0x2
+ 709 0129 91       		.byte	0x91
+ 710 012a 6A       		.sleb128 -22
+ 711 012b 08       		.uleb128 0x8
+ 712 012c BB000000 		.4byte	.LASF21
+ 713 0130 01       		.byte	0x1
+ 714 0131 35       		.byte	0x35
+ 715 0132 81000000 		.4byte	0x81
+ 716 0136 02       		.uleb128 0x2
+ 717 0137 91       		.byte	0x91
+ 718 0138 69       		.sleb128 -23
+ 719 0139 08       		.uleb128 0x8
+ 720 013a 00000000 		.4byte	.LASF22
+ 721 013e 01       		.byte	0x1
+ 722 013f 36       		.byte	0x36
+ 723 0140 99000000 		.4byte	0x99
+ 724 0144 02       		.uleb128 0x2
+ 725 0145 91       		.byte	0x91
+ 726 0146 66       		.sleb128 -26
+ 727 0147 08       		.uleb128 0x8
+ 728 0148 08000000 		.4byte	.LASF23
+ 729 014c 01       		.byte	0x1
+ 730 014d 37       		.byte	0x37
+ 731 014e 99000000 		.4byte	0x99
+ 732 0152 02       		.uleb128 0x2
+ 733 0153 91       		.byte	0x91
+ 734 0154 64       		.sleb128 -28
+ 735 0155 08       		.uleb128 0x8
+ 736 0156 10000000 		.4byte	.LASF24
+ 737 015a 01       		.byte	0x1
+ 738 015b 38       		.byte	0x38
+ 739 015c 99000000 		.4byte	0x99
+ 740 0160 02       		.uleb128 0x2
+ 741 0161 91       		.byte	0x91
+ 742 0162 62       		.sleb128 -30
+ 743 0163 08       		.uleb128 0x8
+ 744 0164 18000000 		.4byte	.LASF25
+ 745 0168 01       		.byte	0x1
+ 746 0169 39       		.byte	0x39
+ 747 016a 99000000 		.4byte	0x99
+ 748 016e 02       		.uleb128 0x2
+ 749 016f 91       		.byte	0x91
+ 750 0170 60       		.sleb128 -32
+ 751 0171 08       		.uleb128 0x8
+ 752 0172 E4000000 		.4byte	.LASF26
+ 753 0176 01       		.byte	0x1
+ 754 0177 3A       		.byte	0x3a
+ 755 0178 A5000000 		.4byte	0xa5
+ 756 017c 02       		.uleb128 0x2
+ 757 017d 91       		.byte	0x91
+ 758 017e 5C       		.sleb128 -36
+ 759 017f 08       		.uleb128 0x8
+ 760 0180 E9000000 		.4byte	.LASF27
+ 761 0184 01       		.byte	0x1
+ 762 0185 3B       		.byte	0x3b
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 18
+
+
+ 763 0186 A5000000 		.4byte	0xa5
+ 764 018a 02       		.uleb128 0x2
+ 765 018b 91       		.byte	0x91
+ 766 018c 58       		.sleb128 -40
+ 767 018d 08       		.uleb128 0x8
+ 768 018e EE000000 		.4byte	.LASF28
+ 769 0192 01       		.byte	0x1
+ 770 0193 3C       		.byte	0x3c
+ 771 0194 A5000000 		.4byte	0xa5
+ 772 0198 02       		.uleb128 0x2
+ 773 0199 91       		.byte	0x91
+ 774 019a 54       		.sleb128 -44
+ 775 019b 08       		.uleb128 0x8
+ 776 019c F3000000 		.4byte	.LASF29
+ 777 01a0 01       		.byte	0x1
+ 778 01a1 3D       		.byte	0x3d
+ 779 01a2 A5000000 		.4byte	0xa5
+ 780 01a6 02       		.uleb128 0x2
+ 781 01a7 91       		.byte	0x91
+ 782 01a8 50       		.sleb128 -48
+ 783 01a9 08       		.uleb128 0x8
+ 784 01aa 2A000000 		.4byte	.LASF30
+ 785 01ae 01       		.byte	0x1
+ 786 01af 3E       		.byte	0x3e
+ 787 01b0 E5010000 		.4byte	0x1e5
+ 788 01b4 02       		.uleb128 0x2
+ 789 01b5 91       		.byte	0x91
+ 790 01b6 40       		.sleb128 -64
+ 791 01b7 08       		.uleb128 0x8
+ 792 01b8 35000000 		.4byte	.LASF31
+ 793 01bc 01       		.byte	0x1
+ 794 01bd 3F       		.byte	0x3f
+ 795 01be E5010000 		.4byte	0x1e5
+ 796 01c2 03       		.uleb128 0x3
+ 797 01c3 91       		.byte	0x91
+ 798 01c4 B07F     		.sleb128 -80
+ 799 01c6 08       		.uleb128 0x8
+ 800 01c7 40000000 		.4byte	.LASF32
+ 801 01cb 01       		.byte	0x1
+ 802 01cc 40       		.byte	0x40
+ 803 01cd E5010000 		.4byte	0x1e5
+ 804 01d1 03       		.uleb128 0x3
+ 805 01d2 91       		.byte	0x91
+ 806 01d3 A07F     		.sleb128 -96
+ 807 01d5 08       		.uleb128 0x8
+ 808 01d6 4B000000 		.4byte	.LASF33
+ 809 01da 01       		.byte	0x1
+ 810 01db 41       		.byte	0x41
+ 811 01dc E5010000 		.4byte	0x1e5
+ 812 01e0 03       		.uleb128 0x3
+ 813 01e1 91       		.byte	0x91
+ 814 01e2 907F     		.sleb128 -112
+ 815 01e4 00       		.byte	0
+ 816 01e5 09       		.uleb128 0x9
+ 817 01e6 B3000000 		.4byte	0xb3
+ 818 01ea F5010000 		.4byte	0x1f5
+ 819 01ee 0A       		.uleb128 0xa
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 19
+
+
+ 820 01ef CD000000 		.4byte	0xcd
+ 821 01f3 0F       		.byte	0xf
+ 822 01f4 00       		.byte	0
+ 823 01f5 09       		.uleb128 0x9
+ 824 01f6 99000000 		.4byte	0x99
+ 825 01fa 05020000 		.4byte	0x205
+ 826 01fe 0A       		.uleb128 0xa
+ 827 01ff CD000000 		.4byte	0xcd
+ 828 0203 03       		.byte	0x3
+ 829 0204 00       		.byte	0
+ 830 0205 0B       		.uleb128 0xb
+ 831 0206 B6010000 		.4byte	.LASF34
+ 832 020a 05       		.byte	0x5
+ 833 020b 21       		.byte	0x21
+ 834 020c F5010000 		.4byte	0x1f5
+ 835 0210 0C       		.uleb128 0xc
+ 836 0211 9B000000 		.4byte	.LASF35
+ 837 0215 06       		.byte	0x6
+ 838 0216 1207     		.2byte	0x712
+ 839 0218 1C020000 		.4byte	0x21c
+ 840 021c 0D       		.uleb128 0xd
+ 841 021d 76000000 		.4byte	0x76
+ 842 0221 00       		.byte	0
+ 843              		.section	.debug_abbrev,"",%progbits
+ 844              	.Ldebug_abbrev0:
+ 845 0000 01       		.uleb128 0x1
+ 846 0001 11       		.uleb128 0x11
+ 847 0002 01       		.byte	0x1
+ 848 0003 25       		.uleb128 0x25
+ 849 0004 0E       		.uleb128 0xe
+ 850 0005 13       		.uleb128 0x13
+ 851 0006 0B       		.uleb128 0xb
+ 852 0007 03       		.uleb128 0x3
+ 853 0008 0E       		.uleb128 0xe
+ 854 0009 1B       		.uleb128 0x1b
+ 855 000a 0E       		.uleb128 0xe
+ 856 000b 55       		.uleb128 0x55
+ 857 000c 17       		.uleb128 0x17
+ 858 000d 11       		.uleb128 0x11
+ 859 000e 01       		.uleb128 0x1
+ 860 000f 10       		.uleb128 0x10
+ 861 0010 17       		.uleb128 0x17
+ 862 0011 00       		.byte	0
+ 863 0012 00       		.byte	0
+ 864 0013 02       		.uleb128 0x2
+ 865 0014 24       		.uleb128 0x24
+ 866 0015 00       		.byte	0
+ 867 0016 0B       		.uleb128 0xb
+ 868 0017 0B       		.uleb128 0xb
+ 869 0018 3E       		.uleb128 0x3e
+ 870 0019 0B       		.uleb128 0xb
+ 871 001a 03       		.uleb128 0x3
+ 872 001b 0E       		.uleb128 0xe
+ 873 001c 00       		.byte	0
+ 874 001d 00       		.byte	0
+ 875 001e 03       		.uleb128 0x3
+ 876 001f 16       		.uleb128 0x16
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 20
+
+
+ 877 0020 00       		.byte	0
+ 878 0021 03       		.uleb128 0x3
+ 879 0022 0E       		.uleb128 0xe
+ 880 0023 3A       		.uleb128 0x3a
+ 881 0024 0B       		.uleb128 0xb
+ 882 0025 3B       		.uleb128 0x3b
+ 883 0026 0B       		.uleb128 0xb
+ 884 0027 49       		.uleb128 0x49
+ 885 0028 13       		.uleb128 0x13
+ 886 0029 00       		.byte	0
+ 887 002a 00       		.byte	0
+ 888 002b 04       		.uleb128 0x4
+ 889 002c 24       		.uleb128 0x24
+ 890 002d 00       		.byte	0
+ 891 002e 0B       		.uleb128 0xb
+ 892 002f 0B       		.uleb128 0xb
+ 893 0030 3E       		.uleb128 0x3e
+ 894 0031 0B       		.uleb128 0xb
+ 895 0032 03       		.uleb128 0x3
+ 896 0033 08       		.uleb128 0x8
+ 897 0034 00       		.byte	0
+ 898 0035 00       		.byte	0
+ 899 0036 05       		.uleb128 0x5
+ 900 0037 16       		.uleb128 0x16
+ 901 0038 00       		.byte	0
+ 902 0039 03       		.uleb128 0x3
+ 903 003a 0E       		.uleb128 0xe
+ 904 003b 3A       		.uleb128 0x3a
+ 905 003c 0B       		.uleb128 0xb
+ 906 003d 3B       		.uleb128 0x3b
+ 907 003e 05       		.uleb128 0x5
+ 908 003f 49       		.uleb128 0x49
+ 909 0040 13       		.uleb128 0x13
+ 910 0041 00       		.byte	0
+ 911 0042 00       		.byte	0
+ 912 0043 06       		.uleb128 0x6
+ 913 0044 2E       		.uleb128 0x2e
+ 914 0045 01       		.byte	0x1
+ 915 0046 3F       		.uleb128 0x3f
+ 916 0047 19       		.uleb128 0x19
+ 917 0048 03       		.uleb128 0x3
+ 918 0049 0E       		.uleb128 0xe
+ 919 004a 3A       		.uleb128 0x3a
+ 920 004b 0B       		.uleb128 0xb
+ 921 004c 3B       		.uleb128 0x3b
+ 922 004d 0B       		.uleb128 0xb
+ 923 004e 49       		.uleb128 0x49
+ 924 004f 13       		.uleb128 0x13
+ 925 0050 11       		.uleb128 0x11
+ 926 0051 01       		.uleb128 0x1
+ 927 0052 12       		.uleb128 0x12
+ 928 0053 06       		.uleb128 0x6
+ 929 0054 40       		.uleb128 0x40
+ 930 0055 18       		.uleb128 0x18
+ 931 0056 9642     		.uleb128 0x2116
+ 932 0058 19       		.uleb128 0x19
+ 933 0059 01       		.uleb128 0x1
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 21
+
+
+ 934 005a 13       		.uleb128 0x13
+ 935 005b 00       		.byte	0
+ 936 005c 00       		.byte	0
+ 937 005d 07       		.uleb128 0x7
+ 938 005e 34       		.uleb128 0x34
+ 939 005f 00       		.byte	0
+ 940 0060 03       		.uleb128 0x3
+ 941 0061 08       		.uleb128 0x8
+ 942 0062 3A       		.uleb128 0x3a
+ 943 0063 0B       		.uleb128 0xb
+ 944 0064 3B       		.uleb128 0x3b
+ 945 0065 0B       		.uleb128 0xb
+ 946 0066 49       		.uleb128 0x49
+ 947 0067 13       		.uleb128 0x13
+ 948 0068 02       		.uleb128 0x2
+ 949 0069 18       		.uleb128 0x18
+ 950 006a 00       		.byte	0
+ 951 006b 00       		.byte	0
+ 952 006c 08       		.uleb128 0x8
+ 953 006d 34       		.uleb128 0x34
+ 954 006e 00       		.byte	0
+ 955 006f 03       		.uleb128 0x3
+ 956 0070 0E       		.uleb128 0xe
+ 957 0071 3A       		.uleb128 0x3a
+ 958 0072 0B       		.uleb128 0xb
+ 959 0073 3B       		.uleb128 0x3b
+ 960 0074 0B       		.uleb128 0xb
+ 961 0075 49       		.uleb128 0x49
+ 962 0076 13       		.uleb128 0x13
+ 963 0077 02       		.uleb128 0x2
+ 964 0078 18       		.uleb128 0x18
+ 965 0079 00       		.byte	0
+ 966 007a 00       		.byte	0
+ 967 007b 09       		.uleb128 0x9
+ 968 007c 01       		.uleb128 0x1
+ 969 007d 01       		.byte	0x1
+ 970 007e 49       		.uleb128 0x49
+ 971 007f 13       		.uleb128 0x13
+ 972 0080 01       		.uleb128 0x1
+ 973 0081 13       		.uleb128 0x13
+ 974 0082 00       		.byte	0
+ 975 0083 00       		.byte	0
+ 976 0084 0A       		.uleb128 0xa
+ 977 0085 21       		.uleb128 0x21
+ 978 0086 00       		.byte	0
+ 979 0087 49       		.uleb128 0x49
+ 980 0088 13       		.uleb128 0x13
+ 981 0089 2F       		.uleb128 0x2f
+ 982 008a 0B       		.uleb128 0xb
+ 983 008b 00       		.byte	0
+ 984 008c 00       		.byte	0
+ 985 008d 0B       		.uleb128 0xb
+ 986 008e 34       		.uleb128 0x34
+ 987 008f 00       		.byte	0
+ 988 0090 03       		.uleb128 0x3
+ 989 0091 0E       		.uleb128 0xe
+ 990 0092 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 22
+
+
+ 991 0093 0B       		.uleb128 0xb
+ 992 0094 3B       		.uleb128 0x3b
+ 993 0095 0B       		.uleb128 0xb
+ 994 0096 49       		.uleb128 0x49
+ 995 0097 13       		.uleb128 0x13
+ 996 0098 3F       		.uleb128 0x3f
+ 997 0099 19       		.uleb128 0x19
+ 998 009a 3C       		.uleb128 0x3c
+ 999 009b 19       		.uleb128 0x19
+ 1000 009c 00       		.byte	0
+ 1001 009d 00       		.byte	0
+ 1002 009e 0C       		.uleb128 0xc
+ 1003 009f 34       		.uleb128 0x34
+ 1004 00a0 00       		.byte	0
+ 1005 00a1 03       		.uleb128 0x3
+ 1006 00a2 0E       		.uleb128 0xe
+ 1007 00a3 3A       		.uleb128 0x3a
+ 1008 00a4 0B       		.uleb128 0xb
+ 1009 00a5 3B       		.uleb128 0x3b
+ 1010 00a6 05       		.uleb128 0x5
+ 1011 00a7 49       		.uleb128 0x49
+ 1012 00a8 13       		.uleb128 0x13
+ 1013 00a9 3F       		.uleb128 0x3f
+ 1014 00aa 19       		.uleb128 0x19
+ 1015 00ab 3C       		.uleb128 0x3c
+ 1016 00ac 19       		.uleb128 0x19
+ 1017 00ad 00       		.byte	0
+ 1018 00ae 00       		.byte	0
+ 1019 00af 0D       		.uleb128 0xd
+ 1020 00b0 35       		.uleb128 0x35
+ 1021 00b1 00       		.byte	0
+ 1022 00b2 49       		.uleb128 0x49
+ 1023 00b3 13       		.uleb128 0x13
+ 1024 00b4 00       		.byte	0
+ 1025 00b5 00       		.byte	0
+ 1026 00b6 00       		.byte	0
+ 1027              		.section	.debug_aranges,"",%progbits
+ 1028 0000 1C000000 		.4byte	0x1c
+ 1029 0004 0200     		.2byte	0x2
+ 1030 0006 00000000 		.4byte	.Ldebug_info0
+ 1031 000a 04       		.byte	0x4
+ 1032 000b 00       		.byte	0
+ 1033 000c 0000     		.2byte	0
+ 1034 000e 0000     		.2byte	0
+ 1035 0010 00000000 		.4byte	.LFB64
+ 1036 0014 0C040000 		.4byte	.LFE64-.LFB64
+ 1037 0018 00000000 		.4byte	0
+ 1038 001c 00000000 		.4byte	0
+ 1039              		.section	.debug_ranges,"",%progbits
+ 1040              	.Ldebug_ranges0:
+ 1041 0000 00000000 		.4byte	.LFB64
+ 1042 0004 0C040000 		.4byte	.LFE64
+ 1043 0008 00000000 		.4byte	0
+ 1044 000c 00000000 		.4byte	0
+ 1045              		.section	.debug_line,"",%progbits
+ 1046              	.Ldebug_line0:
+ 1047 0000 F5010000 		.section	.debug_str,"MS",%progbits,1
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 23
+
+
+ 1047      02005D01 
+ 1047      00000201 
+ 1047      FB0E0D00 
+ 1047      01010101 
+ 1048              	.LASF22:
+ 1049 0000 72657375 		.ascii	"result1\000"
+ 1049      6C743100 
+ 1050              	.LASF23:
+ 1051 0008 72657375 		.ascii	"result2\000"
+ 1051      6C743200 
+ 1052              	.LASF24:
+ 1053 0010 72657375 		.ascii	"result3\000"
+ 1053      6C743300 
+ 1054              	.LASF25:
+ 1055 0018 72657375 		.ascii	"result4\000"
+ 1055      6C743400 
+ 1056              	.LASF9:
+ 1057 0020 5F5F696E 		.ascii	"__int32_t\000"
+ 1057      7433325F 
+ 1057      7400
+ 1058              	.LASF30:
+ 1059 002a 72657375 		.ascii	"resultStr1\000"
+ 1059      6C745374 
+ 1059      723100
+ 1060              	.LASF31:
+ 1061 0035 72657375 		.ascii	"resultStr2\000"
+ 1061      6C745374 
+ 1061      723200
+ 1062              	.LASF32:
+ 1063 0040 72657375 		.ascii	"resultStr3\000"
+ 1063      6C745374 
+ 1063      723300
+ 1064              	.LASF33:
+ 1065 004b 72657375 		.ascii	"resultStr4\000"
+ 1065      6C745374 
+ 1065      723400
+ 1066              	.LASF14:
+ 1067 0056 666C6F61 		.ascii	"float\000"
+ 1067      7400
+ 1068              	.LASF1:
+ 1069 005c 756E7369 		.ascii	"unsigned char\000"
+ 1069      676E6564 
+ 1069      20636861 
+ 1069      7200
+ 1070              	.LASF16:
+ 1071 006a 63686172 		.ascii	"char8\000"
+ 1071      3800
+ 1072              	.LASF13:
+ 1073 0070 696E7431 		.ascii	"int16\000"
+ 1073      3600
+ 1074              	.LASF5:
+ 1075 0076 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1075      20756E73 
+ 1075      69676E65 
+ 1075      6420696E 
+ 1075      7400
+ 1076              	.LASF3:
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 24
+
+
+ 1077 0088 73686F72 		.ascii	"short unsigned int\000"
+ 1077      7420756E 
+ 1077      7369676E 
+ 1077      65642069 
+ 1077      6E7400
+ 1078              	.LASF35:
+ 1079 009b 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1079      52784275 
+ 1079      66666572 
+ 1079      00
+ 1080              	.LASF15:
+ 1081 00a8 646F7562 		.ascii	"double\000"
+ 1081      6C6500
+ 1082              	.LASF39:
+ 1083 00af 6D61696E 		.ascii	"main\000"
+ 1083      00
+ 1084              	.LASF12:
+ 1085 00b4 75696E74 		.ascii	"uint16\000"
+ 1085      313600
+ 1086              	.LASF21:
+ 1087 00bb 666C6167 		.ascii	"flag\000"
+ 1087      00
+ 1088              	.LASF8:
+ 1089 00c0 756E7369 		.ascii	"unsigned int\000"
+ 1089      676E6564 
+ 1089      20696E74 
+ 1089      00
+ 1090              	.LASF7:
+ 1091 00cd 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1091      206C6F6E 
+ 1091      6720756E 
+ 1091      7369676E 
+ 1091      65642069 
+ 1092              	.LASF26:
+ 1093 00e4 72657331 		.ascii	"res1\000"
+ 1093      00
+ 1094              	.LASF27:
+ 1095 00e9 72657332 		.ascii	"res2\000"
+ 1095      00
+ 1096              	.LASF28:
+ 1097 00ee 72657333 		.ascii	"res3\000"
+ 1097      00
+ 1098              	.LASF29:
+ 1099 00f3 72657334 		.ascii	"res4\000"
+ 1099      00
+ 1100              	.LASF10:
+ 1101 00f8 696E7433 		.ascii	"int32_t\000"
+ 1101      325F7400 
+ 1102              	.LASF19:
+ 1103 0100 73697A65 		.ascii	"sizetype\000"
+ 1103      74797065 
+ 1103      00
+ 1104              	.LASF38:
+ 1105 0109 483A5C42 		.ascii	"H:\\BCC722-RTOS-moinho\\UCoS\\Micrium_2\\Software\\"
+ 1105      43433732 
+ 1105      322D5254 
+ 1105      4F532D6D 
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 25
+
+
+ 1105      6F696E68 
+ 1106 0137 4576616C 		.ascii	"EvalBoards\\Cypress\\CY8CKIT-050\\PSoC\\uCOS-III-Pr"
+ 1106      426F6172 
+ 1106      64735C43 
+ 1106      79707265 
+ 1106      73735C43 
+ 1107 0166 6F62655C 		.ascii	"obe\\ADC_SAR_Seq_Example01.cydsn\000"
+ 1107      4144435F 
+ 1107      5341525F 
+ 1107      5365715F 
+ 1107      4578616D 
+ 1108              	.LASF6:
+ 1109 0186 6C6F6E67 		.ascii	"long long int\000"
+ 1109      206C6F6E 
+ 1109      6720696E 
+ 1109      7400
+ 1110              	.LASF37:
+ 1111 0194 6D61696E 		.ascii	"main.c\000"
+ 1111      2E6300
+ 1112              	.LASF17:
+ 1113 019b 63686172 		.ascii	"char\000"
+ 1113      00
+ 1114              	.LASF20:
+ 1115 01a0 636F756E 		.ascii	"count\000"
+ 1115      7400
+ 1116              	.LASF2:
+ 1117 01a6 73686F72 		.ascii	"short int\000"
+ 1117      7420696E 
+ 1117      7400
+ 1118              	.LASF11:
+ 1119 01b0 75696E74 		.ascii	"uint8\000"
+ 1119      3800
+ 1120              	.LASF34:
+ 1121 01b6 4144435F 		.ascii	"ADC_SAR_Seq_finalArray\000"
+ 1121      5341525F 
+ 1121      5365715F 
+ 1121      66696E61 
+ 1121      6C417272 
+ 1122              	.LASF4:
+ 1123 01cd 6C6F6E67 		.ascii	"long int\000"
+ 1123      20696E74 
+ 1123      00
+ 1124              	.LASF18:
+ 1125 01d6 6C6F6E67 		.ascii	"long double\000"
+ 1125      20646F75 
+ 1125      626C6500 
+ 1126              	.LASF0:
+ 1127 01e2 7369676E 		.ascii	"signed char\000"
+ 1127      65642063 
+ 1127      68617200 
+ 1128              	.LASF36:
+ 1129 01ee 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1129      43313120 
+ 1129      352E342E 
+ 1129      31203230 
+ 1129      31363036 
+ 1130 0221 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ARM GAS  C:\Users\alex\AppData\Local\Temp\ccPvLLYc.s 			page 26
+
+
+ 1130      20726576 
+ 1130      6973696F 
+ 1130      6E203233 
+ 1130      37373135 
+ 1131 0254 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1131      66756E63 
+ 1131      74696F6E 
+ 1131      2D736563 
+ 1131      74696F6E 
+ 1132              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
