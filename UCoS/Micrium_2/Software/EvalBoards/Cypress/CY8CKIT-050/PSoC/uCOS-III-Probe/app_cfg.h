@@ -64,15 +64,15 @@
 /* tamanho da pilha */
 #define  APP_CFG_TASK_START_STK_SIZE                    128u
     
-#define  APP_CFG_TASK_USER_IF_STK_SIZE                  64u       // APAGAR DEPOIS
+#define  APP_CFG_TASK_USER_IF_STK_SIZE                  128u       // APAGAR DEPOIS
     
     
 
-#define  APP_CFG_TASK_IHM_STK_SIZE                      64u       // tamanho da pilha de task do ihm
-#define  APP_CFG_TASK_EMERG_STK_SIZE                    64u       // tamanho da pilha de task de emerg
-#define  APP_CFG_TASK_SEN_MEC_STK_SIZE                  64u       // tamanho da pilha de task de sen. prot. mec.
-#define  APP_CFG_TASK_SEN_TEMP_STK_SIZE                 64u       // tamanho da pilha de task do sen. temp.
-#define  APP_CFG_TASK_DISPLAY_STK_SIZE                  256u       // tamanho da pilha de task do display
+#define  APP_CFG_TASK_IHM_STK_SIZE                      128u       // tamanho da pilha de task do ihm
+#define  APP_CFG_TASK_EMERG_STK_SIZE                    128u       // tamanho da pilha de task de emerg
+#define  APP_CFG_TASK_SEN_MEC_STK_SIZE                  128u       // tamanho da pilha de task de sen. prot. mec.
+#define  APP_CFG_TASK_SEN_TEMP_STK_SIZE                 128u       // tamanho da pilha de task do sen. temp.
+#define  APP_CFG_TASK_DISPLAY_STK_SIZE                  128u       // tamanho da pilha de task do display
     
 /*
 *********************************************************************************************************

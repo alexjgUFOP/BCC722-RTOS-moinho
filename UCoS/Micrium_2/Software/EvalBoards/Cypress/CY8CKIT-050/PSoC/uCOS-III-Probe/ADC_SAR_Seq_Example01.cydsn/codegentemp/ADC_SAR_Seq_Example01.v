@@ -1,6 +1,6 @@
 // ======================================================================
 // ADC_SAR_Seq_Example01.v generated from TopDesign.cysch
-// 10/20/2022 at 08:44
+// 10/22/2022 at 18:55
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
