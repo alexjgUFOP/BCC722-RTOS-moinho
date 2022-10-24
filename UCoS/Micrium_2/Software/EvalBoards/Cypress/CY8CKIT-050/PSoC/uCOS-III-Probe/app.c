@@ -451,24 +451,16 @@ static  void  App_Task_Sen_Mec(void *p_arg)
 {
     
       
-    OS_ERR          err;                                    /* var com os erros do processo */
+    OS_ERR          err;                                            /* var com os erros do processo */
     
    (void)p_arg;
 
     while(DEF_ON){
             
-                                                            // tratamento de ocorrencia de alerta
+                                                                    // tratamento de ocorrencia de alerta
         
-        if(alerta){                                         // se ocorreu um alerta
-            si_alerta_Write(1);                             // ativa sinaleira de emerg.
-            ct_motor_Write(0);                              // desliga contator do motor
-            rearme = 1;                                     // seta flag indicando necessidade de rearme
-                    
-        }
-        else{
-            si_alerta_Write(0);                             // ativa sinaleira de alerta
-            
-        }
+        if((!se_indut_porta_Read()) || (!se_indut_motor_Read())){   // se sensores de alerta corrigidos
+            statusAlerta(DESL);
     
     }
 }
