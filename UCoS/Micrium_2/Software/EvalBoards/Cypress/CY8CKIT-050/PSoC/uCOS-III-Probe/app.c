@@ -126,6 +126,8 @@ static  void  App_Task_Display  (void *p_arg);             /* prototipo da funca
         void  statusRearme   (CPU_INT08U op);
         void  statusEmerg    (CPU_INT08U op);
         void  statusAlerta   (CPU_INT08U op);
+        
+        OS_ERR  i_err;
 
         
 /*
@@ -137,7 +139,7 @@ static  void  App_Task_Display  (void *p_arg);             /* prototipo da funca
 CY_ISR(se_indut_porta_Handler){                     // implementando rotina de tratamento de interrupção  - interrupt handler 
     
      // tratando debounce do botão
-    OSTimeDly(DEBOUNCE,OS_ERR_TIME_DLY_ISR, NULL);
+    OSTimeDly(100,OS_ERR_TIME_DLY_ISR, &i_err);
     
                                                     // trata sens. indut da protecao mec. da porta
     statusMotor(DESL);
@@ -152,7 +154,7 @@ CY_ISR(se_indut_porta_Handler){                     // implementando rotina de t
 CY_ISR(se_indut_motor_Handler){                     // implementando rotina de tratamento de interrupção  - interrupt handler 
   
     // tratando debounce do botão
-    OSTimeDly(DEBOUNCE,OS_ERR_TIME_DLY_ISR, NULL);
+    OSTimeDly(100,OS_ERR_TIME_DLY_ISR, &i_err);
     
                                                     // trata sens. indut da protecao mec. do motor
     statusMotor(DESL);
@@ -167,7 +169,7 @@ CY_ISR(bt_emerg_int_Handler){                       // implementando rotina de t
     
     
                                                     // tratando debounce do botão
-    OSTimeDly(200,OS_ERR_TIME_DLY_ISR, NULL);
+    OSTimeDly(100,OS_ERR_TIME_DLY_ISR, &i_err);
     statusMotor(DESL);
     statusRearme(LIGA);
     statusEmerg(LIGA);
@@ -339,7 +341,7 @@ static  void  App_TaskCreate (void)
                  (void        *)0,                                              // sem endereço de memoria local passado
                  (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
                  (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
- 
+
     // ======== task Emergencia  ========
     OSTaskCreate((OS_TCB      *)&App_Task_Emerg_TCB,                            // endereço da task para OS_TCB
                  (CPU_CHAR    *)"Emerg_Task",                                   // string com nome da task
@@ -369,9 +371,9 @@ static  void  App_TaskCreate (void)
                  (void        *)0,                                              // sem endereço de memoria local passado
                  (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
                  (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
-    
+    /*
     // ======== task sen. temp.  ========
-    OSTaskCreate((OS_TCB      *)&App_Task_Sen_Mec_TCB,                          // endereço da task para OS_TCB
+    OSTaskCreate((OS_TCB      *)&App_Task_Sen_Temp_TCB,                          // endereço da task para OS_TCB
                  (CPU_CHAR    *)"Sen_Temp_Task",                                // string com nome da task
                  (OS_TASK_PTR  )App_Task_Sen_Temp,                              // endereco da funcao sem. veiculo 01 que define comportamento da task
                  (void        *)0,                                              // parametros passados na criacao - sem nenhum valor passado
@@ -400,7 +402,7 @@ static  void  App_TaskCreate (void)
                  (void        *)0,                                              // sem endereço de memoria local passado
                  (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
                  (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
-    
+    */
 }
 
 static  void  App_Task_Ihm(void *p_arg)
@@ -421,9 +423,18 @@ static  void  App_Task_Ihm(void *p_arg)
             statusMotor(DESL);
         }
                 
-        if(!bt_rearme_Read() && (!emerg) && (!rearme) && (!alerta)){    // remocao de rearme se nao cond. adver. / alerta e emerg. ativos   
+        if(!bt_rearme_Read() && (!emerg) && (!alerta)){    // remocao de rearme se nao cond. adver. / alerta e emerg. ativos   
             statusRearme(DESL);
+            
         }
+        
+        if(rearme){
+            statusRearme(LIGA);
+            statusMotor(DESL);
+        }
+        
+        
+        
                                
     }
     
@@ -439,6 +450,7 @@ static  void  App_Task_Emerg(void *p_arg)
 
     while(DEF_ON){                                          // tratamento de ocorrencia de emergencia
         
+        
         if(bt_emerg_Read()){                                // se o botao foi liberado libera a emergencia
             statusEmerg(DESL);
         }
@@ -451,16 +463,19 @@ static  void  App_Task_Sen_Mec(void *p_arg)
 {
     
       
-    OS_ERR          err;                                            /* var com os erros do processo */
+    OS_ERR          err;                                    /* var com os erros do processo */
     
    (void)p_arg;
 
     while(DEF_ON){
             
-                                                                    // tratamento de ocorrencia de alerta
+                                                            // tratamento de ocorrencia de alerta
         
-        if((!se_indut_porta_Read()) || (!se_indut_motor_Read())){   // se sensores de alerta corrigidos
-            statusAlerta(DESL);
+                                                                       // tratamento de ocorrencia de alerta
+    
+    if((se_indut_porta_Read()) || (se_indut_motor_Read())){   // se sensores de alerta corrigidos
+        statusAlerta(DESL);
+    }
     
     }
 }
