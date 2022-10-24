@@ -498,6 +498,8 @@ static  void  App_Task_Sen_Temp(void *p_arg)
         
         ADC_SAR_Seq_IsEndConversion(ADC_SAR_Seq_WAIT_FOR_RESULT);
         
+        // utilizando NTC's do kit Grove
+        
         temp1 = ADC_SAR_Seq_GetResult16(0u);
         temp2 = ADC_SAR_Seq_GetResult16(1u);
         
@@ -527,7 +529,10 @@ static  void  App_Task_Sen_Temp(void *p_arg)
         
         if(tempM > tAltaMotor || tAltaQuadro){
             statusAlerta(LIGA);
-            
+            statusRearme(LIGA);
+        }
+        else{
+            statusAlerta(DESL);
         }
                 
         // fonte: https://wiki.seeedstudio.com/Grove-Temperature_Sensor_V1.2/
