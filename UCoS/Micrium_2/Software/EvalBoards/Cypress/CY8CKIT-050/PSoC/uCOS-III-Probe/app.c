@@ -37,7 +37,8 @@
 #include <project.h>                /* incluindo api do psoc */
 //#include <math.h>                   // biblioteca matematica padrao do C - para calc de temperatura
 
-
+//////////////// comentario teste - apagar
+//////////////// outro comentario de teste
 /*
 *********************************************************************************************************
 *                                             LOCAL DEFINES
@@ -50,24 +51,15 @@
 #define  APP_USER_IF_CTXSW                          3u
 #define  APP_USER_IF_STATE_MAX                      4u
 
-#define DEBOUNCE 100u                               // tempo de debounce para botoes
-#define NTC_B   4275.0                              // constante B do termistor
-#define NTC_R0  100000.0                            // R0 = 100k kit grove
+#define LIGA                1u
+#define DESL                0u
 
+#define DEBOUNCE            100u                               // tempo de debounce para botoes
+#define NTC_B               4275.0                              // constante B do termistor
+#define NTC_R0              100000.0                            // R0 = 100k kit grove
+#define TEMP_MOTOR_ALERTA   40.0
+#define TEMP_QUADRO_ALERTA  40.0
 
- #define TIVM  0                                     /* intervalo de t. inicial VM  no s. tran. */
- #define TFVM 50                                     /* intervalo de t. final   VM no s. tran.  */
- #define TIVE 50                                     /* intervalo de t. inicial VE no s. tran.  */
- #define TFVE 95                                     /* intervalo de t. final   VE no s. tran.  */
- #define TCVE (TIVE + 30)                            /* intervalo de t. para ctrl do VE no s. tran. */
- #define TIAM 95                                     /* intervalo de t. inicial AM no s. tran. */
- #define TFAM 100                                    /* intervalo de t. final   AM no s. tran. */
- #define TASJ (TFVM - (TFAM - TIAM))                 /* ajuste de tempo entre semaforos */
-
-#define SEM1 1
-#define SEM2 2
-
-#define TBASE 1000
 
 /*
 *********************************************************************************************************
@@ -102,10 +94,11 @@ static  OS_TCB      App_Task_Display_TCB;
 static  CPU_STK     App_Task_Display_Stk[APP_CFG_TASK_DISPLAY_STK_SIZE];
 
 
-        CPU_INT08U  motor = 0,                                          // estado do motor - 1: ligado / 0: desligado
-                    emerg = 0,                                          // var. para monitorar estado de emergem
-                    rearme = 1,                                         // var. para monitorar estado de rearme
-                    alerta = 0;                                         // var. para monitorar estado de alerta - sensores de monitoramento
+        CPU_INT08U  motor   = 0,                                        // estado do motor - 1: ligado / 0: desligado
+                    emerg   = 0,                                        // var. para monitorar estado de emergem
+                    rearme  = 1,                                        // var. para monitorar estado de rearme
+                    alerta  = 0;                                        // var. para monitorar estado de alerta - sensores de monitoramento
+                    
 
         float       tempM = 0,                                          // var. para temperatura do motor
                     tempQ = 0;                                          // var. para temperatura do quadro
@@ -129,6 +122,10 @@ static  void  App_Task_Sen_Mec  (void *p_arg);             /* prototipo da funca
 static  void  App_Task_Sen_Temp (void *p_arg);             /* prototipo da funcao que define a task de sen. temp. */
 static  void  App_Task_Display  (void *p_arg);             /* prototipo da funcao que define a task de sem. display */
 
+        void  statusMotor    (CPU_INT08U op);
+        void  statusRearme   (CPU_INT08U op);
+        void  statusEmerg    (CPU_INT08U op);
+        void  statusAlerta   (CPU_INT08U op);
 
         
 /*
@@ -143,8 +140,10 @@ CY_ISR(se_indut_porta_Handler){                     // implementando rotina de t
     OSTimeDly(DEBOUNCE,OS_ERR_TIME_DLY_ISR, NULL);
     
                                                     // trata sens. indut da protecao mec. da porta
-    alerta = 1;                                     // setando estado de alerta
-    
+    statusMotor(DESL);
+    statusRearme(LIGA);
+    statusAlerta(LIGA);
+        
     se_indut_porta_ClearInterrupt();                // limpa flag de interrupçao
     
     
@@ -156,7 +155,9 @@ CY_ISR(se_indut_motor_Handler){                     // implementando rotina de t
     OSTimeDly(DEBOUNCE,OS_ERR_TIME_DLY_ISR, NULL);
     
                                                     // trata sens. indut da protecao mec. do motor
-    alerta = 1;                                     // setando estado de alerta
+    statusMotor(DESL);
+    statusRearme(LIGA);
+    statusAlerta(LIGA);
     
     se_indut_motor_ClearInterrupt();                // limpa flag de interrupçao
     
@@ -167,12 +168,10 @@ CY_ISR(bt_emerg_int_Handler){                       // implementando rotina de t
     
                                                     // tratando debounce do botão
     OSTimeDly(200,OS_ERR_TIME_DLY_ISR, NULL);
-    
-                                                    // trata botao de emerg
-    si_emerg_Write(!si_emerg_Read());               // mudando status da emergencia
-    rearme = 1;
-    
-    
+    statusMotor(DESL);
+    statusRearme(LIGA);
+    statusEmerg(LIGA);
+
     bt_emerg_ClearInterrupt();                      // limpa flag de interrupçao
     
 }
@@ -327,14 +326,14 @@ static  void  App_TaskCreate (void)
     */
     
     // ======== task IHM  ========
-    OSTaskCreate((OS_TCB      *)&App_Task_Ihm_TCB,                             // endereço da task para OS_TCB
-                 (CPU_CHAR    *)"IHM_Task",                                    // string com nome da task
-                 (OS_TASK_PTR  )App_Task_Ihm,                                  // endereco da funcao sem. veiculo 01 que define comportamento da task
+    OSTaskCreate((OS_TCB      *)&App_Task_Ihm_TCB,                              // endereço da task para OS_TCB
+                 (CPU_CHAR    *)"IHM_Task",                                     // string com nome da task
+                 (OS_TASK_PTR  )App_Task_Ihm,                                   // endereco da funcao sem. veiculo 01 que define comportamento da task
                  (void        *)0,                                              // parametros passados na criacao - sem nenhum valor passado
-                 (OS_PRIO      )APP_CFG_TASK_IHM_PRIO,                         // prioridade de execucao da task
-                 (CPU_STK     *)&App_Task_Ihm_Stk[0],                          // endereco base da pilha reservada para tarefa
-                 (CPU_STK_SIZE )APP_CFG_TASK_IHM_STK_SIZE_LIMIT,               // endereco final da pilha reservada para tarefa
-                 (CPU_STK_SIZE )APP_CFG_TASK_IHM_STK_SIZE,                     // tamanho da pilha
+                 (OS_PRIO      )APP_CFG_TASK_IHM_PRIO,                          // prioridade de execucao da task
+                 (CPU_STK     *)&App_Task_Ihm_Stk[0],                           // endereco base da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_IHM_STK_SIZE_LIMIT,                // endereco final da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_IHM_STK_SIZE,                      // tamanho da pilha
                  (OS_MSG_QTY   )0u,                                             // task incapaz de receber mensagens
                  (OS_TICK      )0u,                                             // clock tick default
                  (void        *)0,                                              // sem endereço de memoria local passado
@@ -342,29 +341,29 @@ static  void  App_TaskCreate (void)
                  (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
  
     // ======== task Emergencia  ========
-    OSTaskCreate((OS_TCB      *)&App_Task_Emerg_TCB,                             // endereço da task para OS_TCB
-                 (CPU_CHAR    *)"Emerg_Task",                                    // string com nome da task
-                 (OS_TASK_PTR  )App_Task_Emerg,                                  // endereco da funcao sem. veiculo 01 que define comportamento da task
+    OSTaskCreate((OS_TCB      *)&App_Task_Emerg_TCB,                            // endereço da task para OS_TCB
+                 (CPU_CHAR    *)"Emerg_Task",                                   // string com nome da task
+                 (OS_TASK_PTR  )App_Task_Emerg,                                 // endereco da funcao sem. veiculo 01 que define comportamento da task
                  (void        *)0,                                              // parametros passados na criacao - sem nenhum valor passado
-                 (OS_PRIO      )APP_CFG_TASK_EMERG_PRIO,                         // prioridade de execucao da task
-                 (CPU_STK     *)&App_Task_Emerg_Stk[0],                          // endereco base da pilha reservada para tarefa
-                 (CPU_STK_SIZE )APP_CFG_TASK_EMERG_STK_SIZE_LIMIT,               // endereco final da pilha reservada para tarefa
-                 (CPU_STK_SIZE )APP_CFG_TASK_EMERG_STK_SIZE,                     // tamanho da pilha
+                 (OS_PRIO      )APP_CFG_TASK_EMERG_PRIO,                        // prioridade de execucao da task
+                 (CPU_STK     *)&App_Task_Emerg_Stk[0],                         // endereco base da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_EMERG_STK_SIZE_LIMIT,              // endereco final da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_EMERG_STK_SIZE,                    // tamanho da pilha
                  (OS_MSG_QTY   )0u,                                             // task incapaz de receber mensagens
                  (OS_TICK      )0u,                                             // clock tick default
                  (void        *)0,                                              // sem endereço de memoria local passado
                  (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
                  (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
-/*
+
     // ======== task sen. mec.  ========
-    OSTaskCreate((OS_TCB      *)&App_Task_Sen_Mec_TCB,                             // endereço da task para OS_TCB
-                 (CPU_CHAR    *)"Sen_Mec_Task",                                    // string com nome da task
-                 (OS_TASK_PTR  )App_Task_Sen_Mec,                                  // endereco da funcao sem. veiculo 01 que define comportamento da task
+    OSTaskCreate((OS_TCB      *)&App_Task_Sen_Mec_TCB,                          // endereço da task para OS_TCB
+                 (CPU_CHAR    *)"Sen_Mec_Task",                                 // string com nome da task
+                 (OS_TASK_PTR  )App_Task_Sen_Mec,                               // endereco da funcao sem. veiculo 01 que define comportamento da task
                  (void        *)0,                                              // parametros passados na criacao - sem nenhum valor passado
-                 (OS_PRIO      )APP_CFG_TASK_SEN_MEC_PRIO,                         // prioridade de execucao da task
-                 (CPU_STK     *)&App_Task_Sen_Mec_Stk[0],                          // endereco base da pilha reservada para tarefa
-                 (CPU_STK_SIZE )APP_CFG_TASK_SEN_MEC_STK_SIZE_LIMIT,               // endereco final da pilha reservada para tarefa
-                 (CPU_STK_SIZE )APP_CFG_TASK_SEN_MEC_STK_SIZE,                     // tamanho da pilha
+                 (OS_PRIO      )APP_CFG_TASK_SEN_MEC_PRIO,                      // prioridade de execucao da task
+                 (CPU_STK     *)&App_Task_Sen_Mec_Stk[0],                       // endereco base da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_SEN_MEC_STK_SIZE_LIMIT,            // endereco final da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_SEN_MEC_STK_SIZE,                  // tamanho da pilha
                  (OS_MSG_QTY   )0u,                                             // task incapaz de receber mensagens
                  (OS_TICK      )0u,                                             // clock tick default
                  (void        *)0,                                              // sem endereço de memoria local passado
@@ -372,108 +371,78 @@ static  void  App_TaskCreate (void)
                  (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
     
     // ======== task sen. temp.  ========
-    OSTaskCreate((OS_TCB      *)&App_Task_Sen_Mec_TCB,                             // endereço da task para OS_TCB
-                 (CPU_CHAR    *)"Sen_Temp_Task",                                    // string com nome da task
-                 (OS_TASK_PTR  )App_Task_Sen_Temp,                                  // endereco da funcao sem. veiculo 01 que define comportamento da task
+    OSTaskCreate((OS_TCB      *)&App_Task_Sen_Mec_TCB,                          // endereço da task para OS_TCB
+                 (CPU_CHAR    *)"Sen_Temp_Task",                                // string com nome da task
+                 (OS_TASK_PTR  )App_Task_Sen_Temp,                              // endereco da funcao sem. veiculo 01 que define comportamento da task
                  (void        *)0,                                              // parametros passados na criacao - sem nenhum valor passado
-                 (OS_PRIO      )APP_CFG_TASK_SEN_TEMP_PRIO,                         // prioridade de execucao da task
-                 (CPU_STK     *)&App_Task_Sen_Temp_Stk[0],                          // endereco base da pilha reservada para tarefa
-                 (CPU_STK_SIZE )APP_CFG_TASK_SEN_TEMP_STK_SIZE_LIMIT,               // endereco final da pilha reservada para tarefa
-                 (CPU_STK_SIZE )APP_CFG_TASK_SEN_TEMP_STK_SIZE,                     // tamanho da pilha
+                 (OS_PRIO      )APP_CFG_TASK_SEN_TEMP_PRIO,                     // prioridade de execucao da task
+                 (CPU_STK     *)&App_Task_Sen_Temp_Stk[0],                      // endereco base da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_SEN_TEMP_STK_SIZE_LIMIT,           // endereco final da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_SEN_TEMP_STK_SIZE,                 // tamanho da pilha
                  (OS_MSG_QTY   )0u,                                             // task incapaz de receber mensagens
                  (OS_TICK      )0u,                                             // clock tick default
                  (void        *)0,                                              // sem endereço de memoria local passado
                  (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
                  (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
-    */
-    /*
+    
+    
     // ======== task diz play  ========
-    OSTaskCreate((OS_TCB      *)&App_Task_Display_TCB,                             // endereço da task para OS_TCB
-                 (CPU_CHAR    *)"Display_Task",                                    // string com nome da task
-                 (OS_TASK_PTR  )App_TaskUserIF,                                  // endereco da funcao sem. veiculo 01 que define comportamento da task
+    OSTaskCreate((OS_TCB      *)&App_Task_Display_TCB,                          // endereço da task para OS_TCB
+                 (CPU_CHAR    *)"Display_Task",                                 // string com nome da task
+                 (OS_TASK_PTR  )App_TaskUserIF,                                 // endereco da funcao sem. veiculo 01 que define comportamento da task
                  (void        *)0,                                              // parametros passados na criacao - sem nenhum valor passado
-                 (OS_PRIO      )APP_CFG_TASK_DISPLAY_PRIO,                         // prioridade de execucao da task
-                 (CPU_STK     *)&App_Task_Display_Stk[0],                          // endereco base da pilha reservada para tarefa
-                 (CPU_STK_SIZE )APP_CFG_TASK_DISPLAY_STK_SIZE_LIMIT,               // endereco final da pilha reservada para tarefa
-                 (CPU_STK_SIZE )APP_CFG_TASK_DISPLAY_STK_SIZE,                     // tamanho da pilha
+                 (OS_PRIO      )APP_CFG_TASK_DISPLAY_PRIO,                      // prioridade de execucao da task
+                 (CPU_STK     *)&App_Task_Display_Stk[0],                       // endereco base da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_DISPLAY_STK_SIZE_LIMIT,            // endereco final da pilha reservada para tarefa
+                 (CPU_STK_SIZE )APP_CFG_TASK_DISPLAY_STK_SIZE,                  // tamanho da pilha
                  (OS_MSG_QTY   )0u,                                             // task incapaz de receber mensagens
                  (OS_TICK      )0u,                                             // clock tick default
                  (void        *)0,                                              // sem endereço de memoria local passado
                  (OS_OPT       )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),    // opcoes especificas da tarefa escolhas - verificacao se pilha pode ser acessada e se precisa ser limpa
                  (OS_ERR      *)&os_err);                                       // ponteiro com erros durante create
-    */
+    
 }
 
 static  void  App_Task_Ihm(void *p_arg)
 {
     
     OS_ERR          err;                                /* var com os erros do processo */
-         
+             
    (void)p_arg;
 
     while(DEF_ON){
-                                                            // tratamento de acionamento do motor - liga   
-        if(!bt_liga_Read() && !si_emerg_Read() && !rearme && !alerta){ // botao liga pressionado caso nao esteja em status de emergencia, rearme ou alerta
-            OSTimeDly(100,OS_OPT_TIME_DLY, &err);           // debounce do botao
-            ct_motor_Write(1);                              // aciona o contator de potencia
-            si_liga_Write(1);                               // aciona sinaleiro de motor ligado
-            si_desl_Write(0);                               // deslig sinaleiro de motor desligado
-            
-        }
-         
-                                                            // tratamento botao desliga
-        if(!bt_desl_Read() || !ct_motor_Read()){            // caso botao desliga seja pressionado
-            ct_motor_Write(0);                              // desliga motor
-            si_desl_Write(1);                               // deslig sinaleiro de motor desligado
-            si_liga_Write(0);                               // aciona sinaleiro de motor ligado
-            
+        
+                
+        if((!bt_liga_Read()) && (!emerg) && (!rearme) && (!alerta)){   // botoeira liga pressionada    
+            statusMotor(LIGA);
         }
         
-                                                            // tratamento do rearme
-        if(!bt_rearme_Read() && !si_emerg_Read() && !alerta){          // ativa rearme apenas se botao for pressionado e nao estiver em condicao adversa
-            rearme = 0;                                     // desativa status de rearme
-            si_rearme_Write(0);                             // desativa sinaleira de rearme
-            
+        if(!bt_desl_Read()){                                            // botoeira desliga pressionada
+            statusMotor(DESL);
         }
-        else if(rearme){                                    // se o rearme estiver com status ativo
-            si_rearme_Write(1);                             // aciona sinaleira de rearme
+                
+        if(!bt_rearme_Read() && (!emerg) && (!rearme) && (!alerta)){    // remocao de rearme se nao cond. adver. / alerta e emerg. ativos   
+            statusRearme(DESL);
         }
-        
-            
+                               
     }
-
     
 }
 
 static  void  App_Task_Emerg(void *p_arg)
 {
     
-    OS_ERR          err;                                /* var com os erros do processo */
+    OS_ERR          err;                                    /* var com os erros do processo */
          
    (void)p_arg;
 
 
-    while(DEF_ON){                                                    // tratamento de ocorrencia de emergencia
+    while(DEF_ON){                                          // tratamento de ocorrencia de emergencia
         
-        
-        if(emerg){                                          // se ocorreu uma emergencia
-            si_emerg_Write(1);                              // ativa sinaleira de emerg.
-            al_sonoro_Write(1);                             // aciona alarme sonoro
-            ct_motor_Write(0);                              // desliga contator do motor
-            rearme = 1;                                     // seta flag indicando necessidade de rearme
-                    
-        }
-        else{
-            si_emerg_Write(0);                              // desabilita sinaleira de emerg.
-            al_sonoro_Write(0);                             // desabilita alarme sonoro
+        if(bt_emerg_Read()){                                // se o botao foi liberado libera a emergencia
+            statusEmerg(DESL);
         }
         
-        
-        
-        //if(bt_emerg_Read()){                                // se o botao foi liberado libera a emergencia
-        //    emerg = 0;
-        //    si_emerg_Write(0);
-        //}
     }
     
 }
@@ -503,13 +472,16 @@ static  void  App_Task_Sen_Mec(void *p_arg)
     
     }
 }
-/*
+
 static  void  App_Task_Sen_Temp(void *p_arg)
 {
      
     OS_ERR          err;                                    // var com os erros do processo 
-    CPU_INT16U temp1 = 0, temp2 = 0;                        // var aux com bits da temp. do adc
-    float R1 = 0, R2 = 0;
+    CPU_INT08U      tAltaMotor  = TEMP_MOTOR_ALERTA;        // variavel referencia para teste de logica da temperatura
+    CPU_INT08U      tAltaQuadro = TEMP_QUADRO_ALERTA;       // variavel referencia para teste de logica da temperatura
+    CPU_INT16U      temp1 = 0,                              // var aux com bits da temp. do adc
+                    temp2 = 0;                       
+    float           R1 = 0, R2 = 0;                         // resistencia em bits 
     
     
    (void)p_arg;
@@ -523,165 +495,87 @@ static  void  App_Task_Sen_Temp(void *p_arg)
     ADC_SAR_Seq_StartConvert();
 
     while(DEF_ON){
+        
         ADC_SAR_Seq_IsEndConversion(ADC_SAR_Seq_WAIT_FOR_RESULT);
+        
+        // utilizando NTC's do kit Grove
+        
         temp1 = ADC_SAR_Seq_GetResult16(0u);
         temp2 = ADC_SAR_Seq_GetResult16(1u);
         
-        R1 = 4095.0/temp1-1.0; // resistencia lida
-        R2 = 4095.0/temp2-1.0; // resistencia lida
+        R1 = (4095.0/temp1)-1.0; // resistencia lida
+        R2 = (4095.0/temp2)-1.0; // resistencia lida
         
-     
+        R1 = NTC_R0*R1;
+        R2 = NTC_R0*R2;
+        
         tempM = 1.0/(log(R1/NTC_R0)/NTC_B+1/298.15) -273.15; // convert to temperature via datasheet
         tempQ = 1.0/(log(R2/NTC_R0)/NTC_B+1/298.15) -273.15; // convert to temperature via datasheet
         
+        OSTimeDly(100, OS_OPT_TIME_DLY, &err);
         
+        if(bt_test_Read()){
+            OSTimeDly(100, OS_OPT_TIME_DLY, &err);          // debounce botao de teste
+            tAltaMotor  = 10;                               // variavel referencia para teste de logica da temperatura
+            tAltaQuadro = 10;     
+                        
+        }
+        else{
+            tAltaMotor  = TEMP_MOTOR_ALERTA;                // variavel referencia para teste de logica da temperatura
+            tAltaQuadro = TEMP_QUADRO_ALERTA;     
+            
+        }
+            
+        
+        if(tempM > tAltaMotor || tAltaQuadro){
+            statusAlerta(LIGA);
+            statusRearme(LIGA);
+        }
+        else{
+            statusAlerta(DESL);
+        }
+                
         // fonte: https://wiki.seeedstudio.com/Grove-Temperature_Sensor_V1.2/
         // log: adicionando "Libm.a" no projeto https://community.infineon.com/t5/PSoC-Creator-Designer/Using-Thermistor-but-pow-and-log-functions-inaccessible/m-p/228391#M12773
     
     }
- 
-    
+     
 }
-*/
+
 static  void  App_Task_Display (void *p_arg)
 {
-   CPU_INT32U   val;
-   CPU_INT08U   user_if_state_cur;
-   CPU_INT08U   user_if_state_prev;   
-   CPU_BOOLEAN  pb2_state_cur;
-   CPU_BOOLEAN  pb2_state_prev;
-   CPU_BOOLEAN  pb3_state_cur;
-   CPU_BOOLEAN  pb3_state_prev;
-   OS_ERR       os_err;
-   CPU_CHAR     line_str[17];
-   
-   
-   (void)p_arg;
-   
-   LCD_Disp_Start();                                             /* Initialize the LCD screen.                       */
-   
-   LCD_Disp_Position(0u, 0u);                                    /* Clear LCD screen                                 */
-   LCD_Disp_PrintString((uint8 *)"                ");
-   LCD_Disp_Position(1u, 0u);
-   LCD_Disp_PrintString((uint8 *)"                ");
-   
-   LCD_Disp_PrintString((uint8 *)"Micrium uC/OS-III");
+    CPU_INT32U   val;
+    OS_ERR       os_err;
+    CPU_CHAR     line_str[17];
 
-   user_if_state_cur  = APP_USER_IF_SIGN_ON;
-   user_if_state_prev = APP_USER_IF_SIGN_ON;
-   pb2_state_cur      = DEF_OFF;
-   pb2_state_prev     = DEF_OFF;
-   pb3_state_cur      = DEF_OFF;
-   pb3_state_prev     = DEF_OFF;
+
+    (void)p_arg;
    
+    LCD_Disp_Start();                                       /* Initialize the LCD screen.                       */
    
-    while (DEF_TRUE) { 
+    while(DEF_ON){
         
-        si_alerta_Write(0);
-
-        if (user_if_state_cur != user_if_state_prev) {
-            LCD_Disp_Position(0u, 0u);
-            LCD_Disp_PrintString((uint8 *)"                ");
-            LCD_Disp_Position(1u, 0u);
-            LCD_Disp_PrintString((uint8 *)"                ");
-            user_if_state_prev = user_if_state_cur;
-        }
-
-        switch (user_if_state_cur) {
-            case APP_USER_IF_VER_TICK_RATE:
-                 Str_Copy(line_str, "uC/OS-III Vx.yyy");
-                 val          = (CPU_INT32U)OSVersion(&os_err);
-                 line_str[11] = (val        )  / 1000u + '0';
-                 line_str[13] = (val % 1000u)  /  100u + '0';
-                 line_str[14] = (val %  100u)  /   10u + '0';
-                 line_str[15] = (val %   10u)          + '0';
-                 LCD_Disp_Position(0u, 0u);
-                 LCD_Disp_PrintString((uint8 *)line_str);
-
-                 Str_Copy(line_str, "TickRate:   xxxx");
-                 val = (CPU_INT32U)OSCfg_TickRate_Hz;
-                 Str_FmtNbr_Int32U((CPU_INT32U     )val, 
-                                   (CPU_INT08U     )4u,
-                                   (CPU_INT08U     )10,
-                                   (CPU_CHAR       )0,
-                                   (CPU_BOOLEAN    )DEF_NO,
-                                   (CPU_BOOLEAN    )DEF_YES,
-                                   (CPU_CHAR      *)&line_str[12]);
-                 LCD_Disp_Position(1u, 0u);
-                 LCD_Disp_PrintString((uint8 *)line_str);
-                 break;
-
-            case APP_USER_IF_CPU:
-                 Str_Copy(line_str, "CPU Usage:xx %  ");
-                 val          = (CPU_INT32U)OSStatTaskCPUUsage;
-                 line_str[10] = (val / 10u) + '0';
-                 line_str[11] = (val % 10u) + '0';
-                 LCD_Disp_Position(0u, 0u);
-                 LCD_Disp_PrintString((uint8 *)line_str);
-                 
-                 Str_Copy(line_str, "CPU Speed:xxxMHz");
-                 val          = (CPU_INT32U)BSP_CPU_ClkFreq();
-                 val         /= 1000000u;
-                 line_str[10] = (val       ) / 100u + '0';
-                 line_str[11] = (val % 100u) /  10u + '0';
-                 line_str[12] = (val % 10u)         + '0';
-                 LCD_Disp_Position(1u, 0u);
-                 LCD_Disp_PrintString((uint8 *)line_str);
-                 break;
-
-            case APP_USER_IF_CTXSW:
-                 Str_Copy(line_str, "#Ticks: xxxxxxxx");
-                 val = (CPU_INT32U)OSTickCtr;
-                 Str_FmtNbr_Int32U((CPU_INT32U     )val, 
-                                   (CPU_INT08U     )8u,
-                                   (CPU_INT08U     )10,
-                                   (CPU_CHAR       )0,
-                                   (CPU_BOOLEAN    )DEF_NO,
-                                   (CPU_BOOLEAN    )DEF_YES,
-                                   (CPU_CHAR      *)&line_str[8]);
-                 LCD_Disp_Position(0u, 0u);
-                 LCD_Disp_PrintString((uint8 *)line_str);
-                 
-                 Str_Copy(line_str, "#CtxSw: xxxxxxxx");
-                 val          = (CPU_INT32U)OSTaskCtxSwCtr;
-                 Str_FmtNbr_Int32U((CPU_INT32U     )val, 
-                                   (CPU_INT08U     )8u,
-                                   (CPU_INT08U     )10,
-                                   (CPU_CHAR       )0,
-                                   (CPU_BOOLEAN    )DEF_NO,
-                                   (CPU_BOOLEAN    )DEF_YES,
-                                   (CPU_CHAR      *)&line_str[8]);
-                 LCD_Disp_Position(1u, 0u);
-                 LCD_Disp_PrintString((uint8 *)line_str);
-                 break;
-
-            case APP_USER_IF_SIGN_ON:
-            default:
-                 LCD_Disp_Position(0u, 0u);
-                 LCD_Disp_PrintString((uint8 *)"=== Micrium === ");
-                 LCD_Disp_Position(1u, 0u);
-                 LCD_Disp_PrintString((uint8 *)"   uC/OS-III    ");
-                 break;
-        }
-
-        pb2_state_cur = BSP_PB_StatusGet(2);
-        pb3_state_cur = BSP_PB_StatusGet(3);
-        if ((pb2_state_cur  == DEF_ON ) &&
-            (pb2_state_prev == DEF_OFF)) {     
-            user_if_state_cur = (user_if_state_cur + 1u) % APP_USER_IF_STATE_MAX;
-        }
-
-        if ((pb3_state_cur  == DEF_ON ) &&
-            (pb3_state_prev == DEF_OFF)) { 
-            user_if_state_cur = (user_if_state_cur - 1u) % APP_USER_IF_STATE_MAX;
-        }
-
+        LCD_Disp_Position(0u, 0u);                          // limpa o display
+        LCD_Disp_PrintString((char *)"                ");
+        LCD_Disp_Position(1u, 0u);
+        LCD_Disp_PrintString((char *)"                ");
+        
+                                                            // imprime temperatura do quadro                 
+        LCD_Disp_Position(0u, 0u); 
+        LCD_Disp_PrintString((char *)"TEMP QUADRO     ");
+        sprintf((char *)line_str,"%.2f",tempQ);
+        LCD_Disp_PrintString((char *)line_str);
+        
+                                                            // imprime temperatura do motor
+        LCD_Disp_Position(1u, 0u);
+        LCD_Disp_PrintString((char *)"TEMP MOTOR      ");
+        sprintf((char *)line_str,"%.2f",tempM);
+        LCD_Disp_PrintString((char *)line_str);
+        
         OSTimeDlyHMSM(0, 0, 0, 100, 
                       OS_OPT_TIME_HMSM_STRICT, 
                       &os_err);
 
-        pb2_state_prev = pb2_state_cur;
-        pb3_state_prev = pb3_state_cur;	
     }
 }
 
@@ -866,6 +760,66 @@ static  void  App_TaskUserIF (void *p_arg)
 
 /* desenvolvimento das funcoes */
 
+void statusMotor(CPU_INT08U op){
+    
+    if(op){
+        ct_motor_Write(LIGA);  // liga contator
+        si_liga_Write(LIGA);   // liga sinaleira motor liga
+        si_desl_Write(DESL);   // desl sinaleira motor desl
+               
+    }
+    else{
+        ct_motor_Write(DESL);   // desl contator
+        si_liga_Write(DESL);    // desl sinaleira motor liga
+        si_desl_Write(LIGA);    // liga sinaleira motor desl
+        
+    }
+    
+}
+
+void statusRearme(CPU_INT08U op){
+    
+    if(op){
+        si_rearme_Write(LIGA);  // liga sinaleira rearme
+        rearme = 1;
+        
+    }
+    else{
+        si_rearme_Write(DESL);  // desl sinaleira rearme
+        rearme = 0;
+    }
+    
+}
+
+void statusEmerg(CPU_INT08U op){
+    
+    if(op){
+        si_emerg_Write(LIGA);   // liga sinaleira emerg
+        emerg = 1;
+        
+    }
+    else{        
+        si_emerg_Write(DESL);   // desl sinaleira rearme
+        emerg = 0;
+        
+    }
+    
+}
+
+void statusAlerta(CPU_INT08U op){
+    
+    if(op){
+        si_alerta_Write(LIGA);   // liga sinaleira alerta
+        alerta = 1;
+        
+    }
+    else{        
+        si_alerta_Write(DESL);   // desl sinaleira alerta
+        alerta = 0;
+        
+    }
+    
+}
 
 
 /*
